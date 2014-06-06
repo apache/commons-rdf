@@ -11,8 +11,8 @@ This library is still work in progress. From the very beginning it is using a pa
 ## Contributors
 
 * Sergio Fernández ([Apache Marmotta](http://marmotta.apache.org))
-* Andy Seaborne ([Jena](http://jena.apache.org))
-* Peter Ansel ([Sesame](http://openrdf.callimachus.net))
+* Andy Seaborne ([Apache Jena](http://jena.apache.org))
+* Peter Ansel ([OpenRDF Sesame](http://openrdf.callimachus.net))
 
 ## License
 
