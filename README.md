@@ -13,6 +13,7 @@ This library is still work in progress. From the very beginning it is using a pa
 * Sergio Fernández ([Apache Marmotta](http://marmotta.apache.org))
 * Andy Seaborne ([Apache Jena](http://jena.apache.org))
 * Peter Ansel ([OpenRDF Sesame](http://openrdf.callimachus.net))
+* Alexandre Bertails ([W3C](http://www.w3.org))
 
 ## License
 
