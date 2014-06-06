@@ -6,3 +6,8 @@ target
 *.ear
 hs_err_pid*
 *~
+.idea
+*.iml
+.settings
+.classpath
+.project
