@@ -1,11 +1,11 @@
 package org.apache.commons.rdf;
 
-public interface Triple {
+public interface Triple extends TermTuple {
+    // Repeat for clarity
 
-    Resource getSubject();
+    BlankNodeOrIRI getSubject();
 
     IRI getProperty();
 
-    Literal getObject();
-
+    Resource getObject();
 }
