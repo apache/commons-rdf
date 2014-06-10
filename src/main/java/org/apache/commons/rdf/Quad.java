@@ -6,10 +6,10 @@ public interface Quad {
 
     IRI getProperty();
 
-    Resource getObject();
+    RDFTerm getObject();
 
     IRI getGraph();
 
-    /** Project to a Triple */
+    /** Convert to a Triple */
     Triple toTriple() ;
 }
