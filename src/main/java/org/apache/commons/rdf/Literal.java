@@ -5,5 +5,5 @@ public interface Literal extends Term {
 
 	IRI getDatatype() ;
 
-    String getLanguage() ;
+    Optional<String> getLanguageTag() ;
 }
