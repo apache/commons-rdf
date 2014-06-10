@@ -1,7 +1,6 @@
 package org.apache.commons.rdf;
 
-public interface Quad extends TermTuple {
-    // Repeat for clarity
+public interface Quad {
 
     BlankNodeOrIRI getSubject();
 
@@ -11,6 +10,6 @@ public interface Quad extends TermTuple {
 
     IRI getGraph();
 
-    /** View as a Triple */
-    Triple asTriple() ;
+    /** Project to a Triple */
+    Triple toTriple() ;
 }
