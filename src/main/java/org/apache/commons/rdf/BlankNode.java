@@ -3,7 +3,10 @@ package org.apache.commons.rdf;
 /**
  * An <a href=
  * "http://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/#dfn-blank-node"
- * >RDF-1.1 Blank Node</a>. <br>
+ * >RDF-1.1 Blank Node</a>, as defined by <a href=
+ * "http://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/#section-Graph-Literal"
+ * >RDF-1.1 Concepts and Abstract Syntax</a>, a W3C Recommendation published on
+ * 25 February 2014.<br>
  * 
  * Note that: <dd>Blank nodes are disjoint from IRIs and literals. Otherwise,
  * the set of possible blank nodes is arbitrary. RDF makes no reference to any
