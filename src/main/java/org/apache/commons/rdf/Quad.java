@@ -36,7 +36,7 @@ public interface Quad {
 	IRI getPredicate();
 
 	/**
-	 * The object of this quad, which may be either a {@link BlankNode} an
+	 * The object of this quad, which may be either a {@link BlankNode}, an
 	 * {@link IRI}, or a {@link Literal}, which are represented in Commons RDF
 	 * by the interface {@link RDFTerm}.
 	 * 
