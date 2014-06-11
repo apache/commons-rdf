@@ -3,7 +3,7 @@ package org.apache.commons.rdf;
 /**
  * RDF Term
  */
-public interface Term {
+public interface RDFTerm {
 
     /**
      * Return the term representation (TBD)
