@@ -1,10 +1,8 @@
 package org.apache.commons.rdf;
 
 /**
- * An <a href=
- * "http://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/#dfn-blank-node"
- * >RDF-1.1 Blank Node</a>, as defined by <a href=
- * "http://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/#section-Graph-Literal"
+ * An <a href= "http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node" >RDF-1.1
+ * Blank Node</a>, as defined by <a href= "http://www.w3.org/TR/rdf11-concepts/"
  * >RDF-1.1 Concepts and Abstract Syntax</a>, a W3C Recommendation published on
  * 25 February 2014.<br>
  * 
@@ -24,9 +22,8 @@ package org.apache.commons.rdf;
  * the same blank node identifier except in situations where this is supported
  * by the syntax.</dd>
  * 
- * @see <a href=
- *      "http://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/#dfn-blank-node"
- *      >RDF-1.1 Blank Node</a>
+ * @see <a href= "http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node" >RDF-1.1
+ *      Blank Node</a>
  */
 public interface BlankNode extends BlankNodeOrIRI {
 

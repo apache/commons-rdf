@@ -1,16 +1,13 @@
 package org.apache.commons.rdf;
 
 /**
- * An <a href=
- * "http://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/#dfn-rdf-triple"
- * >RDF-1.1 Triple</a>, as defined by <a href=
- * "http://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/"
+ * An <a href= "http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-triple" >RDF-1.1
+ * Triple</a>, as defined by <a href= "http://www.w3.org/TR/rdf11-concepts/"
  * >RDF-1.1 Concepts and Abstract Syntax</a>, a W3C Recommendation published on
  * 25 February 2014.<br>
  * 
- * @see <a href=
- *      "http://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/#dfn-rdf-triple"
- *      >RDF-1.1 Triple</a>
+ * @see <a href= "http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-triple" >RDF-1.1
+ *      Triple</a>
  */
 public interface Triple {
 
@@ -20,8 +17,7 @@ public interface Triple {
 	 * {@link BlankNodeOrIRI}.
 	 * 
 	 * @return The subject {@link BlankNodeOrIRI} of this triple.
-	 * @see <a
-	 *      href="http://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/#dfn-subject">RDF-1.1
+	 * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-subject">RDF-1.1
 	 *      Triple subject</a>
 	 */
 	BlankNodeOrIRI getSubject();
@@ -30,8 +26,7 @@ public interface Triple {
 	 * The predicate {@link IRI} of this triple.
 	 * 
 	 * @return The predicate {@link IRI} of this triple.
-	 * @see <a
-	 *      href="http://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/#dfn-predicate">RDF-1.1
+	 * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-predicate">RDF-1.1
 	 *      Triple predicate</a>
 	 */
 	IRI getPredicate();
@@ -42,8 +37,7 @@ public interface Triple {
 	 * by the interface {@link RDFTerm}.
 	 * 
 	 * @return The object {@link RDFTerm} of this triple.
-	 * @see <a
-	 *      href="http://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/#dfn-object">RDF-1.1
+	 * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-object">RDF-1.1
 	 *      Triple object</a>
 	 */
 	RDFTerm getObject();

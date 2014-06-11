@@ -1,15 +1,12 @@
 package org.apache.commons.rdf;
 
-import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 /**
- * A Quad is an abstraction aimed at targeting an <a href=
- * "http://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/#dfn-rdf-triple"
- * >RDF-1.1 Triple</a> to a specific <a
- * href="http://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/#dfn-rdf-graph"
- * >RDF-1.1 Graph</a> without using a {@link Set} or {@link Map}.
+ * A Quad is an abstraction to specify that a <a href=
+ * "http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-triple" >RDF-1.1 Triple</a> is
+ * in an <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-graph" >RDF-1.1
+ * Graph</a>.
  */
 public interface Quad {
 
@@ -19,8 +16,7 @@ public interface Quad {
 	 * {@link BlankNodeOrIRI}.
 	 * 
 	 * @return The subject {@link BlankNodeOrIRI} of this quad.
-	 * @see <a
-	 *      href="http://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/#dfn-subject">RDF-1.1
+	 * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-subject">RDF-1.1
 	 *      Triple subject</a>
 	 */
 	BlankNodeOrIRI getSubject();
@@ -29,8 +25,7 @@ public interface Quad {
 	 * The predicate {@link IRI} of this quad.
 	 * 
 	 * @return The predicate {@link IRI} of this quad.
-	 * @see <a
-	 *      href="http://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/#dfn-predicate">RDF-1.1
+	 * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-predicate">RDF-1.1
 	 *      Triple predicate</a>
 	 */
 	IRI getPredicate();
@@ -41,8 +36,7 @@ public interface Quad {
 	 * by the interface {@link RDFTerm}.
 	 * 
 	 * @return The object {@link RDFTerm} of this quad.
-	 * @see <a
-	 *      href="http://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/#dfn-object">RDF-1.1
+	 * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-object">RDF-1.1
 	 *      Triple object</a>
 	 */
 	RDFTerm getObject();
@@ -58,7 +52,7 @@ public interface Quad {
 	 * @return The optional {@link BlankNodeOrIRI} representing the Named Graph
 	 *         of this quad if present, and the Default Graph if not present.
 	 * @see <a
-	 *      href="http://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/#dfn-named-graph">RDF-1.1
+	 *      href="http://www.w3.org/TR/rdf11-concepts/#dfn-named-graph">RDF-1.1
 	 *      Named Graph</a>
 	 */
 	Optional<BlankNodeOrIRI> getGraph();

@@ -4,7 +4,7 @@ import java.util.Optional;
 
 /**
  * An RDF-1.1 Literal, as defined by <a href=
- * "http://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/#section-Graph-Literal"
+ * "http://www.w3.org/TR/rdf11-concepts/#section-Graph-Literal"
  * >RDF-1.1 Concepts and Abstract Syntax</a>, a W3C Recommendation published on
  * 25 February 2014
  */
@@ -12,13 +12,11 @@ public interface Literal extends RDFTerm {
 	
 	/**
 	 * The lexical form of this literal, represented by a <a
-	 * href="http://www.unicode.org/versions/latest/">Unicode string</a>, which
-	 * SHOULD be in <a href="http://www.unicode.org/reports/tr15/">Normal Form
-	 * C</a>.
+	 * href="http://www.unicode.org/versions/latest/">Unicode string</a>.
 	 * 
 	 * @return The lexical form of this literal.
 	 * @see <a
-	 *      href="http://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/#dfn-lexical-form">RDF-1.1
+	 *      href="http://www.w3.org/TR/rdf11-concepts/#dfn-lexical-form">RDF-1.1
 	 *      Literal lexical form</a>
 	 */
 	String getLexicalForm();
@@ -29,7 +27,7 @@ public interface Literal extends RDFTerm {
 	 * 
 	 * @return The datatype IRI for this literal.
 	 * @see <a
-	 *      href="http://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/#dfn-datatype-iri">RDF-1.1
+	 *      href="http://www.w3.org/TR/rdf11-concepts/#dfn-datatype-iri">RDF-1.1
 	 *      Literal datatype IRI</a>
 	 */
 	IRI getDatatype();
@@ -43,7 +41,7 @@ public interface Literal extends RDFTerm {
 	 * 
 	 * @return The {@link Optional} language tag for this literal.
 	 * @see <a
-	 *      href="http://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/#dfn-language-tag">RDF-1.1
+	 *      href="http://www.w3.org/TR/rdf11-concepts/#dfn-language-tag">RDF-1.1
 	 *      Literal language tag</a>
 	 */
 	Optional<String> getLanguageTag();
