@@ -4,7 +4,7 @@ public interface Quad {
 
     BlankNodeOrIRI getSubject();
 
-    IRI getProperty();
+    IRI getPredicate();
 
     RDFTerm getObject();
 

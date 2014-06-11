@@ -4,7 +4,7 @@ public interface Triple {
 
     BlankNodeOrIRI getSubject();
 
-    IRI getProperty();
+    IRI getPredicate();
 
     RDFTerm getObject();
 }
