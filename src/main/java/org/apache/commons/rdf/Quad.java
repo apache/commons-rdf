@@ -2,7 +2,7 @@ package org.apache.commons.rdf;
 
 public interface Quad {
 
-    BlankNodeOrIRI getSubject();
+    Resource getSubject();
 
     IRI getProperty();
 
@@ -13,5 +13,6 @@ public interface Quad {
     /**
      * Convert to a Triple
      */
-    Triple toTriple();
+    Triple asTriple();
+
 }

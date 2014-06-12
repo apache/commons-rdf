@@ -1,4 +1,4 @@
 package org.apache.commons.rdf;
 
-public interface IRI extends RDFTerm {
+public interface IRI extends Resource {
 }

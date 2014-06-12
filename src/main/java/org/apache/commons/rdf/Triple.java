@@ -2,9 +2,10 @@ package org.apache.commons.rdf;
 
 public interface Triple {
 
-    BlankNodeOrIRI getSubject();
+    Resource getSubject();
 
     IRI getProperty();
 
     RDFTerm getObject();
+
 }
