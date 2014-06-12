@@ -2,9 +2,9 @@ package org.apache.commons.rdf;
 
 /**
  * An <a href= "http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node" >RDF-1.1
- * Blank Node</a>, as defined by <a href= "http://www.w3.org/TR/rdf11-concepts/"
- * >RDF-1.1 Concepts and Abstract Syntax</a>, a W3C Recommendation published on
- * 25 February 2014.<br>
+ * Blank Node</a>, as defined by <a href=
+ * "http://www.w3.org/TR/rdf11-concepts/#section-blank-nodes" >RDF-1.1 Concepts
+ * and Abstract Syntax</a>, a W3C Recommendation published on 25 February 2014.<br>
  * 
  * Note that: <dd>Blank nodes are disjoint from IRIs and literals. Otherwise,
  * the set of possible blank nodes is arbitrary. RDF makes no reference to any
@@ -28,13 +28,36 @@ package org.apache.commons.rdf;
 public interface BlankNode extends BlankNodeOrIRI {
 
 	/**
-	 * Return a label for the blank node. This is not a serialization/syntax
-	 * label. It should be uniquely identifying within the local scope it is
-	 * created in but has no uniqueness guarantees other than that.<br>
+	 * Return a <a href=
+	 * "http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node-identifier">label</a>
+	 * for the blank node. This is not a serialization/syntax label. It should
+	 * be uniquely identifying within the local scope it is created in but has
+	 * no uniqueness guarantees other than that.<br>
 	 * 
 	 * In particular, the existence of two objects of type {@link BlankNode}
 	 * with the same value returned from {@link #getLabel()} are not equivalent
-	 * unless they are known to have been created in the same local scope.
+	 * unless they are known to have been created in the same local scope.<br>
+	 * 
+	 * An example of a local scope may be an instance of a Java Virtual Machine
+	 * (JVM). In the context of a JVM instance, an implementor may support
+	 * insertion and removal of {@link Triple} objects containing Blank Nodes
+	 * without modifying the blank node labels.<br>
+	 * 
+	 * Another example of a local scope may be a <a
+	 * href="http://www.w3.org/TR/rdf11-concepts/#section-rdf-graph">Graph</a>
+	 * or <a
+	 * href="http://www.w3.org/TR/rdf11-concepts/#section-dataset">Dataset</a>
+	 * created from a single document. In this context, an implementor should
+	 * reasonably guarantee that the label returned by getLabel only maps to
+	 * equivalent blank nodes in the same Graph or Dataset, but they may not
+	 * guarantee that it is unique for the JVM instance. In this case, the
+	 * implementor may support a mechanism to provide a mapping for blank nodes
+	 * between Graph or Dataset instances to guarantee their uniqueness.<br>
+	 * 
+	 * If implementors support <a
+	 * href="http://www.w3.org/TR/rdf11-concepts/#section-skolemization"
+	 * >Skolemisation</a>, they may map instances of {@link BlankNode} objects
+	 * to {@link IRI} objects to reduce scoping issues.
 	 * 
 	 * @return A label for the {@link BlankNode}.
 	 */
