@@ -14,7 +14,16 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
     <developers>
         <developer>
@@ -32,7 +41,7 @@
         <developer>
             <id>ansell</id>
             <name>Peter Ansell</name>
-            <email>ansell.peter@gmail.com</email>
+            <email>p_ansell@yahoo.com</email>
             <organization>OpenRDF</organization>
         </developer>
         <developer>
@@ -62,7 +71,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>3.8.1</version>
+            <version>4.11</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

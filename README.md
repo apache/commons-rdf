@@ -1,8 +1,8 @@
 # Commons RDF
 
-Working repository for experimenting with idea of providing a commons library for [RDF 1.1](http://www.w3.org/TR/rdf11-concepts/) that could be implemented by the upcoming versions of the main Java toolkits ([Jena](http://jena.apache.org) 3.0 and [Sesame](http://openrdf.callimachus.net) 4.0) as well as wrappers for other JVM languages ([Banana RDF](https://github.com/w3c/banana-rdf) and so on).
+Working repository for experimenting with idea of providing a common library for [RDF 1.1](http://www.w3.org/TR/rdf11-concepts/) that could be implemented by the upcoming versions of the main Java toolkits ([Jena](http://jena.apache.org) 3.0 and [Sesame](http://openrdf.callimachus.net) 4.0) as well as wrappers for other JVM languages ([Banana RDF](https://github.com/w3c/banana-rdf) and so on).
 
-The main motivation behind this simple library is revise an historical incompatibility issue. This library does not pretend to be a generic api wrapping those libraries, but a set of interfaces for the RDF 1.1 concepts. In the initial phase just about the core concepts (URI/IRI, Resource, Blank Node, Literal, etc). And then we may extend it to triples/quads/statements or even graphs/models, but that's something we'll see.
+The main motivation behind this simple library is revise an historical incompatibility issue. This library does not pretend to be a generic api wrapping those libraries, but a set of interfaces for the RDF 1.1 concepts. In the initial phase just about a subset of the core concepts defined by RDF-1.1 (URI/IRI, Resource, Blank Node, Literal, Triple, Quad, etc). In a future phase we may define interfaces for Graphs and Datasets.
 
 ## Status
 
@@ -12,7 +12,7 @@ This library is still work in progress. From the very beginning it is using a pa
 
 * Sergio Fernández ([Apache Marmotta](http://marmotta.apache.org))
 * Andy Seaborne ([Apache Jena](http://jena.apache.org))
-* Peter Ansel ([OpenRDF Sesame](http://openrdf.callimachus.net))
+* Peter Ansell ([OpenRDF Sesame](http://openrdf.callimachus.net))
 * Alexandre Bertails ([W3C](http://www.w3.org))
 
 ## License
