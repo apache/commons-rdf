@@ -1,9 +1,10 @@
 package org.apache.commons.rdf;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
- * In-memory Model
+ * Model, a collection of RDF triples
  *
  */
 public interface Model {
@@ -16,18 +17,14 @@ public interface Model {
 
     boolean remove(Triple triple);
 
+    boolean remove(Resource subject, IRI predicate, RDFTerm object);
+
     boolean clear();
 
-    int size();
+    long size();
 
-    Collection<? extends Triple> getTriples();
+    Iterator<? extends Triple> getTriples();
 
-    Collection<? extends Resource> getSubjects();
-
-    Collection<? extends IRI> getPredicates();
-
-    Collection<? extends RDFTerm> getObjects();
-
-    Collection<? extends Triple> filter(Resource subject, IRI predicate, RDFTerm object);
+    Iterator<? extends Triple> filter(Resource subject, IRI predicate, RDFTerm object);
 
 }
