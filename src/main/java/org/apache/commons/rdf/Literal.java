@@ -1,9 +1,10 @@
 package org.apache.commons.rdf;
 
 public interface Literal extends RDFTerm {
-	String getLexicalForm() ;
+    
+    String getLexicalForm();
 
-	IRI getDatatype() ;
+    IRI getDatatype();
 
-    Optional<String> getLanguageTag() ;
+    Optional<String> getLanguageTag();
 }

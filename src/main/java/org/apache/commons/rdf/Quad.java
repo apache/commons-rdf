@@ -10,6 +10,8 @@ public interface Quad {
 
     IRI getGraph();
 
-    /** Convert to a Triple */
-    Triple toTriple() ;
+    /**
+     * Convert to a Triple
+     */
+    Triple toTriple();
 }
