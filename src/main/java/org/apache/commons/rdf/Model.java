@@ -28,4 +28,6 @@ public interface Model {
 
     Collection<? extends RDFTerm> getObjects();
 
+    Collection<? extends Triple> filter(Resource subject, IRI predicate, RDFTerm object);
+
 }
