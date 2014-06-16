@@ -1,6 +1,5 @@
 package org.apache.commons.rdf;
 
-import java.util.Collection;
 import java.util.Iterator;
 
 /**
@@ -29,14 +28,6 @@ public interface Graph {
      * @return added or not
      */
     boolean add(Resource subject, IRI predicate, RDFTerm object);
-
-    /**
-     * Add a collection of triples to the graph
-     *
-     * @param triples triples to add
-     * @return added all or not
-     */
-    boolean add(Collection<? extends Triple> triples);
 
     /**
      * Remove a concrete triple from the graph
