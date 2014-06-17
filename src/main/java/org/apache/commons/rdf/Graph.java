@@ -1,90 +1,108 @@
 package org.apache.commons.rdf;
 
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.stream.Stream;
 
 /**
- * An <a href="http://www.w3.org/TR/rdf11-concepts/#section-rdf-graph">
- * RDF 1.1 Graph</a>, a set of RDF triples, as defined by <a
- * href="http://www.w3.org/TR/rdf11-concepts/" >RDF-1.1 Concepts
- * and Abstract Syntax</a>, a W3C Recommendation published on 25
- * February 2014.
+ * An <a href="http://www.w3.org/TR/rdf11-concepts/#section-rdf-graph"> RDF 1.1
+ * Graph</a>, a set of RDF triples, as defined by <a
+ * href="http://www.w3.org/TR/rdf11-concepts/" >RDF-1.1 Concepts and Abstract
+ * Syntax</a>, a W3C Recommendation published on 25 February 2014.
  */
 public interface Graph {
 
     /**
-     * Add a triple to the graph
+     * Add a triple to the graph.
      *
-     * @param triple triple to add
-     * @return added or not
+     * @param triple
+     *            The triple to add
      */
-    boolean add(Triple triple);
+    void add(Triple triple);
 
     /**
-     * Add a triple to the graph
+     * Add a triple to the graph.
      *
-     * @param subject subject of the triple
-     * @param predicate predicate of the triple
-     * @param object object of the property
-     * @return added or not
+     * @param subject
+     *            The triple subject
+     * @param predicate
+     *            The triple predicate
+     * @param object
+     *            The triple object
      */
-    boolean add(Resource subject, IRI predicate, RDFTerm object);
+    void add(Resource subject, IRI predicate, RDFTerm object);
 
     /**
-     * Add a collection of triples to the graph
+     * Check if graph contains triple.
      *
-     * @param triples triples to add
-     * @return added all or not
+     * @param triple
+     *            The triple to check.
+     * @return True if the Graph contains the given Triple.
      */
-    boolean add(Collection<? extends Triple> triples);
+    boolean contains(Triple triple);
 
     /**
-     * Remove a concrete triple from the graph
+     * Check if graph contains a pattern of triples.
      *
-     * @param triple triple to remove
-     * @return removed or not
+     * @param subject
+     *            The triple subject (null is a wildcard)
+     * @param predicate
+     *            The triple predicate (null is a wildcard)
+     * @param object
+     *            The triple object (null is a wildcard)
+     * @return True if the Graph contains any Triples that match
+     *            the given pattern.
      */
-    boolean remove(Triple triple);
+    boolean contains(Resource subject, IRI predicate, RDFTerm object);
 
     /**
-     * emove a concrete pattern of triples from the graph
+     * Remove a concrete triple from the graph.
      *
-     * @param subject subject (null is a wildcard)
-     * @param predicate  predicate (null is a wildcard)
-     * @param object object (null is a wildcard)
-     * @return remoed or not
+     * @param triple
+     *            triple to remove
      */
-    boolean remove(Resource subject, IRI predicate, RDFTerm object);
+    void remove(Triple triple);
 
     /**
-     * Clear the graph
+     * Remove a concrete pattern of triples from the graph.
      *
-     * @return clearer or not
+     * @param subject
+     *            The triple subject (null is a wildcard)
+     * @param predicate
+     *            The triple predicate (null is a wildcard)
+     * @param object
+     *            The triple object (null is a wildcard)
      */
-    boolean clear();
+    void remove(Resource subject, IRI predicate, RDFTerm object);
 
     /**
-     * Number of triples contained by the graph
+     * Clear the graph.
+     */
+    void clear();
+
+    /**
+     * Number of triples contained by the graph.
      *
-     * @return size
+     * @return The size of the graph.
      */
     long size();
 
     /**
-     * Get all triples contained by the graph
+     * Get all triples contained by the graph.
      *
-     * @return iterator over all triples
+     * @return A {@link Stream} over all of the triples in the graph.
      */
-    Iterator<? extends Triple> getTriples();
+    Stream<? extends Triple> getTriples();
 
     /**
-     * Get all triples contained by the graph matched with the pattern
+     * Get all triples contained by the graph matched with the pattern.
      *
-     * @param subject subject (null is a wildcard)
-     * @param predicate  predicate (null is a wildcard)
-     * @param object object (null is a wildcard)
-     * @return iterator over the matched triples
+     * @param subject
+     *            The triple subject (null is a wildcard)
+     * @param predicate
+     *            The triple predicate (null is a wildcard)
+     * @param object
+     *            The triple object (null is a wildcard)
+     * @return A {@link Stream} over the matched triples.
      */
-    Iterator<? extends Triple> getTriples(Resource subject, IRI predicate, RDFTerm object);
-
+    Stream<? extends Triple> getTriples(Resource subject, IRI predicate,
+			RDFTerm object);
 }
