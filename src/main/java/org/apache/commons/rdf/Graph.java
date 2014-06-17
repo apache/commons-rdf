@@ -10,76 +10,96 @@ import java.util.stream.Stream;
  */
 public interface Graph {
 
-	/**
-	 * Add a triple to the graph.
-	 *
-	 * @param triple
-	 *            The triple to add
-	 */
-	void add(Triple triple);
+    /**
+     * Add a triple to the graph.
+     *
+     * @param triple
+     *            The triple to add
+     */
+    void add(Triple triple);
 
-	/**
-	 * Add a triple to the graph.
-	 *
-	 * @param subject
-	 *            The triple subject
-	 * @param predicate
-	 *            The triple predicate
-	 * @param object
-	 *            The triple object
-	 */
-	void add(Resource subject, IRI predicate, RDFTerm object);
+    /**
+     * Add a triple to the graph.
+     *
+     * @param subject
+     *            The triple subject
+     * @param predicate
+     *            The triple predicate
+     * @param object
+     *            The triple object
+     */
+    void add(Resource subject, IRI predicate, RDFTerm object);
 
-	/**
-	 * Remove a concrete triple from the graph.
-	 *
-	 * @param triple
-	 *            triple to remove
-	 */
-	void remove(Triple triple);
+    /**
+     * Check if graph contains triple.
+     *
+     * @param triple
+     *            The triple to check.
+     */
+    boolean contains(Triple triple);
 
-	/**
-	 * Remove a concrete pattern of triples from the graph.
-	 *
-	 * @param subject
-	 *            The triple subject (null is a wildcard)
-	 * @param predicate
-	 *            The triple predicate (null is a wildcard)
-	 * @param object
-	 *            The triple object (null is a wildcard)
-	 */
-	void remove(Resource subject, IRI predicate, RDFTerm object);
+    /**
+     * Check if graph contains triple.
+     *
+     * @param subject
+     *            The triple subject
+     * @param predicate
+     *            The triple predicate
+     * @param object
+     *            The triple object
+     */
+    boolean contains(Resource subject, IRI predicate, RDFTerm object);
 
-	/**
-	 * Clear the graph.
-	 */
-	void clear();
+    /**
+     * Remove a concrete triple from the graph.
+     *
+     * @param triple
+     *            triple to remove
+     */
+    void remove(Triple triple);
 
-	/**
-	 * Number of triples contained by the graph.
-	 *
-	 * @return The size of the graph.
-	 */
-	long size();
+    /**
+     * Remove a concrete pattern of triples from the graph.
+     *
+     * @param subject
+     *            The triple subject (null is a wildcard)
+     * @param predicate
+     *            The triple predicate (null is a wildcard)
+     * @param object
+     *            The triple object (null is a wildcard)
+     */
+    void remove(Resource subject, IRI predicate, RDFTerm object);
 
-	/**
-	 * Get all triples contained by the graph.
-	 *
-	 * @return A {@link Stream} over all of the triples in the graph.
-	 */
-	Stream<? extends Triple> getTriples();
+    /**
+     * Clear the graph.
+     */
+    void clear();
 
-	/**
-	 * Get all triples contained by the graph matched with the pattern.
-	 *
-	 * @param subject
-	 *            The triple subject (null is a wildcard)
-	 * @param predicate
-	 *            The triple predicate (null is a wildcard)
-	 * @param object
-	 *            The triple object (null is a wildcard)
-	 * @return A {@link Stream} over the matched triples.
-	 */
-	Stream<? extends Triple> getTriples(Resource subject, IRI predicate,
+    /**
+     * Number of triples contained by the graph.
+     *
+     * @return The size of the graph.
+     */
+    long size();
+
+    /**
+     * Get all triples contained by the graph.
+     *
+     * @return A {@link Stream} over all of the triples in the graph.
+     */
+    Stream<? extends Triple> getTriples();
+
+    /**
+     * Get all triples contained by the graph matched with the pattern.
+     *
+     * @param subject
+     *            The triple subject (null is a wildcard)
+     * @param predicate
+     *            The triple predicate (null is a wildcard)
+     * @param object
+     *            The triple object (null is a wildcard)
+     * @return A {@link Stream} over the matched triples.
+     */
+    Stream<? extends Triple> getTriples(Resource subject, IRI predicate,
 			RDFTerm object);
 }
