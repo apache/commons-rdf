@@ -35,11 +35,12 @@ public interface Graph {
      *
      * @param triple
      *            The triple to check.
+     * @return True if the Graph contains the given Triple.
      */
     boolean contains(Triple triple);
 
     /**
-     * Check if graph contains triple.
+     * Check if graph contains a pattern of triples.
      *
      * @param subject
      *            The triple subject (null is a wildcard)
@@ -47,6 +48,8 @@ public interface Graph {
      *            The triple predicate (null is a wildcard)
      * @param object
      *            The triple object (null is a wildcard)
+     * @return True if the Graph contains any Triples that match
+     *            the given pattern.
      */
     boolean contains(Resource subject, IRI predicate, RDFTerm object);
 
