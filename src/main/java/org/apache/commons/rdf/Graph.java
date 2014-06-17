@@ -42,11 +42,11 @@ public interface Graph {
      * Check if graph contains triple.
      *
      * @param subject
-     *            The triple subject
+     *            The triple subject (null is a wildcard)
      * @param predicate
-     *            The triple predicate
+     *            The triple predicate (null is a wildcard)
      * @param object
-     *            The triple object
+     *            The triple object (null is a wildcard)
      */
     boolean contains(Resource subject, IRI predicate, RDFTerm object);
 
