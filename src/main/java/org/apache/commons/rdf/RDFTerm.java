@@ -12,10 +12,12 @@ package org.apache.commons.rdf;
 public interface RDFTerm {
 
     /**
-     * Return the term representation (TBD)
+     * Return the term serialised as specified by the RDF-1.1 N-Triples Canonical form.
      *
-     * @return term representation
+     * @return The term serialised as RDF-1.1 N-Triples.
+     * @see <a href="http://www.w3.org/TR/n-triples/#canonical-ntriples">
+     *         RDF-1.1 N-Triples Canonical form</a>
      */
-    String toString();
+    String ntriplesString();
 
 }
