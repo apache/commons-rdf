@@ -59,8 +59,8 @@ public interface BlankNode extends Resource {
      * >Skolemisation</a>, they may map instances of {@link BlankNode} objects
      * to {@link IRI} objects to reduce scoping issues.
      *
-     * @return A label for the {@link BlankNode}.
+     * @return An internal, locally scoped, identifier for the {@link BlankNode}.
      */
-    String getLabel();
+    String internalIdentifier();
 
 }

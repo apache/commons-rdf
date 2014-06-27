@@ -7,4 +7,14 @@ package org.apache.commons.rdf;
  * and Abstract Syntax</a>, a W3C Recommendation published on 25 February 2014.<br>
  */
 public interface IRI extends Resource {
+
+	/**
+	 * Returns the IRI encoded as a native Unicode String.<br>
+	 * 
+	 * The returned string must not include URL-encoding to escape 
+	 * non-ASCII characters.
+	 * 
+	 * @return The IRI encoded as a native Unicode String.
+	 */
+    String getIRIString();
 }
