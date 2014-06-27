@@ -22,7 +22,7 @@ package org.apache.commons.rdf;
  * the same blank node identifier except in situations where this is supported
  * by the syntax.</dd>
  *
- * @see <a href= "http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node" >RDF-1.1
+ * @see <a href= "http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node">RDF-1.1
  * Blank Node</a>
  */
 public interface BlankNode extends Resource {
@@ -59,7 +59,7 @@ public interface BlankNode extends Resource {
      * >Skolemisation</a>, they may map instances of {@link BlankNode} objects
      * to {@link IRI} objects to reduce scoping issues.
      *
-     * @return An internal, locally scoped, identifier for the {@link BlankNode}.
+     * @return An internal, system identifier for the {@link BlankNode}.
      */
     String internalIdentifier();
 
