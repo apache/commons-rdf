@@ -6,6 +6,8 @@ The main motivation behind this simple library is revise an historical incompati
 
 ## Status
 
+[![Build Status](https://secure.travis-ci.org/wikier/commons-rdf.svg?branch=master)](https://travis-ci.org/wikier/commons-rdf)
+
 This library is still work in progress. From the very beginning it is using a package from [Apache Commons](http://commons.apache.org) without permission. That's because at some point we would like to submit it there, so we would like to avoid naming issues on such migration.
 
 A draft diagram of the interfaces which may be included in Commons RDF are:
