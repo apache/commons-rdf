@@ -19,7 +19,7 @@ public interface Quad {
      * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-subject">RDF-1.1
      * Triple subject</a>
      */
-    Resource getSubject();
+    BlankNodeOrIRI getSubject();
 
     /**
      * The predicate {@link IRI} of this quad.
@@ -55,7 +55,7 @@ public interface Quad {
      * href="http://www.w3.org/TR/rdf11-concepts/#dfn-named-graph">RDF-1.1
      * Named Graph</a>
      */
-    Optional<Resource> getGraph();
+    Optional<BlankNodeOrIRI> getGraph();
 
     /**
      * A helper method used to convert to a {@link Triple}, removing any Graph

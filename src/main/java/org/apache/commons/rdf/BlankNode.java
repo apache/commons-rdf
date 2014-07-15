@@ -25,7 +25,7 @@ package org.apache.commons.rdf;
  * @see <a href= "http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node">RDF-1.1
  * Blank Node</a>
  */
-public interface BlankNode extends Resource {
+public interface BlankNode extends BlankNodeOrIRI {
 
     /**
      * Return a <a href=
