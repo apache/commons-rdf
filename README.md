@@ -8,7 +8,7 @@ The main motivation behind this simple library is revise an historical incompati
 
 This library is still work in progress. From the very beginning it is using a package from [Apache Commons](http://commons.apache.org) without permission. That's because at some point we would like to submit it there, so we would like to avoid naming issues on such migration.
 
-This is the current draft with the basic design:
+A draft diagram of the interfaces which may be included in Commons RDF are:
 
 ![commons-rdf class diagram](src/main/resources/commons-rdf-class-diagram.png "commons-rdf class diagram")
 
