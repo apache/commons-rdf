@@ -20,7 +20,7 @@ public interface Triple {
      * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-subject">RDF-1.1
      * Triple subject</a>
      */
-    Resource getSubject();
+    BlankNodeOrIRI getSubject();
 
     /**
      * The predicate {@link IRI} of this triple.

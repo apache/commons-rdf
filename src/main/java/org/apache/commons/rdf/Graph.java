@@ -28,7 +28,7 @@ public interface Graph {
      * @param object
      *            The triple object
      */
-    void add(Resource subject, IRI predicate, RDFTerm object);
+    void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
 
     /**
      * Check if graph contains triple.
@@ -51,7 +51,7 @@ public interface Graph {
      * @return True if the Graph contains any Triples that match
      *            the given pattern.
      */
-    boolean contains(Resource subject, IRI predicate, RDFTerm object);
+    boolean contains(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
 
     /**
      * Remove a concrete triple from the graph.
@@ -71,7 +71,7 @@ public interface Graph {
      * @param object
      *            The triple object (null is a wildcard)
      */
-    void remove(Resource subject, IRI predicate, RDFTerm object);
+    void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
 
     /**
      * Clear the graph.
@@ -115,6 +115,6 @@ public interface Graph {
      *            The triple object (null is a wildcard)
      * @return A {@link Stream} over the matched triples.
      */
-    Stream<? extends Triple> getTriples(Resource subject, IRI predicate,
+    Stream<? extends Triple> getTriples(BlankNodeOrIRI subject, IRI predicate,
 			RDFTerm object);
 }
