@@ -1,40 +1,7 @@
-diff --git a/pom.xml b/pom.xml
-index 0ecc4f8..a7db1db 100644
---- a/pom.xml
-+++ b/pom.xml
-@@ -59,8 +59,8 @@
-                 <artifactId>maven-compiler-plugin</artifactId>
-                 <version>3.1</version>
-                 <configuration>
--                    <source>1.8</source>
--                    <target>1.8</target>
-+                    <source>1.7</source>
-+                    <target>1.7</target>
-                     <encoding>UTF-8</encoding>
-                 </configuration>
-             </plugin>
-@@ -69,6 +69,17 @@
- 
-     <dependencies>
-         <dependency>
-+            <groupId>com.google.guava</groupId>
-+            <artifactId>guava</artifactId>
-+            <version>17.0</version>
-+            <exclusions>
-+                <exclusion>
-+                    <groupId>com.google.code.findbugs</groupId>
-+                    <artifactId>*</artifactId>
-+                </exclusion>
-+            </exclusions>
-+        </dependency>
-+        <dependency>
-             <groupId>junit</groupId>
-             <artifactId>junit</artifactId>
-             <version>4.11</version>
-diff --git a/src/main/java/org/apache/commons/rdf/Literal.java b/src/main/java/org/apache/commons/rdf/Literal.java
+diff --git a/org/apache/commons/rdf/Literal.java b/org/apache/commons/rdf/Literal.java
 index 30505a3..e5638f7 100644
---- a/src/main/java/org/apache/commons/rdf/Literal.java
-+++ b/src/main/java/org/apache/commons/rdf/Literal.java
+--- a/org/apache/commons/rdf/Literal.java
++++ b/org/apache/commons/rdf/Literal.java
 @@ -1,6 +1,6 @@
  package org.apache.commons.rdf;
  
