@@ -76,6 +76,7 @@
                     <artifactId>license-maven-plugin</artifactId>
                     <version>1.7</version>
                     <configuration>
+                        <licenseName>apache_v2</licenseName>
                         <header>src/etc/header.txt</header>
                         <strictCheck>true</strictCheck>
                         <excludes>
