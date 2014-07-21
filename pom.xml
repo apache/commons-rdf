@@ -13,6 +13,7 @@
     <inceptionYear>2014</inceptionYear>
 
     <properties>
+        <commons.rdf.classifier>java8</commons.rdf.classifier>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
@@ -64,6 +65,13 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <classifier>${commons.rdf.classifier}</classifier>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
@@ -80,7 +88,7 @@
         <profile>
             <id>java7</id>
             <properties>
-                <projectVersion>${project.version}-java7</projectVersion>
+                <commons.rdf.classifier>java7</commons.rdf.classifier>
             </properties>
             <build>
                 <plugins>
