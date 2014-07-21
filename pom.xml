@@ -100,7 +100,6 @@
                         <version>1.1.1</version>
                         <configuration>
                             <strip>1</strip>
-                            <targetDirectory>${basedir}</targetDirectory>
                             <patches>
                                 <patch>java7.patch</patch>
                             </patches>
