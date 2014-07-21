@@ -76,4 +76,46 @@
         </dependency>
     </dependencies>
 
+    <profiles>
+        <profile>
+            <id>java7</id>
+            <properties>
+                <projectVersion>${project.version}-java7</projectVersion>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>3.1</version>
+                        <configuration>
+                            <source>1.7</source>
+                            <target>1.7</target>
+                            <encoding>UTF-8</encoding>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-patch-plugin</artifactId>
+                        <version>1.1.1</version>
+                        <configuration>
+                            <patches>
+                                <patch>java7.patch</patch>
+                            </patches>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>patch</id>
+                                <goals>
+                                    <goal>apply</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+    </profiles>
+
 </project>
