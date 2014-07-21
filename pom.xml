@@ -122,6 +122,26 @@
                             </execution>
                         </executions>
                     </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.3.1</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <executable>git</executable>
+                            <arguments>
+                                <argument>checkout</argument>
+                                <argument>src/main/java/org/apache/commons/rdf/Literal.java</argument>
+                            </arguments>
+                        </configuration>
+                    </plugin>
                 </plugins>
             </build>
             <dependencies>
