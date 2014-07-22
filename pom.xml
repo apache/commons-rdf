@@ -13,7 +13,6 @@
     <inceptionYear>2014</inceptionYear>
 
     <properties>
-        <commons.rdf.classifier></commons.rdf.classifier>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
@@ -65,13 +64,6 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <classifier>${commons.rdf.classifier}</classifier>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 
@@ -100,6 +92,13 @@
                             <source>1.6</source>
                             <target>1.6</target>
                             <encoding>UTF-8</encoding>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <configuration>
+                            <classifier>java6</classifier>
                         </configuration>
                     </plugin>
                     <plugin>
