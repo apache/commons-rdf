@@ -88,10 +88,10 @@ public interface Graph {
     /**
      * Get all triples contained by the graph.<br>
      *
-     * The behaviour of the Stream is not specified if add, remove, or clear, 
+     * The behaviour of the Stream is not specified if add, remove, or clear,
      * are called on the Stream before it terminates.<br>
      *
-     * Implementations may throw ConcurrentModificationException from Stream 
+     * Implementations may throw ConcurrentModificationException from Stream
      * methods if they detect a conflict while the Stream is active.
      *
      * @return A {@link Stream} over all of the triples in the graph.
@@ -101,10 +101,10 @@ public interface Graph {
     /**
      * Get all triples contained by the graph matched with the pattern.
      *
-     * The behaviour of the Stream is not specified if add, remove, or clear, 
+     * The behaviour of the Stream is not specified if add, remove, or clear,
      * are called on the Stream before it terminates.<br>
      *
-     * Implementations may throw ConcurrentModificationException from Stream 
+     * Implementations may throw ConcurrentModificationException from Stream
      * methods if they detect a conflict while the Stream is active.
      *
      * @param subject
@@ -115,6 +115,6 @@ public interface Graph {
      *            The triple object (null is a wildcard)
      * @return A {@link Stream} over the matched triples.
      */
-    Stream<? extends Triple> getTriples(BlankNodeOrIRI subject, IRI predicate,
-			RDFTerm object);
+    Stream<? extends Triple> getTriples(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
+
 }
