@@ -13,7 +13,7 @@
     <inceptionYear>2014</inceptionYear>
 
     <properties>
-        <commons.rdf.classifier>java8</commons.rdf.classifier>
+        <commons.rdf.classifier></commons.rdf.classifier>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
@@ -86,9 +86,9 @@
 
     <profiles>
         <profile>
-            <id>java7</id>
+            <id>java6</id>
             <properties>
-                <commons.rdf.classifier>java7</commons.rdf.classifier>
+                <commons.rdf.classifier>java6</commons.rdf.classifier>
             </properties>
             <build>
                 <plugins>
@@ -97,8 +97,8 @@
                         <artifactId>maven-compiler-plugin</artifactId>
                         <version>3.1</version>
                         <configuration>
-                            <source>1.7</source>
-                            <target>1.7</target>
+                            <source>1.6</source>
+                            <target>1.6</target>
                             <encoding>UTF-8</encoding>
                         </configuration>
                     </plugin>
@@ -109,7 +109,7 @@
                         <configuration>
                             <strip>1</strip>
                             <patches>
-                                <patch>java7.patch</patch>
+                                <patch>java6.patch</patch>
                             </patches>
                         </configuration>
                         <executions>
