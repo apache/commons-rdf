@@ -137,6 +137,7 @@
                             <executable>git</executable>
                             <arguments>
                                 <argument>checkout</argument>
+                                <argument>src/main/java/org/apache/commons/rdf/Graph.java</argument>
                                 <argument>src/main/java/org/apache/commons/rdf/Literal.java</argument>
                             </arguments>
                         </configuration>
