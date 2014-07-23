@@ -1,9 +1,9 @@
-diff --git a/org/apache/commons/rdf/Graph.java b/org/apache/commons/rdf/Graph.java
+diff --git a/com/github/commonsrdf/api/Graph.java b/com/github/commonsrdf/api/Graph.java
 index d55fb8c..71aca8d 100644
---- a/org/apache/commons/rdf/Graph.java
-+++ b/org/apache/commons/rdf/Graph.java
+--- a/com/github/commonsrdf/api/Graph.java
++++ b/com/github/commonsrdf/api/Graph.java
 @@ -1,6 +1,6 @@
- package org.apache.commons.rdf;
+ package com.github.commonsrdf.api;
  
 -import java.util.stream.Stream;
 +import java.util.Iterator;
@@ -39,12 +39,12 @@ index d55fb8c..71aca8d 100644
 +    Iterator<? extends Triple> getTriples(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
  
  }
-diff --git a/org/apache/commons/rdf/Literal.java b/org/apache/commons/rdf/Literal.java
+diff --git a/com/github/commonsrdf/api/Literal.java b/com/github/commonsrdf/api/Literal.java
 index 30505a3..e5638f7 100644
---- a/org/apache/commons/rdf/Literal.java
-+++ b/org/apache/commons/rdf/Literal.java
+--- a/com/github/commonsrdf/api/Literal.java
++++ b/com/github/commonsrdf/api/Literal.java
 @@ -1,6 +1,6 @@
- package org.apache.commons.rdf;
+ package com.github.commonsrdf.api;
  
 -import java.util.Optional;
 +import com.google.common.base.Optional;
