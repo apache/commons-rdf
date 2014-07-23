@@ -1,0 +1,53 @@
+diff --git a/org/apache/commons/rdf/Graph.java b/org/apache/commons/rdf/Graph.java
+index d55fb8c..71aca8d 100644
+--- a/org/apache/commons/rdf/Graph.java
++++ b/org/apache/commons/rdf/Graph.java
+@@ -1,6 +1,6 @@
+ package org.apache.commons.rdf;
+ 
+-import java.util.stream.Stream;
++import java.util.Iterator;
+ 
+ /**
+  * An <a href="http://www.w3.org/TR/rdf11-concepts/#section-rdf-graph"> RDF 1.1
+@@ -88,15 +88,9 @@ public interface Graph {
+     /**
+      * Get all triples contained by the graph.<br>
+      *
+-     * The behaviour of the Stream is not specified if add, remove, or clear,
+-     * are called on the Stream before it terminates.<br>
+-     *
+-     * Implementations may throw ConcurrentModificationException from Stream
+-     * methods if they detect a conflict while the Stream is active.
+-     *
+-     * @return A {@link Stream} over all of the triples in the graph.
++     * @return A {@link Iterator} over all of the triples in the graph.
+      */
+-    Stream<? extends Triple> getTriples();
++    Iterator<? extends Triple> getTriples();
+ 
+     /**
+      * Get all triples contained by the graph matched with the pattern.
+@@ -113,8 +107,8 @@ public interface Graph {
+      *            The triple predicate (null is a wildcard)
+      * @param object
+      *            The triple object (null is a wildcard)
+-     * @return A {@link Stream} over the matched triples.
++     * @return A {@link Iterator} over the matched triples.
+      */
+-    Stream<? extends Triple> getTriples(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
++    Iterator<? extends Triple> getTriples(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
+ 
+ }
+diff --git a/org/apache/commons/rdf/Literal.java b/org/apache/commons/rdf/Literal.java
+index 30505a3..e5638f7 100644
+--- a/org/apache/commons/rdf/Literal.java
++++ b/org/apache/commons/rdf/Literal.java
+@@ -1,6 +1,6 @@
+ package org.apache.commons.rdf;
+ 
+-import java.util.Optional;
++import com.google.common.base.Optional;
+ 
+ /**
+  * An RDF-1.1 Literal, as defined by <a href=
