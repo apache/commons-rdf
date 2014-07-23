@@ -15,23 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.commons.rdf;
+package com.github.commonsrdf.api;
 
 /**
- * An <a href= "http://www.w3.org/TR/rdf11-concepts/#dfn-iri"
- * >RDF-1.1 IRI</a>, as defined by <a href=
- * "http://www.w3.org/TR/rdf11-concepts/" >RDF-1.1 Concepts
- * and Abstract Syntax</a>, a W3C Recommendation published on 25 February 2014.<br>
+ * This interface represents the {@link RDFTerm}s that may be used in the
+ * subject position of an RDF-1.1 {@link Triple}, including {@link BlankNode}
+ * and {@link IRI}.
  */
-public interface IRI extends BlankNodeOrIRI {
-
-	/**
-	 * Returns the IRI encoded as a native Unicode String.<br>
-	 * 
-	 * The returned string must not include URL-encoding to escape 
-	 * non-ASCII characters.
-	 * 
-	 * @return The IRI encoded as a native Unicode String.
-	 */
-    String getIRIString();
+public interface BlankNodeOrIRI extends RDFTerm {
 }
