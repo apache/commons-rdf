@@ -6,7 +6,8 @@ The main motivation behind this simple library is revise an historical incompati
 
 ## Status
 
-[![Build Status](https://secure.travis-ci.org/commons-rdf/api.svg?branch=master)](https://travis-ci.org/commons-rdf/api)
+[![Build Status](https://secure.travis-ci.org/commons-rdf/commons-rdf.svg?branch=master)](https://travis-ci.org/commons-rdf/commons-rdf)
+
 
 This library is still work in progress. At some point we'll thing about moving to a recognizable organization, Apache or whatever.
 
