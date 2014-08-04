@@ -1,4 +1,4 @@
-==Release==
+# Release
 
 * Open an issue on Github to let others know that a release is planned soon to allow for comments
 * Make sure that the latest snapshot on Sonatype OSS Snapshots repository is current by deploying the snapshot before release
