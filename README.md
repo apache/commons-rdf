@@ -16,7 +16,7 @@ A draft diagram of the interfaces which may be included in Commons RDF are:
 
 ## Building
 
-Building has been tested with [Apache Maven 3.2](http://maven.apache.org/download.cgi) and [Java JDK 8])(http://www.oracle.com/technetwork/java/javase/downloads/).
+Building has been tested with [Apache Maven 3.2](http://maven.apache.org/download.cgi) and [Java JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/).
 
     stain@biggie-mint ~/src/commons-rdf $ mvn clean install
     [INFO] Scanning for projects...
