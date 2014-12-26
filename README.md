@@ -29,10 +29,31 @@ Building has been tested with [Apache Maven 3.2](http://maven.apache.org/downloa
     [INFO] Installing /home/stain/src/commons-rdf/target/api-0.0.3-SNAPSHOT.jar to /home/stain/.m2/repository/com/github/commons-rdf/api/0.0.3-SNAPSHOT/api-0.0.3-SNAPSHOT.jar
     [INFO] ------------------------------------------------------------------------
     [INFO] BUILD SUCCESS
+
+To then use from your project, add to Maven (update `<version>` to match the Maven output):
+
+    <dependency>
+        <groupId>com.github.commons-rdf</groupId>
+        <artifactId>api</artifactId>
+        <version>0.0.3-SNAPSHOT</version>
+    </dependency>
     
+    
+### Java 6 compatibility
+
+This API is targetting *Java 8*, as Java 7 is scheduled [EOL at April 2015](http://www.oracle.com/technetwork/java/javase/eol-135779.html). (issue #38 for details). 
+
+For convenience, a patched version for Java 6 and 7 is however available.
+
 To build with Java 1.6/1.7 compatibility, use the Maven profile `-Pjava6`:
 
     stain@biggie-mint ~/src/commons-rdf $ mvn clean install -Pjava6
+
+To then depend on the Java 6 version in your Maven project, add to your `<dependency>`:
+
+    <classifier>java6</classifier>
+
+Note that the Java 6 version depends on the [Guava libraries](https://code.google.com/p/guava-libraries/).
 
 
 ## Contributors
