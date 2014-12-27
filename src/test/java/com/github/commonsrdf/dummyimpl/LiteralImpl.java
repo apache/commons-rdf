@@ -69,8 +69,7 @@ public class LiteralImpl implements Literal {
 		} else if (! getDatatype().getIRIString().equals(XSD_STRING.getIRIString())) { 
 			sb.append("^^");
 			sb.append(getDatatype().ntriplesString());
-		}
-		sb.append(QUOTE);
+		}		
 		return sb.toString();
 	}
 
