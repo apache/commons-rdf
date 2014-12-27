@@ -65,12 +65,12 @@ public class GraphImpl implements Graph {
 	}
 
 	@Override
-	public Stream<? extends Triple> getTriples() {
+	public Stream<Triple> getTriples() {
 		return triples.parallelStream();
 	}
 
 	@Override
-	public Stream<? extends Triple> getTriples(final BlankNodeOrIRI subject,
+	public Stream<Triple> getTriples(final BlankNodeOrIRI subject,
 			final IRI predicate, final RDFTerm object) {
 		Predicate<Triple> match = new Predicate<Triple>() {
 			@Override
@@ -100,8 +100,8 @@ public class GraphImpl implements Graph {
 
 	@Override
 	public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		for (Triple t : 
-			getTriples(subject, predicate, object).collect(Collectors.toList())) {
+		Stream<? extends Triple> toRemove = getTriples(subject, predicate, object);
+		for (Triple t : toRemove.collect(Collectors.toList())) {
 			// Avoid ConcurrentModificationException in ArrayList
 			remove(t);
 		}
