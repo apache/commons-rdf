@@ -36,6 +36,6 @@ public class TripleImpl implements Triple {
 	public String toString() {
 		return getSubject().ntriplesString() + " "
 				+ getPredicate().ntriplesString() + " "
-				+ getObject().ntriplesString() + ".";
+				+ getObject().ntriplesString() + " .";
 	}
 }
