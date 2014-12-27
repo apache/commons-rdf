@@ -18,7 +18,7 @@ public class GraphImpl implements Graph {
 
 	@Override
 	public void add(Triple triple) {
-		if (triple == null) { 
+		if (triple == null) {
 			throw new NullPointerException("triple can't be null");
 		}
 		triples.add(triple);
@@ -32,7 +32,7 @@ public class GraphImpl implements Graph {
 
 	@Override
 	public boolean contains(Triple triple) {
-		if (triple == null) { 
+		if (triple == null) {
 			throw new NullPointerException("triple can't be null");
 		}
 		return triples.contains(triple);
@@ -46,15 +46,16 @@ public class GraphImpl implements Graph {
 
 	@Override
 	public void remove(Triple triple) {
-		if (triple == null) { 
+		if (triple == null) {
 			throw new NullPointerException("triple can't be null");
 		}
 		triples.remove(triple);
 	}
 
 	@Override
-	public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {	
-		Iterator<? extends Triple> it = getTriples(subject, predicate, object).iterator();	
+	public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+		Iterator<? extends Triple> it = getTriples(subject, predicate, object)
+				.iterator();
 		while (it.hasNext()) {
 			it.remove();
 		}
@@ -66,7 +67,7 @@ public class GraphImpl implements Graph {
 	}
 
 	@Override
-	public long size() {		
+	public long size() {
 		return triples.size();
 	}
 
@@ -95,11 +96,11 @@ public class GraphImpl implements Graph {
 		};
 		return getTriples().filter(match);
 	}
-	
+
 	@Override
 	public String toString() {
 		// thread-safe StringBuffer as forEach use parallel streams
-		final StringBuffer sb = new StringBuffer();		
+		final StringBuffer sb = new StringBuffer();
 		getTriples().parallel().forEach(t -> sb.append(t.toString() + "\n"));
 		return sb.toString();
 	}

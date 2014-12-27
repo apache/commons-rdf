@@ -8,14 +8,15 @@ public class BlankNodeImpl implements BlankNode {
 
 	private static AtomicLong bnodeCounter = new AtomicLong();
 	private String id;
-	
-	public BlankNodeImpl() { 
+
+	public BlankNodeImpl() {
 		this("b" + bnodeCounter.incrementAndGet());
 	}
-	
+
 	public BlankNodeImpl(String id) {
 		if (id == null || id.isEmpty() || id.contains(":")) {
-			// TODO: Check against http://www.w3.org/TR/n-triples/#n-triples-grammar
+			// TODO: Check against
+			// http://www.w3.org/TR/n-triples/#n-triples-grammar
 			throw new IllegalArgumentException("Invalid blank node id: " + id);
 		}
 		this.id = id;
@@ -30,7 +31,7 @@ public class BlankNodeImpl implements BlankNode {
 	public String internalIdentifier() {
 		return id;
 	}
-	
+
 	@Override
 	public String toString() {
 		return ntriplesString();

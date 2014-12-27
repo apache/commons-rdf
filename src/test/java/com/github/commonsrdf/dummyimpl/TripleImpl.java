@@ -14,7 +14,7 @@ public class TripleImpl implements Triple {
 	public TripleImpl(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
 		this.subject = subject;
 		this.predicate = predicate;
-		this.object = object;	
+		this.object = object;
 	}
 
 	@Override
@@ -31,9 +31,11 @@ public class TripleImpl implements Triple {
 	public RDFTerm getObject() {
 		return object;
 	}
-	
+
 	@Override
 	public String toString() {
-		return getSubject().ntriplesString() + " " + getPredicate().ntriplesString() + " " + getObject().ntriplesString() + ".";
+		return getSubject().ntriplesString() + " "
+				+ getPredicate().ntriplesString() + " "
+				+ getObject().ntriplesString() + ".";
 	}
 }

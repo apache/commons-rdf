@@ -12,12 +12,24 @@ package com.github.commonsrdf.api;
  */
 public interface RDFTermFactory {
 	public Graph createGraph() throws UnsupportedOperationException;
+
 	public IRI createIRI(String iri) throws UnsupportedOperationException;
+
 	public BlankNode createBlankNode() throws UnsupportedOperationException;
-	public BlankNode createBlankNode(String identifier) throws UnsupportedOperationException;	
-	public Literal createLiteral(String literal) throws UnsupportedOperationException;
-	public Literal createLiteral(String literal, IRI dataType) throws UnsupportedOperationException;
-	public Literal createLiteral(String literal, String language) throws UnsupportedOperationException;
-	public Triple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) throws UnsupportedOperationException;
+
+	public BlankNode createBlankNode(String identifier)
+			throws UnsupportedOperationException;
+
+	public Literal createLiteral(String literal)
+			throws UnsupportedOperationException;
+
+	public Literal createLiteral(String literal, IRI dataType)
+			throws UnsupportedOperationException;
+
+	public Literal createLiteral(String literal, String language)
+			throws UnsupportedOperationException;
+
+	public Triple createTriple(BlankNodeOrIRI subject, IRI predicate,
+			RDFTerm object) throws UnsupportedOperationException;
 
 }
