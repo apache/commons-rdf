@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.github.commonsrdf.api.BlankNodeOrIRI;
@@ -85,10 +86,10 @@ public class GraphImpl implements Graph {
 
 	@Override
 	public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		Iterator<? extends Triple> it = getTriples(subject, predicate, object)
-				.iterator();
-		while (it.hasNext()) {
-			it.remove();
+		for (Triple t : 
+			getTriples(subject, predicate, object).collect(Collectors.toList())) {
+			// Avoid ConcurrentModificationException in ArrayList
+			remove(t);
 		}
 	}
 
@@ -107,9 +108,7 @@ public class GraphImpl implements Graph {
 
 	@Override
 	public String toString() {
-		final StringBuilder sb = new StringBuilder();
-		getTriples().sequential().forEach(t -> sb.append(t + "\n"));
-		return sb.toString();
+		return getTriples().map(Object::toString).collect(Collectors.joining("\n"));		
 	}
 
 }
