@@ -80,7 +80,7 @@ public class GraphImpl implements Graph {
 				return true;
 			}
 		};
-		return getTriples().filter(match);
+		return getTriples().unordered().filter(match);
 	}
 
 	@Override
@@ -108,7 +108,7 @@ public class GraphImpl implements Graph {
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
-		getTriples().sequential().forEach(t -> sb.append(t));
+		getTriples().sequential().forEach(t -> sb.append(t + "\n"));
 		return sb.toString();
 	}
 
