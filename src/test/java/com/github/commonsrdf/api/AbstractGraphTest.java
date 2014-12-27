@@ -142,11 +142,7 @@ public abstract class AbstractGraphTest {
 	public void getTriplesQuery() throws Exception {
 		assertEquals(3, graph.getTriples(alice, null, null).count());
 		assertEquals(4, graph.getTriples(null, name, null).count());
-
-		Set<RDFTerm> orgMembers = graph.getTriples(null, member, org1)
-				.map(Triple::getObject).collect(Collectors.toSet());
-		assertTrue(orgMembers.contains(alice));
-		assertTrue(orgMembers.contains(bob));
+		assertEquals(2, graph.getTriples(null, member, org1).count());
 	}
 
 	/**
