@@ -1,8 +1,8 @@
 package com.github.commonsrdf.dummyimpl;
 
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -14,7 +14,7 @@ import com.github.commonsrdf.api.Triple;
 
 public class GraphImpl implements Graph {
 
-	protected Set<Triple> triples = new LinkedHashSet<Triple>();
+	protected List<Triple> triples = new ArrayList<Triple>();
 
 	@Override
 	public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
@@ -60,13 +60,21 @@ public class GraphImpl implements Graph {
 		Predicate<Triple> match = new Predicate<Triple>() {
 			@Override
 			public boolean test(Triple t) {
-				if (subject != null && !t.getSubject().equals(subject)) {
+				// Lacking the requirement for .equals() we have to be silly
+				// and test ntriples string equivalance
+				if (subject != null
+						&& !t.getSubject().ntriplesString()
+								.equals(subject.ntriplesString())) {
 					return false;
 				}
-				if (predicate != null && !t.getPredicate().equals(predicate)) {
+				if (predicate != null
+						&& !t.getPredicate().ntriplesString()
+								.equals(predicate.ntriplesString())) {
 					return false;
 				}
-				if (object != null && !t.getObject().equals(object)) {
+				if (object != null
+						&& !t.getObject().ntriplesString()
+								.equals(object.ntriplesString())) {
 					return false;
 				}
 				return true;
@@ -99,9 +107,8 @@ public class GraphImpl implements Graph {
 
 	@Override
 	public String toString() {
-		// thread-safe StringBuffer as forEach use parallel streams
-		final StringBuffer sb = new StringBuffer();
-		getTriples().parallel().forEach(t -> sb.append(t.toString() + "\n"));
+		final StringBuilder sb = new StringBuilder();
+		getTriples().sequential().forEach(t -> sb.append(t));
 		return sb.toString();
 	}
 
