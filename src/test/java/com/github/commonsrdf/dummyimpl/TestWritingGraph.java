@@ -32,7 +32,7 @@ public class TestWritingGraph {
 		Path graphFile = Files.createTempFile("graph", ".nt");
 		System.out.println("From stream: " + graphFile);		
 		Stream<CharSequence> stream = graph.getTriples().unordered().parallel().
-				map(t -> t.toString());
+				map(Object::toString);
 		Files.write(graphFile, 
 				stream::iterator,
 				Charset.forName("UTF-8"));
@@ -45,7 +45,7 @@ public class TestWritingGraph {
 		BlankNode subject = new BlankNodeImpl("subj"); 
 		IRI predicate = new IRIImpl("pred");
 		Stream<CharSequence> stream = graph.getTriples(subject, predicate, null).
-				map(t -> t.toString());
+				map(Object::toString);
 		Files.write(graphFile, 
 				stream::iterator,
 				Charset.forName("UTF-8"));
