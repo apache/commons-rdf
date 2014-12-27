@@ -13,13 +13,6 @@ public abstract class AbstractCommonsRDFTest {
 
 	private RDFTermFactory factory;
 
-	@Before
-	public void getFactory() {
-		factory = createFactory();
-	}
-
-	public abstract RDFTermFactory createFactory();
-
 	@Test
 	public void createBlankNode() throws Exception {
 		BlankNode bnode = factory.createBlankNode();
@@ -43,6 +36,22 @@ public abstract class AbstractCommonsRDFTest {
 		BlankNode bnode = factory.createBlankNode("example1");
 		assertEquals("example1", bnode.internalIdentifier());
 		assertEquals("_:example1", bnode.ntriplesString());
+	}
+
+	public abstract RDFTermFactory createFactory();
+
+	@Test
+	public void createGraph() {
+		Graph graph = factory.createGraph();
+		assertEquals("Graph was not empty", 0, graph.size());
+		graph.add(factory.createBlankNode(),
+				factory.createIRI("http://example.com/"),
+				factory.createBlankNode());
+
+		Graph graph2 = factory.createGraph();
+		assertNotSame(graph, graph2);
+		assertEquals("Graph was empty after adding", 1, graph.size());
+		assertEquals("New graph was not empty", 0, graph2.size());
 	}
 
 	@Test
@@ -98,18 +107,6 @@ public abstract class AbstractCommonsRDFTest {
 	}
 
 	@Test
-	public void createLiteralString() throws Exception {
-		Literal example = factory.createLiteral("Example",
-				factory.createIRI("http://www.w3.org/2001/XMLSchema#string"));
-		assertEquals("Example", example.getLexicalForm());
-		assertFalse(example.getLanguageTag().isPresent());
-		assertEquals("http://www.w3.org/2001/XMLSchema#string", example
-				.getDatatype().getIRIString());
-		// http://lists.w3.org/Archives/Public/public-rdf-comments/2014Dec/0004.html
-		assertEquals("\"Example\"", example.ntriplesString());
-	}
-
-	@Test
 	public void createLiteralDateTime() throws Exception {
 		Literal dateTime = factory.createLiteral("2014-12-27T00:50:00T-0600",
 				factory.createIRI("http://www.w3.org/2001/XMLSchema#dateTime"));
@@ -132,50 +129,16 @@ public abstract class AbstractCommonsRDFTest {
 		assertEquals("\"Example\"@en", example.ntriplesString());
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void invalidLiteralLang() throws Exception {
-		factory.createLiteral("Example", "");
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void invalidBlankNode() throws Exception {
-		factory.createBlankNode("with:colon");
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void invalidIRI() throws Exception {
-		factory.createIRI("<no_brackets>");
-	}
-
 	@Test
-	public void createGraph() {
-		Graph graph = factory.createGraph();
-		assertEquals("Graph was not empty", 0, graph.size());
-		graph.add(factory.createBlankNode(),
-				factory.createIRI("http://example.com/"),
-				factory.createBlankNode());
-
-		Graph graph2 = factory.createGraph();
-		assertNotSame(graph, graph2);
-		assertEquals("Graph was empty after adding", 1, graph.size());
-		assertEquals("New graph was not empty", 0, graph2.size());
-	}
-
-	@Test
-	public void createTripleBnodeTriple() {
-		BlankNode subject = factory.createBlankNode();
-		IRI predicate = factory.createIRI("http://example.com/pred");
-		Literal object = factory.createLiteral("Example", "en");
-		Triple triple = factory.createTriple(subject, predicate, object);
-
-		// NOTE: We do not require object equivalence after insertion,
-		// but the ntriples should match
-		assertEquals(subject.ntriplesString(), triple.getSubject()
-				.ntriplesString());
-		assertEquals(predicate.ntriplesString(), triple.getPredicate()
-				.ntriplesString());
-		assertEquals(object.ntriplesString(), triple.getObject()
-				.ntriplesString());
+	public void createLiteralString() throws Exception {
+		Literal example = factory.createLiteral("Example",
+				factory.createIRI("http://www.w3.org/2001/XMLSchema#string"));
+		assertEquals("Example", example.getLexicalForm());
+		assertFalse(example.getLanguageTag().isPresent());
+		assertEquals("http://www.w3.org/2001/XMLSchema#string", example
+				.getDatatype().getIRIString());
+		// http://lists.w3.org/Archives/Public/public-rdf-comments/2014Dec/0004.html
+		assertEquals("\"Example\"", example.ntriplesString());
 	}
 
 	@Test
@@ -211,6 +174,43 @@ public abstract class AbstractCommonsRDFTest {
 				.ntriplesString());
 		assertEquals(object.ntriplesString(), triple.getObject()
 				.ntriplesString());
+	}
+
+	@Test
+	public void createTripleBnodeTriple() {
+		BlankNode subject = factory.createBlankNode();
+		IRI predicate = factory.createIRI("http://example.com/pred");
+		Literal object = factory.createLiteral("Example", "en");
+		Triple triple = factory.createTriple(subject, predicate, object);
+
+		// NOTE: We do not require object equivalence after insertion,
+		// but the ntriples should match
+		assertEquals(subject.ntriplesString(), triple.getSubject()
+				.ntriplesString());
+		assertEquals(predicate.ntriplesString(), triple.getPredicate()
+				.ntriplesString());
+		assertEquals(object.ntriplesString(), triple.getObject()
+				.ntriplesString());
+	}
+
+	@Before
+	public void getFactory() {
+		factory = createFactory();
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void invalidBlankNode() throws Exception {
+		factory.createBlankNode("with:colon");
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void invalidIRI() throws Exception {
+		factory.createIRI("<no_brackets>");
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void invalidLiteralLang() throws Exception {
+		factory.createLiteral("Example", "");
 	}
 
 	@Test(expected = Exception.class)

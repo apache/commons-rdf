@@ -14,13 +14,13 @@ public class IRIImpl implements IRI {
 	}
 
 	@Override
-	public String ntriplesString() {
-		return "<" + getIRIString() + ">";
+	public String getIRIString() {
+		return uri.toString();
 	}
 
 	@Override
-	public String getIRIString() {
-		return uri.toString();
+	public String ntriplesString() {
+		return "<" + getIRIString() + ">";
 	}
 
 	@Override

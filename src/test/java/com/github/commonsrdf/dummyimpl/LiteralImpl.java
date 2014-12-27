@@ -7,14 +7,14 @@ import com.github.commonsrdf.api.Literal;
 
 public class LiteralImpl implements Literal {
 
-	private static final IRIImpl XSD_STRING = new IRIImpl(
-			"http://www.w3.org/2001/XMLSchema#string");
+	private static final String QUOTE = "\"";
 	private static final IRIImpl RDF_LANG_STRING = new IRIImpl(
 			"http://www.w3.org/1999/02/22-rdf-syntax-ns#langString");
-	private static final String QUOTE = "\"";
+	private static final IRIImpl XSD_STRING = new IRIImpl(
+			"http://www.w3.org/2001/XMLSchema#string");
 
-	private Optional<String> languageTag;
 	private IRI dataType;
+	private Optional<String> languageTag;
 	private String lexicalForm;
 
 	public LiteralImpl(String literal) {
@@ -23,6 +23,18 @@ public class LiteralImpl implements Literal {
 		}
 		this.lexicalForm = literal;
 		this.dataType = XSD_STRING;
+		this.languageTag = Optional.empty();
+	}
+
+	public LiteralImpl(String lexicalForm, IRI dataType) {
+		if (lexicalForm == null) {
+			throw new NullPointerException("lexicalForm can't be null");
+		}
+		this.lexicalForm = lexicalForm;
+		if (dataType == null) {
+			throw new NullPointerException("dataType can't be null");
+		}
+		this.dataType = dataType;
 		this.languageTag = Optional.empty();
 	}
 
@@ -40,16 +52,19 @@ public class LiteralImpl implements Literal {
 		this.dataType = RDF_LANG_STRING;
 	}
 
-	public LiteralImpl(String lexicalForm, IRI dataType) {
-		if (lexicalForm == null) {
-			throw new NullPointerException("lexicalForm can't be null");
-		}
-		this.lexicalForm = lexicalForm;
-		if (dataType == null) {
-			throw new NullPointerException("dataType can't be null");
-		}
-		this.dataType = dataType;
-		this.languageTag = Optional.empty();
+	@Override
+	public IRI getDatatype() {
+		return dataType;
+	}
+
+	@Override
+	public Optional<String> getLanguageTag() {
+		return languageTag;
+	}
+
+	@Override
+	public String getLexicalForm() {
+		return lexicalForm;
 	}
 
 	@Override
@@ -74,21 +89,6 @@ public class LiteralImpl implements Literal {
 			sb.append(getDatatype().ntriplesString());
 		}
 		return sb.toString();
-	}
-
-	@Override
-	public String getLexicalForm() {
-		return lexicalForm;
-	}
-
-	@Override
-	public IRI getDatatype() {
-		return dataType;
-	}
-
-	@Override
-	public Optional<String> getLanguageTag() {
-		return languageTag;
 	}
 
 	@Override

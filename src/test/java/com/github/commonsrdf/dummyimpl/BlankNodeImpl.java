@@ -23,13 +23,13 @@ public class BlankNodeImpl implements BlankNode {
 	}
 
 	@Override
-	public String ntriplesString() {
-		return "_:" + id;
+	public String internalIdentifier() {
+		return id;
 	}
 
 	@Override
-	public String internalIdentifier() {
-		return id;
+	public String ntriplesString() {
+		return "_:" + id;
 	}
 
 	@Override

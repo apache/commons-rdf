@@ -11,14 +11,14 @@ package com.github.commonsrdf.api;
  * 
  */
 public interface RDFTermFactory {
-	public Graph createGraph() throws UnsupportedOperationException;
-
-	public IRI createIRI(String iri) throws UnsupportedOperationException;
-
 	public BlankNode createBlankNode() throws UnsupportedOperationException;
 
 	public BlankNode createBlankNode(String identifier)
 			throws UnsupportedOperationException;
+
+	public Graph createGraph() throws UnsupportedOperationException;
+
+	public IRI createIRI(String iri) throws UnsupportedOperationException;
 
 	public Literal createLiteral(String literal)
 			throws UnsupportedOperationException;

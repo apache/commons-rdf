@@ -17,6 +17,12 @@ public class GraphImpl implements Graph {
 	protected Set<Triple> triples = new LinkedHashSet<Triple>();
 
 	@Override
+	public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+		add(new TripleImpl(subject, predicate, object));
+
+	}
+
+	@Override
 	public void add(Triple triple) {
 		if (triple == null) {
 			throw new NullPointerException("triple can't be null");
@@ -25,17 +31,8 @@ public class GraphImpl implements Graph {
 	}
 
 	@Override
-	public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		add(new TripleImpl(subject, predicate, object));
-
-	}
-
-	@Override
-	public boolean contains(Triple triple) {
-		if (triple == null) {
-			throw new NullPointerException("triple can't be null");
-		}
-		return triples.contains(triple);
+	public void clear() {
+		triples.clear();
 	}
 
 	@Override
@@ -45,30 +42,11 @@ public class GraphImpl implements Graph {
 	}
 
 	@Override
-	public void remove(Triple triple) {
+	public boolean contains(Triple triple) {
 		if (triple == null) {
 			throw new NullPointerException("triple can't be null");
 		}
-		triples.remove(triple);
-	}
-
-	@Override
-	public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		Iterator<? extends Triple> it = getTriples(subject, predicate, object)
-				.iterator();
-		while (it.hasNext()) {
-			it.remove();
-		}
-	}
-
-	@Override
-	public void clear() {
-		triples.clear();
-	}
-
-	@Override
-	public long size() {
-		return triples.size();
+		return triples.contains(triple);
 	}
 
 	@Override
@@ -95,6 +73,28 @@ public class GraphImpl implements Graph {
 			}
 		};
 		return getTriples().filter(match);
+	}
+
+	@Override
+	public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+		Iterator<? extends Triple> it = getTriples(subject, predicate, object)
+				.iterator();
+		while (it.hasNext()) {
+			it.remove();
+		}
+	}
+
+	@Override
+	public void remove(Triple triple) {
+		if (triple == null) {
+			throw new NullPointerException("triple can't be null");
+		}
+		triples.remove(triple);
+	}
+
+	@Override
+	public long size() {
+		return triples.size();
 	}
 
 	@Override

@@ -7,9 +7,9 @@ import com.github.commonsrdf.api.Triple;
 
 public class TripleImpl implements Triple {
 
-	private BlankNodeOrIRI subject;
-	private IRI predicate;
 	private RDFTerm object;
+	private IRI predicate;
+	private BlankNodeOrIRI subject;
 
 	public TripleImpl(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
 		this.subject = subject;
@@ -18,8 +18,8 @@ public class TripleImpl implements Triple {
 	}
 
 	@Override
-	public BlankNodeOrIRI getSubject() {
-		return subject;
+	public RDFTerm getObject() {
+		return object;
 	}
 
 	@Override
@@ -28,8 +28,8 @@ public class TripleImpl implements Triple {
 	}
 
 	@Override
-	public RDFTerm getObject() {
-		return object;
+	public BlankNodeOrIRI getSubject() {
+		return subject;
 	}
 
 	@Override

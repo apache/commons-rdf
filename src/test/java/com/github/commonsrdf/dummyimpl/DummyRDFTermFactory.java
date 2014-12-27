@@ -12,16 +12,6 @@ import com.github.commonsrdf.api.Triple;
 public class DummyRDFTermFactory implements RDFTermFactory {
 
 	@Override
-	public Graph createGraph() {
-		return new GraphImpl();
-	}
-
-	@Override
-	public IRI createIRI(String iri) {
-		return new IRIImpl(iri);
-	}
-
-	@Override
 	public BlankNode createBlankNode() {
 		return new BlankNodeImpl();
 	}
@@ -29,6 +19,16 @@ public class DummyRDFTermFactory implements RDFTermFactory {
 	@Override
 	public BlankNode createBlankNode(String identifier) {
 		return new BlankNodeImpl(identifier);
+	}
+
+	@Override
+	public Graph createGraph() {
+		return new GraphImpl();
+	}
+
+	@Override
+	public IRI createIRI(String iri) {
+		return new IRIImpl(iri);
 	}
 
 	@Override
