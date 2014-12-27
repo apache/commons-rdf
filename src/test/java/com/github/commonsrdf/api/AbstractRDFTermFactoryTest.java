@@ -9,7 +9,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-public abstract class AbstractCommonsRDFTest {
+public abstract class AbstractRDFTermFactoryTest {
 
 	private RDFTermFactory factory;
 
@@ -220,5 +220,5 @@ public abstract class AbstractCommonsRDFTest {
 		BlankNode object = factory.createBlankNode("b3");
 		factory.createTriple(subject, (IRI) predicate, object);
 	}
-
+	
 }
