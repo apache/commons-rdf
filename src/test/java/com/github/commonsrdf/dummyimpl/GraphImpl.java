@@ -100,7 +100,7 @@ public class GraphImpl implements Graph {
 
 	@Override
 	public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		Stream<? extends Triple> toRemove = getTriples(subject, predicate, object);
+		Stream<Triple> toRemove = getTriples(subject, predicate, object);
 		for (Triple t : toRemove.collect(Collectors.toList())) {
 			// Avoid ConcurrentModificationException in ArrayList
 			remove(t);
