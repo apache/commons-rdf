@@ -15,6 +15,7 @@ import com.github.commonsrdf.api.Triple;
 
 public class GraphImpl implements Graph {
 
+	private static final int TO_STRING_MAX = 10;
 	protected List<Triple> triples = new ArrayList<Triple>();
 
 	@Override
@@ -108,7 +109,13 @@ public class GraphImpl implements Graph {
 
 	@Override
 	public String toString() {
-		return getTriples().map(Object::toString).collect(Collectors.joining("\n"));		
+		String s = getTriples().limit(TO_STRING_MAX).map(Object::toString)
+				.collect(Collectors.joining("\n"));
+		if (size() > TO_STRING_MAX) {
+			return s + "\n# ... +" + (size() - TO_STRING_MAX) + " more";
+		} else {
+			return s;
+		}
 	}
 
 }
