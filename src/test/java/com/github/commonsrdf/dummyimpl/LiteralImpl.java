@@ -30,6 +30,10 @@ public class LiteralImpl implements Literal {
 		}
 		this.lexicalForm = literal;
 		this.languageTag = Optional.of(languageTag);
+		if (languageTag.isEmpty()) { 
+			// TODO: Check against http://www.w3.org/TR/n-triples/#n-triples-grammar
+			throw new IllegalArgumentException("Language tag can't be null");
+		}
 		this.dataType = RDF_LANG_STRING;		
 	}
 	
@@ -63,8 +67,8 @@ public class LiteralImpl implements Literal {
 			sb.append(getLanguageTag().get());
 		
 		} else if (! getDatatype().getIRIString().equals(XSD_STRING.getIRIString())) { 
-			sb.append("^");
-			sb.append(getDatatype().getIRIString());
+			sb.append("^^");
+			sb.append(getDatatype().ntriplesString());
 		}
 		sb.append(QUOTE);
 		return sb.toString();
@@ -83,6 +87,11 @@ public class LiteralImpl implements Literal {
 	@Override
 	public Optional<String> getLanguageTag() {
 		return languageTag;
+	}
+	
+	@Override
+	public String toString() {
+		return ntriplesString();
 	}
 
 }

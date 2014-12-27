@@ -18,6 +18,9 @@ public class GraphImpl implements Graph {
 
 	@Override
 	public void add(Triple triple) {
+		if (triple == null) { 
+			throw new NullPointerException("triple can't be null");
+		}
 		triples.add(triple);
 	}
 
@@ -29,6 +32,9 @@ public class GraphImpl implements Graph {
 
 	@Override
 	public boolean contains(Triple triple) {
+		if (triple == null) { 
+			throw new NullPointerException("triple can't be null");
+		}
 		return triples.contains(triple);
 	}
 
@@ -40,6 +46,9 @@ public class GraphImpl implements Graph {
 
 	@Override
 	public void remove(Triple triple) {
+		if (triple == null) { 
+			throw new NullPointerException("triple can't be null");
+		}
 		triples.remove(triple);
 	}
 
@@ -57,13 +66,13 @@ public class GraphImpl implements Graph {
 	}
 
 	@Override
-	public long size() {
+	public long size() {		
 		return triples.size();
 	}
 
 	@Override
 	public Stream<? extends Triple> getTriples() {
-		return triples.stream();
+		return triples.parallelStream();
 	}
 
 	@Override
@@ -84,7 +93,15 @@ public class GraphImpl implements Graph {
 				return true;
 			}
 		};
-		return triples.stream().filter(match);
+		return getTriples().filter(match);
+	}
+	
+	@Override
+	public String toString() {
+		// thread-safe StringBuffer as forEach use parallel streams
+		final StringBuffer sb = new StringBuffer();		
+		getTriples().parallel().forEach(t -> sb.append(t.toString() + "\n"));
+		return sb.toString();
 	}
 
 }

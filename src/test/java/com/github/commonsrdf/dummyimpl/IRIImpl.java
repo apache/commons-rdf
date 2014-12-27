@@ -8,7 +8,8 @@ public class IRIImpl implements IRI {
 
 	protected URI uri;
 	
-	public IRIImpl(String iri) {
+	public IRIImpl(String iri) {		
+		// TODO: Check against http://www.w3.org/TR/n-triples/#n-triples-grammar
 		uri = URI.create(iri);
 	}
 	
@@ -20,6 +21,11 @@ public class IRIImpl implements IRI {
 	@Override
 	public String getIRIString() {
 		return uri.toString();
+	}
+	
+	@Override
+	public String toString() {
+		return ntriplesString();
 	}
 
 }

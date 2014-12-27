@@ -31,4 +31,9 @@ public class TripleImpl implements Triple {
 	public RDFTerm getObject() {
 		return object;
 	}
+	
+	@Override
+	public String toString() {
+		return getSubject().ntriplesString() + " " + getPredicate().ntriplesString() + " " + getObject().ntriplesString() + ".";
+	}
 }
