@@ -221,9 +221,9 @@ public abstract class AbstractRDFTermFactoryTest {
 		factory = createFactory();
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = Exception.class)
 	public void invalidBlankNode() throws Exception {
-		factory.createBlankNode("with:colon");
+		factory.createBlankNode("with:colon").ntriplesString();
 	}
 
 	@Test(expected = IllegalArgumentException.class)
