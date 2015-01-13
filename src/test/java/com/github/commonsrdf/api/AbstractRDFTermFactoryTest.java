@@ -19,7 +19,9 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Assume;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public abstract class AbstractRDFTermFactoryTest {
@@ -77,34 +79,6 @@ public abstract class AbstractRDFTermFactoryTest {
 		assertEquals("http://example.com/vocab#term", term.getIRIString());
 		assertEquals("<http://example.com/vocab#term>", term.ntriplesString());
 
-		// Although relative IRIs are defined in 
-		// http://www.w3.org/TR/rdf11-concepts/#section-IRIs
-		// it is not a requirement for an implementation to support
-		// it (all instances of an relative IRI should eventually
-		// be possible to resolve to an absolute IRI)
-
-		// Therefore the below is disabled as a required test:
-
-		boolean relativeIriSupported;
-		try {
-			factory.createIRI("../relative");
-			relativeIriSupported = true;
-		} catch (UnsupportedOperationException|IllegalArgumentException ex) {
-			relativeIriSupported = false;			
-		}
-		if (relativeIriSupported) {		
-			IRI relative = factory.createIRI("../relative");
-			assertEquals("../relative", relative.getIRIString());
-			assertEquals("<../relative>", relative.ntriplesString());
-	
-			IRI relativeTerm = factory.createIRI("../relative#term");
-			assertEquals("../relative#term", relativeTerm.getIRIString());
-			assertEquals("<../relative#term>", relativeTerm.ntriplesString());
-	
-			IRI emptyRelative = factory.createIRI(""); // <> equals the base URI
-			assertEquals("", emptyRelative.getIRIString());
-			assertEquals("<>", emptyRelative.ntriplesString());
-		}
 
 
 		// and now for the international fun!
@@ -125,7 +99,35 @@ public abstract class AbstractRDFTermFactoryTest {
 		assertEquals("http://𐐀.example.com/𐐀", deseret.getIRIString());
 		assertEquals("<http://𐐀.example.com/𐐀>", deseret.ntriplesString());
 	}
+	
+	@Test
+	public void createIRIRelative() throws Exception {
+		// Although relative IRIs are defined in 
+		// http://www.w3.org/TR/rdf11-concepts/#section-IRIs
+		// it is not a requirement for an implementation to support
+		// it (all instances of an relative IRI should eventually
+		// be possible to resolve to an absolute IRI)
 
+		try {
+			factory.createIRI("../relative");
+		} catch (UnsupportedOperationException|IllegalArgumentException ex) {
+			// Therefore the below simply skips the test if the
+			// above fails
+			Assume.assumeNoException("Ignoring unsupported Relative IRI (not a failure)", ex);
+		}
+		IRI relative = factory.createIRI("../relative");
+		assertEquals("../relative", relative.getIRIString());
+		assertEquals("<../relative>", relative.ntriplesString());
+
+		IRI relativeTerm = factory.createIRI("../relative#term");
+		assertEquals("../relative#term", relativeTerm.getIRIString());
+		assertEquals("<../relative#term>", relativeTerm.ntriplesString());
+
+		IRI emptyRelative = factory.createIRI(""); // <> equals the base URI
+		assertEquals("", emptyRelative.getIRIString());
+		assertEquals("<>", emptyRelative.ntriplesString());
+	}
+	
 	@Test
 	public void createLiteral() throws Exception {
 		Literal example = factory.createLiteral("Example");
