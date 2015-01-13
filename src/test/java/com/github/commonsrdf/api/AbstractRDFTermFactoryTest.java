@@ -77,6 +77,15 @@ public abstract class AbstractRDFTermFactoryTest {
 		assertEquals("http://example.com/vocab#term", term.getIRIString());
 		assertEquals("<http://example.com/vocab#term>", term.ntriplesString());
 
+		// Although relative IRIs are defined in 
+		// http://www.w3.org/TR/rdf11-concepts/#section-IRIs
+		// it is not a requirement for an implementation to support
+		// it (all instances of an relative IRI should eventually
+		// be possible to resolve to an absolute IRI)
+
+		// Therefore the below is disabled as a required test:
+
+		/*
 		IRI relative = factory.createIRI("../relative");
 		assertEquals("../relative", relative.getIRIString());
 		assertEquals("<../relative>", relative.ntriplesString());
@@ -88,6 +97,7 @@ public abstract class AbstractRDFTermFactoryTest {
 		IRI emptyRelative = factory.createIRI(""); // <> equals the base URI
 		assertEquals("", emptyRelative.getIRIString());
 		assertEquals("<>", emptyRelative.ntriplesString());
+		*/
 
 		// and now for the international fun!
 
