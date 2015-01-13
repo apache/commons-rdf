@@ -41,28 +41,25 @@ To then use from your project, add to Maven (update `<version>` to match the Mav
     
 ### Java 6 compatibility
 
-This API is targetting *Java 8*, as Java 7 is scheduled [EOL at April 2015](http://www.oracle.com/technetwork/java/javase/eol-135779.html). (issue #38 for details). 
+This API is targetting *Java 8*, as Java 7 is scheduled [EOL at April 2015](http://www.oracle.com/technetwork/java/javase/eol-135779.html).
 
 For convenience, a patched version for Java 6 and 7 is however available.
 
-To build with Java 1.6/1.7 compatibility, use the Maven profile `-Pjava6`:
+To build with Java 1.6/1.7 compatibility, use the `java6` Maven profile:
 
-    stain@biggie-mint ~/src/commons-rdf $ mvn clean install -Pjava6
+    $ mvn clean install -Pjava6
 
-To then depend on the Java 6 version in your Maven project, add to your `<dependency>`:
+To then depend on the Java 6 version in your Maven project, you need to use a special `classifier` to the dependency:
 
     <classifier>java6</classifier>
 
-Note that the Java 6 version depends on the [Guava libraries](https://code.google.com/p/guava-libraries/).
-
+Note that the Java 6 version depends on the [Guava libraries](https://code.google.com/p/guava-libraries/) for providing the missing features.
 
 ## Contributors
 
 * Sergio Fernández ([Apache Marmotta](http://marmotta.apache.org))
 * Andy Seaborne ([Apache Jena](http://jena.apache.org))
 * Peter Ansell ([OpenRDF Sesame](http://openrdf.callimachus.net))
-* Alexandre Bertails ([W3C](http://www.w3.org))
-
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to contribute. In short - raise a Github pull request.
 
