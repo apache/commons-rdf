@@ -78,8 +78,6 @@ public abstract class AbstractRDFTermFactoryTest {
 		assertEquals("http://example.com/vocab#term", term.getIRIString());
 		assertEquals("<http://example.com/vocab#term>", term.ntriplesString());
 
-
-
 		// and now for the international fun!
 
 		IRI latin1 = factory.createIRI("http://accént.example.com/première");
@@ -98,10 +96,10 @@ public abstract class AbstractRDFTermFactoryTest {
 		assertEquals("http://𐐀.example.com/𐐀", deseret.getIRIString());
 		assertEquals("<http://𐐀.example.com/𐐀>", deseret.ntriplesString());
 	}
-	
+
 	@Test
 	public void createIRIRelative() throws Exception {
-		// Although relative IRIs are defined in 
+		// Although relative IRIs are defined in
 		// http://www.w3.org/TR/rdf11-concepts/#section-IRIs
 		// it is not a requirement for an implementation to support
 		// it (all instances of an relative IRI should eventually
@@ -109,10 +107,11 @@ public abstract class AbstractRDFTermFactoryTest {
 
 		try {
 			factory.createIRI("../relative");
-		} catch (UnsupportedOperationException|IllegalArgumentException ex) {
+		} catch (UnsupportedOperationException | IllegalArgumentException ex) {
 			// Therefore the below simply skips the test if the
 			// above fails
-			Assume.assumeNoException("Ignoring unsupported Relative IRI (not a failure)", ex);
+			Assume.assumeNoException(
+					"Ignoring unsupported Relative IRI (not a failure)", ex);
 		}
 		IRI relative = factory.createIRI("../relative");
 		assertEquals("../relative", relative.getIRIString());
@@ -126,7 +125,7 @@ public abstract class AbstractRDFTermFactoryTest {
 		assertEquals("", emptyRelative.getIRIString());
 		assertEquals("<>", emptyRelative.ntriplesString());
 	}
-	
+
 	@Test
 	public void createLiteral() throws Exception {
 		Literal example = factory.createLiteral("Example");
@@ -252,5 +251,5 @@ public abstract class AbstractRDFTermFactoryTest {
 		BlankNode object = factory.createBlankNode("b3");
 		factory.createTriple(subject, (IRI) predicate, object);
 	}
-	
+
 }

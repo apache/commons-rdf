@@ -64,7 +64,7 @@ public class TestWritingGraph {
 		} else {
 			graphFile.toFile().deleteOnExit();
 		}
-		
+
 		BlankNode subject = new BlankNodeImpl("subj");
 		IRI predicate = new IRIImpl("pred");
 		Stream<CharSequence> stream = graph
