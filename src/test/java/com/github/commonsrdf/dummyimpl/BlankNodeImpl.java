@@ -27,7 +27,7 @@ public class BlankNodeImpl implements BlankNode {
 	}
 
 	public BlankNodeImpl(String id) {
-		if (id == null || id.isEmpty() || id.contains(":")) {
+		if (id == null || id.isEmpty()) {
 			// TODO: Check against
 			// http://www.w3.org/TR/n-triples/#n-triples-grammar
 			throw new IllegalArgumentException("Invalid blank node id: " + id);
@@ -42,6 +42,11 @@ public class BlankNodeImpl implements BlankNode {
 
 	@Override
 	public String ntriplesString() {
+		if (id.contains(":")) {
+			throw new IllegalStateException(
+					"Blank node identifier can't be expressed as ntriples string: "
+							+ id);
+		}
 		return "_:" + id;
 	}
 
