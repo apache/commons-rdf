@@ -17,7 +17,11 @@ package com.github.commonsrdf.api;
  * Factory for creating RDFTerm and Graph instances.
  * <p>
  * If an implementation does not support a particular method (e.g. because it
- * needs more parameters), then it may throw UnsupportedOperationException.
+ * needs more parameters), then it MAY throw UnsupportedOperationException.
+ * <p>
+ * If a factory method does not allow a provided parameter, e.g. because an IRI
+ * is invalid, then it SHOULD throw IllegalArgumentException.
+ * 
  * 
  * @see RDFTerm
  * @see Graph
@@ -31,16 +35,17 @@ public interface RDFTermFactory {
 
 	public Graph createGraph() throws UnsupportedOperationException;
 
-	public IRI createIRI(String iri) throws UnsupportedOperationException;
+	public IRI createIRI(String iri) throws UnsupportedOperationException,
+			IllegalArgumentException;
 
 	public Literal createLiteral(String literal)
 			throws UnsupportedOperationException;
 
 	public Literal createLiteral(String literal, IRI dataType)
-			throws UnsupportedOperationException;
+			throws UnsupportedOperationException, IllegalArgumentException;
 
 	public Literal createLiteral(String literal, String language)
-			throws UnsupportedOperationException;
+			throws UnsupportedOperationException, IllegalArgumentException;
 
 	public Triple createTriple(BlankNodeOrIRI subject, IRI predicate,
 			RDFTerm object) throws UnsupportedOperationException;
