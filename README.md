@@ -18,7 +18,7 @@ A draft diagram of the interfaces which may be included in Commons RDF are:
 
 Building has been tested with [Apache Maven 3.2](http://maven.apache.org/download.cgi) and [Java JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/).
 
-    stain@biggie-mint ~/src/commons-rdf $ mvn clean install
+    $ mvn clean install
     [INFO] Scanning for projects...
     [INFO] 
     [INFO] Using the builder org.apache.maven.lifecycle.internal.builder.singlethreaded.SingleThreadedBuilder with a thread count of 1
