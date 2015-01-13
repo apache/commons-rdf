@@ -85,19 +85,27 @@ public abstract class AbstractRDFTermFactoryTest {
 
 		// Therefore the below is disabled as a required test:
 
-		/*
-		IRI relative = factory.createIRI("../relative");
-		assertEquals("../relative", relative.getIRIString());
-		assertEquals("<../relative>", relative.ntriplesString());
+		boolean relativeIriSupported;
+		try {
+			factory.createIRI("../relative");
+			relativeIriSupported = true;
+		} catch (UnsupportedOperationException|IllegalArgumentException ex) {
+			relativeIriSupported = false;			
+		}
+		if (relativeIriSupported) {		
+			IRI relative = factory.createIRI("../relative");
+			assertEquals("../relative", relative.getIRIString());
+			assertEquals("<../relative>", relative.ntriplesString());
+	
+			IRI relativeTerm = factory.createIRI("../relative#term");
+			assertEquals("../relative#term", relativeTerm.getIRIString());
+			assertEquals("<../relative#term>", relativeTerm.ntriplesString());
+	
+			IRI emptyRelative = factory.createIRI(""); // <> equals the base URI
+			assertEquals("", emptyRelative.getIRIString());
+			assertEquals("<>", emptyRelative.ntriplesString());
+		}
 
-		IRI relativeTerm = factory.createIRI("../relative#term");
-		assertEquals("../relative#term", relativeTerm.getIRIString());
-		assertEquals("<../relative#term>", relativeTerm.ntriplesString());
-
-		IRI emptyRelative = factory.createIRI(""); // <> equals the base URI
-		assertEquals("", emptyRelative.getIRIString());
-		assertEquals("<>", emptyRelative.ntriplesString());
-		*/
 
 		// and now for the international fun!
 
