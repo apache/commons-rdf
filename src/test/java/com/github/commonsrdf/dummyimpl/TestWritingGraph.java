@@ -26,6 +26,9 @@ import com.github.commonsrdf.api.IRI;
 
 public class TestWritingGraph {
 
+	/** Run tests with -Dkeepfiles=true to inspect /tmp files **/
+	private static boolean KEEP_FILES = Boolean.getBoolean("keepfiles");
+
 	private GraphImpl graph;
 
 	@Before
@@ -34,36 +37,40 @@ public class TestWritingGraph {
 		BlankNode subject = new BlankNodeImpl("subj");
 		IRI predicate = new IRIImpl("pred");
 		// 200k triples should do
-		for (int i=0; i<200000; i++) {
-			graph.add(subject, predicate, 
-					new LiteralImpl("Example " + i, "en"));		
-		}		
+		for (int i = 0; i < 200000; i++) {
+			graph.add(subject, predicate, new LiteralImpl("Example " + i, "en"));
+		}
 	}
-	
+
 	@Test
 	public void writeGraphFromStream() throws Exception {
 		Path graphFile = Files.createTempFile("graph", ".nt");
-		System.out.println("From stream: " + graphFile);		
-		Stream<CharSequence> stream = graph.getTriples().unordered().parallel().
-				map(Object::toString);
-		Files.write(graphFile, 
-				stream::iterator,
-				Charset.forName("UTF-8"));
+		if (KEEP_FILES) {
+			System.out.println("From stream: " + graphFile);
+		} else {
+			graphFile.toFile().deleteOnExit();
+		}
+
+		Stream<CharSequence> stream = graph.getTriples().unordered().parallel()
+				.map(Object::toString);
+		Files.write(graphFile, stream::iterator, Charset.forName("UTF-8"));
 	}
 
 	@Test
 	public void writeGraphFromStreamFiltered() throws Exception {
-		Path graphFile = Files.createTempFile("graph", ".nt");		
-		System.out.println("Filtered stream: " + graphFile);
-		BlankNode subject = new BlankNodeImpl("subj"); 
-		IRI predicate = new IRIImpl("pred");
-		Stream<CharSequence> stream = graph.getTriples(subject, predicate, null).
-				map(Object::toString);
-		Files.write(graphFile, 
-				stream::iterator,
-				Charset.forName("UTF-8"));
+		Path graphFile = Files.createTempFile("graph", ".nt");
+		if (KEEP_FILES) {
+			System.out.println("Filtered stream: " + graphFile);
+		} else {
+			graphFile.toFile().deleteOnExit();
+		}
 		
+		BlankNode subject = new BlankNodeImpl("subj");
+		IRI predicate = new IRIImpl("pred");
+		Stream<CharSequence> stream = graph
+				.getTriples(subject, predicate, null).map(Object::toString);
+		Files.write(graphFile, stream::iterator, Charset.forName("UTF-8"));
+
 	}
 
 }
- 
