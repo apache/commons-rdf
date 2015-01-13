@@ -17,9 +17,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -88,6 +85,7 @@ public abstract class AbstractGraphTest {
 
 		assertTrue(graph.contains(alice, knows, bob));
 
+		@SuppressWarnings("unused")
 		Triple triple = factory.createTriple(alice, knows, bob);
 		// FIXME: Should not this be true?
 		// assertTrue(graph.contains(triple));
