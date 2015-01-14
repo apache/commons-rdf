@@ -40,5 +40,19 @@ public class IRIImpl implements IRI {
 	public String toString() {
 		return ntriplesString();
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (! (obj instanceof IRI)) { 
+			return false;
+		}
+		IRI other = (IRI) obj;
+		return getIRIString().equals(other.getIRIString());
+	}
 
+	@Override
+	public int hashCode() {		
+		return getIRIString().hashCode();
+	}
+	
 }
