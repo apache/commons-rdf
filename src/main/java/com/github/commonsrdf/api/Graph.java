@@ -43,6 +43,21 @@ public interface Graph extends AutoCloseable {
      */
     void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
 
+	/**
+	 * Close the graph, relinquishing any underlying resources.
+	 * <p>
+	 * For example, this would close any open file and network streams and free
+	 * database locks held by the Graph implementation.
+	 * <p>
+	 * The behaviour of the other Graph methods are undefined after closing the
+	 * graph.
+	 * <p>
+	 * Implementations might not need {@link #close()}, hence the default
+	 * implementation does nothing.
+	 */
+    @Override
+    default void close() throws Exception {}
+    
     /**
      * Check if graph contains triple.
      *
