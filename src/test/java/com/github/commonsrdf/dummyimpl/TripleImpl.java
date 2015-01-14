@@ -13,6 +13,7 @@
  */
 package com.github.commonsrdf.dummyimpl;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import com.github.commonsrdf.api.BlankNode;
@@ -43,6 +44,9 @@ public class TripleImpl implements Triple {
 	 * @param triple Triple to clone
 	 */
 	public TripleImpl(Optional<Graph> localScope, Triple triple) {
+		Objects.requireNonNull(localScope);
+		Objects.requireNonNull(triple);
+		
 		this.subject = (BlankNodeOrIRI)inScope(localScope, triple.getSubject());
 		this.predicate = (IRI)inScope(localScope, triple.getPredicate());
 		this.object = inScope(localScope, triple.getObject());
@@ -54,7 +58,7 @@ public class TripleImpl implements Triple {
 		}
 		if (object instanceof BlankNode) {
 			BlankNode blankNode = (BlankNode) object; 
-			return new BlankNodeImpl(localScope, blankNode.internalIdentifier());
+			return new BlankNodeImpl(Objects.requireNonNull(localScope), blankNode.internalIdentifier());
 		} else if (object instanceof IRI && ! (object instanceof IRIImpl)) {
 			IRI iri = (IRI) object;
 			return new IRIImpl(iri.getIRIString());
@@ -95,12 +99,7 @@ public class TripleImpl implements Triple {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + subject.hashCode();
-		result = prime * result +  predicate.hashCode();
-		result = prime * result + object.hashCode();
-		return result;
+		return Objects.hash(subject, predicate, object);
 	}
 
 	@Override
