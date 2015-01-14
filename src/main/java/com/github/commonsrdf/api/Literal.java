@@ -16,7 +16,7 @@ package com.github.commonsrdf.api;
 import java.util.Optional;
 
 /**
- * An RDF-1.1 Literal, as defined by <a href=
+ * A RDF-1.1 Literal, as defined by <a href=
  * "http://www.w3.org/TR/rdf11-concepts/#section-Graph-Literal" >RDF-1.1
  * Concepts and Abstract Syntax</a>, a W3C Recommendation published on 25
  * February 2014
@@ -86,7 +86,7 @@ public interface Literal extends RDFTerm {
 	 * @see Object#equals(Object)
 	 * 
 	 * @param other
-	 * @return true if other is an IRI and is equal to this
+	 * @return true if other is a Literal and is equal to this
 	 */
     @Override
     public boolean equals(Object other);
