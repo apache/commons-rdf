@@ -55,4 +55,40 @@ public interface Triple {
      */
     RDFTerm getObject();
 
+    /**
+	 * Check it this Triple is equal to another Triple.
+	 * <p>
+	 * <p>Two Triples are equal if and only if their
+	 * {@link #getSubject()}, {@link #getPredicate()} and {@link #getObject()}
+	 * are equal. 
+	 * <p>
+	 * Implementations MUST check the local scope for Triple comparison
+	 * if either the subject or object is a BlankNode, and MAY check the local
+	 * scope in other cases.
+	 * <p>
+	 * Implementations MUST also override {@link #hashCode()} so that two equal
+	 * Triples produce the same hash code.
+	 * 
+	 * @see Object#equals(Object)
+	 * 
+	 * @param other
+	 * @return true if other is a Triple and is equal to this
+	 */
+    @Override
+    public boolean equals(Object other);
+    
+    
+    /**
+	 * Calculate a hash code for this Triple.
+	 * <p>
+	 * This method MUST be implemented when implementing {@link #equals(Object)}
+	 * so that two equal IRIs produce the same hash code.
+	 * 
+	 * @see Object#hashCode()
+	 * 
+	 * @return a hash code value for this Triple.
+	 */
+    @Override
+    public int hashCode();
+    
 }
