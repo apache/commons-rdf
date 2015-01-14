@@ -42,7 +42,7 @@ public class TripleImpl implements Triple {
 	public TripleImpl(Graph localScope, Triple triple) {
 		this.subject = (BlankNodeOrIRI)inScope(localScope, triple.getSubject());
 		this.predicate = (IRI)inScope(localScope, triple.getPredicate());
-		this.object = inScope(localScope, triple.getPredicate());
+		this.object = inScope(localScope, triple.getObject());
 	}
 
 	private RDFTerm inScope(Graph localScope, RDFTerm object) {

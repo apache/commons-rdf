@@ -13,8 +13,8 @@
  */
 package com.github.commonsrdf.dummyimpl;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -29,7 +29,7 @@ import com.github.commonsrdf.api.Triple;
 public class GraphImpl implements Graph {
 
 	private static final int TO_STRING_MAX = 10;
-	protected List<Triple> triples = new ArrayList<Triple>();
+	protected Set<Triple> triples = new LinkedHashSet<Triple>();
 
 	@Override
 	public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
