@@ -13,10 +13,13 @@
  */
 package com.github.commonsrdf.dummyimpl;
 
+import java.util.Optional;
+
 import com.github.commonsrdf.api.BlankNode;
 import com.github.commonsrdf.api.BlankNodeOrIRI;
 import com.github.commonsrdf.api.Graph;
 import com.github.commonsrdf.api.IRI;
+import com.github.commonsrdf.api.Literal;
 import com.github.commonsrdf.api.RDFTerm;
 import com.github.commonsrdf.api.Triple;
 
@@ -30,27 +33,42 @@ public class TripleImpl implements Triple {
 		if (subject == null || predicate == null || object == null) {
 			throw new NullPointerException("subject, predicate or object was null");
 		}
-		this.subject = subject;
-		this.predicate = predicate;
-		this.object = object;
+		this.subject = (BlankNodeOrIRI) inScope(null, subject);
+		this.predicate = (IRI) inScope(null, predicate);
+		this.object = inScope(null, object);
 	}
 
 	/** Construct Triple by cloning another Triple and its constituent parts
 	 * @param localScope Scope to create new triple in
 	 * @param triple Triple to clone
 	 */
-	public TripleImpl(Graph localScope, Triple triple) {
+	public TripleImpl(Optional<Graph> localScope, Triple triple) {
 		this.subject = (BlankNodeOrIRI)inScope(localScope, triple.getSubject());
 		this.predicate = (IRI)inScope(localScope, triple.getPredicate());
 		this.object = inScope(localScope, triple.getObject());
 	}
 
-	private RDFTerm inScope(Graph localScope, RDFTerm object) {
+	private RDFTerm inScope(Optional<Graph> localScope, RDFTerm object) {
+		if (! (object instanceof BlankNode) && ! (object instanceof IRI) & ! (object instanceof Literal)) {
+			throw new IllegalArgumentException("RDFTerm must be BlankNode, IRI or Literal");
+		}
 		if (object instanceof BlankNode) {
 			BlankNode blankNode = (BlankNode) object; 
 			return new BlankNodeImpl(localScope, blankNode.internalIdentifier());
+		} else if (object instanceof IRI && ! (object instanceof IRIImpl)) {
+			IRI iri = (IRI) object;
+			return new IRIImpl(iri.getIRIString());
+		} else if (object instanceof Literal && ! (object instanceof LiteralImpl)) {
+			Literal literal = (Literal) object;
+			if (literal.getLanguageTag().isPresent()) {
+				return new LiteralImpl(literal.getLexicalForm(), literal.getLanguageTag().get());
+			} else { 
+				IRI dataType = (IRI) inScope(localScope, literal.getDatatype());			
+				return new LiteralImpl(literal.getLexicalForm(), dataType);
+			}
+		} else {
+			return object;
 		}
-		return object;
 	}
 
 	@Override
