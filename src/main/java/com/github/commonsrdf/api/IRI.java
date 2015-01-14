@@ -39,9 +39,11 @@ public interface IRI extends BlankNodeOrIRI {
 	 * equality</a>: Two IRIs are equal if and only if they are equivalent under
 	 * Simple String Comparison according to section 5.1 of [RFC3987]. Further
 	 * normalization MUST NOT be performed when comparing IRIs for equality.
-	 * </blockquote> Two IRIs are equal are in the same local scope and their
-	 * {@link #getIRIString()} are equal. Implementations are not required to
-	 * check the local scope for IRI comparison.
+	 * </blockquote> 
+	 * <p>Two IRIs are equal are in the same local scope and their
+	 * {@link #getIRIString()} are equal. 
+	 * <p>
+	 * Implementations MAY check the local scope for IRI comparison.
 	 * <p>
 	 * Implementations MUST also override {@link #hashCode()} so that two equal
 	 * IRIs produce the same hash code.
