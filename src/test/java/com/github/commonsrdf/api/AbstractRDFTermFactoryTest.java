@@ -214,18 +214,15 @@ public abstract class AbstractRDFTermFactoryTest {
 		assertEquals("http://www.w3.org/1999/02/22-rdf-syntax-ns#langString",
 				example.getDatatype().getIRIString());
 		assertEquals("\"Example\"@en", example.ntriplesString());
-		
-		// What about more exotic ISO-639-3 languages?
-		factory.createLiteral("Herbert Van de Sompel", "vls"); // JENA-827 reference
 	}
-	
 
 	@Test
 	public void createLiteralLangISO693_3() throws Exception {
 		// see https://issues.apache.org/jira/browse/JENA-827
 		Literal vls;
 		try {
-			vls = factory.createLiteral("Herbert Van de Sompel", "vls"); // JENA-827 reference
+			vls = factory.createLiteral("Herbert Van de Sompel", "vls"); // JENA-827
+																			// reference
 		} catch (UnsupportedOperationException ex) {
 			Assume.assumeNoException(ex);
 			return;
