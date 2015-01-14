@@ -105,7 +105,7 @@ For an example, see
 * Sergio Fernández ([Apache Marmotta](http://marmotta.apache.org))
 * Andy Seaborne ([Apache Jena](http://jena.apache.org))
 * Peter Ansell ([OpenRDF Sesame](http://openrdf.callimachus.net))
-* Stian Soiland-Reyes (([Apache Taverna](http://taverna.incubator.apache.org))
+* Stian Soiland-Reyes ([Apache Taverna](http://taverna.incubator.apache.org))
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to contribute. In short - raise a Github pull request.
 
