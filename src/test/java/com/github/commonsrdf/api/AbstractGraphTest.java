@@ -107,7 +107,7 @@ public abstract class AbstractGraphTest {
 			graph.add(factory.createTriple(bob, member, org2));
 			if (secretClubName != null) {
 				graph.add(org1, name, secretClubName);
-				graph.add(org1, name, companyName);
+				graph.add(org2, name, companyName);
 			}
 		}
 	}
@@ -121,7 +121,7 @@ public abstract class AbstractGraphTest {
 				.startsWith(
 						"<http://example.com/alice> <http://xmlns.com/foaf/0.1/name> \"Alice\" ."));
 		assertTrue(graph.toString().endsWith(
-				"_:org1 <http://xmlns.com/foaf/0.1/name> \"A company\" ."));
+				"_:org2 <http://xmlns.com/foaf/0.1/name> \"A company\" ."));
 
 	}
 
