@@ -13,6 +13,8 @@
  */
 package com.github.commonsrdf.dummyimpl;
 
+import java.util.IllformedLocaleException;
+import java.util.Locale;
 import java.util.Optional;
 
 import com.github.commonsrdf.api.IRI;
@@ -62,6 +64,13 @@ public class LiteralImpl implements Literal {
 			// http://www.w3.org/TR/n-triples/#n-triples-grammar
 			throw new IllegalArgumentException("Language tag can't be null");
 		}
+		try {
+			new Locale.Builder().setLanguageTag(languageTag);
+		} catch (IllformedLocaleException ex) {
+			throw new IllegalArgumentException("Invalid languageTag: " + languageTag, ex);
+		}
+		
+		//System.out.println(aLocale);
 		this.dataType = RDF_LANG_STRING;
 	}
 
