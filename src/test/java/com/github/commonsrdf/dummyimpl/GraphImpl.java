@@ -19,6 +19,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.github.commonsrdf.api.BlankNode;
 import com.github.commonsrdf.api.BlankNodeOrIRI;
 import com.github.commonsrdf.api.Graph;
 import com.github.commonsrdf.api.IRI;
@@ -40,6 +41,10 @@ public class GraphImpl implements Graph {
 	public void add(Triple triple) {
 		if (triple == null) {
 			throw new NullPointerException("triple can't be null");
+		}
+		if (triple.getSubject() instanceof BlankNode || triple.getObject() instanceof BlankNode) {
+			// Clone it
+			triple = new TripleImpl(this, triple);
 		}
 		triples.add(triple);
 	}
