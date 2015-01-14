@@ -14,7 +14,7 @@
 package com.github.commonsrdf.api;
 
 /**
- * An <a href= "http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node" >RDF-1.1
+ * A <a href= "http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node" >RDF-1.1
  * Blank Node</a>, as defined by <a href=
  * "http://www.w3.org/TR/rdf11-concepts/#section-blank-nodes" >RDF-1.1 Concepts
  * and Abstract Syntax</a>, a W3C Recommendation published on 25 February 2014.<br>
@@ -107,7 +107,7 @@ public interface BlankNode extends BlankNodeOrIRI {
 	 * @see Object#equals(Object)
 	 * 
 	 * @param other
-	 * @return true if other is an BlankNode, is in the same local scope and is
+	 * @return true if other is a BlankNode, is in the same local scope and is
 	 *         equal to this BlankNode
 	 */
     @Override
