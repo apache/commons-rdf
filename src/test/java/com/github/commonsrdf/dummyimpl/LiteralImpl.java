@@ -96,8 +96,7 @@ public class LiteralImpl implements Literal {
 			sb.append("@");
 			sb.append(getLanguageTag().get());
 
-		} else if (!getDatatype().getIRIString().equals(
-				XSD_STRING.getIRIString())) {
+		} else if (!getDatatype().equals(XSD_STRING)) {
 			sb.append("^^");
 			sb.append(getDatatype().ntriplesString());
 		}
@@ -109,4 +108,29 @@ public class LiteralImpl implements Literal {
 		return ntriplesString();
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((dataType == null) ? 0 : dataType.hashCode());
+		result = prime * result
+				+ ((lexicalForm == null) ? 0 : lexicalForm.hashCode());
+		result = prime * result
+				+ ((languageTag == null) ? 0 : languageTag.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (! (obj instanceof Literal)) {
+			return false;
+		}
+		Literal literal = (Literal) obj;		
+		return  getDatatype().equals(literal.getDatatype()) && 
+				getLexicalForm().equals(literal.getLexicalForm()) && 
+				getLanguageTag().equals(literal.getLanguageTag());
+	}
+	
+	
 }
