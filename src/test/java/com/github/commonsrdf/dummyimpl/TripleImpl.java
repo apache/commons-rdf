@@ -31,12 +31,9 @@ public class TripleImpl implements Triple {
 	private RDFTerm object;
 
 	public TripleImpl(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		if (subject == null || predicate == null || object == null) {
-			throw new NullPointerException("subject, predicate or object was null");
-		}
-		this.subject = (BlankNodeOrIRI) inScope(null, subject);
-		this.predicate = (IRI) inScope(null, predicate);
-		this.object = inScope(null, object);
+		this.subject = (BlankNodeOrIRI) inScope(Optional.empty(), Objects.requireNonNull(subject));
+		this.predicate = (IRI) inScope(null, Objects.requireNonNull(predicate));
+		this.object = inScope(Optional.empty(), Objects.requireNonNull(object));
 	}
 
 	/** Construct Triple by cloning another Triple and its constituent parts
