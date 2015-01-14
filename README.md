@@ -90,8 +90,8 @@ The extensions of each Test class needs to provide a
 [RDFTermFactory](src/test/java/com/github/commonsrdf/api/RDFTermFactory.java)
 that can create the corresponding implementations of a `Graph`, `IRI`, etc.
 
-For an example, see the
-[DummyGraphTest](src/test/java/com/github/commonsrdf/dummyimpl/DummyGraphTest.java)
+For an example, see 
+[DummyGraphTest](src/test/java/com/github/commonsrdf/dummyimpl/DummyGraphTest.java).
 
 
 ## Contributors
