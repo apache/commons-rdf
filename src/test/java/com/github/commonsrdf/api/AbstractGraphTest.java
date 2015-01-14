@@ -17,6 +17,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Optional;
+
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,8 +34,10 @@ public abstract class AbstractGraphTest {
 	private IRI member;
 	private BlankNode org1;
 	private BlankNode org2;
-	private RDFTerm aliceName;
+	private Literal aliceName;
 	private Literal bobName;
+	private Literal secretClubName;
+	private Literal companyName;
 	private Triple bobNameTriple;
 
 	public abstract RDFTermFactory createFactory();
@@ -41,40 +45,62 @@ public abstract class AbstractGraphTest {
 	@Before
 	public void createGraphAndAdd() {
 		factory = createFactory();
-		try {
-			graph = factory.createGraph();
-			alice = factory.createIRI("http://example.com/alice");
-			bob = factory.createIRI("http://example.com/bob");
-			name = factory.createIRI("http://xmlns.com/foaf/0.1/name");
-			knows = factory.createIRI("http://xmlns.com/foaf/0.1/knows");
-			member = factory.createIRI("http://xmlns.com/foaf/0.1/member");
-			org1 = factory.createBlankNode("org1");
-			org2 = factory.createBlankNode("org2");
-			aliceName = factory.createLiteral("Alice");
-			bobName = factory.createLiteral("Bob", "en-US");
-			bobNameTriple = factory.createTriple(bob, name, bobName);
-
-		} catch (UnsupportedOperationException ex) {
-			Assume.assumeNoException(ex);
-		}
-
+		graph = factory.createGraph();
 		assertEquals(0, graph.size());
 
-		graph.add(alice, name, aliceName);
+		alice = factory.createIRI("http://example.com/alice");
+		bob = factory.createIRI("http://example.com/bob");
+		name = factory.createIRI("http://xmlns.com/foaf/0.1/name");
+		knows = factory.createIRI("http://xmlns.com/foaf/0.1/knows");
+		member = factory.createIRI("http://xmlns.com/foaf/0.1/member");
+		try { 
+			org1 = factory.createBlankNode("org1");
+			org2 = factory.createBlankNode("org2");
+		} catch (UnsupportedOperationException ex) {
+			// leave as null
+		}
+		
+		try { 
+			secretClubName = factory.createLiteral("The Secret Club");
+			companyName = factory.createLiteral("A company");
+			aliceName = factory.createLiteral("Alice");
+			bobName = factory.createLiteral("Bob", "en-US");
+		} catch (UnsupportedOperationException ex) { 
+			// leave as null
+		} 
+		
+		if (aliceName != null) {
+			graph.add(alice, name, aliceName);
+		} 
 		graph.add(alice, knows, bob);
-		graph.add(alice, member, org1);
-		// and for Bob we'll try as Triples
-		graph.add(bobNameTriple);
-		graph.add(factory.createTriple(bob, member, org1));
-		graph.add(factory.createTriple(bob, member, org2));
 
-		graph.add(org1, name, factory.createLiteral("The Secret Club"));
-		graph.add(org1, name, factory.createLiteral("A company"));
+		if (org1 != null) {
+			graph.add(alice, member, org1);
+		}
+
+		if (bobName != null) {
+			try { 
+				bobNameTriple = factory.createTriple(bob, name, bobName);
+			} catch (UnsupportedOperationException ex) { 
+				// leave as null
+			}
+			if (bobNameTriple != null) {
+				graph.add(bobNameTriple);
+			}
+		}
+		if (org1 != null) {
+			graph.add(factory.createTriple(bob, member, org1));
+			graph.add(factory.createTriple(bob, member, org2));	
+			if (secretClubName != null) {
+				graph.add(org1, name, secretClubName);
+				graph.add(org1, name, companyName);
+			}
+		}
 	}
 
 	@Test
 	public void graphToString() {
-
+		Assume.assumeNotNull(aliceName, companyName);
 		System.out.println(graph);
 		assertTrue(graph
 				.toString()
@@ -87,6 +113,9 @@ public abstract class AbstractGraphTest {
 
 	@Test
 	public void size() throws Exception {
+		assertTrue(graph.size() > 0);
+		Assume.assumeNotNull(org1, org2, aliceName, bobName, secretClubName, companyName, bobNameTriple); 
+		// Can only reliably predict size if we could create all triples 
 		assertEquals(8, graph.size());
 	}
 
@@ -96,42 +125,59 @@ public abstract class AbstractGraphTest {
 
 		assertTrue(graph.contains(alice, knows, bob));
 
-		@SuppressWarnings("unused")
-		Triple triple = factory.createTriple(alice, knows, bob);
-		// FIXME: Should not this be true?
-		// assertTrue(graph.contains(triple));
-
-		Triple existingTriple = graph.getTriples().skip(4).findFirst().get();
+		Optional<? extends Triple> first = graph.getTriples().skip(4).findFirst();
+		Assume.assumeTrue(first.isPresent());
+		Triple existingTriple = first.get();
 		assertTrue(graph.contains(existingTriple));
-
+		
 		Triple nonExistingTriple = factory.createTriple(bob, knows, alice);
 		assertFalse(graph.contains(nonExistingTriple));
+		
+		
+		Triple triple = null;
+		try  {
+			triple = factory.createTriple(alice, knows, bob);
+		} catch (UnsupportedOperationException ex) {
+		}
+		if (triple != null) {
+			// FIXME: Should not this always be true?
+			//	assertTrue(graph.contains(triple));
+		}
 	}
 
 	@Test
 	public void remove() throws Exception {
+		long fullSize = graph.size();
 		graph.remove(alice, knows, bob);
-		assertEquals(7, graph.size());
-		graph.remove(alice, knows, bob);
-		assertEquals(7, graph.size());
-		graph.add(alice, knows, bob);
-		graph.add(alice, knows, bob);
-		graph.add(alice, knows, bob);
-		// Undetermined size at this point
-		// assertEquals(8, graph.size());
-		// but at least after remove they should all be gone
-		graph.remove(alice, knows, bob);
-		assertEquals(7, graph.size());
+		long shrunkSize = graph.size();
+		assertEquals(1,  fullSize - shrunkSize);
 
-		Triple otherTriple = graph.getTriples().findAny().get();
+		graph.remove(alice, knows, bob);
+		assertEquals(shrunkSize, graph.size()); // unchanged
+		
+		graph.add(alice, knows, bob);
+		graph.add(alice, knows, bob);
+		graph.add(alice, knows, bob);
+		// Undetermined size at this point -- but at least it
+		// should be bigger
+		assertTrue(graph.size() > shrunkSize);
+		
+		// and after a single remove they should all be gone
+		graph.remove(alice, knows, bob);
+		assertEquals(shrunkSize, graph.size());
+
+		Optional<? extends Triple> anyTriple = graph.getTriples().findAny();
+		Assume.assumeTrue(anyTriple.isPresent());
+		
+		Triple otherTriple = anyTriple.get();
 		graph.remove(otherTriple);
-		assertEquals(6, graph.size());
+		assertEquals(shrunkSize - 1, graph.size());
 		graph.remove(otherTriple);
-		assertEquals(6, graph.size());
+		assertEquals(shrunkSize - 1, graph.size()); // no change
 		graph.add(otherTriple);
-		assertEquals(7, graph.size());
+		assertEquals(shrunkSize, graph.size());
 	}
-
+ 
 	@Test
 	public void clear() throws Exception {
 		graph.clear();
@@ -143,14 +189,26 @@ public abstract class AbstractGraphTest {
 
 	@Test
 	public void getTriples() throws Exception {
-		assertEquals(8, graph.getTriples().count());
+		
+		long tripleCount = graph.getTriples().count();
+		assertTrue(tripleCount > 0);
 		assertTrue(graph.getTriples().allMatch(t -> graph.contains(t)));
+		// Check exact count
+		Assume.assumeNotNull(org1, org2, aliceName, bobName, secretClubName, companyName, bobNameTriple);
+		assertEquals(8, tripleCount);
 	}
 
 	@Test
 	public void getTriplesQuery() throws Exception {
-		assertEquals(3, graph.getTriples(alice, null, null).count());
+		
+		long aliceCount = graph.getTriples(alice, null, null).count();
+		assertTrue(aliceCount > 0);
+		Assume.assumeNotNull(aliceName);
+		assertEquals(3, aliceCount);
+		
+		Assume.assumeNotNull(org1, org2, bobName, companyName, secretClubName);
 		assertEquals(4, graph.getTriples(null, name, null).count());
+		Assume.assumeNotNull(org1);
 		assertEquals(2, graph.getTriples(null, member, org1).count());
 	}
 
@@ -173,7 +231,7 @@ public abstract class AbstractGraphTest {
 	 */
 	@Test
 	public void whyJavaStreamsMightNotTakeOverFromSparql() throws Exception {
-
+		Assume.assumeNotNull(org1, org2, secretClubName);
 		// Find a secret organizations
 		assertEquals(
 				"\"The Secret Club\"",

@@ -14,6 +14,8 @@
 package com.github.commonsrdf.dummyimpl;
 
 import com.github.commonsrdf.api.AbstractGraphTest;
+import com.github.commonsrdf.api.Graph;
+import com.github.commonsrdf.api.IRI;
 import com.github.commonsrdf.api.RDFTermFactory;
 
 /**
@@ -26,7 +28,20 @@ public class DefaultGraphTest extends AbstractGraphTest {
 
 	@Override
 	public RDFTermFactory createFactory() {
-		return new RDFTermFactory(){};
+		// The most minimal RDFTermFactory that would still
+		// make sense with a Graph
+		return new RDFTermFactory(){
+			@Override
+			public Graph createGraph() throws UnsupportedOperationException {				
+				return new GraphImpl();
+			}
+			@Override
+			public IRI createIRI(String iri)
+					throws UnsupportedOperationException,
+					IllegalArgumentException {
+				return new IRIImpl(iri);
+			}
+		};
 	}
 
 }
