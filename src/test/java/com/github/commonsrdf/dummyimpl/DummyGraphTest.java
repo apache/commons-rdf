@@ -16,6 +16,10 @@ package com.github.commonsrdf.dummyimpl;
 import com.github.commonsrdf.api.AbstractGraphTest;
 import com.github.commonsrdf.api.RDFTermFactory;
 
+/**
+ * Test DummyRDFTermFactory with AbstractGraphTest
+ *
+ */
 public class DummyGraphTest extends AbstractGraphTest {
 
 	@Override
