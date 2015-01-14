@@ -55,13 +55,54 @@ To then depend on the Java 6 version in your Maven project, you need to use a sp
 
 Note that the Java 6 version depends on the [Guava libraries](https://code.google.com/p/guava-libraries/) for providing the missing features.
 
+## Example implementation
+
+For a simple example of how to minimally implement this API, see
+the [dummyimpl](src/test/java/com/github/commonsrdf/dummyimpl/)
+package that is part of the unit tests.
+
+Note that this is not to be considered as a 
+reference implementation, although it
+fully implements the commons-rdf API.
+
+
+## Testing
+
+The abstract classes
+[AbstractGraphTest](src/test/java/com/github/commonsrdf/api/AbstractGraphTest.java)
+and 
+[AbstractRDFTermFactoryTest](src/test/java/com/github/commonsrdf/api/AbstractRDFTermFactoryTest.java)
+can be realised as JUnit tests by implementations in order to verify that they
+pass the minimal requirements of this API.
+
+In order for this to work, your project will need to depend on the `tests`
+classifier, for example (for Maven):
+
+    <dependency>
+        <groupId>com.github.commons-rdf</groupId>
+        <artifactId>api</artifactId>
+        <version>0.0.3-SNAPSHOT</version>
+        <classifier>tests</classifier>
+        <scope>test</scope>
+    </dependency>
+
+The extensions of each Test class needs to provide a 
+[RDFTermFactory](src/test/java/com/github/commonsrdf/api/RDFTermFactory.java)
+that can create the corresponding implementations of a `Graph`, `IRI`, etc.
+
+For an example, see the
+[DummyGraphTest](src/test/java/com/github/commonsrdf/dummyimpl/DummyGraphTest.java)
+
+
 ## Contributors
 
 * Sergio Fernández ([Apache Marmotta](http://marmotta.apache.org))
 * Andy Seaborne ([Apache Jena](http://jena.apache.org))
 * Peter Ansell ([OpenRDF Sesame](http://openrdf.callimachus.net))
+* Stian Soiland-Reyes (([Apache Taverna](http://taverna.incubator.apache.org))
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to contribute. In short - raise a Github pull request.
+
 
 ## License
 
