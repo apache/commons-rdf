@@ -31,7 +31,7 @@ public class DummyRDFTermFactory implements RDFTermFactory {
 
 	@Override
 	public BlankNode createBlankNode(String identifier) {
-		return new BlankNodeImpl(identifier);
+		return new BlankNodeImpl(null, identifier);
 	}
 
 	@Override

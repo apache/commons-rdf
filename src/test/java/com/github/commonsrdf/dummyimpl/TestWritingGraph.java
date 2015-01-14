@@ -34,7 +34,7 @@ public class TestWritingGraph {
 	@Before
 	public void createGraph() throws Exception {
 		graph = new GraphImpl();
-		BlankNode subject = new BlankNodeImpl("subj");
+		BlankNode subject = new BlankNodeImpl(graph, "subj");
 		IRI predicate = new IRIImpl("pred");
 		// 200k triples should do
 		for (int i = 0; i < 200000; i++) {
@@ -65,7 +65,7 @@ public class TestWritingGraph {
 			graphFile.toFile().deleteOnExit();
 		}
 
-		BlankNode subject = new BlankNodeImpl("subj");
+		BlankNode subject = new BlankNodeImpl(graph, "subj");
 		IRI predicate = new IRIImpl("pred");
 		Stream<CharSequence> stream = graph
 				.getTriples(subject, predicate, null).map(Object::toString);
