@@ -13,6 +13,8 @@
  */
 package com.github.commonsrdf.dummyimpl;
 
+import java.util.Optional;
+
 import com.github.commonsrdf.api.BlankNode;
 import com.github.commonsrdf.api.BlankNodeOrIRI;
 import com.github.commonsrdf.api.Graph;
@@ -31,7 +33,7 @@ public class DummyRDFTermFactory implements RDFTermFactory {
 
 	@Override
 	public BlankNode createBlankNode(String identifier) {
-		return new BlankNodeImpl(null, identifier);
+		return new BlankNodeImpl(Optional.empty(), identifier);
 	}
 
 	@Override
