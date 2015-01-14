@@ -79,6 +79,12 @@ In order for this to work, your project will need to depend on the `tests`
 classifier, for example (for Maven):
 
     <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.11</version>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
         <groupId>com.github.commons-rdf</groupId>
         <artifactId>api</artifactId>
         <version>0.0.3-SNAPSHOT</version>
