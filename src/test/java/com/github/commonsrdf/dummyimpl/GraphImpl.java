@@ -42,11 +42,7 @@ public class GraphImpl implements Graph {
 		if (triple == null) {
 			throw new NullPointerException("triple can't be null");
 		}
-		if (triple.getSubject() instanceof BlankNode || triple.getObject() instanceof BlankNode) {
-			// Clone it
-			triple = new TripleImpl(this, triple);
-		}
-		triples.add(triple);
+		triples.add(new TripleImpl(this, triple));
 	}
 
 	@Override
