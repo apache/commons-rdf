@@ -87,36 +87,46 @@ public interface Graph {
     void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
 
     /**
-     * Clear the graph.
+     * Clear the graph, removing all triples.
+     * 
      */
     void clear();
 
     /**
-     * Number of triples contained by the graph.
-     *
-     * @return The size of the graph.
-     */
+	 * Number of triples contained by the graph.
+	 * <p>
+	 * The count of a set does not include duplicates, as determined by
+	 * {@link Triple#equals(Object)}.
+	 * 
+	 * @return The number of triples in the graph
+	 */
     long size();
 
     /**
      * Get all triples contained by the graph.<br>
-     *
+     * <p>
+     * The iteration does not contain any duplicate triples, as determined by
+     * {@link Triple#equals(Object)}.
+     * <p>
      * The behaviour of the Stream is not specified if add, remove, or clear,
      * are called on the Stream before it terminates.<br>
-     *
+     * <p>
      * Implementations may throw ConcurrentModificationException from Stream
      * methods if they detect a conflict while the Stream is active.
      *
-     * @return A {@link Stream} over all of the triples in the graph.
+     * @return A {@link Stream} over all of the triples in the graph
      */
     Stream<? extends Triple> getTriples();
 
     /**
      * Get all triples contained by the graph matched with the pattern.
-     *
+     * <p>
+     * The iteration does not contain any duplicate triples, as determined by
+     * {@link Triple#equals(Object)}.
+     * <p>
      * The behaviour of the Stream is not specified if add, remove, or clear,
      * are called on the Stream before it terminates.<br>
-     *
+     * <p>
      * Implementations may throw ConcurrentModificationException from Stream
      * methods if they detect a conflict while the Stream is active.
      *
