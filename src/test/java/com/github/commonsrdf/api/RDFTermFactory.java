@@ -17,10 +17,11 @@ package com.github.commonsrdf.api;
  * Factory for creating RDFTerm and Graph instances.
  * <p>
  * If an implementation does not support a particular method (e.g. because it
- * needs more parameters), then it MAY throw UnsupportedOperationException.
+ * needs more parameters or can't create graphs), then it MAY throw
+ * UnsupportedOperationException (as provided by the default implementations).
  * <p>
- * If a factory method does not allow a provided parameter, e.g. because an IRI
- * is invalid, then it SHOULD throw IllegalArgumentException.
+ * If a factory method does not allow or support a provided parameter, e.g.
+ * because an IRI is invalid, then it SHOULD throw IllegalArgumentException.
  * 
  * 
  * @see RDFTerm
@@ -28,26 +29,50 @@ package com.github.commonsrdf.api;
  * 
  */
 public interface RDFTermFactory {
-	public BlankNode createBlankNode() throws UnsupportedOperationException;
+	default BlankNode createBlankNode() throws UnsupportedOperationException {
+		throw new UnsupportedOperationException(
+				"createBlankNode() not supported");
+	}
 
-	public BlankNode createBlankNode(String identifier)
-			throws UnsupportedOperationException;
+	default BlankNode createBlankNode(String identifier)
+			throws UnsupportedOperationException {
+		throw new UnsupportedOperationException(
+				"createBlankNode(String) not supported");
+	}
 
-	public Graph createGraph() throws UnsupportedOperationException;
+	default Graph createGraph() throws UnsupportedOperationException {
+		throw new UnsupportedOperationException("createGraph() not supported");
+	}
 
-	public IRI createIRI(String iri) throws UnsupportedOperationException,
-			IllegalArgumentException;
+	default IRI createIRI(String iri) throws UnsupportedOperationException,
+			IllegalArgumentException {
+		throw new UnsupportedOperationException(
+				"createIRI(String) not supported");
+	}
 
-	public Literal createLiteral(String literal)
-			throws UnsupportedOperationException;
+	default Literal createLiteral(String literal)
+			throws UnsupportedOperationException {
+		throw new UnsupportedOperationException(
+				"createLiteral(String) not supported");
+	}
 
-	public Literal createLiteral(String literal, IRI dataType)
-			throws UnsupportedOperationException, IllegalArgumentException;
+	default Literal createLiteral(String literal, IRI dataType)
+			throws UnsupportedOperationException, IllegalArgumentException {
+		throw new UnsupportedOperationException(
+				"createLiteral(String) not supported");
+	}
 
-	public Literal createLiteral(String literal, String language)
-			throws UnsupportedOperationException, IllegalArgumentException;
+	default Literal createLiteral(String literal, String language)
+			throws UnsupportedOperationException, IllegalArgumentException {
+		throw new UnsupportedOperationException(
+				"createLiteral(String,String) not supported");
+	}
 
-	public Triple createTriple(BlankNodeOrIRI subject, IRI predicate,
-			RDFTerm object) throws UnsupportedOperationException;
+	default Triple createTriple(BlankNodeOrIRI subject, IRI predicate,
+			RDFTerm object) throws UnsupportedOperationException,
+			IllegalArgumentException {
+		throw new UnsupportedOperationException(
+				"createTriple(BlankNodeOrIRI,IRI,RDFTerm) not supported");
+	}
 
 }
