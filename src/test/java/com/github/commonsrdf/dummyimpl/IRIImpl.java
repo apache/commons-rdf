@@ -24,7 +24,7 @@ public class IRIImpl implements IRI {
 	public IRIImpl(String iri) {
 		// TODO: Check against http://www.w3.org/TR/n-triples/#n-triples-grammar
 		// FIXME: URI.create uses outdated RFC2396 and will get some IDNs wrong
-		// should throw IllegalArgumentException on most illegal IRIs 
+		// should throw IllegalArgumentException on most illegal IRIs
 		uri = URI.create(iri);
 	}
 
@@ -42,10 +42,10 @@ public class IRIImpl implements IRI {
 	public String toString() {
 		return ntriplesString();
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
-		if (! (obj instanceof IRI)) { 
+		if (!(obj instanceof IRI)) {
 			return false;
 		}
 		IRI other = (IRI) obj;
@@ -53,8 +53,8 @@ public class IRIImpl implements IRI {
 	}
 
 	@Override
-	public int hashCode() {		
+	public int hashCode() {
 		return uri.hashCode();
 	}
-	
+
 }

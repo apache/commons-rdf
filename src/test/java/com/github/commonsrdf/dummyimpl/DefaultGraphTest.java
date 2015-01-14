@@ -19,8 +19,8 @@ import com.github.commonsrdf.api.IRI;
 import com.github.commonsrdf.api.RDFTermFactory;
 
 /**
- * Ensure AbstractGraphTest does not crash if the RDFTermFactory
- * throws UnsupportedOperationException
+ * Ensure AbstractGraphTest does not crash if the RDFTermFactory throws
+ * UnsupportedOperationException
  *
  */
 
@@ -30,11 +30,12 @@ public class DefaultGraphTest extends AbstractGraphTest {
 	public RDFTermFactory createFactory() {
 		// The most minimal RDFTermFactory that would still
 		// make sense with a Graph
-		return new RDFTermFactory(){
+		return new RDFTermFactory() {
 			@Override
-			public Graph createGraph() throws UnsupportedOperationException {				
+			public Graph createGraph() throws UnsupportedOperationException {
 				return new GraphImpl();
 			}
+
 			@Override
 			public IRI createIRI(String iri)
 					throws UnsupportedOperationException,

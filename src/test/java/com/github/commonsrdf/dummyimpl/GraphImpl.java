@@ -34,16 +34,16 @@ public class GraphImpl implements Graph {
 
 	@Override
 	public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		add(new TripleImpl(Objects.requireNonNull(subject), 
-				Objects.requireNonNull(predicate), 
+		add(new TripleImpl(Objects.requireNonNull(subject),
+				Objects.requireNonNull(predicate),
 				Objects.requireNonNull(object)));
 
 	}
 
 	@Override
 	public void add(Triple triple) {
-		triples.add(new TripleImpl(Optional.of(this), 
-				Objects.requireNonNull(triple)));
+		triples.add(new TripleImpl(Optional.of(this), Objects
+				.requireNonNull(triple)));
 	}
 
 	@Override

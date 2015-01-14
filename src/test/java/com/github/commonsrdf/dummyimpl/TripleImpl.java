@@ -31,40 +31,50 @@ public class TripleImpl implements Triple {
 	private RDFTerm object;
 
 	public TripleImpl(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		this.subject = (BlankNodeOrIRI) inScope(Optional.empty(), Objects.requireNonNull(subject));
+		this.subject = (BlankNodeOrIRI) inScope(Optional.empty(),
+				Objects.requireNonNull(subject));
 		this.predicate = (IRI) inScope(null, Objects.requireNonNull(predicate));
 		this.object = inScope(Optional.empty(), Objects.requireNonNull(object));
 	}
 
-	/** Construct Triple by cloning another Triple and its constituent parts
-	 * @param localScope Scope to create new triple in
-	 * @param triple Triple to clone
+	/**
+	 * Construct Triple by cloning another Triple and its constituent parts
+	 * 
+	 * @param localScope
+	 *            Scope to create new triple in
+	 * @param triple
+	 *            Triple to clone
 	 */
 	public TripleImpl(Optional<Graph> localScope, Triple triple) {
 		Objects.requireNonNull(localScope);
 		Objects.requireNonNull(triple);
-		
-		this.subject = (BlankNodeOrIRI)inScope(localScope, triple.getSubject());
-		this.predicate = (IRI)inScope(localScope, triple.getPredicate());
+
+		this.subject = (BlankNodeOrIRI) inScope(localScope, triple.getSubject());
+		this.predicate = (IRI) inScope(localScope, triple.getPredicate());
 		this.object = inScope(localScope, triple.getObject());
 	}
 
 	private RDFTerm inScope(Optional<Graph> localScope, RDFTerm object) {
-		if (! (object instanceof BlankNode) && ! (object instanceof IRI) & ! (object instanceof Literal)) {
-			throw new IllegalArgumentException("RDFTerm must be BlankNode, IRI or Literal");
+		if (!(object instanceof BlankNode) && !(object instanceof IRI)
+				& !(object instanceof Literal)) {
+			throw new IllegalArgumentException(
+					"RDFTerm must be BlankNode, IRI or Literal");
 		}
 		if (object instanceof BlankNode) {
-			BlankNode blankNode = (BlankNode) object; 
-			return new BlankNodeImpl(Objects.requireNonNull(localScope), blankNode.internalIdentifier());
-		} else if (object instanceof IRI && ! (object instanceof IRIImpl)) {
+			BlankNode blankNode = (BlankNode) object;
+			return new BlankNodeImpl(Objects.requireNonNull(localScope),
+					blankNode.internalIdentifier());
+		} else if (object instanceof IRI && !(object instanceof IRIImpl)) {
 			IRI iri = (IRI) object;
 			return new IRIImpl(iri.getIRIString());
-		} else if (object instanceof Literal && ! (object instanceof LiteralImpl)) {
+		} else if (object instanceof Literal
+				&& !(object instanceof LiteralImpl)) {
 			Literal literal = (Literal) object;
 			if (literal.getLanguageTag().isPresent()) {
-				return new LiteralImpl(literal.getLexicalForm(), literal.getLanguageTag().get());
-			} else { 
-				IRI dataType = (IRI) inScope(localScope, literal.getDatatype());			
+				return new LiteralImpl(literal.getLexicalForm(), literal
+						.getLanguageTag().get());
+			} else {
+				IRI dataType = (IRI) inScope(localScope, literal.getDatatype());
 				return new LiteralImpl(literal.getLexicalForm(), dataType);
 			}
 		} else {
@@ -105,11 +115,9 @@ public class TripleImpl implements Triple {
 			return false;
 		}
 		Triple other = (Triple) obj;
-		return getSubject().equals(other.getSubject()) &&
-				getPredicate().equals(other.getPredicate()) && 
-				getObject().equals(other.getObject());		
+		return getSubject().equals(other.getSubject())
+				&& getPredicate().equals(other.getPredicate())
+				&& getObject().equals(other.getObject());
 	}
-	
-	
-	
+
 }

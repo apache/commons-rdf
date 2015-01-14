@@ -56,10 +56,11 @@ public class LiteralImpl implements Literal {
 		try {
 			new Locale.Builder().setLanguageTag(languageTag);
 		} catch (IllformedLocaleException ex) {
-			throw new IllegalArgumentException("Invalid languageTag: " + languageTag, ex);
+			throw new IllegalArgumentException("Invalid languageTag: "
+					+ languageTag, ex);
 		}
-		
-		//System.out.println(aLocale);
+
+		// System.out.println(aLocale);
 		this.dataType = RDF_LANG_STRING;
 	}
 
@@ -113,14 +114,13 @@ public class LiteralImpl implements Literal {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (! (obj instanceof Literal)) {
+		if (!(obj instanceof Literal)) {
 			return false;
 		}
-		Literal literal = (Literal) obj;		
-		return  getDatatype().equals(literal.getDatatype()) && 
-				getLexicalForm().equals(literal.getLexicalForm()) && 
-				getLanguageTag().equals(literal.getLanguageTag());
+		Literal literal = (Literal) obj;
+		return getDatatype().equals(literal.getDatatype())
+				&& getLexicalForm().equals(literal.getLexicalForm())
+				&& getLanguageTag().equals(literal.getLanguageTag());
 	}
-	
-	
+
 }

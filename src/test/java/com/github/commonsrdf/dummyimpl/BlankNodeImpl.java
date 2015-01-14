@@ -30,7 +30,7 @@ public class BlankNodeImpl implements BlankNode {
 		this(Optional.empty(), "b" + bnodeCounter.incrementAndGet());
 	}
 
-	public BlankNodeImpl(Optional<Graph> localScope, String id) {		
+	public BlankNodeImpl(Optional<Graph> localScope, String id) {
 		this.localScope = Objects.requireNonNull(localScope);
 		if (Objects.requireNonNull(id).isEmpty()) {
 			throw new IllegalArgumentException("Invalid blank node id: " + id);
