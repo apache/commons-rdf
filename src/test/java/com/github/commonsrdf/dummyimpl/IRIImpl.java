@@ -54,7 +54,7 @@ public class IRIImpl implements IRI {
 
 	@Override
 	public int hashCode() {		
-		return getIRIString().hashCode();
+		return uri.hashCode();
 	}
 	
 }
