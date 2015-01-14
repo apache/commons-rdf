@@ -25,6 +25,9 @@ public class TripleImpl implements Triple {
 	private RDFTerm object;
 
 	public TripleImpl(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+		if (subject == null || predicate == null || object == null) {
+			throw new NullPointerException("subject, predicate or object was null");
+		}
 		this.subject = subject;
 		this.predicate = predicate;
 		this.object = object;
@@ -51,4 +54,28 @@ public class TripleImpl implements Triple {
 				+ getPredicate().ntriplesString() + " "
 				+ getObject().ntriplesString() + " .";
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + subject.hashCode();
+		result = prime * result +  predicate.hashCode();
+		result = prime * result + object.hashCode();
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Triple)) {
+			return false;
+		}
+		Triple other = (Triple) obj;
+		return getSubject().equals(other.getSubject()) &&
+				getPredicate().equals(other.getPredicate()) && 
+				getObject().equals(other.getObject());		
+	}
+	
+	
+	
 }
