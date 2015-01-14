@@ -17,6 +17,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,29 +32,39 @@ public abstract class AbstractGraphTest {
 	private IRI member;
 	private BlankNode org1;
 	private BlankNode org2;
+	private RDFTerm aliceName;
+	private Literal bobName;
+	private Triple bobNameTriple;
 
 	public abstract RDFTermFactory createFactory();
 
 	@Before
 	public void createGraphAndAdd() {
 		factory = createFactory();
-		graph = factory.createGraph();
+		try {
+			graph = factory.createGraph();
+			alice = factory.createIRI("http://example.com/alice");
+			bob = factory.createIRI("http://example.com/bob");
+			name = factory.createIRI("http://xmlns.com/foaf/0.1/name");
+			knows = factory.createIRI("http://xmlns.com/foaf/0.1/knows");
+			member = factory.createIRI("http://xmlns.com/foaf/0.1/member");
+			org1 = factory.createBlankNode("org1");
+			org2 = factory.createBlankNode("org2");
+			aliceName = factory.createLiteral("Alice");
+			bobName = factory.createLiteral("Bob", "en-US");
+			bobNameTriple = factory.createTriple(bob, name, bobName);
+
+		} catch (UnsupportedOperationException ex) {
+			Assume.assumeNoException(ex);
+		}
+
 		assertEquals(0, graph.size());
 
-		alice = factory.createIRI("http://example.com/alice");
-		bob = factory.createIRI("http://example.com/bob");
-		name = factory.createIRI("http://xmlns.com/foaf/0.1/name");
-		knows = factory.createIRI("http://xmlns.com/foaf/0.1/knows");
-		member = factory.createIRI("http://xmlns.com/foaf/0.1/member");
-		org1 = factory.createBlankNode("org1");
-		org2 = factory.createBlankNode("org2");
-
-		graph.add(alice, name, factory.createLiteral("Alice"));
+		graph.add(alice, name, aliceName);
 		graph.add(alice, knows, bob);
 		graph.add(alice, member, org1);
 		// and for Bob we'll try as Triples
-		graph.add(factory.createTriple(bob, name,
-				factory.createLiteral("Bob", "en-US")));
+		graph.add(bobNameTriple);
 		graph.add(factory.createTriple(bob, member, org1));
 		graph.add(factory.createTriple(bob, member, org2));
 
