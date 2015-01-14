@@ -23,6 +23,8 @@ public class IRIImpl implements IRI {
 
 	public IRIImpl(String iri) {
 		// TODO: Check against http://www.w3.org/TR/n-triples/#n-triples-grammar
+		// FIXME: URI.create uses outdated RFC2396 and will get some IDNs wrong
+		// should throw IllegalArgumentException on most illegal IRIs 
 		uri = URI.create(iri);
 	}
 

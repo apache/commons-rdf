@@ -16,6 +16,7 @@ package com.github.commonsrdf.dummyimpl;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.junit.Before;
@@ -34,7 +35,7 @@ public class TestWritingGraph {
 	@Before
 	public void createGraph() throws Exception {
 		graph = new GraphImpl();
-		BlankNode subject = new BlankNodeImpl(graph, "subj");
+		BlankNode subject = new BlankNodeImpl(Optional.of(graph), "subj");
 		IRI predicate = new IRIImpl("pred");
 		// 200k triples should do
 		for (int i = 0; i < 200000; i++) {
@@ -65,7 +66,7 @@ public class TestWritingGraph {
 			graphFile.toFile().deleteOnExit();
 		}
 
-		BlankNode subject = new BlankNodeImpl(graph, "subj");
+		BlankNode subject = new BlankNodeImpl(Optional.of(graph), "subj");
 		IRI predicate = new IRIImpl("pred");
 		Stream<CharSequence> stream = graph
 				.getTriples(subject, predicate, null).map(Object::toString);

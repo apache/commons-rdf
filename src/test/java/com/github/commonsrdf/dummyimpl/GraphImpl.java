@@ -14,12 +14,13 @@
 package com.github.commonsrdf.dummyimpl;
 
 import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.github.commonsrdf.api.BlankNode;
 import com.github.commonsrdf.api.BlankNodeOrIRI;
 import com.github.commonsrdf.api.Graph;
 import com.github.commonsrdf.api.IRI;
@@ -33,16 +34,16 @@ public class GraphImpl implements Graph {
 
 	@Override
 	public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		add(new TripleImpl(subject, predicate, object));
+		add(new TripleImpl(Objects.requireNonNull(subject), 
+				Objects.requireNonNull(predicate), 
+				Objects.requireNonNull(object)));
 
 	}
 
 	@Override
 	public void add(Triple triple) {
-		if (triple == null) {
-			throw new NullPointerException("triple can't be null");
-		}
-		triples.add(new TripleImpl(this, triple));
+		triples.add(new TripleImpl(Optional.of(this), 
+				Objects.requireNonNull(triple)));
 	}
 
 	@Override
@@ -58,10 +59,7 @@ public class GraphImpl implements Graph {
 
 	@Override
 	public boolean contains(Triple triple) {
-		if (triple == null) {
-			throw new NullPointerException("triple can't be null");
-		}
-		return triples.contains(triple);
+		return triples.contains(Objects.requireNonNull(triple));
 	}
 
 	@Override
@@ -109,10 +107,7 @@ public class GraphImpl implements Graph {
 
 	@Override
 	public void remove(Triple triple) {
-		if (triple == null) {
-			throw new NullPointerException("triple can't be null");
-		}
-		triples.remove(triple);
+		triples.remove(Objects.requireNonNull(triple));
 	}
 
 	@Override

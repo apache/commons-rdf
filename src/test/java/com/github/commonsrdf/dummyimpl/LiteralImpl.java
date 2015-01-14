@@ -15,6 +15,7 @@ package com.github.commonsrdf.dummyimpl;
 
 import java.util.IllformedLocaleException;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Optional;
 
 import com.github.commonsrdf.api.IRI;
@@ -33,31 +34,19 @@ public class LiteralImpl implements Literal {
 	private String lexicalForm;
 
 	public LiteralImpl(String literal) {
-		if (literal == null) {
-			throw new NullPointerException("literal can't be null");
-		}
-		this.lexicalForm = literal;
+		this.lexicalForm = Objects.requireNonNull(literal);
 		this.dataType = XSD_STRING;
 		this.languageTag = Optional.empty();
 	}
 
 	public LiteralImpl(String lexicalForm, IRI dataType) {
-		if (lexicalForm == null) {
-			throw new NullPointerException("lexicalForm can't be null");
-		}
-		this.lexicalForm = lexicalForm;
-		if (dataType == null) {
-			throw new NullPointerException("dataType can't be null");
-		}
-		this.dataType = dataType;
+		this.lexicalForm = Objects.requireNonNull(lexicalForm);
+		this.dataType = Objects.requireNonNull(dataType);
 		this.languageTag = Optional.empty();
 	}
 
 	public LiteralImpl(String literal, String languageTag) {
-		if (literal == null) {
-			throw new NullPointerException("literal can't be null");
-		}
-		this.lexicalForm = literal;
+		this.lexicalForm = Objects.requireNonNull(literal);
 		this.languageTag = Optional.of(languageTag);
 		if (languageTag.isEmpty()) {
 			// TODO: Check against
@@ -121,12 +110,9 @@ public class LiteralImpl implements Literal {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((dataType == null) ? 0 : dataType.hashCode());
-		result = prime * result
-				+ ((lexicalForm == null) ? 0 : lexicalForm.hashCode());
-		result = prime * result
-				+ ((languageTag == null) ? 0 : languageTag.hashCode());
+		result = prime * result + dataType.hashCode();
+		result = prime * result + lexicalForm.hashCode();
+		result = prime * result + languageTag.hashCode();
 		return result;
 	}
 

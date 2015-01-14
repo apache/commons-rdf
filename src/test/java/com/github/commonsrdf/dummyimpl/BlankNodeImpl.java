@@ -13,6 +13,8 @@
  */
 package com.github.commonsrdf.dummyimpl;
 
+import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 import com.github.commonsrdf.api.BlankNode;
@@ -22,18 +24,18 @@ public class BlankNodeImpl implements BlankNode {
 
 	private static AtomicLong bnodeCounter = new AtomicLong();
 	private String id;
-	private Graph localScope;
+	private Optional<Graph> localScope;
 
 	public BlankNodeImpl() {
-		this(null, "b" + bnodeCounter.incrementAndGet());
+		this(Optional.empty(), "b" + bnodeCounter.incrementAndGet());
 	}
 
-	public BlankNodeImpl(Graph localScope, String id) {
-		this.localScope = localScope;
-		if (id == null || id.isEmpty()) {
-			// TODO: Check against
-			// http://www.w3.org/TR/n-triples/#n-triples-grammar
+	public BlankNodeImpl(Optional<Graph> localScope, String id) {		
+		this.localScope = Objects.requireNonNull(localScope);
+		if (Objects.requireNonNull(id).isEmpty()) {
 			throw new IllegalArgumentException("Invalid blank node id: " + id);
+			// NOTE: It is valid for the id to not be a valid ntriples bnode id.
+			// See ntriplesString().
 		}
 		this.id = id;
 	}
@@ -46,6 +48,7 @@ public class BlankNodeImpl implements BlankNode {
 	@Override
 	public String ntriplesString() {
 		if (id.contains(":")) {
+			// FIXME: Perhaps do a SHA hash of the id?
 			throw new IllegalStateException(
 					"Blank node identifier can't be expressed as ntriples string: "
 							+ id);
