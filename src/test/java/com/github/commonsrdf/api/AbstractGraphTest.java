@@ -23,6 +23,20 @@ import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.github.commonsrdf.dummyimpl.DummyGraphTest;
+
+/**
+ * Test Graph implementation
+ * <p>
+ * To add to your implementation's tests, create a subclass with a name ending
+ * in <code>Test</code> and provide {@link #createFactory()} which minimally
+ * must support {@link RDFTermFactory#createGraph()} and
+ * {@link RDFTermFactory#createIRI(String)}, but ideally support all operations.
+ *
+ * @see Graph
+ * @see RDFTermFactory
+ * @see DummyGraphTest
+ */
 public abstract class AbstractGraphTest {
 
 	private RDFTermFactory factory;
