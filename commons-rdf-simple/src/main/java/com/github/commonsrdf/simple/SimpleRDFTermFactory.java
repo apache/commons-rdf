@@ -24,7 +24,7 @@ import com.github.commonsrdf.api.RDFTerm;
 import com.github.commonsrdf.api.RDFTermFactory;
 import com.github.commonsrdf.api.Triple;
 
-public class DummyRDFTermFactory implements RDFTermFactory {
+public class SimpleRDFTermFactory implements RDFTermFactory {
 
 	@Override
 	public BlankNode createBlankNode() {

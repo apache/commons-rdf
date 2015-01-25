@@ -20,17 +20,17 @@ import com.github.commonsrdf.api.IRI;
 import com.github.commonsrdf.api.RDFTermFactory;
 
 /**
- * Test dummy without relative IRI support.
+ * Test simple IRI without relative IRI support.
  * <p?>
  * Ensures that {@link AbstractRDFTermFactoryTest#createIRIRelative()} is
  * correctly skipped (without causing an error.
  *
  */
-public class DummyNoRelativeIRIRDFTermFactoryTest extends
+public class SimpleNoRelativeIRIRDFTermFactoryTest extends
 		AbstractRDFTermFactoryTest {
 	@Override
 	public RDFTermFactory createFactory() {
-		return new DummyRDFTermFactory() {
+		return new SimpleRDFTermFactory() {
 			@Override
 			public IRI createIRI(String iri) {
 				if (!URI.create(iri).isAbsolute()) {

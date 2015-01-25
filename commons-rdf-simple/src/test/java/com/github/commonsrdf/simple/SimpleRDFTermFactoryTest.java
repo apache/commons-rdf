@@ -13,18 +13,14 @@
  */
 package com.github.commonsrdf.simple;
 
-import com.github.commonsrdf.api.AbstractGraphTest;
+import com.github.commonsrdf.api.AbstractRDFTermFactoryTest;
 import com.github.commonsrdf.api.RDFTermFactory;
 
-/**
- * Test DummyRDFTermFactory with AbstractGraphTest
- *
- */
-public class DummyGraphTest extends AbstractGraphTest {
+public class SimpleRDFTermFactoryTest extends AbstractRDFTermFactoryTest {
 
 	@Override
 	public RDFTermFactory createFactory() {
-		return new DummyRDFTermFactory();
+		return new SimpleRDFTermFactory();
 	}
 
 }
