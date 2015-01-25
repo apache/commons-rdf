@@ -1,6 +1,6 @@
 # Commons RDF
 
-Working repository for experimenting with idea of providing a common library for [RDF 1.1](http://www.w3.org/TR/rdf11-concepts/) that could be implemented by the upcoming versions of the main Java toolkits ([Jena](http://jena.apache.org) 3.0 and [Sesame](http://openrdf.callimachus.net) 4.0) as well as wrappers for other JVM languages ([Banana RDF](https://github.com/w3c/banana-rdf) and so on).
+Working repository for experimenting with idea of providing a common library for [RDF 1.1](http://www.w3.org/TR/rdf11-concepts/) that could be implemented by the upcoming versions of the main Java toolkits ([Jena](http://jena.apache.org) 3.0 and [Sesame](http://rdf4j.org/) 4.0) as well as wrappers for other JVM languages ([Banana RDF](https://github.com/w3c/banana-rdf) and so on).
 
 The main motivation behind this simple library is revise an historical incompatibility issue. This library does not pretend to be a generic api wrapping those libraries, but a set of interfaces for the RDF 1.1 concepts that can be used to expose common RDF-1.1 concepts using common Java interfaces. In the initial phase commons-rdf is focused on a subset of the core concepts defined by RDF-1.1 (IRI, Blank Node, Literal, Triple, and Graph). In particular, commons RDF aims to provide a type-safe, non-general API that covers RDF 1.1. In a future phase we may define interfaces for Datasets and Quads.
 
@@ -12,7 +12,7 @@ This library is still work in progress.
 
 A draft diagram of the interfaces which may be included in Commons RDF are:
 
-![commons-rdf class diagram](src/main/resources/commons-rdf-class-diagram.png "commons-rdf class diagram")
+![commons-rdf class diagram](commons-rdf-api/src/main/resources/commons-rdf-class-diagram.png "commons-rdf class diagram")
 
 ## Building
 
@@ -34,44 +34,52 @@ To then use from your project, add to Maven (update `<version>` to match the Mav
 
     <dependency>
         <groupId>com.github.commons-rdf</groupId>
-        <artifactId>api</artifactId>
+        <artifactId>commons-rdf-api</artifactId>
         <version>0.0.3-SNAPSHOT</version>
     </dependency>
     
     
-### Java 6 compatibility
+### Java 6/7 compatibility
 
-This API is targetting *Java 8*, as Java 7 is scheduled [EOL at April 2015](http://www.oracle.com/technetwork/java/javase/eol-135779.html).
+This API is targeting *Java 8*, as Java 7 is scheduled [EOL at April 2015](http://www.oracle.com/technetwork/java/javase/eol-135779.html).
 
-For convenience, a patched version for Java 6 and 7 is however available.
+For convenience, a patched edition for Java 6 and 7 is however available.
 
 To build with Java 1.6/1.7 compatibility, use the `java6` Maven profile:
 
     $ mvn clean install -Pjava6
 
-To then depend on the Java 6 version in your Maven project, you need to use a special `classifier` to the dependency:
+To then depend on the Java 6 edition in your Maven project, you need to use a special `classifier` to the dependency:
 
     <classifier>java6</classifier>
 
-Note that the Java 6 version depends on the [Guava libraries](https://code.google.com/p/guava-libraries/) for providing the missing features.
+Note that the Java 6 edition depends on the [Guava libraries](https://code.google.com/p/guava-libraries/) for providing the missing features. If you use the Java 6 version, your code will probably not be binary compatible with
+libraries compiled against the regular (Java 8) edition of the Commons RDF API. 
 
-## Example implementation
 
-For a simple example of how to minimally implement this API, see
-the [dummyimpl](src/test/java/com/github/commonsrdf/dummyimpl/)
-package that is part of the unit tests.
+## Simple implementation
 
-Note that this is not to be considered as a 
-reference implementation, although it
-fully implements the commons-rdf API.
+The [commons-rdf-simple](commons-rdf-simple) module contains a 
+simple (if not naive) implementation of the Commons RDF API 
+using in-memory POJO objects.
+
+Note that although this module fully implements the commons-rdf API,
+it should *not*  be considered a reference implementation. 
+It is not thread-safe nor scalable, but may be useful for testing
+and simple usage (e.g. output from an independent RDF parser).
+
+Projects including [Apache Jena](http://jena.apache.org/) 
+and [OpenRDF Sesame](http://rdf4j.org/) aim to provide 
+complete and scalable implementations of the Commons RDF API. 
+
 
 
 ## Testing
 
 The abstract classes
-[AbstractGraphTest](src/test/java/com/github/commonsrdf/api/AbstractGraphTest.java)
+[AbstractGraphTest](commons-rdf-api/src/test/java/com/github/commonsrdf/api/AbstractGraphTest.java)
 and 
-[AbstractRDFTermFactoryTest](src/test/java/com/github/commonsrdf/api/AbstractRDFTermFactoryTest.java)
+[AbstractRDFTermFactoryTest](commons-rdf-api/src/test/java/com/github/commonsrdf/api/AbstractRDFTermFactoryTest.java)
 can be realised as JUnit tests by implementations in order to verify that they
 pass the minimal requirements of this API.
 
@@ -86,25 +94,25 @@ classifier, for example (for Maven):
     </dependency>
     <dependency>
         <groupId>com.github.commons-rdf</groupId>
-        <artifactId>api</artifactId>
+        <artifactId>commons-rdf-api</artifactId>
         <version>0.0.3-SNAPSHOT</version>
         <classifier>tests</classifier>
         <scope>test</scope>
     </dependency>
 
 The extensions of each Test class needs to provide a 
-[RDFTermFactory](src/test/java/com/github/commonsrdf/api/RDFTermFactory.java)
+[RDFTermFactory](commons-rdf-api/src/main/java/com/github/commonsrdf/api/RDFTermFactory.java)
 that can create the corresponding implementations of a `Graph`, `IRI`, etc.
 
 For an example, see 
-[DummyGraphTest](src/test/java/com/github/commonsrdf/dummyimpl/DummyGraphTest.java).
+[SimpleGraphTest](commons-rdf-simple/src/main/java/com/github/commonsrdf/simple/SimpleGraphTest.java).
 
 
 ## Contributors
 
 * Sergio Fernández ([Apache Marmotta](http://marmotta.apache.org))
 * Andy Seaborne ([Apache Jena](http://jena.apache.org))
-* Peter Ansell ([OpenRDF Sesame](http://openrdf.callimachus.net))
+* Peter Ansell ([OpenRDF Sesame](http://rdf4j.org/))
 * Stian Soiland-Reyes ([Apache Taverna](http://taverna.incubator.apache.org))
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to contribute. In short - raise a Github pull request.
