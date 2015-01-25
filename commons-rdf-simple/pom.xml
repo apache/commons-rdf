@@ -24,7 +24,7 @@
 	<artifactId>commons-rdf-simple</artifactId>
 	<packaging>jar</packaging>
 
-	<name>Commons RDF: Simple</name>
+	<name>Commons RDF: Simple impl</name>
 	<description>Simple (if not naive) implementation of Commons RDF API</description>
 
 	<dependencies>
