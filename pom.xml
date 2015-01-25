@@ -227,6 +227,7 @@
 
     <modules>
       <module>commons-rdf-api</module>
+      <module>commons-rdf-simple</module>
     </modules>
 
 </project>

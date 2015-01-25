@@ -11,23 +11,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.commonsrdf.dummyimpl;
+package com.github.commonsrdf.simple;
 
-import com.github.commonsrdf.api.AbstractRDFTermFactoryTest;
+import com.github.commonsrdf.api.AbstractGraphTest;
 import com.github.commonsrdf.api.RDFTermFactory;
 
 /**
- * The default RDFTermFactory might be useless (every method throws
- * UnsupportedOperationException), but this test ensures that
- * AbstractRDFTermFactoryTest does not fall over on unsupported operations.
+ * Test DummyRDFTermFactory with AbstractGraphTest
  *
  */
-public class DefaultRDFTermFactoryTest extends AbstractRDFTermFactoryTest {
+public class DummyGraphTest extends AbstractGraphTest {
 
 	@Override
 	public RDFTermFactory createFactory() {
-		return new RDFTermFactory() {
-		};
+		return new DummyRDFTermFactory();
 	}
 
 }

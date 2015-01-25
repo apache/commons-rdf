@@ -11,16 +11,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.commonsrdf.dummyimpl;
+package com.github.commonsrdf.simple;
+
+import java.net.URI;
 
 import com.github.commonsrdf.api.AbstractRDFTermFactoryTest;
+import com.github.commonsrdf.api.IRI;
 import com.github.commonsrdf.api.RDFTermFactory;
 
-public class DummyRDFTermFactoryTest extends AbstractRDFTermFactoryTest {
-
+/**
+ * Test dummy without relative IRI support.
+ * <p?>
+ * Ensures that {@link AbstractRDFTermFactoryTest#createIRIRelative()} is
+ * correctly skipped (without causing an error.
+ *
+ */
+public class DummyNoRelativeIRIRDFTermFactoryTest extends
+		AbstractRDFTermFactoryTest {
 	@Override
 	public RDFTermFactory createFactory() {
-		return new DummyRDFTermFactory();
+		return new DummyRDFTermFactory() {
+			@Override
+			public IRI createIRI(String iri) {
+				if (!URI.create(iri).isAbsolute()) {
+					throw new IllegalArgumentException("IRIs must be absolute");
+					// ..in this subclass for testing purposes only :)
+				}
+				return super.createIRI(iri);
+			}
+		};
 	}
-
 }

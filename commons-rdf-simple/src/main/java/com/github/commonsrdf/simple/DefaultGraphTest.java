@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.commonsrdf.dummyimpl;
+package com.github.commonsrdf.simple;
 
 import com.github.commonsrdf.api.AbstractGraphTest;
 import com.github.commonsrdf.api.Graph;
