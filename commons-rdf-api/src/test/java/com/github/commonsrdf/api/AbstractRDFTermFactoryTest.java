@@ -23,8 +23,6 @@ import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.github.commonsrdf.dummyimpl.DummyRDFTermFactoryTest;
-
 /**
  * Test RDFTermFactory implementation (and thus its RDFTerm implementations)
  * <p>
