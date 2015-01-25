@@ -24,7 +24,6 @@
     </parent>
 
     <artifactId>commons-rdf-api</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Commons RDF: API</name>

@@ -111,6 +111,19 @@
             </plugin>
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-jar-plugin</artifactId>
+              <version>2.5</version>
+              <executions>
+                <execution>
+                  <goals>
+                    <goal>jar</goal>
+                    <goal>test-jar</goal>
+                  </goals>
+                </execution>
+              </executions>
+            </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-source-plugin</artifactId>
               <version>2.2.1</version>
               <executions>
@@ -138,6 +151,7 @@
     </build>
 
     <dependencies>
+      <!-- Common dependencies - should really only be junit -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
