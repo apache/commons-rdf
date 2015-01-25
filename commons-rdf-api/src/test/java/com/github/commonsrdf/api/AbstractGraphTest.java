@@ -33,7 +33,7 @@ import org.junit.Test;
  *
  * @see Graph
  * @see RDFTermFactory
- * @see DummyGraphTest
+ * @see com.github.commonsrdf.simple.SimpleGraphTest
  */
 public abstract class AbstractGraphTest {
 

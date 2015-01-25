@@ -31,7 +31,7 @@ import org.junit.Test;
  * supports one of the operations, but ideally supports all operations.
  * 
  * @see RDFTermFactory
- * @see DummyRDFTermFactoryTest
+ * @see com.github.commonsrdf.simple.SimpleRDFTermFactoryTest
  */
 public abstract class AbstractRDFTermFactoryTest {
 
