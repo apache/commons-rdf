@@ -13,6 +13,8 @@
  */
 package com.github.commonsrdf.simple;
 
+import java.util.Optional;
+
 import com.github.commonsrdf.api.IRI;
 
 /**
@@ -168,5 +170,14 @@ public enum Types implements IRI {
 	@Override
 	public String ntriplesString() {
 		return this.field.ntriplesString();
+	}
+	
+	public static Optional<IRI> get(IRI nextIRI) {
+		for(IRI nextType : values()) {
+			if(nextType.equals(nextIRI)) {
+				return Optional.of(nextType); 
+			}
+		}
+		return Optional.empty();
 	}
 }
