@@ -24,6 +24,14 @@ import com.github.commonsrdf.api.RDFTerm;
 import com.github.commonsrdf.api.RDFTermFactory;
 import com.github.commonsrdf.api.Triple;
 
+/**
+ * A simple implementation of RDFTermFactory.
+ * <p>
+ * The {@link RDFTerm} and {@link Graph} instances created by this factory are
+ * simple in-memory Implementations that are not thread-safe or efficient, but
+ * which may be useful for testing and prototyping purposes.
+ *
+ */
 public class SimpleRDFTermFactory implements RDFTermFactory {
 
 	@Override

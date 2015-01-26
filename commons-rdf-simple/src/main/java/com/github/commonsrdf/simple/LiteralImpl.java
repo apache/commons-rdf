@@ -21,6 +21,10 @@ import java.util.Optional;
 import com.github.commonsrdf.api.IRI;
 import com.github.commonsrdf.api.Literal;
 
+/**
+ * A simple implementation of Literal.
+ *
+ */
 public class LiteralImpl implements Literal {
 
 	private static final String QUOTE = "\"";

@@ -20,6 +20,10 @@ import java.util.concurrent.atomic.AtomicLong;
 import com.github.commonsrdf.api.BlankNode;
 import com.github.commonsrdf.api.Graph;
 
+/** 
+ * A simple implementation of BlankNode.
+ *
+ */
 public class BlankNodeImpl implements BlankNode {
 
 	private static AtomicLong bnodeCounter = new AtomicLong();

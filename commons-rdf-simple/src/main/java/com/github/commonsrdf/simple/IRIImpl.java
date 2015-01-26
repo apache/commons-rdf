@@ -17,6 +17,10 @@ import java.net.URI;
 
 import com.github.commonsrdf.api.IRI;
 
+/** 
+ * A simple implementation of IRI.
+ *
+ */
 public class IRIImpl implements IRI {
 
 	protected String iri;

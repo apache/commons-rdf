@@ -24,12 +24,25 @@ import com.github.commonsrdf.api.Literal;
 import com.github.commonsrdf.api.RDFTerm;
 import com.github.commonsrdf.api.Triple;
 
+/**
+ * A simple implementation of Triple.
+ *
+ */
 public class TripleImpl implements Triple {
 
 	private BlankNodeOrIRI subject;
 	private IRI predicate;
 	private RDFTerm object;
 
+	/**
+	 * Construct Triple from its constituent parts.
+	 * <p>
+	 * The parts may be copied to ensure they are in scope.
+	 * 
+	 * @param subject subject of triple
+	 * @param predicate predicate of triple
+	 * @param object object of triple
+	 */
 	public TripleImpl(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
 		this.subject = (BlankNodeOrIRI) inScope(Optional.empty(),
 				Objects.requireNonNull(subject));
@@ -38,10 +51,12 @@ public class TripleImpl implements Triple {
 	}
 
 	/**
-	 * Construct Triple by cloning another Triple and its constituent parts
+	 * Construct Triple by cloning another Triple and its constituent parts.
+	 * <p>
+	 * The parts of the triple may be copied to ensure they are in scope.
 	 * 
 	 * @param localScope
-	 *            Scope to create new triple in
+	 *            Scope to create new triple in.
 	 * @param triple
 	 *            Triple to clone
 	 */

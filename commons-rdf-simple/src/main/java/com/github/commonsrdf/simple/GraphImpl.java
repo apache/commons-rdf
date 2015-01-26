@@ -27,6 +27,12 @@ import com.github.commonsrdf.api.IRI;
 import com.github.commonsrdf.api.RDFTerm;
 import com.github.commonsrdf.api.Triple;
 
+/**
+ * A simple, memory-based implementation of Graph.
+ * <p>
+ * {@link Triple}s in the graph are kept in a {@link Set}.
+ *
+ */
 public class GraphImpl implements Graph {
 
 	private static final int TO_STRING_MAX = 10;
