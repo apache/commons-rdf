@@ -1,53 +1,226 @@
-diff --git a/com/github/commonsrdf/api/Graph.java b/com/github/commonsrdf/api/Graph.java
-index d55fb8c..71aca8d 100644
---- a/com/github/commonsrdf/api/Graph.java
-+++ b/com/github/commonsrdf/api/Graph.java
-@@ -1,6 +1,6 @@
+diff --git a/api/src/main/java/com/github/commonsrdf/api/Graph.java b/api/src/main/java/com/github/commonsrdf/api/Graph.java
+index 40f4808..e1f6074 100644
+--- a/api/src/main/java/com/github/commonsrdf/api/Graph.java
++++ b/api/src/main/java/com/github/commonsrdf/api/Graph.java
+@@ -13,8 +13,7 @@
+  */
  package com.github.commonsrdf.api;
  
+-import java.util.function.Predicate;
 -import java.util.stream.Stream;
 +import java.util.Iterator;
  
  /**
   * An <a href="http://www.w3.org/TR/rdf11-concepts/#section-rdf-graph"> RDF 1.1
-@@ -88,15 +88,9 @@ public interface Graph {
-     /**
-      * Get all triples contained by the graph.<br>
-      *
--     * The behaviour of the Stream is not specified if add, remove, or clear,
--     * are called on the Stream before it terminates.<br>
--     *
--     * Implementations may throw ConcurrentModificationException from Stream
--     * methods if they detect a conflict while the Stream is active.
--     *
--     * @return A {@link Stream} over all of the triples in the graph.
-+     * @return A {@link Iterator} over all of the triples in the graph.
-      */
--    Stream<? extends Triple> getTriples();
+@@ -22,7 +21,7 @@ import java.util.stream.Stream;
+  * href="http://www.w3.org/TR/rdf11-concepts/" >RDF-1.1 Concepts and Abstract
+  * Syntax</a>, a W3C Recommendation published on 25 February 2014.
+  */
+-public interface Graph extends AutoCloseable {
++public interface Graph {
+ 
+ 	/**
+ 	 * Add a triple to the graph.
+@@ -79,9 +78,7 @@ public interface Graph extends AutoCloseable {
+ 	 * Implementations might not need {@link #close()}, hence the default
+ 	 * implementation does nothing.
+ 	 */
+-	@Override
+-	default void close() throws Exception {
+-	}
++	public void close() throws Exception;
+ 
+ 	/**
+ 	 * Remove a concrete triple from the graph.
+@@ -125,15 +122,15 @@ public interface Graph extends AutoCloseable {
+ 	 * The iteration does not contain any duplicate triples, as determined by
+ 	 * the equals method for each {@link Triple}.
+ 	 * <p>
+-	 * The behaviour of the Stream is not specified if add, remove, or clear,
+-	 * are called on the Stream before it terminates.<br>
++     * The behaviour of the Iterator is not specified if add, remove, or clear,
++     * are called on the Iterator before it terminates.<br>
+ 	 * <p>
+-	 * Implementations may throw ConcurrentModificationException from Stream
+-	 * methods if they detect a conflict while the Stream is active.
++     * Implementations may throw ConcurrentModificationException from Iterator 
++     * methods if they detect a conflict while the Iterator is active.
+ 	 *
+-	 * @return A {@link Stream} over all of the triples in the graph
++     * @return A {@link Iterator} over all of the triples in the graph
+ 	 */
+-	Stream<? extends Triple> getTriples();
 +    Iterator<? extends Triple> getTriples();
  
-     /**
-      * Get all triples contained by the graph matched with the pattern.
-@@ -113,8 +107,8 @@ public interface Graph {
-      *            The triple predicate (null is a wildcard)
-      * @param object
-      *            The triple object (null is a wildcard)
--     * @return A {@link Stream} over the matched triples.
-+     * @return A {@link Iterator} over the matched triples.
-      */
--    Stream<? extends Triple> getTriples(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
-+    Iterator<? extends Triple> getTriples(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
+ 	/**
+ 	 * Get all triples contained by the graph matched with the pattern.
+@@ -141,11 +138,11 @@ public interface Graph extends AutoCloseable {
+ 	 * The iteration does not contain any duplicate triples, as determined by
+ 	 * the equals method for each {@link Triple}.
+ 	 * <p>
+-	 * The behaviour of the Stream is not specified if add, remove, or clear,
+-	 * are called on the Stream before it terminates.<br>
++     * The behaviour of the Iterator is not specified if add, remove, or clear,
++     * are called on the Iterator before it terminates.<br>
+ 	 * <p>
+-	 * Implementations may throw ConcurrentModificationException from Stream
+-	 * methods if they detect a conflict while the Stream is active.
++     * Implementations may throw ConcurrentModificationException from Iterator 
++     * methods if they detect a conflict while the Iterator is active.
+ 	 *
+ 	 * @param subject
+ 	 *            The triple subject (null is a wildcard)
+@@ -153,27 +150,9 @@ public interface Graph extends AutoCloseable {
+ 	 *            The triple predicate (null is a wildcard)
+ 	 * @param object
+ 	 *            The triple object (null is a wildcard)
+-	 * @return A {@link Stream} over the matched triples.
++	 * @return A {@link Iterator} over the matched triples.
+ 	 */
+-	Stream<? extends Triple> getTriples(BlankNodeOrIRI subject, IRI predicate,
++	Iterator<? extends Triple> getTriples(BlankNodeOrIRI subject, IRI predicate,
+ 			RDFTerm object);
  
+-	/**
+-	 * Get all triples contained by the graph matched with the pattern.
+-	 * <p>
+-	 * The iteration does not contain any duplicate triples, as determined by
+-	 * the equals method for each {@link Triple}.
+-	 * <p>
+-	 * The behaviour of the Stream is not specified if add, remove, or clear,
+-	 * are called on the Stream before it terminates.<br>
+-	 * <p>
+-	 * Implementations may throw ConcurrentModificationException from Stream
+-	 * methods if they detect a conflict while the Stream is active.
+-	 *
+-	 * @param filter
+-	 *            A filter to match against each triple in the graph.
+-	 * @return A {@link Stream} over the matched triples.
+-	 */
+-	Stream<? extends Triple> getTriples(Predicate<Triple> filter);
+-
  }
-diff --git a/com/github/commonsrdf/api/Literal.java b/com/github/commonsrdf/api/Literal.java
-index 30505a3..e5638f7 100644
---- a/com/github/commonsrdf/api/Literal.java
-+++ b/com/github/commonsrdf/api/Literal.java
-@@ -1,6 +1,6 @@
+diff --git a/api/src/main/java/com/github/commonsrdf/api/Literal.java b/api/src/main/java/com/github/commonsrdf/api/Literal.java
+index 4982327..703f1d2 100644
+--- a/api/src/main/java/com/github/commonsrdf/api/Literal.java
++++ b/api/src/main/java/com/github/commonsrdf/api/Literal.java
+@@ -13,7 +13,7 @@
+  */
  package com.github.commonsrdf.api;
  
 -import java.util.Optional;
 +import com.google.common.base.Optional;
  
  /**
-  * An RDF-1.1 Literal, as defined by <a href=
+  * A RDF-1.1 Literal, as defined by <a href=
+diff --git a/api/src/main/java/com/github/commonsrdf/api/RDFTermFactory.java b/api/src/main/java/com/github/commonsrdf/api/RDFTermFactory.java
+index 0643ba4..ef36b67 100644
+--- a/api/src/main/java/com/github/commonsrdf/api/RDFTermFactory.java
++++ b/api/src/main/java/com/github/commonsrdf/api/RDFTermFactory.java
+@@ -48,10 +48,7 @@ public interface RDFTermFactory {
+ 	 * @throws UnsupportedOperationException
+ 	 *             If the operation is not supported.
+ 	 */
+-	default BlankNode createBlankNode() throws UnsupportedOperationException {
+-		throw new UnsupportedOperationException(
+-				"createBlankNode() not supported");
+-	}
++	public BlankNode createBlankNode() throws UnsupportedOperationException ;
+ 
+ 	/**
+ 	 * Create a blank node for the given internal identifier.
+@@ -72,11 +69,8 @@ public interface RDFTermFactory {
+ 	 * @throws UnsupportedOperationException
+ 	 *             If the operation is not supported.
+ 	 */
+-	default BlankNode createBlankNode(String identifier)
+-			throws IllegalArgumentException, UnsupportedOperationException {
+-		throw new UnsupportedOperationException(
+-				"createBlankNode(String) not supported");
+-	}
++	public BlankNode createBlankNode(String identifier)
++			throws IllegalArgumentException, UnsupportedOperationException;
+ 
+ 	/**
+ 	 * Create a new graph.
+@@ -88,9 +82,7 @@ public interface RDFTermFactory {
+ 	 * @throws UnsupportedOperationException
+ 	 *             If the operation is not supported.
+ 	 */
+-	default Graph createGraph() throws UnsupportedOperationException {
+-		throw new UnsupportedOperationException("createGraph() not supported");
+-	}
++	public Graph createGraph() throws UnsupportedOperationException;
+ 
+ 	/**
+ 	 * Create an IRI from a (possibly escaped) String.
+@@ -108,11 +100,8 @@ public interface RDFTermFactory {
+ 	 * @throws UnsupportedOperationException
+ 	 *             If the operation is not supported.
+ 	 */
+-	default IRI createIRI(String iri) throws IllegalArgumentException,
+-			UnsupportedOperationException {
+-		throw new UnsupportedOperationException(
+-				"createIRI(String) not supported");
+-	}
++	public IRI createIRI(String iri) throws IllegalArgumentException,
++			UnsupportedOperationException;
+ 
+ 	/**
+ 	 * Create a simple literal.
+@@ -136,11 +125,8 @@ public interface RDFTermFactory {
+ 	 * @throws UnsupportedOperationException
+ 	 *             If the operation is not supported.
+ 	 */
+-	default Literal createLiteral(String lexicalForm)
+-			throws IllegalArgumentException, UnsupportedOperationException {
+-		throw new UnsupportedOperationException(
+-				"createLiteral(String) not supported");
+-	}
++	public Literal createLiteral(String lexicalForm)
++			throws IllegalArgumentException, UnsupportedOperationException;
+ 
+ 	/**
+ 	 * Create a literal with the specified data type.
+@@ -173,11 +159,8 @@ public interface RDFTermFactory {
+ 	 * @throws UnsupportedOperationException
+ 	 *             If the operation is not supported.
+ 	 */
+-	default Literal createLiteral(String lexicalForm, IRI dataType)
+-			throws IllegalArgumentException, UnsupportedOperationException {
+-		throw new UnsupportedOperationException(
+-				"createLiteral(String) not supported");
+-	}
++	public Literal createLiteral(String lexicalForm, IRI dataType)
++			throws IllegalArgumentException, UnsupportedOperationException;
+ 
+ 	/**
+ 	 * Create a language-tagged literal.
+@@ -212,11 +195,8 @@ public interface RDFTermFactory {
+ 	 * @throws UnsupportedOperationException
+ 	 *             If the operation is not supported.
+ 	 */
+-	default Literal createLiteral(String lexicalForm, String languageTag)
+-			throws IllegalArgumentException, UnsupportedOperationException {
+-		throw new UnsupportedOperationException(
+-				"createLiteral(String,String) not supported");
+-	}
++	public Literal createLiteral(String lexicalForm, String languageTag)
++			throws IllegalArgumentException, UnsupportedOperationException;
+ 
+ 	/**
+ 	 * Create a triple.
+@@ -240,11 +220,8 @@ public interface RDFTermFactory {
+ 	 * @throws UnsupportedOperationException
+ 	 *             If the operation is not supported.
+ 	 */
+-	default Triple createTriple(BlankNodeOrIRI subject, IRI predicate,
++	public Triple createTriple(BlankNodeOrIRI subject, IRI predicate,
+ 			RDFTerm object) throws IllegalArgumentException,
+-			UnsupportedOperationException {
+-		throw new UnsupportedOperationException(
+-				"createTriple(BlankNodeOrIRI,IRI,RDFTerm) not supported");
+-	}
++			UnsupportedOperationException;
+ 
+ }
