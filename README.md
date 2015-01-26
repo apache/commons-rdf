@@ -74,6 +74,8 @@ To then depend on the Java 6 edition in your Maven project, you need to use a sp
 Note that the Java 6 edition depends on the [Guava libraries](https://code.google.com/p/guava-libraries/) for providing the missing features. If you use the Java 6 version, your code will probably not be binary compatible with
 libraries compiled against the regular (Java 8) edition of the Commons RDF API. 
 
+The simple implementaton and testing (see below) are *not* included in the `-Pjava6` edition.
+
 
 ## Simple implementation
 
