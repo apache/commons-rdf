@@ -19,7 +19,7 @@ import java.nio.file.Path;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.github.commonsrdf.api.BlankNode;
@@ -27,20 +27,39 @@ import com.github.commonsrdf.api.IRI;
 
 public class TestWritingGraph {
 
+	/*
+	 * 200k triples should do - about 7 MB on disk. Override with
+	 * -Dtriples=20000000 to exercise your memory banks.
+	 */
+	private static final int TRIPLES = Integer.getInteger("triples", 200000);
+
 	/** Run tests with -Dkeepfiles=true to inspect /tmp files **/
 	private static boolean KEEP_FILES = Boolean.getBoolean("keepfiles");
 
-	private GraphImpl graph;
+	private static GraphImpl graph;
 
-	@Before
-	public void createGraph() throws Exception {
+	@BeforeClass
+	public static void createGraph() throws Exception {
 		graph = new GraphImpl();
 		BlankNode subject = new BlankNodeImpl(Optional.of(graph), "subj");
 		IRI predicate = new IRIImpl("pred");
-		// 200k triples should do
-		for (int i = 0; i < 200000; i++) {
+		for (int i = 0; i < TRIPLES; i++) {
 			graph.add(subject, predicate, new LiteralImpl("Example " + i, "en"));
 		}
+	}
+
+	@Test
+	public void createGraphTiming() throws Exception {
+		createGraph();
+	}
+	
+	@Test
+	public void countQuery() {
+		BlankNode subject = new BlankNodeImpl(Optional.of(graph), "subj");
+		IRI predicate = new IRIImpl("pred");
+		long count = graph.getTriples(subject, predicate, null).unordered()
+				.parallel().count();
+		System.out.println("Counted - " + count);
 	}
 
 	@Test
@@ -51,8 +70,8 @@ public class TestWritingGraph {
 		} else {
 			graphFile.toFile().deleteOnExit();
 		}
-
-		Stream<CharSequence> stream = graph.getTriples().unordered().parallel()
+		
+		Stream<CharSequence> stream = graph.getTriples().unordered()
 				.map(Object::toString);
 		Files.write(graphFile, stream::iterator, Charset.forName("UTF-8"));
 	}
