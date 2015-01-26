@@ -171,11 +171,20 @@ public enum Types implements IRI {
 	public String ntriplesString() {
 		return this.field.ntriplesString();
 	}
-	
+
+	/**
+	 * Get the IRI from this enum if it is present, or return
+	 * {@link Optional#empty()} otherwise.
+	 * 
+	 * @param nextIRI
+	 *            The IRI to look for.
+	 * @return An {@link Optional} containing the IRI from this enum or
+	 *         {@link Optional#empty()} if it is not present here.
+	 */
 	public static Optional<IRI> get(IRI nextIRI) {
-		for(IRI nextType : values()) {
-			if(nextType.equals(nextIRI)) {
-				return Optional.of(nextType); 
+		for (IRI nextType : values()) {
+			if (nextType.equals(nextIRI)) {
+				return Optional.of(nextType);
 			}
 		}
 		return Optional.empty();
