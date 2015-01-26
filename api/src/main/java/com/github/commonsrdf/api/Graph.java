@@ -22,7 +22,7 @@ import java.util.stream.Stream;
  * href="http://www.w3.org/TR/rdf11-concepts/" >RDF-1.1 Concepts and Abstract
  * Syntax</a>, a W3C Recommendation published on 25 February 2014.
  */
-public interface Graph {
+public interface Graph extends AutoCloseable {
 
 	/**
 	 * Add a triple to the graph.
@@ -66,6 +66,22 @@ public interface Graph {
 	 *         pattern.
 	 */
 	boolean contains(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
+
+	/**
+	 * Close the graph, relinquishing any underlying resources.
+	 * <p>
+	 * For example, this would close any open file and network streams and free
+	 * database locks held by the Graph implementation.
+	 * <p>
+	 * The behaviour of the other Graph methods are undefined after closing the
+	 * graph.
+	 * <p>
+	 * Implementations might not need {@link #close()}, hence the default
+	 * implementation does nothing.
+	 */
+	@Override
+	default void close() throws Exception {
+	}
 
 	/**
 	 * Remove a concrete triple from the graph.
@@ -154,7 +170,8 @@ public interface Graph {
 	 * Implementations may throw ConcurrentModificationException from Stream
 	 * methods if they detect a conflict while the Stream is active.
 	 *
-	 * @param filter A filter to match against each triple in the graph.
+	 * @param filter
+	 *            A filter to match against each triple in the graph.
 	 * @return A {@link Stream} over the matched triples.
 	 */
 	Stream<? extends Triple> getTriples(Predicate<Triple> filter);
