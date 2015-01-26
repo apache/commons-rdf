@@ -34,14 +34,13 @@ class LiteralImpl implements Literal {
 	private String lexicalForm;
 
 	public LiteralImpl(String literal) {
-		this.lexicalForm = Objects.requireNonNull(literal);
-		this.dataType = Types.XSD_STRING;
-		this.languageTag = Optional.empty();
+		this(literal, Types.XSD_STRING);
 	}
 
 	public LiteralImpl(String lexicalForm, IRI dataType) {
 		this.lexicalForm = Objects.requireNonNull(lexicalForm);
-		this.dataType = Objects.requireNonNull(dataType);
+		this.dataType = Types.get(Objects.requireNonNull(dataType)).orElse(
+				dataType);
 		this.languageTag = Optional.empty();
 	}
 
