@@ -69,12 +69,6 @@ public enum Types implements IRI {
 	/** <tt>http://www.w3.org/2001/XMLSchema#duration</tt> */
 	XSD_DURATION("http://www.w3.org/2001/XMLSchema#duration"),
 
-	/** <tt>http://www.w3.org/2001/XMLSchema#ENTITIES</tt> */
-	XSD_ENTITIES("http://www.w3.org/2001/XMLSchema#ENTITIES"),
-
-	/** <tt>http://www.w3.org/2001/XMLSchema#ENTITY</tt> */
-	XSD_ENTITY("http://www.w3.org/2001/XMLSchema#ENTITY"),
-
 	/** <tt>http://www.w3.org/2001/XMLSchema#float</tt> */
 	XSD_FLOAT("http://www.w3.org/2001/XMLSchema#float"),
 
@@ -95,15 +89,6 @@ public enum Types implements IRI {
 
 	/** <tt>http://www.w3.org/2001/XMLSchema#hexBinary</tt> */
 	XSD_HEXBINARY("http://www.w3.org/2001/XMLSchema#hexBinary"),
-
-	/** <tt>http://www.w3.org/2001/XMLSchema#ID</tt> */
-	XSD_ID("http://www.w3.org/2001/XMLSchema#ID"),
-
-	/** <tt>http://www.w3.org/2001/XMLSchema#IDREF</tt> */
-	XSD_IDREF("http://www.w3.org/2001/XMLSchema#IDREF"),
-
-	/** <tt>http://www.w3.org/2001/XMLSchema#IDREFS</tt> */
-	XSD_IDREFS("http://www.w3.org/2001/XMLSchema#IDREFS"),
 
 	/** <tt>http://www.w3.org/2001/XMLSchema#int</tt> */
 	XSD_INT("http://www.w3.org/2001/XMLSchema#int"),
@@ -129,9 +114,6 @@ public enum Types implements IRI {
 	/** <tt>http://www.w3.org/2001/XMLSchema#NMTOKEN</tt> */
 	XSD_NMTOKEN("http://www.w3.org/2001/XMLSchema#NMTOKEN"),
 
-	/** <tt>http://www.w3.org/2001/XMLSchema#NMTOKENS</tt> */
-	XSD_NMTOKENS("http://www.w3.org/2001/XMLSchema#NMTOKENS"),
-
 	/** <tt>http://www.w3.org/2001/XMLSchema#nonNegativeInteger</tt> */
 	XSD_NONNEGATIVEINTEGER(
 			"http://www.w3.org/2001/XMLSchema#nonNegativeInteger"),
@@ -143,14 +125,8 @@ public enum Types implements IRI {
 	/** <tt>http://www.w3.org/2001/XMLSchema#normalizedString</tt> */
 	XSD_NORMALIZEDSTRING("http://www.w3.org/2001/XMLSchema#normalizedString"),
 
-	/** <tt>http://www.w3.org/2001/XMLSchema#NOTATION</tt> */
-	XSD_NOTATION("http://www.w3.org/2001/XMLSchema#NOTATION"),
-
 	/** <tt>http://www.w3.org/2001/XMLSchema#positiveInteger</tt> */
 	XSD_POSITIVEINTEGER("http://www.w3.org/2001/XMLSchema#positiveInteger"),
-
-	/** <tt>http://www.w3.org/2001/XMLSchema#QName</tt> */
-	XSD_QNAME("http://www.w3.org/2001/XMLSchema#QName"),
 
 	/** <tt>http://www.w3.org/2001/XMLSchema#short</tt> */
 	XSD_SHORT("http://www.w3.org/2001/XMLSchema#short"),
