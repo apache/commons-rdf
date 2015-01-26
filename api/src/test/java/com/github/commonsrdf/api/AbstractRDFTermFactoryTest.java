@@ -17,7 +17,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
 
 import org.junit.Assume;
 import org.junit.Before;
@@ -352,7 +351,11 @@ public abstract class AbstractRDFTermFactoryTest {
 		}
 		// Factory allows :colon, which is OK as long as it's not causing an
 		// invalid ntriplesString
-		assertFalse(withColon.ntriplesString().contains("with:colon"));		
+		assertFalse(withColon.ntriplesString().contains("with:colon"));
+		
+		// and creating it twice gets the same ntriplesString		
+		assertEquals(withColon.ntriplesString(),
+				factory.createBlankNode("with:colon").ntriplesString());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
