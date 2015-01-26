@@ -337,15 +337,22 @@ public abstract class AbstractRDFTermFactoryTest {
 		factory = createFactory();
 	}
 
-	@Test(expected = Exception.class)
-	public void invalidBlankNode() throws Exception {
+	@Test
+	public void possiblyInvalidBlankNode() throws Exception {		
+		BlankNode withColon;
 		try {
-			factory.createBlankNode("with:colon").ntriplesString();
+			withColon = factory.createBlankNode("with:colon");
 		} catch (UnsupportedOperationException ex) {
 			Assume.assumeNoException("createBlankNode(String) not supported",
 					ex);
 			return;
+		} catch (IllegalArgumentException ex){			
+			// Good!
+			return;
 		}
+		// Factory allows :colon, which is OK as long as it's not causing an
+		// invalid ntriplesString
+		assertFalse(withColon.ntriplesString().contains("with:colon"));		
 	}
 
 	@Test(expected = IllegalArgumentException.class)
