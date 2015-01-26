@@ -20,15 +20,33 @@ Building has been tested with [Apache Maven 3.2](http://maven.apache.org/downloa
 
     $ mvn clean install
     [INFO] Scanning for projects...
+    [INFO] ------------------------------------------------------------------------
+    [INFO] Reactor Build Order:
+    [INFO] 
+    [INFO] Commons RDF
+    [INFO] Commons RDF: API
+    [INFO] Commons RDF: Simple impl
     [INFO] 
     [INFO] Using the builder org.apache.maven.lifecycle.internal.builder.singlethreaded.SingleThreadedBuilder with a thread count of 1
     [INFO]                                                                         
     [INFO] ------------------------------------------------------------------------
-    [INFO] Building Commons RDF: API 0.0.3-SNAPSHOT
-    ....
-    [INFO] Installing /home/stain/src/commons-rdf/target/api-0.0.3-SNAPSHOT.jar to /home/stain/.m2/repository/com/github/commons-rdf/api/0.0.3-SNAPSHOT/api-0.0.3-SNAPSHOT.jar
+    [INFO] Building Commons RDF 0.0.3-SNAPSHOT
+        ....
+    [INFO] Installing /home/johndoe/src/commons-rdf/commons-rdf-api/target/commons-rdf-api-0.0.3-SNAPSHOT-javadoc.jar to /home/johndoe/.m2/repository/com/github/commons-rdf/commons-rdf-api/0.0.3-SNAPSHOT/commons-rdf-api-0.0.3-SNAPSHOT-javadoc.jar
+    [INFO] ------------------------------------------------------------------------
+    [INFO] Reactor Summary:
+    [INFO] 
+    [INFO] Commons RDF ....................................... SUCCESS [  1.792 s]
+    [INFO] Commons RDF: API .................................. SUCCESS [  2.676 s]
+    [INFO] Commons RDF: Simple impl .......................... SUCCESS [  3.142 s]
     [INFO] ------------------------------------------------------------------------
     [INFO] BUILD SUCCESS
+    [INFO] ------------------------------------------------------------------------
+    [INFO] Total time: 7.718 s
+    [INFO] Finished at: 2015-01-26T02:09:10+00:00
+    [INFO] Final Memory: 22M/309M
+    [INFO] ------------------------------------------------------------------------
+
 
 To then use from your project, add to Maven (update `<version>` to match the Maven output):
 
@@ -41,7 +59,7 @@ To then use from your project, add to Maven (update `<version>` to match the Mav
     
 ### Java 6/7 compatibility
 
-This API is targeting *Java 8*, as Java 7 is scheduled [EOL at April 2015](http://www.oracle.com/technetwork/java/javase/eol-135779.html).
+This API is targeting **Java 8**, as Java 7 is scheduled [EOL at April 2015](http://www.oracle.com/technetwork/java/javase/eol-135779.html).
 
 For convenience, a patched edition for Java 6 and 7 is however available.
 
@@ -105,7 +123,7 @@ The extensions of each Test class needs to provide a
 that can create the corresponding implementations of a `Graph`, `IRI`, etc.
 
 For an example, see 
-[SimpleGraphTest](commons-rdf-simple/src/main/java/com/github/commonsrdf/simple/SimpleGraphTest.java).
+[SimpleGraphTest](commons-rdf-simple/src/test/java/com/github/commonsrdf/simple/SimpleGraphTest.java).
 
 
 ## Contributors
