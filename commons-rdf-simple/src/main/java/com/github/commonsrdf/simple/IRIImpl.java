@@ -19,18 +19,18 @@ import com.github.commonsrdf.api.IRI;
 
 public class IRIImpl implements IRI {
 
-	protected URI uri;
+	protected String iri;
 
 	public IRIImpl(String iri) {
-		// TODO: Check against http://www.w3.org/TR/n-triples/#n-triples-grammar
-		// FIXME: URI.create uses outdated RFC2396 and will get some IDNs wrong
 		// should throw IllegalArgumentException on most illegal IRIs
-		uri = URI.create(iri);
+		URI.create(iri);
+		// NOTE: We don't keep the URI as it uses outdated RFC2396 and will get some IDNs wrong
+		this.iri = iri;
 	}
 
 	@Override
 	public String getIRIString() {
-		return uri.toString();
+		return iri;
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class IRIImpl implements IRI {
 
 	@Override
 	public int hashCode() {
-		return uri.hashCode();
+		return iri.hashCode();
 	}
 
 }
