@@ -29,48 +29,215 @@ package com.github.commonsrdf.api;
  * 
  */
 public interface RDFTermFactory {
+
+	/**
+	 * Create a new BlankNode.
+	 * <p>
+	 * If implemented, the {@link BlankNode#internalIdentifier()} of the
+	 * returned blank node will be a auto-generated value.
+	 * 
+	 * @return A new BlankNode
+	 * @throws UnsupportedOperationException
+	 */
 	default BlankNode createBlankNode() throws UnsupportedOperationException {
 		throw new UnsupportedOperationException(
 				"createBlankNode() not supported");
 	}
 
+	/**
+	 * Create a BlankNode for the given internal identifier.
+	 * <p>
+	 * Two BlankNodes created with the same identifier using this method MUST be
+	 * equal if they are in the same local scope (e.g. in the same Graph). See
+	 * {@link BlankNode#equals(Object)}.
+	 * <p>
+	 * If implemented, the {@link BlankNode#internalIdentifier()} of the
+	 * returned blank node SHOULD be the provided identifier.
+	 * 
+	 * @param identifier
+	 *            An internal identifier for the blank node.
+	 * @return A BlankNode for the given identifier
+	 * @throws IllegalArgumentException
+	 *             if the identifier is not acceptable, e.g. was empty or
+	 *             contained unsupported characters.
+	 * @throws UnsupportedOperationException
+	 *             if createBlankNode(String) is not implemented or supported.
+	 */
 	default BlankNode createBlankNode(String identifier)
-			throws UnsupportedOperationException {
+			throws IllegalArgumentException, UnsupportedOperationException {
 		throw new UnsupportedOperationException(
 				"createBlankNode(String) not supported");
 	}
 
+	/**
+	 * Create a new, empty Graph.
+	 * <p>
+	 * It is undefined if the graph will be persisted.
+	 * 
+	 * @return A new Graph
+	 * @throws UnsupportedOperationException
+	 *             if createGraph() is not implemented or supported
+	 */
 	default Graph createGraph() throws UnsupportedOperationException {
 		throw new UnsupportedOperationException("createGraph() not supported");
 	}
 
-	default IRI createIRI(String iri) throws UnsupportedOperationException,
-			IllegalArgumentException {
+	/**
+	 * Create an IRI from a string.
+	 * <p>
+	 * The iri string MUST be valid according to the <a
+	 * href="http://www.w3.org/TR/rdf11-concepts/#dfn-iri">W3C RDF-1.1 IRI</a>
+	 * definition.
+	 * </p>
+	 * 
+	 * @param iri
+	 *            Internationalized Resource Identifier
+	 * @return A new IRI
+	 * @throws IllegalArgumentException
+	 *             If the provided string is not acceptable, e.g. does not
+	 *             conform to the RFC3987 syntax.
+	 * @throws UnsupportedOperationException
+	 *             If the createIRI(String) method is not implemented or-
+	 *             supported. If the method is supported, but not for the given
+	 *             iri string (e.g. if only absolute ASCII URIs are supported by
+	 *             the implementation), then an IllegalArgumentException should
+	 *             be thrown instead.
+	 */
+	default IRI createIRI(String iri) throws IllegalArgumentException,
+			UnsupportedOperationException {
 		throw new UnsupportedOperationException(
 				"createIRI(String) not supported");
 	}
 
-	default Literal createLiteral(String literal)
-			throws UnsupportedOperationException {
+	/**
+	 * Create a simple literal with the given lexical form.
+	 * <p>
+	 * The provided lexical form should not be escaped in any sense, e.g. should
+	 * not include "quotes" unless those are part of the literal value.
+	 * <p>
+	 * The returned Literal MUST return a {@link Literal#getLexicalForm()} that
+	 * is equal to the provided lexical form, MUST NOT have a
+	 * {@link Literal#getLanguageTag()} present, and SHOULD return a
+	 * {@link Literal#getDatatype()} that is equal to the IRI for
+	 * <code>http://www.w3.org/2001/XMLSchema#string</code>.
+	 * 
+	 * 
+	 * @param lexicalForm
+	 *            The literal value in plain text
+	 * @return The created Literal
+	 * @throws IllegalArgumentException
+	 *             If the provided lexicalForm is not acceptable, e.g. because
+	 *             it is too large for an underlying storage.
+	 * @throws UnsupportedOperationException
+	 *             If the createLiteral(String) method is not implemented or
+	 *             supported.
+	 */
+	default Literal createLiteral(String lexicalForm)
+			throws IllegalArgumentException, UnsupportedOperationException {
 		throw new UnsupportedOperationException(
 				"createLiteral(String) not supported");
 	}
 
-	default Literal createLiteral(String literal, IRI dataType)
-			throws UnsupportedOperationException, IllegalArgumentException {
+	/**
+	 * Create a plain Literal with the given lexical form and data type.
+	 * <p>
+	 * The provided <code>lexicalForm</code> should not be escaped in any sense,
+	 * e.g. should not include "quotes" unless those are part of the literal
+	 * value.
+	 * <p>
+	 * It is RECOMMENDED that the provided dataType is one of the <a
+	 * href="http://www.w3.org/TR/rdf11-concepts/#xsd-datatypes">RDF-compatible
+	 * XSD types</a>.
+	 * <p>
+	 * The provided lexical form SHOULD be in the <a
+	 * href="http://www.w3.org/TR/rdf11-concepts/#dfn-lexical-space">lexical
+	 * space</a> of the provided dataType.
+	 * <p>
+	 * The returned Literal SHOULD return an equivalent literal value for its
+	 * {@link Literal#getLexicalForm()}, MUST NOT have a
+	 * {@link Literal#getLanguageTag()} present, and SHOULD return a
+	 * {@link Literal#getDatatype()} that is equal to the provided dataType IRI.
+	 * 
+	 * @param lexicalForm
+	 *            The literal value
+	 * @param dataType
+	 *            The data type IRI for the literal value, e.g.
+	 *            <code>http://www.w3.org/2001/XMLSchema#integer</code>
+	 * @return The created Literal
+	 * @throws IllegalArgumentException
+	 *             If the provided values are not acceptable, e.g. because the
+	 *             literal is not in the lexical space of the provided dataType,
+	 *             or because the provided dataType is not supported.
+	 * @throws UnsupportedOperationException
+	 *             If the createLiteral(String,IRI) method is not implemented or
+	 *             supported.
+	 */
+	default Literal createLiteral(String lexicalForm, IRI dataType)
+			throws IllegalArgumentException, UnsupportedOperationException {
 		throw new UnsupportedOperationException(
 				"createLiteral(String) not supported");
 	}
 
-	default Literal createLiteral(String literal, String language)
-			throws UnsupportedOperationException, IllegalArgumentException {
+	/**
+	 * Create a literal with the given lexical form and language tag.
+	 * <p>
+	 * The provided language tag MUST be valid according to <a
+	 * href"http://tools.ietf.org/html/bcp47">BCP47</a>
+	 * <p>
+	 * The provided language tag <a
+	 * href="dfn-language-tagged-string">language-tagged string</a>MAY be
+	 * converted to lower case</a>.
+	 * <p>
+	 * The returned Literal SHOULD return an equivalent literal value for its
+	 * {@link Literal#getLexicalForm()}, MUST have a
+	 * {@link Literal#getLanguageTag()} present, and MUST return a
+	 * {@link Literal#getDatatype()} that is equal to the IRI for
+	 * <code>http://www.w3.org/1999/02/22-rdf-syntax-ns#langString</code>.
+	 * 
+	 * @param lexicalForm
+	 *            The literal value
+	 * @param languageTag
+	 *            The non-empty language tag as defined by <a
+	 *            href"http://tools.ietf.org/html/bcp47">BCP47</a>, e.g.
+	 *            <code>en</code>
+	 * @return The created Literal
+	 * @throws IllegalArgumentException
+	 *             If the provided values are not acceptable, e.g. because the
+	 *             languageTag was syntactically invalid.
+	 * @throws UnsupportedOperationException
+	 *             If the createLiteral(String,String) method is not implemented
+	 *             or supported.
+	 */
+	default Literal createLiteral(String lexicalForm, String languageTag)
+			throws IllegalArgumentException, UnsupportedOperationException {
 		throw new UnsupportedOperationException(
 				"createLiteral(String,String) not supported");
 	}
 
+	/**
+	 * Create a Triple with the given subject, predicate and object.
+	 * <p>
+	 * The returned Triple SHOULD have a {@link Triple#getSubject()} that is
+	 * equal to the provided subject, a {@link Triple#getPredicate()} that is
+	 * equal to the provided predicate, and a {@link Triple#getObject()} that is
+	 * equal to the provided object.
+	 * 
+	 * @param subject
+	 *            The IRI or BlankNode that is the subject of the triple
+	 * @param predicate
+	 *            The IRI that is the predicate of the triple
+	 * @param object
+	 *            The IRI, BlankNode or Literal that is the object of the triple
+	 * @return The created Triple
+	 * @throws IllegalArgumentException
+	 *             If any of the provided parameters are not acceptable, e.g.
+	 *             because a Literal has a lexicalForm that is too large for an
+	 *             underlying storage.
+	 * @throws UnsupportedOperationException if createTriple is not supported
+	 */
 	default Triple createTriple(BlankNodeOrIRI subject, IRI predicate,
-			RDFTerm object) throws UnsupportedOperationException,
-			IllegalArgumentException {
+			RDFTerm object) throws IllegalArgumentException,
+			UnsupportedOperationException {
 		throw new UnsupportedOperationException(
 				"createTriple(BlankNodeOrIRI,IRI,RDFTerm) not supported");
 	}
