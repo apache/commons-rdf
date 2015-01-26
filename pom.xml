@@ -79,6 +79,11 @@
         </developer>
     </developers>
 
+    <modules>
+      <module>api</module>
+      <module>simple</module>
+    </modules>
+
     <build>
         <plugins>
             <plugin>
@@ -238,10 +243,5 @@
         </profile>
 
     </profiles>
-
-    <modules>
-      <module>commons-rdf-api</module>
-      <module>commons-rdf-simple</module>
-    </modules>
 
 </project>
