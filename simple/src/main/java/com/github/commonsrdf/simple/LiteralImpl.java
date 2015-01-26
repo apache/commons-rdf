@@ -25,7 +25,7 @@ import com.github.commonsrdf.api.Literal;
  * A simple implementation of Literal.
  *
  */
-public class LiteralImpl implements Literal {
+class LiteralImpl implements Literal {
 
 	private static final String QUOTE = "\"";
 	private static final IRIImpl RDF_LANG_STRING = new IRIImpl(

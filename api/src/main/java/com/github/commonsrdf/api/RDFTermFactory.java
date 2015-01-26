@@ -46,6 +46,7 @@ public interface RDFTermFactory {
 	 * 
 	 * @return A new BlankNode
 	 * @throws UnsupportedOperationException
+	 *             If the operation is not supported.
 	 */
 	default BlankNode createBlankNode() throws UnsupportedOperationException {
 		throw new UnsupportedOperationException(
@@ -57,7 +58,7 @@ public interface RDFTermFactory {
 	 * <p>
 	 * Two BlankNodes created with the same identifier using this method MUST be
 	 * equal if they are in the same local scope (e.g. in the same Graph). See
-	 * {@link BlankNode#equals(Object)}.
+	 * the equals contract for {@link BlankNode} for more information.
 	 * <p>
 	 * If supported, the {@link BlankNode#internalIdentifier()} of the returned
 	 * blank node SHOULD be equal to the provided identifier.
@@ -69,7 +70,7 @@ public interface RDFTermFactory {
 	 *             if the identifier is not acceptable, e.g. was empty or
 	 *             contained unsupported characters.
 	 * @throws UnsupportedOperationException
-	 *             if createBlankNode(String) is not implemented or supported.
+	 *             If the operation is not supported.
 	 */
 	default BlankNode createBlankNode(String identifier)
 			throws IllegalArgumentException, UnsupportedOperationException {
@@ -85,7 +86,7 @@ public interface RDFTermFactory {
 	 * 
 	 * @return A new Graph
 	 * @throws UnsupportedOperationException
-	 *             if createGraph() is not implemented or supported
+	 *             If the operation is not supported.
 	 */
 	default Graph createGraph() throws UnsupportedOperationException {
 		throw new UnsupportedOperationException("createGraph() not supported");
@@ -105,11 +106,7 @@ public interface RDFTermFactory {
 	 *             If the provided string is not acceptable, e.g. does not
 	 *             conform to the RFC3987 syntax.
 	 * @throws UnsupportedOperationException
-	 *             If the createIRI(String) method is not implemented or
-	 *             supported. If the method is supported, but not for the
-	 *             particular iri string provided (e.g. if only absolute ASCII
-	 *             URIs are supported by the implementation), then an
-	 *             IllegalArgumentException should be thrown.
+	 *             If the operation is not supported.
 	 */
 	default IRI createIRI(String iri) throws IllegalArgumentException,
 			UnsupportedOperationException {
@@ -137,8 +134,7 @@ public interface RDFTermFactory {
 	 *             If the provided lexicalForm is not acceptable, e.g. because
 	 *             it is too large for an underlying storage.
 	 * @throws UnsupportedOperationException
-	 *             If the createLiteral(String) method is not implemented or
-	 *             supported.
+	 *             If the operation is not supported.
 	 */
 	default Literal createLiteral(String lexicalForm)
 			throws IllegalArgumentException, UnsupportedOperationException {
@@ -175,8 +171,7 @@ public interface RDFTermFactory {
 	 *             If any of the provided arguments are not acceptable, e.g.
 	 *             because the provided dataType is not permitted.
 	 * @throws UnsupportedOperationException
-	 *             If the createLiteral(String,IRI) method is not implemented or
-	 *             supported.
+	 *             If the operation is not supported.
 	 */
 	default Literal createLiteral(String lexicalForm, IRI dataType)
 			throws IllegalArgumentException, UnsupportedOperationException {
@@ -191,7 +186,7 @@ public interface RDFTermFactory {
 	 * not include "quotes" unless those are part of the literal value.
 	 * <p>
 	 * The provided language tag MUST be valid according to <a
-	 * href"http://tools.ietf.org/html/bcp47">BCP47</a>, e.g. <code>en</code>.
+	 * href="http://tools.ietf.org/html/bcp47">BCP47</a>, e.g. <code>en</code>.
 	 * <p>
 	 * The provided language tag <a
 	 * href="http://www.w3.org/TR/rdf11-concepts/#dfn-language-tagged-string"
@@ -209,14 +204,13 @@ public interface RDFTermFactory {
 	 *            The literal value
 	 * @param languageTag
 	 *            The non-empty language tag as defined by <a
-	 *            href"http://tools.ietf.org/html/bcp47">BCP47</a>
+	 *            href="http://tools.ietf.org/html/bcp47">BCP47</a>
 	 * @return The created Literal
 	 * @throws IllegalArgumentException
 	 *             If the provided values are not acceptable, e.g. because the
 	 *             languageTag was syntactically invalid.
 	 * @throws UnsupportedOperationException
-	 *             If the createLiteral(String,String) method is not implemented
-	 *             or supported.
+	 *             If the operation is not supported.
 	 */
 	default Literal createLiteral(String lexicalForm, String languageTag)
 			throws IllegalArgumentException, UnsupportedOperationException {
@@ -244,7 +238,7 @@ public interface RDFTermFactory {
 	 *             because a Literal has a lexicalForm that is too large for an
 	 *             underlying storage.
 	 * @throws UnsupportedOperationException
-	 *             if createTriple is not supported
+	 *             If the operation is not supported.
 	 */
 	default Triple createTriple(BlankNodeOrIRI subject, IRI predicate,
 			RDFTerm object) throws IllegalArgumentException,

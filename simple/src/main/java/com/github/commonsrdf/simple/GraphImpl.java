@@ -31,12 +31,13 @@ import com.github.commonsrdf.api.Triple;
  * A simple, memory-based implementation of Graph.
  * <p>
  * {@link Triple}s in the graph are kept in a {@link Set}.
- *
+ * <p>
+ * All Stream operations are performed using parallel and unordered directives.
  */
-public class GraphImpl implements Graph {
+class GraphImpl implements Graph {
 
 	private static final int TO_STRING_MAX = 10;
-	protected Set<Triple> triples = new LinkedHashSet<Triple>();
+	protected final Set<Triple> triples = new LinkedHashSet<Triple>();
 
 	@Override
 	public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
@@ -99,7 +100,12 @@ public class GraphImpl implements Graph {
 				return true;
 			}
 		};
-		return getTriples().unordered().filter(match);
+		return getTriples(match);
+	}
+
+	@Override
+	public Stream<Triple> getTriples(final Predicate<Triple> filter) {
+		return getTriples().unordered().filter(filter);
 	}
 
 	@Override

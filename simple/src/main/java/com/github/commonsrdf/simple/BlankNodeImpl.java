@@ -24,7 +24,7 @@ import com.github.commonsrdf.api.Graph;
  * A simple implementation of BlankNode.
  *
  */
-public class BlankNodeImpl implements BlankNode {
+class BlankNodeImpl implements BlankNode {
 
 	private static AtomicLong bnodeCounter = new AtomicLong();
 	private String id;

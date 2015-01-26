@@ -28,7 +28,7 @@ import com.github.commonsrdf.api.Triple;
  * A simple implementation of Triple.
  *
  */
-public class TripleImpl implements Triple {
+class TripleImpl implements Triple {
 
 	private BlankNodeOrIRI subject;
 	private IRI predicate;
