@@ -14,7 +14,7 @@
 package com.github.commonsrdf.api;
 
 /**
- * An <a href= "http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node" >RDF-1.1
+ * A <a href= "http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node" >RDF-1.1
  * Blank Node</a>, as defined by <a href=
  * "http://www.w3.org/TR/rdf11-concepts/#section-blank-nodes" >RDF-1.1 Concepts
  * and Abstract Syntax</a>, a W3C Recommendation published on 25 February 2014.<br>
@@ -76,5 +76,55 @@ public interface BlankNode extends BlankNodeOrIRI {
      * @return An internal, system identifier for the {@link BlankNode}.
      */
     String internalIdentifier();
+    
+
+	/**
+	 * Check it this BlankNode is equal to another BlankNode.
+	 * <p>
+	 * <blockquote cite="http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node-identifier">
+	 * <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node-identifier">Blank
+	 * node identifiers</a> are local identifiers that are used in some concrete
+	 * RDF syntaxes or RDF store implementations. They are always locally scoped
+	 * to the file or RDF store, and are <em>not</em> persistent or portable
+	 * identifiers for blank nodes. Blank node identifiers are <em>not</em> part
+	 * of the RDF abstract syntax, but are entirely dependent on the concrete
+	 * syntax or implementation. The syntactic restrictions on blank node
+	 * identifiers, if any, therefore also depend on the concrete RDF syntax or
+	 * implementation. Implementations that handle blank node identifiers in
+	 * concrete syntaxes need to be careful not to create the same blank node
+	 * from multiple occurrences of the same blank node identifier except in
+	 * situations where this is supported by the syntax. 
+	 * </blockquote>
+	 * <p>
+	 * Implementations MUST check the local scope, as two BlankNode in different
+	 * Graphs MUST differ. On the other hand, two BlankNodes found in triples
+	 * of the same Graph instance MUST equal if and only if they have the same
+	 * {@link #internalIdentifier()}.
+	 * <p>
+	 * Implementations MUST also override {@link #hashCode()} so that two equal
+	 * Literals produce the same hash code.
+	 * 
+	 * @see Object#equals(Object)
+	 * 
+	 * @param other
+	 * @return true if other is a BlankNode, is in the same local scope and is
+	 *         equal to this BlankNode
+	 */
+    @Override
+    public boolean equals(Object other);
+    
+    
+    /**
+	 * Calculate a hash code for this BlankNode.
+	 * <p>
+	 * This method MUST be implemented when implementing {@link #equals(Object)}
+	 * so that two equal BlankNodes produce the same hash code.
+	 * 
+	 * @see Object#hashCode()
+	 * 
+	 * @return a hash code value for this BlankNode.
+	 */
+    @Override
+    public int hashCode();    
 
 }

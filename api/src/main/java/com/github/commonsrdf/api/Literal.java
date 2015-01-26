@@ -16,7 +16,7 @@ package com.github.commonsrdf.api;
 import java.util.Optional;
 
 /**
- * An RDF-1.1 Literal, as defined by <a href=
+ * A RDF-1.1 Literal, as defined by <a href=
  * "http://www.w3.org/TR/rdf11-concepts/#section-Graph-Literal" >RDF-1.1
  * Concepts and Abstract Syntax</a>, a W3C Recommendation published on 25
  * February 2014
@@ -65,5 +65,44 @@ public interface Literal extends RDFTerm {
      * Literal language tag</a>
      */
     Optional<String> getLanguageTag();
+    
+	/**
+	 * Check it this Literal is equal to another Literal.
+	 * <p>
+	 * <blockquote cite="http://www.w3.org/TR/rdf11-concepts/#dfn-literal-term">
+	 * <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-literal-term">Literal
+	 * term equality</a>: Two literals are term-equal (the same RDF literal) if
+	 * and only if the two lexical forms, the two datatype IRIs, and the two
+	 * language tags (if any) compare equal, character by character. Thus, two
+	 * literals can have the same value without being the same RDF term.
+	 * </blockquote>
+	 * <p>
+	 * Implementations MAY check the local scope for Literal
+	 * comparison.
+	 * <p>
+	 * Implementations MUST also override {@link #hashCode()} so that two equal
+	 * Literals produce the same hash code.
+	 * 
+	 * @see Object#equals(Object)
+	 * 
+	 * @param other
+	 * @return true if other is a Literal and is equal to this
+	 */
+    @Override
+    public boolean equals(Object other);
+    
+    
+    /**
+	 * Calculate a hash code for this Literal.
+	 * <p>
+	 * This method MUST be implemented when implementing {@link #equals(Object)}
+	 * so that two equal Literals produce the same hash code.
+	 * 
+	 * @see Object#hashCode()
+	 * 
+	 * @return a hash code value for this Literal.
+	 */
+    @Override
+    public int hashCode();
 
 }
