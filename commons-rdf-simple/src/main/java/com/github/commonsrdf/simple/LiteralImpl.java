@@ -47,7 +47,7 @@ public class LiteralImpl implements Literal {
 
 	public LiteralImpl(String literal, String languageTag) {
 		this.lexicalForm = Objects.requireNonNull(literal);
-		this.languageTag = Optional.of(languageTag);
+		this.languageTag = Optional.of(languageTag.toLowerCase(Locale.ENGLISH));
 		if (languageTag.isEmpty()) {
 			// TODO: Check against
 			// http://www.w3.org/TR/n-triples/#n-triples-grammar
