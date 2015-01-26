@@ -39,7 +39,7 @@
                         <artifactId>maven-patch-plugin</artifactId>
                         <version>1.1.1</version>
                         <configuration>
-                            <strip>1</strip>
+                            <strip>5</strip>
                             <patches>
                                 <patch>java6.patch</patch>
                             </patches>
@@ -72,6 +72,7 @@
                                 <argument>checkout</argument>
                                 <argument>src/main/java/com/github/commonsrdf/api/Graph.java</argument>
                                 <argument>src/main/java/com/github/commonsrdf/api/Literal.java</argument>
+                                <argument>src/main/java/com/github/commonsrdf/api/RDFTermFactory.java</argument>
                             </arguments>
                         </configuration>
                     </plugin>
