@@ -61,10 +61,12 @@ public interface RDFTermFactory {
 	 * the equals contract for {@link BlankNode} for more information.
 	 * <p>
 	 * If supported, the {@link BlankNode#internalIdentifier()} of the returned
-	 * blank node SHOULD be equal to the provided identifier.
+	 * blank node MAY be equal to the provided identifier.
 	 * 
 	 * @param identifier
-	 *            An internal identifier for the blank node.
+	 *            A non-empty String that is unique to this blank node in this
+	 *            scope, and which may be used as the internal identifier for
+	 *            the blank node.
 	 * @return A BlankNode for the given identifier
 	 * @throws IllegalArgumentException
 	 *             if the identifier is not acceptable, e.g. was empty or
