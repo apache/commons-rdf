@@ -5,3 +5,5 @@ notifications:
   email:
     - ansell.peter@gmail.com
     - sergio@wikier.org
+after_success:
+  - mvn clean test jacoco:report coveralls:jacoco
