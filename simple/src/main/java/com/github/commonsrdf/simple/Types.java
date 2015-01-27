@@ -182,8 +182,8 @@ public enum Types implements IRI {
 	 *         {@link Optional#empty()} if it is not present here.
 	 */
 	public static Optional<IRI> get(IRI nextIRI) {
-		for (IRI nextType : values()) {
-			if (nextType.equals(nextIRI)) {
+		for (Types nextType : values()) {
+			if (nextType.field.equals(nextIRI)) {
 				return Optional.of(nextType);
 			}
 		}
