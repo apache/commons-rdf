@@ -17,7 +17,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
 
 import org.junit.Assume;
 import org.junit.Before;
@@ -46,19 +45,11 @@ public abstract class AbstractRDFTermFactoryTest {
 			Assume.assumeNoException(ex);
 			return;
 		}
-		String ntriplesString = bnode.ntriplesString();
-		assertTrue("ntriples must start with _:",
-				ntriplesString.startsWith("_:"));
-		assertTrue("Internal identifier can't be empty", bnode
-				.internalIdentifier().length() > 0);
-		assertEquals("ntriples does not correspond with internal identifier",
-				bnode.internalIdentifier(),
-				ntriplesString.substring(2, ntriplesString.length()));
 
 		BlankNode bnode2 = factory.createBlankNode();
 		assertNotEquals(
 				"Second blank node has not got a unique internal identifier",
-				bnode.internalIdentifier(), bnode2.internalIdentifier());
+				bnode.internalIdentifier(), bnode2.internalIdentifier());		
 	}
 
 	@Test
@@ -71,9 +62,30 @@ public abstract class AbstractRDFTermFactoryTest {
 			return;
 		}
 		assertEquals("example1", bnode.internalIdentifier());
-		assertEquals("_:example1", bnode.ntriplesString());
+		// .. but we can't assume the internal identifier leaks into
+		// ntriplesString
+		//assertEquals("_:example1", bnode.ntriplesString());
 	}
 
+	@Test
+	public void createBlankNodeIdentifierTwice() throws Exception {
+		BlankNode bnode1, bnode2, bnode3;
+		try {
+			bnode1 = factory.createBlankNode("example1");
+			bnode2 = factory.createBlankNode("example1");
+			bnode3 = factory.createBlankNode("differ");
+		} catch (UnsupportedOperationException ex) {
+			Assume.assumeNoException(ex);
+			return;
+		}
+		assertEquals(bnode1.internalIdentifier(), bnode2.internalIdentifier());
+		// We don't know what the ntriplesString is, but it MUST be the same
+		assertEquals(bnode1.ntriplesString(), bnode2.ntriplesString());
+		// and here it MUST differ
+		assertNotEquals(bnode1.ntriplesString(), bnode3.ntriplesString());
+	}
+
+	
 	public abstract RDFTermFactory createFactory();
 
 	@Test
@@ -266,15 +278,11 @@ public abstract class AbstractRDFTermFactoryTest {
 			return;
 		}
 
-		// NOTE: We do not require object equivalence after insertion,
-		// but the ntriples should match
-		assertEquals(subject.ntriplesString(), triple.getSubject()
-				.ntriplesString());
-		assertEquals(predicate.ntriplesString(), triple.getPredicate()
-				.ntriplesString());
-		assertEquals(object.ntriplesString(), triple.getObject()
-				.ntriplesString());
-
+		// bnode equivalence should be OK as we used the same
+		// factory and have not yet inserted Triple into a Graph
+		assertEquals(subject, triple.getSubject());		
+		assertEquals(predicate, triple.getPredicate());
+		assertEquals(object, triple.getObject());
 	}
 
 	@Test
@@ -293,14 +301,11 @@ public abstract class AbstractRDFTermFactoryTest {
 			return;
 		}
 
-		// NOTE: We do not require object equivalence after insertion,
-		// but the ntriples should match
-		assertEquals(subject.ntriplesString(), triple.getSubject()
-				.ntriplesString());
-		assertEquals(predicate.ntriplesString(), triple.getPredicate()
-				.ntriplesString());
-		assertEquals(object.ntriplesString(), triple.getObject()
-				.ntriplesString());
+		// bnode equivalence should be OK as we used the same
+		// factory and have not yet inserted Triple into a Graph
+		assertEquals(subject, triple.getSubject());		
+		assertEquals(predicate, triple.getPredicate());
+		assertEquals(object, triple.getObject());
 	}
 
 	@Test
@@ -319,14 +324,11 @@ public abstract class AbstractRDFTermFactoryTest {
 			return;
 		}
 
-		// NOTE: We do not require object equivalence after insertion,
-		// but the ntriples should match
-		assertEquals(subject.ntriplesString(), triple.getSubject()
-				.ntriplesString());
-		assertEquals(predicate.ntriplesString(), triple.getPredicate()
-				.ntriplesString());
-		assertEquals(object.ntriplesString(), triple.getObject()
-				.ntriplesString());
+		// bnode equivalence should be OK as we used the same
+		// factory and have not yet inserted Triple into a Graph
+		assertEquals(subject, triple.getSubject());		
+		assertEquals(predicate, triple.getPredicate());
+		assertEquals(object, triple.getObject());
 	}
 
 	@Before
@@ -334,15 +336,26 @@ public abstract class AbstractRDFTermFactoryTest {
 		factory = createFactory();
 	}
 
-	@Test(expected = Exception.class)
-	public void invalidBlankNode() throws Exception {
+	@Test
+	public void possiblyInvalidBlankNode() throws Exception {		
+		BlankNode withColon;
 		try {
-			factory.createBlankNode("with:colon").ntriplesString();
+			withColon = factory.createBlankNode("with:colon");
 		} catch (UnsupportedOperationException ex) {
 			Assume.assumeNoException("createBlankNode(String) not supported",
 					ex);
 			return;
+		} catch (IllegalArgumentException ex){			
+			// Good!
+			return;
 		}
+		// Factory allows :colon, which is OK as long as it's not causing an
+		// invalid ntriplesString
+		assertFalse(withColon.ntriplesString().contains("with:colon"));
+		
+		// and creating it twice gets the same ntriplesString		
+		assertEquals(withColon.ntriplesString(),
+				factory.createBlankNode("with:colon").ntriplesString());
 	}
 
 	@Test(expected = IllegalArgumentException.class)

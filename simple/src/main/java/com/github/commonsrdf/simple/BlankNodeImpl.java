@@ -13,8 +13,10 @@
  */
 package com.github.commonsrdf.simple;
 
+import java.nio.charset.Charset;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 import com.github.commonsrdf.api.BlankNode;
@@ -26,6 +28,7 @@ import com.github.commonsrdf.api.Graph;
  */
 class BlankNodeImpl implements BlankNode {
 
+	private static final Charset UTF8 = Charset.forName("UTF-8");
 	private static AtomicLong bnodeCounter = new AtomicLong();
 	private String id;
 	private Optional<Graph> localScope;
@@ -52,10 +55,7 @@ class BlankNodeImpl implements BlankNode {
 	@Override
 	public String ntriplesString() {
 		if (id.contains(":")) {
-			// FIXME: Perhaps do a SHA hash of the id?
-			throw new IllegalStateException(
-					"Blank node identifier can't be expressed as ntriples string: "
-							+ id);
+			return "_:u" + UUID.nameUUIDFromBytes(id.getBytes(UTF8));
 		}
 		return "_:" + id;
 	}
