@@ -14,6 +14,7 @@
 package com.github.commonsrdf.simple;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -22,19 +23,18 @@ import java.util.concurrent.atomic.AtomicLong;
 import com.github.commonsrdf.api.BlankNode;
 import com.github.commonsrdf.api.Graph;
 
-/** 
+/**
  * A simple implementation of BlankNode.
  *
  */
 class BlankNodeImpl implements BlankNode {
 
-	private static final Charset UTF8 = Charset.forName("UTF-8");
 	private static AtomicLong bnodeCounter = new AtomicLong();
-	private String id;
-	private Optional<Graph> localScope;
+	private final String id;
+	private final Optional<Graph> localScope;
 
 	public BlankNodeImpl() {
-		this(Optional.empty(), "b" + bnodeCounter.incrementAndGet());
+		this(Optional.empty(), "b:" + bnodeCounter.incrementAndGet());
 	}
 
 	public BlankNodeImpl(Optional<Graph> localScope, String id) {
@@ -55,7 +55,9 @@ class BlankNodeImpl implements BlankNode {
 	@Override
 	public String ntriplesString() {
 		if (id.contains(":")) {
-			return "_:u" + UUID.nameUUIDFromBytes(id.getBytes(UTF8));
+			return "_:u"
+					+ UUID.nameUUIDFromBytes(id
+							.getBytes(StandardCharsets.UTF_8));
 		}
 		return "_:" + id;
 	}
