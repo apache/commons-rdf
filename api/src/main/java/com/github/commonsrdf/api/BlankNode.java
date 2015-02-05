@@ -29,14 +29,16 @@ package com.github.commonsrdf.api;
  * <p>
  * Also note that: 
  * <blockquote cite="http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node-identifier">
- *   <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node-identifier">Blank node identifiers</a>
- *   are local identifiers that are used in
+ * <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node-identifier">Blank node identifiers</a>
+ * are local identifiers that are used in
  * some concrete RDF syntaxes or RDF store implementations. They are always
- * locally scoped to the file or RDF store, and are not persistent or portable
+ * <em>locally scoped</em> to the file or RDF store, and are not persistent or portable
  * identifiers for blank nodes. Blank node identifiers are not part of the RDF
  * abstract syntax, but are entirely dependent on the concrete syntax or
- * implementation. The syntactic restrictions on blank node identifiers, if any,
+ * implementation.
+ * The syntactic restrictions on blank node identifiers, if any,
  * therefore also depend on the concrete RDF syntax or implementation.
+ * <p>
  * Implementations that handle blank node identifiers in concrete syntaxes need
  * to be careful not to create the same blank node from multiple occurrences of
  * the same blank node identifier except in situations where this is supported
