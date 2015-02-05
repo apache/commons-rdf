@@ -32,8 +32,10 @@ package com.github.commonsrdf.api;
  * <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node-identifier">Blank node identifiers</a>
  * are local identifiers that are used in
  * some concrete RDF syntaxes or RDF store implementations. They are always
- * <em>locally scoped</em> to the file or RDF store, and are not persistent or portable
- * identifiers for blank nodes. Blank node identifiers are not part of the RDF
+ * <em>locally scoped</em> to the file or RDF store, and are <em>not</em> persistent 
+ * or portable
+ * identifiers for blank nodes. Blank node identifiers are <em>not</em> 
+ * part of the RDF
  * abstract syntax, but are entirely dependent on the concrete syntax or
  * implementation.
  * The syntactic restrictions on blank node identifiers, if any,
@@ -103,10 +105,12 @@ public interface BlankNode extends BlankNodeOrIRI {
 	 * of the RDF abstract syntax, but are entirely dependent on the concrete
 	 * syntax or implementation. The syntactic restrictions on blank node
 	 * identifiers, if any, therefore also depend on the concrete RDF syntax or
-	 * implementation. Implementations that handle blank node identifiers in
+	 * implementation. 
+	 * <p>Implementations that handle blank node identifiers in
 	 * concrete syntaxes need to be careful not to create the same blank node
 	 * from multiple occurrences of the same blank node identifier except in
-	 * situations where this is supported by the syntax. </blockquote>
+	 * situations where this is supported by the syntax. 
+	 * </blockquote>
 	 * <p>
 	 * Implementations MUST check the local scope, as two BlankNode in different
 	 * Graphs MUST differ. On the other hand, two BlankNodes found in triples of
