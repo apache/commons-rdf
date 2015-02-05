@@ -38,10 +38,11 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
+    <url>http://commons-rdf.github.io/</url>
     <scm>
         <connection>scm:git:https://github.com/commons-rdf/commons-rdf.git</connection>
         <developerConnection>scm:git:git@github.com:commons-rdf/commons-rdf.git</developerConnection>
-        <url>http://commons-rdf.github.io/</url>
+        <url>https://github.com/commons-rdf/commons-rdf/</url>
     </scm>
 
     <licenses>
