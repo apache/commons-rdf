@@ -19,11 +19,18 @@ package com.github.commonsrdf.api;
  * "http://www.w3.org/TR/rdf11-concepts/#section-blank-nodes" >RDF-1.1 Concepts
  * and Abstract Syntax</a>, a W3C Recommendation published on 25 February 2014.<br>
  * <p>
- * Note that: Blank nodes are disjoint from IRIs and literals. Otherwise, the
- * set of possible blank nodes is arbitrary. RDF makes no reference to any
- * internal structure of blank nodes.
+ * Note: 
+ * <blockquote cite="http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node">
+ *   <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node">Blank nodes</a>
+ *   are disjoint from IRIs and literals. Otherwise, the
+ *   set of possible blank nodes is arbitrary. RDF makes no reference to any
+ *   internal structure of blank nodes.
+ * </blockquote>
  * <p>
- * Also note that: Blank node identifiers are local identifiers that are used in
+ * Also note that: 
+ * <blockquote cite="http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node-identifier">
+ *   <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node-identifier">Blank node identifiers</a>
+ *   are local identifiers that are used in
  * some concrete RDF syntaxes or RDF store implementations. They are always
  * locally scoped to the file or RDF store, and are not persistent or portable
  * identifiers for blank nodes. Blank node identifiers are not part of the RDF
@@ -34,8 +41,9 @@ package com.github.commonsrdf.api;
  * to be careful not to create the same blank node from multiple occurrences of
  * the same blank node identifier except in situations where this is supported
  * by the syntax.
+ * </blockquote>
  *
- * @see <a href= "http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node">RDF-1.1
+ * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node">RDF-1.1
  *      Blank Node</a>
  */
 public interface BlankNode extends BlankNodeOrIRI {
