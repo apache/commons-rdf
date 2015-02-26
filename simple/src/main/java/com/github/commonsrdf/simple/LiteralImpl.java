@@ -28,24 +28,19 @@ import com.github.commonsrdf.api.Literal;
 class LiteralImpl implements Literal {
 
 	private static final String QUOTE = "\"";
-	private static final IRIImpl RDF_LANG_STRING = new IRIImpl(
-			"http://www.w3.org/1999/02/22-rdf-syntax-ns#langString");
-	private static final IRIImpl XSD_STRING = new IRIImpl(
-			"http://www.w3.org/2001/XMLSchema#string");
 
 	private IRI dataType;
 	private Optional<String> languageTag;
 	private String lexicalForm;
 
 	public LiteralImpl(String literal) {
-		this.lexicalForm = Objects.requireNonNull(literal);
-		this.dataType = XSD_STRING;
-		this.languageTag = Optional.empty();
+		this(literal, Types.XSD_STRING);
 	}
 
 	public LiteralImpl(String lexicalForm, IRI dataType) {
 		this.lexicalForm = Objects.requireNonNull(lexicalForm);
-		this.dataType = Objects.requireNonNull(dataType);
+		this.dataType = Types.get(Objects.requireNonNull(dataType)).orElse(
+				dataType);
 		this.languageTag = Optional.empty();
 	}
 
@@ -65,7 +60,7 @@ class LiteralImpl implements Literal {
 		}
 
 		// System.out.println(aLocale);
-		this.dataType = RDF_LANG_STRING;
+		this.dataType = Types.RDF_LANGSTRING;
 	}
 
 	@Override
@@ -99,7 +94,7 @@ class LiteralImpl implements Literal {
 			sb.append("@");
 			sb.append(getLanguageTag().get());
 
-		} else if (!getDatatype().equals(XSD_STRING)) {
+		} else if (!getDatatype().equals(Types.XSD_STRING)) {
 			sb.append("^^");
 			sb.append(getDatatype().ntriplesString());
 		}

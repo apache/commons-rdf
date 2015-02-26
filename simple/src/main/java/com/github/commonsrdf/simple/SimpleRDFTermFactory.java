@@ -51,7 +51,9 @@ public class SimpleRDFTermFactory implements RDFTermFactory {
 
 	@Override
 	public IRI createIRI(String iri) {
-		return new IRIImpl(iri);
+		IRI result = new IRIImpl(iri);
+		// Reuse any IRI objects already created in Types
+		return Types.get(result).orElse(result);
 	}
 
 	@Override
