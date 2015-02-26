@@ -20,7 +20,7 @@ package com.github.commonsrdf.api;
  * and Abstract Syntax</a>, a W3C Recommendation published on 25 February 2014.<br>
  * <p>
  * Note: 
- * <blockquote cite="http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node">
+ * <blockquote>
  *   <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node">Blank nodes</a>
  *   are disjoint from IRIs and literals. Otherwise, the
  *   set of possible blank nodes is arbitrary. RDF makes no reference to any
@@ -28,7 +28,7 @@ package com.github.commonsrdf.api;
  * </blockquote>
  * <p>
  * Also note that: 
- * <blockquote cite="http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node-identifier">
+ * <blockquote>
  * <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node-identifier">Blank node identifiers</a>
  * are local identifiers that are used in
  * some concrete RDF syntaxes or RDF store implementations. They are always
