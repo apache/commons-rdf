@@ -14,7 +14,7 @@ This library is still work in progress.
 
 A draft diagram of the interfaces which may be included in Commons RDF are:
 
-![commons-rdf class diagram](commons-rdf-api/src/main/resources/commons-rdf-class-diagram.png "commons-rdf class diagram")
+![commons-rdf class diagram](api/src/main/resources/commons-rdf-class-diagram.png "commons-rdf class diagram")
 
 ## Building
 
