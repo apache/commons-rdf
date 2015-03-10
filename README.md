@@ -58,27 +58,6 @@ To then use from your project, add to Maven (update `<version>` to match the Mav
         <version>0.0.3-SNAPSHOT</version>
     </dependency>
     
-    
-### Java 6/7 compatibility
-
-This API is targeting **Java 8**, as Java 7 is scheduled [EOL at April 2015](http://www.oracle.com/technetwork/java/javase/eol-135779.html).
-
-For convenience, a patched edition for Java 6 and 7 is however available.
-
-To build with Java 1.6/1.7 compatibility, use the `java6` Maven profile:
-
-    $ mvn clean install -Pjava6
-
-To then depend on the Java 6 edition in your Maven project, you need to use a special `classifier` to the dependency:
-
-    <classifier>java6</classifier>
-
-Note that the Java 6 edition depends on the [Guava libraries](https://code.google.com/p/guava-libraries/) for providing the missing features. If you use the Java 6 version, your code will probably not be binary compatible with
-libraries compiled against the regular (Java 8) edition of the Commons RDF API. 
-
-The simple implementaton and testing (see below) are *not* included in the `-Pjava6` edition.
-
-
 ## Simple implementation
 
 The [commons-rdf-simple](commons-rdf-simple) module contains a 
@@ -94,8 +73,6 @@ Projects including [Apache Jena](http://jena.apache.org/)
 and [OpenRDF Sesame](http://rdf4j.org/) aim to provide 
 complete and scalable implementations of the Commons RDF API. 
 
-
-
 ## Testing
 
 The abstract classes
@@ -106,12 +83,12 @@ can be realised as JUnit tests by implementations in order to verify that they
 pass the minimal requirements of this API.
 
 In order for this to work, your project will need to depend on the `tests`
-classifier, for example (for Maven):
+classifier for the commons-rdf-api module, for example (for Maven):
 
     <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
-        <version>4.11</version>
+        <version>4.12</version>
         <scope>test</scope>
     </dependency>
     <dependency>
@@ -122,13 +99,12 @@ classifier, for example (for Maven):
         <scope>test</scope>
     </dependency>
 
-The extensions of each Test class needs to provide a 
+The extensions of each Test class need to provide a 
 [RDFTermFactory](commons-rdf-api/src/main/java/com/github/commonsrdf/api/RDFTermFactory.java)
 that can create the corresponding implementations of a `Graph`, `IRI`, etc.
 
 For an example, see 
 [SimpleGraphTest](commons-rdf-simple/src/test/java/com/github/commonsrdf/simple/SimpleGraphTest.java).
-
 
 ## Contributors
 
@@ -138,7 +114,6 @@ For an example, see
 * Stian Soiland-Reyes ([Apache Taverna](http://taverna.incubator.apache.org))
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to contribute. In short - raise a Github pull request.
-
 
 ## License
 
