@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.commonsrdf.api;
+package org.apache.commons.rdf.api;
 
 /**
  * An <a href= "http://www.w3.org/TR/rdf11-concepts/#dfn-iri" >RDF-1.1 IRI</a>,

@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.commonsrdf.api;
+package org.apache.commons.rdf.api;
 
 import static org.junit.Assert.*;
 
@@ -44,7 +44,7 @@ public abstract class AbstractBlankNodeTest {
 
 	/**
 	 * Test method for
-	 * {@link com.github.commonsrdf.api.BlankNode#internalIdentifier()}.
+	 * {@link BlankNode#internalIdentifier()}.
 	 */
 	@Test
 	public final void testInternalIdentifier() {
@@ -94,7 +94,7 @@ public abstract class AbstractBlankNodeTest {
 
 	/**
 	 * Test method for
-	 * {@link com.github.commonsrdf.api.BlankNode#equals(java.lang.Object)}.
+	 * {@link BlankNode#equals(java.lang.Object)}.
 	 */
 	@Test
 	public final void testEquals() {
@@ -132,7 +132,7 @@ public abstract class AbstractBlankNodeTest {
 	}
 
 	/**
-	 * Test method for {@link com.github.commonsrdf.api.BlankNode#hashCode()}.
+	 * Test method for {@link BlankNode#hashCode()}.
 	 */
 	@Test
 	public final void testHashCode() {
@@ -171,7 +171,7 @@ public abstract class AbstractBlankNodeTest {
 
 	/**
 	 * Test method for
-	 * {@link com.github.commonsrdf.api.RDFTerm#ntriplesString()}.
+	 * {@link RDFTerm#ntriplesString()}.
 	 */
 	@Test
 	public final void testNtriplesString() {
