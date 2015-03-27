@@ -17,32 +17,38 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <!--
+    temporally disable until we clariffy the usage
+    of animal-sniffer-maven-plugin
     <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>9</version>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-parent</artifactId>
+        <version>37</version>
     </parent>
+    -->
 
-    <groupId>com.github.commons-rdf</groupId>
-    <artifactId>commons-rdf</artifactId>
+    <groupId>org.apache.commons.rdf</groupId>
+    <artifactId>commonsrdf</artifactId>
     <version>0.0.3-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Commons RDF</name>
     <description>Commons Java API for RDF 1.1</description>
 
-    <inceptionYear>2014</inceptionYear>
+    <url>http://commonsrdf.incubator.apache.org</url>
+
+    <inceptionYear>2015</inceptionYear>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
-    <url>http://commons-rdf.github.io/</url>
     <scm>
-        <connection>scm:git:https://github.com/commons-rdf/commons-rdf.git</connection>
-        <developerConnection>scm:git:git@github.com:commons-rdf/commons-rdf.git</developerConnection>
-        <url>https://github.com/commons-rdf/commons-rdf/</url>
+        <url>https://git-wip-us.apache.org/repos/asf/incubator-commonsrdf.git</url>
+        <connection>scm:git:https://git-wip-us.apache.org/repos/asf/incubator-commonsrdf.git</connection>
+        <developerConnection>scm:git:https://git-wip-us.apache.org/repos/asf/incubator-commonsrdf.git</developerConnection>
+        <tag>HEAD</tag>
     </scm>
 
     <licenses>
@@ -55,28 +61,59 @@
 
     <developers>
         <developer>
+            <id>lewismc</id>
+            <name>Lewis John McGibbney</name>
+            <email>lewismc@apache.org</email>
+        </developer>
+        <developer>
+            <id>rvesse</id>
+            <name>Rob Vesse</name>
+            <email>rvesse@apache.org</email>
+        </developer>
+        <developer>
+            <id>johndament</id>
+            <name>John D Ament</name>
+            <email>johndament@apache.org</email>
+        </developer>
+        <developer>
+            <id>ggregory</id>
+            <name>Gary Gregory</name>
+            <email>ggregory@apache.org</email>
+        </developer>
+        <developer>
             <id>wikier</id>
             <name>Sergio Fernández</name>
             <email>wikier@apache.org</email>
-            <organization>Apache Software Foundation</organization>
         </developer>
         <developer>
             <id>andy</id>
             <name>Andy Seaborne</name>
             <email>andy@apache.org</email>
-            <organization>Apache Software Foundation</organization>
         </developer>
         <developer>
             <id>ansell</id>
             <name>Peter Ansell</name>
-            <email>p_ansell@yahoo.com</email>
-            <organization>OpenRDF</organization>
+            <email>ansell@apache.org</email>
         </developer>
         <developer>
-            <id>betehess</id>
-            <name>Alexandre Bertails</name>
-            <email>alexandre@bertails.org</email>
-            <organization>W3C</organization>
+            <id>stain</id>
+            <name>Stian Soiland-Reyes</name>
+            <email>stain@apache.org</email>
+        </developer>
+        <developer>
+            <id>reto</id>
+            <name>Reto Gmür</name>
+            <email>reto@apache.org</email>
+        </developer>
+        <developer>
+            <id>enridaga</id>
+            <name>Enrico Daga</name>
+            <email>enridaga@apache.org</email>
+        </developer>
+        <developer>
+            <id>britter</id>
+            <name>Benedikt Ritter</name>
+            <email>britter@apache.org</email>
         </developer>
     </developers>
 
