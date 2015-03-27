@@ -11,12 +11,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.commonsrdf.simple;
+package org.apache.commons.rdf.simple;
 
 import static org.junit.Assert.*;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -27,7 +25,7 @@ import org.junit.Test;
 public class TypesTest {
 
 	/**
-	 * Test method for {@link com.github.commonsrdf.simple.Types#getIRIString()}
+	 * Test method for {@link Types#getIRIString()}
 	 * .
 	 */
 	@Test
@@ -38,7 +36,7 @@ public class TypesTest {
 
 	/**
 	 * Test method for
-	 * {@link com.github.commonsrdf.simple.Types#ntriplesString()}.
+	 * {@link Types#ntriplesString()}.
 	 */
 	@Test
 	public final void testNtriplesString() {
@@ -48,7 +46,7 @@ public class TypesTest {
 
 	/**
 	 * Test method for
-	 * {@link com.github.commonsrdf.simple.Types#get(com.github.commonsrdf.api.IRI)}
+	 * {@link Types#get(org.apache.commons.rdf.api.IRI)}
 	 * .
 	 */
 	@Test

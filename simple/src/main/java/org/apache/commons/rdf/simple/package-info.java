@@ -27,5 +27,5 @@
  * {@link SimpleRDFTermFactory#createIRI(String)}.
  * 
  */
-package com.github.commonsrdf.simple;
+package org.apache.commons.rdf.simple;
 

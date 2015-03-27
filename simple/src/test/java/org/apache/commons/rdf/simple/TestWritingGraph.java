@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.commonsrdf.simple;
+package org.apache.commons.rdf.simple;
 
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -22,8 +22,8 @@ import java.util.stream.Stream;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.github.commonsrdf.api.BlankNode;
-import com.github.commonsrdf.api.IRI;
+import org.apache.commons.rdf.api.BlankNode;
+import org.apache.commons.rdf.api.IRI;
 
 public class TestWritingGraph {
 

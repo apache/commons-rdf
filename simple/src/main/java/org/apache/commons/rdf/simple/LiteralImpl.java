@@ -11,15 +11,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.commonsrdf.simple;
+package org.apache.commons.rdf.simple;
 
 import java.util.IllformedLocaleException;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
-import com.github.commonsrdf.api.IRI;
-import com.github.commonsrdf.api.Literal;
+import org.apache.commons.rdf.api.IRI;
+import org.apache.commons.rdf.api.Literal;
 
 /**
  * A simple implementation of Literal.

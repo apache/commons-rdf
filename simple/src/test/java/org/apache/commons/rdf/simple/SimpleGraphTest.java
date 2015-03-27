@@ -11,12 +11,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.commonsrdf.simple;
+package org.apache.commons.rdf.simple;
 
-import com.github.commonsrdf.api.AbstractRDFTermFactoryTest;
-import com.github.commonsrdf.api.RDFTermFactory;
+import org.apache.commons.rdf.api.AbstractGraphTest;
+import org.apache.commons.rdf.api.RDFTermFactory;
 
-public class SimpleRDFTermFactoryTest extends AbstractRDFTermFactoryTest {
+/**
+ * Test SimpleRDFTermFactory with AbstractGraphTest
+ *
+ */
+public class SimpleGraphTest extends AbstractGraphTest {
 
 	@Override
 	public RDFTermFactory createFactory() {

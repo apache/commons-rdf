@@ -11,13 +11,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.commonsrdf.simple;
+package org.apache.commons.rdf.simple;
 
 import java.net.URI;
 
-import com.github.commonsrdf.api.AbstractRDFTermFactoryTest;
-import com.github.commonsrdf.api.IRI;
-import com.github.commonsrdf.api.RDFTermFactory;
+import org.apache.commons.rdf.api.AbstractRDFTermFactoryTest;
+import org.apache.commons.rdf.api.IRI;
+import org.apache.commons.rdf.api.RDFTermFactory;
 
 /**
  * Test simple IRI without relative IRI support.

@@ -11,12 +11,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.commonsrdf.simple;
+package org.apache.commons.rdf.simple;
 
-import com.github.commonsrdf.api.AbstractGraphTest;
-import com.github.commonsrdf.api.Graph;
-import com.github.commonsrdf.api.IRI;
-import com.github.commonsrdf.api.RDFTermFactory;
+import org.apache.commons.rdf.api.AbstractGraphTest;
+import org.apache.commons.rdf.api.Graph;
+import org.apache.commons.rdf.api.IRI;
+import org.apache.commons.rdf.api.RDFTermFactory;
 
 /**
  * Ensure AbstractGraphTest does not crash if the RDFTermFactory throws

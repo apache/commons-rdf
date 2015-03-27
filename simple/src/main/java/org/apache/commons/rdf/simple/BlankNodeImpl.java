@@ -11,17 +11,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.commonsrdf.simple;
+package org.apache.commons.rdf.simple;
 
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
-import com.github.commonsrdf.api.BlankNode;
-import com.github.commonsrdf.api.Graph;
+import org.apache.commons.rdf.api.BlankNode;
+import org.apache.commons.rdf.api.Graph;
 
 /**
  * A simple implementation of BlankNode.

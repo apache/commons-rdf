@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.commonsrdf.simple;
+package org.apache.commons.rdf.simple;
 
 import java.util.LinkedHashSet;
 import java.util.Objects;
@@ -21,11 +21,11 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.github.commonsrdf.api.BlankNodeOrIRI;
-import com.github.commonsrdf.api.Graph;
-import com.github.commonsrdf.api.IRI;
-import com.github.commonsrdf.api.RDFTerm;
-import com.github.commonsrdf.api.Triple;
+import org.apache.commons.rdf.api.BlankNodeOrIRI;
+import org.apache.commons.rdf.api.Graph;
+import org.apache.commons.rdf.api.IRI;
+import org.apache.commons.rdf.api.RDFTerm;
+import org.apache.commons.rdf.api.Triple;
 
 /**
  * A simple, memory-based implementation of Graph.

@@ -11,11 +11,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.commonsrdf.simple;
+package org.apache.commons.rdf.simple;
 
 import java.net.URI;
 
-import com.github.commonsrdf.api.IRI;
+import org.apache.commons.rdf.api.IRI;
 
 /** 
  * A simple implementation of IRI.
