@@ -23,7 +23,7 @@
 
     <parent>
         <groupId>org.apache.commons.rdf</groupId>
-        <artifactId>commonsrdf</artifactId>
+        <artifactId>commons-rdf</artifactId>
         <version>0.0.3-SNAPSHOT</version>
     </parent>
 
