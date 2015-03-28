@@ -161,23 +161,4 @@ public interface Graph extends AutoCloseable {
 	 */
 	Stream<? extends Triple> getTriples(BlankNodeOrIRI subject, IRI predicate,
 			RDFTerm object);
-
-	/**
-	 * Get all triples contained by the graph matched with the pattern.
-	 * <p>
-	 * The iteration does not contain any duplicate triples, as determined by
-	 * the equals method for each {@link Triple}.
-	 * <p>
-	 * The behaviour of the Stream is not specified if add, remove, or clear,
-	 * are called on the Stream before it terminates.<br>
-	 * <p>
-	 * Implementations may throw ConcurrentModificationException from Stream
-	 * methods if they detect a conflict while the Stream is active.
-	 *
-	 * @param filter
-	 *            A filter to match against each triple in the graph.
-	 * @return A {@link Stream} over the matched triples.
-	 */
-	Stream<? extends Triple> getTriples(Predicate<Triple> filter);
-
 }

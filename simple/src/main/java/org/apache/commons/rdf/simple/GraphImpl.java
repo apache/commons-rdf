@@ -17,6 +17,7 @@
  */
 package org.apache.commons.rdf.simple;
 
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -42,7 +43,7 @@ import org.apache.commons.rdf.api.Triple;
 final class GraphImpl implements Graph {
 
 	private static final int TO_STRING_MAX = 10;
-	private final Set<Triple> triples = new LinkedHashSet<Triple>();
+	private final Set<Triple> triples = new HashSet<Triple>();
 	private final SimpleRDFTermFactory factory;
 
 	GraphImpl(SimpleRDFTermFactory simpleRDFTermFactory) {
@@ -76,7 +77,7 @@ final class GraphImpl implements Graph {
 	}
 
 	private <T extends RDFTerm> RDFTerm internallyMap(T object) {
-		if (object instanceof BlankNode) {
+		if (object instanceof BlankNode && !(object instanceof BlankNodeImpl)) {
 			BlankNode blankNode = (BlankNode) object;
 			// This guarantees that adding the same BlankNode multiple times to
 			// this graph will generate a local object that is mapped to an
@@ -121,38 +122,34 @@ final class GraphImpl implements Graph {
 
 	@Override
 	public Stream<Triple> getTriples() {
-		return triples.parallelStream();
+		return triples.parallelStream().unordered();
 	}
 
 	@Override
 	public Stream<Triple> getTriples(final BlankNodeOrIRI subject,
 			final IRI predicate, final RDFTerm object) {
-		Predicate<Triple> match = new Predicate<Triple>() {
-			@Override
-			public boolean test(Triple t) {
-				// Lacking the requirement for .equals() we have to be silly
-				// and test ntriples string equivalance
-				if (subject != null
-						&& !t.getSubject().equals(subject)) {
-					return false;
-				}
-				if (predicate != null
-						&& !t.getPredicate().equals(predicate)) {
-					return false;
-				}
-				if (object != null
-						&& !t.getObject().equals(object)) {
-					return false;
-				}
-				return true;
+		final BlankNodeOrIRI newSubject = (BlankNodeOrIRI) internallyMap(subject);
+		final IRI newPredicate = (IRI) internallyMap(predicate);
+		final RDFTerm newObject = internallyMap(object);
+
+		return getTriples(t -> {
+			// Lacking the requirement for .equals() we have to be silly
+			// and test ntriples string equivalance
+			if (subject != null && !t.getSubject().equals(newSubject)) {
+				return false;
 			}
-		};
-		return getTriples(match);
+			if (predicate != null && !t.getPredicate().equals(newPredicate)) {
+				return false;
+			}
+			if (object != null && !t.getObject().equals(newObject)) {
+				return false;
+			}
+			return true;
+		});
 	}
 
-	@Override
-	public Stream<Triple> getTriples(final Predicate<Triple> filter) {
-		return getTriples().unordered().filter(filter);
+	private Stream<Triple> getTriples(final Predicate<Triple> filter) {
+		return getTriples().filter(filter);
 	}
 
 	@Override
