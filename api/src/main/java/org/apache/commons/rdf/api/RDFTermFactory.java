@@ -69,14 +69,14 @@ public interface RDFTermFactory {
 	 * {@link BlankNode#equals(Object)} MUST return true. A BlankNode object
 	 * created through the {@link RDFTermFactory#createBlankNode()} method must
 	 * be universally unique, and SHOULD contain a {@link UUID} as part of its
-	 * {@link #internalIdentifier()}.
+	 * {@link BlankNode#internalIdentifier()}.
 	 * <p>
 	 * A BlankNode object created through the
 	 * {@link RDFTermFactory#createBlankNode(String)} method must be universally
-	 * unique, but also produce the same {@link #internalIdentifier()} as any
+	 * unique, but also produce the same {@link BlankNode#internalIdentifier()} as any
 	 * previous or future calls to that method on that factory with the same
 	 * parameters. In addition, it SHOULD contain a {@link UUID} as part of its
-	 * {@link #internalIdentifier()}, created using
+	 * {@link BlankNode#internalIdentifier()}, created using
 	 * {@link UUID#nameUUIDFromBytes(byte[])} using a constant salt for each
 	 * instance of {@link RDFTermFactory}, with the given identifier joined to
 	 * that salt in a consistent manner.

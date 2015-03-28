@@ -95,11 +95,10 @@ public interface BlankNode extends BlankNodeOrIRI {
 	/**
 	 * Check it this BlankNode is equal to another BlankNode. Two BlankNodes
 	 * MUST be equal if, and only if, they have the same
-	 * {@link #internalIdentifier()}. </p>
+	 * {@link #internalIdentifier()}.
 	 * <p>
 	 * Implementations MUST also override {@link #hashCode()} so that two equal
 	 * Literals produce the same hash code.
-	 * </p>
 	 * 
 	 * @param other
 	 *            Another object
