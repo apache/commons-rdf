@@ -19,34 +19,31 @@ package org.apache.commons.rdf.simple;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.commons.rdf.api.BlankNode;
-import org.apache.commons.rdf.api.Graph;
 
 /**
  * A simple implementation of BlankNode.
- *
  */
 final class BlankNodeImpl implements BlankNode {
 
 	private static AtomicLong bnodeCounter = new AtomicLong();
 
-	private static final Object DEFAULT_SEED = new Object();
+	private static final Object DEFAULT_SALT = new Object();
 
 	private final String id;
 
 	public BlankNodeImpl() {
-		this(DEFAULT_SEED, "genid:" + bnodeCounter.incrementAndGet());
+		this(DEFAULT_SALT, "genid:" + bnodeCounter.incrementAndGet());
 	}
 
-	public BlankNodeImpl(Object uuidSeed, String id) {
+	public BlankNodeImpl(Object uuidSalt, String id) {
 		if (Objects.requireNonNull(id).isEmpty()) {
 			throw new IllegalArgumentException("Invalid blank node id: " + id);
 		}
-		String uuidInput = uuidSeed.toString() + ":" + id;
+		String uuidInput = uuidSalt.toString() + ":" + id;
 		// Both the scope and the id are used to create the UUID, ensuring that
 		// a caller can reliably create the same bnode if necessary by sending
 		// in the same scope.
