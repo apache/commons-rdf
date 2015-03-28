@@ -45,6 +45,11 @@ final class LiteralImpl implements Literal {
 		this.lexicalForm = Objects.requireNonNull(lexicalForm);
 		this.dataType = Types.get(Objects.requireNonNull(dataType)).orElse(
 				dataType);
+		if (Types.RDF_LANGSTRING.equals(this.dataType)) {
+			throw new IllegalArgumentException(
+					"Cannot create a non-language literal with type "
+							+ Types.RDF_LANGSTRING);
+		}
 		this.languageTag = null;
 	}
 

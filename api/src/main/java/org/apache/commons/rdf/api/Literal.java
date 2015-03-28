@@ -42,7 +42,14 @@ public interface Literal extends RDFTerm {
 	/**
 	 * The IRI identifying the datatype that determines how the lexical form
 	 * maps to a literal value.
-	 *
+	 * <p>
+	 * If the datatype IRI is <a
+	 * href="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+	 * >http://www.w3.org/1999/02/22-rdf-syntax-ns#langString</a>,
+	 * {@link #getLanguageTag()} must not return {@link Optional#empty()}, and
+	 * it must return a valid <a
+	 * href="http://tools.ietf.org/html/bcp47">BCP47</a> language tag.
+	 * 
 	 * @return The datatype IRI for this literal.
 	 * @see <a
 	 *      href="http://www.w3.org/TR/rdf11-concepts/#dfn-datatype-iri">RDF-1.1
