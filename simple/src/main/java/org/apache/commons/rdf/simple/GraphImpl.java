@@ -19,7 +19,6 @@ package org.apache.commons.rdf.simple;
 
 import java.util.LinkedHashSet;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -52,10 +51,28 @@ final class GraphImpl implements Graph {
 
 	@Override
 	public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		add(new TripleImpl(Objects.requireNonNull(subject),
-				Objects.requireNonNull(predicate),
-				Objects.requireNonNull(object)));
+		BlankNodeOrIRI newSubject = (BlankNodeOrIRI) internallyMap(subject);
+		IRI newPredicate = (IRI) internallyMap(predicate);
+		RDFTerm newObject = internallyMap(object);
+		triples.add(factory.createTriple(newSubject, newPredicate, newObject));
+	}
 
+	@Override
+	public void add(Triple triple) {
+		BlankNodeOrIRI newSubject = (BlankNodeOrIRI) internallyMap(triple
+				.getSubject());
+		IRI newPredicate = (IRI) internallyMap(triple.getPredicate());
+		RDFTerm newObject = internallyMap(triple.getObject());
+		// Check if any of the object references changed during the mapping, to
+		// avoid creating a new Triple object if possible
+		if (newSubject == triple.getSubject()
+				&& newPredicate == triple.getPredicate()
+				&& newObject == triple.getObject()) {
+			triples.add(triple);
+		} else {
+			triples.add(factory.createTriple(newSubject, newPredicate,
+					newObject));
+		}
 	}
 
 	private <T extends RDFTerm> RDFTerm internallyMap(T object) {
@@ -84,15 +101,6 @@ final class GraphImpl implements Graph {
 			// can be returned directly
 			return object;
 		}
-	}
-
-	@Override
-	public void add(Triple triple) {
-		BlankNodeOrIRI subject = (BlankNodeOrIRI) internallyMap(triple
-				.getSubject());
-		IRI predicate = (IRI) internallyMap(triple.getPredicate());
-		RDFTerm object = internallyMap(triple.getObject());
-		triples.add(factory.createTriple(subject, predicate, object));
 	}
 
 	@Override
