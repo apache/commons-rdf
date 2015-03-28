@@ -18,6 +18,7 @@
 package org.apache.commons.rdf.api;
 
 import java.util.Locale;
+import java.util.UUID;
 
 /**
  * Factory for creating RDFTerm and Graph instances.
@@ -33,7 +34,6 @@ import java.util.Locale;
  * because an IRI is considered invalid, then it SHOULD throw
  * IllegalArgumentException.
  * 
- * 
  * @see RDFTerm
  * @see Graph
  * 
@@ -43,12 +43,16 @@ public interface RDFTermFactory {
 	/**
 	 * Create a new blank node.
 	 * <p>
-	 * Two BlankNodes created with this method MUST NOT be equal.
+	 * All pairs of {@link BlankNode}s created with this method MUST NOT be
+	 * equal.
 	 * <p>
 	 * If supported, the {@link BlankNode#internalIdentifier()} of the returned
-	 * blank node MUST be an auto-generated value.
+	 * blank node MUST be a universally unique value across both this and any
+	 * other {@link RDFTermFactory} objects running in the JVM when compared
+	 * with both past and future calls both to this method, and calls to
+	 * {@link #createBlankNode(String)} with any inputs.
 	 * 
-	 * @return A new BlankNode
+	 * @return A new {@link BlankNode}
 	 * @throws UnsupportedOperationException
 	 *             If the operation is not supported.
 	 */
@@ -58,28 +62,37 @@ public interface RDFTermFactory {
 	}
 
 	/**
-	 * Create a blank node for the given internal identifier.
+	 * Create a blank node based on the given identifier.
 	 * <p>
-	 * Two BlankNodes created with the same identifier using this method MUST be
-	 * equal if they are in the same local scope (e.g. in the same Graph). See
-	 * the equals contract for {@link BlankNode} for more information.
+	 * All BlankNodes created using this method with the same parameter for a
+	 * single instance of RDFTermFactory MUST be equivalent. Ie,
+	 * {@link BlankNode#equals(Object)} MUST return true. A BlankNode object
+	 * created through the {@link RDFTermFactory#createBlankNode()} method must
+	 * be universally unique, and SHOULD contain a {@link UUID} as part of its
+	 * {@link #internalIdentifier()}.
 	 * <p>
-	 * If supported, the {@link BlankNode#internalIdentifier()} of the returned
-	 * blank node MAY be equal to the provided identifier.
+	 * A BlankNode object created through the
+	 * {@link RDFTermFactory#createBlankNode(String)} method must be universally
+	 * unique, but also produce the same {@link #internalIdentifier()} as any
+	 * previous or future calls to that method on that factory with the same
+	 * parameters. In addition, it SHOULD contain a {@link UUID} as part of its
+	 * {@link #internalIdentifier()}, created using
+	 * {@link UUID#nameUUIDFromBytes(byte[])} using a constant salt for each
+	 * instance of {@link RDFTermFactory}, with the given identifier joined to
+	 * that salt in a consistent manner.
+	 * <p>
+	 * BlankNodes created using this method with the same parameter, for
+	 * different instances of RDFTermFactory, SHOULD NOT be equivalent.
 	 * 
 	 * @param identifier
-	 *            A non-empty String that is unique to this blank node in this
-	 *            scope, and which may be used as the internal identifier for
-	 *            the blank node.
+	 *            A non-empty, non-null, String that is unique to this blank
+	 *            node in the context of this {@link RDFTermFactory}.
 	 * @return A BlankNode for the given identifier
-	 * @throws IllegalArgumentException
-	 *             if the identifier is not acceptable, e.g. was empty or
-	 *             contained unsupported characters.
 	 * @throws UnsupportedOperationException
 	 *             If the operation is not supported.
 	 */
 	default BlankNode createBlankNode(String identifier)
-			throws IllegalArgumentException, UnsupportedOperationException {
+			throws UnsupportedOperationException {
 		throw new UnsupportedOperationException(
 				"createBlankNode(String) not supported");
 	}
@@ -89,6 +102,11 @@ public interface RDFTermFactory {
 	 * <p>
 	 * It is undefined if the graph will be persisted by any underlying storage
 	 * mechanism.
+	 * <p>
+	 * {@link BlankNode} objects added to the {@link Graph} returned from this
+	 * method SHOULD be mapped using the {@link #createBlankNode(String)} of
+	 * this factory, called using the {@link BlankNode#internalIdentifier()} as
+	 * the parameter, before they are inserted into the Graph.
 	 * 
 	 * @return A new Graph
 	 * @throws UnsupportedOperationException
@@ -164,8 +182,9 @@ public interface RDFTermFactory {
 	 * <p>
 	 * The returned Literal SHOULD have a {@link Literal#getLexicalForm()} that
 	 * is equal to the provided lexicalForm, MUST NOT have a
-	 * {@link Literal#getLanguageTag()} present, and SHOULD return a
-	 * {@link Literal#getDatatype()} that is equal to the provided dataType IRI.
+	 * {@link Literal#getLanguageTag()} present, and MUST return a
+	 * {@link Literal#getDatatype()} that is equivalent to the provided dataType
+	 * IRI.
 	 * 
 	 * @param lexicalForm
 	 *            The literal value
@@ -204,7 +223,7 @@ public interface RDFTermFactory {
 	 * <code>http://www.w3.org/1999/02/22-rdf-syntax-ns#langString</code>, and
 	 * MUST have a {@link Literal#getLanguageTag()} present which SHOULD be
 	 * equal to the provided language tag (compared as
-	 * {@link String#toLowerCase(Locale)} in {@link Locale#ENGLISH}).
+	 * {@link String#toLowerCase(Locale)} using {@link Locale#ENGLISH}).
 	 * 
 	 * @param lexicalForm
 	 *            The literal value

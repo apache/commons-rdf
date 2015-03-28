@@ -44,6 +44,11 @@ final class GraphImpl implements Graph {
 
 	private static final int TO_STRING_MAX = 10;
 	private final Set<Triple> triples = new LinkedHashSet<Triple>();
+	private final SimpleRDFTermFactory factory;
+
+	GraphImpl(SimpleRDFTermFactory simpleRDFTermFactory) {
+		this.factory = simpleRDFTermFactory;
+	}
 
 	@Override
 	public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
@@ -60,37 +65,34 @@ final class GraphImpl implements Graph {
 			// this graph will generate a local object that is mapped to an
 			// equivalent object, based on the code in the package private
 			// BlankNodeImpl class
-			return new BlankNodeImpl(this, blankNode.internalIdentifier());
+			return factory.createBlankNode(blankNode.internalIdentifier());
 		} else if (object instanceof IRI && !(object instanceof IRIImpl)) {
 			IRI iri = (IRI) object;
-			return new IRIImpl(iri.getIRIString());
+			return factory.createIRI(iri.getIRIString());
 		} else if (object instanceof Literal
 				&& !(object instanceof LiteralImpl)) {
 			Literal literal = (Literal) object;
 			if (literal.getLanguageTag().isPresent()) {
-				return new LiteralImpl(literal.getLexicalForm(), literal
+				return factory.createLiteral(literal.getLexicalForm(), literal
 						.getLanguageTag().get());
 			} else {
-				return new LiteralImpl(literal.getLexicalForm(),
+				return factory.createLiteral(literal.getLexicalForm(),
 						(IRI) internallyMap(literal.getDatatype()));
 			}
 		} else {
+			// The object is a local implementation, and is not a BlankNode, so
+			// can be returned directly
 			return object;
 		}
 	}
 
 	@Override
 	public void add(Triple triple) {
-		if (!(triple instanceof TripleImpl)) {
-			BlankNodeOrIRI subject = (BlankNodeOrIRI) internallyMap(triple
-					.getSubject());
-			IRI predicate = (IRI) internallyMap(triple.getPredicate());
-			RDFTerm object = internallyMap(triple.getObject());
-			triples.add(new TripleImpl(subject, predicate, object));
-		} else {
-			triples.add(new TripleImpl(triple.getSubject(), triple
-					.getPredicate(), triple.getObject()));
-		}
+		BlankNodeOrIRI subject = (BlankNodeOrIRI) internallyMap(triple
+				.getSubject());
+		IRI predicate = (IRI) internallyMap(triple.getPredicate());
+		RDFTerm object = internallyMap(triple.getObject());
+		triples.add(factory.createTriple(subject, predicate, object));
 	}
 
 	@Override

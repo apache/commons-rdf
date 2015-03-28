@@ -17,8 +17,6 @@
  */
 package org.apache.commons.rdf.simple;
 
-import java.util.Optional;
-
 import org.apache.commons.rdf.api.BlankNode;
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.Graph;
@@ -34,7 +32,6 @@ import org.apache.commons.rdf.api.Triple;
  * The {@link RDFTerm} and {@link Graph} instances created by this factory are
  * simple in-memory Implementations that are not thread-safe or efficient, but
  * which may be useful for testing and prototyping purposes.
- *
  */
 public class SimpleRDFTermFactory implements RDFTermFactory {
 
@@ -45,12 +42,12 @@ public class SimpleRDFTermFactory implements RDFTermFactory {
 
 	@Override
 	public BlankNode createBlankNode(String identifier) {
-		return new BlankNodeImpl(Optional.empty(), identifier);
+		return new BlankNodeImpl(this, identifier);
 	}
 
 	@Override
 	public Graph createGraph() {
-		return new GraphImpl();
+		return new GraphImpl(this);
 	}
 
 	@Override
