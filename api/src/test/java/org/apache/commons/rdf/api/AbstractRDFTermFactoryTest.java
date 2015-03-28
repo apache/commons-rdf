@@ -29,7 +29,7 @@ import org.junit.Test;
 /**
  * Test RDFTermFactory implementation (and thus its RDFTerm implementations)
  * <p>
- * To add to your implementation's tests, testCreate a subclass with a name ending
+ * To add to your implementation's tests, create a subclass with a name ending
  * in <code>Test</code> and provide {@link #createFactory()} which minimally
  * supports one of the operations, but ideally supports all operations.
  * 
