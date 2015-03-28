@@ -29,7 +29,7 @@ import org.junit.Test;
 /**
  * Test RDFTermFactory implementation (and thus its RDFTerm implementations)
  * <p>
- * To add to your implementation's tests, create a subclass with a name ending
+ * To add to your implementation's tests, testCreate a subclass with a name ending
  * in <code>Test</code> and provide {@link #createFactory()} which minimally
  * supports one of the operations, but ideally supports all operations.
  * 
@@ -40,8 +40,22 @@ public abstract class AbstractRDFTermFactoryTest {
 
 	private RDFTermFactory factory;
 
+	/**
+	 * testCreate a new, distinct {@link RDFTermFactory} object using the
+	 * implementation being tested here.
+	 * 
+	 * @return a new, distinct {@link RDFTermFactory} object using the
+	 *         implementation being tested here
+	 */
+	public abstract RDFTermFactory createFactory();
+
+	@Before
+	public void setUp() {
+		factory = createFactory();
+	}
+
 	@Test
-	public void createBlankNode() throws Exception {
+	public void testCreateBlankNode() throws Exception {
 		BlankNode bnode;
 		try {
 			bnode = factory.createBlankNode();
@@ -57,7 +71,7 @@ public abstract class AbstractRDFTermFactoryTest {
 	}
 
 	@Test
-	public void createBlankNodeIdentifierEmpty() throws Exception {
+	public void testCreateBlankNodeIdentifierEmpty() throws Exception {
 		try {
 			factory.createBlankNode("");
 		} catch (UnsupportedOperationException e) {
@@ -68,7 +82,7 @@ public abstract class AbstractRDFTermFactoryTest {
 	}
 
 	@Test
-	public void createBlankNodeIdentifier() throws Exception {
+	public void testCreateBlankNodeIdentifier() throws Exception {
 		BlankNode bnode;
 		try {
 			bnode = factory.createBlankNode("example1");
@@ -83,7 +97,7 @@ public abstract class AbstractRDFTermFactoryTest {
 	}
 
 	@Test
-	public void createBlankNodeIdentifierTwice() throws Exception {
+	public void testCreateBlankNodeIdentifierTwice() throws Exception {
 		BlankNode bnode1, bnode2, bnode3;
 		try {
 			bnode1 = factory.createBlankNode("example1");
@@ -100,10 +114,8 @@ public abstract class AbstractRDFTermFactoryTest {
 		assertNotEquals(bnode1.ntriplesString(), bnode3.ntriplesString());
 	}
 
-	public abstract RDFTermFactory createFactory();
-
 	@Test
-	public void createGraph() {
+	public void testCreateGraph() {
 		Graph graph;
 		try {
 			graph = factory.createGraph();
@@ -124,7 +136,7 @@ public abstract class AbstractRDFTermFactoryTest {
 	}
 
 	@Test
-	public void createIRI() throws Exception {
+	public void testCreateIRI() throws Exception {
 		IRI example;
 		try {
 			example = factory.createIRI("http://example.com/");
@@ -160,7 +172,7 @@ public abstract class AbstractRDFTermFactoryTest {
 	}
 
 	@Test
-	public void createIRIRelative() throws Exception {
+	public void testCreateIRIRelative() throws Exception {
 		// Although relative IRIs are defined in
 		// http://www.w3.org/TR/rdf11-concepts/#section-IRIs
 		// it is not a requirement for an implementation to support
@@ -186,7 +198,7 @@ public abstract class AbstractRDFTermFactoryTest {
 	}
 
 	@Test
-	public void createLiteral() throws Exception {
+	public void testCreateLiteral() throws Exception {
 		Literal example;
 		try {
 			example = factory.createLiteral("Example");
@@ -204,7 +216,7 @@ public abstract class AbstractRDFTermFactoryTest {
 	}
 
 	@Test
-	public void createLiteralDateTime() throws Exception {
+	public void testCreateLiteralDateTime() throws Exception {
 		Literal dateTime;
 		try {
 			dateTime = factory
@@ -225,7 +237,7 @@ public abstract class AbstractRDFTermFactoryTest {
 	}
 
 	@Test
-	public void createLiteralLang() throws Exception {
+	public void testCreateLiteralLang() throws Exception {
 		Literal example;
 		try {
 			example = factory.createLiteral("Example", "en");
@@ -242,7 +254,7 @@ public abstract class AbstractRDFTermFactoryTest {
 	}
 
 	@Test
-	public void createLiteralLangISO693_3() throws Exception {
+	public void testCreateLiteralLangISO693_3() throws Exception {
 		// see https://issues.apache.org/jira/browse/JENA-827
 		Literal vls;
 		try {
@@ -260,7 +272,7 @@ public abstract class AbstractRDFTermFactoryTest {
 	}
 
 	@Test
-	public void createLiteralString() throws Exception {
+	public void testCreateLiteralString() throws Exception {
 		Literal example;
 		try {
 			example = factory.createLiteral("Example", factory
@@ -278,7 +290,7 @@ public abstract class AbstractRDFTermFactoryTest {
 	}
 
 	@Test
-	public void createTripleBnodeBnode() {
+	public void testCreateTripleBnodeBnode() {
 		BlankNode subject;
 		IRI predicate;
 		BlankNode object;
@@ -301,7 +313,7 @@ public abstract class AbstractRDFTermFactoryTest {
 	}
 
 	@Test
-	public void createTripleBnodeIRI() {
+	public void testCreateTripleBnodeIRI() {
 		BlankNode subject;
 		IRI predicate;
 		IRI object;
@@ -324,7 +336,7 @@ public abstract class AbstractRDFTermFactoryTest {
 	}
 
 	@Test
-	public void createTripleBnodeTriple() {
+	public void testCreateTripleBnodeTriple() {
 		BlankNode subject;
 		IRI predicate;
 		Literal object;
@@ -346,13 +358,8 @@ public abstract class AbstractRDFTermFactoryTest {
 		assertEquals(object, triple.getObject());
 	}
 
-	@Before
-	public void getFactory() {
-		factory = createFactory();
-	}
-
 	@Test
-	public void possiblyInvalidBlankNode() throws Exception {
+	public void testPossiblyInvalidBlankNode() throws Exception {
 		BlankNode withColon;
 		try {
 			withColon = factory.createBlankNode("with:colon");
@@ -374,7 +381,7 @@ public abstract class AbstractRDFTermFactoryTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void invalidIRI() throws Exception {
+	public void testInvalidIRI() throws Exception {
 		try {
 			factory.createIRI("<no_brackets>");
 		} catch (UnsupportedOperationException ex) {
@@ -384,7 +391,7 @@ public abstract class AbstractRDFTermFactoryTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void invalidLiteralLang() throws Exception {
+	public void testInvalidLiteralLang() throws Exception {
 		try {
 			factory.createLiteral("Example", "with space");
 		} catch (UnsupportedOperationException ex) {
@@ -395,7 +402,7 @@ public abstract class AbstractRDFTermFactoryTest {
 	}
 
 	@Test(expected = Exception.class)
-	public void invalidTriplePredicate() {
+	public void testInvalidTriplePredicate() {
 		BlankNode subject = factory.createBlankNode("b1");
 		BlankNode predicate = factory.createBlankNode("b2");
 		BlankNode object = factory.createBlankNode("b3");
