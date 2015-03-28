@@ -273,7 +273,7 @@ public final class Types implements IRI {
 	public int hashCode() {
 		return this.field.hashCode();
 	}
-	
+
 	@Override
 	public String toString() {
 		return this.field.toString();
@@ -299,9 +299,13 @@ public final class Types implements IRI {
 	 *         {@link Optional#empty()} if it is not present here.
 	 */
 	public static Optional<IRI> get(IRI nextIRI) {
-		for (IRI nextType : values()) {
-			if (nextType.equals(nextIRI)) {
-				return Optional.of(nextType);
+		if (ALL_TYPES.contains(nextIRI)) {
+			// If we know about this IRI, then look through our set to find the
+			// object that matches and return it
+			for (IRI nextType : ALL_TYPES) {
+				if (nextType.equals(nextIRI)) {
+					return Optional.of(nextType);
+				}
 			}
 		}
 		return Optional.empty();
