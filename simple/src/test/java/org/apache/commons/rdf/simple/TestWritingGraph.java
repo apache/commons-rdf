@@ -17,6 +17,8 @@
  */
 package org.apache.commons.rdf.simple;
 
+import static org.junit.Assert.*;
+
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -39,7 +41,7 @@ public class TestWritingGraph {
 	 * 200k triples should do - about 7 MB on disk. Override with
 	 * -Dtriples=20000000 to exercise your memory banks.
 	 */
-	private static final int TRIPLES = Integer.getInteger("triples", 200000);
+	private static final long TRIPLES = Long.getLong("triples", 200000L);
 
 	/** Run tests with -Dkeepfiles=true to inspect /tmp files **/
 	private static boolean KEEP_FILES = Boolean.getBoolean("keepfiles");
@@ -52,7 +54,7 @@ public class TestWritingGraph {
 	public static void createGraph() throws Exception {
 		factory = new SimpleRDFTermFactory();
 		graph = factory.createGraph();
-		BlankNode subject = factory.createBlankNode("subj");
+		IRI subject = factory.createIRI("subj");
 		IRI predicate = factory.createIRI("pred");
 		List<IRI> types = new ArrayList<>(Types.values());
 		// Ensure we don't try to create a literal with rdf:langString but
@@ -60,7 +62,10 @@ public class TestWritingGraph {
 		types.remove(Types.RDF_LANGSTRING);
 		Collections.shuffle(types);
 		for (int i = 0; i < TRIPLES; i++) {
-			if (i % 5 == 0) {
+			if (i % 11 == 0) {
+				graph.add(subject, predicate,
+						factory.createBlankNode("Example " + i));
+			} else if (i % 5 == 0) {
 				graph.add(subject, predicate,
 						factory.createLiteral("Example " + i, "en"));
 			} else if (i % 3 == 0) {
@@ -89,11 +94,12 @@ public class TestWritingGraph {
 
 	@Test
 	public void countQuery() {
-		BlankNode subject = factory.createBlankNode("subj");
+		IRI subject = factory.createIRI("subj");
 		IRI predicate = factory.createIRI("pred");
 		long count = graph.getTriples(subject, predicate, null).unordered()
 				.parallel().count();
 		System.out.println("Counted - " + count);
+		assertEquals(count, TRIPLES);
 	}
 
 	@Test
