@@ -37,7 +37,7 @@ public class DefaultGraphTest extends AbstractGraphTest {
 		return new RDFTermFactory() {
 			@Override
 			public Graph createGraph() throws UnsupportedOperationException {
-				return new GraphImpl();
+				return new GraphImpl(new SimpleRDFTermFactory());
 			}
 
 			@Override
