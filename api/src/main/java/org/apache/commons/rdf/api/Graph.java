@@ -126,7 +126,7 @@ public interface Graph extends AutoCloseable {
 	/**
 	 * Get all triples contained by the graph.<br>
 	 * <p>
-	 * The iteration does not contain any duplicate triples, as determined by
+	 * The iteration SHOULD NOT contain any duplicate triples, as determined by
 	 * the equals method for each {@link Triple}.
 	 * <p>
 	 * The behaviour of the Stream is not specified if add, remove, or clear,
