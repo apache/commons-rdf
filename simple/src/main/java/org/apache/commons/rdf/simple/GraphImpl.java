@@ -133,18 +133,15 @@ final class GraphImpl implements Graph {
 				// Lacking the requirement for .equals() we have to be silly
 				// and test ntriples string equivalance
 				if (subject != null
-						&& !t.getSubject().ntriplesString()
-								.equals(subject.ntriplesString())) {
+						&& !t.getSubject().equals(subject)) {
 					return false;
 				}
 				if (predicate != null
-						&& !t.getPredicate().ntriplesString()
-								.equals(predicate.ntriplesString())) {
+						&& !t.getPredicate().equals(predicate)) {
 					return false;
 				}
 				if (object != null
-						&& !t.getObject().ntriplesString()
-								.equals(object.ntriplesString())) {
+						&& !t.getObject().equals(object)) {
 					return false;
 				}
 				return true;
