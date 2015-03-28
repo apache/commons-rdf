@@ -42,11 +42,14 @@ public class SimpleRDFTermFactory implements RDFTermFactory {
 
 	@Override
 	public BlankNode createBlankNode(String identifier) {
+		// Creates a BlankNodeImpl object using this object as the salt
 		return new BlankNodeImpl(this, identifier);
 	}
 
 	@Override
 	public Graph createGraph() {
+		// Creates a GraphImpl object using this object as the factory for
+		// delegating all object creation to
 		return new GraphImpl(this);
 	}
 
