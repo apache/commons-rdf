@@ -120,9 +120,9 @@ public abstract class AbstractGraphTest {
 		System.out.println(graph);
 		assertTrue(graph
 				.toString()
-				.startsWith(
+				.contains(
 						"<http://example.com/alice> <http://xmlns.com/foaf/0.1/name> \"Alice\" ."));
-		assertTrue(graph.toString().endsWith(
+		assertTrue(graph.toString().contains(
 				" <http://xmlns.com/foaf/0.1/name> \"A company\" ."));
 
 	}
