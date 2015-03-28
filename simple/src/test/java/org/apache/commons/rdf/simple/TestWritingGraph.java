@@ -111,8 +111,7 @@ public class TestWritingGraph {
 			graphFile.toFile().deleteOnExit();
 		}
 
-		Stream<CharSequence> stream = graph.getTriples().unordered()
-				.map(Object::toString);
+		Stream<CharSequence> stream = graph.getTriples().map(Object::toString);
 		Files.write(graphFile, stream::iterator, Charset.forName("UTF-8"));
 	}
 
@@ -125,7 +124,24 @@ public class TestWritingGraph {
 			graphFile.toFile().deleteOnExit();
 		}
 
-		BlankNode subject = factory.createBlankNode("subj");
+		IRI subject = factory.createIRI("subj");
+		IRI predicate = factory.createIRI("pred");
+		Stream<CharSequence> stream = graph
+				.getTriples(subject, predicate, null).map(Object::toString);
+		Files.write(graphFile, stream::iterator, Charset.forName("UTF-8"));
+
+	}
+
+	@Test
+	public void writeGraphFromStreamFilteredNoMatches() throws Exception {
+		Path graphFile = Files.createTempFile("graph-empty-", ".nt");
+		if (KEEP_FILES) {
+			System.out.println("Filtered stream: " + graphFile);
+		} else {
+			graphFile.toFile().deleteOnExit();
+		}
+
+		IRI subject = factory.createIRI("nonexistent");
 		IRI predicate = factory.createIRI("pred");
 		Stream<CharSequence> stream = graph
 				.getTriples(subject, predicate, null).map(Object::toString);
