@@ -25,9 +25,11 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.rdf.api.BlankNode;
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
+import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.Triple;
 
@@ -51,10 +53,44 @@ final class GraphImpl implements Graph {
 
 	}
 
+	private <T extends RDFTerm> RDFTerm internallyMap(T object) {
+		if (object instanceof BlankNode) {
+			BlankNode blankNode = (BlankNode) object;
+			// This guarantees that adding the same BlankNode multiple times to
+			// this graph will generate a local object that is mapped to an
+			// equivalent object, based on the code in the package private
+			// BlankNodeImpl class
+			return new BlankNodeImpl(this, blankNode.internalIdentifier());
+		} else if (object instanceof IRI && !(object instanceof IRIImpl)) {
+			IRI iri = (IRI) object;
+			return new IRIImpl(iri.getIRIString());
+		} else if (object instanceof Literal
+				&& !(object instanceof LiteralImpl)) {
+			Literal literal = (Literal) object;
+			if (literal.getLanguageTag().isPresent()) {
+				return new LiteralImpl(literal.getLexicalForm(), literal
+						.getLanguageTag().get());
+			} else {
+				return new LiteralImpl(literal.getLexicalForm(),
+						(IRI) internallyMap(literal.getDatatype()));
+			}
+		} else {
+			return object;
+		}
+	}
+
 	@Override
 	public void add(Triple triple) {
-		triples.add(new TripleImpl(Optional.of(this), Objects
-				.requireNonNull(triple)));
+		if (!(triple instanceof TripleImpl)) {
+			BlankNodeOrIRI subject = (BlankNodeOrIRI) internallyMap(triple
+					.getSubject());
+			IRI predicate = (IRI) internallyMap(triple.getPredicate());
+			RDFTerm object = internallyMap(triple.getObject());
+			triples.add(new TripleImpl(subject, predicate, object));
+		} else {
+			triples.add(new TripleImpl(triple.getSubject(), triple
+					.getPredicate(), triple.getObject()));
+		}
 	}
 
 	@Override

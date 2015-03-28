@@ -83,16 +83,14 @@ public abstract class AbstractRDFTermFactoryTest {
 
 	@Test
 	public void testCreateBlankNodeIdentifier() throws Exception {
-		BlankNode bnode;
 		try {
-			bnode = factory.createBlankNode("example1");
+			factory.createBlankNode("example1");
 		} catch (UnsupportedOperationException ex) {
 			Assume.assumeNoException(ex);
 			return;
 		}
-		assertEquals("example1", bnode.internalIdentifier());
-		// .. but we can't assume the internal identifier leaks into
-		// ntriplesString
+		// We can't assume anything about the resulting bnode
+		// assertEquals("example1", bnode.internalIdentifier());
 		// assertEquals("_:example1", bnode.ntriplesString());
 	}
 
@@ -107,10 +105,13 @@ public abstract class AbstractRDFTermFactoryTest {
 			Assume.assumeNoException(ex);
 			return;
 		}
+		// We don't know what the identifier is, but it MUST be the same
 		assertEquals(bnode1.internalIdentifier(), bnode2.internalIdentifier());
 		// We don't know what the ntriplesString is, but it MUST be the same
 		assertEquals(bnode1.ntriplesString(), bnode2.ntriplesString());
 		// and here it MUST differ
+		assertNotEquals(bnode1.internalIdentifier(),
+				bnode3.internalIdentifier());
 		assertNotEquals(bnode1.ntriplesString(), bnode3.ntriplesString());
 	}
 
