@@ -20,12 +20,15 @@ package org.apache.commons.rdf.simple;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 import org.apache.commons.rdf.api.BlankNode;
 import org.apache.commons.rdf.api.IRI;
 
@@ -47,16 +50,35 @@ public class TestWritingGraph {
 		graph = new GraphImpl();
 		BlankNode subject = new BlankNodeImpl(Optional.of(graph), "subj");
 		IRI predicate = new IRIImpl("pred");
+		List<IRI> types = new ArrayList<>(Types.values());
+		// Ensure we don't try to create a literal with rdf:langString but
+		// without a language tag
+		types.remove(Types.RDF_LANGSTRING);
+		Collections.shuffle(types);
 		for (int i = 0; i < TRIPLES; i++) {
-			graph.add(subject, predicate, new LiteralImpl("Example " + i, "en"));
+			if (i % 5 == 0) {
+				graph.add(subject, predicate, new LiteralImpl("Example " + i,
+						"en"));
+			} else if (i % 3 == 0) {
+				graph.add(subject, predicate, new LiteralImpl("Example " + i,
+						types.get(i % types.size())));
+			} else {
+				graph.add(subject, predicate, new LiteralImpl("Example " + i));
+			}
 		}
+	}
+	
+	@AfterClass
+	public static void tearDownClass() throws Exception {
+		graph.clear();
+		graph = null;
 	}
 
 	@Test
 	public void createGraphTiming() throws Exception {
 		createGraph();
 	}
-	
+
 	@Test
 	public void countQuery() {
 		BlankNode subject = new BlankNodeImpl(Optional.of(graph), "subj");
@@ -74,7 +96,7 @@ public class TestWritingGraph {
 		} else {
 			graphFile.toFile().deleteOnExit();
 		}
-		
+
 		Stream<CharSequence> stream = graph.getTriples().unordered()
 				.map(Object::toString);
 		Files.write(graphFile, stream::iterator, Charset.forName("UTF-8"));
