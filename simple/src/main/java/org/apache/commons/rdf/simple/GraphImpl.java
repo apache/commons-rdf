@@ -18,7 +18,6 @@
 package org.apache.commons.rdf.simple;
 
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
