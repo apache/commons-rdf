@@ -23,14 +23,15 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.apache.commons.rdf.api.BlankNode;
+import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
+import org.apache.commons.rdf.api.RDFTermFactory;
 
 public class TestWritingGraph {
 
@@ -43,13 +44,16 @@ public class TestWritingGraph {
 	/** Run tests with -Dkeepfiles=true to inspect /tmp files **/
 	private static boolean KEEP_FILES = Boolean.getBoolean("keepfiles");
 
-	private static GraphImpl graph;
+	private static Graph graph;
+
+	private static RDFTermFactory factory;
 
 	@BeforeClass
 	public static void createGraph() throws Exception {
-		graph = new GraphImpl();
-		BlankNode subject = new BlankNodeImpl(Optional.of(graph), "subj");
-		IRI predicate = new IRIImpl("pred");
+		factory = new SimpleRDFTermFactory();
+		graph = factory.createGraph();
+		BlankNode subject = factory.createBlankNode("subj");
+		IRI predicate = factory.createIRI("pred");
 		List<IRI> types = new ArrayList<>(Types.values());
 		// Ensure we don't try to create a literal with rdf:langString but
 		// without a language tag
@@ -57,17 +61,21 @@ public class TestWritingGraph {
 		Collections.shuffle(types);
 		for (int i = 0; i < TRIPLES; i++) {
 			if (i % 5 == 0) {
-				graph.add(subject, predicate, new LiteralImpl("Example " + i,
-						"en"));
+				graph.add(subject, predicate,
+						factory.createLiteral("Example " + i, "en"));
 			} else if (i % 3 == 0) {
-				graph.add(subject, predicate, new LiteralImpl("Example " + i,
-						types.get(i % types.size())));
+				graph.add(
+						subject,
+						predicate,
+						factory.createLiteral("Example " + i,
+								types.get(i % types.size())));
 			} else {
-				graph.add(subject, predicate, new LiteralImpl("Example " + i));
+				graph.add(subject, predicate,
+						factory.createLiteral("Example " + i));
 			}
 		}
 	}
-	
+
 	@AfterClass
 	public static void tearDownClass() throws Exception {
 		graph.clear();
@@ -81,8 +89,8 @@ public class TestWritingGraph {
 
 	@Test
 	public void countQuery() {
-		BlankNode subject = new BlankNodeImpl(Optional.of(graph), "subj");
-		IRI predicate = new IRIImpl("pred");
+		BlankNode subject = factory.createBlankNode("subj");
+		IRI predicate = factory.createIRI("pred");
 		long count = graph.getTriples(subject, predicate, null).unordered()
 				.parallel().count();
 		System.out.println("Counted - " + count);
@@ -111,8 +119,8 @@ public class TestWritingGraph {
 			graphFile.toFile().deleteOnExit();
 		}
 
-		BlankNode subject = new BlankNodeImpl(Optional.of(graph), "subj");
-		IRI predicate = new IRIImpl("pred");
+		BlankNode subject = factory.createBlankNode("subj");
+		IRI predicate = factory.createIRI("pred");
 		Stream<CharSequence> stream = graph
 				.getTriples(subject, predicate, null).map(Object::toString);
 		Files.write(graphFile, stream::iterator, Charset.forName("UTF-8"));
