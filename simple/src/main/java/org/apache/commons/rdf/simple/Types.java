@@ -273,6 +273,11 @@ public final class Types implements IRI {
 	public int hashCode() {
 		return this.field.hashCode();
 	}
+	
+	@Override
+	public String toString() {
+		return this.field.toString();
+	}
 
 	/**
 	 * Get an immutable set of the IRIs used by the RDF-1.1 specification to
