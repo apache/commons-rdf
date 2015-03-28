@@ -30,18 +30,18 @@ import org.apache.commons.rdf.api.Graph;
  * A simple implementation of BlankNode.
  *
  */
-class BlankNodeImpl implements BlankNode {
+final class BlankNodeImpl implements BlankNode {
 
 	private static AtomicLong bnodeCounter = new AtomicLong();
 	private final String id;
-	private final Optional<Graph> localScope;
+	private final Graph localScope;
 
 	public BlankNodeImpl() {
 		this(Optional.empty(), "b:" + bnodeCounter.incrementAndGet());
 	}
 
 	public BlankNodeImpl(Optional<Graph> localScope, String id) {
-		this.localScope = Objects.requireNonNull(localScope);
+		this.localScope = Objects.requireNonNull(localScope).orElse(null);
 		if (Objects.requireNonNull(id).isEmpty()) {
 			throw new IllegalArgumentException("Invalid blank node id: " + id);
 			// NOTE: It is valid for the id to not be a valid ntriples bnode id.
