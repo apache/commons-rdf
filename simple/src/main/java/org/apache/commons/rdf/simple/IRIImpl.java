@@ -21,18 +21,19 @@ import java.net.URI;
 
 import org.apache.commons.rdf.api.IRI;
 
-/** 
+/**
  * A simple implementation of IRI.
  *
  */
-class IRIImpl implements IRI {
+final class IRIImpl implements IRI {
 
-	protected String iri;
+	private final String iri;
 
 	public IRIImpl(String iri) {
 		// should throw IllegalArgumentException on most illegal IRIs
 		URI.create(iri);
-		// NOTE: We don't keep the URI as it uses outdated RFC2396 and will get some IDNs wrong
+		// NOTE: We don't keep the URI as it uses outdated RFC2396 and will get
+		// some IDNs wrong
 		this.iri = iri;
 	}
 
@@ -53,7 +54,10 @@ class IRIImpl implements IRI {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (!(obj instanceof IRI)) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null || !(obj instanceof IRI)) {
 			return false;
 		}
 		IRI other = (IRI) obj;

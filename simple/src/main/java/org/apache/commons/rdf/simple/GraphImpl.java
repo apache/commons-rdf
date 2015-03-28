@@ -38,10 +38,10 @@ import org.apache.commons.rdf.api.Triple;
  * <p>
  * All Stream operations are performed using parallel and unordered directives.
  */
-class GraphImpl implements Graph {
+final class GraphImpl implements Graph {
 
 	private static final int TO_STRING_MAX = 10;
-	protected final Set<Triple> triples = new LinkedHashSet<Triple>();
+	private final Set<Triple> triples = new LinkedHashSet<Triple>();
 
 	@Override
 	public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {

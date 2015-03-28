@@ -32,11 +32,11 @@ import org.apache.commons.rdf.api.Triple;
  * A simple implementation of Triple.
  *
  */
-class TripleImpl implements Triple {
+final class TripleImpl implements Triple {
 
-	private BlankNodeOrIRI subject;
-	private IRI predicate;
-	private RDFTerm object;
+	private final BlankNodeOrIRI subject;
+	private final IRI predicate;
+	private final RDFTerm object;
 
 	/**
 	 * Construct Triple from its constituent parts.
