@@ -33,9 +33,9 @@ class LiteralImpl implements Literal {
 
 	private static final String QUOTE = "\"";
 
-	private IRI dataType;
-	private Optional<String> languageTag;
-	private String lexicalForm;
+	private final IRI dataType;
+	private final String languageTag;
+	private final String lexicalForm;
 
 	public LiteralImpl(String literal) {
 		this(literal, Types.XSD_STRING);
@@ -45,12 +45,13 @@ class LiteralImpl implements Literal {
 		this.lexicalForm = Objects.requireNonNull(lexicalForm);
 		this.dataType = Types.get(Objects.requireNonNull(dataType)).orElse(
 				dataType);
-		this.languageTag = Optional.empty();
+		this.languageTag = null;
 	}
 
 	public LiteralImpl(String literal, String languageTag) {
 		this.lexicalForm = Objects.requireNonNull(literal);
-		this.languageTag = Optional.of(languageTag.toLowerCase(Locale.ENGLISH));
+		this.languageTag = Objects.requireNonNull(languageTag).toLowerCase(
+				Locale.ENGLISH);
 		if (languageTag.isEmpty()) {
 			// TODO: Check against
 			// http://www.w3.org/TR/n-triples/#n-triples-grammar
@@ -74,7 +75,7 @@ class LiteralImpl implements Literal {
 
 	@Override
 	public Optional<String> getLanguageTag() {
-		return languageTag;
+		return Optional.ofNullable(languageTag);
 	}
 
 	@Override
@@ -117,7 +118,10 @@ class LiteralImpl implements Literal {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (!(obj instanceof Literal)) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null || !(obj instanceof Literal)) {
 			return false;
 		}
 		Literal literal = (Literal) obj;

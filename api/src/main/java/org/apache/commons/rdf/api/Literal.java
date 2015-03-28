@@ -17,6 +17,7 @@
  */
 package org.apache.commons.rdf.api;
 
+import java.io.Serializable;
 import java.util.Optional;
 
 /**
@@ -59,7 +60,12 @@ public interface Literal extends RDFTerm {
 	 * href="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
 	 * >http://www.w3.org/1999/02/22-rdf-syntax-ns#langString</a>, this method
 	 * must return {@link Optional#empty()}.
-	 *
+	 * <p>
+	 * Implementor note: If your application requires {@link Serializable}
+	 * objects, it is best not to store an {@link Optional} in a field. It is
+	 * recommended to use {@link Optional#ofNullable(Object)} to create the
+	 * return value for this method.
+	 * 
 	 * @return The {@link Optional} language tag for this literal. If
 	 *         {@link Optional#isPresent()} returns true, the value returned by
 	 *         {@link Optional#get()} must be a non-empty string conforming to
