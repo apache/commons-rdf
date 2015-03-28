@@ -17,7 +17,6 @@
  */
 package org.apache.commons.rdf.api;
 
-import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 /**
@@ -29,15 +28,19 @@ import java.util.stream.Stream;
 public interface Graph extends AutoCloseable {
 
 	/**
-	 * Add a triple to the graph.
+	 * Add a triple to the graph, possibly mapping any of the components of the
+	 * Triple to those supported by this Graph.
 	 *
 	 * @param triple
 	 *            The triple to add
+	 * @return The Triple that was added to the graph, including any mapped
+	 *         components.
 	 */
-	void add(Triple triple);
+	Triple add(Triple triple);
 
 	/**
-	 * Add a triple to the graph.
+	 * Add a triple to the graph, possibly mapping any of the components to
+	 * those supported by this Graph.
 	 *
 	 * @param subject
 	 *            The triple subject
@@ -45,8 +48,10 @@ public interface Graph extends AutoCloseable {
 	 *            The triple predicate
 	 * @param object
 	 *            The triple object
+	 * @return The Triple that was added to the graph, including any mapped
+	 *         components.
 	 */
-	void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
+	Triple add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
 
 	/**
 	 * Check if graph contains triple.
@@ -109,7 +114,6 @@ public interface Graph extends AutoCloseable {
 
 	/**
 	 * Clear the graph, removing all triples.
-	 * 
 	 */
 	void clear();
 

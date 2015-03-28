@@ -51,15 +51,17 @@ final class GraphImpl implements Graph {
 	}
 
 	@Override
-	public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+	public Triple add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
 		BlankNodeOrIRI newSubject = (BlankNodeOrIRI) internallyMap(subject);
 		IRI newPredicate = (IRI) internallyMap(predicate);
 		RDFTerm newObject = internallyMap(object);
-		triples.add(factory.createTriple(newSubject, newPredicate, newObject));
+		Triple result = factory.createTriple(newSubject, newPredicate, newObject);
+		triples.add(result);
+		return result;
 	}
 
 	@Override
-	public void add(Triple triple) {
+	public Triple add(Triple triple) {
 		BlankNodeOrIRI newSubject = (BlankNodeOrIRI) internallyMap(triple
 				.getSubject());
 		IRI newPredicate = (IRI) internallyMap(triple.getPredicate());
@@ -70,9 +72,12 @@ final class GraphImpl implements Graph {
 				&& newPredicate == triple.getPredicate()
 				&& newObject == triple.getObject()) {
 			triples.add(triple);
+			return triple;
 		} else {
-			triples.add(factory.createTriple(newSubject, newPredicate,
-					newObject));
+			Triple result = factory.createTriple(newSubject, newPredicate,
+					newObject);
+			triples.add(result);
+			return result;
 		}
 	}
 
