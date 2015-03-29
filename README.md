@@ -1,20 +1,39 @@
-# Commons RDF
+# Apache Commons RDF (Incubating)
 
-Working repository for experimenting with idea of providing a common library for [RDF 1.1](http://www.w3.org/TR/rdf11-concepts/) that could be implemented by the upcoming versions of the main Java toolkits ([Jena](http://jena.apache.org) 3.0 and [Sesame](http://rdf4j.org/) 4.0) as well as wrappers for other JVM languages ([Banana RDF](https://github.com/w3c/banana-rdf) and so on).
+[![Build Status](https://travis-ci.org/apache/incubator-commonsrdf.svg?branch=master)](https://travis-ci.org/apache/incubator-commonsrdf) [![Coverage Status](https://coveralls.io/r/apache/incubator-commonsrdf/badge.svg)](https://coveralls.io/r/apache/incubator-commonsrdf)
 
-The main motivation behind this simple library is revise an historical incompatibility issue. This library does not pretend to be a generic api wrapping those libraries, but a set of interfaces for the RDF 1.1 concepts that can be used to expose common RDF-1.1 concepts using common Java interfaces. In the initial phase commons-rdf is focused on a subset of the core concepts defined by RDF-1.1 (IRI, Blank Node, Literal, Triple, and Graph). In particular, commons RDF aims to provide a type-safe, non-general API that covers RDF 1.1. In a future phase we may define interfaces for Datasets and Quads.
+Commons RDF aims to provide a common library for [RDF 1.1](http://www.w3.org/TR/rdf11-concepts/) 
+that could be implemented by the upcoming versions of the main Java toolkits 
+([Jena](http://jena.apache.org/) 3.x and [Sesame](http://openrdf.callimachus.net/) 
+4.x) as well as for other libraries ([OWLAPI](http://owlapi.sourceforge.net/),
+[Clerezza](http://clerezza.apache.org/)) and other JVM languages.
 
-## Status
-
-[![Build Status](https://travis-ci.org/apache/incubator-commonsrdf.svg?branch=master)](https://travis-ci.org/apache/incubator-commonsrdf)
-
-[![Coverage Status](https://coveralls.io/r/apache/incubator-commonsrdf/badge.svg)](https://coveralls.io/r/apache/incubator-commonsrdf)
-
-This library is still work in progress.
+The main motivation behind this simple library is revise an historical incompatibility 
+issue. This library does not pretend to be a generic api wrapping those libraries, 
+but a set of interfaces for the RDF 1.1 concepts that can be used to expose common 
+RDF-1.1 concepts using common Java interfaces. In the initial phase commons-rdf 
+is focused on a subset of the core concepts defined by RDF-1.1 (URI/IRI, Blank Node, 
+Literal, Triple, and Graph). In particular, commons RDF aims to provide a type-safe, 
+non-general API that covers RDF 1.1. In a future phase we may define interfaces 
+for Datasets and Quads.
 
 A draft diagram of the interfaces which may be included in Commons RDF are:
 
 ![commons-rdf class diagram](api/src/main/resources/commons-rdf-class-diagram.png "commons-rdf class diagram")
+
+This library is still <strong>work in progress</strong>. Therefore everybody is
+welcomed to join the project and contribute!
+
+## Disclaimer
+
+Apache Commons RDF is an effort undergoing incubation at [The Apache Software Foundation
+(ASF)](http://apache.org/) sponsored by the [Apache Incubator PMC](http://incubator.apache.org/).
+Incubation is required of all newly accepted projects until a further review
+indicates that the infrastructure, communications, and decision making process
+have stabilized in a manner consistent with other successful ASF projects.
+While incubation status is not necessarily a reflection of the completeness or
+stability of the code, it does indicate that the project has yet to be fully
+endorsed by the ASF.
 
 ## Building
 
@@ -34,7 +53,7 @@ Building has been tested with [Apache Maven 3.2](http://maven.apache.org/downloa
     [INFO] ------------------------------------------------------------------------
     [INFO] Building Commons RDF 0.0.3-SNAPSHOT
         ....
-    [INFO] Installing /home/johndoe/src/commons-rdf/commons-rdf-api/target/commons-rdf-api-0.0.3-SNAPSHOT-javadoc.jar to /home/johndoe/.m2/repository/com/github/commons-rdf/commons-rdf-api/0.0.3-SNAPSHOT/commons-rdf-api-0.0.3-SNAPSHOT-javadoc.jar
+    [INFO] Installing /home/johndoe/src/commons-rdf/commons-rdf-api/target/commons-rdf-api-0.0.3-SNAPSHOT-javadoc.jar to /home/johndoe/.m2/repository/org/apache/commons/commons-rdf/commons-rdf-api/0.0.3-SNAPSHOT/commons-rdf-api-0.0.3-SNAPSHOT-javadoc.jar
     [INFO] ------------------------------------------------------------------------
     [INFO] Reactor Summary:
     [INFO] 
@@ -53,14 +72,14 @@ Building has been tested with [Apache Maven 3.2](http://maven.apache.org/downloa
 To then use from your project, add to Maven (update `<version>` to match the Maven output):
 
     <dependency>
-        <groupId>com.github.commons-rdf</groupId>
+        <groupId>org.apache.commons</groupId>
         <artifactId>commons-rdf-api</artifactId>
         <version>0.0.3-SNAPSHOT</version>
     </dependency>
     
 ## Simple implementation
 
-The [commons-rdf-simple](commons-rdf-simple) module contains a 
+The [commons-rdf-simple](simple) module contains a 
 simple (if not naive) implementation of the Commons RDF API 
 using in-memory POJO objects.
 
@@ -76,9 +95,9 @@ complete and scalable implementations of the Commons RDF API.
 ## Testing
 
 The abstract classes
-[AbstractGraphTest](commons-rdf-api/src/test/java/com/github/commonsrdf/api/AbstractGraphTest.java)
+[AbstractGraphTest](api/src/test/java/org/apache/commons/rdf/api/AbstractGraphTest.java)
 and 
-[AbstractRDFTermFactoryTest](commons-rdf-api/src/test/java/com/github/commonsrdf/api/AbstractRDFTermFactoryTest.java)
+[AbstractRDFTermFactoryTest](api/src/test/java/org/apache/commons/rdf/api/AbstractRDFTermFactoryTest.java)
 can be realised as JUnit tests by implementations in order to verify that they
 pass the minimal requirements of this API.
 
@@ -92,7 +111,7 @@ classifier for the commons-rdf-api module, for example (for Maven):
         <scope>test</scope>
     </dependency>
     <dependency>
-        <groupId>com.github.commons-rdf</groupId>
+        <groupId>org.apache.commons</groupId>
         <artifactId>commons-rdf-api</artifactId>
         <version>0.0.3-SNAPSHOT</version>
         <classifier>tests</classifier>
@@ -100,11 +119,11 @@ classifier for the commons-rdf-api module, for example (for Maven):
     </dependency>
 
 The extensions of each Test class need to provide a 
-[RDFTermFactory](commons-rdf-api/src/main/java/com/github/commonsrdf/api/RDFTermFactory.java)
+[RDFTermFactory](api/src/main/java/org/apache/commons/rdf/api/RDFTermFactory.java)
 that can create the corresponding implementations of a `Graph`, `IRI`, etc.
 
 For an example, see 
-[SimpleGraphTest](commons-rdf-simple/src/test/java/com/github/commonsrdf/simple/SimpleGraphTest.java).
+[SimpleGraphTest](simple/src/test/java/org/apache/commons/rdf/simple/SimpleGraphTest.java).
 
 ## Contributors
 
