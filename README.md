@@ -6,9 +6,9 @@ The main motivation behind this simple library is revise an historical incompati
 
 ## Status
 
-[![Build Status](https://secure.travis-ci.org/commons-rdf/commons-rdf.svg?branch=master)](https://travis-ci.org/commons-rdf/commons-rdf)
+[![Build Status](https://travis-ci.org/apache/incubator-commonsrdf.svg?branch=master)](https://travis-ci.org/apache/incubator-commonsrdf)
 
-[![Coverage Status](https://coveralls.io/repos/commons-rdf/commons-rdf/badge.svg)](https://coveralls.io/r/commons-rdf/commons-rdf)
+[![Coverage Status](https://coveralls.io/r/apache/incubator-commonsrdf/badge.svg)](https://coveralls.io/r/apache/incubator-commonsrdf)
 
 This library is still work in progress.
 
