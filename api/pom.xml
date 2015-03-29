@@ -22,8 +22,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.apache.commons.rdf</groupId>
-        <artifactId>commons-rdf</artifactId>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-rdf-parent</artifactId>
         <version>0.0.3-SNAPSHOT</version>
     </parent>
 
