@@ -17,20 +17,22 @@
  */
 package org.apache.commons.rdf.simple;
 
+import static org.junit.Assert.*;
+
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.apache.commons.rdf.api.BlankNode;
+import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
+import org.apache.commons.rdf.api.RDFTermFactory;
 
 public class TestWritingGraph {
 
@@ -38,36 +40,46 @@ public class TestWritingGraph {
 	 * 200k triples should do - about 7 MB on disk. Override with
 	 * -Dtriples=20000000 to exercise your memory banks.
 	 */
-	private static final int TRIPLES = Integer.getInteger("triples", 200000);
+	private static final long TRIPLES = Long.getLong("triples", 200000L);
 
 	/** Run tests with -Dkeepfiles=true to inspect /tmp files **/
 	private static boolean KEEP_FILES = Boolean.getBoolean("keepfiles");
 
-	private static GraphImpl graph;
+	private static Graph graph;
+
+	private static RDFTermFactory factory;
 
 	@BeforeClass
 	public static void createGraph() throws Exception {
-		graph = new GraphImpl();
-		BlankNode subject = new BlankNodeImpl(Optional.of(graph), "subj");
-		IRI predicate = new IRIImpl("pred");
+		factory = new SimpleRDFTermFactory();
+		graph = factory.createGraph();
+		IRI subject = factory.createIRI("subj");
+		IRI predicate = factory.createIRI("pred");
 		List<IRI> types = new ArrayList<>(Types.values());
 		// Ensure we don't try to create a literal with rdf:langString but
 		// without a language tag
 		types.remove(Types.RDF_LANGSTRING);
 		Collections.shuffle(types);
 		for (int i = 0; i < TRIPLES; i++) {
-			if (i % 5 == 0) {
-				graph.add(subject, predicate, new LiteralImpl("Example " + i,
-						"en"));
+			if (i % 11 == 0) {
+				graph.add(subject, predicate,
+						factory.createBlankNode("Example " + i));
+			} else if (i % 5 == 0) {
+				graph.add(subject, predicate,
+						factory.createLiteral("Example " + i, "en"));
 			} else if (i % 3 == 0) {
-				graph.add(subject, predicate, new LiteralImpl("Example " + i,
-						types.get(i % types.size())));
+				graph.add(
+						subject,
+						predicate,
+						factory.createLiteral("Example " + i,
+								types.get(i % types.size())));
 			} else {
-				graph.add(subject, predicate, new LiteralImpl("Example " + i));
+				graph.add(subject, predicate,
+						factory.createLiteral("Example " + i));
 			}
 		}
 	}
-	
+
 	@AfterClass
 	public static void tearDownClass() throws Exception {
 		graph.clear();
@@ -81,11 +93,12 @@ public class TestWritingGraph {
 
 	@Test
 	public void countQuery() {
-		BlankNode subject = new BlankNodeImpl(Optional.of(graph), "subj");
-		IRI predicate = new IRIImpl("pred");
+		IRI subject = factory.createIRI("subj");
+		IRI predicate = factory.createIRI("pred");
 		long count = graph.getTriples(subject, predicate, null).unordered()
 				.parallel().count();
 		System.out.println("Counted - " + count);
+		assertEquals(count, TRIPLES);
 	}
 
 	@Test
@@ -97,8 +110,7 @@ public class TestWritingGraph {
 			graphFile.toFile().deleteOnExit();
 		}
 
-		Stream<CharSequence> stream = graph.getTriples().unordered()
-				.map(Object::toString);
+		Stream<CharSequence> stream = graph.getTriples().map(Object::toString);
 		Files.write(graphFile, stream::iterator, Charset.forName("UTF-8"));
 	}
 
@@ -111,8 +123,25 @@ public class TestWritingGraph {
 			graphFile.toFile().deleteOnExit();
 		}
 
-		BlankNode subject = new BlankNodeImpl(Optional.of(graph), "subj");
-		IRI predicate = new IRIImpl("pred");
+		IRI subject = factory.createIRI("subj");
+		IRI predicate = factory.createIRI("pred");
+		Stream<CharSequence> stream = graph
+				.getTriples(subject, predicate, null).map(Object::toString);
+		Files.write(graphFile, stream::iterator, Charset.forName("UTF-8"));
+
+	}
+
+	@Test
+	public void writeGraphFromStreamFilteredNoMatches() throws Exception {
+		Path graphFile = Files.createTempFile("graph-empty-", ".nt");
+		if (KEEP_FILES) {
+			System.out.println("Filtered stream: " + graphFile);
+		} else {
+			graphFile.toFile().deleteOnExit();
+		}
+
+		IRI subject = factory.createIRI("nonexistent");
+		IRI predicate = factory.createIRI("pred");
 		Stream<CharSequence> stream = graph
 				.getTriples(subject, predicate, null).map(Object::toString);
 		Files.write(graphFile, stream::iterator, Charset.forName("UTF-8"));

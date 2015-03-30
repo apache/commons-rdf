@@ -48,8 +48,8 @@ public abstract class AbstractGraphTest {
 	private IRI name;
 	private IRI knows;
 	private IRI member;
-	private BlankNode org1;
-	private BlankNode org2;
+	private BlankNode bnode1;
+	private BlankNode bnode2;
 	private Literal aliceName;
 	private Literal bobName;
 	private Literal secretClubName;
@@ -70,8 +70,8 @@ public abstract class AbstractGraphTest {
 		knows = factory.createIRI("http://xmlns.com/foaf/0.1/knows");
 		member = factory.createIRI("http://xmlns.com/foaf/0.1/member");
 		try {
-			org1 = factory.createBlankNode("org1");
-			org2 = factory.createBlankNode("org2");
+			bnode1 = factory.createBlankNode("org1");
+			bnode2 = factory.createBlankNode("org2");
 		} catch (UnsupportedOperationException ex) {
 			// leave as null
 		}
@@ -90,8 +90,8 @@ public abstract class AbstractGraphTest {
 		}
 		graph.add(alice, knows, bob);
 
-		if (org1 != null) {
-			graph.add(alice, member, org1);
+		if (bnode1 != null) {
+			graph.add(alice, member, bnode1);
 		}
 
 		if (bobName != null) {
@@ -104,12 +104,12 @@ public abstract class AbstractGraphTest {
 				graph.add(bobNameTriple);
 			}
 		}
-		if (org1 != null) {
-			graph.add(factory.createTriple(bob, member, org1));
-			graph.add(factory.createTriple(bob, member, org2));
+		if (bnode1 != null) {
+			graph.add(factory.createTriple(bob, member, bnode1));
+			graph.add(factory.createTriple(bob, member, bnode2));
 			if (secretClubName != null) {
-				graph.add(org1, name, secretClubName);
-				graph.add(org2, name, companyName);
+				graph.add(bnode1, name, secretClubName);
+				graph.add(bnode2, name, companyName);
 			}
 		}
 	}
@@ -120,17 +120,17 @@ public abstract class AbstractGraphTest {
 		System.out.println(graph);
 		assertTrue(graph
 				.toString()
-				.startsWith(
+				.contains(
 						"<http://example.com/alice> <http://xmlns.com/foaf/0.1/name> \"Alice\" ."));
-		assertTrue(graph.toString().endsWith(
-				"_:org2 <http://xmlns.com/foaf/0.1/name> \"A company\" ."));
+		assertTrue(graph.toString().contains(
+				" <http://xmlns.com/foaf/0.1/name> \"A company\" ."));
 
 	}
 
 	@Test
 	public void size() throws Exception {
 		assertTrue(graph.size() > 0);
-		Assume.assumeNotNull(org1, org2, aliceName, bobName, secretClubName,
+		Assume.assumeNotNull(bnode1, bnode2, aliceName, bobName, secretClubName,
 				companyName, bobNameTriple);
 		// Can only reliably predict size if we could create all triples
 		assertEquals(8, graph.size());
@@ -211,7 +211,7 @@ public abstract class AbstractGraphTest {
 		assertTrue(tripleCount > 0);
 		assertTrue(graph.getTriples().allMatch(t -> graph.contains(t)));
 		// Check exact count
-		Assume.assumeNotNull(org1, org2, aliceName, bobName, secretClubName,
+		Assume.assumeNotNull(bnode1, bnode2, aliceName, bobName, secretClubName,
 				companyName, bobNameTriple);
 		assertEquals(8, tripleCount);
 	}
@@ -224,10 +224,10 @@ public abstract class AbstractGraphTest {
 		Assume.assumeNotNull(aliceName);
 		assertEquals(3, aliceCount);
 
-		Assume.assumeNotNull(org1, org2, bobName, companyName, secretClubName);
+		Assume.assumeNotNull(bnode1, bnode2, bobName, companyName, secretClubName);
 		assertEquals(4, graph.getTriples(null, name, null).count());
-		Assume.assumeNotNull(org1);
-		assertEquals(2, graph.getTriples(null, member, org1).count());
+		Assume.assumeNotNull(bnode1);
+		assertEquals(3, graph.getTriples(null, member, null).count());
 	}
 
 	/**
@@ -249,7 +249,7 @@ public abstract class AbstractGraphTest {
 	 */
 	@Test
 	public void whyJavaStreamsMightNotTakeOverFromSparql() throws Exception {
-		Assume.assumeNotNull(org1, org2, secretClubName);
+		Assume.assumeNotNull(bnode1, bnode2, secretClubName);
 		// Find a secret organizations
 		assertEquals(
 				"\"The Secret Club\"",

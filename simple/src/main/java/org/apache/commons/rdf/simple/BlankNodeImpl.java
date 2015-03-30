@@ -19,35 +19,39 @@ package org.apache.commons.rdf.simple;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.commons.rdf.api.BlankNode;
-import org.apache.commons.rdf.api.Graph;
 
 /**
  * A simple implementation of BlankNode.
- *
  */
 final class BlankNodeImpl implements BlankNode {
 
 	private static AtomicLong bnodeCounter = new AtomicLong();
+
+	private static final Object DEFAULT_SALT = new Object();
+
 	private final String id;
-	private final Graph localScope;
 
 	public BlankNodeImpl() {
-		this(Optional.empty(), "b:" + bnodeCounter.incrementAndGet());
+		this(DEFAULT_SALT, "genid:" + bnodeCounter.incrementAndGet());
 	}
 
-	public BlankNodeImpl(Optional<Graph> localScope, String id) {
-		this.localScope = Objects.requireNonNull(localScope).orElse(null);
+	public BlankNodeImpl(Object uuidSalt, String id) {
 		if (Objects.requireNonNull(id).isEmpty()) {
 			throw new IllegalArgumentException("Invalid blank node id: " + id);
-			// NOTE: It is valid for the id to not be a valid ntriples bnode id.
-			// See ntriplesString().
 		}
-		this.id = id;
+		String uuidInput = uuidSalt.toString() + ":" + id;
+		// Both the scope and the id are used to create the UUID, ensuring that
+		// a caller can reliably create the same bnode if necessary by sending
+		// in the same scope.
+		// In addition, it would be very difficult for the default constructor
+		// to interfere with this process since it uses a local object as its
+		// reference.
+		this.id = UUID.nameUUIDFromBytes(
+				uuidInput.getBytes(StandardCharsets.UTF_8)).toString();
 	}
 
 	@Override
@@ -57,11 +61,6 @@ final class BlankNodeImpl implements BlankNode {
 
 	@Override
 	public String ntriplesString() {
-		if (id.contains(":")) {
-			return "_:u"
-					+ UUID.nameUUIDFromBytes(id
-							.getBytes(StandardCharsets.UTF_8));
-		}
 		return "_:" + id;
 	}
 
@@ -72,7 +71,7 @@ final class BlankNodeImpl implements BlankNode {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(localScope, id);
+		return id.hashCode();
 	}
 
 	@Override
@@ -83,6 +82,7 @@ final class BlankNodeImpl implements BlankNode {
 		if (obj == null) {
 			return false;
 		}
+		// We don't support equality with other implementations
 		if (!(obj instanceof BlankNodeImpl)) {
 			return false;
 		}
@@ -92,13 +92,6 @@ final class BlankNodeImpl implements BlankNode {
 				return false;
 			}
 		} else if (!id.equals(other.id)) {
-			return false;
-		}
-		if (localScope == null) {
-			if (other.localScope != null) {
-				return false;
-			}
-		} else if (!localScope.equals(other.localScope)) {
 			return false;
 		}
 		return true;

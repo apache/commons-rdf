@@ -17,17 +17,18 @@
  */
 package org.apache.commons.rdf.simple;
 
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.rdf.api.BlankNode;
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
+import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.Triple;
 
@@ -41,20 +42,70 @@ import org.apache.commons.rdf.api.Triple;
 final class GraphImpl implements Graph {
 
 	private static final int TO_STRING_MAX = 10;
-	private final Set<Triple> triples = new LinkedHashSet<Triple>();
+	private final Set<Triple> triples = new HashSet<Triple>();
+	private final SimpleRDFTermFactory factory;
 
-	@Override
-	public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		add(new TripleImpl(Objects.requireNonNull(subject),
-				Objects.requireNonNull(predicate),
-				Objects.requireNonNull(object)));
-
+	GraphImpl(SimpleRDFTermFactory simpleRDFTermFactory) {
+		this.factory = simpleRDFTermFactory;
 	}
 
 	@Override
-	public void add(Triple triple) {
-		triples.add(new TripleImpl(Optional.of(this), Objects
-				.requireNonNull(triple)));
+	public Triple add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+		BlankNodeOrIRI newSubject = (BlankNodeOrIRI) internallyMap(subject);
+		IRI newPredicate = (IRI) internallyMap(predicate);
+		RDFTerm newObject = internallyMap(object);
+		Triple result = factory.createTriple(newSubject, newPredicate, newObject);
+		triples.add(result);
+		return result;
+	}
+
+	@Override
+	public Triple add(Triple triple) {
+		BlankNodeOrIRI newSubject = (BlankNodeOrIRI) internallyMap(triple
+				.getSubject());
+		IRI newPredicate = (IRI) internallyMap(triple.getPredicate());
+		RDFTerm newObject = internallyMap(triple.getObject());
+		// Check if any of the object references changed during the mapping, to
+		// avoid creating a new Triple object if possible
+		if (newSubject == triple.getSubject()
+				&& newPredicate == triple.getPredicate()
+				&& newObject == triple.getObject()) {
+			triples.add(triple);
+			return triple;
+		} else {
+			Triple result = factory.createTriple(newSubject, newPredicate,
+					newObject);
+			triples.add(result);
+			return result;
+		}
+	}
+
+	private <T extends RDFTerm> RDFTerm internallyMap(T object) {
+		if (object instanceof BlankNode && !(object instanceof BlankNodeImpl)) {
+			BlankNode blankNode = (BlankNode) object;
+			// This guarantees that adding the same BlankNode multiple times to
+			// this graph will generate a local object that is mapped to an
+			// equivalent object, based on the code in the package private
+			// BlankNodeImpl class
+			return factory.createBlankNode(blankNode.internalIdentifier());
+		} else if (object instanceof IRI && !(object instanceof IRIImpl)) {
+			IRI iri = (IRI) object;
+			return factory.createIRI(iri.getIRIString());
+		} else if (object instanceof Literal
+				&& !(object instanceof LiteralImpl)) {
+			Literal literal = (Literal) object;
+			if (literal.getLanguageTag().isPresent()) {
+				return factory.createLiteral(literal.getLexicalForm(), literal
+						.getLanguageTag().get());
+			} else {
+				return factory.createLiteral(literal.getLexicalForm(),
+						(IRI) internallyMap(literal.getDatatype()));
+			}
+		} else {
+			// The object is a local implementation, and is not a BlankNode, so
+			// can be returned directly
+			return object;
+		}
 	}
 
 	@Override
@@ -75,41 +126,34 @@ final class GraphImpl implements Graph {
 
 	@Override
 	public Stream<Triple> getTriples() {
-		return triples.parallelStream();
+		return triples.parallelStream().unordered();
 	}
 
 	@Override
 	public Stream<Triple> getTriples(final BlankNodeOrIRI subject,
 			final IRI predicate, final RDFTerm object) {
-		Predicate<Triple> match = new Predicate<Triple>() {
-			@Override
-			public boolean test(Triple t) {
-				// Lacking the requirement for .equals() we have to be silly
-				// and test ntriples string equivalance
-				if (subject != null
-						&& !t.getSubject().ntriplesString()
-								.equals(subject.ntriplesString())) {
-					return false;
-				}
-				if (predicate != null
-						&& !t.getPredicate().ntriplesString()
-								.equals(predicate.ntriplesString())) {
-					return false;
-				}
-				if (object != null
-						&& !t.getObject().ntriplesString()
-								.equals(object.ntriplesString())) {
-					return false;
-				}
-				return true;
+		final BlankNodeOrIRI newSubject = (BlankNodeOrIRI) internallyMap(subject);
+		final IRI newPredicate = (IRI) internallyMap(predicate);
+		final RDFTerm newObject = internallyMap(object);
+
+		return getTriples(t -> {
+			// Lacking the requirement for .equals() we have to be silly
+			// and test ntriples string equivalance
+			if (subject != null && !t.getSubject().equals(newSubject)) {
+				return false;
 			}
-		};
-		return getTriples(match);
+			if (predicate != null && !t.getPredicate().equals(newPredicate)) {
+				return false;
+			}
+			if (object != null && !t.getObject().equals(newObject)) {
+				return false;
+			}
+			return true;
+		});
 	}
 
-	@Override
-	public Stream<Triple> getTriples(final Predicate<Triple> filter) {
-		return getTriples().unordered().filter(filter);
+	private Stream<Triple> getTriples(final Predicate<Triple> filter) {
+		return getTriples().filter(filter);
 	}
 
 	@Override

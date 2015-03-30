@@ -17,7 +17,6 @@
  */
 package org.apache.commons.rdf.api;
 
-import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 /**
@@ -29,15 +28,19 @@ import java.util.stream.Stream;
 public interface Graph extends AutoCloseable {
 
 	/**
-	 * Add a triple to the graph.
+	 * Add a triple to the graph, possibly mapping any of the components of the
+	 * Triple to those supported by this Graph.
 	 *
 	 * @param triple
 	 *            The triple to add
+	 * @return The Triple that was added to the graph, including any mapped
+	 *         components.
 	 */
-	void add(Triple triple);
+	Triple add(Triple triple);
 
 	/**
-	 * Add a triple to the graph.
+	 * Add a triple to the graph, possibly mapping any of the components to
+	 * those supported by this Graph.
 	 *
 	 * @param subject
 	 *            The triple subject
@@ -45,8 +48,10 @@ public interface Graph extends AutoCloseable {
 	 *            The triple predicate
 	 * @param object
 	 *            The triple object
+	 * @return The Triple that was added to the graph, including any mapped
+	 *         components.
 	 */
-	void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
+	Triple add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
 
 	/**
 	 * Check if graph contains triple.
@@ -109,7 +114,6 @@ public interface Graph extends AutoCloseable {
 
 	/**
 	 * Clear the graph, removing all triples.
-	 * 
 	 */
 	void clear();
 
@@ -126,7 +130,7 @@ public interface Graph extends AutoCloseable {
 	/**
 	 * Get all triples contained by the graph.<br>
 	 * <p>
-	 * The iteration does not contain any duplicate triples, as determined by
+	 * The iteration SHOULD NOT contain any duplicate triples, as determined by
 	 * the equals method for each {@link Triple}.
 	 * <p>
 	 * The behaviour of the Stream is not specified if add, remove, or clear,
@@ -161,23 +165,4 @@ public interface Graph extends AutoCloseable {
 	 */
 	Stream<? extends Triple> getTriples(BlankNodeOrIRI subject, IRI predicate,
 			RDFTerm object);
-
-	/**
-	 * Get all triples contained by the graph matched with the pattern.
-	 * <p>
-	 * The iteration does not contain any duplicate triples, as determined by
-	 * the equals method for each {@link Triple}.
-	 * <p>
-	 * The behaviour of the Stream is not specified if add, remove, or clear,
-	 * are called on the Stream before it terminates.<br>
-	 * <p>
-	 * Implementations may throw ConcurrentModificationException from Stream
-	 * methods if they detect a conflict while the Stream is active.
-	 *
-	 * @param filter
-	 *            A filter to match against each triple in the graph.
-	 * @return A {@link Stream} over the matched triples.
-	 */
-	Stream<? extends Triple> getTriples(Predicate<Triple> filter);
-
 }

@@ -18,13 +18,9 @@
 package org.apache.commons.rdf.simple;
 
 import java.util.Objects;
-import java.util.Optional;
 
-import org.apache.commons.rdf.api.BlankNode;
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
-import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
-import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.Triple;
 
@@ -41,64 +37,20 @@ final class TripleImpl implements Triple {
 	/**
 	 * Construct Triple from its constituent parts.
 	 * <p>
-	 * The parts may be copied to ensure they are in scope.
+	 * The objects are not changed. All mapping of BNode objects is done in
+	 * {@link SimpleRDFTermFactory#createTriple(BlankNodeOrIRI, IRI, RDFTerm)}.
 	 * 
-	 * @param subject subject of triple
-	 * @param predicate predicate of triple
-	 * @param object object of triple
+	 * @param subject
+	 *            subject of triple
+	 * @param predicate
+	 *            predicate of triple
+	 * @param object
+	 *            object of triple
 	 */
 	public TripleImpl(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		this.subject = (BlankNodeOrIRI) inScope(Optional.empty(),
-				Objects.requireNonNull(subject));
-		this.predicate = (IRI) inScope(null, Objects.requireNonNull(predicate));
-		this.object = inScope(Optional.empty(), Objects.requireNonNull(object));
-	}
-
-	/**
-	 * Construct Triple by cloning another Triple and its constituent parts.
-	 * <p>
-	 * The parts of the triple may be copied to ensure they are in scope.
-	 * 
-	 * @param localScope
-	 *            Scope to create new triple in.
-	 * @param triple
-	 *            Triple to clone
-	 */
-	public TripleImpl(Optional<Graph> localScope, Triple triple) {
-		Objects.requireNonNull(localScope);
-		Objects.requireNonNull(triple);
-
-		this.subject = (BlankNodeOrIRI) inScope(localScope, triple.getSubject());
-		this.predicate = (IRI) inScope(localScope, triple.getPredicate());
-		this.object = inScope(localScope, triple.getObject());
-	}
-
-	private RDFTerm inScope(Optional<Graph> localScope, RDFTerm object) {
-		if (!(object instanceof BlankNode) && !(object instanceof IRI)
-				& !(object instanceof Literal)) {
-			throw new IllegalArgumentException(
-					"RDFTerm must be BlankNode, IRI or Literal");
-		}
-		if (object instanceof BlankNode) {
-			BlankNode blankNode = (BlankNode) object;
-			return new BlankNodeImpl(Objects.requireNonNull(localScope),
-					blankNode.internalIdentifier());
-		} else if (object instanceof IRI && !(object instanceof IRIImpl)) {
-			IRI iri = (IRI) object;
-			return new IRIImpl(iri.getIRIString());
-		} else if (object instanceof Literal
-				&& !(object instanceof LiteralImpl)) {
-			Literal literal = (Literal) object;
-			if (literal.getLanguageTag().isPresent()) {
-				return new LiteralImpl(literal.getLexicalForm(), literal
-						.getLanguageTag().get());
-			} else {
-				IRI dataType = (IRI) inScope(localScope, literal.getDatatype());
-				return new LiteralImpl(literal.getLexicalForm(), dataType);
-			}
-		} else {
-			return object;
-		}
+		this.subject = Objects.requireNonNull(subject);
+		this.predicate = Objects.requireNonNull(predicate);
+		this.object = Objects.requireNonNull(object);
 	}
 
 	@Override
