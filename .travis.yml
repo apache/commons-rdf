@@ -1,9 +1,21 @@
+# Use docker-based build environment
+sudo: false
+
 language: java
 jdk:
   - oraclejdk8
+
+cache:
+  directories:
+    - '$HOME/.m2/repository'
+
+install: /bin/true
+
 notifications:
   email:
     - ansell.peter@gmail.com
     - sergio@wikier.org
+    - commits@commonsrdf.incubator.apache.org
+
 after_success:
   - mvn clean test jacoco:report coveralls:report
