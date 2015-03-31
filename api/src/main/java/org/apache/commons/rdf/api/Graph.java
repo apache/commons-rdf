@@ -33,10 +33,8 @@ public interface Graph extends AutoCloseable {
 	 *
 	 * @param triple
 	 *            The triple to add
-	 * @return The Triple that was added to the graph, including any mapped
-	 *         components.
 	 */
-	Triple add(Triple triple);
+	void add(Triple triple);
 
 	/**
 	 * Add a triple to the graph, possibly mapping any of the components to
@@ -48,10 +46,8 @@ public interface Graph extends AutoCloseable {
 	 *            The triple predicate
 	 * @param object
 	 *            The triple object
-	 * @return The Triple that was added to the graph, including any mapped
-	 *         components.
 	 */
-	Triple add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
+	void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
 
 	/**
 	 * Check if graph contains triple.
