@@ -23,8 +23,7 @@ import org.junit.Test;
 
 /**
  * Tests for the {@link Types} enumeration.
- * 
- * @author Peter Ansell p_ansell@yahoo.com
+ *
  */
 public class TypesTest {
 

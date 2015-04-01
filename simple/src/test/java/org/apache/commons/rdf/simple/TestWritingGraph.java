@@ -34,6 +34,10 @@ import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDFTermFactory;
 
+/**
+ * Test writting graph
+ *
+ */
 public class TestWritingGraph {
 
 	/*

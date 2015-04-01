@@ -26,8 +26,7 @@ import org.apache.commons.rdf.api.IRI;
 
 /**
  * Types from the RDF and XML Schema vocabularies.
- * 
- * @author Peter Ansell p_ansell@yahoo.com
+ *
  */
 public final class Types implements IRI {
 

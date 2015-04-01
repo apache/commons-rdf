@@ -24,8 +24,7 @@ import org.apache.commons.rdf.api.BlankNode;
 
 /**
  * Concrete implementation of BlankNodeImpl test.
- * 
- * @author Peter Ansell p_ansell@yahoo.com
+ *
  */
 public class BlankNodeImplTest extends AbstractBlankNodeTest {
 

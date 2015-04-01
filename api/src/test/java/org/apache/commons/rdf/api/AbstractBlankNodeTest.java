@@ -23,8 +23,7 @@ import org.junit.Test;
 
 /**
  * Abstract test class for the BlankNode interface.
- * 
- * @author Peter Ansell p_ansell@yahoo.com
+ *
  */
 public abstract class AbstractBlankNodeTest {
 
