@@ -37,7 +37,7 @@ import org.junit.Test;
  *
  * @see Graph
  * @see RDFTermFactory
- * @see com.github.commonsrdf.simple.SimpleGraphTest
+ * @see org.apache.commons.rdf.simple.SimpleGraphTest
  */
 public abstract class AbstractGraphTest {
 
@@ -117,7 +117,6 @@ public abstract class AbstractGraphTest {
 	@Test
 	public void graphToString() {
 		Assume.assumeNotNull(aliceName, companyName);
-		System.out.println(graph);
 		assertTrue(graph
 				.toString()
 				.contains(
