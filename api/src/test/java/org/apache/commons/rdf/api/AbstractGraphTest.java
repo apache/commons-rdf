@@ -117,7 +117,6 @@ public abstract class AbstractGraphTest {
 	@Test
 	public void graphToString() {
 		Assume.assumeNotNull(aliceName, companyName);
-		System.out.println(graph);
 		assertTrue(graph
 				.toString()
 				.contains(
