@@ -28,98 +28,92 @@ import java.util.Optional;
  */
 public interface Literal extends RDFTerm {
 
-	/**
-	 * The lexical form of this literal, represented by a <a
-	 * href="http://www.unicode.org/versions/latest/">Unicode string</a>.
-	 *
-	 * @return The lexical form of this literal.
-	 * @see <a
-	 *      href="http://www.w3.org/TR/rdf11-concepts/#dfn-lexical-form">RDF-1.1
-	 *      Literal lexical form</a>
-	 */
-	String getLexicalForm();
+    /**
+     * The lexical form of this literal, represented by a <a
+     * href="http://www.unicode.org/versions/latest/">Unicode string</a>.
+     *
+     * @return The lexical form of this literal.
+     * @see <a
+     * href="http://www.w3.org/TR/rdf11-concepts/#dfn-lexical-form">RDF-1.1
+     * Literal lexical form</a>
+     */
+    String getLexicalForm();
 
-	/**
-	 * The IRI identifying the datatype that determines how the lexical form
-	 * maps to a literal value.
-	 * <p>
-	 * If the datatype IRI is <a
-	 * href="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
-	 * >http://www.w3.org/1999/02/22-rdf-syntax-ns#langString</a>,
-	 * {@link #getLanguageTag()} must not return {@link Optional#empty()}, and
-	 * it must return a valid <a
-	 * href="http://tools.ietf.org/html/bcp47">BCP47</a> language tag.
-	 * 
-	 * @return The datatype IRI for this literal.
-	 * @see <a
-	 *      href="http://www.w3.org/TR/rdf11-concepts/#dfn-datatype-iri">RDF-1.1
-	 *      Literal datatype IRI</a>
-	 */
-	IRI getDatatype();
+    /**
+     * The IRI identifying the datatype that determines how the lexical form
+     * maps to a literal value.
+     *
+     * If the datatype IRI is <a
+     * href="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+     * >http://www.w3.org/1999/02/22-rdf-syntax-ns#langString</a>,
+     * {@link #getLanguageTag()} must not return {@link Optional#empty()}, and
+     * it must return a valid <a
+     * href="http://tools.ietf.org/html/bcp47">BCP47</a> language tag.
+     *
+     * @return The datatype IRI for this literal.
+     * @see <a
+     * href="http://www.w3.org/TR/rdf11-concepts/#dfn-datatype-iri">RDF-1.1
+     * Literal datatype IRI</a>
+     */
+    IRI getDatatype();
 
-	/**
-	 * If and only if the datatype IRI is <a
-	 * href="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
-	 * >http://www.w3.org/1999/02/22-rdf-syntax-ns#langString</a>, the language
-	 * tag for this Literal is a non-empty language tag as defined by <a
-	 * href="http://tools.ietf.org/html/bcp47">BCP47</a>.<br>
-	 * If the datatype IRI is not <a
-	 * href="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
-	 * >http://www.w3.org/1999/02/22-rdf-syntax-ns#langString</a>, this method
-	 * must return {@link Optional#empty()}.
-	 * <p>
-	 * Implementor note: If your application requires {@link Serializable}
-	 * objects, it is best not to store an {@link Optional} in a field. It is
-	 * recommended to use {@link Optional#ofNullable(Object)} to create the
-	 * return value for this method.
-	 * 
-	 * @return The {@link Optional} language tag for this literal. If
-	 *         {@link Optional#isPresent()} returns true, the value returned by
-	 *         {@link Optional#get()} must be a non-empty string conforming to
-	 *         BCP47.
-	 * @see <a
-	 *      href="http://www.w3.org/TR/rdf11-concepts/#dfn-language-tag">RDF-1.1
-	 *      Literal language tag</a>
-	 */
-	Optional<String> getLanguageTag();
+    /**
+     * If and only if the datatype IRI is <a
+     * href="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+     * >http://www.w3.org/1999/02/22-rdf-syntax-ns#langString</a>, the language
+     * tag for this Literal is a non-empty language tag as defined by <a
+     * href="http://tools.ietf.org/html/bcp47">BCP47</a>.<br>
+     * If the datatype IRI is not <a
+     * href="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+     * >http://www.w3.org/1999/02/22-rdf-syntax-ns#langString</a>, this method
+     * must return {@link Optional#empty()}.
+     *
+     * Implementation note: If your application requires {@link Serializable}
+     * objects, it is best not to store an {@link Optional} in a field. It is
+     * recommended to use {@link Optional#ofNullable(Object)} to create the
+     * return value for this method.
+     *
+     * @return The {@link Optional} language tag for this literal. If
+     * {@link Optional#isPresent()} returns true, the value returned by
+     * {@link Optional#get()} must be a non-empty string conforming to
+     * BCP47.
+     * @see <a
+     * href="http://www.w3.org/TR/rdf11-concepts/#dfn-language-tag">RDF-1.1
+     * Literal language tag</a>
+     */
+    Optional<String> getLanguageTag();
 
-	/**
-	 * Check it this Literal is equal to another Literal. <blockquote> <a
-	 * href="http://www.w3.org/TR/rdf11-concepts/#dfn-literal-term">Literal term
-	 * equality</a>: Two literals are term-equal (the same RDF literal) if and
-	 * only if the two lexical forms, the two datatype IRIs, and the two
-	 * language tags (if any) compare equal, character by character. Thus, two
-	 * literals can have the same value without being the same RDF term.
-	 * </blockquote>
-	 * <p>
-	 * Implementations MAY check the local scope for Literal comparison.
-	 * </p>
-	 * <p>
-	 * Implementations MUST also override {@link #hashCode()} so that two equal
-	 * Literals produce the same hash code.
-	 * </p>
-	 * 
-	 * @see Object#equals(Object)
-	 * 
-	 * @param other
-	 *            Another object
-	 * @return true if other is a Literal and is equal to this
-	 */
-	@Override
-	public boolean equals(Object other);
+    /**
+     * Check it this Literal is equal to another Literal. <blockquote> <a
+     * href="http://www.w3.org/TR/rdf11-concepts/#dfn-literal-term">Literal term
+     * equality</a>: Two literals are term-equal (the same RDF literal) if and
+     * only if the two lexical forms, the two datatype IRIs, and the two
+     * language tags (if any) compare equal, character by character. Thus, two
+     * literals can have the same value without being the same RDF term.
+     * </blockquote>
+     *
+     * Implementations MAY check the local scope for Literal comparison.
+     *
+     * Implementations MUST also override {@link #hashCode()} so that two equal
+     * Literals produce the same hash code.
+     *
+     * @param other Another object
+     * @return true if other is a Literal and is equal to this
+     * @see Object#equals(Object)
+     */
+    @Override
+    public boolean equals(Object other);
 
-	/**
-	 * Calculate a hash code for this Literal.
-	 * <p>
-	 * This method MUST be implemented when implementing {@link #equals(Object)}
-	 * so that two equal Literals produce the same hash code.
-	 * </p>
-	 * 
-	 * @see Object#hashCode()
-	 * 
-	 * @return a hash code value for this Literal.
-	 */
-	@Override
-	public int hashCode();
+    /**
+     * Calculate a hash code for this Literal.
+     *
+     * This method MUST be implemented when implementing {@link #equals(Object)}
+     * so that two equal Literals produce the same hash code.
+     *
+     * @return a hash code value for this Literal.
+     * @see Object#hashCode()
+     */
+    @Override
+    public int hashCode();
 
 }

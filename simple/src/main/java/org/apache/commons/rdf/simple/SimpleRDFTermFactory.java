@@ -17,67 +17,60 @@
  */
 package org.apache.commons.rdf.simple;
 
-import org.apache.commons.rdf.api.BlankNode;
-import org.apache.commons.rdf.api.BlankNodeOrIRI;
-import org.apache.commons.rdf.api.Graph;
-import org.apache.commons.rdf.api.IRI;
-import org.apache.commons.rdf.api.Literal;
-import org.apache.commons.rdf.api.RDFTerm;
-import org.apache.commons.rdf.api.RDFTermFactory;
-import org.apache.commons.rdf.api.Triple;
+import org.apache.commons.rdf.api.*;
 
 /**
  * A simple implementation of RDFTermFactory.
- * <p>
+ * <p/>
  * The {@link RDFTerm} and {@link Graph} instances created by this factory are
  * simple in-memory Implementations that are not thread-safe or efficient, but
  * which may be useful for testing and prototyping purposes.
  */
 public class SimpleRDFTermFactory implements RDFTermFactory {
 
-	@Override
-	public BlankNode createBlankNode() {
-		return new BlankNodeImpl();
-	}
+    @Override
+    public BlankNode createBlankNode() {
+        return new BlankNodeImpl();
+    }
 
-	@Override
-	public BlankNode createBlankNode(String identifier) {
-		// Creates a BlankNodeImpl object using this object as the salt
-		return new BlankNodeImpl(this, identifier);
-	}
+    @Override
+    public BlankNode createBlankNode(String identifier) {
+        // Creates a BlankNodeImpl object using this object as the salt
+        return new BlankNodeImpl(this, identifier);
+    }
 
-	@Override
-	public Graph createGraph() {
-		// Creates a GraphImpl object using this object as the factory for
-		// delegating all object creation to
-		return new GraphImpl(this);
-	}
+    @Override
+    public Graph createGraph() {
+        // Creates a GraphImpl object using this object as the factory for
+        // delegating all object creation to
+        return new GraphImpl(this);
+    }
 
-	@Override
-	public IRI createIRI(String iri) {
-		IRI result = new IRIImpl(iri);
-		// Reuse any IRI objects already created in Types
-		return Types.get(result).orElse(result);
-	}
+    @Override
+    public IRI createIRI(String iri) {
+        IRI result = new IRIImpl(iri);
+        // Reuse any IRI objects already created in Types
+        return Types.get(result).orElse(result);
+    }
 
-	@Override
-	public Literal createLiteral(String literal) {
-		return new LiteralImpl(literal);
-	}
+    @Override
+    public Literal createLiteral(String literal) {
+        return new LiteralImpl(literal);
+    }
 
-	@Override
-	public Literal createLiteral(String literal, IRI dataType) {
-		return new LiteralImpl(literal, dataType);
-	}
+    @Override
+    public Literal createLiteral(String literal, IRI dataType) {
+        return new LiteralImpl(literal, dataType);
+    }
 
-	@Override
-	public Literal createLiteral(String literal, String language) {
-		return new LiteralImpl(literal, language);
-	}
+    @Override
+    public Literal createLiteral(String literal, String language) {
+        return new LiteralImpl(literal, language);
+    }
 
-	@Override
-	public Triple createTriple(BlankNodeOrIRI subject, IRI predicate,
-			RDFTerm object) {
-		return new TripleImpl(subject, predicate, object);
-	}
+    @Override
+    public Triple createTriple(BlankNodeOrIRI subject, IRI predicate,
+                               RDFTerm object) {
+        return new TripleImpl(subject, predicate, object);
+    }
 }

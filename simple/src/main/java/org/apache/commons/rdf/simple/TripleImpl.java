@@ -17,78 +17,74 @@
  */
 package org.apache.commons.rdf.simple;
 
-import java.util.Objects;
-
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.Triple;
 
+import java.util.Objects;
+
 /**
  * A simple implementation of Triple.
- *
  */
 final class TripleImpl implements Triple {
 
-	private final BlankNodeOrIRI subject;
-	private final IRI predicate;
-	private final RDFTerm object;
+    private final BlankNodeOrIRI subject;
+    private final IRI predicate;
+    private final RDFTerm object;
 
-	/**
-	 * Construct Triple from its constituent parts.
-	 * <p>
-	 * The objects are not changed. All mapping of BNode objects is done in
-	 * {@link SimpleRDFTermFactory#createTriple(BlankNodeOrIRI, IRI, RDFTerm)}.
-	 * 
-	 * @param subject
-	 *            subject of triple
-	 * @param predicate
-	 *            predicate of triple
-	 * @param object
-	 *            object of triple
-	 */
-	public TripleImpl(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		this.subject = Objects.requireNonNull(subject);
-		this.predicate = Objects.requireNonNull(predicate);
-		this.object = Objects.requireNonNull(object);
-	}
+    /**
+     * Construct Triple from its constituent parts.
+     * <p/>
+     * The objects are not changed. All mapping of BNode objects is done in
+     * {@link SimpleRDFTermFactory#createTriple(BlankNodeOrIRI, IRI, RDFTerm)}.
+     *
+     * @param subject   subject of triple
+     * @param predicate predicate of triple
+     * @param object    object of triple
+     */
+    public TripleImpl(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+        this.subject = Objects.requireNonNull(subject);
+        this.predicate = Objects.requireNonNull(predicate);
+        this.object = Objects.requireNonNull(object);
+    }
 
-	@Override
-	public BlankNodeOrIRI getSubject() {
-		return subject;
-	}
+    @Override
+    public BlankNodeOrIRI getSubject() {
+        return subject;
+    }
 
-	@Override
-	public IRI getPredicate() {
-		return predicate;
-	}
+    @Override
+    public IRI getPredicate() {
+        return predicate;
+    }
 
-	@Override
-	public RDFTerm getObject() {
-		return object;
-	}
+    @Override
+    public RDFTerm getObject() {
+        return object;
+    }
 
-	@Override
-	public String toString() {
-		return getSubject().ntriplesString() + " "
-				+ getPredicate().ntriplesString() + " "
-				+ getObject().ntriplesString() + " .";
-	}
+    @Override
+    public String toString() {
+        return getSubject().ntriplesString() + " "
+                + getPredicate().ntriplesString() + " "
+                + getObject().ntriplesString() + " .";
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(subject, predicate, object);
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(subject, predicate, object);
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof Triple)) {
-			return false;
-		}
-		Triple other = (Triple) obj;
-		return getSubject().equals(other.getSubject())
-				&& getPredicate().equals(other.getPredicate())
-				&& getObject().equals(other.getObject());
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Triple)) {
+            return false;
+        }
+        Triple other = (Triple) obj;
+        return getSubject().equals(other.getSubject())
+                && getPredicate().equals(other.getPredicate())
+                && getObject().equals(other.getObject());
+    }
 
 }

@@ -33,7 +33,7 @@ public interface RDFTerm {
      *
      * @return The term serialised as RDF-1.1 N-Triples.
      * @see <a href="http://www.w3.org/TR/n-triples/#canonical-ntriples">
-     *         RDF-1.1 N-Triples Canonical form</a>
+     * RDF-1.1 N-Triples Canonical form</a>
      */
     String ntriplesString();
 

@@ -17,32 +17,31 @@
  */
 package org.apache.commons.rdf.simple;
 
-import java.net.URI;
-
 import org.apache.commons.rdf.api.AbstractRDFTermFactoryTest;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDFTermFactory;
+
+import java.net.URI;
 
 /**
  * Test simple IRI without relative IRI support.
  * <p?>
  * Ensures that {@link AbstractRDFTermFactoryTest#createIRIRelative()} is
  * correctly skipped (without causing an error.
- *
  */
 public class SimpleNoRelativeIRIRDFTermFactoryTest extends
-		AbstractRDFTermFactoryTest {
-	@Override
-	public RDFTermFactory createFactory() {
-		return new SimpleRDFTermFactory() {
-			@Override
-			public IRI createIRI(String iri) {
-				if (!URI.create(iri).isAbsolute()) {
-					throw new IllegalArgumentException("IRIs must be absolute");
-					// ..in this subclass for testing purposes only :)
-				}
-				return super.createIRI(iri);
-			}
-		};
-	}
+        AbstractRDFTermFactoryTest {
+    @Override
+    public RDFTermFactory createFactory() {
+        return new SimpleRDFTermFactory() {
+            @Override
+            public IRI createIRI(String iri) {
+                if (!URI.create(iri).isAbsolute()) {
+                    throw new IllegalArgumentException("IRIs must be absolute");
+                    // ..in this subclass for testing purposes only :)
+                }
+                return super.createIRI(iri);
+            }
+        };
+    }
 }

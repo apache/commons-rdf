@@ -22,13 +22,12 @@ import org.apache.commons.rdf.api.RDFTermFactory;
 
 /**
  * Simple RDFTermFactory Test
- *
  */
 public class SimpleRDFTermFactoryTest extends AbstractRDFTermFactoryTest {
 
-	@Override
-	public RDFTermFactory createFactory() {
-		return new SimpleRDFTermFactory();
-	}
+    @Override
+    public RDFTermFactory createFactory() {
+        return new SimpleRDFTermFactory();
+    }
 
 }

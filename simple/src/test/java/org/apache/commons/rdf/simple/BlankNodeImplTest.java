@@ -17,25 +17,24 @@
  */
 package org.apache.commons.rdf.simple;
 
-import java.util.Optional;
-
 import org.apache.commons.rdf.api.AbstractBlankNodeTest;
 import org.apache.commons.rdf.api.BlankNode;
 
+import java.util.Optional;
+
 /**
  * Concrete implementation of BlankNodeImpl test.
- *
  */
 public class BlankNodeImplTest extends AbstractBlankNodeTest {
 
-	@Override
-	protected BlankNode getBlankNode() {
-		return new BlankNodeImpl();
-	}
+    @Override
+    protected BlankNode getBlankNode() {
+        return new BlankNodeImpl();
+    }
 
-	@Override
-	protected BlankNode getBlankNode(String identifier) {
-		return new BlankNodeImpl(Optional.empty(), identifier);
-	}
+    @Override
+    protected BlankNode getBlankNode(String identifier) {
+        return new BlankNodeImpl(Optional.empty(), identifier);
+    }
 
 }

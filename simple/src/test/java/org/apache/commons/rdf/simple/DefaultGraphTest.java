@@ -25,28 +25,27 @@ import org.apache.commons.rdf.api.RDFTermFactory;
 /**
  * Ensure AbstractGraphTest does not crash if the RDFTermFactory throws
  * UnsupportedOperationException
- *
  */
 
 public class DefaultGraphTest extends AbstractGraphTest {
 
-	@Override
-	public RDFTermFactory createFactory() {
-		// The most minimal RDFTermFactory that would still
-		// make sense with a Graph
-		return new RDFTermFactory() {
-			@Override
-			public Graph createGraph() throws UnsupportedOperationException {
-				return new GraphImpl(new SimpleRDFTermFactory());
-			}
+    @Override
+    public RDFTermFactory createFactory() {
+        // The most minimal RDFTermFactory that would still
+        // make sense with a Graph
+        return new RDFTermFactory() {
+            @Override
+            public Graph createGraph() throws UnsupportedOperationException {
+                return new GraphImpl(new SimpleRDFTermFactory());
+            }
 
-			@Override
-			public IRI createIRI(String iri)
-					throws UnsupportedOperationException,
-					IllegalArgumentException {
-				return new IRIImpl(iri);
-			}
-		};
-	}
+            @Override
+            public IRI createIRI(String iri)
+                    throws UnsupportedOperationException,
+                    IllegalArgumentException {
+                return new IRIImpl(iri);
+            }
+        };
+    }
 
 }

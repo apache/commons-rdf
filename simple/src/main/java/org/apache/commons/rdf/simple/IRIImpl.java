@@ -17,56 +17,55 @@
  */
 package org.apache.commons.rdf.simple;
 
-import java.net.URI;
-
 import org.apache.commons.rdf.api.IRI;
+
+import java.net.URI;
 
 /**
  * A simple implementation of IRI.
- *
  */
 final class IRIImpl implements IRI {
 
-	private final String iri;
+    private final String iri;
 
-	public IRIImpl(String iri) {
-		// should throw IllegalArgumentException on most illegal IRIs
-		URI.create(iri);
-		// NOTE: We don't keep the URI as it uses outdated RFC2396 and will get
-		// some IDNs wrong
-		this.iri = iri;
-	}
+    public IRIImpl(String iri) {
+        // should throw IllegalArgumentException on most illegal IRIs
+        URI.create(iri);
+        // NOTE: We don't keep the URI as it uses outdated RFC2396 and will get
+        // some IDNs wrong
+        this.iri = iri;
+    }
 
-	@Override
-	public String getIRIString() {
-		return iri;
-	}
+    @Override
+    public String getIRIString() {
+        return iri;
+    }
 
-	@Override
-	public String ntriplesString() {
-		return "<" + getIRIString() + ">";
-	}
+    @Override
+    public String ntriplesString() {
+        return "<" + getIRIString() + ">";
+    }
 
-	@Override
-	public String toString() {
-		return ntriplesString();
-	}
+    @Override
+    public String toString() {
+        return ntriplesString();
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null || !(obj instanceof IRI)) {
-			return false;
-		}
-		IRI other = (IRI) obj;
-		return getIRIString().equals(other.getIRIString());
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || !(obj instanceof IRI)) {
+            return false;
+        }
+        IRI other = (IRI) obj;
+        return getIRIString().equals(other.getIRIString());
+    }
 
-	@Override
-	public int hashCode() {
-		return iri.hashCode();
-	}
+    @Override
+    public int hashCode() {
+        return iri.hashCode();
+    }
 
 }

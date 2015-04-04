@@ -18,39 +18,39 @@
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<parent>
+    <parent>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-rdf-parent</artifactId>
-	<version>0.0.3-SNAPSHOT</version>
-	</parent>
+        <version>0.0.3-SNAPSHOT</version>
+    </parent>
 
-	<artifactId>commons-rdf-simple</artifactId>
-	<packaging>jar</packaging>
+    <artifactId>commons-rdf-simple</artifactId>
+    <packaging>jar</packaging>
 
-	<name>Commons RDF: Simple Implementation</name>
-	<description>Simple (if not naive) implementation of Commons RDF API</description>
+    <name>Commons RDF: Simple Implementation</name>
+    <description>Simple (if not naive) implementation of Commons RDF API</description>
 
-	<dependencies>
-		<dependency>
-			<groupId>${project.parent.groupId}</groupId>
-			<artifactId>commons-rdf-api</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>${project.parent.groupId}</groupId>
-			<artifactId>commons-rdf-api</artifactId>
-			<version>${project.parent.version}</version>
-			<classifier>tests</classifier>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>${project.parent.groupId}</groupId>
+            <artifactId>commons-rdf-api</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.parent.groupId}</groupId>
+            <artifactId>commons-rdf-api</artifactId>
+            <version>${project.parent.version}</version>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
 </project>

@@ -29,7 +29,7 @@
  * To use this implementation, create an instance of {@link SimpleRDFTermFactory}
  * and use methods like {@link SimpleRDFTermFactory#createGraph} and 
  * {@link SimpleRDFTermFactory#createIRI(String)}.
- * 
+ *
  */
 package org.apache.commons.rdf.simple;
 

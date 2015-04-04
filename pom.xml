@@ -47,7 +47,8 @@
     <scm>
         <url>https://git-wip-us.apache.org/repos/asf/incubator-commonsrdf.git</url>
         <connection>scm:git:https://git-wip-us.apache.org/repos/asf/incubator-commonsrdf.git</connection>
-        <developerConnection>scm:git:https://git-wip-us.apache.org/repos/asf/incubator-commonsrdf.git</developerConnection>
+        <developerConnection>scm:git:https://git-wip-us.apache.org/repos/asf/incubator-commonsrdf.git
+        </developerConnection>
         <tag>HEAD</tag>
     </scm>
 
@@ -118,8 +119,8 @@
     </developers>
 
     <modules>
-      <module>api</module>
-      <module>simple</module>
+        <module>api</module>
+        <module>simple</module>
     </modules>
 
     <dependencyManagement>
@@ -163,42 +164,42 @@
                 </executions>
             </plugin>
             <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-jar-plugin</artifactId>
-              <version>2.6</version>
-              <configuration>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.6</version>
                 <configuration>
-                  <skip>true</skip>
+                    <configuration>
+                        <skip>true</skip>
+                    </configuration>
                 </configuration>
-              </configuration>
             </plugin>
             <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-source-plugin</artifactId>
-              <version>2.2.1</version>
-              <executions>
-                <execution>
-                  <goals>
-                    <goal>jar</goal>
-                    <goal>test-jar</goal>
-                  </goals>
-                </execution>
-              </executions>
-              <configuration>
-                <skipIfEmpty>true</skipIfEmpty>
-              </configuration>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.2.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>jar</goal>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <skipIfEmpty>true</skipIfEmpty>
+                </configuration>
             </plugin>
             <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-javadoc-plugin</artifactId>
-              <version>2.9.1</version>
-              <executions>
-                <execution>
-                  <goals>
-                    <goal>jar</goal>
-                  </goals>
-                </execution>
-              </executions>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
