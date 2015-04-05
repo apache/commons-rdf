@@ -35,7 +35,7 @@ import java.util.stream.Stream;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Test writting graph
+ * Test writing graph
  */
 public class TestWritingGraph {
 
@@ -102,7 +102,7 @@ public class TestWritingGraph {
         IRI predicate = factory.createIRI("pred");
         long count = graph.getTriples(subject, predicate, null).unordered()
                 .parallel().count();
-        System.out.println("Counted - " + count);
+        //System.out.println("Counted - " + count);
         assertEquals(count, TRIPLES);
     }
 
