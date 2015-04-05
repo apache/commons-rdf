@@ -27,7 +27,7 @@ import static org.junit.Assert.*;
 
 /**
  * Test Graph implementation
- * <p/>
+ * <p>
  * To add to your implementation's tests, create a subclass with a name ending
  * in <code>Test</code> and provide {@link #createFactory()} which minimally
  * must support {@link RDFTermFactory#createGraph()} and
@@ -230,9 +230,8 @@ public abstract class AbstractGraphTest {
 
     /**
      * An attempt to use the Java 8 streams to look up a more complicated query.
-     * <p/>
+     * <p>
      * FYI, the equivalent SPARQL version (untested):
-     * <p/>
      * <pre>
      * 	SELECT ?orgName WHERE {
      * 			?org foaf:name ?orgName .

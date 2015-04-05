@@ -35,7 +35,7 @@ final class TripleImpl implements Triple {
 
     /**
      * Construct Triple from its constituent parts.
-     * <p/>
+     * <p>
      * The objects are not changed. All mapping of BNode objects is done in
      * {@link SimpleRDFTermFactory#createTriple(BlankNodeOrIRI, IRI, RDFTerm)}.
      *

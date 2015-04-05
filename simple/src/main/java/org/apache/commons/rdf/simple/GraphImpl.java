@@ -28,9 +28,9 @@ import java.util.stream.Stream;
 
 /**
  * A simple, memory-based implementation of Graph.
- * <p/>
+ * <p>
  * {@link Triple}s in the graph are kept in a {@link Set}.
- * <p/>
+ * <p>
  * All Stream operations are performed using parallel and unordered directives.
  */
 final class GraphImpl implements Graph {

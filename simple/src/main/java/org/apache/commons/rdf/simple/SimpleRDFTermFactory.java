@@ -21,7 +21,7 @@ import org.apache.commons.rdf.api.*;
 
 /**
  * A simple implementation of RDFTermFactory.
- * <p/>
+ * <p>
  * The {@link RDFTerm} and {@link Graph} instances created by this factory are
  * simple in-memory Implementations that are not thread-safe or efficient, but
  * which may be useful for testing and prototyping purposes.
