@@ -24,6 +24,18 @@ A draft diagram of the interfaces which may be included in Commons RDF are:
 This library is still <strong>work in progress</strong>. Therefore everybody is
 welcomed to join the project and contribute!
 
+## Contributing
+
+Feel free to subscribe to the 
+[dev@commonsrdf](http://mail-archives.apache.org/mod_mbox/incubator-commonsrdf-dev/) 
+mailing list to follow the ongoing development of Commons RDF, ask questions 
+about its usage, or help shape Commons RDF by contributing your ideas, code and 
+use cases. 
+ 
+See [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to contribute. 
+In short - raise a Github pull request.
+
+
 ## Disclaimer
 
 Apache Commons RDF is an effort undergoing incubation at [The Apache Software Foundation
@@ -34,6 +46,8 @@ have stabilized in a manner consistent with other successful ASF projects.
 While incubation status is not necessarily a reflection of the completeness or
 stability of the code, it does indicate that the project has yet to be fully
 endorsed by the ASF.
+
+
 
 ## Building
 
@@ -125,14 +139,7 @@ that can create the corresponding implementations of a `Graph`, `IRI`, etc.
 For an example, see 
 [SimpleGraphTest](simple/src/test/java/org/apache/commons/rdf/simple/SimpleGraphTest.java).
 
-## Contributors
 
-* Sergio Fernández ([Apache Marmotta](http://marmotta.apache.org))
-* Andy Seaborne ([Apache Jena](http://jena.apache.org))
-* Peter Ansell ([OpenRDF Sesame](http://rdf4j.org/))
-* Stian Soiland-Reyes ([Apache Taverna](http://taverna.incubator.apache.org))
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to contribute. In short - raise a Github pull request.
 
 ## License
 
