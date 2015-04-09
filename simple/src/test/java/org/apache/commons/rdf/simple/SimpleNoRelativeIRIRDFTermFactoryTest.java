@@ -25,7 +25,7 @@ import java.net.URI;
 
 /**
  * Test simple IRI without relative IRI support.
- * <p?>
+ * <p>
  * Ensures that {@link AbstractRDFTermFactoryTest#createIRIRelative()} is
  * correctly skipped (without causing an error.
  */
