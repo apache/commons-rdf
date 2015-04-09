@@ -43,7 +43,7 @@ final class BlankNodeImpl implements BlankNode {
         if (Objects.requireNonNull(id).isEmpty()) {
             throw new IllegalArgumentException("Invalid blank node id: " + id);
         }
-        String uuidInput = uuidSalt.toString() + ":" + id;
+        String uuidInput = System.identityHashCode(uuidSalt) + ":" + id;
         // Both the scope and the id are used to create the UUID, ensuring that
         // a caller can reliably create the same bnode if necessary by sending
         // in the same scope.
