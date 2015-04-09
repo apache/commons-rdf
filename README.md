@@ -4,17 +4,18 @@
 [![Coverage Status](https://coveralls.io/repos/apache/incubator-commonsrdf/badge.svg)](https://coveralls.io/r/apache/incubator-commonsrdf)
 
 Commons RDF aims to provide a common library for [RDF 1.1](http://www.w3.org/TR/rdf11-concepts/) 
-that could be implemented by the upcoming versions of the main Java toolkits 
+that could be implemented by the upcoming versions of the main Java toolkits for RDF:
 ([Jena](http://jena.apache.org/) 3.x and [Sesame](http://openrdf.callimachus.net/) 
 4.x) as well as for other libraries ([OWLAPI](http://owlapi.sourceforge.net/),
 [Clerezza](http://clerezza.apache.org/)) and other JVM languages.
 
-The main motivation behind this simple library is revise an historical incompatibility 
-issue. This library does not pretend to be a generic api wrapping those libraries, 
-but a set of interfaces for the RDF 1.1 concepts that can be used to expose common 
-RDF-1.1 concepts using common Java interfaces. In the initial phase commons-rdf 
-is focused on a subset of the core concepts defined by RDF-1.1 (URI/IRI, Blank Node, 
-Literal, Triple, and Graph). In particular, commons RDF aims to provide a type-safe, 
+The main motivation behind this simple library is to revise an historical incompatibility 
+issue between these toolkits. This library does not pretend to be a generic API wrapping those libraries, 
+but is a set of common Java interfaces for the RDF 1.1 concepts, e.g. `IRI`, `BlankNode`, 
+`Graph`, accompanied with unit test cases for their expected behaviour, and a `simple` 
+implementation, which main purpose is to clarify the tests and interfaces.
+
+In particular, Commons RDF aims to provide a type-safe, 
 non-general API that covers RDF 1.1. In a future phase we may define interfaces 
 for Datasets and Quads.
 
@@ -92,6 +93,35 @@ To then use from your project, add to Maven (update `<version>` to match the Mav
         <version>0.0.3-SNAPSHOT</version>
     </dependency>
     
+
+## Snapshot repository
+
+The Apache Commons RDF project is aiming to regularly release early 
+previews releases (0.x.y versions) and publish these to Maven Central.
+
+However, if you are following the ongoing
+development on [dev@commonsrdf](http://mail-archives.apache.org/mod_mbox/incubator-commonsrdf-dev/), 
+you may want to try the [snapshot builds](https://builds.apache.org/job/incubator-commonsrdf/), 
+which are automatically deployed to the 
+[Apache snapshot repository](https://repository.apache.org/content/groups/snapshots/org/apache/commons/commons-rdf-api/).
+
+To use these snapshots from your Maven project, depend on the latest `*-SNAPSHOT` version
+as found in the current [pom.xml](pom.xml), and add to your own `pom.xml`:
+
+```xml
+<repositories>
+  <repository>
+    <id>apache.snapshots</id>
+    <name>Apache Snapshot Repository</name>
+    <url>http://repository.apache.org/snapshots</url>
+    <releases>
+      <enabled>false</enabled>
+    </releases>
+  </repository>
+</repositories>
+```
+ 
+
 ## Simple implementation
 
 The [commons-rdf-simple](simple) module contains a 
