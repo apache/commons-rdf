@@ -27,7 +27,7 @@ import java.util.Objects;
 /**
  * A simple implementation of Triple.
  */
-final class TripleImpl implements Triple {
+public class TripleImpl implements Triple {
 
     private final BlankNodeOrIRI subject;
     private final IRI predicate;
