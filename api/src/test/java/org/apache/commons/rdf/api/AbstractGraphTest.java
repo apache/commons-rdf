@@ -19,11 +19,15 @@ package org.apache.commons.rdf.api;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.junit.Assume;
@@ -275,6 +279,128 @@ public abstract class AbstractGraphTest {
         assertEquals(4, graph.getTriples(null, name, null).count());
         Assume.assumeNotNull(bnode1);
         assertEquals(3, graph.getTriples(null, member, null).count());
+    }
+
+    @Test
+    public void addBlankNodesFromMultipleGraphs() {
+
+        try {
+            Graph g1 = createGraph1();
+            Graph g2 = createGraph2();
+            Graph g3 = factory.createGraph();
+
+            copyTriples(g1, g3);
+            copyTriples(g2, g3);
+
+            IRI name = factory.createIRI("http://xmlns.com/foaf/0.1/name");
+
+            final Map<String, BlankNodeOrIRI> whoIsWho = new HashMap<>();
+            System.out.println(g3.getTriples(null, name, null).count());
+            // NOTE: sequential as our HashMap is not thread-safe
+            g3.getTriples(null, name, null).sequential().forEach( t ->
+                whoIsWho.put( t.getObject().ntriplesString(), t.getSubject()));
+            assertEquals(4, whoIsWho.size());
+            // and contains 4 unique values
+            assertEquals(4, new HashSet<BlankNodeOrIRI>(whoIsWho.values()).size());
+
+            BlankNodeOrIRI b1Alice = whoIsWho.get("\"Alice\"");
+            assertNotNull(b1Alice);
+            BlankNodeOrIRI b2Bob = whoIsWho.get("\"Bob\"");
+            assertNotNull(b2Bob);
+            BlankNodeOrIRI b1Charlie = whoIsWho.get("\"Charlie\"");
+            assertNotNull(b1Charlie);
+            BlankNodeOrIRI b2Dave = whoIsWho.get("\"Dave\"");
+            assertNotNull(b2Dave);
+
+            notEquals(b1Alice, b2Bob);
+            notEquals(b1Alice, b1Charlie);
+            notEquals(b1Alice, b2Dave);
+            notEquals(b2Bob, b1Charlie);
+            notEquals(b2Bob, b2Dave);
+            notEquals(b1Charlie, b2Dave);
+
+            IRI hasChild = factory.createIRI("http://example.com/hasChild");
+            assertTrue(g3.contains(b1Alice, hasChild, b2Bob));
+            assertTrue(g3.contains(b2Dave, hasChild, b1Charlie));
+            // But not
+            assertFalse(g3.contains(b1Alice, hasChild, b1Alice));
+            assertFalse(g3.contains(b1Alice, hasChild, b1Charlie));
+            assertFalse(g3.contains(b1Alice, hasChild, b2Dave));
+            // nor
+            assertFalse(g3.contains(b2Dave, hasChild, b1Alice));
+            assertFalse(g3.contains(b2Dave, hasChild, b1Alice));
+
+            // and these don't have any children (as far as we know)
+            assertFalse(g3.contains(b2Bob, hasChild, null));
+            assertFalse(g3.contains(b1Charlie, hasChild, null));
+        } catch (UnsupportedOperationException ex) {
+            Assume.assumeNoException(ex);
+        }
+    }
+
+    private void notEquals(BlankNodeOrIRI node1, BlankNodeOrIRI node2) {
+        assertFalse(node1.equals(node2));
+        // in which case we should be able to assume
+        // (as they are in the same graph)
+        assertFalse(node1.ntriplesString().equals(node2.ntriplesString()));
+    }
+
+    /**
+     * Add all triples from the source to the target.
+     * <p>
+     * The triples may be copied in any order.
+     * No special conversion or adaptation of {@link BlankNode}s are performed.
+     *
+     * @param source Source Graph to copy triples from
+     * @param target Target Graph where triples will be added
+     */
+    protected static void copyTriples(Graph source, Graph target) {
+
+        // unordered() as we don't need to preserve triple order
+        // sequential() as we don't require target Graph to be thread-safe
+        source.getTriples().unordered().sequential().forEach(t -> target.add(t));
+    }
+
+    private Graph createGraph1() {
+        RDFTermFactory factory1 = createFactory();
+        // Let's assume this is parsed from
+        // a Turtle file <g1.ttl>, and faithfully keeps its
+        // internal blank node identifiers _:b1 and _:b2
+
+        IRI name = factory1.createIRI("http://xmlns.com/foaf/0.1/name");
+        Graph g1 = factory1.createGraph();
+        BlankNode b1 = factory1.createBlankNode();
+        g1.add(b1, name, factory1.createLiteral("Alice"));
+
+        BlankNode b2 = factory1.createBlankNode();
+        g1.add(b2, name, factory1.createLiteral("Bob"));
+
+        IRI hasChild = factory1.createIRI("http://example.com/hasChild");
+        g1.add(b1, hasChild,  b2);
+
+        return g1;
+    }
+
+    private Graph createGraph2() {
+        // Let's assume this is parsed from
+        // a Turtle file <g2.ttl>, which also uses the
+        // internal blank node identifiers _:b1 and _:b2,
+        // but is describing someone else.
+        RDFTermFactory factory2 = createFactory();
+        IRI name = factory2.createIRI("http://xmlns.com/foaf/0.1/name");
+
+        Graph g2 = factory2.createGraph();
+
+        BlankNode b1 = factory2.createBlankNode();
+        g2.add(b1, name, factory2.createLiteral("Charlie"));
+
+        BlankNode b2 = factory2.createBlankNode();
+        g2.add(b2, name, factory2.createLiteral("Dave"));
+
+        IRI hasChild = factory2.createIRI("http://example.com/hasChild");
+        // NOTE: Opposite direction of loadGraph1
+        g2.add(b2, hasChild,  b1);
+        return g2;
     }
 
     /**
