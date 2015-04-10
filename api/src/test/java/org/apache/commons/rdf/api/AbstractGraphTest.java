@@ -23,7 +23,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -297,7 +296,7 @@ public abstract class AbstractGraphTest {
 
             final Map<String, BlankNodeOrIRI> whoIsWho = new ConcurrentHashMap<>();
             // ConcurrentHashMap as we will try parallel forEach below,
-            // which should not give inconsistent results (it does with a 
+            // which should not give inconsistent results (it does with a
             // HashMap!)
             g3.getTriples(null, name, null).parallel().forEach( t ->
                 whoIsWho.put( t.getObject().ntriplesString(), t.getSubject()));
@@ -356,7 +355,7 @@ public abstract class AbstractGraphTest {
      * @param source Source Graph to copy triples from
      * @param target Target Graph where triples will be added
      */
-    protected static void copyTriples(Graph source, Graph target) {
+    private void copyTriples(Graph source, Graph target) {
 
         // unordered() as we don't need to preserve triple order
         // sequential() as we don't (currently) require target Graph to be thread-safe
