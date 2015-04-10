@@ -4,8 +4,8 @@
 [![Coverage Status](https://coveralls.io/repos/apache/incubator-commonsrdf/badge.svg)](https://coveralls.io/r/apache/incubator-commonsrdf)
 
 Commons RDF aims to provide a common library for [RDF 1.1](http://www.w3.org/TR/rdf11-concepts/) 
-that could be implemented by the upcoming versions of the main Java toolkits for RDF:
-([Jena](http://jena.apache.org/) 3.x and [Sesame](http://openrdf.callimachus.net/) 
+that could be implemented by Java toolkits for RDF:
+([Jena](http://jena.apache.org/) and [Sesame](http://openrdf.callimachus.net/) 
 4.x) as well as for other libraries ([OWLAPI](http://owlapi.sourceforge.net/),
 [Clerezza](http://clerezza.apache.org/)) and other JVM languages.
 
