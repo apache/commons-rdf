@@ -17,7 +17,6 @@
  */
 package org.apache.commons.rdf.api;
 
-import java.util.Iterator;
 import java.util.stream.Stream;
 
 /**
@@ -26,7 +25,7 @@ import java.util.stream.Stream;
  * href="http://www.w3.org/TR/rdf11-concepts/" >RDF-1.1 Concepts and Abstract
  * Syntax</a>, a W3C Recommendation published on 25 February 2014.
  */
-public interface Graph extends AutoCloseable,Iterable<Triple> {
+public interface Graph extends AutoCloseable {
 
     /**
      * Add a triple to the graph, possibly mapping any of the components of the
@@ -148,25 +147,4 @@ public interface Graph extends AutoCloseable,Iterable<Triple> {
     Stream<? extends Triple> getTriples(BlankNodeOrIRI subject, IRI predicate,
                                         RDFTerm object);
 
-    /**
-     * Get an iterator for all triples contained by the graph.
-     * <p>
-     * The iteration SHOULD NOT contain any duplicate triples, as determined by
-     * the equals method for each {@link Triple}.
-     * <p>
-     * The behaviour of the iterator is not specified if add, remove, or clear,
-     * are called on the Graph before it terminates. It is undefined if the
-     * returned Iterator supports the remove method.
-     * <p>
-     * Implementations may throw ConcurrentModificationException from Iterator
-     * methods if they detect a concurrency conflict while the Iterator is
-     * active.
-     *
-     * @return A {@link Iterator} over all of the triples in the graph
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    default Iterator<Triple> iterator() {
-        return (Iterator<Triple>) getTriples().iterator();
-    }
 }
