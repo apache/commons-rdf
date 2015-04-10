@@ -289,8 +289,8 @@ public abstract class AbstractGraphTest {
             Graph g2 = createGraph2();
             Graph g3 = factory.createGraph();
 
-            copyTriples(g1, g3);
-            copyTriples(g2, g3);
+            addAllTriples(g1, g3);
+            addAllTriples(g2, g3);
 
             IRI name = factory.createIRI("http://xmlns.com/foaf/0.1/name");
 
@@ -355,7 +355,7 @@ public abstract class AbstractGraphTest {
      * @param source Source Graph to copy triples from
      * @param target Target Graph where triples will be added
      */
-    private void copyTriples(Graph source, Graph target) {
+    private void addAllTriples(Graph source, Graph target) {
 
         // unordered() as we don't need to preserve triple order
         // sequential() as we don't (currently) require target Graph to be thread-safe
