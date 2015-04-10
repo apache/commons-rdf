@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.junit.Assume;
 import org.junit.Before;
@@ -294,10 +295,11 @@ public abstract class AbstractGraphTest {
 
             IRI name = factory.createIRI("http://xmlns.com/foaf/0.1/name");
 
-            final Map<String, BlankNodeOrIRI> whoIsWho = new HashMap<>();
-            System.out.println(g3.getTriples(null, name, null).count());
-            // NOTE: sequential as our HashMap is not thread-safe
-            g3.getTriples(null, name, null).sequential().forEach( t ->
+            final Map<String, BlankNodeOrIRI> whoIsWho = new ConcurrentHashMap<>();
+            // ConcurrentHashMap as we will try parallel forEach below,
+            // which should not give inconsistent results (it does with a 
+            // HashMap!)
+            g3.getTriples(null, name, null).parallel().forEach( t ->
                 whoIsWho.put( t.getObject().ntriplesString(), t.getSubject()));
             assertEquals(4, whoIsWho.size());
             // and contains 4 unique values
@@ -357,7 +359,7 @@ public abstract class AbstractGraphTest {
     protected static void copyTriples(Graph source, Graph target) {
 
         // unordered() as we don't need to preserve triple order
-        // sequential() as we don't require target Graph to be thread-safe
+        // sequential() as we don't (currently) require target Graph to be thread-safe
         source.getTriples().unordered().sequential().forEach(t -> target.add(t));
     }
 
