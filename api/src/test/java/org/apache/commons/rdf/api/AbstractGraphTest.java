@@ -17,13 +17,18 @@
  */
 package org.apache.commons.rdf.api;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
+
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.Optional;
-
-import static org.junit.Assert.*;
 
 /**
  * Test Graph implementation
@@ -132,6 +137,36 @@ public abstract class AbstractGraphTest {
                 companyName, bobNameTriple);
         // Can only reliably predict size if we could create all triples
         assertEquals(8, graph.size());
+    }
+
+    @Test
+    public void iterable() throws Exception {
+
+        Assume.assumeTrue(graph.size() > 0);
+
+        List<Triple> triples = new ArrayList<>();
+        for (Triple t : graph) {
+            triples.add(t);
+        }
+        assertEquals(graph.size(), (long)triples.size());
+        if (bobNameTriple != null) {
+            assertTrue(triples.contains(bobNameTriple));
+        }
+
+        // aborted iteration
+        Iterator<Triple> it = graph.iterator();
+
+        assertTrue(it.hasNext());
+        it.next();
+
+        // second iteration - should start from fresh and
+        // get the same count
+        long count = 0;
+        for (Triple t : graph) {
+            count++;
+        }
+        assertEquals(graph.size(), count);
+
     }
 
     @Test
