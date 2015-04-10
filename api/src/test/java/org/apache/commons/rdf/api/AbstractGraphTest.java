@@ -17,13 +17,20 @@
  */
 package org.apache.commons.rdf.api;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
+
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.Optional;
-
-import static org.junit.Assert.*;
 
 /**
  * Test Graph implementation
@@ -134,6 +141,82 @@ public abstract class AbstractGraphTest {
         assertEquals(8, graph.size());
     }
 
+    @Test
+    public void iterable() throws Exception {
+
+        Assume.assumeTrue(graph.size() > 0);
+
+        List<Triple> triples = new ArrayList<>();
+        for (Triple t : GraphUtil.iterate(graph)) {
+            triples.add(t);
+        }
+        assertEquals(graph.size(), (long)triples.size());
+        if (bobNameTriple != null) {
+            assertTrue(triples.contains(bobNameTriple));
+        }
+
+        // aborted iteration
+        Iterator<Triple> it = GraphUtil.iterate(graph).iterator();
+
+        assertTrue(it.hasNext());
+        it.next();
+
+        // second iteration - should start from fresh and
+        // get the same count
+        long count = 0;
+        for (Triple t : GraphUtil.iterate(graph)) {
+            count++;
+        }
+        assertEquals(graph.size(), count);
+
+    }
+
+    @Test
+    public void iterableStream() throws Exception {
+
+        Assume.assumeTrue(graph.size() > 0);
+
+        List<RDFTerm> objects = new ArrayList<>();
+        for (Triple t : GraphUtil.iterate(graph.getTriples(alice, knows, null))) {
+            objects.add(t.getObject());
+        }
+        assertEquals(1, objects.size());
+        assertEquals(bob, objects.get(0));
+        
+        // aborted iteration
+        Iterator<Triple> it = GraphUtil.iterate(graph.getTriples(alice, knows, null)).iterator();
+
+        assertTrue(it.hasNext());
+        it.next();
+
+        // second iteration - should start from fresh and
+        // get the same count
+        long count = 0;
+        Stream<? extends Triple> stream = graph.getTriples(alice, knows, null);
+        for (Triple t : GraphUtil.iterate(stream)) {
+            count++;
+        }
+        assertEquals(1, count);
+        
+
+    }
+    
+    @Test(expected=IllegalStateException.class)
+    public void iterableStreamTwiceFails() throws Exception {
+        Stream<? extends Triple> stream = graph.getTriples(alice, knows, null);
+        long count = 0;
+        for (Triple t : GraphUtil.iterate(stream)) {
+            count++;
+        }
+        assertEquals(1, count);
+        // Can't iterate again over terminated stream, below should
+        // throw IllegalStateException
+        for (Triple t : GraphUtil.iterate(stream)) {
+            fail("Should not be able to iterate on a finished stream");
+        }
+    }
+
+    
     @Test
     public void contains() throws Exception {
         assertFalse(graph.contains(bob, knows, alice)); // or so he claims..

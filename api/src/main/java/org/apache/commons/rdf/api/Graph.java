@@ -146,4 +146,5 @@ public interface Graph extends AutoCloseable {
      */
     Stream<? extends Triple> getTriples(BlankNodeOrIRI subject, IRI predicate,
                                         RDFTerm object);
+
 }
