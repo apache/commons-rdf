@@ -17,9 +17,7 @@
  */
 package org.apache.commons.rdf.api;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -145,7 +143,7 @@ public abstract class AbstractGraphTest {
         Assume.assumeTrue(graph.size() > 0);
 
         List<Triple> triples = new ArrayList<>();
-        for (Triple t : graph) {
+        for (Triple t : graph.iterate()) {
             triples.add(t);
         }
         assertEquals(graph.size(), (long)triples.size());
@@ -154,7 +152,7 @@ public abstract class AbstractGraphTest {
         }
 
         // aborted iteration
-        Iterator<Triple> it = graph.iterator();
+        Iterator<Triple> it = graph.iterate().iterator();
 
         assertTrue(it.hasNext());
         it.next();
@@ -162,13 +160,13 @@ public abstract class AbstractGraphTest {
         // second iteration - should start from fresh and
         // get the same count
         long count = 0;
-        for (Triple t : graph) {
+        Iterable<Triple> iterable = graph.iterate();
+        for (Triple t : iterable) {
             count++;
         }
         assertEquals(graph.size(), count);
-
     }
-
+    
     @Test
     public void contains() throws Exception {
         assertFalse(graph.contains(bob, knows, alice)); // or so he claims..
