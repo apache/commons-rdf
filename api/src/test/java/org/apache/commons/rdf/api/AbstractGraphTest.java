@@ -17,13 +17,16 @@
  */
 package org.apache.commons.rdf.api;
 
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
+
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.Optional;
-
-import static org.junit.Assert.*;
 
 /**
  * Test Graph implementation
@@ -134,6 +137,51 @@ public abstract class AbstractGraphTest {
         assertEquals(8, graph.size());
     }
 
+    @Test
+    public void iterate() throws Exception {
+
+        Assume.assumeTrue(graph.size() > 0);
+
+        List<Triple> triples = new ArrayList<>();
+        for (Triple t : graph.iterate()) {
+            triples.add(t);
+        }
+        assertEquals(graph.size(), (long)triples.size());
+        if (bobNameTriple != null) {
+            assertTrue(triples.contains(bobNameTriple));
+        }
+
+        // aborted iteration
+        Iterator<Triple> it = graph.iterate().iterator();
+
+        assertTrue(it.hasNext());
+        it.next();
+
+        // second iteration - should start from fresh and
+        // get the same count
+        long count = 0;
+        Iterable<Triple> iterable = graph.iterate();
+        for (Triple t : iterable) {
+            count++;
+        }
+        assertEquals(graph.size(), count);
+    }
+    
+    @Test
+    public void iterateFilter() throws Exception {
+        List<RDFTerm> friends = new ArrayList<>();
+        IRI alice = factory.createIRI("http://example.com/alice");
+        IRI knows = factory.createIRI("http://xmlns.com/foaf/0.1/knows");
+        for (Triple t : graph.iterate(alice, knows, null)) {
+            friends.add(t.getObject());
+        }
+        assertEquals(1, friends.size());
+        assertEquals(bob, friends.get(0));
+        
+        // .. can we iterate over zero hits?
+        assertFalse(graph.iterate(bob, knows, alice).iterator().hasNext());
+    }
+    
     @Test
     public void contains() throws Exception {
         assertFalse(graph.contains(bob, knows, alice)); // or so he claims..
