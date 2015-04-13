@@ -17,7 +17,9 @@
  */
 package org.apache.commons.rdf.api;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -138,7 +140,7 @@ public abstract class AbstractGraphTest {
     }
 
     @Test
-    public void iterable() throws Exception {
+    public void iterate() throws Exception {
 
         Assume.assumeTrue(graph.size() > 0);
 
@@ -146,7 +148,7 @@ public abstract class AbstractGraphTest {
         for (Triple t : graph.iterate()) {
             triples.add(t);
         }
-        assertEquals(graph.size(), (long)triples.size());
+        assertEquals(graph.size(), triples.size());
         if (bobNameTriple != null) {
             assertTrue(triples.contains(bobNameTriple));
         }
@@ -166,7 +168,22 @@ public abstract class AbstractGraphTest {
         }
         assertEquals(graph.size(), count);
     }
-    
+
+    @Test
+    public void iterateFilter() throws Exception {
+        List<RDFTerm> friends = new ArrayList<>();
+        IRI alice = factory.createIRI("http://example.com/alice");
+        IRI knows = factory.createIRI("http://xmlns.com/foaf/0.1/knows");
+        for (Triple t : graph.iterate(alice, knows, null)) {
+            friends.add(t.getObject());
+        }
+        assertEquals(1, friends.size());
+        assertEquals(bob, friends.get(0));
+
+        // .. can we iterate over zero hits?
+        assertFalse(graph.iterate(bob, knows, alice).iterator().hasNext());
+    }
+
     @Test
     public void contains() throws Exception {
         assertFalse(graph.contains(bob, knows, alice)); // or so he claims..
