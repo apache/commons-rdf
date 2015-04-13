@@ -27,7 +27,7 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * A simple implementation of BlankNode.
  */
-final class BlankNodeImpl implements BlankNode {
+public class BlankNodeImpl implements BlankNode {
 
     private static AtomicLong bnodeCounter = new AtomicLong();
 

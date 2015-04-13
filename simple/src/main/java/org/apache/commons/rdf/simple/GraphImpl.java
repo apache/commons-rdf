@@ -33,13 +33,13 @@ import java.util.stream.Stream;
  * <p>
  * All Stream operations are performed using parallel and unordered directives.
  */
-final class GraphImpl implements Graph {
+public class GraphImpl implements Graph {
 
     private static final int TO_STRING_MAX = 10;
     private final Set<Triple> triples = new HashSet<Triple>();
     private final SimpleRDFTermFactory factory;
 
-    GraphImpl(SimpleRDFTermFactory simpleRDFTermFactory) {
+    public GraphImpl(SimpleRDFTermFactory simpleRDFTermFactory) {
         this.factory = simpleRDFTermFactory;
     }
 

@@ -28,7 +28,7 @@ import java.util.Optional;
 /**
  * A simple implementation of Literal.
  */
-final class LiteralImpl implements Literal {
+public class LiteralImpl implements Literal {
 
     private static final String QUOTE = "\"";
 
