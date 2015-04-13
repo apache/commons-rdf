@@ -138,7 +138,7 @@ public abstract class AbstractGraphTest {
     }
 
     @Test
-    public void iterable() throws Exception {
+    public void iterate() throws Exception {
 
         Assume.assumeTrue(graph.size() > 0);
 
@@ -165,6 +165,21 @@ public abstract class AbstractGraphTest {
             count++;
         }
         assertEquals(graph.size(), count);
+    }
+    
+    @Test
+    public void iterateFilter() throws Exception {
+        List<RDFTerm> friends = new ArrayList<>();
+        IRI alice = factory.createIRI("http://example.com/alice");
+        IRI knows = factory.createIRI("http://xmlns.com/foaf/0.1/knows");
+        for (Triple t : graph.iterate(alice, knows, null)) {
+            friends.add(t.getObject());
+        }
+        assertEquals(1, friends.size());
+        assertEquals(bob, friends.get(0));
+        
+        // .. can we iterate over zero hits?
+        assertFalse(graph.iterate(bob, knows, alice).iterator().hasNext());
     }
     
     @Test

@@ -154,7 +154,7 @@ public interface Graph extends AutoCloseable {
      * <p>
      * This method is meant to be used with a Java for-each loop, e.g.: 
      * <code>
-     *  for (Triple t : GraphUtil.iterate(graph)) {
+     *  for (Triple t : graph.iterate()) {
      *      System.out.println(t);
      *  }
      * </code>
@@ -183,5 +183,48 @@ public interface Graph extends AutoCloseable {
     default Iterable<Triple> iterate() 
             throws ConcurrentModificationException, IllegalStateException {
         return ((Stream<Triple>)getTriples())::iterator;
+    }
+    
+    /**
+     * Get an Iterable for iterating over the triples in the graph that
+     * match the pattern. 
+     * <p>
+     * This method is meant to be used with a Java for-each loop, e.g.: 
+     * <code>
+     *  IRI alice = factory.createIRI("http://example.com/alice");
+     *  IRI knows = factory.createIRI("http://xmlns.com/foaf/0.1/");
+     *  for (Triple t : graph.iterate(alice, knows, null)) {
+     *      System.out.println(t.getObject());
+     *  }
+     * </code>
+     * The behaviour of the iterator is not specified if {@link #add(Triple)},
+     * {@link #remove(Triple)} or {@link #clear()}, are called on the
+     * {@link Graph} before it terminates. It is undefined if the returned
+     * {@link Iterator} supports the {@link Iterator#remove()} method.
+     * <p>
+     * Implementations may throw {@link ConcurrentModificationException} from
+     * Iterator methods if they detect a concurrency conflict while the Iterator
+     * is active.
+     * <p>
+     * The {@link Iterable#iterator()} must only be called once, that is the
+     * Iterable must only be iterated over once. A {@link IllegalStateException}
+     * may be thrown on attempt to reuse the Iterable.
+     *
+     * @param subject   The triple subject (null is a wildcard)
+     * @param predicate The triple predicate (null is a wildcard)
+     * @param object    The triple object (null is a wildcard)
+     * @return A {@link Iterable} that returns {@link Iterator} over the
+     *         matching triples in the graph
+     * @throws IllegalStateException
+     *             if the {@link Iterable} has been reused
+     * @throws ConcurrentModificationException
+     *             if a concurrency conflict occurs while the Iterator is
+     *             active.
+     */
+    @SuppressWarnings("unchecked")
+    default Iterable<Triple> iterate(
+            BlankNodeOrIRI subject, IRI predicate, RDFTerm object) 
+        throws ConcurrentModificationException, IllegalStateException {
+        return ((Stream<Triple>) getTriples(subject, predicate, object))::iterator;
     }
 }
