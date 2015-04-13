@@ -370,10 +370,10 @@ public abstract class AbstractGraphTest {
 
         IRI name = factory1.createIRI("http://xmlns.com/foaf/0.1/name");
         Graph g1 = factory1.createGraph();
-        BlankNode b1 = factory1.createBlankNode();
+        BlankNode b1 = factory1.createBlankNode("b1");
         g1.add(b1, name, factory1.createLiteral("Alice"));
 
-        BlankNode b2 = factory1.createBlankNode();
+        BlankNode b2 = factory1.createBlankNode("b2");
         g1.add(b2, name, factory1.createLiteral("Bob"));
 
         IRI hasChild = factory1.createIRI("http://example.com/hasChild");
@@ -392,10 +392,10 @@ public abstract class AbstractGraphTest {
 
         Graph g2 = factory2.createGraph();
 
-        BlankNode b1 = factory2.createBlankNode();
+        BlankNode b1 = factory2.createBlankNode("b1");
         g2.add(b1, name, factory2.createLiteral("Charlie"));
 
-        BlankNode b2 = factory2.createBlankNode();
+        BlankNode b2 = factory2.createBlankNode("b2");
         g2.add(b2, name, factory2.createLiteral("Dave"));
 
         IRI hasChild = factory2.createIRI("http://example.com/hasChild");

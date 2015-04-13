@@ -114,6 +114,26 @@ public abstract class AbstractRDFTermFactoryTest {
     }
 
     @Test
+    public void testCreateBlankNodeIdentifierTwiceDifferentFactories() throws Exception {
+        BlankNode bnode1, differentFactory;
+        try {
+            bnode1 = factory.createBlankNode("example1");
+            // it should differ from a second factory
+            differentFactory = createFactory().createBlankNode("example1");
+        } catch (UnsupportedOperationException ex) {
+            Assume.assumeNoException(ex);
+            return;
+        }
+        //
+        assertNotEquals(bnode1, differentFactory);
+        assertNotEquals(bnode1.internalIdentifier(),
+                differentFactory.internalIdentifier());
+        // but not
+        //assertNotEquals(bnode1.ntriplesString(), differentFactory.ntriplesString());
+    }
+
+
+    @Test
     public void testCreateGraph() {
         Graph graph;
         try {
