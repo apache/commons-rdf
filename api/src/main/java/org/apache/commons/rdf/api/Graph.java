@@ -68,13 +68,13 @@ public interface Graph extends AutoCloseable {
 
     /**
      * Close the graph, relinquishing any underlying resources.
-     *
+     * <p>
      * For example, this would close any open file and network streams and free
      * database locks held by the Graph implementation.
-     *
+     * <p>
      * The behaviour of the other Graph methods are undefined after closing the
      * graph.
-     *
+     * <p>
      * Implementations might not need {@link #close()}, hence the default
      * implementation does nothing.
      */
@@ -105,9 +105,9 @@ public interface Graph extends AutoCloseable {
 
     /**
      * Number of triples contained by the graph.
-     *
-     * The count of a set does not include duplicates, as determined by the
-     * equals method for each {@link Triple}.
+     * <p>
+     * The count of a set does not include duplicates, consistent with the
+     * {@link Triple#equals(Object)} equals method for each {@link Triple}.
      *
      * @return The number of triples in the graph
      */
@@ -115,14 +115,15 @@ public interface Graph extends AutoCloseable {
 
     /**
      * Get all triples contained by the graph.<br>
-     *
-     * The iteration SHOULD NOT contain any duplicate triples, as determined by
-     * the equals method for each {@link Triple}.
-     *
-     * The behaviour of the Stream is not specified if add, remove, or clear,
-     * are called on the Stream before it terminates.<br>
-     *
-     * Implementations may throw ConcurrentModificationException from Stream
+     * <p>
+     * The iteration does not contain any duplicate triples, as determined by
+     * the {@link Triple#equals(Object)} method for each {@link Triple}.
+     * <p>
+     * The behaviour of the {@link Stream} is not specified if {@link #add(Triple)},
+     * {@link #remove(Triple)} or {@link #clear()} are called on the
+     * {@link Graph} before it terminates.
+     * <p>
+     * Implementations may throw {@link ConcurrentModificationException} from Stream
      * methods if they detect a conflict while the Stream is active.
      *
      * @return A {@link Stream} over all of the triples in the graph
@@ -131,14 +132,15 @@ public interface Graph extends AutoCloseable {
 
     /**
      * Get all triples contained by the graph matched with the pattern.
-     *
+     * <p>
      * The iteration does not contain any duplicate triples, as determined by
-     * the equals method for each {@link Triple}.
-     *
-     * The behaviour of the Stream is not specified if add, remove, or clear,
-     * are called on the Stream before it terminates.<br>
-     *
-     * Implementations may throw ConcurrentModificationException from Stream
+     * the {@link Triple#equals(Object)} method for each {@link Triple}.
+     * <p>
+     * The behaviour of the {@link Stream} is not specified if {@link #add(Triple)},
+     * {@link #remove(Triple)} or {@link #clear()} are called on the
+     * {@link Graph} before it terminates.
+     * <p>
+     * Implementations may throw {@link ConcurrentModificationException} from Stream
      * methods if they detect a conflict while the Stream is active.
      *
      * @param subject   The triple subject (null is a wildcard)
@@ -153,11 +155,11 @@ public interface Graph extends AutoCloseable {
      * Get an Iterable for iterating over all triples in the graph.
      * <p>
      * This method is meant to be used with a Java for-each loop, e.g.:
-     * <code>
+     * <pre>
      *  for (Triple t : graph.iterate()) {
      *      System.out.println(t);
      *  }
-     * </code>
+     * </pre>
      * The behaviour of the iterator is not specified if {@link #add(Triple)},
      * {@link #remove(Triple)} or {@link #clear()}, are called on the
      * {@link Graph} before it terminates. It is undefined if the returned
@@ -186,21 +188,22 @@ public interface Graph extends AutoCloseable {
     }
 
     /**
-     * Get an Iterable for iterating over the triples in the graph that
-     * match the pattern.
+     * Get an Iterable for iterating over the triples in the graph that match
+     * the pattern.
      * <p>
      * This method is meant to be used with a Java for-each loop, e.g.:
-     * <code>
+     * <pre>
      *  IRI alice = factory.createIRI("http://example.com/alice");
      *  IRI knows = factory.createIRI("http://xmlns.com/foaf/0.1/");
      *  for (Triple t : graph.iterate(alice, knows, null)) {
      *      System.out.println(t.getObject());
      *  }
-     * </code>
-     * The behaviour of the iterator is not specified if {@link #add(Triple)},
-     * {@link #remove(Triple)} or {@link #clear()}, are called on the
-     * {@link Graph} before it terminates. It is undefined if the returned
-     * {@link Iterator} supports the {@link Iterator#remove()} method.
+     * </pre>
+     * <p>
+     * The behaviour of the iterator is not specified if
+     * {@link #add(Triple)}, {@link #remove(Triple)} or {@link #clear()}, are
+     * called on the {@link Graph} before it terminates. It is undefined if the
+     * returned {@link Iterator} supports the {@link Iterator#remove()} method.
      * <p>
      * Implementations may throw {@link ConcurrentModificationException} from
      * Iterator methods if they detect a concurrency conflict while the Iterator
@@ -210,9 +213,12 @@ public interface Graph extends AutoCloseable {
      * Iterable must only be iterated over once. A {@link IllegalStateException}
      * may be thrown on attempt to reuse the Iterable.
      *
-     * @param subject   The triple subject (null is a wildcard)
-     * @param predicate The triple predicate (null is a wildcard)
-     * @param object    The triple object (null is a wildcard)
+     * @param subject
+     *            The triple subject (null is a wildcard)
+     * @param predicate
+     *            The triple predicate (null is a wildcard)
+     * @param object
+     *            The triple object (null is a wildcard)
      * @return A {@link Iterable} that returns {@link Iterator} over the
      *         matching triples in the graph
      * @throws IllegalStateException
