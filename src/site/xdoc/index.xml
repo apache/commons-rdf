@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements.  See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License.  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<document>
+ <properties>
+  <title>Home</title>
+  <author email="dev@commons.apache.org">Commons Documentation Team</author>
+ </properties>
+<body>
+<!-- ================================================== -->
+<section name="Commons RDF">
+
+  <p>
+    Commons RDF aims to provide a common library for <a href="http://www.w3.org/TR/rdf11-concepts/">RDF 1.1</a>
+    that could be implemented by the upcoming versions of the main Java toolkits
+    (<a href="http://jena.apache.org/">Jena</a> 3.x and <a href="http://openrdf.callimachus.net/">Sesame</a>
+    4.x) as well as for other libraries (<a href="http://owlapi.sourceforge.net/">OWLAPI</a>,
+    <a href="http://clerezza.apache.org/">Clerezza</a>) and other JVM languages.
+  </p>
+  <p>
+    The main motivation behind this simple library is revise an historical incompatibility
+    issue. This library does not pretend to be a generic api wrapping those libraries,
+    but a set of interfaces for the RDF 1.1 concepts that can be used to expose common
+    RDF-1.1 concepts using common Java interfaces. In the initial phase commons-rdf
+    is focused on a subset of the core concepts defined by RDF-1.1 (URI/IRI, Blank Node,
+    Literal, Triple, and Graph). In particular, commons RDF aims to provide a type-safe,
+    non-general API that covers RDF 1.1. In a future phase we may define interfaces
+    for Datasets and Quads.
+  </p>
+  
+  <p>
+    A draft diagram of the interfaces which may be included in Commons RDF are:
+
+    <!-- TODO move class diagram to site/resources-->
+    <img src="api/src/main/resources/commons-rdf-class-diagram.png" title="Commons RDF class diagram" />
+  </p>
+
+</section>
+<!-- ================================================== -->
+<section name="Documentation">
+<p>
+The package descriptions in the <a href="javadocs/api-release/index.html">JavaDoc</a> give an overview of the available features
+and various <a href="project-reports.html">project reports</a> are provided.
+</p>
+<p>
+The <a href="source-repository.html">git repository</a> can be
+<a href="https://git-wip-us.apache.org/repos/asf/incubator-commonsrdf.git">browsed</a>, or you can browse/contribute via <a href="https://github.com/apache/incubator-commonsrdf">GitHub</a>.
+</p>
+</section>
+<!-- ================================================== -->
+<section name="Release Information">
+<p>There is currently no stable release of Commons RDF. You may: </p>
+  
+  <!-- TODO comment in, after first release
+<ul>
+<li>Download <a href="http://commons.apache.org/proper/rdf/download_rdf.cgi">1.0</a></li>
+<li>Read the <a href="release-notes/RELEASE-NOTES-1.0.txt">1.0 release notes</a></li>
+</ul>
+<p>
+Alternatively you can pull it from the central Maven repositories:
+<pre>
+  &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;
+  &lt;artifactId&gt;commons-rdf3&lt;/artifactId&gt;
+  &lt;version&gt;1.0&lt;/version&gt;
+</pre>
+</p>
+ -->
+
+</section>
+<!-- ================================================== -->
+<section name="Getting Involved">
+<p>
+The <a href="mail-lists.html">commons developer mailing list</a> is the main channel of communication for contributors. Please remember that the lists are shared between all commons components, so prefix your email by [rdf]. </p>
+<p>You can also visit the #apache-commons IRC channel on irc.freenode.net or peruse <a href="issue-tracking.html">JIRA</a>.</p> 
+<!-- TODO we could create these special jira marker versions for RDF as well, if it make sense
+Specific links of interest for JIRA are:</p>
+<ul>
+<li>Ideas looking for code: <a href="https://issues.apache.org/jira/issues/?jql=project%20%3D%20LANG%20AND%20resolution%20%3D%20Unresolved%20AND%20fixVersion%20%3D%20%22Patch%20Needed%22%20ORDER%20BY%20priority%20DESC">Patch Needed</a></li>
+<li>Issues with patches, looking for reviews: <a href="https://issues.apache.org/jira/issues/?jql=fixVersion%20%3D%20%22Review%20Patch%22%20AND%20project%20%3D%20LANG%20AND%20resolution%20%3D%20Unresolved%20ORDER%20BY%20priority%20DESC">Review Patch</a></li>
+</ul>
+-->
+<p>Alternatively you can go through the <em>Needs Work</em> tags in the <a href="taglist.html">TagList report</a>.</p>
+<p>If you'd like to offer up pull requests via GitHub rather than applying patches to JIRA, we have a <a href="https://github.com/apache/commons-lang/">GitHub mirror</a>. </p>
+</section>
+<!-- ================================================== -->
+<section name="Support">
+<p>
+The <a href="mail-lists.html">commons mailing lists</a> act as the main support forum.
+The user list is suitable for most library usage queries.
+The dev list is intended for the development discussion.
+Please remember that the lists are shared between all commons components,
+so prefix your email by [lang].
+</p>
+<p>
+Bug reports and enhancements are also welcomed via the <a href="issue-tracking.html">JIRA</a> issue tracker.
+Please read the instructions carefully.
+</p>
+</section>
+<!-- ================================================== -->
+</body>
+</document>
