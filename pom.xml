@@ -92,11 +92,6 @@
             <email>andy@apache.org</email>
         </developer>
         <developer>
-            <id>ansell</id>
-            <name>Peter Ansell</name>
-            <email>ansell@apache.org</email>
-        </developer>
-        <developer>
             <id>stain</id>
             <name>Stian Soiland-Reyes</name>
             <email>stain@apache.org</email>
