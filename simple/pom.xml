@@ -23,11 +23,12 @@
 
     <parent>
         <groupId>org.apache.commons</groupId>
-        <artifactId>commons-rdf-parent</artifactId>
-        <version>0.0.3-SNAPSHOT</version>
+        <artifactId>commons-rdf-parent-incubating</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>commons-rdf-simple</artifactId>
+    <artifactId>commons-rdf-simple-incubating</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Commons RDF: Simple Implementation</name>
@@ -36,13 +37,13 @@
     <dependencies>
         <dependency>
             <groupId>${project.parent.groupId}</groupId>
-            <artifactId>commons-rdf-api</artifactId>
-            <version>${project.parent.version}</version>
+            <artifactId>commons-rdf-api-incubating</artifactId>
+            <version>0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>${project.parent.groupId}</groupId>
-            <artifactId>commons-rdf-api</artifactId>
-            <version>${project.parent.version}</version>
+            <artifactId>commons-rdf-api-incubating</artifactId>
+            <version>0.1-SNAPSHOT</version>
             <classifier>tests</classifier>
             <scope>test</scope>
         </dependency>
