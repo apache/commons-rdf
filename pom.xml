@@ -113,6 +113,13 @@
         </developer>
     </developers>
 
+    <contributors>
+        <contributor>
+            <name>Peter Ansell</name>
+            <email>ansell@apache.org</email>
+        </contributor>
+    </contributors>
+
     <modules>
         <module>api</module>
         <module>simple</module>
