@@ -29,7 +29,7 @@
 
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-rdf-parent</artifactId>
-    <version>0.1.0-SNAPSHOT-incubating</version>
+    <version>0.1.0-incubating-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Commons RDF</name>

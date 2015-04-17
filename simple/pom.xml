@@ -24,7 +24,7 @@
     <parent>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-rdf-parent</artifactId>
-        <version>0.1.0-SNAPSHOT-incubating</version>
+        <version>0.1.0-incubating-SNAPSHOT</version>
     </parent>
 
     <artifactId>commons-rdf-simple</artifactId>
@@ -37,12 +37,12 @@
         <dependency>
             <groupId>${project.parent.groupId}</groupId>
             <artifactId>commons-rdf-api</artifactId>
-            <version>0.1-SNAPSHOT-incubating</version>
+            <version>0.1-incubating-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>${project.parent.groupId}</groupId>
             <artifactId>commons-rdf-api</artifactId>
-            <version>0.1-SNAPSHOT-incubating</version>
+            <version>0.1-incubating-SNAPSHOT</version>
             <classifier>tests</classifier>
             <scope>test</scope>
         </dependency>
