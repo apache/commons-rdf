@@ -26,8 +26,8 @@ import java.net.URI;
 /**
  * Test simple IRI without relative IRI support.
  * <p>
- * Ensures that {@link AbstractRDFTermFactoryTest#createIRIRelative()} is
- * correctly skipped (without causing an error.
+ * Ensures that {@link AbstractRDFTermFactoryTest#testCreateIRIRelative()} is
+ * correctly skipped (without causing an error).
  */
 public class SimpleNoRelativeIRIRDFTermFactoryTest extends
         AbstractRDFTermFactoryTest {
@@ -38,7 +38,6 @@ public class SimpleNoRelativeIRIRDFTermFactoryTest extends
             public IRI createIRI(String iri) {
                 if (!URI.create(iri).isAbsolute()) {
                     throw new IllegalArgumentException("IRIs must be absolute");
-                    // ..in this subclass for testing purposes only :)
                 }
                 return super.createIRI(iri);
             }
