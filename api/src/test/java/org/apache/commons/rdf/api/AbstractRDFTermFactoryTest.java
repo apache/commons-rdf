@@ -31,7 +31,6 @@ import static org.junit.Assert.*;
  * supports one of the operations, but ideally supports all operations.
  *
  * @see RDFTermFactory
- * @see com.github.commonsrdf.simple.SimpleRDFTermFactoryTest
  */
 public abstract class AbstractRDFTermFactoryTest {
 

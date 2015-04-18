@@ -40,7 +40,6 @@ import org.junit.Test;
  *
  * @see Graph
  * @see RDFTermFactory
- * @see org.apache.commons.rdf.simple.SimpleGraphTest
  */
 public abstract class AbstractGraphTest {
 
