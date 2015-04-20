@@ -39,9 +39,23 @@
 
     <inceptionYear>2015</inceptionYear>
 
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <project.build.encoding>UTF-8</project.build.encoding>
+        <commons.componentid>rdf</commons.componentid>
+        <commons.release.version>0.1.0</commons.release.version>
+        <commons.jira.id>COMMONSRDF</commons.jira.id>
+        <commons.jira.pid>12316620</commons.jira.pid>
+        <commons.site.path>rdf</commons.site.path>
+        <commons.scmPubUrl>https://svn.apache.org/repos/infra/websites/production/commonsrdf/content/</commons.scmPubUrl>
+        <commons.scmPubCheckoutDirectory>site</commons.scmPubCheckoutDirectory>
     </properties>
 
     <scm>
@@ -52,71 +66,148 @@
         <tag>HEAD</tag>
     </scm>
 
-    <licenses>
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
+    <issueManagement>
+        <system>Jira</system>
+        <url>https://issues.apache.org/jira/browse/COMMONSRDF</url>
+    </issueManagement>
+
+    <mailingLists>
+        <mailingList>
+            <name>dev</name>
+            <post>dev@commonsrdf.incubator.apache.org</post>
+            <subscribe>dev-subscribe@commonsrdf.incubator.apache.org</subscribe>
+            <unsubscribe>dev-unsubscribe@commonsrdf.incubator.apache.org</unsubscribe>
+            <archive>http://mail-archives.apache.org/mod_mbox/commonsrdf-dev/</archive>
+            <otherArchives>
+                <otherArchive>http://markmail.org/search/?q=list%3Aorg.apache.commonsrdf.dev</otherArchive>
+            </otherArchives>
+        </mailingList>
+        <mailingList>
+            <name>commits</name>
+            <post>commits@commonsrdf.incubator.apache.org</post>
+            <subscribe>commits-subscribe@commonsrdf.incubator.apache.org</subscribe>
+            <unsubscribe>commits-unsubscribe@commonsrdf.incubator.apache.org</unsubscribe>
+            <archive>http://mail-archives.apache.org/mod_mbox/commonsrdf-commits/</archive>
+            <otherArchives>
+                <otherArchive>http://markmail.org/search/?q=list%3Aorg.apache.commonsrdf.commits</otherArchive>
+            </otherArchives>
+        </mailingList>
+    </mailingLists>
 
     <developers>
         <developer>
             <id>lewismc</id>
             <name>Lewis John McGibbney</name>
-            <email>lewismc@apache.org</email>
+            <email>lewismc[at]apache[dot]org</email>
+            <roles>
+                <role>Committer</role>
+                <role>PMC Member</role>
+                <role>Champion</role>
+            </roles>
+            <timezone>+1</timezone>
         </developer>
         <developer>
             <id>rvesse</id>
             <name>Rob Vesse</name>
-            <email>rvesse@apache.org</email>
+            <email>rvesse[at]apache[dot]org</email>
+            <roles>
+                <role>Committer</role>
+                <role>PMC Member</role>
+                <role>Mentor</role>
+            </roles>
+            <timezone>+0</timezone>
         </developer>
         <developer>
             <id>johndament</id>
             <name>John D Ament</name>
-            <email>johndament@apache.org</email>
+            <email>johndament[at]apache[dot]org</email>
+            <roles>
+                <role>Committer</role>
+                <role>PMC Member</role>
+                <role>Mentor</role>
+            </roles>
+            <timezone>+1</timezone>
         </developer>
         <developer>
             <id>ggregory</id>
             <name>Gary Gregory</name>
-            <email>ggregory@apache.org</email>
+            <email>ggregory[at]apache[dot]org</email>
+            <roles>
+                <role>Committer</role>
+                <role>PMC Member</role>
+                <role>Mentor</role>
+            </roles>
+            <timezone>+1</timezone>
         </developer>
         <developer>
             <id>wikier</id>
             <name>Sergio Fernández</name>
-            <email>wikier@apache.org</email>
+            <email>wikier[at]apache[dot]org</email>
+            <url>http://www.wikier.org</url>
+            <roles>
+                <role>Committer</role>
+                <role>PMC Member</role>
+            </roles>
+            <timezone>+1</timezone>
         </developer>
         <developer>
             <id>andy</id>
             <name>Andy Seaborne</name>
-            <email>andy@apache.org</email>
+            <email>andy[at]apache[dot]org</email>
+            <roles>
+                <role>Committer</role>
+                <role>PMC Member</role>
+            </roles>
+            <timezone>+0</timezone>
         </developer>
         <developer>
             <id>stain</id>
             <name>Stian Soiland-Reyes</name>
-            <email>stain@apache.org</email>
+            <email>stain[at]apache[dot]org</email>
+            <roles>
+                <role>Committer</role>
+                <role>PMC Member</role>
+            </roles>
+            <timezone>+0</timezone>
         </developer>
         <developer>
             <id>reto</id>
             <name>Reto Gmür</name>
-            <email>reto@apache.org</email>
+            <email>reto[at]apache[dot]org</email>
+            <roles>
+                <role>Committer</role>
+                <role>PMC Member</role>
+            </roles>
+            <timezone>+1</timezone>
         </developer>
         <developer>
             <id>enridaga</id>
             <name>Enrico Daga</name>
-            <email>enridaga@apache.org</email>
+            <email>enridaga[at]apache[dot]org</email>
+            <roles>
+                <role>Committer</role>
+                <role>PMC Member</role>
+            </roles>
+            <timezone>+0</timezone>
         </developer>
         <developer>
             <id>britter</id>
             <name>Benedikt Ritter</name>
-            <email>britter@apache.org</email>
+            <email>britter[at]apache[dot]org</email>
+            <roles>
+                <role>Committer</role>
+                <role>PMC Member</role>
+                <role>Apache Commons Representative</role>
+            </roles>
+            <timezone>+1</timezone>
         </developer>
     </developers>
 
     <contributors>
         <contributor>
             <name>Peter Ansell</name>
-            <email>ansell@apache.org</email>
+            <email>ansell[at]apache[dot]org</email>
+            <url>http://github.com/ansell</url>
         </contributor>
     </contributors>
 
@@ -135,6 +226,7 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
     <build>
         <plugins>
             <plugin>
@@ -210,7 +302,7 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
-                    <encoding>UTF-8</encoding>
+                    <encoding>${project.build.encoding}</encoding>
                 </configuration>
             </plugin>
             <!-- Create code coverage reports and submit them to coveralls.io. -->
@@ -231,6 +323,25 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.4</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.doxia</groupId>
+                        <artifactId>doxia-module-markdown</artifactId>
+                        <version>1.6</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <siteDirectory>${basedir}/src/site</siteDirectory>
+                    <outputDirectory>${project.build.directory}/site</outputDirectory>
+                    <inputEncoding>${project.build.encoding}</inputEncoding>
+                    <outputEncoding>${project.build.encoding}</outputEncoding>
+                    <showAvatarImages>false</showAvatarImages>
+                </configuration>
             </plugin>
         </plugins>
         <pluginManagement>
