@@ -47,12 +47,12 @@
 
   <body>
     <links>
-      <item name="Incubator"     href="http://incubator.apache.org/" />
+      <item name="Incubator"            href="http://incubator.apache.org/" />
     </links>
     <menu name="Project">
       <item name="Home"                 href="/index.html" />
-      <item name="Download"             href="/download.html" />
       <item name="API"                  href="/apidocs/index.html?org/apache/commons/rdf/api/package-summary.html" />
+      <item name="Download"             href="/download.html" />
       <item name="Team"                 href="/team-list.html" />
     </menu>
     <menu name="Tools">
