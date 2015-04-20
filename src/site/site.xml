@@ -47,30 +47,18 @@
 
   <body>
     <links>
-      <item name="Apache Incubator"     href="http://incubator.apache.org/" />
-      <item name="Apache Commons"       href="http://commons.apache.org/" />
-      <item name="Apache"               href="http://www.apache.org"/>
+      <item name="Incubator"     href="http://incubator.apache.org/" />
     </links>
     <menu name="Project">
       <item name="Home"                 href="/index.html" />
       <item name="Download"             href="/download.html" />
-      <item name="API"                  href="/apidocs/index.html" />
+      <item name="API"                  href="/apidocs/index.html?org/apache/commons/rdf/api/package-summary.html" />
       <item name="Team"                 href="/team-list.html" />
     </menu>
     <menu name="Tools">
       <item name="Mailing Lists"        href="/mail-lists.html" />
       <item name="Source (Git)"         href="https://git-wip-us.apache.org/repos/asf?p=incubator-commonsrdf.git" />
       <item name="Issues (Jira)"        href="https://issues.apache.org/jira/browse/COMMONSRDF" />
-    </menu>
-    <menu name="Apache Commons">
-      <item name="Home"                 href="http://commons.apache.org/" />
-    </menu>
-    <menu name="ASF">
-      <item name="How the ASF works"    href="http://www.apache.org/foundation/how-it-works.html" />
-      <item name="Get Involved"         href="http://www.apache.org/foundation/getinvolved.html" />
-      <item name="Developer Resources"  href="http://www.apache.org/dev/" />
-      <item name="Sponsorship"          href="http://www.apache.org/foundation/sponsorship.html" />
-      <item name="Thanks"               href="http://www.apache.org/foundation/thanks.html" />
     </menu>
   </body>
 
