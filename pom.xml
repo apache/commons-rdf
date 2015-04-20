@@ -55,7 +55,7 @@
         <commons.jira.pid>12316620</commons.jira.pid>
         <commons.site.path>rdf</commons.site.path>
         <commons.scmPubUrl>https://svn.apache.org/repos/infra/websites/production/commonsrdf/content/</commons.scmPubUrl>
-        <commons.scmPubCheckoutDirectory>site</commons.scmPubCheckoutDirectory>
+        <commons.scmPubCheckoutDirectory>${project.build.directory}/site-content</commons.scmPubCheckoutDirectory>
     </properties>
 
     <scm>
