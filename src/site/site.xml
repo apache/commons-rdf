@@ -54,6 +54,7 @@
     <menu name="Project">
       <item name="Home"                 href="/index.html" />
       <item name="Download"             href="/download.html" />
+      <item name="API"                  href="/apidocs/index.html" />
       <item name="Team"                 href="/team-list.html" />
     </menu>
     <menu name="Tools">

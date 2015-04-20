@@ -289,9 +289,13 @@
                 <version>2.9.1</version>
                 <executions>
                     <execution>
+                        <id>attach-javadocs</id>
                         <goals>
                             <goal>jar</goal>
                         </goals>
+                        <configuration>
+                            <additionalparam>-Xdoclint:none</additionalparam>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -341,6 +345,15 @@
                     <inputEncoding>${project.build.encoding}</inputEncoding>
                     <outputEncoding>${project.build.encoding}</outputEncoding>
                     <showAvatarImages>false</showAvatarImages>
+                    <reportPlugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-javadoc-plugin</artifactId>
+                            <configuration>
+                                <additionalparam>-Xdoclint:none</additionalparam>
+                            </configuration>
+                        </plugin>
+                    </reportPlugins>
                 </configuration>
             </plugin>
         </plugins>
