@@ -48,6 +48,8 @@
     </licenses>
 
     <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.encoding>UTF-8</project.build.encoding>
         <commons.componentid>rdf</commons.componentid>
         <commons.release.version>0.1.0</commons.release.version>
@@ -276,8 +278,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
                     <encoding>${project.build.encoding}</encoding>
                 </configuration>
             </plugin>
