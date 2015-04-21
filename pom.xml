@@ -246,6 +246,7 @@
                     <excludes>
                         <exclude>LICENSE</exclude>
                         <exclude>*.md</exclude>
+                        <exclude>**/package-info.java</exclude><!-- confused by /* syntax? -->
                         <exclude>target/**</exclude>
                     </excludes>
                 </configuration>
