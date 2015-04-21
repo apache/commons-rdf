@@ -29,7 +29,7 @@ import java.util.UUID;
  * additional parameters or can't create graphs), then it MAY throw
  * UnsupportedOperationException, as provided by the default implementations
  * here.
- * 
+ *
  * If a factory method does not allow or support a provided parameter, e.g.
  * because an IRI is considered invalid, then it SHOULD throw
  * IllegalArgumentException.
@@ -41,10 +41,10 @@ public interface RDFTermFactory {
 
     /**
      * Create a new blank node.
-     *
+     * <p>
      * All pairs of {@link BlankNode}s created with this method MUST NOT be
      * equal.
-     *
+     * <p>
      * If supported, the {@link BlankNode#internalIdentifier()} of the returned
      * blank node MUST be a universally unique value across both this and any
      * other {@link RDFTermFactory} objects running in the JVM when compared
@@ -61,31 +61,34 @@ public interface RDFTermFactory {
 
     /**
      * Create a blank node based on the given identifier.
-     *
-     * All BlankNodes created using this method with the same parameter for a
-     * single instance of RDFTermFactory MUST be equivalent. Ie,
-     * {@link BlankNode#equals(Object)} MUST return true. A BlankNode object
-     * created through the {@link RDFTermFactory#createBlankNode()} method must
-     * be universally unique, and SHOULD contain a {@link UUID} as part of its
-     * {@link BlankNode#internalIdentifier()}.
-     *
+     * <p>
+     * For a single instance of RDFTermFactory, all BlankNodes created using
+     * this method with the same <code>identifier</code> parameter MUST be
+     * equivalent according to {@link BlankNode#equals(Object)}, The returned
+     * BlankNode MUST NOT be equal to any other BlankNode objects from
+     * {@link #createBlankNode(String)} with a different <code>identifier</code>
+     * parameter.
+     * <p>
+     * BlankNodes created on a different RDFTermFactory instance using this
+     * method SHOULD NOT be equivalent.
+     * <p>
      * A BlankNode object created through the
-     * {@link RDFTermFactory#createBlankNode(String)} method must be universally
-     * unique, but also produce the same {@link BlankNode#internalIdentifier()} as any
-     * previous or future calls to that method on that factory with the same
-     * parameters. In addition, it SHOULD contain a {@link UUID} as part of its
-     * {@link BlankNode#internalIdentifier()}, created using
-     * {@link UUID#nameUUIDFromBytes(byte[])} using a constant salt for each
-     * instance of {@link RDFTermFactory}, with the given identifier joined to
-     * that salt in a consistent manner.
+     * {@link RDFTermFactory#createBlankNode(String)} method MUST produce the
+     * same {@link BlankNode#internalIdentifier()} as any previous or future
+     * calls to this method <b>on that factory instance</b> with the same
+     * <code>identifier</code> parameter.
+     * <p>
+     * The returned blank node SHOULD contain a {@link UUID} string as part of
+     * its {@link BlankNode#internalIdentifier()}, which MUST be universally
+     * unique across factory instances and JVM runs (e.g. created using
+     * {@link UUID#randomUUID()} per factory instance).
      *
-     * BlankNodes created using this method with the same parameter, for
-     * different instances of RDFTermFactory, SHOULD NOT be equivalent.
-     *
-     * @param identifier A non-empty, non-null, String that is unique to this blank
-     *                   node in the context of this {@link RDFTermFactory}.
+     * @param identifier
+     *            A non-empty, non-null, String that is unique to this blank
+     *            node in the context of this {@link RDFTermFactory}.
      * @return A BlankNode for the given identifier
-     * @throws UnsupportedOperationException If the operation is not supported.
+     * @throws UnsupportedOperationException
+     *             If the operation is not supported.
      */
     default BlankNode createBlankNode(String identifier)
             throws UnsupportedOperationException {
