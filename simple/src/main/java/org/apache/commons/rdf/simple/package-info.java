@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -15,21 +15,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.commons.rdf.simple;
-
 /**
  * A simple in-memory implementation of the Commons RDF API.
  * <p>
- * This package contains a simple (if not naive) implementation of the Commons RDF API 
+ * This package contains a simple (if not naive) implementation of
+ * {@link org.apache.commons.rdf.api}
  * using in-memory POJO objects.
  * <p>
  * Note that although this module fully implements the commons-rdf API,
- * it should *not*  be considered a reference implementation. 
- * It is not thread-safe nor scalable, but may be useful for testing
- * and simple usage (e.g. output from an independent RDF parser).
+ * it should <strong>not</strong>  be considered a reference implementation.
+ * It is <strong>not thread-safe</strong> nor scalable, but may be useful for
+ * testing and simple usage (e.g. prototyping).
  * <p>
- * To use this implementation, create an instance of {@link SimpleRDFTermFactory}
- * and use methods like {@link SimpleRDFTermFactory#createGraph} and 
- * {@link SimpleRDFTermFactory#createIRI(String)}.
+ * To use this implementation, create an instance of
+ * {@link org.apache.commons.rdf.simple.SimpleRDFTermFactory}
+ * and use methods like
+ * {@link org.apache.commons.rdf.simple.SimpleRDFTermFactory#createGraph} and
+ * {@link org.apache.commons.rdf.simple.SimpleRDFTermFactory#createIRI(String)}.
+ * <p>
+ * The {@link org.apache.commons.rdf.simple.Types} class provide constant
+ * {@link org.apache.commons.rdf.api.IRI}s of the common RDF XML datatypes.
  *
  */
+package org.apache.commons.rdf.simple;
+
+
