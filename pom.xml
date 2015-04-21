@@ -334,6 +334,7 @@
                             </configuration>
                             <reports> 
                                 <report>project-team</report>
+                                <report>mailing-list</report>
                                 <report>scm</report>
                                 <report>modules</report>
                             </reports>
