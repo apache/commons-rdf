@@ -30,7 +30,7 @@ A draft diagram of the interfaces which may be included in Commons RDF are:
 ![Classes diagram](images/commons-rdf-class-diagram.png)
 
 This library is still <strong>work in progress</strong>. Therefore everybody is
-welcomed to join the project and contribute!
+welcomed to [join the project](mail-lists.html) and contribute!
 
 ## Disclaimer
 
