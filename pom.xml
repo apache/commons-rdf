@@ -400,8 +400,6 @@
                     <configuration>
                         <excludes combine.children="append">
                             <exclude>.travis.yml</exclude>
-                            <exclude>CONTRIBUTING.md</exclude>
-                            <exclude>release-procedure.md</exclude>
                         </excludes>
                     </configuration>
                 </plugin>

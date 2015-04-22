@@ -3,9 +3,11 @@
 [![Build Status](https://travis-ci.org/apache/incubator-commonsrdf.svg?branch=master)](https://travis-ci.org/apache/incubator-commonsrdf)
 [![Coverage Status](https://coveralls.io/repos/apache/incubator-commonsrdf/badge.svg)](https://coveralls.io/r/apache/incubator-commonsrdf)
 
-Commons RDF aims to provide a common library for [RDF 1.1](http://www.w3.org/TR/rdf11-concepts/) 
-that could be implemented by ([Jena](http://jena.apache.org/) as well as for other libraries such as [OWLAPI](http://owlapi.sourceforge.net/),
-[Clerezza](http://clerezza.apache.org/)) and other JVM languages.
+[Commons RDF](http://commonsrdf.incubator.apache.org/) aims to provide a common
+library for [RDF 1.1](http://www.w3.org/TR/rdf11-concepts/) that could be
+implemented by [Jena](http://jena.apache.org/) as well as for other libraries
+such as [OWLAPI](http://owlapi.sourceforge.net/), 
+[Clerezza](http://clerezza.apache.org/) and other JVM languages.
 
 The main motivation behind this simple library is to revise an historical incompatibility 
 issue between these toolkits. This library does not pretend to be a generic API wrapping those libraries, 
@@ -22,18 +24,19 @@ A draft diagram of the interfaces which may be included in Commons RDF are:
 ![commons-rdf class diagram](api/src/main/resources/commons-rdf-class-diagram.png "commons-rdf class diagram")
 
 This library is still <strong>work in progress</strong>. Therefore everybody is
-welcomed to join the project and contribute!
+welcomed to join the project and [contribute](http://commonsrdf.incubator.apache.org/contributing.html)!
+
+See the [Commons RDF homepage](http://commonsrdf.incubator.apache.org/) for more details.
 
 ## Contributing
 
 Feel free to subscribe to the 
 [dev@commonsrdf](http://mail-archives.apache.org/mod_mbox/incubator-commonsrdf-dev/) 
 mailing list to follow the ongoing development of Commons RDF, ask questions 
-about its usage, or help shape Commons RDF by contributing your ideas, code and 
-use cases. 
+about its usage, or help shape Commons RDF by 
+[contributing](http://commonsrdf.incubator.apache.org/contributing.html)
+your ideas, code and use cases. 
  
-See [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to contribute. 
-In short - raise a Github pull request.
 
 
 ## Disclaimer

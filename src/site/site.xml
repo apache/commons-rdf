@@ -56,11 +56,12 @@
       <item name="Home"                 href="/index.html" />
       <item name="API"                  href="/apidocs/index.html?org/apache/commons/rdf/api/package-summary.html" />
       <item name="Download"             href="/download.html" />
+      <item name="Contributing"         href="/contributing.html" />
       <item name="Team"                 href="/team-list.html" />
     </menu>
     <menu name="Tools">
       <item name="Mailing Lists"        href="/mail-lists.html" />
-      <item name="Source (Git)"         href="https://git-wip-us.apache.org/repos/asf?p=incubator-commonsrdf.git" />
+      <item name="Source (Git)"         href="https://git-wip-us.apache.org/repos/asf/incubator-commonsrdf.git" />
       <item name="Issues (Jira)"        href="https://issues.apache.org/jira/browse/COMMONSRDF" />
     </menu>
   </body>
