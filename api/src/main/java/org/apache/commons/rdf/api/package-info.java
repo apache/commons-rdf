@@ -38,12 +38,6 @@
  * MAY be mutable (e.g. support methods like
  * {@link org.apache.commons.rdf.api.Graph#add(Triple)}).
  * <p>
- * The {@link org.apache.commons.rdf.simple}
- * implementation
- * is provided as part of Commons RDF, this is a naive,
- * minimal implementation of these interfaces,
- * primarily to facilitate testing and prototyping.
- * <p>
  * For further documentation and contact details, see the
  * <a href="http://commonsrdf.incubator.apache.org/">Commons RDF</a>
  * web site.
