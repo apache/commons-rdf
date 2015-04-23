@@ -42,7 +42,7 @@ which may be included in Commons RDF, specifically:
 * [Triple](apidocs/index.html?org/apache/commons/rdf/api/Triple.html): a 
   `(subject, predicate, object)` RDF triple.
 * [RDFTerm](apidocs/index.html?org/apache/commons/rdf/api/RDFTerm.html): a RDF 1.1 
-  Term, where IRIs, literals and blank nodess are collectively known as RDF terms.
+  Term, where IRIs, literals and blank nodes are collectively known as RDF terms.
 * [IRI](apidocs/index.html?org/apache/commons/rdf/api/IRI.html): an 
   Internationalized Resource Identifier.
 * [BlankNode](apidocs/index.html?org/apache/commons/rdf/api/BlankNode.html): a 
