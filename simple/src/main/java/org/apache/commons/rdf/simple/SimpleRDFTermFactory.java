@@ -17,7 +17,16 @@
  */
 package org.apache.commons.rdf.simple;
 
-import org.apache.commons.rdf.api.*;
+import java.util.UUID;
+
+import org.apache.commons.rdf.api.BlankNode;
+import org.apache.commons.rdf.api.BlankNodeOrIRI;
+import org.apache.commons.rdf.api.Graph;
+import org.apache.commons.rdf.api.IRI;
+import org.apache.commons.rdf.api.Literal;
+import org.apache.commons.rdf.api.RDFTerm;
+import org.apache.commons.rdf.api.RDFTermFactory;
+import org.apache.commons.rdf.api.Triple;
 
 /**
  * A simple implementation of RDFTermFactory.
@@ -28,6 +37,10 @@ import org.apache.commons.rdf.api.*;
  */
 public class SimpleRDFTermFactory implements RDFTermFactory {
 
+    /** Unique salt per instance, for {@link #createBlankNode(String)}
+     */
+    private final UUID SALT = UUID.randomUUID();
+
     @Override
     public BlankNode createBlankNode() {
         return new BlankNodeImpl();
@@ -35,8 +48,7 @@ public class SimpleRDFTermFactory implements RDFTermFactory {
 
     @Override
     public BlankNode createBlankNode(String identifier) {
-        // Creates a BlankNodeImpl object using this object as the salt
-        return new BlankNodeImpl(this, identifier);
+        return new BlankNodeImpl(SALT, identifier);
     }
 
     @Override
