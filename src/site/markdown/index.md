@@ -27,7 +27,7 @@ for Datasets and Quads.
 
 A draft diagram of the interfaces which may be included in Commons RDF are:
 
-![Classes diagram](images/commons-rdf-class-diagram.png)
+<a href="images/class-diagram.png"><img src="images/class-diagram.png" alt="Class diagram" style="height: 35em" /></a>
 
 This library is still <strong>work in progress</strong>. Therefore everybody is
 welcomed to [join the project](mail-lists.html) and contribute!
