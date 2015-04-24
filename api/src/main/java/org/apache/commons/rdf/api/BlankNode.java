@@ -58,22 +58,27 @@ import java.util.UUID;
 public interface BlankNode extends BlankNodeOrIRI {
 
     /**
-     * Return a <a href=
-     * "http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node-identifier" >unique
-     * label</a> for the blank node.
+     * Return a reference for uniquely identifying the blank node.
      * <p>
-     * The internal identifier string MUST be universally unique, and
-     * SHOULD contain a UUID string. The UUID, if present, MUST be
-     * universally unique across JVM runs and {@link RDFTermFactory} instances.
+     * The reference string MUST be universally unique, e.g. blank nodes created
+     * separately in different JVMs or from different {@link RDFTermFactory}
+     * instances MUST NOT have the same reference string.
      * <p>
-     * IMPORTANT: This is not a serialization/syntax label, and there are no
-     * guarantees that it is a valid identifier in any concrete syntax. For an
-     * N-Triples compatible identifier use {@link #ntriplesString()}. For all
-     * other syntaxes, the result of this method must be sanitized to produce a
-     * valid concrete identifier if one is needed.
+     * The {@link #internalIdentifier()} of two <code>BlankNode</code> instances
+     * MUST be equal if and only if the two blank nodes are equal according to
+     * {@link #equals(Object)}.
+     * <p>
+     * This method does not specify any specific structure of the reference
+     * string, except that the reference SHOULD be (or contain) a {@link UUID}
+     * string.
+     * <p>
+     * <strong>IMPORTANT:</strong> This is not a <a
+     * href="http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node-identifier">
+     * blank node identifier</a> nor a serialization/syntax label, and there are
+     * no guarantees that it is a valid identifier in any concrete RDF syntax.
+     * For an N-Triples compatible identifier, use {@link #ntriplesString()}.
      *
-     * @return An internal, system identifier for the {@link BlankNode} that is
-     * used primarily to check whether two BlankNode's are equivalent.
+     * @return A universally unique reference to identify this {@link BlankNode}
      */
     String internalIdentifier();
 

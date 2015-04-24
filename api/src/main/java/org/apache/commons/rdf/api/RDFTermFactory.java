@@ -18,7 +18,6 @@
 package org.apache.commons.rdf.api;
 
 import java.util.Locale;
-import java.util.UUID;
 
 /**
  * Factory for creating RDFTerm and Graph instances.
@@ -42,17 +41,12 @@ public interface RDFTermFactory {
     /**
      * Create a new blank node.
      * <p>
-     * All pairs of {@link BlankNode}s created with this method MUST NOT be
-     * equal.
-     * <p>
-     * If supported, the {@link BlankNode#internalIdentifier()} of the returned
-     * blank node MUST be a universally unique value across both this and any
-     * other {@link RDFTermFactory} objects running in the JVM when compared
-     * with both past and future calls both to this method, and calls to
-     * {@link #createBlankNode(String)} with any inputs.
+     * The returned blank node MUST NOT be equal to any existing
+     * {@link BlankNode} instances according to {@link BlankNode#equals(Object)}.
      *
-     * @return A new {@link BlankNode}
-     * @throws UnsupportedOperationException If the operation is not supported.
+     * @return A new, unique {@link BlankNode}
+     * @throws UnsupportedOperationException
+     *             If the operation is not supported.
      */
     default BlankNode createBlankNode() throws UnsupportedOperationException {
         throw new UnsupportedOperationException(
@@ -60,37 +54,29 @@ public interface RDFTermFactory {
     }
 
     /**
-     * Create a blank node based on the given identifier.
+     * Create a blank node based on the given name.
      * <p>
-     * For a single instance of RDFTermFactory, all BlankNodes created using
-     * this method with the same <code>identifier</code> parameter MUST be
-     * equivalent according to {@link BlankNode#equals(Object)}, The returned
-     * BlankNode MUST NOT be equal to any other BlankNode objects from
-     * {@link #createBlankNode(String)} with a different <code>identifier</code>
-     * parameter.
+     * For a particular instance of <code>RDFTermFactory</code>, all
+     * {@link BlankNode}s created using this method with the same
+     * <code>name</code> parameter MUST be equivalent according to
+     * {@link BlankNode#equals(Object)},
      * <p>
-     * BlankNodes created on a different RDFTermFactory instance using this
-     * method SHOULD NOT be equivalent.
+     * The returned BlankNode MUST NOT be equal to any other
+     * <code>BlankNode</code> instances returned from this instance.
      * <p>
-     * A BlankNode object created through the
-     * {@link RDFTermFactory#createBlankNode(String)} method MUST produce the
-     * same {@link BlankNode#internalIdentifier()} as any previous or future
-     * calls to this method <b>on that factory instance</b> with the same
-     * <code>identifier</code> parameter.
-     * <p>
-     * The returned blank node SHOULD contain a {@link UUID} string as part of
-     * its {@link BlankNode#internalIdentifier()}, which MUST be universally
-     * unique across factory instances and JVM runs (e.g. created using
-     * {@link UUID#randomUUID()} per factory instance).
+     * The returned BlankNode SHOULD NOT be equivalent to any BlankNodes created
+     * on a <em>different</em> <code>RDFTermFactory</code> instance, e.g.
+     * different instances of <code>RDFTermFactory</code> should produce
+     * different blank nodes for the same <code>name</code>.
      *
-     * @param identifier
+     * @param name
      *            A non-empty, non-null, String that is unique to this blank
      *            node in the context of this {@link RDFTermFactory}.
-     * @return A BlankNode for the given identifier
+     * @return A BlankNode for the given name
      * @throws UnsupportedOperationException
      *             If the operation is not supported.
      */
-    default BlankNode createBlankNode(String identifier)
+    default BlankNode createBlankNode(String name)
             throws UnsupportedOperationException {
         throw new UnsupportedOperationException(
                 "createBlankNode(String) not supported");
