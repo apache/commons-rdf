@@ -60,7 +60,7 @@ a W3C Recommendation published on 25 February 2014. The idea is that Commons RDF
 will provide a common library for RDF 1.1 that could be implemented by systems 
 on the Java Virtual Machine, allowing the portability across different implementations.
 
-See the [examples](examples.html) for how to interact with these interfaces.
+See the the [user guide](userguide.html) for examples of how to interact with these interfaces.
 
 ## Modules
 
