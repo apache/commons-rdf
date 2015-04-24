@@ -46,7 +46,7 @@ public abstract class AbstractBlankNodeTest {
 
     /**
      * Test method for
-     * {@link BlankNode#internalIdentifier()}.
+     * {@link BlankNode#uniqueReference()}.
      */
     @Test
     public final void testInternalIdentifier() {
@@ -57,7 +57,7 @@ public abstract class AbstractBlankNodeTest {
             }
 
             @Override
-            public String internalIdentifier() {
+            public String uniqueReference() {
                 return null;
             }
         };
@@ -68,30 +68,30 @@ public abstract class AbstractBlankNodeTest {
         BlankNode testManual4 = getBlankNode("4");
 
         // Test against our fake stub
-        assertNotEquals(testNull.internalIdentifier(),
-                testAutomatic1.internalIdentifier());
-        assertNotEquals(testAutomatic1.internalIdentifier(),
-                testNull.internalIdentifier());
-        assertNotEquals(testNull.internalIdentifier(),
-                testManual3a.internalIdentifier());
-        assertNotEquals(testManual3a.internalIdentifier(),
-                testNull.internalIdentifier());
+        assertNotEquals(testNull.uniqueReference(),
+                testAutomatic1.uniqueReference());
+        assertNotEquals(testAutomatic1.uniqueReference(),
+                testNull.uniqueReference());
+        assertNotEquals(testNull.uniqueReference(),
+                testManual3a.uniqueReference());
+        assertNotEquals(testManual3a.uniqueReference(),
+                testNull.uniqueReference());
 
         // Test the two imported instances against each other
-        assertEquals(testAutomatic1.internalIdentifier(),
-                testAutomatic1.internalIdentifier());
-        assertEquals(testAutomatic2.internalIdentifier(),
-                testAutomatic2.internalIdentifier());
-        assertNotEquals(testAutomatic1.internalIdentifier(),
-                testAutomatic2.internalIdentifier());
-        assertNotEquals(testAutomatic2.internalIdentifier(),
-                testAutomatic1.internalIdentifier());
-        assertNotEquals(testAutomatic1.internalIdentifier(),
-                testManual3a.internalIdentifier());
-        assertEquals(testManual3b.internalIdentifier(),
-                testManual3a.internalIdentifier());
-        assertNotEquals(testManual3a.internalIdentifier(),
-                testManual4.internalIdentifier());
+        assertEquals(testAutomatic1.uniqueReference(),
+                testAutomatic1.uniqueReference());
+        assertEquals(testAutomatic2.uniqueReference(),
+                testAutomatic2.uniqueReference());
+        assertNotEquals(testAutomatic1.uniqueReference(),
+                testAutomatic2.uniqueReference());
+        assertNotEquals(testAutomatic2.uniqueReference(),
+                testAutomatic1.uniqueReference());
+        assertNotEquals(testAutomatic1.uniqueReference(),
+                testManual3a.uniqueReference());
+        assertEquals(testManual3b.uniqueReference(),
+                testManual3a.uniqueReference());
+        assertNotEquals(testManual3a.uniqueReference(),
+                testManual4.uniqueReference());
     }
 
     /**
@@ -107,7 +107,7 @@ public abstract class AbstractBlankNodeTest {
             }
 
             @Override
-            public String internalIdentifier() {
+            public String uniqueReference() {
                 return null;
             }
         };
@@ -145,7 +145,7 @@ public abstract class AbstractBlankNodeTest {
             }
 
             @Override
-            public String internalIdentifier() {
+            public String uniqueReference() {
                 return null;
             }
         };
@@ -184,7 +184,7 @@ public abstract class AbstractBlankNodeTest {
             }
 
             @Override
-            public String internalIdentifier() {
+            public String uniqueReference() {
                 return null;
             }
         };

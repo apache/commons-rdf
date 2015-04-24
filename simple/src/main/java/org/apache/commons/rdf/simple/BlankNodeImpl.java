@@ -32,22 +32,22 @@ final class BlankNodeImpl implements BlankNode {
     private static final UUID SALT = UUID.randomUUID();
     private static final AtomicLong COUNTER = new AtomicLong();
 
-    private final String id;
+    private final String uniqueReference;
 
     public BlankNodeImpl() {
         this(SALT, Long.toString(COUNTER.incrementAndGet()));
     }
 
-    public BlankNodeImpl(UUID uuidSalt, String id) {
-        if (Objects.requireNonNull(id).isEmpty()) {
-            throw new IllegalArgumentException("Invalid blank node id: " + id);
+    public BlankNodeImpl(UUID uuidSalt, String name) {
+        if (Objects.requireNonNull(name).isEmpty()) {
+            throw new IllegalArgumentException("Invalid blank node id: " + name);
         }
 
         // Build a semi-URN - to be hashed for a name-based UUID below
         // Both the scope and the id are used to create the UUID, ensuring that
         // a caller can reliably create the same bnode if necessary by sending
         // in the same scope to RDFTermFactory.createBlankNode(String)
-        String uuidInput = "urn:uuid:" + uuidSalt + "#" + id;
+        String uuidInput = "urn:uuid:" + uuidSalt + "#" + name;
 
         // The above is not a good value for this.id, as the id
         // needs to be further escaped for
@@ -56,7 +56,7 @@ final class BlankNodeImpl implements BlankNode {
 
 
         // Rather than implement ntriples escaping here, and knowing
-        // the internalIdentifier should contain a UUID anyway, we simply
+        // the uniqueReference() contain a UUID anyway, we simply
         // create another name-based UUID, and use it within both
         // internalIdentifier() and within ntriplesString().
         //
@@ -64,18 +64,18 @@ final class BlankNodeImpl implements BlankNode {
         // is not preserved or shown in ntriplesString. In a way
         // this is a feature, not a bug. as the contract for RDFTermFactory
         // has no such requirement.
-        this.id = UUID.nameUUIDFromBytes(
+        this.uniqueReference = UUID.nameUUIDFromBytes(
                 uuidInput.getBytes(StandardCharsets.UTF_8)).toString();
     }
 
     @Override
-    public String internalIdentifier() {
-        return id;
+    public String uniqueReference() {
+        return uniqueReference;
     }
 
     @Override
     public String ntriplesString() {
-        return "_:" + id;
+        return "_:" + uniqueReference;
     }
 
     @Override
@@ -85,7 +85,7 @@ final class BlankNodeImpl implements BlankNode {
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return uniqueReference.hashCode();
     }
 
     @Override
@@ -101,11 +101,11 @@ final class BlankNodeImpl implements BlankNode {
             return false;
         }
         BlankNodeImpl other = (BlankNodeImpl) obj;
-        if (id == null) {
-            if (other.id != null) {
+        if (uniqueReference == null) {
+            if (other.uniqueReference != null) {
                 return false;
             }
-        } else if (!id.equals(other.id)) {
+        } else if (!uniqueReference.equals(other.uniqueReference)) {
             return false;
         }
         return true;

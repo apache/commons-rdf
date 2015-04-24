@@ -48,7 +48,7 @@ import java.util.UUID;
  * by the syntax. </blockquote>
  *
  * A BlankNode SHOULD contain a {@link UUID} string as part of its
- * universally unique {@link #internalIdentifier()}.
+ * universally unique {@link #uniqueReference()}.
  *
  * @see RDFTermFactory#createBlankNode()
  * @see RDFTermFactory#createBlankNode(String)
@@ -64,7 +64,7 @@ public interface BlankNode extends BlankNodeOrIRI {
      * separately in different JVMs or from different {@link RDFTermFactory}
      * instances MUST NOT have the same reference string.
      * <p>
-     * The {@link #internalIdentifier()} of two <code>BlankNode</code> instances
+     * The {@link #uniqueReference()} of two <code>BlankNode</code> instances
      * MUST be equal if and only if the two blank nodes are equal according to
      * {@link #equals(Object)}.
      * <p>
@@ -80,12 +80,12 @@ public interface BlankNode extends BlankNodeOrIRI {
      *
      * @return A universally unique reference to identify this {@link BlankNode}
      */
-    String internalIdentifier();
+    String uniqueReference();
 
     /**
      * Check it this BlankNode is equal to another BlankNode. Two BlankNodes
      * MUST be equal if, and only if, they have the same
-     * {@link #internalIdentifier()}.
+     * {@link #uniqueReference()}.
      *
      * Implementations MUST also override {@link #hashCode()} so that two equal
      * Literals produce the same hash code.

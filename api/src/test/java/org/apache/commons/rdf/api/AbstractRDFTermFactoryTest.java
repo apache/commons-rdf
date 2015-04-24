@@ -63,7 +63,7 @@ public abstract class AbstractRDFTermFactoryTest {
         BlankNode bnode2 = factory.createBlankNode();
         assertNotEquals(
                 "Second blank node has not got a unique internal identifier",
-                bnode.internalIdentifier(), bnode2.internalIdentifier());
+                bnode.uniqueReference(), bnode2.uniqueReference());
     }
 
     @Test
@@ -102,12 +102,12 @@ public abstract class AbstractRDFTermFactoryTest {
             return;
         }
         // We don't know what the identifier is, but it MUST be the same
-        assertEquals(bnode1.internalIdentifier(), bnode2.internalIdentifier());
+        assertEquals(bnode1.uniqueReference(), bnode2.uniqueReference());
         // We don't know what the ntriplesString is, but it MUST be the same
         assertEquals(bnode1.ntriplesString(), bnode2.ntriplesString());
         // and here it MUST differ
-        assertNotEquals(bnode1.internalIdentifier(),
-                bnode3.internalIdentifier());
+        assertNotEquals(bnode1.uniqueReference(),
+                bnode3.uniqueReference());
         assertNotEquals(bnode1.ntriplesString(), bnode3.ntriplesString());
     }
 

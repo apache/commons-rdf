@@ -47,8 +47,8 @@ public class SimpleRDFTermFactory implements RDFTermFactory {
     }
 
     @Override
-    public BlankNode createBlankNode(String identifier) {
-        return new BlankNodeImpl(SALT, identifier);
+    public BlankNode createBlankNode(String name) {
+        return new BlankNodeImpl(SALT, name);
     }
 
     @Override

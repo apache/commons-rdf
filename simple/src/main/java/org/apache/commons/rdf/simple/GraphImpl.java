@@ -78,7 +78,7 @@ final class GraphImpl implements Graph {
             // this graph will generate a local object that is mapped to an
             // equivalent object, based on the code in the package private
             // BlankNodeImpl class
-            return factory.createBlankNode(blankNode.internalIdentifier());
+            return factory.createBlankNode(blankNode.uniqueReference());
         } else if (object instanceof IRI && !(object instanceof IRIImpl)) {
             IRI iri = (IRI) object;
             return factory.createIRI(iri.getIRIString());
