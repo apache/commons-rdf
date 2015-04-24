@@ -60,7 +60,6 @@ public interface RDFTermFactory {
      * {@link BlankNode}s created using this method with the same
      * <code>name</code> parameter MUST be equivalent according to
      * {@link BlankNode#equals(Object)},
-     * <p>
      * The returned BlankNode MUST NOT be equal to any other
      * <code>BlankNode</code> instances returned from this instance.
      * <p>
