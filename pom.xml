@@ -51,6 +51,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.encoding>UTF-8</project.build.encoding>
+        <commons.encoding>UTF-8</commons.encoding>
         <commons.componentid>rdf</commons.componentid>
         <commons.release.version>0.1.0</commons.release.version>
         <commons.jira.id>COMMONSRDF</commons.jira.id>
@@ -58,6 +59,9 @@
         <commons.site.path>rdf</commons.site.path>
         <commons.scmPubUrl>https://svn.apache.org/repos/infra/websites/production/commonsrdf/content/</commons.scmPubUrl>
         <commons.scmPubCheckoutDirectory>${project.build.directory}/site-content</commons.scmPubCheckoutDirectory>
+        <!--  Override Java 7 javadoc link from commons-parent -->
+        <commons.javadoc.java.link>http://docs.oracle.com/javase/8/docs/api/</commons.javadoc.java.link>
+        
     </properties>
 
     <scm>
@@ -233,8 +237,7 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.6</version>
+                <artifactId>maven-jar-plugin</artifactId>                
                 <configuration>
                     <configuration>
                         <skip>true</skip>
@@ -243,8 +246,7 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>2.2.1</version>
+                <artifactId>maven-source-plugin</artifactId>                
                 <executions>
                     <execution>
                         <goals>
@@ -259,15 +261,15 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9.1</version>
+                <artifactId>maven-javadoc-plugin</artifactId>                
+
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
                         <goals>
                             <goal>jar</goal>
                         </goals>
-                        <configuration>
+                        <configuration>                        	
                             <additionalparam>-Xdoclint:none</additionalparam>
                         </configuration>
                     </execution>
@@ -275,8 +277,7 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <artifactId>maven-compiler-plugin</artifactId>                
                 <configuration>
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
@@ -305,7 +306,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
-                <version>3.4</version>
                 <dependencies>
                     <dependency>
                         <groupId>org.apache.maven.doxia</groupId>
