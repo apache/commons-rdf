@@ -49,6 +49,21 @@
   </custom>
 
   <body>
+    <head>
+    	<style type="text/css"><![CDATA[
+    	
+    	    /* Override prettify.css, nicer fonts for code examples */
+    		.source .source pre {
+    			font-family: Monaco,Menlo,Consolas,Inconsolata,monospace;
+    		}
+    		/* COMMONSSITE-82 workaround */
+    		.nav-list li.collapsed a {
+    			background-repeat: no-repeat;
+    			background-position: 16px 9px;
+    		}
+    	]]>	
+    	</style>
+    </head>
     <links>
       <item name="Incubator"            href="http://incubator.apache.org/" />
     </links>
