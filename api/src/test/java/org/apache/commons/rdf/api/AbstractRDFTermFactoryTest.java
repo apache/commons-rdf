@@ -17,11 +17,14 @@
  */
 package org.apache.commons.rdf.api;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotSame;
+
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /**
  * Test RDFTermFactory implementation (and thus its RDFTerm implementations)
@@ -85,9 +88,6 @@ public abstract class AbstractRDFTermFactoryTest {
             Assume.assumeNoException(ex);
             return;
         }
-        // We can't assume anything about the resulting bnode
-        // assertEquals("example1", bnode.internalIdentifier());
-        // assertEquals("_:example1", bnode.ntriplesString());
     }
 
     @Test
