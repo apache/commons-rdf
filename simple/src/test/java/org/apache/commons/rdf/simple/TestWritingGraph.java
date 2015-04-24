@@ -17,12 +17,7 @@
  */
 package org.apache.commons.rdf.simple;
 
-import org.apache.commons.rdf.api.Graph;
-import org.apache.commons.rdf.api.IRI;
-import org.apache.commons.rdf.api.RDFTermFactory;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -32,7 +27,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.junit.Assert.assertEquals;
+import org.apache.commons.rdf.api.Graph;
+import org.apache.commons.rdf.api.IRI;
+import org.apache.commons.rdf.api.RDFTermFactory;
+import org.apache.commons.rdf.api.Triple;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  * Test writing graph
@@ -106,6 +107,12 @@ public class TestWritingGraph {
         assertEquals(count, TRIPLES);
     }
 
+    public static String tripleAsString(Triple t) {
+        return t.getSubject().ntriplesString() + " "
+                + t.getPredicate().ntriplesString() + " " +
+                t.getObject().ntriplesString() + " .";
+    }
+
     @Test
     public void writeGraphFromStream() throws Exception {
         Path graphFile = Files.createTempFile("graph", ".nt");
@@ -115,7 +122,7 @@ public class TestWritingGraph {
             graphFile.toFile().deleteOnExit();
         }
 
-        Stream<CharSequence> stream = graph.getTriples().map(Object::toString);
+        Stream<CharSequence> stream = graph.getTriples().map(TestWritingGraph::tripleAsString);
         Files.write(graphFile, stream::iterator, Charset.forName("UTF-8"));
     }
 
@@ -131,7 +138,7 @@ public class TestWritingGraph {
         IRI subject = factory.createIRI("subj");
         IRI predicate = factory.createIRI("pred");
         Stream<CharSequence> stream = graph
-                .getTriples(subject, predicate, null).map(Object::toString);
+                .getTriples(subject, predicate, null).map(TestWritingGraph::tripleAsString);
         Files.write(graphFile, stream::iterator, Charset.forName("UTF-8"));
 
     }
