@@ -266,11 +266,75 @@ System.out.println(graph.contains(null, null, null));
 
 ## IRI, Literal, BlankNode
 
-**TODO:**
+The core RDF terms are arranged in this class hierarchy:
 
-* [BlankNode](apidocs/org/apache/commons/rdf/api/BlankNode.html)
-* [IRI](apidocs/org/apache/commons/rdf/api/IRI.html)
-* [Literal](apidocs/org/apache/commons/rdf/api/Literal.html)
+* [RDFTerm](apidocs/org/apache/commons/rdf/api/RDFTerm.html)
+    * [BlankNodeOrIRI](apidocs/org/apache/commons/rdf/api/BlankNodeOrIRI.html)
+          * [BlankNode](apidocs/org/apache/commons/rdf/api/BlankNode.html)
+          * [IRI](apidocs/org/apache/commons/rdf/api/IRI.html)
+    * [Literal](apidocs/org/apache/commons/rdf/api/Literal.html)
+
+### N-Triples string
+
+All of the [RDFTerm](apidocs/org/apache/commons/rdf/api/RDFTerm.html) types
+support the `ntriplesString()` method:
+
+```java
+System.out.println(aliceBlankNode.ntriplesString());
+System.out.println(nameIri.ntriplesString());
+System.out.println(aliceLiteral.ntriplesString());
+```
+
+> `_:ef136d20-f1ee-3830-a54b-cd5e489d50fb`
+>
+> ``<http://example.com/name>``
+>
+> ``"Alice"``
+
+This returns the [N-Triples](http://www.w3.org/TR/n-triples) canonical form
+of the term, which can be useful both for debugging and simple serialization.
+
+_Note: The `.toString()` of the _simple_ implementation used in
+these examples use `ntriplesString()` internally, but Commons RDF places no such
+formal requirement on the `.toString()` method. Clients should use
+`ntriplesString()` if a canonical N-Triples compatible string is needed._
+
+As an example, here is how one could write a simple
+N-Triples compatible serialization of a
+[Graph](apidocs/org/apache/commons/rdf/api/Graph.html):
+
+```java
+public class NTriplesSerializer {
+    public static String tripleAsString(Triple t) {
+        return t.getSubject().ntriplesString() + " " +
+               t.getPredicate().ntriplesString() + " " +
+               t.getObject().ntriplesString() + " .";
+    }
+    public static void writeGraph(Graph graph, Path graphFile) throws Exception {
+        Stream<CharSequence> stream = graph.getTriples().map(NTriplesSerializer::tripleAsString);
+        Files.write(graphFile, stream::iterator, Charset.forName("UTF-8"));
+    }
+}
+```
+
+Example output:
+
+```turtle
+_:ef136d20-f1ee-3830-a54b-cd5e489d50fb <http://example.com/name> "Alice" .
+<http://example.com/bob> <http://example.com/name> "Bob" .
+```
+
+### IRI
+
+**TODO:** [IRI](apidocs/org/apache/commons/rdf/api/IRI.html)
+
+### Literal
+
+**TODO:** [Literal](apidocs/org/apache/commons/rdf/api/Literal.html)
+
+### Blank node
+
+**TODO:** [BlankNode](apidocs/org/apache/commons/rdf/api/BlankNode.html)
 
 ## Types
 
