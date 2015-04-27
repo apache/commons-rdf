@@ -239,6 +239,9 @@ System.out.println(namedB.map(t -> t.getSubject()).findAny().get());
 
 ### Removing triples
 
+_Note: Some `Graph` implementations are immutable, in which case the below
+may throw an `UnsupportedOperationException`_.
+
 Triples can be [removed](apidocs/org/apache/commons/rdf/api/Graph.html#remove-org.apache.commons.rdf.api.Triple-) from a graph:
 
 ```java
@@ -294,12 +297,13 @@ System.out.println(aliceLiteral.ntriplesString());
 This returns the [N-Triples](http://www.w3.org/TR/n-triples) canonical form
 of the term, which can be useful both for debugging and simple serialization.
 
-_Note: The `.toString()` of the _simple_ implementation used in
+_Note: The `.toString()` of the `simple` implementation used in
 these examples use `ntriplesString()` internally, but Commons RDF places no such
-formal requirement on the `.toString()` method. Clients should use
-`ntriplesString()` if a canonical N-Triples compatible string is needed._
+formal requirement on the `.toString()` method. Clients that rely on
+a canonical N-Triples-compatible string should instead use
+`ntriplesString()`._
 
-As an example, here is how one could write a simple
+As an example of using `ntriplesString()`, here is how one could write a simple
 N-Triples compatible serialization of a
 [Graph](apidocs/org/apache/commons/rdf/api/Graph.html):
 
@@ -326,7 +330,61 @@ _:ef136d20-f1ee-3830-a54b-cd5e489d50fb <http://example.com/name> "Alice" .
 
 ### IRI
 
-**TODO:** [IRI](apidocs/org/apache/commons/rdf/api/IRI.html)
+An [IRI](apidocs/org/apache/commons/rdf/api/IRI.html)
+is a representation of an
+[Internationalized Resource Identifier](http://www.w3.org/TR/rdf11-concepts/#dfn-iri),
+e.g. `http://example.com/alice` or `http://ns.example.org/vocab#term`.
+
+> IRIs in the RDF abstract syntax MUST be absolute, and MAY contain a fragment identifier.
+
+To create an IRI from a `RDFTermFactory`, use [createIRI](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createIRI-java.lang.String-):
+
+```java
+IRI iri = factory.createIRI("http://example.com/alice");
+```
+
+You can retrieve the IRI string using [getIRIString](apidocs/org/apache/commons/rdf/api/IRI.html#getIRIString--):
+
+```java
+System.out.println(iri.getIRIString());
+```
+
+> `http://example.com/alice`
+
+_Note: The IRI string might contain non-ASCII characters which must be
+%-encoded for applications that expect an URI. It is currently
+out of scope for Commons RDF to perform such a conversion,
+however implementations might provide separate methods for that purpose._
+
+Two IRI instances can be compared using the
+[equals](apidocs/org/apache/commons/rdf/api/IRI.html#equals-java.lang.Object-)
+method, which uses [simple string comparison](http://tools.ietf.org/html/rfc3987#section-5.3.1):
+
+```java
+IRI iri2 = factory.createIRI("http://example.com/alice");
+System.out.println(iri.equals(iri2));
+```
+
+> `true`
+
+```java
+IRI iri3 = factory.createIRI("http://example.com/alice/./");
+System.out.println(iri.equals(iri3));
+```
+
+> `false`
+
+Note that IRIs are never equal to objects which are not themselves
+instances of [IRI](apidocs/org/apache/commons/rdf/api/IRI.html):
+
+
+```java
+System.out.println(iri.equals("http://example.com/alice"));
+System.out.println(iri.equals(factory.createLiteral("http://example.com/alice")));
+```
+> `false`
+>
+> `false`
 
 ### Literal
 
@@ -339,7 +397,3 @@ _:ef136d20-f1ee-3830-a54b-cd5e489d50fb <http://example.com/name> "Alice" .
 ## Types
 
 **TODO:** [Types](apidocs/org/apache/commons/rdf/simple/Types.html)
-
-## Full example
-
-**TODO:** Serialize as n-triples example
