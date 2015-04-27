@@ -1,6 +1,8 @@
 # User Guide
 
 This page shows some examples of a client using the Commons RDF API.
+It was last updated for version `0.1-incubating-SNAPSHOT` of the
+Commons RDF [API](apidocs/).
 
 ## Using Commons RDF from Maven
 
@@ -337,7 +339,10 @@ e.g. `http://example.com/alice` or `http://ns.example.org/vocab#term`.
 
 > IRIs in the RDF abstract syntax MUST be absolute, and MAY contain a fragment identifier.
 
-To create an IRI from a `RDFTermFactory`, use [createIRI](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createIRI-java.lang.String-):
+In RDF, an IRI identifies a resource that can be used as a _subject_,
+_predicate_ or _object_ of a `Triple`.
+
+To create an `IRI` instance from a `RDFTermFactory`, use [createIRI](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createIRI-java.lang.String-):
 
 ```java
 IRI iri = factory.createIRI("http://example.com/alice");
@@ -386,14 +391,115 @@ System.out.println(iri.equals(factory.createLiteral("http://example.com/alice"))
 >
 > `false`
 
+
+### Blank node
+
+A [blank node](http://www.w3.org/TR/rdf11-concepts/#section-blank-nodes) is a
+resource which, unlike an IRI, is not directly identified. Blank nodes can be
+used as _subject_ or _object_ of a `Triple`.
+
+To create a new
+[BlankNode](apidocs/org/apache/commons/rdf/api/BlankNode.html) instance from a
+`RDFTermFactory`, use
+[createBlankNode](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createBlankNode--):
+
+```java
+BlankNode bnode = factory.createBlankNode();
+```
+
+Every call to `createBlankNode()` returns a brand new blank node
+which can be used in multiple triples in multiple graphs. Thus
+every such blank node can only be
+[equal](apidocs/org/apache/commons/rdf/api/BlankNode.html#equals-java.lang.Object-)
+to itself:
+
+```java
+System.out.println(bnode.equals(bnode));
+System.out.println(bnode.equals(factory.createBlankNode()))
+```
+
+> `true`
+>
+> `false`
+
+Sometimes it can be beneficial to create a blank node based on a
+localized _name_, without needing to keep object references
+to earlier `BlankNode` instances. For that purpose, `RDFTermFactory`
+may support the
+[expanded createBlankNode](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createBlankNode-java.lang.String-)
+method:
+
+```java
+BlankNode b1 = factory.createBlankNode("b1");
+```
+
+Note that there is no requirement for the
+[ntriplesString()](apidocs/org/apache/commons/rdf/api/RDFTerm.html#ntriplesString--)
+of the BlankNode to reflect the provided `name`:
+
+```java
+System.out.println(b1.ntriplesString());
+```
+
+> `_:6c0f628f-02cb-3634-99db-0e1e99d2e66d`
+
+
+
+Any later `createBlankNode("b1")` **on the same factory instance**
+returns a `BlankNode` which are
+[equal](apidocs/org/apache/commons/rdf/api/BlankNode.html#equals-java.lang.Object-)
+to the previous b1:
+
+```java
+System.out.println(b1.equals(factory.createBlankNode("b1")))
+System.out.println(b1.equals(new SimpleRDFTermFactory().createBlankNode("b1")));
+```
+
+> `true`
+>
+> `false`
+
+#### Blank node reference
+
+_Warning: This method is still under discussion and these details,
+including the method name, are subject to change. See
+[COMMONSRDF-6](https://issues.apache.org/jira/browse/COMMONSRDF-6)._
+
+While blank nodes are distinct from IRIs, and don't have inherent
+universal identifiers, it can nevertheless be useful
+for debugging and testing to have a unique reference string for
+a particular blank node.
+For that purpose, BlankNode exposes the
+[internalIdentifier](apidocs/org/apache/commons/rdf/api/BlankNode.html#internalIdentifier--)
+method:
+
+```java
+System.out.println(bnode.internalIdentifier())
+```
+
+> `735d5e63-96a4-488b-8613-7037b82c74a5`
+
+While this reference string might for the _simple_
+implementation also be seen  within the `BlankNode.ntriplesString()`
+result, there is no such guarantee from the Commons RDF API.
+Clients who need a globally unique reference
+for a blank node should therefore use the `internalIdentifier()` method.
+
+_Note: While it is recommended for this string to be (or contain) a
+[UUID string](http://docs.oracle.com/javase/8/docs/api/java/util/UUID.html),
+implementations are free to use any scheme to ensure their
+blank node references are globally unique. Therefore no assumptions should
+be made about this string except that it is unique per blank node._
+
+
 ### Literal
 
 **TODO:** [Literal](apidocs/org/apache/commons/rdf/api/Literal.html)
 
-### Blank node
-
-**TODO:** [BlankNode](apidocs/org/apache/commons/rdf/api/BlankNode.html)
-
-## Types
+### Types
 
 **TODO:** [Types](apidocs/org/apache/commons/rdf/simple/Types.html)
+
+### Triple
+
+**TODO:** [Triple](apidocs/org/apache/commons/rdf/api/Triple.html)
