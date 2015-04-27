@@ -4,6 +4,24 @@ This page shows some examples of a client using the Commons RDF API.
 It was last updated for version `0.1-incubating-SNAPSHOT` of the
 Commons RDF [API](apidocs/).
 
+* [Using Commons RDF from Maven](#Using_Commons_RDF_from_Maven)
+* [Creating Commons RDF instances](#Creating_RDFTerm_instances)
+* [Graph](#Graph)
+  * [Adding triples](#Adding_triples)
+  * [Finding triples](#Finding_triples)
+  * [Size](#Size)
+  * [Iterating over triples](#Iterating_over_triples)
+  * [Stream of triples](#Stream_of_triples)
+  * [Removing triples](#Removing_triples)
+* [RDF terms](#RDF_terms)
+  * [IRI](#IRI)
+  * [Blank node](#Blank_node)
+    * [Blank node reference](#Blank_node_reference)
+  * [Literal](#Literal)
+  * [Types](#Types)
+* [Triple](#Triple)
+
+
 ## Using Commons RDF from Maven
 
 To use Commons RDF API from an
@@ -60,7 +78,7 @@ _simple_ implementation, add to your `<dependencies>`:
 ```
 
 
-## Creating RDFTerm instances
+## Creating Commons RDF instances
 
 To create instances of Commons RDF interfaces like
 [`Graph`](apidocs/org/apache/commons/rdf/api/Graph.html) and
@@ -269,7 +287,7 @@ System.out.println(graph.contains(null, null, null));
 > false
 
 
-## IRI, Literal, BlankNode
+## RDF terms
 
 The core RDF terms are arranged in this class hierarchy:
 
