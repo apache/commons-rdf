@@ -512,11 +512,74 @@ be made about this string except that it is unique per blank node._
 
 ### Literal
 
-**TODO:** [Literal](apidocs/org/apache/commons/rdf/api/Literal.html)
+A [literal](http://www.w3.org/TR/rdf11-concepts/#section-Graph-Literal) in RDF
+is a value such as a string, number or a date. A `Literal` can only be used as
+_objects_ of a `Triple`
 
-### Types
+To create a [Literal](apidocs/org/apache/commons/rdf/api/Literal.html) instance
+from an `RDFTermFactory`, use
+[createLiteral](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createLiteral-java.lang.String-):
 
-**TODO:** [Types](apidocs/org/apache/commons/rdf/simple/Types.html)
+```java
+Literal literal = factory.createLiteral("Hello world");
+System.out.println(literal);
+```
+
+> `"Hello world"`
+
+In RDF 1.1, a _plain literal_ as created above always have the type
+`http://www.w3.org/2001/XMLSchema#string`:
+
+```java
+System.out.println(literal.getDatatype());
+```
+
+> `<http://www.w3.org/2001/XMLSchema#string>`
+
+
+
+Literals may be created with an associated language tag:
+
+```java
+Literal inSpanish = factory.createLiteral("¡Hola, Mundo!", "es");
+System.out.println(inSpanish);
+```
+> `"¡Hola, Mundo!"@es`
+
+In RDF 1.1, a Literal with a language always have the
+type `http://www.w3.org/1999/02/22-rdf-syntax-ns#langString`:
+
+```java
+System.out.println(inSpanish.getDatatype());
+```
+
+> `<http://www.w3.org/1999/02/22-rdf-syntax-ns#langString>`
+
+A _typed literal_ has a datatype represented by an `IRI`:
+
+```java
+IRI xsdDouble = factory.createIRI("http://www.w3.org/2001/XMLSchema#double");
+Literal typedLiteral = factory.createLiteral("13.37", xsdDouble);
+System.out.println(typedLiteral);
+```
+
+> `"13.37"^^<http://www.w3.org/2001/XMLSchema#double>`
+
+
+#### Types
+
+The class [Types](apidocs/org/apache/commons/rdf/simple/Types.html), which is
+part of the _simple_ implementation, provides constants for the standard
+XML Schema datatypes, e.g. `xsd:dateTime` and `xsd:float`. Using `Types`,
+the above example can be simplified to:
+
+```java
+Literal typedLiteral = factory.createLiteral("13.37", Types.XSD_DOUBLE);
+````
+
+Note that the string returned from `Literal.ntriplesString()` will always
+contain the full IRI for the datatype:
+
 
 ### Triple
 
