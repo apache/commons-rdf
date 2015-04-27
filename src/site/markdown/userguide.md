@@ -18,7 +18,7 @@ Commons RDF [API](apidocs/).
   * [Blank node](#Blank_node)
     * [Blank node reference](#Blank_node_reference)
   * [Literal](#Literal)
-  * [Types](#Types)
+    * [Types](#Types)
 * [Triple](#Triple)
 
 
@@ -575,10 +575,10 @@ the above example can be simplified to:
 
 ```java
 Literal typedLiteral = factory.createLiteral("13.37", Types.XSD_DOUBLE);
-````
+```
 
 Note that the string returned from `Literal.ntriplesString()` will always
-contain the full IRI for the datatype:
+contain the full IRI for the datatype.
 
 
 ### Triple
