@@ -5,23 +5,23 @@ It was last updated for version `0.1-incubating-SNAPSHOT` of the
 Commons RDF [API](apidocs/).
 
 * [Using Commons RDF from Maven](#Using_Commons_RDF_from_Maven)
-* [Creating Commons RDF instances](#Creating_RDFTerm_instances)
-* [Graph](#Graph)
-  * [Adding triples](#Adding_triples)
-  * [Finding triples](#Finding_triples)
-  * [Size](#Size)
-  * [Iterating over triples](#Iterating_over_triples)
-  * [Stream of triples](#Stream_of_triples)
-  * [Removing triples](#Removing_triples)
+* [Creating Commons RDF instances](#Creating_Commons_RDF_instances)
 * [RDF terms](#RDF_terms)
-  * [IRI](#IRI)
-  * [Blank node](#Blank_node)
-    * [Blank node reference](#Blank_node_reference)
-  * [Literal](#Literal)
-    * [Datatype](#Datatype)
-    * [Language](#Language)
-    * [Types](#Types)
+    * [IRI](#IRI)
+    * [Blank node](#Blank_node)
+        * [Blank node reference](#Blank_node_reference)
+    * [Literal](#Literal)
+        * [Datatype](#Datatype)
+            * [Types](#Types)
+        * [Language](#Language)
 * [Triple](#Triple)
+* [Graph](#Graph)
+    * [Adding triples](#Adding_triples)
+    * [Finding triples](#Finding_triples)
+    * [Size](#Size)
+    * [Iterating over triples](#Iterating_over_triples)
+    * [Stream of triples](#Stream_of_triples)
+    * [Removing triples](#Removing_triples)
 
 
 ## Using Commons RDF from Maven
@@ -92,9 +92,9 @@ _simple_ implementation, you can construct the
 [SimpleRDFTermFactory](apidocs/org/apache/commons/rdf/simple/SimpleRDFTermFactory.html):
 
 ```java
-import org.apache.commons.rdf.api.RDFTermFactory;
+import org.apache.commons.rdf.api.*;
 import org.apache.commons.rdf.simple.SimpleRDFTermFactory;
-// ..
+// ...
 RDFTermFactory rdfTermFactory = new SimpleRDFTermFactory();
 ```
 
@@ -127,6 +127,390 @@ using a `RDFTermFactory`. More likely, implementation-specific methods might cre
 objects as part of data parsing, storage lookup and queries.
 
 
+
+
+
+## RDF terms
+
+[RDFTerm](apidocs/org/apache/commons/rdf/api/RDFTerm.html) is
+the super-interface for instances that can be used as subject, predicate and
+object of a [Triple](apidocs/org/apache/commons/rdf/api/Triple.html).
+
+The RDF term interfaces are arranged in this class hierarchy:
+
+* [RDFTerm](apidocs/org/apache/commons/rdf/api/RDFTerm.html)
+    * [BlankNodeOrIRI](apidocs/org/apache/commons/rdf/api/BlankNodeOrIRI.html)
+        * [BlankNode](apidocs/org/apache/commons/rdf/api/BlankNode.html)
+        * [IRI](apidocs/org/apache/commons/rdf/api/IRI.html)
+    * [Literal](apidocs/org/apache/commons/rdf/api/Literal.html)
+
+### N-Triples string
+
+All of the [RDFTerm](apidocs/org/apache/commons/rdf/api/RDFTerm.html) types
+support the `ntriplesString()` method:
+
+```java
+System.out.println(aliceBlankNode.ntriplesString());
+System.out.println(nameIri.ntriplesString());
+System.out.println(aliceLiteral.ntriplesString());
+```
+
+> `_:ef136d20-f1ee-3830-a54b-cd5e489d50fb`
+>
+> ``<http://example.com/name>``
+>
+> ``"Alice"``
+
+This returns the [N-Triples](http://www.w3.org/TR/n-triples) canonical form
+of the term, which can be useful both for debugging and simple serialization.
+
+_Note: The `.toString()` of the `simple` implementation used in
+some of these examples use `ntriplesString()` internally, but Commons RDF
+places no such formal requirement on the `.toString()` method. Clients that
+rely on a canonical N-Triples-compatible string should instead use
+`ntriplesString()`._
+
+As an example of using `ntriplesString()`, here is how one could write a basic
+N-Triples-compatible serialization of a
+[Graph](apidocs/org/apache/commons/rdf/api/Graph.html):
+
+```java
+public class NTriplesSerializer {
+    public static String tripleAsString(Triple t) {
+        return t.getSubject().ntriplesString() + " " +
+               t.getPredicate().ntriplesString() + " " +
+               t.getObject().ntriplesString() + " .";
+    }
+    public static void writeGraph(Graph graph, Path graphFile) throws Exception {
+        Stream<CharSequence> stream = graph.getTriples().map(NTriplesSerializer::tripleAsString);
+        Files.write(graphFile, stream::iterator, Charset.forName("UTF-8"));
+    }
+}
+```
+
+Example output:
+
+> `_:ef136d20-f1ee-3830-a54b-cd5e489d50fb <http://example.com/name> "Alice" .`
+>
+> `<http://example.com/bob> <http://example.com/name> "Bob" .`
+
+### IRI
+
+An [IRI](apidocs/org/apache/commons/rdf/api/IRI.html)
+is a representation of an
+[Internationalized Resource Identifier](http://www.w3.org/TR/rdf11-concepts/#dfn-iri),
+e.g. `http://example.com/alice` or `http://ns.example.org/vocab#term`.
+
+> IRIs in the RDF abstract syntax MUST be absolute, and MAY contain a fragment identifier.
+
+In RDF, an IRI identifies a resource that can be used as a _subject_,
+_predicate_ or _object_ of a [Triple](apidocs/org/apache/commons/rdf/api/Triple.html).
+
+To create an `IRI` instance from a `RDFTermFactory`, use [createIRI](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createIRI-java.lang.String-):
+
+```java
+IRI iri = factory.createIRI("http://example.com/alice");
+```
+
+You can retrieve the IRI string using [getIRIString](apidocs/org/apache/commons/rdf/api/IRI.html#getIRIString--):
+
+```java
+System.out.println(iri.getIRIString());
+```
+
+> `http://example.com/alice`
+
+_Note: The IRI string might contain non-ASCII characters which must be
+%-encoded for applications that expect an URI. It is currently
+out of scope for Commons RDF to perform such a conversion,
+however implementations might provide separate methods for that purpose._
+
+Two IRI instances can be compared using the
+[equals](apidocs/org/apache/commons/rdf/api/IRI.html#equals-java.lang.Object-)
+method, which uses [simple string comparison](http://tools.ietf.org/html/rfc3987#section-5.3.1):
+
+```java
+IRI iri2 = factory.createIRI("http://example.com/alice");
+System.out.println(iri.equals(iri2));
+```
+
+> `true`
+
+```java
+IRI iri3 = factory.createIRI("http://example.com/alice/./");
+System.out.println(iri.equals(iri3));
+```
+
+> `false`
+
+Note that IRIs are never equal to objects which are not themselves
+instances of [IRI](apidocs/org/apache/commons/rdf/api/IRI.html):
+
+
+```java
+System.out.println(iri.equals("http://example.com/alice"));
+System.out.println(iri.equals(factory.createLiteral("http://example.com/alice")));
+```
+> `false`
+>
+> `false`
+
+
+### Blank node
+
+A [blank node](http://www.w3.org/TR/rdf11-concepts/#section-blank-nodes) is a
+resource which, unlike an IRI, is not directly identified. Blank nodes can be
+used as _subject_ or _object_ of a `Triple`
+[Triple](apidocs/org/apache/commons/rdf/api/Triple.html).
+
+To create a new
+[BlankNode](apidocs/org/apache/commons/rdf/api/BlankNode.html) instance from a
+`RDFTermFactory`, use
+[createBlankNode](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createBlankNode--):
+
+```java
+BlankNode bnode = factory.createBlankNode();
+```
+
+Every call to `createBlankNode()` returns a brand new blank node
+which can be used in multiple triples in multiple graphs. Thus
+every such blank node can only be
+[equal](apidocs/org/apache/commons/rdf/api/BlankNode.html#equals-java.lang.Object-)
+to itself:
+
+```java
+System.out.println(bnode.equals(bnode));
+System.out.println(bnode.equals(factory.createBlankNode()))
+```
+
+> `true`
+>
+> `false`
+
+Sometimes it can be beneficial to create a blank node based on a
+localized _name_, without needing to keep object references
+to earlier `BlankNode` instances. For that purpose, `RDFTermFactory`
+may support the
+[expanded createBlankNode](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createBlankNode-java.lang.String-)
+method:
+
+```java
+BlankNode b1 = factory.createBlankNode("b1");
+```
+
+Note that there is no requirement for the
+[ntriplesString()](apidocs/org/apache/commons/rdf/api/RDFTerm.html#ntriplesString--)
+of the BlankNode to reflect the provided `name`:
+
+```java
+System.out.println(b1.ntriplesString());
+```
+
+> `_:6c0f628f-02cb-3634-99db-0e1e99d2e66d`
+
+
+
+Any later `createBlankNode("b1")` **on the same factory instance**
+returns a `BlankNode` which are
+[equal](apidocs/org/apache/commons/rdf/api/BlankNode.html#equals-java.lang.Object-)
+to the previous b1:
+
+```java
+System.out.println(b1.equals(factory.createBlankNode("b1")))
+System.out.println(b1.equals(new SimpleRDFTermFactory().createBlankNode("b1")));
+```
+
+> `true`
+>
+> `false`
+
+#### Blank node reference
+
+_Warning: This method is still under discussion and these details,
+including the method name, are subject to change. See
+[COMMONSRDF-6](https://issues.apache.org/jira/browse/COMMONSRDF-6)._
+
+While blank nodes are distinct from IRIs, and don't have inherent
+universal identifiers, it can nevertheless be useful
+for debugging and testing to have a unique reference string for
+a particular blank node.
+For that purpose, BlankNode exposes the
+[internalIdentifier](apidocs/org/apache/commons/rdf/api/BlankNode.html#internalIdentifier--)
+method:
+
+```java
+System.out.println(bnode.internalIdentifier())
+```
+
+> `735d5e63-96a4-488b-8613-7037b82c74a5`
+
+While this reference string might for the _simple_
+implementation also be seen  within the `BlankNode.ntriplesString()`
+result, there is no such guarantee from the Commons RDF API.
+Clients who need a globally unique reference
+for a blank node should therefore use the `internalIdentifier()` method.
+
+_Note: While it is recommended for this string to be (or contain) a
+[UUID string](http://docs.oracle.com/javase/8/docs/api/java/util/UUID.html),
+implementations are free to use any scheme to ensure their
+blank node references are globally unique. Therefore no assumptions should
+be made about this string except that it is unique per blank node._
+
+
+### Literal
+
+A [literal](http://www.w3.org/TR/rdf11-concepts/#section-Graph-Literal) in RDF
+is a value such as a string, number or a date. A `Literal` can only be used as
+an _object_ of a [Triple](apidocs/org/apache/commons/rdf/api/Triple.html#getObject--).
+
+To create a [Literal](apidocs/org/apache/commons/rdf/api/Literal.html) instance
+from an `RDFTermFactory`, use
+[createLiteral](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createLiteral-java.lang.String-):
+
+```java
+Literal literal = factory.createLiteral("Hello world!");
+System.out.println(literal.ntriplesString());
+```
+
+> `"Hello world!"`
+
+The lexical value (what is inside the quotes) can be retrieved
+using [getLexicalForm()](apidocs/org/apache/commons/rdf/api/Literal.html#getLexicalForm--):
+
+```java
+String lexical = literal.getLexicalForm();
+System.out.println(lexical);
+```
+
+> `Hello world!`
+
+
+#### Datatype
+
+All literals in RDF 1.1 have a
+[datatype](http://www.w3.org/TR/rdf11-concepts/#dfn-datatype-iri) `IRI`, which
+can be retrieved using
+[Literal.getDatatype()](apidocs/org/apache/commons/rdf/api/Literal.html#getDatatype--):
+
+```java
+IRI datatype = literal.getDatatype();
+System.out.println(datatype.ntriplesString());
+```
+
+> `<http://www.w3.org/2001/XMLSchema#string>`
+
+In RDF 1.1, a [simple
+literal](http://www.w3.org/TR/rdf11-concepts/#dfn-simple-literal) (as created
+above) always have the type
+`http://www.w3.org/2001/XMLSchema#string` (or
+[xsd:string](apidocs/org/apache/commons/rdf/simple/Types.html#XSD_STRING) for
+short). 
+
+<div class="alert alert-warn" role="alert"><p><span class="glyphicon glyphicon-warn-sign" aria-hidden="true"></span>
+<!-- Markdown not supported inside HTML -->
+<strong>Note:</strong>
+RDF 1.0 had the datatype
+<code>http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral</code> to
+indicate <em>plain literals</em> (untyped), which were distinct from
+<code>http://www.w3.org/2001/XMLSchema#string</code> (typed). Commons
+RDF assumes RDF 1.1, which merges the two concepts as the second type, however
+particular implementations might have explicit options for RDF 1.0 support, in
+which case you might find <code>Literal</code> instances with the deprecated
+<a href="apidocs/org/apache/commons/rdf/simple/Types.html#RDF_PLAINLITERAL">plain
+literal</a> data type.
+</p></div>
+
+
+To create a literal with any other 
+[datatype](http://www.w3.org/TR/rdf11-concepts/#dfn-datatype-iri), then
+first create the datatype `IRI` and pass it to the expanded
+[createLiteral](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createLiteral-java.lang.String-org.apache.commons.rdf.api.IRI-):
+
+```java
+IRI xsdDouble = factory.createIRI("http://www.w3.org/2001/XMLSchema#double");
+Literal typedLiteral = factory.createLiteral("13.37", xsdDouble);
+System.out.println(typedLiteral.ntriplesString());
+```
+
+> `"13.37"^^<http://www.w3.org/2001/XMLSchema#double>`
+
+
+
+
+##### Types
+
+The class [Types](apidocs/org/apache/commons/rdf/simple/Types.html), which is
+part of the _simple_ implementation, provides `IRI` constants for the standard
+XML Schema datatypes like `xsd:dateTime` and `xsd:float`. Using `Types`,
+the above example can be simplified to:
+
+```java
+Literal typedLiteral = factory.createLiteral("13.37", Types.XSD_DOUBLE);
+```
+
+As the constants in `Types` are all instances of `IRI`, they can 
+also be used for comparisons:
+
+```java
+System.out.println(literal.getDatatype().equals(Types.XSD_STRING));
+```    
+
+> `true`
+
+#### Language
+
+Literals may be created with an associated 
+[language tag](http://www.w3.org/TR/rdf11-concepts/#dfn-language-tagged-string)
+using the expanded [createLiteral](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createLiteral-java.lang.String-java.lang.String-):
+
+```java
+Literal inSpanish = factory.createLiteral("¡Hola, Mundo!", "es");
+System.out.println(inSpanish.ntriplesString());
+System.out.println(inSpanish.getLexicalForm());
+```
+> `"¡Hola, Mundo!"@es`
+> 
+> `¡Hola, Mundo!`
+
+A literal with a language tag always have the
+implied type `http://www.w3.org/1999/02/22-rdf-syntax-ns#langString`:
+
+```java
+System.out.println(inSpanish.getDatatype().ntriplesString());
+```
+
+> `<http://www.w3.org/1999/02/22-rdf-syntax-ns#langString>`
+
+The language tag can be retrieved using 
+[getLanguageTag()](apidocs/org/apache/commons/rdf/api/Literal.html#getLanguageTag--):
+
+```java
+Optional<String> tag = inSpanish.getLanguageTag();
+if (tag.isPresent()) {
+    System.out.println(tag.get());
+}
+```
+
+> `es`
+
+The language tag is behind an
+[Optional](http://docs.oracle.com/javase/8/docs/api/java/util/Optional.html) as
+it cannot be present for any other datatypes than
+`http://www.w3.org/1999/02/22-rdf-syntax-ns#langString`:
+
+```java
+System.out.println(literal.getLanguageTag().isPresent());
+System.out.println(literalDouble.getLanguageTag().isPresent());
+```
+
+> `false`
+>
+> `false`
+
+
+## Triple
+
+**TODO:** [Triple](apidocs/org/apache/commons/rdf/api/Triple.html)
 
 ## Graph
 
@@ -287,382 +671,3 @@ graph.clear();
 System.out.println(graph.contains(null, null, null));
 ```
 > false
-
-
-## RDF terms
-
-The core RDF terms are arranged in this class hierarchy:
-
-* [RDFTerm](apidocs/org/apache/commons/rdf/api/RDFTerm.html)
-    * [BlankNodeOrIRI](apidocs/org/apache/commons/rdf/api/BlankNodeOrIRI.html)
-          * [BlankNode](apidocs/org/apache/commons/rdf/api/BlankNode.html)
-          * [IRI](apidocs/org/apache/commons/rdf/api/IRI.html)
-    * [Literal](apidocs/org/apache/commons/rdf/api/Literal.html)
-
-### N-Triples string
-
-All of the [RDFTerm](apidocs/org/apache/commons/rdf/api/RDFTerm.html) types
-support the `ntriplesString()` method:
-
-```java
-System.out.println(aliceBlankNode.ntriplesString());
-System.out.println(nameIri.ntriplesString());
-System.out.println(aliceLiteral.ntriplesString());
-```
-
-> `_:ef136d20-f1ee-3830-a54b-cd5e489d50fb`
->
-> ``<http://example.com/name>``
->
-> ``"Alice"``
-
-This returns the [N-Triples](http://www.w3.org/TR/n-triples) canonical form
-of the term, which can be useful both for debugging and simple serialization.
-
-_Note: The `.toString()` of the `simple` implementation used in
-some of these examples use `ntriplesString()` internally, but Commons RDF
-places no such formal requirement on the `.toString()` method. Clients that
-rely on a canonical N-Triples-compatible string should instead use
-`ntriplesString()`._
-
-As an example of using `ntriplesString()`, here is how one could write a simple
-N-Triples compatible serialization of a
-[Graph](apidocs/org/apache/commons/rdf/api/Graph.html):
-
-```java
-public class NTriplesSerializer {
-    public static String tripleAsString(Triple t) {
-        return t.getSubject().ntriplesString() + " " +
-               t.getPredicate().ntriplesString() + " " +
-               t.getObject().ntriplesString() + " .";
-    }
-    public static void writeGraph(Graph graph, Path graphFile) throws Exception {
-        Stream<CharSequence> stream = graph.getTriples().map(NTriplesSerializer::tripleAsString);
-        Files.write(graphFile, stream::iterator, Charset.forName("UTF-8"));
-    }
-}
-```
-
-Example output:
-
-```turtle
-_:ef136d20-f1ee-3830-a54b-cd5e489d50fb <http://example.com/name> "Alice" .
-<http://example.com/bob> <http://example.com/name> "Bob" .
-```
-
-### IRI
-
-An [IRI](apidocs/org/apache/commons/rdf/api/IRI.html)
-is a representation of an
-[Internationalized Resource Identifier](http://www.w3.org/TR/rdf11-concepts/#dfn-iri),
-e.g. `http://example.com/alice` or `http://ns.example.org/vocab#term`.
-
-> IRIs in the RDF abstract syntax MUST be absolute, and MAY contain a fragment identifier.
-
-In RDF, an IRI identifies a resource that can be used as a _subject_,
-_predicate_ or _object_ of a `Triple`.
-
-To create an `IRI` instance from a `RDFTermFactory`, use [createIRI](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createIRI-java.lang.String-):
-
-```java
-IRI iri = factory.createIRI("http://example.com/alice");
-```
-
-You can retrieve the IRI string using [getIRIString](apidocs/org/apache/commons/rdf/api/IRI.html#getIRIString--):
-
-```java
-System.out.println(iri.getIRIString());
-```
-
-> `http://example.com/alice`
-
-_Note: The IRI string might contain non-ASCII characters which must be
-%-encoded for applications that expect an URI. It is currently
-out of scope for Commons RDF to perform such a conversion,
-however implementations might provide separate methods for that purpose._
-
-Two IRI instances can be compared using the
-[equals](apidocs/org/apache/commons/rdf/api/IRI.html#equals-java.lang.Object-)
-method, which uses [simple string comparison](http://tools.ietf.org/html/rfc3987#section-5.3.1):
-
-```java
-IRI iri2 = factory.createIRI("http://example.com/alice");
-System.out.println(iri.equals(iri2));
-```
-
-> `true`
-
-```java
-IRI iri3 = factory.createIRI("http://example.com/alice/./");
-System.out.println(iri.equals(iri3));
-```
-
-> `false`
-
-Note that IRIs are never equal to objects which are not themselves
-instances of [IRI](apidocs/org/apache/commons/rdf/api/IRI.html):
-
-
-```java
-System.out.println(iri.equals("http://example.com/alice"));
-System.out.println(iri.equals(factory.createLiteral("http://example.com/alice")));
-```
-> `false`
->
-> `false`
-
-
-### Blank node
-
-A [blank node](http://www.w3.org/TR/rdf11-concepts/#section-blank-nodes) is a
-resource which, unlike an IRI, is not directly identified. Blank nodes can be
-used as _subject_ or _object_ of a `Triple`.
-
-To create a new
-[BlankNode](apidocs/org/apache/commons/rdf/api/BlankNode.html) instance from a
-`RDFTermFactory`, use
-[createBlankNode](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createBlankNode--):
-
-```java
-BlankNode bnode = factory.createBlankNode();
-```
-
-Every call to `createBlankNode()` returns a brand new blank node
-which can be used in multiple triples in multiple graphs. Thus
-every such blank node can only be
-[equal](apidocs/org/apache/commons/rdf/api/BlankNode.html#equals-java.lang.Object-)
-to itself:
-
-```java
-System.out.println(bnode.equals(bnode));
-System.out.println(bnode.equals(factory.createBlankNode()))
-```
-
-> `true`
->
-> `false`
-
-Sometimes it can be beneficial to create a blank node based on a
-localized _name_, without needing to keep object references
-to earlier `BlankNode` instances. For that purpose, `RDFTermFactory`
-may support the
-[expanded createBlankNode](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createBlankNode-java.lang.String-)
-method:
-
-```java
-BlankNode b1 = factory.createBlankNode("b1");
-```
-
-Note that there is no requirement for the
-[ntriplesString()](apidocs/org/apache/commons/rdf/api/RDFTerm.html#ntriplesString--)
-of the BlankNode to reflect the provided `name`:
-
-```java
-System.out.println(b1.ntriplesString());
-```
-
-> `_:6c0f628f-02cb-3634-99db-0e1e99d2e66d`
-
-
-
-Any later `createBlankNode("b1")` **on the same factory instance**
-returns a `BlankNode` which are
-[equal](apidocs/org/apache/commons/rdf/api/BlankNode.html#equals-java.lang.Object-)
-to the previous b1:
-
-```java
-System.out.println(b1.equals(factory.createBlankNode("b1")))
-System.out.println(b1.equals(new SimpleRDFTermFactory().createBlankNode("b1")));
-```
-
-> `true`
->
-> `false`
-
-#### Blank node reference
-
-_Warning: This method is still under discussion and these details,
-including the method name, are subject to change. See
-[COMMONSRDF-6](https://issues.apache.org/jira/browse/COMMONSRDF-6)._
-
-While blank nodes are distinct from IRIs, and don't have inherent
-universal identifiers, it can nevertheless be useful
-for debugging and testing to have a unique reference string for
-a particular blank node.
-For that purpose, BlankNode exposes the
-[internalIdentifier](apidocs/org/apache/commons/rdf/api/BlankNode.html#internalIdentifier--)
-method:
-
-```java
-System.out.println(bnode.internalIdentifier())
-```
-
-> `735d5e63-96a4-488b-8613-7037b82c74a5`
-
-While this reference string might for the _simple_
-implementation also be seen  within the `BlankNode.ntriplesString()`
-result, there is no such guarantee from the Commons RDF API.
-Clients who need a globally unique reference
-for a blank node should therefore use the `internalIdentifier()` method.
-
-_Note: While it is recommended for this string to be (or contain) a
-[UUID string](http://docs.oracle.com/javase/8/docs/api/java/util/UUID.html),
-implementations are free to use any scheme to ensure their
-blank node references are globally unique. Therefore no assumptions should
-be made about this string except that it is unique per blank node._
-
-
-### Literal
-
-A [literal](http://www.w3.org/TR/rdf11-concepts/#section-Graph-Literal) in RDF
-is a value such as a string, number or a date. A `Literal` can only be used as
-_objects_ of a [Triple](apidocs/org/apache/commons/rdf/api/Triple.html#getObject--).
-
-To create a [Literal](apidocs/org/apache/commons/rdf/api/Literal.html) instance
-from an `RDFTermFactory`, use
-[createLiteral](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createLiteral-java.lang.String-):
-
-```java
-Literal literal = factory.createLiteral("Hello world!");
-System.out.println(literal.ntriplesString());
-```
-
-> `"Hello world!"`
-
-The lexical value (what is inside the quotes) can be retrieved
-using [getLexicalForm()](apidocs/org/apache/commons/rdf/api/Literal.html#getLexicalForm--):
-
-```java
-String lexical = literal.getLexicalForm();
-System.out.println(lexical);
-```
-
-> `Hello world!`
-
-
-#### Datatype
-
-All literals in RDF 1.1 have a
-[datatype](http://www.w3.org/TR/rdf11-concepts/#dfn-datatype-iri) `IRI`, which
-can be retrieved using
-[Literal.getDatatype()](apidocs/org/apache/commons/rdf/api/Literal.html#getDatatype--):
-
-```java
-IRI datatype = literal.getDatatype();
-System.out.println(datatype.ntriplesString());
-```
-
-> `<http://www.w3.org/2001/XMLSchema#string>`
-
-In RDF 1.1, a [simple
-literal](http://www.w3.org/TR/rdf11-concepts/#dfn-simple-literal) (as created
-above) always have the type
-`http://www.w3.org/2001/XMLSchema#string` (or
-[xsd:string](apidocs/org/apache/commons/rdf/simple/Types.html#XSD_STRING) for
-short). 
-
-<div class="alert alert-warn" role="alert"><p><span class="glyphicon glyphicon-warn-sign" aria-hidden="true"></span>
-<!-- Markdown not supported inside HTML -->
-<strong>Note:</strong>
-RDF 1.0 had the datatype
-<code>http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral</code> to
-indicate <em>plain literals</em> (untyped), which were distinct from
-<code>http://www.w3.org/2001/XMLSchema#string</code> (typed). Commons
-RDF assumes RDF 1.1, which merges the two concepts as the second type, however
-particular implementations might have explicit options for RDF 1.0 support, in
-which case you might find <code>Literal</code> instances with the deprecated
-<a href="apidocs/org/apache/commons/rdf/simple/Types.html#RDF_PLAINLITERAL">plain
-literal</a> data type.
-</p></div>
-
-
-To create a literal with any other 
-[datatype](http://www.w3.org/TR/rdf11-concepts/#dfn-datatype-iri), then
-first create the datatype `IRI` and pass it to the expanded
-[createLiteral](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createLiteral-java.lang.String-org.apache.commons.rdf.api.IRI-):
-
-```java
-IRI xsdDouble = factory.createIRI("http://www.w3.org/2001/XMLSchema#double");
-Literal typedLiteral = factory.createLiteral("13.37", xsdDouble);
-System.out.println(typedLiteral.ntriplesString());
-```
-
-> `"13.37"^^<http://www.w3.org/2001/XMLSchema#double>`
-
-
-
-
-#### Types
-
-The class [Types](apidocs/org/apache/commons/rdf/simple/Types.html), which is
-part of the _simple_ implementation, provides `IRI` constants for the standard
-XML Schema datatypes like `xsd:dateTime` and `xsd:float`. Using `Types`,
-the above example can be simplified to:
-
-```java
-Literal typedLiteral = factory.createLiteral("13.37", Types.XSD_DOUBLE);
-```
-
-As the constants in `Types` are all instances of `IRI`, they can 
-also be used for comparisons:
-
-```java
-System.out.println(literal.getDatatype().equals(Types.XSD_STRING));
-```    
-
-> `true`
-
-#### Language
-
-Literals may be created with an associated 
-[language tag](http://www.w3.org/TR/rdf11-concepts/#dfn-language-tagged-string)
-using the expanded [createLiteral](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createLiteral-java.lang.String-java.lang.String-):
-
-```java
-Literal inSpanish = factory.createLiteral("¡Hola, Mundo!", "es");
-System.out.println(inSpanish.ntriplesString());
-System.out.println(inSpanish.getLexicalForm());
-```
-> `"¡Hola, Mundo!"@es`
-> 
-> `¡Hola, Mundo!`
-
-A literal with a language tag always have the
-implied type `http://www.w3.org/1999/02/22-rdf-syntax-ns#langString`:
-
-```java
-System.out.println(inSpanish.getDatatype().ntriplesString());
-```
-
-> `<http://www.w3.org/1999/02/22-rdf-syntax-ns#langString>`
-
-The language tag can be retrieved using 
-[getLanguageTag()](apidocs/org/apache/commons/rdf/api/Literal.html#getLanguageTag--):
-
-```java
-Optional<String> tag = inSpanish.getLanguageTag();
-if (tag.isPresent()) {
-    System.out.println(tag.get());
-}
-```
-
-> `es`
-
-The language tag is behind an
-[Optional](http://docs.oracle.com/javase/8/docs/api/java/util/Optional.html) as
-it cannot be present for any other datatypes than
-`http://www.w3.org/1999/02/22-rdf-syntax-ns#langString`:
-
-```java
-System.out.println(literal.getLanguageTag().isPresent());
-System.out.println(literalDouble.getLanguageTag().isPresent());
-```
-
-> `false`
->
-> `false`
-
-
-### Triple
-
-**TODO:** [Triple](apidocs/org/apache/commons/rdf/api/Triple.html)
