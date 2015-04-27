@@ -18,6 +18,8 @@ Commons RDF [API](apidocs/).
   * [Blank node](#Blank_node)
     * [Blank node reference](#Blank_node_reference)
   * [Literal](#Literal)
+    * [Datatype](#Datatype)
+    * [Language](#Language)
     * [Types](#Types)
 * [Triple](#Triple)
 
@@ -233,8 +235,8 @@ return a Java 8
 [Stream](http://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html).
 
 ```java
-Stream<Object> subjects = graph.getTriples().map(t -> t.getSubject());
-String s = subjects.map(Object::toString).collect(Collectors.joining(" "));
+Stream<RDFTerm> subjects = graph.getTriples().map(t -> t.getObject());
+String s = subjects.map(RDFTerm::ntriplesString).collect(Collectors.joining(" "));
 System.out.println(s);
 ```
 > ``"Alice" "Bob"``
@@ -269,7 +271,7 @@ graph.remove(triple);
 System.out.println(graph.contains(triple));
 ```
 
-The expanded subject/predicate/object form of
+The expanded _subject/predicate/object_ form of
 [remove()](apidocs/org/apache/commons/rdf/api/Graph.html#remove-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-)
 can be used without needing to construct a `Triple` first. It also
 allow `null` as a wildcard pattern:
@@ -318,9 +320,9 @@ This returns the [N-Triples](http://www.w3.org/TR/n-triples) canonical form
 of the term, which can be useful both for debugging and simple serialization.
 
 _Note: The `.toString()` of the `simple` implementation used in
-these examples use `ntriplesString()` internally, but Commons RDF places no such
-formal requirement on the `.toString()` method. Clients that rely on
-a canonical N-Triples-compatible string should instead use
+some of these examples use `ntriplesString()` internally, but Commons RDF
+places no such formal requirement on the `.toString()` method. Clients that
+rely on a canonical N-Triples-compatible string should instead use
 `ntriplesString()`._
 
 As an example of using `ntriplesString()`, here is how one could write a simple
@@ -514,71 +516,151 @@ be made about this string except that it is unique per blank node._
 
 A [literal](http://www.w3.org/TR/rdf11-concepts/#section-Graph-Literal) in RDF
 is a value such as a string, number or a date. A `Literal` can only be used as
-_objects_ of a `Triple`
+_objects_ of a [Triple](apidocs/org/apache/commons/rdf/api/Triple.html#getObject--).
 
 To create a [Literal](apidocs/org/apache/commons/rdf/api/Literal.html) instance
 from an `RDFTermFactory`, use
 [createLiteral](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createLiteral-java.lang.String-):
 
 ```java
-Literal literal = factory.createLiteral("Hello world");
-System.out.println(literal);
+Literal literal = factory.createLiteral("Hello world!");
+System.out.println(literal.ntriplesString());
 ```
 
-> `"Hello world"`
+> `"Hello world!"`
 
-In RDF 1.1, a _plain literal_ as created above always have the type
-`http://www.w3.org/2001/XMLSchema#string`:
+The lexical value (what is inside the quotes) can be retrieved
+using [getLexicalForm()](apidocs/org/apache/commons/rdf/api/Literal.html#getLexicalForm--):
 
 ```java
-System.out.println(literal.getDatatype());
+String lexical = literal.getLexicalForm();
+System.out.println(lexical);
+```
+
+> `Hello world!`
+
+
+#### Datatype
+
+All literals in RDF 1.1 have a
+[datatype](http://www.w3.org/TR/rdf11-concepts/#dfn-datatype-iri) `IRI`, which
+can be retrieved using
+[Literal.getDatatype()](apidocs/org/apache/commons/rdf/api/Literal.html#getDatatype--):
+
+```java
+IRI datatype = literal.getDatatype();
+System.out.println(datatype.ntriplesString());
 ```
 
 > `<http://www.w3.org/2001/XMLSchema#string>`
 
+In RDF 1.1, a [simple
+literal](http://www.w3.org/TR/rdf11-concepts/#dfn-simple-literal) (as created
+above) always have the type
+`http://www.w3.org/2001/XMLSchema#string` (or
+[xsd:string](apidocs/org/apache/commons/rdf/simple/Types.html#XSD_STRING) for
+short). 
+
+<div class="alert alert-warn" role="alert"><p><span class="glyphicon glyphicon-warn-sign" aria-hidden="true"></span>
+<!-- Markdown not supported inside HTML -->
+<strong>Note:</strong>
+RDF 1.0 had the datatype
+<code>http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral</code> to
+indicate <em>plain literals</em> (untyped), which were distinct from
+<code>http://www.w3.org/2001/XMLSchema#string</code> (typed). Commons
+RDF assumes RDF 1.1, which merges the two concepts as the second type, however
+particular implementations might have explicit options for RDF 1.0 support, in
+which case you might find <code>Literal</code> instances with the deprecated
+<a href="apidocs/org/apache/commons/rdf/simple/Types.html#RDF_PLAINLITERAL">plain
+literal</a> data type.
+</p></div>
 
 
-Literals may be created with an associated language tag:
-
-```java
-Literal inSpanish = factory.createLiteral("¡Hola, Mundo!", "es");
-System.out.println(inSpanish);
-```
-> `"¡Hola, Mundo!"@es`
-
-In RDF 1.1, a Literal with a language always have the
-type `http://www.w3.org/1999/02/22-rdf-syntax-ns#langString`:
-
-```java
-System.out.println(inSpanish.getDatatype());
-```
-
-> `<http://www.w3.org/1999/02/22-rdf-syntax-ns#langString>`
-
-A _typed literal_ has a datatype represented by an `IRI`:
+To create a literal with any other 
+[datatype](http://www.w3.org/TR/rdf11-concepts/#dfn-datatype-iri), then
+first create the datatype `IRI` and pass it to the expanded
+[createLiteral](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createLiteral-java.lang.String-org.apache.commons.rdf.api.IRI-):
 
 ```java
 IRI xsdDouble = factory.createIRI("http://www.w3.org/2001/XMLSchema#double");
 Literal typedLiteral = factory.createLiteral("13.37", xsdDouble);
-System.out.println(typedLiteral);
+System.out.println(typedLiteral.ntriplesString());
 ```
 
 > `"13.37"^^<http://www.w3.org/2001/XMLSchema#double>`
 
 
+
+
 #### Types
 
 The class [Types](apidocs/org/apache/commons/rdf/simple/Types.html), which is
-part of the _simple_ implementation, provides constants for the standard
-XML Schema datatypes, e.g. `xsd:dateTime` and `xsd:float`. Using `Types`,
+part of the _simple_ implementation, provides `IRI` constants for the standard
+XML Schema datatypes like `xsd:dateTime` and `xsd:float`. Using `Types`,
 the above example can be simplified to:
 
 ```java
 Literal typedLiteral = factory.createLiteral("13.37", Types.XSD_DOUBLE);
 ```
 
-Note that the string returned from `Literal.ntriplesString()` will always
-contain the full IRI for the datatype.
+As the constants in `Types` are all instances of `IRI`, they can 
+also be used for comparisons:
+
+```java
+System.out.println(literal.getDatatype().equals(Types.XSD_STRING));
+```    
+
+> `true`
+
+#### Language
+
+Literals may be created with an associated 
+[language tag](http://www.w3.org/TR/rdf11-concepts/#dfn-language-tagged-string)
+using the expanded [createLiteral](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createLiteral-java.lang.String-java.lang.String-):
+
+```java
+Literal inSpanish = factory.createLiteral("¡Hola, Mundo!", "es");
+System.out.println(inSpanish.ntriplesString());
+System.out.println(inSpanish.getLexicalForm());
+```
+> `"¡Hola, Mundo!"@es`
+> 
+> `¡Hola, Mundo!`
+
+A literal with a language tag always have the
+implied type `http://www.w3.org/1999/02/22-rdf-syntax-ns#langString`:
+
+```java
+System.out.println(inSpanish.getDatatype().ntriplesString());
+```
+
+> `<http://www.w3.org/1999/02/22-rdf-syntax-ns#langString>`
+
+The language tag can be retrieved using 
+[getLanguageTag()](apidocs/org/apache/commons/rdf/api/Literal.html#getLanguageTag--):
+
+```java
+Optional<String> tag = inSpanish.getLanguageTag();
+if (tag.isPresent()) {
+    System.out.println(tag.get());
+}
+```
+
+> `es`
+
+The language tag is behind an
+[Optional](http://docs.oracle.com/javase/8/docs/api/java/util/Optional.html) as
+it cannot be present for any other datatypes than
+`http://www.w3.org/1999/02/22-rdf-syntax-ns#langString`:
+
+```java
+System.out.println(literal.getLanguageTag().isPresent());
+System.out.println(literalDouble.getLanguageTag().isPresent());
+```
+
+> `false`
+>
+> `false`
 
 
 ### Triple
