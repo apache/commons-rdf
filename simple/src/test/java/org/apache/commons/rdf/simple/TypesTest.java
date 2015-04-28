@@ -17,17 +17,19 @@
  */
 package org.apache.commons.rdf.simple;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 /**
- * Tests for the {@link Types} enumeration.
+ * Tests for the {@link org.apache.commons.rdf.simple.Types} enumeration.
  */
 public class TypesTest {
 
     /**
-     * Test method for {@link Types#getIRIString()}
+     * Test method for {@link org.apache.commons.rdf.simple.Types#getIRIString()}
      * .
      */
     @Test
@@ -38,7 +40,7 @@ public class TypesTest {
 
     /**
      * Test method for
-     * {@link Types#ntriplesString()}.
+     * {@link org.apache.commons.rdf.simple.Types#ntriplesString()}.
      */
     @Test
     public final void testNtriplesString() {
@@ -48,7 +50,7 @@ public class TypesTest {
 
     /**
      * Test method for
-     * {@link Types#get(org.apache.commons.rdf.api.IRI)}
+     * {@link org.apache.commons.rdf.simple.Types#get(org.apache.commons.rdf.api.IRI)}
      * .
      */
     @Test
