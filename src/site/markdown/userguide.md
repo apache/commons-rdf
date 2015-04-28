@@ -25,9 +25,11 @@ It was last updated for version `0.1-incubating-SNAPSHOT` of the
 Commons RDF [API](apidocs/).
 
 * [Introduction](#Introduction)
+    * [RDF concepts](#RDF_concepts)
 * [Using Commons RDF from Maven](#Using_Commons_RDF_from_Maven)
 * [Creating Commons RDF instances](#Creating_Commons_RDF_instances)
 * [RDF terms](#RDF_terms)
+    * [N-Triples string](#N-Triples_string)
     * [IRI](#IRI)
     * [Blank node](#Blank_node)
         * [Blank node reference](#Blank_node_reference)
@@ -58,13 +60,13 @@ of corresponding interfaces and methods.
 
 RDF is a [graph-based data model](http://www.w3.org/TR/rdf11-concepts/#data-model), where
 a _graph_ contains a series of _triples_, each containing the node-arc-node link
-_subject_ -> _predicate_ -> _object_.  Nodes in the graph are represented either as _IRIs_, _literals_ and _blank nodes_. 
+_subject_ -> _predicate_ -> _object_.  Nodes in the graph are represented either as _IRIs_, _literals_ and _blank nodes_.
 :
 This user guide does not intend to give a detailed description of RDF as a data
 model. To fully understand this user guide, you should have a brief
 understanding of the core RDF concepts mentioned above.
 
-For more information on RDF, see the 
+For more information on RDF, see the
 [RDF primer](http://www.w3.org/TR/rdf11-primer/) and the [RDF
 concepts](http://www.w3.org/TR/rdf11-concepts/#data-model) specification from
 W3C.
@@ -455,7 +457,7 @@ literal](http://www.w3.org/TR/rdf11-concepts/#dfn-simple-literal) (as created
 above) always have the type
 `http://www.w3.org/2001/XMLSchema#string` (or
 [xsd:string](apidocs/org/apache/commons/rdf/simple/Types.html#XSD_STRING) for
-short). 
+short).
 
 <div class="alert alert-warn" role="alert"><p><span class="glyphicon glyphicon-warn-sign" aria-hidden="true"></span>
 <!-- Markdown not supported inside HTML -->
@@ -472,7 +474,7 @@ literal</a> data type.
 </p></div>
 
 
-To create a literal with any other 
+To create a literal with any other
 [datatype](http://www.w3.org/TR/rdf11-concepts/#dfn-datatype-iri), then
 first create the datatype `IRI` and pass it to the expanded
 [createLiteral](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createLiteral-java.lang.String-org.apache.commons.rdf.api.IRI-):
@@ -499,18 +501,18 @@ the above example can be simplified to:
 Literal literalDouble2 = factory.createLiteral("13.37", Types.XSD_DOUBLE);
 ```
 
-As the constants in `Types` are all instances of `IRI`, they can 
+As the constants in `Types` are all instances of `IRI`, they can
 also be used for comparisons:
 
 ```java
 System.out.println(literal.getDatatype().equals(Types.XSD_STRING));
-```    
+```
 
 > `true`
 
 #### Language
 
-Literals may be created with an associated 
+Literals may be created with an associated
 [language tag](http://www.w3.org/TR/rdf11-concepts/#dfn-language-tagged-string)
 using the expanded [createLiteral](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createLiteral-java.lang.String-java.lang.String-):
 
@@ -520,7 +522,7 @@ System.out.println(inSpanish.ntriplesString());
 System.out.println(inSpanish.getLexicalForm());
 ```
 > `"¡Hola, Mundo!"@es`
-> 
+>
 > `¡Hola, Mundo!`
 
 A literal with a language tag always have the
@@ -532,7 +534,7 @@ System.out.println(inSpanish.getDatatype().ntriplesString());
 
 > `<http://www.w3.org/1999/02/22-rdf-syntax-ns#langString>`
 
-The language tag can be retrieved using 
+The language tag can be retrieved using
 [getLanguageTag()](apidocs/org/apache/commons/rdf/api/Literal.html#getLanguageTag--):
 
 ```java
@@ -561,7 +563,7 @@ System.out.println(literalDouble.getLanguageTag().isPresent());
 
 ## Triple
 
-A [triple](http://www.w3.org/TR/rdf11-concepts/#section-triples) in 
+A [triple](http://www.w3.org/TR/rdf11-concepts/#section-triples) in
 RDF 1.1 consists of:
 
 * The [subject](apidocs/org/apache/commons/rdf/api/Triple.html#getSubject--), which is an [IRI](apidocs/org/apache/commons/rdf/api/IRI.html) or a [BlankNode](apidocs/org/apache/commons/rdf/api/BlankNode.html)
@@ -570,7 +572,7 @@ RDF 1.1 consists of:
 
 
 To construct a [Triple](apidocs/org/apache/commons/rdf/api/Triple.html) from a
-`RDFTermFactory`, use 
+`RDFTermFactory`, use
 [createTriple](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createTriple-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-):
 
 ```java
@@ -580,21 +582,21 @@ RDFTerm object = factory.createLiteral("Hello");
 Triple triple = factory.createTriple(subject, predicate, object);
 ```
 
-The subject of the triple can be retrieved 
+The subject of the triple can be retrieved
 using [getSubject](apidocs/org/apache/commons/rdf/api/Triple.html#getSubject--):
 
 ```java
-BlankNodeOrIRI subj = triple.getSubject(); 
+BlankNodeOrIRI subj = triple.getSubject();
 System.out.println(subj.ntriplesString());
 ```
 
 > `_:7b914fbe-aa2a-4551-b71c-8ac0e2b52b26`
 
-Likewise the predicate using 
+Likewise the predicate using
 [getPredicate](apidocs/org/apache/commons/rdf/api/Triple.html#getPredicate--):
 
 ```java
-IRI pred = triple.getPredicate(); 
+IRI pred = triple.getPredicate();
 System.out.println(pred.getIRIString());
 ```
 > `http://example.com/says`
@@ -610,7 +612,7 @@ System.out.println(obj.ntriplesString());
 > `"Hello"`
 
 For the subject and object you might find it useful to do
-Java type checking and casting from the types 
+Java type checking and casting from the types
 [BlankNodeOrIRI](apidocs/org/apache/commons/rdf/api/BlankNodeOrIRI.html)
 and [RDFTerm](apidocs/org/apache/commons/rdf/api/RDFTerm.html):
 
@@ -620,7 +622,7 @@ if (subj instanceof IRI) {
     System.out.println(s);
 }
 // ..
-if (obj instanceof Literal) { 
+if (obj instanceof Literal) {
     IRI type = ((Literal) obj).getDatatype();
     System.out.println(type);
 }
@@ -629,7 +631,7 @@ if (obj instanceof Literal) {
 In Commons RDF, `BlankNodeOrIRI` instances are always one of `BlankNode` or
 `IRI`, and `RDFTerm` instances one of `BlankNode`, `IRI` or `Literal`.
 
-A `Triple` is considered 
+A `Triple` is considered
 [equal](apidocs/org/apache/commons/rdf/api/Triple.html#equals-java.lang.Object-)
 to another `Triple` if each of their subject, predicate and object are also
 equal:
@@ -643,7 +645,7 @@ System.out.println(triple.equals(factory.createTriple(subj, pred, obj)));
 
 ## Graph
 
-A [graph](http://www.w3.org/TR/rdf11-concepts/#section-rdf-graph) 
+A [graph](http://www.w3.org/TR/rdf11-concepts/#section-rdf-graph)
 is a collection of triples.
 
 To create a [Graph](apidocs/org/apache/commons/rdf/api/Graph.html) instance
@@ -663,7 +665,7 @@ _Note: Some `Graph` implementations are immutable, in which case the below
 may throw an `UnsupportedOperationException`_.
 
 Any [Triple](apidocs/org/apache/commons/rdf/api/Triple.html) can be added to the
-graph using the 
+graph using the
 [add](apidocs/org/apache/commons/rdf/api/Graph.html#add-org.apache.commons.rdf.api.Triple-)
 method:
 
@@ -804,7 +806,7 @@ System.out.println(graph.contains(null, null, null));
 ```
 > false
 
-# Mutability and thread safety
+## Mutability and thread safety
 
 _Note: This section is subject to change - see discussion on [COMMONSRDF-7](https://issues.apache.org/jira/browse/COMMONSRDF-7)_
 
@@ -818,7 +820,7 @@ will always have return values that are `.equal()` to any earlier return
 values. Being immutable, the `Triple` and `RDFTerm` types should be
 considered thread-safe.
 
-A `Graph` may be _mutable_, particular if it supports methods like 
+A `Graph` may be _mutable_, particular if it supports methods like
 [Graph.add](apidocs/org/apache/commons/rdf/api/Graph.html#add-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-)
 and [Graph.remove](apidocs/org/apache/commons/rdf/api/Graph.html#remove-org.apache.commons.rdf.api.Triple-). That means that responses to methods like [size](apidocs/org/apache/commons/rdf/api/Graph.html#size--) and [contains](apidocs/org/apache/commons/rdf/api/Graph.html#contains-org.apache.commons.rdf.api.Triple-) might change during its lifetime.
 
@@ -830,7 +832,7 @@ and [getTriples](apidocs/org/apache/commons/rdf/api/Graph.html#getTriples-org.ap
 might throw a
 [ConcurrentModificationException](http://docs.oracle.com/javase/8/docs/api/java/util/ConcurrentModificationException.html)
 if it detects a thread concurrency modification, although this behaviour is not guaranteed.
-Implementations of Commons RDF may specify more specific thread-safety considerations. 
+Implementations of Commons RDF may specify more specific thread-safety considerations.
 
 If an implementation does not specify any thread-safety support, then all
 potentially concurrent access to a `Graph` must be `synchronized`, e.g.:
@@ -845,11 +847,11 @@ synchronized(graph) {
 synchronized(graph) {
     for (Triple t : graph) {
         // ...
-    } 
+    }
 }
 ```
 
-# Implementations 
+## Implementations
 
 The [Commons RDF API](apidocs/org/apache/commons/rdf/api/package-summary.html)
 is a set of Java interfaces, with implementations provided by several Java RDF
@@ -858,15 +860,15 @@ updated list of providers.
 
 Implementations are free to choose their level of integration with Commons RDF.
 Several methods defined in Commons RDF therefore explicitly note the
-possibility of throwing a `UnsupportedOperationException`. 
+possibility of throwing a `UnsupportedOperationException`.
 
 Different RDF frameworks might have different mechanisms to retrieve a Commons
-RDF objects like `Graph` or `Triple` (e.g. returned from a query). 
+RDF objects like `Graph` or `Triple` (e.g. returned from a query).
 Commons RDF provides a `RDFTermFactory` interface as a way to create new
 instances, but does not mandate how the factory itself should be instantiated
 (e.g. a factory might be returned for an open network connection).
 
-## Cross-compatibility
+### Cross-compatibility
 
 While different frameworks will have their own classes implementing the Commons
 RDF interfaces, Commons RDF objects are intended to be cross-compatible. Thus a
@@ -888,7 +890,7 @@ Graph g2 = new BarGraph("localhost", 1337);
 IRI iri1 = fooFactory.createIRI("http://example.com/property1");
 
 // Both Triple and RDFTerm instances can be used
-// 
+//
 for (Triple t1: g1.getTriples(null, iri1, null)) {  
     if (g2.contains(t1.getSubject(), null, t1.getObject())) {
       g2.remove(t1);
@@ -901,7 +903,7 @@ _Note: Special care might need to be taken for cross-interoperability of
 [COMMONSRDF-15](https://issues.apache.org/jira/browse/COMMONSRDF-15)_
 
 The `.equals()` methods of `RDFTerm` interfaces are explicitly defined, so
-their instances can be compared across implementations. 
+their instances can be compared across implementations.
 
 _Note: The `Graph` implementation is not required to keep the JVM object
 reference, e.g. after  `g2.add(subj1, pred, obj)` it is not required to later
@@ -914,7 +916,7 @@ special care should be taken for cross-interoperability within hashing data
 structures like `HashMap`. See
 [COMMONSRDF-14](https://issues.apache.org/jira/browse/COMMONSRDF-14)
 
-# Complete example
+## Complete example
 
 The complete source code for the examples used in this user guide can be
 browsed in
@@ -923,4 +925,3 @@ within the
 [examples](https://github.com/apache/incubator-commonsrdf/tree/master/examples)
 folder of the
 Commons RDF source code repository.
-
