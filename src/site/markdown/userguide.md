@@ -122,7 +122,7 @@ _simple_ implementation, you can construct the
 import org.apache.commons.rdf.api.*;
 import org.apache.commons.rdf.simple.SimpleRDFTermFactory;
 // ...
-RDFTermFactory rdfTermFactory = new SimpleRDFTermFactory();
+RDFTermFactory factory = new SimpleRDFTermFactory();
 ```
 
 Using the factory you can construct
@@ -132,15 +132,15 @@ any [RDFTerm](apidocs/org/apache/commons/rdf/api/RDFTerm.html), e.g. to create a
 [Literal](apidocs/org/apache/commons/rdf/api/Literal.html):
 
 ```java
-BlankNode blankNode = factory.createBlankNode();
-IRI iri = factory.createIRI("http://example.com/name");
-Literal literal = factory.createLiteral("Alice");
+BlankNode aliceBlankNode = factory.createBlankNode();
+IRI nameIri = factory.createIRI("http://example.com/name");
+Literal aliceLiteral = factory.createLiteral("Alice");
 ```
 
 You can also create a stand-alone [Triple](apidocs/org/apache/commons/rdf/api/Triple.html):
 
 ```java
-Triple triple = factory.createTriple(blankNode, iri, literal);
+Triple triple = factory.createTriple(aliceBlankNode, nameIri, aliceLiteral);
 ```
 
 
@@ -197,6 +197,8 @@ places no such formal requirement on the `.toString()` method. Clients that
 rely on a canonical N-Triples-compatible string should instead use
 `ntriplesString()`._
 
+<!-- Not relevant here
+
 As an example of using `ntriplesString()`, here is how one could write a basic
 N-Triples-compatible serialization of a
 [Graph](apidocs/org/apache/commons/rdf/api/Graph.html):
@@ -220,6 +222,7 @@ Example output:
 > `_:ef136d20-f1ee-3830-a54b-cd5e489d50fb <http://example.com/name> "Alice" .`
 >
 > `<http://example.com/bob> <http://example.com/name> "Bob" .`
+-->
 
 ### IRI
 
@@ -307,7 +310,7 @@ to itself:
 
 ```java
 System.out.println(bnode.equals(bnode));
-System.out.println(bnode.equals(factory.createBlankNode()))
+System.out.println(bnode.equals(factory.createBlankNode()));
 ```
 
 > `true`
@@ -343,7 +346,7 @@ returns a `BlankNode` which are
 to the previous b1:
 
 ```java
-System.out.println(b1.equals(factory.createBlankNode("b1")))
+System.out.println(b1.equals(factory.createBlankNode("b1")));
 System.out.println(b1.equals(new SimpleRDFTermFactory().createBlankNode("b1")));
 ```
 
@@ -366,7 +369,7 @@ For that purpose, BlankNode exposes the
 method:
 
 ```java
-System.out.println(bnode.internalIdentifier())
+System.out.println(bnode.internalIdentifier());
 ```
 
 > `735d5e63-96a4-488b-8613-7037b82c74a5`
@@ -455,8 +458,8 @@ first create the datatype `IRI` and pass it to the expanded
 
 ```java
 IRI xsdDouble = factory.createIRI("http://www.w3.org/2001/XMLSchema#double");
-Literal typedLiteral = factory.createLiteral("13.37", xsdDouble);
-System.out.println(typedLiteral.ntriplesString());
+Literal literalDouble = factory.createLiteral("13.37", xsdDouble);
+System.out.println(literalDouble.ntriplesString());
 ```
 
 > `"13.37"^^<http://www.w3.org/2001/XMLSchema#double>`
@@ -472,7 +475,7 @@ XML Schema datatypes like `xsd:dateTime` and `xsd:float`. Using `Types`,
 the above example can be simplified to:
 
 ```java
-Literal typedLiteral = factory.createLiteral("13.37", Types.XSD_DOUBLE);
+Literal literalDouble2 = factory.createLiteral("13.37", Types.XSD_DOUBLE);
 ```
 
 As the constants in `Types` are all instances of `IRI`, they can 
@@ -652,8 +655,9 @@ _subject/predicate/object_ form of
 
 ```java
 IRI bob = factory.createIRI("http://example.com/bob");
+IRI nameIri = factory.createIRI("http://example.com/name");
 Literal bobName = factory.createLiteral("Bob");
-graph.add(bob, iri, bobName);
+graph.add(bob, nameIRI, bobName);
 ```
 
 It is not necessary to check if a triple already exist in the graph, as the
@@ -676,7 +680,7 @@ can be used without needing to create a `Triple` first, and also
 allow `null` as a wildcard parameters:
 
 ```java
-System.out.println(graph.contains(null, iri, bobName));
+System.out.println(graph.contains(null, nameIri, bobName));
 ```
 > `true`
 
@@ -768,7 +772,7 @@ can be used without needing to construct a `Triple` first. It also
 allow `null` as a wildcard pattern:
 
 ```java
-graph.remove(null, iri, null);
+graph.remove(null, nameIri, null);
 ```
 
 To remove all triples, use [clear](apidocs/org/apache/commons/rdf/api/Graph.html#clear--):
