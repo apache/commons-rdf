@@ -46,6 +46,7 @@ Commons RDF [API](apidocs/).
 * [Mutability and thread safety](#Mutability_and_thread_safety)
 * [Implementations](#Implementations)
     * [Cross-compatibility](#Cross-compatibility)
+* [Complete example](#Complete_example)
 
 ## Introduction
 
@@ -912,4 +913,14 @@ The `.hashCode()` is not currently explicitly defined, hence
 special care should be taken for cross-interoperability within hashing data
 structures like `HashMap`. See
 [COMMONSRDF-14](https://issues.apache.org/jira/browse/COMMONSRDF-14)
+
+# Complete example
+
+The complete source code for the examples used in this user guide can be
+browsed in
+[UserGuideTest.java](https://github.com/apache/incubator-commonsrdf/blob/master/examples/src/example/UserGuideTest.java)
+within the
+[examples](https://github.com/apache/incubator-commonsrdf/tree/master/examples)
+folder of the
+Commons RDF source code repository.
 
