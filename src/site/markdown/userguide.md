@@ -93,8 +93,9 @@ As Commons RDF requires Java 8 or later, you will also need:
 ```
 
 In the examples below we will use the
-[_simple_ implementation](apidocs/org/apache/commons/rdf/simple/package-summary.html), but
-the examples should be equally applicable to other implementations. To add a dependency for the
+[_simple_ implementation](apidocs/org/apache/commons/rdf/simple/package-summary.html),
+but the examples should be equally applicable to other
+[implementations](implementations.html). To add a dependency for the
 _simple_ implementation, add to your `<dependencies>`:
 
 ```xml
