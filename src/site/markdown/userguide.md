@@ -50,9 +50,6 @@ W3C.
 
 
 
-### 
-
-
 ## Using Commons RDF from Maven
 
 To use Commons RDF API from an
