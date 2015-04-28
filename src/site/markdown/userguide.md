@@ -924,4 +924,4 @@ browsed in
 within the
 [examples](https://github.com/apache/incubator-commonsrdf/tree/master/examples)
 folder of the
-Commons RDF source code repository.
+Commons RDF [source code repository](source-repository.html).
