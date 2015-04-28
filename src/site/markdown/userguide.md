@@ -22,6 +22,7 @@ Commons RDF [API](apidocs/).
     * [Iterating over triples](#Iterating_over_triples)
     * [Stream of triples](#Stream_of_triples)
     * [Removing triples](#Removing_triples)
+* [Mutability and thread safety](#Mutability_and_thread_safety)
 
 
 ## Using Commons RDF from Maven
@@ -510,14 +511,94 @@ System.out.println(literalDouble.getLanguageTag().isPresent());
 
 ## Triple
 
-**TODO:** [Triple](apidocs/org/apache/commons/rdf/api/Triple.html)
+A [triple](http://www.w3.org/TR/rdf11-concepts/#section-triples) in 
+RDF 1.1 consists of:
+
+* The [subject](apidocs/org/apache/commons/rdf/api/Triple.html#getSubject--), which is an [IRI](apidocs/org/apache/commons/rdf/api/IRI.html) or a [BlankNode](apidocs/org/apache/commons/rdf/api/BlankNode.html)
+* The [predicate](apidocs/org/apache/commons/rdf/api/Triple.html#getPredicate--), which is an [IRI](apidocs/org/apache/commons/rdf/api/IRI.html)
+* The [object](apidocs/org/apache/commons/rdf/api/Triple.html#getObject--), which is an [IRI](apidocs/org/apache/commons/rdf/api/IRI.html), a [BlankNode](apidocs/org/apache/commons/rdf/api/BlankNode.html) or a [Literal](apidocs/org/apache/commons/rdf/api/Literal.html)
+
+
+To construct a [Triple](apidocs/org/apache/commons/rdf/api/Triple.html) from a
+`RDFTermFactory`, use 
+[createTriple](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createTriple-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-):
+
+```java
+BlankNodeOrIRI subject = factory.createBlankNode();
+IRI predicate = factory.createIRI("http://example.com/says");
+RDFTerm object = factory.createLiteral("Hello");
+Triple triple = factory.createTriple(subject, predicate, object);
+```
+
+The subject of the triple can be retrieved 
+using [getSubject](apidocs/org/apache/commons/rdf/api/Triple.html#getSubject--):
+
+```java
+BlankNodeOrIRI subj = triple.getSubject(); 
+System.out.println(subj.ntriplesString());
+```
+
+> `_:7b914fbe-aa2a-4551-b71c-8ac0e2b52b26`
+
+Likewise the predicate using 
+[getPredicate](apidocs/org/apache/commons/rdf/api/Triple.html#getPredicate--):
+
+```java
+IRI pred = triple.getPredicate(); 
+System.out.println(pred.getIRIString());
+```
+> `http://example.com/says`
+
+Finally, the object of the triple is returned with
+[getObject](apidocs/org/apache/commons/rdf/api/Triple.html#getObject--):
+
+```java
+RDFTerm obj = triple.getObject();
+System.out.println(obj.ntriplesString());
+```
+
+> `"Hello"`
+
+For the subject and object you might find it useful to do
+Java type checking and casting from the types 
+[BlankNodeOrIRI](apidocs/org/apache/commons/rdf/api/BlankNodeOrIRI.html)
+and [RDFTerm](apidocs/org/apache/commons/rdf/api/RDFTerm.html):
+
+```java
+if (subj instanceof IRI) {
+    String s = ((IRI) subj).getIRIString();
+    System.out.println(s);
+}
+// ..
+if (obj instanceof Literal) { 
+    IRI type = ((Literal) obj).getDatatype();
+    System.out.println(type);
+}
+```
+
+In Commons RDF, `BlankNodeOrIRI` instances are always one of `BlankNode` or
+`IRI`, and `RDFTerm` instances one of `BlankNode`, `IRI` or `Literal`.
+
+A `Triple` is considered 
+[equal](apidocs/org/apache/commons/rdf/api/Triple.html#equals-java.lang.Object-)
+to another `Triple` if each of their subject, predicate and object are also
+equal:
+
+```java
+System.out.println(triple.equals(factory.createTriple(subj, pred, obj)));
+```
+
+> `true`
+
 
 ## Graph
 
-A [Graph](apidocs/org/apache/commons/rdf/api/Graph.html) is a collection of
-[Triple](apidocs/org/apache/commons/rdf/api/Triple.html)s.
+A [graph](http://www.w3.org/TR/rdf11-concepts/#section-rdf-graph) 
+is a collection of triples.
 
-To create a graph from a `RDFTermFactory`, use [createGraph()](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createGraph--):
+To create a [Graph](apidocs/org/apache/commons/rdf/api/Graph.html) instance
+from a `RDFTermFactory`, use
+[createGraph()](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createGraph--):
 
 ```java
 Graph graph = factory.createGraph();
@@ -531,9 +612,10 @@ e.g. by parsing a Turtle file or connecting to a storage backend.
 _Note: Some `Graph` implementations are immutable, in which case the below
 may throw an `UnsupportedOperationException`_.
 
-Given the [previous example](#Creating_RDFTerm_instances), we can
+Any [Triple](apidocs/org/apache/commons/rdf/api/Triple.html) can be added to the
+graph using the 
 [add](apidocs/org/apache/commons/rdf/api/Graph.html#add-org.apache.commons.rdf.api.Triple-)
-the triple to the graph:
+method:
 
 ```java
 graph.add(triple);
@@ -563,7 +645,7 @@ System.out.println(graph.contains(triple));
 ```
 > `true`
 
-The expanded subject/predicate/object call for [Graph.contains()](apidocs/org/apache/commons/rdf/api/Graph.html#contains-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-)
+The expanded _subject/predicate/object_ call for [Graph.contains()](apidocs/org/apache/commons/rdf/api/Graph.html#contains-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-)
 can be used without needing to create a `Triple` first, and also
 allow `null` as a wildcard parameters:
 
@@ -582,8 +664,6 @@ System.out.println(graph.size());
 ```
 > `2`
 
-_Note: In some implementations with large graphs, calculating the size can be an
-expensive operation._
 
 ### Iterating over triples
 
@@ -643,6 +723,7 @@ System.out.println(namedB.map(t -> t.getSubject()).findAny().get());
 ```
 > `<http://example.com/bob>`
 
+
 ### Removing triples
 
 _Note: Some `Graph` implementations are immutable, in which case the below
@@ -671,3 +752,47 @@ graph.clear();
 System.out.println(graph.contains(null, null, null));
 ```
 > false
+
+# Mutability and thread safety
+
+In Commons RDF, all instances of `Triple` and `RDFTerm` (e.g. `IRI`,
+`BlankNode`, `Literal`) are considered _immutable_. That is, their content does
+not change, and so calling a method like
+[IRI.getIRIString](apidocs/org/apache/commons/rdf/api/IRI.html#getIRIString--)
+or
+[Literal.getDatatype](apidocs/org/apache/commons/rdf/api/Literal.html#getDatatype--)
+will always have return values that are `.equal()` to any earlier return
+values. Being immutable, the `Triple` and `RDFTerm` types should be
+considered thread-safe.
+
+A `Graph` may be _mutable_, particular if it supports methods like 
+[Graph.add](apidocs/org/apache/commons/rdf/api/Graph.html#add-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-)
+and [Graph.remove](apidocs/org/apache/commons/rdf/api/Graph.html#remove-org.apache.commons.rdf.api.Triple-). That means that responses to methods like [size](apidocs/org/apache/commons/rdf/api/Graph.html#size--) and [contains](apidocs/org/apache/commons/rdf/api/Graph.html#contains-org.apache.commons.rdf.api.Triple-) might change during its lifetime.
+
+Implementations of Commons RDF may specify the (im)mutability of `Graph` in further details. If a graph is immutable, the methods `add` and `remove` may throw a `UnsupportedOperationException`.
+
+Commons RDF does not specify if methods on a `Graph` are thread-safe. Iterator
+methods like [iterate](apidocs/org/apache/commons/rdf/api/Graph.html#iterate--)
+and [getTriples](apidocs/org/apache/commons/rdf/api/Graph.html#getTriples-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-)
+might throw a
+[ConcurrentModificationException](http://docs.oracle.com/javase/8/docs/api/java/util/ConcurrentModificationException.html)
+if it detects a thread concurrency modification, although this behaviour is not guaranteed.
+Implementations of Commons RDF may specify more specific thread-safety considerations. 
+
+If an implementation does not specify any thread-safety support, then all
+potentially concurrent access to a `Graph` must be `synchronized`, e.g.:
+
+```java
+Graph graph;
+// ...
+synchronized(graph) {
+    graph.add(triple);
+}
+// ...
+synchronized(graph) {
+    for (Triple t : graph) {
+        // ...
+    } 
+}
+```
+
