@@ -48,7 +48,7 @@ that provides and consumes Commons RDF objects.
 
 ### RDF4j Sesame
 
-[Sesame](http://rdf4j.org/) is evolving Commons RDF as a basis for its
+[Sesame](http://rdf4j.org/) is evaluating Commons RDF as a basis for its
 next version.
 
 ### Apache Clerezza
