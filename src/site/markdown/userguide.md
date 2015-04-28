@@ -4,6 +4,7 @@ This page shows some examples of a client using the Commons RDF API.
 It was last updated for version `0.1-incubating-SNAPSHOT` of the
 Commons RDF [API](apidocs/).
 
+* [Introduction](#Introduction)
 * [Using Commons RDF from Maven](#Using_Commons_RDF_from_Maven)
 * [Creating Commons RDF instances](#Creating_Commons_RDF_instances)
 * [RDF terms](#RDF_terms)
@@ -23,12 +24,39 @@ Commons RDF [API](apidocs/).
     * [Stream of triples](#Stream_of_triples)
     * [Removing triples](#Removing_triples)
 * [Mutability and thread safety](#Mutability_and_thread_safety)
+* [Implementations](#Implementations)
+    * [Cross-compatibility](#Cross-compatibility)
+
+## Introduction
+
+[Commons RDF](index.html) is an API that intends to directly describe
+[RDF 1.1 concepts](http://www.w3.org/TR/rdf11-concepts/) as a set
+of corresponding interfaces and methods.
+
+### RDF concepts
+
+RDF is a [graph-based data model](http://www.w3.org/TR/rdf11-concepts/#data-model), where
+a _graph_ contains a series of _triples_, each containing the node-arc-node link
+_subject_ -> _predicate_ -> _object_.  Nodes in the graph are represented either as _IRIs_, _literals_ and _blank nodes_. 
+:
+This user guide does not intend to give a detailed description of RDF as a data
+model. To fully understand this user guide, you should have a brief
+understanding of the core RDF concepts mentioned above.
+
+For more information on RDF, see the 
+[RDF primer](http://www.w3.org/TR/rdf11-primer/) and the [RDF
+concepts](http://www.w3.org/TR/rdf11-concepts/#data-model) specification from
+W3C.
+
+
+
+### 
 
 
 ## Using Commons RDF from Maven
 
 To use Commons RDF API from an
-[Apache Maven](http://maven.apache.org/) projects,
+[Apache Maven](http://maven.apache.org/) project,
 add the following dependency to your `pom.xml`:
 
 ```xml
@@ -755,6 +783,8 @@ System.out.println(graph.contains(null, null, null));
 
 # Mutability and thread safety
 
+_Note: This section is subject to change - see discussion on [COMMONSRDF-7](https://issues.apache.org/jira/browse/COMMONSRDF-7)_
+
 In Commons RDF, all instances of `Triple` and `RDFTerm` (e.g. `IRI`,
 `BlankNode`, `Literal`) are considered _immutable_. That is, their content does
 not change, and so calling a method like
@@ -795,4 +825,69 @@ synchronized(graph) {
     } 
 }
 ```
+
+# Implementations 
+
+The [Commons RDF API](apidocs/org/apache/commons/rdf/api/package-summary.html)
+is a set of Java interfaces, with implementations provided by several Java RDF
+frameworks.  See the [implementations](implementations.html) page for an
+updated list of providers.
+
+Implementations are free to choose their level of integration with Commons RDF.
+Several methods defined in Commons RDF therefore explicitly note the
+possibility of throwing a `UnsupportedOperationException`. 
+
+Different RDF frameworks might have different mechanisms to retrieve a Commons
+RDF objects like `Graph` or `Triple` (e.g. returned from a query). 
+Commons RDF provides a `RDFTermFactory` interface as a way to create new
+instances, but does not mandate how the factory itself should be instantiated
+(e.g. a factory might be returned for an open network connection).
+
+## Cross-compatibility
+
+While different frameworks will have their own classes implementing the Commons
+RDF interfaces, Commons RDF objects are intended to be cross-compatible. Thus a
+client would be able to mix and match objects from multiple implementations:
+
+```java
+import com.example.foo.FooRDFTermFactory;
+import net.example.bar.BarGraph;
+
+RDFTermFactory fooFactory = new FooRDFTermFactory();
+FooGraph g1 = (FooGraph) fooFactory.createGraph();
+// Foo-specific load method
+g1.load("dataset.ttl");
+
+// Another Graph, from a different implementation
+Graph g2 = new BarGraph("localhost", 1337);
+
+// Any factory can be used
+IRI iri1 = fooFactory.createIRI("http://example.com/property1");
+
+// Both Triple and RDFTerm instances can be used
+// 
+for (Triple t1: g1.getTriples(null, iri1, null)) {  
+    if (g2.contains(t1.getSubject(), null, t1.getObject())) {
+      g2.remove(t1);
+    }
+}
+```
+
+_Note: Special care might need to be taken for cross-interoperability of
+`BlankNode` instances. This is currently under discussion. See
+[COMMONSRDF-15](https://issues.apache.org/jira/browse/COMMONSRDF-15)_
+
+The `.equals()` methods of `RDFTerm` interfaces are explicitly defined, so
+their instances can be compared across implementations. 
+
+_Note: The `Graph` implementation is not required to keep the JVM object
+reference, e.g. after  `g2.add(subj1, pred, obj)` it is not required to later
+return the same `subj1` implementation in `g2.getTriples()`. Special care
+should be taken if returned values are needs to be casted to implementation
+specific types._
+
+The `.hashCode()` is not currently explicitly defined, hence
+special care should be taken for cross-interoperability within hashing data
+structures like `HashMap`. See
+[COMMONSRDF-14](https://issues.apache.org/jira/browse/COMMONSRDF-14)
 
