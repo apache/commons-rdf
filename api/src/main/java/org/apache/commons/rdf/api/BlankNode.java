@@ -60,9 +60,10 @@ public interface BlankNode extends BlankNodeOrIRI {
     /**
      * Return a reference for uniquely identifying the blank node.
      * <p>
-     * The reference string MUST be universally unique, e.g. blank nodes created
-     * separately in different JVMs or from different {@link RDFTermFactory}
-     * instances MUST NOT have the same reference string.
+     * The reference string MUST universally and uniquely identify this blank
+     * node. That is, different blank nodes created separately in different JVMs
+     * or from different {@link RDFTermFactory} instances MUST NOT have the same
+     * reference string.
      * <p>
      * The {@link #uniqueReference()} of two <code>BlankNode</code> instances
      * MUST be equal if and only if the two blank nodes are equal according to
