@@ -379,29 +379,25 @@ System.out.println(b1.equals(new SimpleRDFTermFactory().createBlankNode("b1")));
 
 #### Blank node reference
 
-_Warning: This method is still under discussion and these details,
-including the method name, are subject to change. See
-[COMMONSRDF-6](https://issues.apache.org/jira/browse/COMMONSRDF-6)._
-
 While blank nodes are distinct from IRIs, and don't have inherent
 universal identifiers, it can nevertheless be useful
 for debugging and testing to have a unique reference string for
 a particular blank node.
 For that purpose, BlankNode exposes the
-[internalIdentifier](apidocs/org/apache/commons/rdf/api/BlankNode.html#internalIdentifier--)
+[uniqueReference](apidocs/org/apache/commons/rdf/api/BlankNode.html#uniqueReference--)
 method:
 
 ```java
-System.out.println(bnode.internalIdentifier());
+System.out.println(bnode.uniqueReference());
 ```
 
 > `735d5e63-96a4-488b-8613-7037b82c74a5`
 
 While this reference string might for the _simple_
-implementation also be seen  within the `BlankNode.ntriplesString()`
+implementation also be seen within the `BlankNode.ntriplesString()`
 result, there is no such guarantee from the Commons RDF API.
 Clients who need a globally unique reference
-for a blank node should therefore use the `internalIdentifier()` method.
+for a blank node should therefore use the `uniqueReference()` method.
 
 _Note: While it is recommended for this string to be (or contain) a
 [UUID string](http://docs.oracle.com/javase/8/docs/api/java/util/UUID.html),

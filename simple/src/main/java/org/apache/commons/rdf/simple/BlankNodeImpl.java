@@ -56,9 +56,9 @@ final class BlankNodeImpl implements BlankNode {
 
 
         // Rather than implement ntriples escaping here, and knowing
-        // the uniqueReference() contain a UUID anyway, we simply
+        // our uniqueReference() contain a UUID anyway, we simply
         // create another name-based UUID, and use it within both
-        // internalIdentifier() and within ntriplesString().
+        // uniqueReference() and within ntriplesString().
         //
         // A side-effect from this is that the blank node identifier
         // is not preserved or shown in ntriplesString. In a way

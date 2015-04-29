@@ -88,7 +88,7 @@ public class UserGuideTest {
 		System.out.println(b1.equals(factory.createBlankNode("b1")));
 		System.out.println(b1.equals(new SimpleRDFTermFactory().createBlankNode("b1")));
 
-		System.out.println(bnode.internalIdentifier());
+		System.out.println(bnode.uniqueReference());
 	}
 
 	@Test
