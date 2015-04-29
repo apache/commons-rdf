@@ -17,6 +17,7 @@
  */
 package org.apache.commons.rdf.api;
 
+import java.io.Serializable;
 import java.util.Locale;
 
 /**
@@ -67,7 +68,9 @@ public interface RDFTermFactory {
      * The returned BlankNode SHOULD NOT be equivalent to any BlankNodes created
      * on a <em>different</em> <code>RDFTermFactory</code> instance, e.g.
      * different instances of <code>RDFTermFactory</code> should produce
-     * different blank nodes for the same <code>name</code>.
+     * different blank nodes for the same <code>name</code> unless they
+     * purposely are intending to create equivalent {@link BlankNode}
+     * instances (e.g. a reinstated {@link Serializable} factory).
      *
      * @param name
      *            A non-empty, non-null, String that is unique to this blank
