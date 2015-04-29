@@ -68,9 +68,9 @@ public interface BlankNode extends BlankNodeOrIRI {
      * MUST be equal if and only if the two blank nodes are equal according to
      * {@link #equals(Object)}.
      * <p>
-     * This method does not specify any specific structure of the reference
-     * string, except that the reference SHOULD be (or contain) a {@link UUID}
-     * string.
+     * Clients should not assume any particular structure of the reference
+     * string, however it is recommended that the reference string contain a
+     * UUID-derived string, e.g. as returned from {@link UUID#toString()}.
      * <p>
      * <strong>IMPORTANT:</strong> This is not a <a
      * href="http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node-identifier">
