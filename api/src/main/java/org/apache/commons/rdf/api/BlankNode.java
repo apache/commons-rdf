@@ -47,7 +47,7 @@ import java.util.UUID;
  * the same blank node identifier except in situations where this is supported
  * by the syntax. </blockquote>
  *
- * A BlankNode SHOULD contain a {@link UUID} string as part of its
+ * A BlankNode SHOULD contain a {@link UUID}-derived string as part of its
  * universally unique {@link #uniqueReference()}.
  *
  * @see RDFTermFactory#createBlankNode()
