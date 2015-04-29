@@ -56,12 +56,13 @@ public interface RDFTermFactory {
     /**
      * Create a blank node based on the given name.
      * <p>
-     * For a particular instance of <code>RDFTermFactory</code>, all
-     * {@link BlankNode}s created using this method with the same
-     * <code>name</code> parameter MUST be equivalent according to
-     * {@link BlankNode#equals(Object)},
-     * The returned BlankNode MUST NOT be equal to any other
-     * <code>BlankNode</code> instances returned from this instance.
+     * All {@link BlankNode}s created with the given <code>name</code>
+     * <em>on a particular instance</em> of <code>RDFTermFactory</code> MUST be
+     * equivalent according to {@link BlankNode#equals(Object)},
+     * <p>
+     * The returned BlankNode MUST NOT be equal to <code>BlankNode</code>
+     * instances returned for any other <code>name</code> or those returned from
+     * {@link #createBlankNode()}.
      * <p>
      * The returned BlankNode SHOULD NOT be equivalent to any BlankNodes created
      * on a <em>different</em> <code>RDFTermFactory</code> instance, e.g.
