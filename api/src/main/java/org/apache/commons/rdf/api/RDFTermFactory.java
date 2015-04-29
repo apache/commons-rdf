@@ -17,8 +17,8 @@
  */
 package org.apache.commons.rdf.api;
 
+import java.io.Serializable;
 import java.util.Locale;
-import java.util.UUID;
 
 /**
  * Factory for creating RDFTerm and Graph instances.
@@ -29,7 +29,7 @@ import java.util.UUID;
  * additional parameters or can't create graphs), then it MAY throw
  * UnsupportedOperationException, as provided by the default implementations
  * here.
- * 
+ *
  * If a factory method does not allow or support a provided parameter, e.g.
  * because an IRI is considered invalid, then it SHOULD throw
  * IllegalArgumentException.
@@ -41,18 +41,13 @@ public interface RDFTermFactory {
 
     /**
      * Create a new blank node.
+     * <p>
+     * The returned blank node MUST NOT be equal to any existing
+     * {@link BlankNode} instances according to {@link BlankNode#equals(Object)}.
      *
-     * All pairs of {@link BlankNode}s created with this method MUST NOT be
-     * equal.
-     *
-     * If supported, the {@link BlankNode#internalIdentifier()} of the returned
-     * blank node MUST be a universally unique value across both this and any
-     * other {@link RDFTermFactory} objects running in the JVM when compared
-     * with both past and future calls both to this method, and calls to
-     * {@link #createBlankNode(String)} with any inputs.
-     *
-     * @return A new {@link BlankNode}
-     * @throws UnsupportedOperationException If the operation is not supported.
+     * @return A new, unique {@link BlankNode}
+     * @throws UnsupportedOperationException
+     *             If the operation is not supported.
      */
     default BlankNode createBlankNode() throws UnsupportedOperationException {
         throw new UnsupportedOperationException(
@@ -60,34 +55,31 @@ public interface RDFTermFactory {
     }
 
     /**
-     * Create a blank node based on the given identifier.
+     * Create a blank node based on the given name.
+     * <p>
+     * All {@link BlankNode}s created with the given <code>name</code>
+     * <em>on a particular instance</em> of <code>RDFTermFactory</code> MUST be
+     * equivalent according to {@link BlankNode#equals(Object)},
+     * <p>
+     * The returned BlankNode MUST NOT be equal to <code>BlankNode</code>
+     * instances returned for any other <code>name</code> or those returned from
+     * {@link #createBlankNode()}.
+     * <p>
+     * The returned BlankNode SHOULD NOT be equivalent to any BlankNodes created
+     * on a <em>different</em> <code>RDFTermFactory</code> instance, e.g.
+     * different instances of <code>RDFTermFactory</code> should produce
+     * different blank nodes for the same <code>name</code> unless they
+     * purposely are intending to create equivalent {@link BlankNode}
+     * instances (e.g. a reinstated {@link Serializable} factory).
      *
-     * All BlankNodes created using this method with the same parameter for a
-     * single instance of RDFTermFactory MUST be equivalent. Ie,
-     * {@link BlankNode#equals(Object)} MUST return true. A BlankNode object
-     * created through the {@link RDFTermFactory#createBlankNode()} method must
-     * be universally unique, and SHOULD contain a {@link UUID} as part of its
-     * {@link BlankNode#internalIdentifier()}.
-     *
-     * A BlankNode object created through the
-     * {@link RDFTermFactory#createBlankNode(String)} method must be universally
-     * unique, but also produce the same {@link BlankNode#internalIdentifier()} as any
-     * previous or future calls to that method on that factory with the same
-     * parameters. In addition, it SHOULD contain a {@link UUID} as part of its
-     * {@link BlankNode#internalIdentifier()}, created using
-     * {@link UUID#nameUUIDFromBytes(byte[])} using a constant salt for each
-     * instance of {@link RDFTermFactory}, with the given identifier joined to
-     * that salt in a consistent manner.
-     *
-     * BlankNodes created using this method with the same parameter, for
-     * different instances of RDFTermFactory, SHOULD NOT be equivalent.
-     *
-     * @param identifier A non-empty, non-null, String that is unique to this blank
-     *                   node in the context of this {@link RDFTermFactory}.
-     * @return A BlankNode for the given identifier
-     * @throws UnsupportedOperationException If the operation is not supported.
+     * @param name
+     *            A non-empty, non-null, String that is unique to this blank
+     *            node in the context of this {@link RDFTermFactory}.
+     * @return A BlankNode for the given name
+     * @throws UnsupportedOperationException
+     *             If the operation is not supported.
      */
-    default BlankNode createBlankNode(String identifier)
+    default BlankNode createBlankNode(String name)
             throws UnsupportedOperationException {
         throw new UnsupportedOperationException(
                 "createBlankNode(String) not supported");
@@ -101,7 +93,7 @@ public interface RDFTermFactory {
      *
      * {@link BlankNode} objects added to the {@link Graph} returned from this
      * method SHOULD be mapped using the {@link #createBlankNode(String)} of
-     * this factory, called using the {@link BlankNode#internalIdentifier()} as
+     * this factory, called using the {@link BlankNode#uniqueReference()} as
      * the parameter, before they are inserted into the Graph.
      *
      * @return A new Graph

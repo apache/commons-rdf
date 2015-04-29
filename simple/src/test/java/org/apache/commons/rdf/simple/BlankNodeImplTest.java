@@ -17,15 +17,18 @@
  */
 package org.apache.commons.rdf.simple;
 
+import java.util.UUID;
+
 import org.apache.commons.rdf.api.AbstractBlankNodeTest;
 import org.apache.commons.rdf.api.BlankNode;
-
-import java.util.Optional;
 
 /**
  * Concrete implementation of BlankNodeImpl test.
  */
 public class BlankNodeImplTest extends AbstractBlankNodeTest {
+
+    // Fixed salt just for this test
+    private static UUID SALT = UUID.fromString("35019b59-18b3-4e74-8707-ec55f62a37d6");
 
     @Override
     protected BlankNode getBlankNode() {
@@ -34,7 +37,7 @@ public class BlankNodeImplTest extends AbstractBlankNodeTest {
 
     @Override
     protected BlankNode getBlankNode(String identifier) {
-        return new BlankNodeImpl(Optional.empty(), identifier);
+        return new BlankNodeImpl(SALT, identifier);
     }
 
 }

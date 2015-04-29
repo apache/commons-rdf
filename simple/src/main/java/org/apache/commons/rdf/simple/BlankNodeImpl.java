@@ -17,51 +17,65 @@
  */
 package org.apache.commons.rdf.simple;
 
-import org.apache.commons.rdf.api.BlankNode;
-
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
+
+import org.apache.commons.rdf.api.BlankNode;
 
 /**
  * A simple implementation of BlankNode.
  */
 final class BlankNodeImpl implements BlankNode {
 
-    private static AtomicLong bnodeCounter = new AtomicLong();
+    private static final UUID SALT = UUID.randomUUID();
+    private static final AtomicLong COUNTER = new AtomicLong();
 
-    private static final Object DEFAULT_SALT = new Object();
-
-    private final String id;
+    private final String uniqueReference;
 
     public BlankNodeImpl() {
-        this(DEFAULT_SALT, "genid:" + bnodeCounter.incrementAndGet());
+        this(SALT, Long.toString(COUNTER.incrementAndGet()));
     }
 
-    public BlankNodeImpl(Object uuidSalt, String id) {
-        if (Objects.requireNonNull(id).isEmpty()) {
-            throw new IllegalArgumentException("Invalid blank node id: " + id);
+    public BlankNodeImpl(UUID uuidSalt, String name) {
+        if (Objects.requireNonNull(name).isEmpty()) {
+            throw new IllegalArgumentException("Invalid blank node id: " + name);
         }
-        String uuidInput = System.identityHashCode(uuidSalt) + ":" + id;
+
+        // Build a semi-URN - to be hashed for a name-based UUID below
         // Both the scope and the id are used to create the UUID, ensuring that
         // a caller can reliably create the same bnode if necessary by sending
-        // in the same scope.
-        // In addition, it would be very difficult for the default constructor
-        // to interfere with this process since it uses a local object as its
-        // reference.
-        this.id = UUID.nameUUIDFromBytes(
+        // in the same scope to RDFTermFactory.createBlankNode(String)
+        String uuidInput = "urn:uuid:" + uuidSalt + "#" + name;
+
+        // The above is not a good value for this.id, as the id
+        // needs to be further escaped for
+        // ntriplesString() (there are no restrictions on
+        // RDFTermFactory.createBlankNode(String) ).
+
+
+        // Rather than implement ntriples escaping here, and knowing
+        // the uniqueReference() contain a UUID anyway, we simply
+        // create another name-based UUID, and use it within both
+        // internalIdentifier() and within ntriplesString().
+        //
+        // A side-effect from this is that the blank node identifier
+        // is not preserved or shown in ntriplesString. In a way
+        // this is a feature, not a bug. as the contract for RDFTermFactory
+        // has no such requirement.
+        this.uniqueReference = UUID.nameUUIDFromBytes(
                 uuidInput.getBytes(StandardCharsets.UTF_8)).toString();
     }
 
     @Override
-    public String internalIdentifier() {
-        return id;
+    public String uniqueReference() {
+        return uniqueReference;
     }
 
     @Override
     public String ntriplesString() {
-        return "_:" + id;
+        return "_:" + uniqueReference;
     }
 
     @Override
@@ -71,7 +85,7 @@ final class BlankNodeImpl implements BlankNode {
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return uniqueReference.hashCode();
     }
 
     @Override
@@ -87,11 +101,11 @@ final class BlankNodeImpl implements BlankNode {
             return false;
         }
         BlankNodeImpl other = (BlankNodeImpl) obj;
-        if (id == null) {
-            if (other.id != null) {
+        if (uniqueReference == null) {
+            if (other.uniqueReference != null) {
                 return false;
             }
-        } else if (!id.equals(other.id)) {
+        } else if (!uniqueReference.equals(other.uniqueReference)) {
             return false;
         }
         return true;

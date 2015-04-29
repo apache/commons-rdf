@@ -17,11 +17,14 @@
  */
 package org.apache.commons.rdf.api;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotSame;
+
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /**
  * Test RDFTermFactory implementation (and thus its RDFTerm implementations)
@@ -63,7 +66,7 @@ public abstract class AbstractRDFTermFactoryTest {
         BlankNode bnode2 = factory.createBlankNode();
         assertNotEquals(
                 "Second blank node has not got a unique internal identifier",
-                bnode.internalIdentifier(), bnode2.internalIdentifier());
+                bnode.uniqueReference(), bnode2.uniqueReference());
     }
 
     @Test
@@ -85,9 +88,6 @@ public abstract class AbstractRDFTermFactoryTest {
             Assume.assumeNoException(ex);
             return;
         }
-        // We can't assume anything about the resulting bnode
-        // assertEquals("example1", bnode.internalIdentifier());
-        // assertEquals("_:example1", bnode.ntriplesString());
     }
 
     @Test
@@ -102,12 +102,12 @@ public abstract class AbstractRDFTermFactoryTest {
             return;
         }
         // We don't know what the identifier is, but it MUST be the same
-        assertEquals(bnode1.internalIdentifier(), bnode2.internalIdentifier());
+        assertEquals(bnode1.uniqueReference(), bnode2.uniqueReference());
         // We don't know what the ntriplesString is, but it MUST be the same
         assertEquals(bnode1.ntriplesString(), bnode2.ntriplesString());
         // and here it MUST differ
-        assertNotEquals(bnode1.internalIdentifier(),
-                bnode3.internalIdentifier());
+        assertNotEquals(bnode1.uniqueReference(),
+                bnode3.uniqueReference());
         assertNotEquals(bnode1.ntriplesString(), bnode3.ntriplesString());
     }
 
