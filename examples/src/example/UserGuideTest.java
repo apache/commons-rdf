@@ -214,6 +214,6 @@ public class UserGuideTest {
 
 	public static void writeGraph(Graph graph, Path graphFile) throws Exception {
         Stream<CharSequence> stream = graph.getTriples().map(UserGuideTest::tripleAsString);
-        Files.write(graphFile, stream::iterator, Charset.forName("UTF-8"));
+        Files.write(graphFile, stream::iterator, StandardCharsets.UTF_8);
 	}
 }

@@ -20,6 +20,7 @@ package org.apache.commons.rdf.simple;
 import static org.junit.Assert.assertEquals;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -123,7 +124,7 @@ public class TestWritingGraph {
         }
 
         Stream<CharSequence> stream = graph.getTriples().map(TestWritingGraph::tripleAsString);
-        Files.write(graphFile, stream::iterator, Charset.forName("UTF-8"));
+        Files.write(graphFile, stream::iterator, StandardCharsets.UTF_8);
     }
 
     @Test
@@ -139,7 +140,7 @@ public class TestWritingGraph {
         IRI predicate = factory.createIRI("pred");
         Stream<CharSequence> stream = graph
                 .getTriples(subject, predicate, null).map(TestWritingGraph::tripleAsString);
-        Files.write(graphFile, stream::iterator, Charset.forName("UTF-8"));
+        Files.write(graphFile, stream::iterator, StandardCharsets.UTF_8);
 
     }
 
@@ -156,7 +157,7 @@ public class TestWritingGraph {
         IRI predicate = factory.createIRI("pred");
         Stream<CharSequence> stream = graph
                 .getTriples(subject, predicate, null).map(Object::toString);
-        Files.write(graphFile, stream::iterator, Charset.forName("UTF-8"));
+        Files.write(graphFile, stream::iterator, StandardCharsets.UTF_8);
 
     }
 
