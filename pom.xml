@@ -60,16 +60,13 @@
         <commons.site.path>rdf</commons.site.path>
         <commons.scmPubUrl>https://svn.apache.org/repos/infra/websites/production/commonsrdf/content/</commons.scmPubUrl>
         <commons.scmPubCheckoutDirectory>${project.build.directory}/site-content</commons.scmPubCheckoutDirectory>
-        <!--  Override Java 7 javadoc link from commons-parent -->
         <commons.javadoc.java.link>http://docs.oracle.com/javase/8/docs/api/</commons.javadoc.java.link>
-        
     </properties>
 
     <scm>
         <url>https://git-wip-us.apache.org/repos/asf/incubator-commonsrdf.git</url>
         <connection>scm:git:https://git-wip-us.apache.org/repos/asf/incubator-commonsrdf.git</connection>
-        <developerConnection>scm:git:https://git-wip-us.apache.org/repos/asf/incubator-commonsrdf.git
-        </developerConnection>
+        <developerConnection>scm:git:https://git-wip-us.apache.org/repos/asf/incubator-commonsrdf.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 

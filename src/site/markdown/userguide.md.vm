@@ -125,7 +125,7 @@ _simple_ implementation, add to your `<dependencies>`:
     <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-rdf-simple</artifactId>
-        <version>0.1.0-incubating-SNAPSHOT</version>
+        <version>${project.version}</version>
     </dependency>
 ```
 
@@ -166,8 +166,6 @@ You can also create a stand-alone [Triple](apidocs/org/apache/commons/rdf/api/Tr
 Triple triple = factory.createTriple(aliceBlankNode, nameIri, aliceLiteral);
 ```
 
-
-
 The [RDFTermFactory](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html) also
 contains more specific variants of some of the methods above, e.g. to create a
 typed literal.  
@@ -175,8 +173,6 @@ typed literal.
 Note that for any given implementation, `RDFTerm` instances need not be created
 using a `RDFTermFactory`. More likely, implementation-specific methods might create these
 objects as part of data parsing, storage lookup and queries.
-
-
 
 
 
