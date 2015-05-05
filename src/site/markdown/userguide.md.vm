@@ -148,9 +148,9 @@ import org.apache.commons.rdf.simple.SimpleRDFTermFactory;
 RDFTermFactory factory = new SimpleRDFTermFactory();
 ```
 
-If you don't want to depend up the concret implementation you can use a
+If you don't want to depend up the concrete implementation you can use a
 [ServiceLoader](http://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html)
-to lookup instances:
+to lookup any implementations found on the classpath:
 
 ```java
 import java.util.Iterator;
