@@ -101,6 +101,10 @@ public interface BlankNode extends BlankNodeOrIRI {
 
     /**
      * Calculate a hash code for this BlankNode.
+     * <p>
+     * The returned hash code MUST be equal to the
+     * {@link String#hashCode()} of the
+     * {@link #uniqueReference()}.
      *
      * This method MUST be implemented in conjunction with
      * {@link #equals(Object)} so that two equal BlankNodes produce the same

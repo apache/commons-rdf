@@ -18,6 +18,7 @@
 package org.apache.commons.rdf.api;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -106,12 +107,18 @@ public interface Literal extends RDFTerm {
 
     /**
      * Calculate a hash code for this Literal.
-     *
-     * This method MUST be implemented when implementing {@link #equals(Object)}
+     * <p>
+     * The returned hash code MUST be equal to the result
+     * of {@link Objects#hash(Object...)} with
+     * the arguments
+     * {@link #getLexicalForm()}, {@link #getDatatype()}, {@link #getLanguageTag()}.
+     * <p>
+     * This method MUST be implemented in conjunction with {@link #equals(Object)}
      * so that two equal Literals produce the same hash code.
      *
      * @return a hash code value for this Literal.
      * @see Object#hashCode()
+     * @see Objects#hash(Object...)
      */
     @Override
     public int hashCode();

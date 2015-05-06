@@ -17,6 +17,8 @@
  */
 package org.apache.commons.rdf.api;
 
+import java.util.Objects;
+
 /**
  * An <a href= "http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-triple" >RDF-1.1
  * Triple</a>, as defined by <a href= "http://www.w3.org/TR/rdf11-concepts/"
@@ -85,12 +87,17 @@ public interface Triple {
     /**
      * Calculate a hash code for this Triple.
      * <p>
-     * This method MUST be implemented when implementing {@link #equals(Object)}
-     * so that two equal IRIs produce the same hash code.
-     * </p>
+     * The returned hash code MUST be equal to the result
+     * of {@link Objects#hash(Object...)} with
+     * the arguments
+     * {@link #getSubject()}, {@link #getPredicate()}, {@link #getObject()}.
+     * <p>
+     * This method MUST be implemented in conjunction with {@link #equals(Object)}
+     * so that two equal {@link Triple}s produce the same hash code.
      *
      * @return a hash code value for this Triple.
      * @see Object#hashCode()
+     * @see Objects#hash(Object...)
      */
     @Override
     public int hashCode();
