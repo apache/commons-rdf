@@ -28,7 +28,6 @@
     </parent>
 
     <artifactId>commons-rdf-api</artifactId>
-    <version>0.1-incubating-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Commons RDF: API</name>
@@ -56,7 +55,6 @@
                         </goals>
                     </execution>
                 </executions>
-
             </plugin>
         </plugins>
     </build>

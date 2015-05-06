@@ -37,12 +37,12 @@
         <dependency>
             <groupId>${project.parent.groupId}</groupId>
             <artifactId>commons-rdf-api</artifactId>
-            <version>0.1-incubating-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.parent.groupId}</groupId>
             <artifactId>commons-rdf-api</artifactId>
-            <version>0.1-incubating-SNAPSHOT</version>
+            <version>${project.version}</version>
             <classifier>tests</classifier>
             <scope>test</scope>
         </dependency>
