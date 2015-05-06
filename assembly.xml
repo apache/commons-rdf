@@ -26,6 +26,7 @@
             <directory>${project.basedir}</directory>
             <outputDirectory></outputDirectory>
             <excludes>
+                <exclude>examples/**</exclude>
                 <exclude>**/target/**</exclude>
                 <exclude>**/.*/**</exclude>
                 <exclude>**/*.iml</exclude>
