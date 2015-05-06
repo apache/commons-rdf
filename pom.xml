@@ -263,15 +263,9 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <executions>
                     <execution>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <phase>package</phase>
                         <configuration>
-                            <descriptors>
-                                <descriptor>assembly.xml</descriptor>
-                            </descriptors>
-                            <finalName>commons-rdf-${project.version}</finalName>
+                            <descriptor>src/main/assembly/src.xml</descriptor>
+                            <finalName>apache-commons-rdf-${pom.version}</finalName>
                             <tarLongFileMode>gnu</tarLongFileMode>
                         </configuration>
                     </execution>
@@ -303,26 +297,6 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                        <configuration>
-                            <excludes>
-                                <exclude>**/*.asc</exclude>
-                                <exclude>**/*.md5</exclude>
-                                <exclude>**/*.sha1</exclude>
-                            </excludes>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
                 <version>2.4</version>
                 <configuration>
@@ -331,7 +305,6 @@
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <localCheckout>true</localCheckout>
                     <tagNameFormat>@{version}</tagNameFormat>
-                    <arguments>-Papache-release,sign ${arguments}</arguments>
                     <preparationGoals>clean install</preparationGoals>
                     <pushChanges>false</pushChanges>
                 </configuration>
