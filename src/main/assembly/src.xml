@@ -26,12 +26,18 @@
             <directory>${project.basedir}</directory>
             <outputDirectory></outputDirectory>
             <excludes>
+                <exclude>**/*~</exclude>
+                <exclude>pom.xml.*</exclude>
+                <exclude>prelease.properties</exclude>
                 <exclude>examples/**</exclude>
                 <exclude>**/target/**</exclude>
                 <exclude>**/.*/**</exclude>
                 <exclude>**/*.iml</exclude>
                 <exclude>**/*.ipr</exclude>
                 <exclude>**/*.iws</exclude>
+                <exclude>.project</exclude>
+                <exclude>.classpath</exclude>
+                <exclude>.metadata</exclude>
                 <exclude>atlassian-ide-plugin.xml</exclude>
             </excludes>
         </fileSet>

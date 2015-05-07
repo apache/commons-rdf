@@ -231,6 +231,7 @@
     </dependencyManagement>
 
     <build>
+        <finalName>apache-commons-rdf</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -297,7 +298,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>2.4</version>
                 <configuration>
                     <useReleaseProfile>false</useReleaseProfile>
                     <goals>deploy</goals>
@@ -306,6 +306,7 @@
                     <tagNameFormat>@{version}</tagNameFormat>
                     <preparationGoals>clean install</preparationGoals>
                     <pushChanges>false</pushChanges>
+                    <connectionUrl>scm:git:file://`pwd`/.git</connectionUrl>
                 </configuration>
             </plugin>
             <!-- Create code coverage reports and submit them to coveralls.io. -->
@@ -434,5 +435,72 @@
             </plugins>
         </pluginManagement>
     </build>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <!-- extends the release profile from commons -->
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                                <configuration>
+                                    <excludes>
+                                        <exclude>**/*.asc</exclude>
+                                        <exclude>**/*.md5</exclude>
+                                        <exclude>**/*.sha1</exclude>
+                                    </excludes>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>default-cli</id>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <phase>package</phase>
+                                <configuration>
+                                    <tasks>
+                                        <checksum algorithm="MD5" fileext=".md5">
+                                            <fileset dir="${project.build.directory}">
+                                                <include name="*.zip" />
+                                                <include name="*.tar.gz" />
+                                            </fileset>
+                                        </checksum>
+                                        <checksum algorithm="SHA1" fileext=".sha1">
+                                            <fileset dir="${project.build.directory}">
+                                                <include name="*.zip" />
+                                                <include name="*.tar.gz" />
+                                            </fileset>
+                                        </checksum>
+                                    </tasks>
+                                </configuration>
+                            </execution>
+                        </executions>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.apache.ant</groupId>
+                                <artifactId>ant-nodeps</artifactId>
+                                <version>1.8.1</version>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
