@@ -64,7 +64,7 @@ public interface IRI extends BlankNodeOrIRI {
      * The returned hash code MUST be equal to the
      * {@link String#hashCode()} of the
      * {@link #getIRIString()}.
-     *
+     * <p>
      * This method MUST be implemented in conjunction with
      * {@link #equals(Object)}
      * so that two equal IRIs produce the same hash code.
