@@ -91,11 +91,6 @@ public interface RDFTermFactory {
      * It is undefined if the graph will be persisted by any underlying storage
      * mechanism.
      *
-     * {@link BlankNode} objects added to the {@link Graph} returned from this
-     * method SHOULD be mapped using the {@link #createBlankNode(String)} of
-     * this factory, called using the {@link BlankNode#uniqueReference()} as
-     * the parameter, before they are inserted into the Graph.
-     *
      * @return A new Graph
      * @throws UnsupportedOperationException If the operation is not supported.
      */
