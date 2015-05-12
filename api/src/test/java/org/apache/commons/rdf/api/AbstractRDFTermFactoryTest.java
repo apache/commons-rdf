@@ -22,6 +22,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotSame;
 
+import java.util.Objects;
+
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
@@ -406,4 +408,69 @@ public abstract class AbstractRDFTermFactoryTest {
         factory.createTriple(subject, (IRI) predicate, object);
     }
 
+    @Test
+    public void hashCodeBlankNode() throws Exception {
+        BlankNode bnode1;
+        try {
+            bnode1 = factory.createBlankNode();
+        } catch (UnsupportedOperationException ex) {
+            Assume.assumeNoException(
+                    "createBlankNode() not supported", ex);
+            return;
+        }
+        assertEquals(bnode1.uniqueReference().hashCode(), bnode1.hashCode());
+    }
+
+    @Test
+    public void hashCodeIRI() throws Exception {
+        IRI iri;
+        try {
+            iri = factory.createIRI("http://example.com/");
+        } catch (UnsupportedOperationException ex) {
+            Assume.assumeNoException(
+                    "createIRI(String) not supported", ex);
+            return;
+        }
+        assertEquals(iri.getIRIString().hashCode(), iri.hashCode());
+    }
+
+    @Test
+    public void hashCodeLiteral() throws Exception {
+        Literal literal;
+        try {
+            literal = factory.createLiteral("Hello");
+        } catch (UnsupportedOperationException ex) {
+            Assume.assumeNoException(
+                    "createLiteral(String) not supported", ex);
+            return;
+        }
+        assertEquals(Objects.hash(
+                    literal.getLexicalForm(),
+                    literal.getDatatype(),
+                    literal.getLanguageTag()
+                ),
+                literal.hashCode());
+    }
+
+    @Test
+    public void hashCodeTriple() throws Exception {
+        IRI iri;
+        try {
+            iri = factory.createIRI("http://example.com/");
+        } catch (UnsupportedOperationException ex) {
+            Assume.assumeNoException(
+                    "createIRI() not supported", ex);
+            return;
+        }
+        Triple triple;
+        try {
+            triple = factory.createTriple(iri, iri, iri);
+        } catch (UnsupportedOperationException ex) {
+            Assume.assumeNoException(
+                    "createTriple() not supported", ex);
+            return;
+        }
+        assertEquals(Objects.hash(iri, iri, iri),
+                     triple.hashCode());
+    }
 }
