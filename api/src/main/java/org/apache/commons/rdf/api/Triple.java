@@ -66,11 +66,6 @@ public interface Triple {
      * {@link #getPredicate()} and {@link #getObject()} are equal.
      * </p>
      * <p>
-     * Implementations MUST check the local scope for Triple comparison if
-     * either the subject or object is a BlankNode, and MAY check the local
-     * scope in other cases.
-     * </p>
-     * <p>
      * Implementations MUST also override {@link #hashCode()} so that two equal
      * Triples produce the same hash code.
      * </p>
