@@ -39,6 +39,6 @@ file.
   [md5](http://www.apache.org/dyn/closer.cgi/incubator/commonsrdf/0.1.0-incubating/apache-commons-rdf-0.1.0-incubating-src.tar.gz.md5), 
   [sha1](http://www.apache.org/dyn/closer.cgi/incubator/commonsrdf/0.1.0-incubating/apache-commons-rdf-0.1.0-incubating-src.tar.gz.sha1))
 
-The [changelog](https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12316620&version=12332056) 
+The [changelog](https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12316620&amp;version=12332056)
 is available from the [ASF Jira](http://issues.apache.org/jira/browse/COMMONSRDF).
 
