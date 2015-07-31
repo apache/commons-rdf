@@ -92,8 +92,6 @@ public interface Literal extends RDFTerm {
      * literals can have the same value without being the same RDF term.
      * </blockquote>
      *
-     * Implementations MAY check the local scope for Literal comparison.
-     *
      * Implementations MUST also override {@link #hashCode()} so that two equal
      * Literals produce the same hash code.
      *

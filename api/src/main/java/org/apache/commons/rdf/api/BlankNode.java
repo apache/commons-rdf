@@ -87,13 +87,12 @@ public interface BlankNode extends BlankNodeOrIRI {
      * Check it this BlankNode is equal to another BlankNode. Two BlankNodes
      * MUST be equal if, and only if, they have the same
      * {@link #uniqueReference()}.
-     *
+     * <p>
      * Implementations MUST also override {@link #hashCode()} so that two equal
      * Literals produce the same hash code.
      *
      * @param other Another object
-     * @return true if other is a BlankNode, is in the same local scope and is
-     * equal to this BlankNode
+     * @return true if other is a BlankNode instance that represent the same blank node
      * @see Object#equals(Object)
      */
     @Override
