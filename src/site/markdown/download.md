@@ -29,7 +29,7 @@ mirrored from
 [ASF's Maven repository](https://repository.apache.org/content/repositories/releases/org/apache/commons/commons-rdf-api/).
 For convenience of IDE users, the Maven artifacts include `-javadoc.jar` and
 `-sources.jar`, however you might prefer the
-online [API javadoc](/apidocs/)
+online [API javadoc](apidocs/)
 and the [source code releases](#Source_code) (see below).
 
 To use Commons RDF with [Maven](https://maven.apache.org/), add to your `pom.xml`:
@@ -54,7 +54,7 @@ To use Commons RDF with [Maven](https://maven.apache.org/), add to your `pom.xml
 The `<version>` above might not be up to date,
 see the [source code releases](#Source_code) below to find the latest version.
 
-See the [user guide](/userguide.html) for documentation of the
+See the [user guide](userguide.html) for documentation of the
 Apache Commons RDF API.  
 
 ## Source code

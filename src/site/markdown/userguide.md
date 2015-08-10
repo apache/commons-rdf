@@ -141,7 +141,7 @@ see the [download page](download.html) for the latest version._
 To create instances of Commons RDF interfaces like
 [`Graph`](apidocs/org/apache/commons/rdf/api/Graph.html) and
 [`IRI`](apidocs/org/apache/commons/rdf/api/IRI.html) you will need a
-[RDFTermFactory](/apidocs/org/apache/commons/rdf/api/RDFTermFactory.html).
+[RDFTermFactory](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html).
 
 How to get an instance of this factory is implementation specific, for the
 _simple_ implementation, you can construct the
