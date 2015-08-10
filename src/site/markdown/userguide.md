@@ -128,10 +128,12 @@ _simple_ implementation, add to your `<dependencies>`:
     <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-rdf-simple</artifactId>
-        <version>${project.version}</version>
+        <version>0.1.0-incubating</version>
     </dependency>
 ```
 
+The `<version>` above might not be up to date,
+see the [/download.html](download page) for the latest version.
 
 ## Creating Commons RDF instances
 
