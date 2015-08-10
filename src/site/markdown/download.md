@@ -23,10 +23,14 @@
 
 ## Maven
 
-Apache Commons RDF (incuating) is available from
+Apache Commons RDF (incubating) is available from
 [Maven Central](http://central.maven.org/maven2/org/apache/commons/commons-rdf-api/),
 mirrored from
 [ASF's Maven repository](https://repository.apache.org/content/repositories/releases/org/apache/commons/commons-rdf-api/).
+For convenience of IDE users, the Maven artifacts include `-javadoc.jar` and
+`-sources.jar`, however you might prefer the
+online [API javadoc](/apidocs/)
+and the [source code releases](#Source_code) (see below).
 
 To use Commons RDF with [Maven](https://maven.apache.org/), add to your `pom.xml`:
 
@@ -47,13 +51,11 @@ To use Commons RDF with [Maven](https://maven.apache.org/), add to your `pom.xml
 </dependencies>
 ```
 
-For convenience of IDE users, the Maven artifacts include `-javadoc.jar` and
-`-sources.jar`, however you might prefer the
-online [API javadoc](/apidocs/)
-and the [source code](#source code) release (see below).
+The `<version>` above might not be up to date,
+see the [source code releases](#Source_code) below to find the latest version.
 
-See the [user guide](/userguide.html) for more details.  
-
+See the [user guide](/userguide.html) for documentation of the
+Apache Commons RDF API.  
 
 ## Source code
 
