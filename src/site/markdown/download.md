@@ -61,6 +61,10 @@ Apache Commons RDF API.
 
 Here you can find all source releases published by Apache Commons RDF (incubating).
 
+For the latest developments
+you may also be interested in the [source code repository](source-repository.html),
+which is also [mirrored to GitHub](http://github.com/apache/incubator-commonsrdf).
+
 ### 0.1.0-incubating
 
 **Apache Commons RDF 0.1.0-incubating** was published on 2015-05-15, and is available for download
