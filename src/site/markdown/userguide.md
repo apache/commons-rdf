@@ -90,7 +90,7 @@ add the following dependency to your `pom.xml`:
 ```
 
 The `<version>` above might not be up to date,
-see the [/download.html](download page) for the latest version.
+see the [download page](download.html) for the latest version.
 
 If you are testing a `SNAPSHOT` version, then you will have to either build
 Commons RDF from [source](https://github.com/apache/incubator-commonsrdf), or
