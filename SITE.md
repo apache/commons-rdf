@@ -26,4 +26,24 @@ Some common tasks:
 
 * Publish the site: `mvn clean site scm-publish:publish-scm`
 
+You will need to have `svn` installed.
+
 Further details at https://commons.apache.org/site-publish.html
+
+The first time you publish, you might need to tell `svn` your Apache password
+by doing the commit manually:
+
+```
+stain@biggie:~/src/incubator-commonsrdf$ cd target/site-content/
+stain@biggie:~/src/incubator-commonsrdf/target/site-content$ svn commit -m "Updated website"
+Authentication realm: <https://svn.apache.org:443> ASF Committers
+Password for 'stain': *******************
+
+Sending        apidocs/org/apache/commons/rdf/api/BlankNode.html
+Sending        apidocs/org/apache/commons/rdf/api/IRI.html
+Sending        index.html
+Sending        mail-lists.html
+Sending        project-info.html
+Transmitting file data ......................
+Committed revision 961349.
+```
