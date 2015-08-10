@@ -21,7 +21,7 @@
 # User Guide
 
 This page shows some examples of a client using the Commons RDF API.
-It was last updated for version `0.1-incubating-SNAPSHOT` of the
+It was last updated for version `0.1.0-incubating` of the
 Commons RDF [API](apidocs/).
 
 * [Introduction](#Introduction)
@@ -84,14 +84,17 @@ add the following dependency to your `pom.xml`:
     <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-rdf-api</artifactId>
-        <version>0.1-incubating-SNAPSHOT</version>
+        <version>0.1.0-incubating</version>
     </dependency>
 </dependencies>
 ```
 
+The `<version>` above might not be up to date,
+see the [/download.html](download page) for the latest version.
+
 If you are testing a `SNAPSHOT` version, then you will have to either build
 Commons RDF from [source](https://github.com/apache/incubator-commonsrdf), or
-add the [snapshot repository](https://github.com/apache/incubator-commonsrdf#snapshot-repository):
+add this [snapshot repository](https://github.com/apache/incubator-commonsrdf#snapshot-repository):
 
 ```xml
 <repositories>
@@ -148,8 +151,8 @@ import org.apache.commons.rdf.simple.SimpleRDFTermFactory;
 RDFTermFactory factory = new SimpleRDFTermFactory();
 ```
 
-If you don't want to depend on instnatiating a concrete implementation,
-you can alternatively use the 
+If you don't want to depend on instantiating a concrete implementation,
+you can alternatively use the
 [ServiceLoader](http://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html)
 to lookup any `RDFTermFactory` implementations found on the classpath:
 
@@ -184,7 +187,7 @@ Triple triple = factory.createTriple(aliceBlankNode, nameIri, aliceLiteral);
 
 The [RDFTermFactory](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html) also
 contains more specific variants of some of the methods above, e.g. to create a
-typed literal.  
+typed literal.
 
 Note that for any given implementation, `RDFTerm` instances need not be created
 using a `RDFTermFactory`. More likely, implementation-specific methods might create these
@@ -899,7 +902,7 @@ IRI iri1 = fooFactory.createIRI("http://example.com/property1");
 
 // Both Triple and RDFTerm instances can be used
 //
-for (Triple t1: g1.getTriples(null, iri1, null)) {  
+for (Triple t1: g1.getTriples(null, iri1, null)) {
     if (g2.contains(t1.getSubject(), null, t1.getObject())) {
       g2.remove(t1);
     }
