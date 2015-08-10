@@ -29,6 +29,26 @@ welcomed to join the project and [contribute](http://commonsrdf.incubator.apache
 
 See the [Commons RDF homepage](http://commonsrdf.incubator.apache.org/) for more details.
 
+## License
+
+
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements. See the [NOTICE](NOTICE) file
+distributed with this work for additional information
+regarding copyright ownership. The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+
 ## Contributing
 
 Feel free to subscribe to the 
@@ -87,19 +107,25 @@ Building has been tested with [Apache Maven 3.2](http://maven.apache.org/downloa
     [INFO] ------------------------------------------------------------------------
 
 
-To then use from your project, add to Maven (update `<version>` to match the Maven output):
+To then use this build from your project, add to Maven (update `<version>` to match the Maven output):
 
     <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-rdf-api</artifactId>
-        <version>0.0.3-SNAPSHOT</version>
+        <version>0.2.0-incubating-SNAPSHOT</version>
     </dependency>
+
+See the [downloads](http://commonsrdf.incubator.apache.org/download.html) to 
+use the latest stable release published in Maven Central.
     
 
 ## Snapshot repository
 
 The Apache Commons RDF project is aiming to regularly release early 
 previews releases (0.x.y versions) and publish these to Maven Central.
+See the [downloads](http://commonsrdf.incubator.apache.org/download.html) to 
+use the latest stable release.
+
 
 However, if you are following the ongoing
 development on [dev@commonsrdf](http://mail-archives.apache.org/mod_mbox/incubator-commonsrdf-dev/), 
@@ -156,7 +182,7 @@ classifier for the commons-rdf-api module, for example (for Maven):
     <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-rdf-api</artifactId>
-        <version>0.0.3-SNAPSHOT</version>
+        <version>0.2.0-incubating-SNAPSHOT</version>
         <classifier>tests</classifier>
         <scope>test</scope>
     </dependency>
@@ -169,8 +195,4 @@ For an example, see
 [SimpleGraphTest](simple/src/test/java/org/apache/commons/rdf/simple/SimpleGraphTest.java).
 
 
-
-## License
-
-[Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
 
