@@ -17,13 +17,13 @@
  */
 package org.apache.commons.rdf.simple;
 
-import org.apache.commons.rdf.api.IRI;
-import org.apache.commons.rdf.api.Literal;
-
 import java.util.IllformedLocaleException;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
+
+import org.apache.commons.rdf.api.IRI;
+import org.apache.commons.rdf.api.Literal;
 
 /**
  * A simple implementation of Literal.
@@ -117,7 +117,7 @@ final class LiteralImpl implements Literal {
 
     @Override
     public int hashCode() {
-        return Objects.hash(dataType, lexicalForm, languageTag);
+        return Objects.hash(lexicalForm, dataType, languageTag);
     }
 
     @Override
