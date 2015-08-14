@@ -1,7 +1,8 @@
 # Apache Commons RDF (Incubating)
 
 [![Build Status](https://travis-ci.org/apache/incubator-commonsrdf.svg?branch=master)](https://travis-ci.org/apache/incubator-commonsrdf)
-[![Coverage Status](https://coveralls.io/repos/apache/incubator-commonsrdf/badge.svg)](https://coveralls.io/r/apache/incubator-commonsrdf)
+
+[![Coverage Status](https://coveralls.io/repos/apache/incubator-commonsrdf/badge.svg?branch=master&service=github)](https://coveralls.io/github/apache/incubator-commonsrdf?branch=master)
 
 [Commons RDF](http://commonsrdf.incubator.apache.org/) aims to provide a common
 library for [RDF 1.1](http://www.w3.org/TR/rdf11-concepts/) that could be
