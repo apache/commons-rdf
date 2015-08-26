@@ -20,18 +20,31 @@ package org.apache.jena.commons;
 
 import org.apache.commons.rdf.api.Graph ;
 import org.apache.commons.rdf.api.RDFTermFactory ;
+import org.apache.jena.atlas.logging.LogCtl ;
 import org.apache.jena.riot.RDFDataMgr ;
 
 public class Example1 {
+    static { LogCtl.setCmdLogging();}
+    
+    public static void main(String... args) {
+        main_ex2() ;
+    }
+    
+    public static void main_ex1(String... args) {
+        RDFTermFactory rft = new RDFTermFactoryJena() ;
+        ToGraph dest = new ToGraph(rft) ;
+        RDFDataMgr.parse(dest, "D.ttl") ;
+        dest.getGraph().getTriples().forEach(System.out::println) ;
+    }
 
-    public static void main(String[] args) {
+    public static void main_ex2(String... args) {
         RDFTermFactory rft = new RDFTermFactoryJena() ;
         Graph graph = rft.createGraph() ;
-        ToGraph dest = new ToGraph(graph) ;
+        ToGraph dest = new ToGraph(graph, rft) ;
         RDFDataMgr.parse(dest, "D.ttl") ;
-        
         graph.getTriples().forEach(System.out::println) ;
     }
 
+    
 }
 

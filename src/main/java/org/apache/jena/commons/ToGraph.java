@@ -18,14 +18,22 @@
 
 package org.apache.jena.commons;
 
-import org.apache.commons.rdf.api.Graph ;
+import org.apache.commons.rdf.api.* ;
+import org.apache.jena.datatypes.xsd.XSDDatatype ;
+import org.apache.jena.graph.Node ;
 import org.apache.jena.riot.system.StreamRDF ;
 
 public class ToGraph implements StreamRDF {
 
     private Graph graph;
+    private RDFTermFactory factory;
 
-    public ToGraph(Graph graph) {
+    public ToGraph(RDFTermFactory factory) {
+        this(factory.createGraph(), factory) ;
+    }
+
+    public ToGraph(Graph graph, RDFTermFactory factory) {
+        this.factory = factory ; 
         this.graph = graph ;
     }
 
@@ -34,9 +42,35 @@ public class ToGraph implements StreamRDF {
 
     @Override
     public void triple(org.apache.jena.graph.Triple triple) {
-        graph.add(JCR_Factory.fromJena(triple));
+        graph.add((BlankNodeOrIRI)fromJena(triple.getSubject()), 
+                  (IRI)fromJena(triple.getPredicate()),
+                  fromJena(triple.getObject())) ;
     }
 
+    // jena to commonsrdf
+    public RDFTerm fromJena(Node node) {
+        if ( node.isURI() )
+            return factory.createIRI(node.getURI()) ;
+        if ( node.isLiteral() ) {
+            String lang = node.getLiteralLanguage() ;
+            if ( lang != null && lang.isEmpty() )
+                return factory.createLiteral(node.getLiteralLexicalForm(), lang) ;
+            if ( node.getLiteralDatatype().equals(XSDDatatype.XSDstring) )
+                return factory.createLiteral(node.getLiteralLexicalForm()) ;
+            IRI dt = factory.createIRI(node.getLiteralDatatype().getURI()) ;
+            return factory.createLiteral(node.getLiteralLexicalForm(), dt);
+        }
+        if ( node.isBlank() )
+            return factory.createBlankNode(node.getBlankNodeLabel()) ;
+        error("Node is not a concrete RDF Term: "+node) ;
+        return null ;
+    }
+
+    private static void error(String msg) {
+        System.err.println("Error: "+msg) ;
+        throw new RuntimeException(msg) ;
+    }
+    
     @Override
     public void quad(org.apache.jena.sparql.core.Quad quad) {
         throw new UnsupportedOperationException() ;
@@ -50,6 +84,12 @@ public class ToGraph implements StreamRDF {
 
     @Override
     public void finish() {}
+
+
+
+    public Graph getGraph() {
+        return graph;
+    }
     
 }
 
