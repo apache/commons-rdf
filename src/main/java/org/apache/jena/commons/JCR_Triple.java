@@ -63,5 +63,10 @@ public class JCR_Triple implements Triple {
             getPredicate().equals(triple.getPredicate()) &&
             getObject().equals(triple.getObject()) ;
     }
+    
+    @Override 
+    public String toString() {
+        return getSubject()+" "+getPredicate()+" "+getObject()+" ." ;
+    }
 }
 

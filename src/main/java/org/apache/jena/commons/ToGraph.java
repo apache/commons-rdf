@@ -18,33 +18,38 @@
 
 package org.apache.jena.commons;
 
-import org.apache.jena.graph.Node ;
-import org.apache.jena.shared.PrefixMapping ;
-import org.apache.jena.shared.impl.PrefixMappingImpl ;
-import org.apache.jena.sparql.util.FmtUtils ;
+import org.apache.commons.rdf.api.Graph ;
+import org.apache.jena.riot.system.StreamRDF ;
 
-class JCR_Term implements JenaCommonsRDF {
-    private Node node;
-    static private PrefixMapping empty = new PrefixMappingImpl() ; 
-    
-    protected JCR_Term(Node node) {
-        this.node = node ;
-    }
-    
-    @Override
-    public Node getNode() {
-        return node ;
+public class ToGraph implements StreamRDF {
+
+    private Graph graph;
+
+    public ToGraph(Graph graph) {
+        this.graph = graph ;
     }
 
-    public String ntriplesString() {
-        if ( node.isBlank() )
-            return "_:C"+node.getBlankNodeLabel() ;
-        return FmtUtils.stringForNode(node, empty) ;
-    }
-    
     @Override
-    public String toString() {
-        return ntriplesString() ; 
+    public void start() {}
+
+    @Override
+    public void triple(org.apache.jena.graph.Triple triple) {
+        graph.add(JCR_Factory.fromJena(triple));
     }
+
+    @Override
+    public void quad(org.apache.jena.sparql.core.Quad quad) {
+        throw new UnsupportedOperationException() ;
+    }
+
+    @Override
+    public void base(String base) {}
+
+    @Override
+    public void prefix(String prefix, String iri) {}
+
+    @Override
+    public void finish() {}
+    
 }
 

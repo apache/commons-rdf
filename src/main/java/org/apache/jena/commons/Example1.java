@@ -18,33 +18,20 @@
 
 package org.apache.jena.commons;
 
-import org.apache.jena.graph.Node ;
-import org.apache.jena.shared.PrefixMapping ;
-import org.apache.jena.shared.impl.PrefixMappingImpl ;
-import org.apache.jena.sparql.util.FmtUtils ;
+import org.apache.commons.rdf.api.Graph ;
+import org.apache.commons.rdf.api.RDFTermFactory ;
+import org.apache.jena.riot.RDFDataMgr ;
 
-class JCR_Term implements JenaCommonsRDF {
-    private Node node;
-    static private PrefixMapping empty = new PrefixMappingImpl() ; 
-    
-    protected JCR_Term(Node node) {
-        this.node = node ;
-    }
-    
-    @Override
-    public Node getNode() {
-        return node ;
+public class Example1 {
+
+    public static void main(String[] args) {
+        RDFTermFactory rft = new RDFTermFactoryJena() ;
+        Graph graph = rft.createGraph() ;
+        ToGraph dest = new ToGraph(graph) ;
+        RDFDataMgr.parse(dest, "D.ttl") ;
+        
+        graph.getTriples().forEach(System.out::println) ;
     }
 
-    public String ntriplesString() {
-        if ( node.isBlank() )
-            return "_:C"+node.getBlankNodeLabel() ;
-        return FmtUtils.stringForNode(node, empty) ;
-    }
-    
-    @Override
-    public String toString() {
-        return ntriplesString() ; 
-    }
 }
 
