@@ -1,12 +1,28 @@
-*.class
+# Maven and build files
+target/
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+# Eclipse
+.classpath
+.project
+.settings
+.recommenders
+.metadata
 
-# Package Files #
+# Idea IntelliJ
+*.ipr
+*.iws
+*.iml
+.idea/
+
+# Caches
+.scala_dependencies
+
+# Other
+.DS_Store
 *.jar
-*.war
-*.ear
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+# Backups
+pom.xml.backup
+*~
+.#*
+\#*
