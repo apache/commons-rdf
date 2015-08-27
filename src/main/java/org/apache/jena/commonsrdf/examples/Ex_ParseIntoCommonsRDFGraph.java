@@ -20,6 +20,7 @@ package org.apache.jena.commonsrdf.examples;
 
 import org.apache.commons.rdf.api.Graph ;
 import org.apache.commons.rdf.api.RDFTermFactory ;
+import org.apache.commons.rdf.simple.SimpleRDFTermFactory ;
 import org.apache.jena.atlas.logging.LogCtl ;
 import org.apache.jena.commonsrdf.JenaCommonsRDF ;
 import org.apache.jena.commonsrdf.RDFTermFactoryJena ;
@@ -31,12 +32,21 @@ public class Ex_ParseIntoCommonsRDFGraph {
     static { LogCtl.setCmdLogging(); }
     
     public static void main(String ...a) {
-        RDFTermFactory rft = new RDFTermFactoryJena() ; // This can be a non-Jena backed factory 
+        System.out.println("== RDFTermFactoryJena") ;
+        RDFTermFactory rft1 = new RDFTermFactoryJena() ; // This can be a non-Jena backed factory
+        parse(rft1) ;
+        System.out.println() ;
+        System.out.println("== SimpleRDFTermFactory") ;
+        RDFTermFactory rft2 = new SimpleRDFTermFactory() ;
+        parse(rft2) ;
+    }
+    
+    public static void parse(RDFTermFactory rft) {
         Graph graph = rft.createGraph() ;
         StreamRDF dest = JenaCommonsRDF.streamJenaToCommonsRDF(rft, graph) ;
         RDFDataMgr.parse(dest, "D.ttl") ;
-        System.out.println("==== Write CommonsRDF graph\n") ;
         graph.getTriples().forEach(System.out::println) ;
     }
+    
 }
 

@@ -22,7 +22,6 @@ import org.apache.jena.graph.Node ;
 import org.apache.jena.riot.out.NodeFmtLib ;
 import org.apache.jena.shared.PrefixMapping ;
 import org.apache.jena.shared.impl.PrefixMappingImpl ;
-import org.apache.jena.sparql.util.FmtUtils ;
 
 class JCR_Term implements JenaNode {
     private Node node;
@@ -38,9 +37,7 @@ class JCR_Term implements JenaNode {
     }
 
     public String ntriplesString() {
-        if ( node.isBlank() )
-            return "_:C"+NodeFmtLib.encodeBNodeLabel(node.getBlankNodeLabel()) ;
-        return FmtUtils.stringForNode(node, empty) ;
+        return NodeFmtLib.str(node) ;
     }
     
     @Override
