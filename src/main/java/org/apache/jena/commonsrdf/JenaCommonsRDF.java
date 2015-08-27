@@ -108,7 +108,7 @@ public class JenaCommonsRDF {
             return factory.createIRI(node.getURI()) ;
         if ( node.isLiteral() ) {
             String lang = node.getLiteralLanguage() ;
-            if ( lang != null && lang.isEmpty() )
+            if ( lang != null && ! lang.isEmpty() )
                 return factory.createLiteral(node.getLiteralLexicalForm(), lang) ;
             if ( node.getLiteralDatatype().equals(XSDDatatype.XSDstring) )
                 return factory.createLiteral(node.getLiteralLexicalForm()) ;
@@ -124,8 +124,8 @@ public class JenaCommonsRDF {
     /** Convert from Jena to any RDFCommons implementation */
    public static Triple fromJena(RDFTermFactory factory, org.apache.jena.graph.Triple triple) {
         BlankNodeOrIRI subject = (BlankNodeOrIRI)(fromJena(factory, triple.getSubject())) ;
-        IRI predicate = (IRI)(fromJena(factory, triple.getSubject())) ;
-        RDFTerm object = fromJena(factory, triple.getSubject()) ;
+        IRI predicate = (IRI)(fromJena(factory, triple.getPredicate())) ;
+        RDFTerm object = fromJena(factory, triple.getObject()) ;
         return factory.createTriple(subject, predicate, object) ;
     }
 
