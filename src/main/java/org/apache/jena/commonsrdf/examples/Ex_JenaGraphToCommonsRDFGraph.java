@@ -23,22 +23,19 @@ import org.apache.commons.rdf.api.RDFTermFactory ;
 import org.apache.jena.atlas.logging.LogCtl ;
 import org.apache.jena.commonsrdf.JenaCommonsRDF ;
 import org.apache.jena.commonsrdf.RDFTermFactoryJena ;
+import org.apache.jena.riot.Lang ;
 import org.apache.jena.riot.RDFDataMgr ;
-import org.apache.jena.riot.system.StreamRDF ;
 import org.apache.jena.sparql.graph.GraphFactory ;
 
-/** Short examples */
-public class Example1 {
+/** Adapt a Jena Graph after parsing data into it */
+public class Ex_JenaGraphToCommonsRDFGraph {
     static { LogCtl.setCmdLogging(); }
     
     public static void main(String ...a) {
-        jenaGraphToCommonsRDFGraph() ;
-    }
-    
-    public static void jenaGraphToCommonsRDFGraph() {
         org.apache.jena.graph.Graph jGraph = GraphFactory.createGraphMem() ;
         RDFDataMgr.read(jGraph, "D.ttl") ;
         
+        // "graph" is a 
         Graph graph = JenaCommonsRDF.fromJena(jGraph) ;
         
         
@@ -47,17 +44,12 @@ public class Example1 {
         graph.add(rft.createIRI("http://example/s2"),
                   rft.createIRI("http://example/p2"),
                   rft.createLiteral("foo")) ;
+        System.out.println("==== Write CommonsRDF graph\n") ;
         graph.getTriples().forEach(System.out::println) ;
+        
+        System.out.println("\n==== Write Jena graph directly\n") ;
+        // And its in the Jena graph
+        RDFDataMgr.write(System.out, jGraph, Lang.TTL) ;
     }
-
-    public static void parseIntoCommonsRDFGraph() {
-        RDFTermFactory rft = new RDFTermFactoryJena() ;
-        Graph graph = rft.createGraph() ;
-        StreamRDF dest = JenaCommonsRDF.streamJenaToCommonsRDF(rft, graph) ;
-        RDFDataMgr.parse(dest, "D.ttl") ;
-        graph.getTriples().forEach(System.out::println) ;
-    }
-
-    
 }
 
