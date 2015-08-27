@@ -16,32 +16,14 @@
  * limitations under the License.
  */
 
-package org.apache.jena.commons;
+package org.apache.jena.commonsrdf;
 
-import org.apache.commons.rdf.api.BlankNode ;
-import org.apache.jena.graph.Node ;
+import org.apache.jena.shared.JenaException ;
 
-public class JCR_BlankNode extends JCR_Term implements BlankNode, JenaCommonsRDF {
-
-    /*package*/ JCR_BlankNode(Node node) { super(node) ; }
-
-    @Override
-    public String uniqueReference() {
-        return getNode().getBlankNodeLabel() ;
-    }
-
-    @Override
-    public int hashCode() {
-        return uniqueReference().hashCode() ;
-    }
-    
-    @Override
-    public boolean equals(Object other) {
-        if ( other == this ) return true ;
-        if ( other == null ) return false ;
-        if ( ! ( other instanceof BlankNode ) ) return false ;
-        BlankNode bNode = (BlankNode)other ;
-        return  uniqueReference().equals(bNode.uniqueReference()) ;
-    }
+public class ConversionException extends JenaException {
+    public ConversionException()                                  { super(); }
+    public ConversionException(String message)                    { super(message); }
+    public ConversionException(Throwable cause)                   { super(cause) ; }
+    public ConversionException(String message, Throwable cause)   { super(message, cause) ; }
 }
 

@@ -16,14 +16,15 @@
  * limitations under the License.
  */
 
-package org.apache.jena.commons;
+package org.apache.jena.commonsrdf.impl;
 
 import org.apache.jena.graph.Node ;
+import org.apache.jena.riot.out.NodeFmtLib ;
 import org.apache.jena.shared.PrefixMapping ;
 import org.apache.jena.shared.impl.PrefixMappingImpl ;
 import org.apache.jena.sparql.util.FmtUtils ;
 
-class JCR_Term implements JenaCommonsRDF {
+class JCR_Term implements JenaNode {
     private Node node;
     static private PrefixMapping empty = new PrefixMappingImpl() ; 
     
@@ -38,7 +39,7 @@ class JCR_Term implements JenaCommonsRDF {
 
     public String ntriplesString() {
         if ( node.isBlank() )
-            return "_:C"+node.getBlankNodeLabel() ;
+            return "_:C"+NodeFmtLib.encodeBNodeLabel(node.getBlankNodeLabel()) ;
         return FmtUtils.stringForNode(node, empty) ;
     }
     

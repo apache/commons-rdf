@@ -16,14 +16,14 @@
  * limitations under the License.
  */
 
-package org.apache.jena.commons;
+package org.apache.jena.commonsrdf.impl;
 
 import org.apache.jena.graph.Node ;
 import org.apache.jena.graph.NodeFactory ;
 
 import org.apache.commons.rdf.api.* ;
 
-public class JCR_IRI extends JCR_Term implements IRI, JenaCommonsRDF {
+public class JCR_IRI extends JCR_Term implements IRI, JenaNode {
 
     /*package*/ JCR_IRI(String iriStr) {
         super(NodeFactory.createURI(iriStr)) ;

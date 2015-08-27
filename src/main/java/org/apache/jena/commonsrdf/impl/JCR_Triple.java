@@ -16,16 +16,18 @@
  * limitations under the License.
  */
 
-package org.apache.jena.commons;
+package org.apache.jena.commonsrdf.impl;
 
 import java.util.Objects ;
 
 import org.apache.commons.rdf.api.* ;
+import org.apache.jena.commonsrdf.JenaCommonsRDF ;
 
-public class JCR_Triple implements Triple {
+public class JCR_Triple implements Triple, JenaTriple {
     private final BlankNodeOrIRI subject ;
     private final IRI predicate ;
     private final RDFTerm object ;
+    private org.apache.jena.graph.Triple triple = null ;
 
     /* package */ JCR_Triple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
         this.subject = subject ;
@@ -33,6 +35,20 @@ public class JCR_Triple implements Triple {
         this.object = object ;
     }
     
+    /* package */ JCR_Triple(org.apache.jena.graph.Triple triple) {
+        this.subject = (BlankNodeOrIRI)JCR_Factory.fromJena(triple.getSubject()) ;
+        this.predicate = (IRI)JCR_Factory.fromJena(triple.getPredicate()) ;
+        this.object = JCR_Factory.fromJena(triple.getObject()) ;
+        this.triple = triple ;
+    }
+
+    @Override
+    public org.apache.jena.graph.Triple getTriple() {
+        if ( triple == null )
+            triple = org.apache.jena.graph.Triple.create(JenaCommonsRDF.toJena(subject), JenaCommonsRDF.toJena(predicate), JenaCommonsRDF.toJena(object)) ;
+        return triple ;
+    }
+
     @Override
     public BlankNodeOrIRI getSubject() {
         return subject ;

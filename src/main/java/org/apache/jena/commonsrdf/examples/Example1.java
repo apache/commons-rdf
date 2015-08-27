@@ -16,31 +16,42 @@
  * limitations under the License.
  */
 
-package org.apache.jena.commons;
+package org.apache.jena.commonsrdf;
 
 import org.apache.commons.rdf.api.Graph ;
 import org.apache.commons.rdf.api.RDFTermFactory ;
 import org.apache.jena.atlas.logging.LogCtl ;
 import org.apache.jena.riot.RDFDataMgr ;
+import org.apache.jena.riot.system.StreamRDF ;
+import org.apache.jena.sparql.graph.GraphFactory ;
 
+/** Short examples */
 public class Example1 {
-    static { LogCtl.setCmdLogging();}
+    static { LogCtl.setCmdLogging(); }
     
-    public static void main(String... args) {
-        main_ex2() ;
+    public static void main(String ...a) {
+        jenaGraphToCommonsRDFGraph() ;
     }
     
-    public static void main_ex1(String... args) {
+    public static void jenaGraphToCommonsRDFGraph() {
+        org.apache.jena.graph.Graph jGraph = GraphFactory.createGraphMem() ;
+        RDFDataMgr.read(jGraph, "D.ttl") ;
+        
+        Graph graph = JenaCommonsRDF.fromJena(jGraph) ;
+        
+        
+        // Add to CommonsRDF Graph
         RDFTermFactory rft = new RDFTermFactoryJena() ;
-        ToGraph dest = new ToGraph(rft) ;
-        RDFDataMgr.parse(dest, "D.ttl") ;
-        dest.getGraph().getTriples().forEach(System.out::println) ;
+        graph.add(rft.createIRI("http://example/s2"),
+                  rft.createIRI("http://example/p2"),
+                  rft.createLiteral("foo")) ;
+        graph.getTriples().forEach(System.out::println) ;
     }
 
-    public static void main_ex2(String... args) {
+    public static void parseIntoCommonsRDFGraph() {
         RDFTermFactory rft = new RDFTermFactoryJena() ;
         Graph graph = rft.createGraph() ;
-        ToGraph dest = new ToGraph(graph, rft) ;
+        StreamRDF dest = JenaCommonsRDF.streamJenaToCommonsRDF(rft, graph) ;
         RDFDataMgr.parse(dest, "D.ttl") ;
         graph.getTriples().forEach(System.out::println) ;
     }

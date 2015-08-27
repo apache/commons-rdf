@@ -16,11 +16,11 @@
  * limitations under the License.
  */
 
-package org.apache.jena.commons;
+package org.apache.jena.commonsrdf.impl;
 
-import org.apache.jena.graph.Node ;
+import org.apache.jena.graph.Triple ;
 
-public interface JenaCommonsRDF {
-    public Node getNode() ;
+/** Access the Jena triple backing this object */ 
+public interface JenaTriple {
+    public Triple getTriple() ;
 }
-

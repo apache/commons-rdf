@@ -16,10 +16,14 @@
  * limitations under the License.
  */
 
-package org.apache.jena.commons;
+package org.apache.jena.commonsrdf;
 
 import org.apache.commons.rdf.api.* ;
+import org.apache.jena.commonsrdf.impl.JCR_Factory ;
 
+/** RDFTermFactory with Jena-backed objects.
+ *  See {@link JenaCommonsRDF} for other conversions of existing objects. 
+ */
 public class RDFTermFactoryJena implements RDFTermFactory {
     
     @Override
@@ -71,8 +75,7 @@ public class RDFTermFactoryJena implements RDFTermFactory {
     }
 
     @Override
-    public Triple createTriple(BlankNodeOrIRI subject, IRI predicate, 
-                                RDFTerm object) {
+    public Triple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
         return JCR_Factory.createTriple(subject, predicate, object) ;
     }
 

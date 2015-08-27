@@ -16,10 +16,7 @@
  * limitations under the License.
  */
 
-package org.apache.jena.commons;
-
-import static org.apache.jena.commons.JCR_Factory.toJena ;
-import static org.apache.jena.commons.JCR_Factory.fromJena ;
+package org.apache.jena.commonsrdf.impl;
 
 import java.io.StringWriter ;
 import java.util.Iterator ;
@@ -27,11 +24,12 @@ import java.util.stream.Stream ;
 
 import org.apache.commons.rdf.api.* ;
 import org.apache.jena.atlas.iterator.Iter ;
+import org.apache.jena.commonsrdf.JenaCommonsRDF ;
 import org.apache.jena.graph.Node ;
 import org.apache.jena.riot.Lang ;
 import org.apache.jena.riot.RDFDataMgr ;
 
-public class JCR_Graph implements Graph {
+public class JCR_Graph implements Graph, JenaGraph {
 
     private org.apache.jena.graph.Graph graph;
 
@@ -40,35 +38,40 @@ public class JCR_Graph implements Graph {
     }
     
     @Override
-    public void add(Triple triple) { graph.add(JCR_Factory.toJena(triple)); }
+    public org.apache.jena.graph.Graph getGraph() {
+        return graph ;
+    }
+
+    @Override
+    public void add(Triple triple) { graph.add(JenaCommonsRDF.toJena(triple)); }
 
     @Override
     public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) { 
-        graph.add(org.apache.jena.graph.Triple.create(toJena(subject),
-                                                      toJena(predicate),
-                                                      toJena(object)));
+        graph.add(org.apache.jena.graph.Triple.create(JenaCommonsRDF.toJena(subject),
+                                                      JenaCommonsRDF.toJena(predicate),
+                                                      JenaCommonsRDF.toJena(object)));
     }
 
     @Override
     public boolean contains(Triple triple) {
-        return graph.contains(toJena(triple)) ; 
+        return graph.contains(JenaCommonsRDF.toJena(triple)) ; 
     }
 
     @Override
     public boolean contains(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-        return graph.contains(toJena(subject),
-                              toJena(predicate),
-                              toJena(object) );
+        return graph.contains(JenaCommonsRDF.toJena(subject),
+                              JenaCommonsRDF.toJena(predicate),
+                              JenaCommonsRDF.toJena(object) );
     }
 
     @Override
-    public void remove(Triple triple) { graph.delete(JCR_Factory.toJena(triple)); }
+    public void remove(Triple triple) { graph.delete(JenaCommonsRDF.toJena(triple)); }
 
     @Override
     public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-        graph.delete(org.apache.jena.graph.Triple.create(toJena(subject),
-                                                         toJena(predicate),
-                                                         toJena(object)));
+        graph.delete(org.apache.jena.graph.Triple.create(JenaCommonsRDF.toJena(subject),
+                                                         JenaCommonsRDF.toJena(predicate),
+                                                         JenaCommonsRDF.toJena(object)));
     }
 
     @Override
@@ -87,7 +90,7 @@ public class JCR_Graph implements Graph {
     @Override
     public Stream<? extends Triple> getTriples(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
         Iterator<org.apache.jena.graph.Triple> iter = graph.find(toJenaAny(subject),toJenaAny(predicate),toJenaAny(object)) ;
-        Iterator<Triple> iter2 = Iter.map(iter, t-> fromJena(t)) ;
+        Iterator<Triple> iter2 = Iter.map(iter, t-> JenaCommonsRDF.fromJena(t)) ;
         return Iter.asStream(iter2) ;
                         
     }
@@ -95,7 +98,7 @@ public class JCR_Graph implements Graph {
     private Node toJenaAny(RDFTerm term) {
         if ( term == null )
             return Node.ANY ;
-        return toJena(term) ;
+        return JenaCommonsRDF.toJena(term) ;
     }
 
     @Override
