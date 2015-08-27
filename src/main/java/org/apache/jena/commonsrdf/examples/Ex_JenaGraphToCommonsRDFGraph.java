@@ -35,9 +35,8 @@ public class Ex_JenaGraphToCommonsRDFGraph {
         org.apache.jena.graph.Graph jGraph = GraphFactory.createGraphMem() ;
         RDFDataMgr.read(jGraph, "D.ttl") ;
         
-        // "graph" is a 
+        // "graph" is a CommonsRDF graph 
         Graph graph = JenaCommonsRDF.fromJena(jGraph) ;
-        
         
         // Add to CommonsRDF Graph
         RDFTermFactory rft = new RDFTermFactoryJena() ;
