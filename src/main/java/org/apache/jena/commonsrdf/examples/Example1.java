@@ -16,11 +16,13 @@
  * limitations under the License.
  */
 
-package org.apache.jena.commonsrdf;
+package org.apache.jena.commonsrdf.examples;
 
 import org.apache.commons.rdf.api.Graph ;
 import org.apache.commons.rdf.api.RDFTermFactory ;
 import org.apache.jena.atlas.logging.LogCtl ;
+import org.apache.jena.commonsrdf.JenaCommonsRDF ;
+import org.apache.jena.commonsrdf.RDFTermFactoryJena ;
 import org.apache.jena.riot.RDFDataMgr ;
 import org.apache.jena.riot.system.StreamRDF ;
 import org.apache.jena.sparql.graph.GraphFactory ;

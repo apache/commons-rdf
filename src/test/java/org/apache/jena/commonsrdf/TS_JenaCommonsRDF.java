@@ -18,19 +18,24 @@
 
 package org.apache.jena.commonsrdf;
 
-import org.apache.commons.rdf.api.AbstractBlankNodeTest ;
-import org.apache.commons.rdf.api.BlankNode ;
-import org.apache.jena.commonsrdf.impl.JCR_Factory ;
+import org.apache.jena.atlas.logging.LogCtl ;
+import org.junit.BeforeClass ;
+import org.junit.runner.RunWith ;
+import org.junit.runners.Suite ;
 
-public class TestBlankNodeJena extends AbstractBlankNodeTest {
-    @Override
-    protected BlankNode getBlankNode() {
-        return JCR_Factory.createBlankNode() ;
-    }
-    
-    @Override
-    protected BlankNode getBlankNode(String identifier) {
-        return JCR_Factory.createBlankNode(identifier) ;
+@RunWith(Suite.class)
+@Suite.SuiteClasses( {
+    // The tests from commons-rdf
+    TestBlankNodeJena.class
+    , TestGraphJena.class
+    , TestRDFTermFactoryJena.class
+    // Additional tests.
+})
+
+public class TS_JenaCommonsRDF {
+    @BeforeClass public static void beforeClass() {
+        LogCtl.setLog4j();
+        //LogCtl.setWarn("org.apache.jena");
     }
 }
 
