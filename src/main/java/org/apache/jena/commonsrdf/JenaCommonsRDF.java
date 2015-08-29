@@ -19,7 +19,6 @@
 package org.apache.jena.commonsrdf;
 
 import org.apache.commons.rdf.api.* ;
-import org.apache.jena.atlas.lib.NotImplemented ;
 import org.apache.jena.commonsrdf.impl.* ;
 import org.apache.jena.datatypes.RDFDatatype ;
 import org.apache.jena.datatypes.xsd.XSDDatatype ;
@@ -29,13 +28,13 @@ import org.apache.jena.riot.system.StreamRDF ;
 import org.apache.jena.sparql.graph.GraphFactory ;
 
 /** A set of utilities for moving between CommonsRDF and Jena
- * The {@code RDFTermFactory} is {@link RDFTermFactoryJena} for
- * creating CommonsRDF objects backed by Jena.   
-
+ * The {@link RDFTermFactory} for is {@link RDFTermFactoryJena} which
+ * creates CommonsRDF objects backed by Jena.   
+ * <p>
  * This class encapsulates moving between existing object (RDFTerms, Triples, Graphs)
- * if necessary.   
+ * which is usually necessary when working with existing data.   
  * 
- *  @see RDFTermFactoryJena
+ * @see RDFTermFactoryJena
  */
 public class JenaCommonsRDF {
 
@@ -87,22 +86,25 @@ public class JenaCommonsRDF {
         return g ;   
     }
 
-    /** Adapt an existing Jena Node to CommonsRDF. */
+    /** Adapt an existing Jena Node to CommonsRDF {@link RDFTerm}. */
     public static RDFTerm fromJena( Node node) {
         return JCR_Factory.fromJena(node) ;
     }
 
-    /** Adapt an existing Jena Triple to CommonsRDF. */
+    /** Adapt an existing Jena Triple to CommonsRDF {@link Triple}. */
     public static Triple fromJena(org.apache.jena.graph.Triple triple) {
         return JCR_Factory.fromJena(triple) ;
     }
 
-    /** Adapt an existring Jena Graph to CommonsRDF.  This does not take a copy. */  
+    /** Adapt an existring Jena Graph to CommonsRDF {@link Graph}.
+     * This does not take a copy.
+     * Changes to the CommonsRDF Graph are reflected in the jena graph.
+     */    
     public static Graph fromJena(org.apache.jena.graph.Graph graph) {
         return JCR_Factory.fromJena(graph) ;
     }
 
-    /** Convert from Jena to any RDFCommons implementation */
+    /** Convert from Jena {@link Node} to any RDFCommons implementation */
     public static RDFTerm fromJena(RDFTermFactory factory, Node node) {
         if ( node.isURI() )
             return factory.createIRI(node.getURI()) ;
@@ -117,11 +119,10 @@ public class JenaCommonsRDF {
         }
         if ( node.isBlank() )
             return factory.createBlankNode(node.getBlankNodeLabel()) ;
-        //error("Node is not a concrete RDF Term: "+node) ;
-        return null ;
+        throw new ConversionException("Node is not a concrete RDF Term: "+node) ;
     }
 
-    /** Convert from Jena to any RDFCommons implementation */
+    /** Convert from Jena {@link org.apache.jena.graph.Triple} to any RDFCommons implementation */
    public static Triple fromJena(RDFTermFactory factory, org.apache.jena.graph.Triple triple) {
         BlankNodeOrIRI subject = (BlankNodeOrIRI)(fromJena(factory, triple.getSubject())) ;
         IRI predicate = (IRI)(fromJena(factory, triple.getPredicate())) ;
@@ -129,22 +130,21 @@ public class JenaCommonsRDF {
         return factory.createTriple(subject, predicate, object) ;
     }
 
-   /** Convert from Jena to any RDFCommons implementation */
+   /** Convert from Jena to any RDFCommons implementation.
+    *  This is a copy, even if the factory is a RDFTermFactoryJena.
+    *  Use {@link #fromJena(org.apache.jena.graph.Graph)} for a wrapper.
+    */
    public static Graph fromJena(RDFTermFactory factory, org.apache.jena.graph.Graph graph) {
-       if ( factory instanceof RDFTermFactoryJena ) 
-           return JCR_Factory.fromJena(graph) ;
-       throw new NotImplemented() ;
-    //        /return JCR_Factory.fromJena(factory, graph) ;
+       Graph g = factory.createGraph() ;
+       graph.find(Node.ANY, Node.ANY, Node.ANY).forEachRemaining( t-> {
+           g.add(fromJena(factory, t) );
+       }) ;
+       return g ;
    }
-
-   /** Convert from Jena to any RDFCommons implementation */
+   
+   /** Create a {@link StreamRDF} that inserts into any RDFCommons implementation of Graph */
    public static StreamRDF streamJenaToCommonsRDF(RDFTermFactory factory, Graph graph) {
        return new ToGraph(factory, graph) ;
-   }
-
-   /** Convert from Jena to any RDFCommons implementation */
-   public static StreamRDF steramJenaToCommonsRDF(Graph graph) {
-       return streamJenaToCommonsRDF(new RDFTermFactoryJena(), graph) ;
    }
 
    public static void conversionError(String msg) {

@@ -23,6 +23,8 @@ import org.apache.jena.commonsrdf.impl.JCR_Factory ;
 
 /** RDFTermFactory with Jena-backed objects.
  *  See {@link JenaCommonsRDF} for other conversions of existing objects. 
+ *  
+ *  @see RDFTermFactory
  */
 public class RDFTermFactoryJena implements RDFTermFactory {
     
