@@ -69,13 +69,13 @@ which is also [mirrored to GitHub](http://github.com/apache/incubator-commonsrdf
 
 **Apache Commons RDF 0.1.0-incubating** was published on 2015-05-15, and is available for download
 from official mirrors of the
-ASF Distribution Directory [incubator/commonsrdf](https://www.apache.org/dyn/closer.cgi/incubator/commonsrdf/0.1.0-incubating/):
+ASF Distribution Directory [incubator/commonsrdf](https://www.apache.org/dyn/closer.lua/incubator/commonsrdf/0.1.0-incubating/):
 
-* [apache-commons-rdf-0.1.0-incubating-src.zip](https://www.apache.org/dyn/closer.cgi/incubator/commonsrdf/0.1.0-incubating/apache-commons-rdf-0.1.0-incubating-src.zip)
+* [apache-commons-rdf-0.1.0-incubating-src.zip](https://www.apache.org/dyn/closer.lua/incubator/commonsrdf/0.1.0-incubating/apache-commons-rdf-0.1.0-incubating-src.zip)
   ([asc](https://dist.apache.org/repos/dist/release/incubator/commonsrdf/0.1.0-incubating/apache-commons-rdf-0.1.0-incubating-src.zip.asc),
   [md5](https://dist.apache.org/repos/dist/release/incubator/commonsrdf/0.1.0-incubating/apache-commons-rdf-0.1.0-incubating-src.zip.md5),
   [sha1](https://dist.apache.org/repos/dist/release/incubator/commonsrdf/0.1.0-incubating/apache-commons-rdf-0.1.0-incubating-src.zip.sha1))
-* [apache-commons-rdf-0.1.0-incubating-src.tar.gz](https://www.apache.org/dyn/closer.cgi/incubator/commonsrdf/0.1.0-incubating/apache-commons-rdf-0.1.0-incubating-src.tar.gz)
+* [apache-commons-rdf-0.1.0-incubating-src.tar.gz](https://www.apache.org/dyn/closer.lua/incubator/commonsrdf/0.1.0-incubating/apache-commons-rdf-0.1.0-incubating-src.tar.gz)
   ([asc](https://dist.apache.org/repos/dist/release/incubator/commonsrdf/0.1.0-incubating/apache-commons-rdf-0.1.0-incubating-src.tar.gz.asc),
   [md5](https://dist.apache.org/repos/dist/release/incubator/commonsrdf/0.1.0-incubating//apache-commons-rdf-0.1.0-incubating-src.tar.gz.md5),
   [sha1](https://dist.apache.org/repos/dist/release/incubator/commonsrdf/0.1.0-incubating/apache-commons-rdf-0.1.0-incubating-src.tar.gz.sha1))
