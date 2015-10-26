@@ -84,7 +84,7 @@ See the the [user guide](userguide.html) for examples of how to interact with th
 
 ## Modules
 
-The project is actually composed by two modules:
+The project is composed by two modules:
 
 * [API](apidocs/index.html?org/apache/commons/rdf/api/package-summary.html) defines 
   a common library of RDF 1.1 concepts.
@@ -95,6 +95,10 @@ The project is actually composed by two modules:
 Following [semantic versioning](http://semver.org/) both modules follow a common 
 versioning schema, where version `x.y.z` of `Simple` implements version `x.y` of
 the `API`; i.e., the version `z` are backwards-compatible patches of the implementation.
+
+External [implementations of the Commons RDF API](implementations.html) are
+being developed as part of their retrospective projects.
+
 
 ## Contributing
 

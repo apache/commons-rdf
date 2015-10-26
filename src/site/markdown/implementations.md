@@ -60,16 +60,23 @@ RDFTermFactory rdfTermFactory = new SimpleRDFTermFactory();
 The information in this section should not be considered updated or
 authorative as it relies on external project planning.
 
+Feel free to [suggest changes](http://commonsrdf.incubator.apache.org/contributing.html) to the
+[source code for this page](https://github.com/apache/incubator-commonsrdf/blob/master/src/site/markdown/implementations.md).
+
+
 
 ### Apache Jena
 
 [Apache Jena](http://jena.apache.org/) is considering a compatibility interface
-that provides and consumes Commons RDF objects.
+that provides and consumes Commons RDF objects 
+([JENA-1015](https://issues.apache.org/jira/browse/JENA-1015)).
+
 
 ### RDF4j Sesame
 
-[Sesame](http://rdf4j.org/) is evaluating Commons RDF as a basis for its
-next version.
+[Sesame](http://rdf4j.org/) is planning to support Commons RDF
+([SES-2091](https://openrdf.atlassian.net/browse/SES-2091)).
+
 
 ### Apache Clerezza
 
@@ -77,4 +84,10 @@ next version.
 aligning its [RDF core](https://github.com/apache/clerezza-rdf-core) module
 with Commons RDF.
 
+
+### OWL API
+
+[OWL API](http://owlapi.sourceforge.net/) is considering the
+[pull request #446](https://github.com/owlcs/owlapi/pull/446) for 
+integration with Commons RDF in OWLAPI 5.
 

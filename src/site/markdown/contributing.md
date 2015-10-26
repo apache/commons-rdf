@@ -31,6 +31,7 @@ use cases.
 You can contribute to Apache Commons RDF in many ways:
 
  * Participate in the design discussions on [dev@commonsrdf](mail-lists.html)
+ * Implement the Commons RDF API in your own [implementation](implementations.html)
  * Raise an [issue](https://issues.apache.org/jira/browse/COMMONSRDF)
  * Raise a [pull request](https://github.com/apache/incubator-commonsrdf/pulls) to:
     + Contribute new [tests](https://github.com/apache/incubator-commonsrdf/tree/master/api/src/test/java/org/apache/commons/rdf/api)   
