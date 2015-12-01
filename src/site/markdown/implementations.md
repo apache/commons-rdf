@@ -88,6 +88,7 @@ with Commons RDF.
 ### OWL API
 
 [OWL API](http://owlapi.sourceforge.net/) is considering the integration with 
-Commons RDF in OWLAPI 5 (~~[pull request #446](https://github.com/owlcs/owlapi/pull/446)~~,
-[pull request #452](https://github.com/owlcs/owlapi/issues/452)).
+Commons RDF in OWLAPI 5 
+(<strike>[pull request #446](https://github.com/owlcs/owlapi/pull/446)</strike>,
+[pull request #452](https://github.com/owlcs/owlapi/pull/452)).
 
