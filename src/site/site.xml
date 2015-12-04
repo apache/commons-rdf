@@ -55,6 +55,7 @@
     <menu name="Project">
       <item name="Home"                 href="/index.html" />
       <item name="API"                  href="/apidocs/index.html?org/apache/commons/rdf/api/package-summary.html" />
+      <item name="Implementations"      href="/implementations.html" />
       <item name="User Guide"           href="/userguide.html" />       
       <item name="Download"             href="/download.html" />
       <item name="Contributing"         href="/contributing.html" />
