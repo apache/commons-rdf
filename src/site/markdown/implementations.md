@@ -29,14 +29,14 @@ implementations.
 
 [org.apache.commons.rdf.simple](apidocs/org/apache/commons/rdf/simple/package-summary.html)
 is maintained as part of Commons RDF, and its main purpose is to verify and
-clarify the [test harness](testapidocs/org/apache/commons/rdf/api/package-summary.html). 
+clarify the [test harness](testapidocs/org/apache/commons/rdf/api/package-summary.html).
 It is backed by simple (if not naive) in-memory POJO objects and have no external
 dependencies.
 
 Note that although this module fully implements the commons-rdf API, it should
 **not** be considered as a reference implementation. It is **not thread-safe** and
 probably **not scalable**, however it may be useful for testing and simple
-usage (e.g. prototyping). 
+usage (e.g. prototyping).
 
 **Usage:**
 
@@ -49,16 +49,18 @@ usage (e.g. prototyping).
 ```
 
 ```java
+import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.RDFTermFactory;
 import org.apache.commons.rdf.simple.SimpleRDFTermFactory;
 
 RDFTermFactory rdfTermFactory = new SimpleRDFTermFactory();
+Graph graph = rdfTermFactory.createGraph();
 ```
 
 ## Planned implementations
 
 The information in this section should not be considered updated or
-authorative as it relies on external project planning.
+authoritative as it relies on external project planning.
 
 Feel free to [suggest changes](http://commonsrdf.incubator.apache.org/contributing.html) to the
 [source code for this page](https://github.com/apache/incubator-commonsrdf/blob/master/src/site/markdown/implementations.md).
@@ -68,7 +70,7 @@ Feel free to [suggest changes](http://commonsrdf.incubator.apache.org/contributi
 ### Apache Jena
 
 [Apache Jena](http://jena.apache.org/) is considering a compatibility interface
-that provides and consumes Commons RDF objects 
+that provides and consumes Commons RDF objects
 ([JENA-1015](https://issues.apache.org/jira/browse/JENA-1015)).
 
 
@@ -80,15 +82,14 @@ that provides and consumes Commons RDF objects
 
 ### Apache Clerezza
 
-[Apache Clerezza](https://clerezza.apache.org/) is 
+[Apache Clerezza](https://clerezza.apache.org/) is
 aligning its [RDF core](https://github.com/apache/clerezza-rdf-core) module
 with Commons RDF.
 
 
 ### OWL API
 
-[OWL API](http://owlapi.sourceforge.net/) is considering the integration with 
-Commons RDF in OWLAPI 5 
+[OWL API](http://owlapi.sourceforge.net/) is considering the integration with
+Commons RDF in OWLAPI 5
 (<strike>[pull request #446](https://github.com/owlcs/owlapi/pull/446)</strike>,
 [pull request #452](https://github.com/owlcs/owlapi/pull/452)).
-
