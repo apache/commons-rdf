@@ -15,7 +15,8 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <ver.commonsrdf>0.1.0-incubating</ver.commonsrdf>
+    <ver.commonsrdf>0.2.0-incubating-SNAPSHOT</ver.commonsrdf>
+    <ver.jena>3.0.1</ver.jena>
   </properties>
 
   <licenses>
@@ -46,7 +47,7 @@
     <dependency>
       <groupId>org.apache.jena</groupId>
       <artifactId>apache-jena-libs</artifactId>
-      <version>3.0.0</version>
+      <version>${ver.jena}</version>
       <type>pom</type>
     </dependency>
 
