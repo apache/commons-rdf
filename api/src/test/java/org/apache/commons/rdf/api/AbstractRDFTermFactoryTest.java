@@ -126,8 +126,8 @@ public abstract class AbstractRDFTermFactoryTest {
         }
         //
         assertNotEquals(bnode1, differentFactory);
-        assertNotEquals(bnode1.internalIdentifier(),
-                differentFactory.internalIdentifier());
+        assertNotEquals(bnode1.uniqueReference(),
+                differentFactory.uniqueReference());
         // but not
         //assertNotEquals(bnode1.ntriplesString(), differentFactory.ntriplesString());
     }
