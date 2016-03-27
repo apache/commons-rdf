@@ -20,7 +20,10 @@ package org.apache.commons.rdf.api;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.Locale;
+import java.util.concurrent.Future;
 
 /**
  * Builder for parsing an RDF source into a Graph.
@@ -32,10 +35,10 @@ import java.nio.file.Path;
  * <code>source</code> methods before calling {@link #parse()} on the returned
  * RDFParserBuilder.
  * <p>
- * It is undefined if a RDFParserBuilder is mutable or thread-safe, callers
+ * It is undefined if a RDFParserBuilder is mutable or thread-safe, so callers
  * should always use the returned modified RDFParserBuilder from the builder
- * methods. The builder may return its own mutated instance, or a cloned builder
- * with the modified setting.
+ * methods. The builder may return itself, or a cloned builder with the modified
+ * settings applied.
  * <p>
  * Example usage:
  * </p>
@@ -70,7 +73,10 @@ public interface RDFParserBuilder {
 	 * This option can be used to select the RDFSyntax of the source, overriding
 	 * any <code>Content-Type</code> headers or equivalent.
 	 * <p>
-	 * If the content type is a 
+	 * The character set of the RDFSyntax is assumed to be
+	 * {@link StandardCharsets#UTF_8} unless overridden within the document
+	 * (e.g. <?xml version="1.0" encoding="iso-8859-1"?></code> in
+	 * {@link RDFSyntax#RDFXML}).
 	 * <p>
 	 * This method will override any contentType set with
 	 * {@link #contentType(String)}.
@@ -93,12 +99,20 @@ public interface RDFParserBuilder {
 	 * This option can be used to select the RDFSyntax of the source, overriding
 	 * any <code>Content-Type</code> headers or equivalent.
 	 * <p>
+	 * The content type MAY include a <code>charset</code> parameter if the RDF
+	 * media types which permit it; if <code>charset</code> is not specified the
+	 * default is {@link StandardCharsets#UTF_8} unless overridden within the
+	 * document.
+	 * <p>
 	 * This method will override any contentType set with
 	 * {@link #contentType(RDFSyntax)}.
 	 * 
 	 * @see #contentType(RDFSyntax)
 	 * @param contentType
-	 *            A content-type string, e.g. <code>text/turtle</code>
+	 *            A content-type string, e.g. <code>application/ld+json</code>
+	 *            or <code>text/turtle;charset="UTF-8"</code> as specified by
+	 *            <a href="https://tools.ietf.org/html/rfc7231#section-3.1.1.1">
+	 *            RFC7231</a>.
 	 * @throws IllegalArgumentException
 	 *             If this RDFParserBuilder does not support the specified
 	 *             content-type, or it has an invalid syntax.
@@ -110,31 +124,35 @@ public interface RDFParserBuilder {
 	/**
 	 * Specify which {@link Graph} to add triples into.
 	 * <p>
-	 * The default if this option has not been set is that 
-	 * each call to {@link #parse()} will return a new {@link Graph} (created using
+	 * The default if this option has not been set is that each call to
+	 * {@link #parse()} will return a new {@link Graph} (created using
 	 * {@link RDFTermFactory#createGraph() if #rdfTermFactory(RDFTermFactory)
 	 * has been set).
 	 * 
-	 * @param graph The {@link Graph} to add triples into.
-	 * @return An {@link RDFParserBuilder} that will insert triples into the specified graph.
+	 * @param graph
+	 *            The {@link Graph} to add triples into.
+	 * @return An {@link RDFParserBuilder} that will insert triples into the
+	 *         specified graph.
 	 */
 	RDFParserBuilder intoGraph(Graph graph);
 
 	/**
 	 * Specify a base IRI to use for parsing any relative IRI references.
 	 * <p>
-	 * Setting this option will override any protocol-specific base IRI 
-	 * (e.g. <code>Content-Location</code> header) or the {@link #source(URL)} URL, 
-	 * but does not override any base IRIs set within the source document
-	 * (e.g. <code>@base</code> in Turtle documents).
+	 * Setting this option will override any protocol-specific base IRI (e.g.
+	 * <code>Content-Location</code> header) or the {@link #source(URL)} URL,
+	 * but does not override any base IRIs set within the source document (e.g.
+	 * <code>@base</code> in Turtle documents).
 	 * <p>
-	 * If the source is in a syntax that does not support relative IRI references, 
-	 * e.g. {@link RDFSyntax#NTRIPLES}, setting the base has no effect.
+	 * If the source is in a syntax that does not support relative IRI
+	 * references, e.g. {@link RDFSyntax#NTRIPLES}, setting the base has no
+	 * effect.
 	 * <p>
 	 * This method will override any base IRI set with {@link #base(String)}.
 	 *
 	 * @see #base(String)
-	 * @param base An absolute IRI to use as a base
+	 * @param base
+	 *            An absolute IRI to use as a base
 	 * @return An {@link RDFParserBuilder} that will use the specified base IRI
 	 */
 	RDFParserBuilder base(IRI base);
@@ -142,38 +160,50 @@ public interface RDFParserBuilder {
 	/**
 	 * Specify a base IRI to use for parsing any relative IRI references.
 	 * <p>
-	 * Setting this option will override any protocol-specific base IRI 
-	 * (e.g. <code>Content-Location</code> header) or the {@link #source(URL)} URL, 
-	 * but does not override any base IRIs set within the source document
-	 * (e.g. <code>@base</code> in Turtle documents).
+	 * Setting this option will override any protocol-specific base IRI (e.g.
+	 * <code>Content-Location</code> header) or the {@link #source(URL)} URL,
+	 * but does not override any base IRIs set within the source document (e.g.
+	 * <code>@base</code> in Turtle documents).
 	 * <p>
-	 * If the source is in a syntax that does not support relative IRI references, 
-	 * e.g. {@link RDFSyntax#NTRIPLES}, setting the base has no effect.
+	 * If the source is in a syntax that does not support relative IRI
+	 * references, e.g. {@link RDFSyntax#NTRIPLES}, setting the base has no
+	 * effect.
 	 * <p>
 	 * This method will override any base IRI set with {@link #base(IRI)}.
 	 *
 	 * @see #base(IRI)
-	 * @param base An absolute IRI to use as a base
+	 * @param base
+	 *            An absolute IRI to use as a base
 	 * @return An {@link RDFParserBuilder} that will use the specified base IRI
-	 */	
+	 */
 	RDFParserBuilder base(String base);
 
 	/**
 	 * Specify a source to parse.
 	 * <p>
-	 * The source set will not be accessed before the call to {@link #parse()}. 
+	 * The source set will not be read before the call to {@link #parse()}.
 	 * <p>
-	 * The InputStream will not be closed after parsing. The
-	 * InputStream does not need to support {@link InputStream#markSupported()}.
+	 * The InputStream will not be closed after parsing. The InputStream does
+	 * not need to support {@link InputStream#markSupported()}. The parser might
+	 * not consume the complete stream (e.g. the parser may not read beyond the
+	 * closing tag of <code>&lt;/rdf:Description&;gt</code>).
 	 * <p>
-	 * The {@link #contentType(RDFSyntax)} SHOULD be set unless the implementation
-	 * supports syntax guessing.
-	 * <p> 
-	 * The {@link #base(IRI)} MUST be set unless the syntax does not permit relative IRIs
-	 * (e.g.  {@link RDFSyntax#NTRIPLES}).
+	 * The {@link #contentType(RDFSyntax)} or {@link #contentType(String)}
+	 * SHOULD be set before calling {@link #parse()}.
+	 * <p>
+	 * The character set is assumed to be {@link StandardCharsets#UTF_8} unless
+	 * the {@link #contentType(String)} specifies otherwise.
+	 * <p>
+	 * The {@link #base(IRI)} or {@link #base(String)} MUST be set before
+	 * calling {@link #parse()}, unless the syntax does not permit relative
+	 * IRIs.
+	 * <p>
+	 * This method will override any source set with {@link #source(IRI)},
+	 * {@link #source(Path)} or {@link #source(String)}.
 	 * 
 	 * @param inputStream
-	 * @return
+	 *            An InputStream to consume
+	 * @return An {@link RDFParserBuilder} that will use the specified source.
 	 */
 	RDFParserBuilder source(InputStream inputStream);
 
@@ -186,7 +216,8 @@ public interface RDFParserBuilder {
 	/**
 	 * Parse the specified source.
 	 * 
-	 * @return The graph containing (at least) the parsed triples.
+	 * @return A Future that will return the graph containing (at least) the
+	 *         parsed triples.
 	 * 
 	 * @throws IOException
 	 *             If an error occurred while reading the source.
@@ -194,5 +225,5 @@ public interface RDFParserBuilder {
 	 *             If the builder is in an invalid state, e.g. a
 	 *             <code>source</code> has not been set.
 	 */
-	Graph parse() throws IOException, IllegalStateException;
+	Future<Graph> parse() throws IOException, IllegalStateException;
 }
