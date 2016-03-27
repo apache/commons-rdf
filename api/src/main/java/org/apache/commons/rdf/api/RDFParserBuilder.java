@@ -19,10 +19,8 @@ package org.apache.commons.rdf.api;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.util.Locale;
 import java.util.concurrent.Future;
 
 /**
@@ -126,7 +124,8 @@ public interface RDFParserBuilder {
 	 * <p>
 	 * The default if this option has not been set is that each call to
 	 * {@link #parse()} will return a new {@link Graph} (created using
-	 * {@link RDFTermFactory#createGraph() if #rdfTermFactory(RDFTermFactory)
+	 * {@link RDFTermFactory#createGraph()} 
+	 * if {@link #rdfTermFactory(RDFTermFactory)}
 	 * has been set).
 	 * 
 	 * @param graph
@@ -140,7 +139,7 @@ public interface RDFParserBuilder {
 	 * Specify a base IRI to use for parsing any relative IRI references.
 	 * <p>
 	 * Setting this option will override any protocol-specific base IRI (e.g.
-	 * <code>Content-Location</code> header) or the {@link #source(URL)} URL,
+	 * <code>Content-Location</code> header) or the {@link #source(IRI)} IRI,
 	 * but does not override any base IRIs set within the source document (e.g.
 	 * <code>@base</code> in Turtle documents).
 	 * <p>
@@ -161,7 +160,7 @@ public interface RDFParserBuilder {
 	 * Specify a base IRI to use for parsing any relative IRI references.
 	 * <p>
 	 * Setting this option will override any protocol-specific base IRI (e.g.
-	 * <code>Content-Location</code> header) or the {@link #source(URL)} URL,
+	 * <code>Content-Location</code> header) or the {@link #source(IRI)} IRI,
 	 * but does not override any base IRIs set within the source document (e.g.
 	 * <code>@base</code> in Turtle documents).
 	 * <p>
