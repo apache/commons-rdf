@@ -145,15 +145,15 @@ public interface RDFParserBuilder {
 	 * <code>@base</code> in Turtle documents).
 	 * <p>
 	 * If the source is in a syntax that does not support relative IRI
-	 * references, e.g. {@link RDFSyntax#NTRIPLES}, setting the base has no
-	 * effect.
+	 * references (e.g. {@link RDFSyntax#NTRIPLES}), setting the 
+	 * <code>base</code> has no effect.
 	 * <p>
 	 * This method will override any base IRI set with {@link #base(String)}.
 	 *
 	 * @see #base(String)
 	 * @param base
-	 *            An absolute IRI to use as a base
-	 * @return An {@link RDFParserBuilder} that will use the specified base IRI
+	 *            An absolute IRI to use as a base.
+	 * @return An {@link RDFParserBuilder} that will use the specified base IRI.
 	 */
 	RDFParserBuilder base(IRI base);
 
@@ -166,37 +166,41 @@ public interface RDFParserBuilder {
 	 * <code>@base</code> in Turtle documents).
 	 * <p>
 	 * If the source is in a syntax that does not support relative IRI
-	 * references, e.g. {@link RDFSyntax#NTRIPLES}, setting the base has no
-	 * effect.
+	 * references (e.g. {@link RDFSyntax#NTRIPLES}), setting the 
+	 * <code>base</code> has no effect.
 	 * <p>
 	 * This method will override any base IRI set with {@link #base(IRI)}.
 	 *
 	 * @see #base(IRI)
 	 * @param base
-	 *            An absolute IRI to use as a base
-	 * @return An {@link RDFParserBuilder} that will use the specified base IRI
+	 *            An absolute IRI to use as a base.
+	 * @return An {@link RDFParserBuilder} that will use the specified base IRI.
 	 */
 	RDFParserBuilder base(String base);
 
 	/**
-	 * Specify a source to parse.
+	 * Specify a source {@link InputStream} to parse.
 	 * <p>
 	 * The source set will not be read before the call to {@link #parse()}.
 	 * <p>
 	 * The InputStream will not be closed after parsing. The InputStream does
-	 * not need to support {@link InputStream#markSupported()}. The parser might
-	 * not consume the complete stream (e.g. the parser may not read beyond the
-	 * closing tag of <code>&lt;/rdf:Description&;gt</code>).
+	 * not need to support {@link InputStream#markSupported()}. 
+	 * <p>
+	 * The parser might
+	 * not consume the complete stream (e.g. an RDF/XML parser may not read beyond the
+	 * closing tag of <code>&lt;/rdf:Description&gt;</code>).
 	 * <p>
 	 * The {@link #contentType(RDFSyntax)} or {@link #contentType(String)}
 	 * SHOULD be set before calling {@link #parse()}.
 	 * <p>
 	 * The character set is assumed to be {@link StandardCharsets#UTF_8} unless
-	 * the {@link #contentType(String)} specifies otherwise.
+	 * the {@link #contentType(String)} specifies otherwise or the document
+	 * declares its own charset (e.g. RDF/XML with a 
+	 * <code>&lt;?xml encoding="iso-8859-1"&gt;</code> header).
 	 * <p>
 	 * The {@link #base(IRI)} or {@link #base(String)} MUST be set before
-	 * calling {@link #parse()}, unless the syntax does not permit relative
-	 * IRIs.
+	 * calling {@link #parse()}, unless the RDF syntax does not permit relative
+	 * IRIs (e.g. {@link RDFSyntax#NTRIPLES}).
 	 * <p>
 	 * This method will override any source set with {@link #source(IRI)},
 	 * {@link #source(Path)} or {@link #source(String)}.
@@ -207,10 +211,96 @@ public interface RDFParserBuilder {
 	 */
 	RDFParserBuilder source(InputStream inputStream);
 
+	/**
+	 * Specify a source file {@link Path} to parse.
+	 * <p>
+	 * The source set will not be read before the call to {@link #parse()}.
+	 * <p>
+	 * The {@link #contentType(RDFSyntax)} or {@link #contentType(String)}
+	 * SHOULD be set before calling {@link #parse()}. 
+	 * <p>
+	 * The character set is assumed to be {@link StandardCharsets#UTF_8} unless
+	 * the {@link #contentType(String)} specifies otherwise or the document
+	 * declares its own charset (e.g. RDF/XML with a 
+	 * <code>&lt;?xml encoding="iso-8859-1"&gt;</code> header).
+	 * <p>
+	 * The {@link #base(IRI)} or {@link #base(String)} MAY be set before
+	 * calling {@link #parse()}, otherwise {@link Path#toUri()} will be used
+	 * as the base IRI.
+	 * <p>
+	 * This method will override any source set with {@link #source(IRI)},
+	 * {@link #source(InputStream)} or {@link #source(String)}.
+	 * 
+	 * @param file
+	 *            A Path for a file to parse
+	 * @return An {@link RDFParserBuilder} that will use the specified source.
+	 */
 	RDFParserBuilder source(Path file);
 
+	/**
+	 * Specify an absolute source {@link IRI} to retrieve and parse.
+	 * <p>
+	 * The source set will not be read before the call to {@link #parse()}.
+	 * <p>
+	 * If this builder does not support the given IRI 
+	 * (e.g. <code>urn:uuid:ce667463-c5ab-4c23-9b64-701d055c4890</code>),
+	 * this method should succeed, while the {@link #parse()} should 
+	 * throw an {@link IOException}. 
+	 * <p>
+	 * The {@link #contentType(RDFSyntax)} or {@link #contentType(String)}
+	 * MAY be set before calling {@link #parse()}, in which case that
+	 * type MAY be used for content negotiation (e.g. <code>Accept</code> header in HTTP),
+	 * and SHOULD be used for selecting the RDFSyntax.
+	 * <p>
+	 * The character set is assumed to be {@link StandardCharsets#UTF_8} unless
+	 * the protocol's equivalent of <code>Content-Type</code> specifies otherwise or
+	 * the document declares its own charset (e.g. RDF/XML with a 
+	 * <code>&lt;?xml encoding="iso-8859-1"&gt;</code> header).
+	 * <p>
+	 * The {@link #base(IRI)} or {@link #base(String)} MAY be set before
+	 * calling {@link #parse()}, otherwise the source IRI will be used
+	 * as the base IRI.
+	 * <p>
+	 * This method will override any source set with {@link #source(Path)},
+	 * {@link #source(InputStream)} or {@link #source(String)}.
+	 * 
+	 * @param iri
+	 *            An IRI to retrieve and parse
+	 * @return An {@link RDFParserBuilder} that will use the specified source.
+	 */
 	RDFParserBuilder source(IRI iri);
 
+	/**
+	 * Specify an absolute source IRI to retrieve and parse.
+	 * <p>
+	 * The source set will not be read before the call to {@link #parse()}.
+	 * <p>
+	 * If this builder does not support the given IRI 
+	 * (e.g. <code>urn:uuid:ce667463-c5ab-4c23-9b64-701d055c4890</code>),
+	 * this method should succeed, while the {@link #parse()} should 
+	 * throw an {@link IOException}. 
+	 * <p>
+	 * The {@link #contentType(RDFSyntax)} or {@link #contentType(String)}
+	 * MAY be set before calling {@link #parse()}, in which case that
+	 * type MAY be used for content negotiation (e.g. <code>Accept</code> header in HTTP),
+	 * and SHOULD be used for selecting the RDFSyntax.
+	 * <p>
+	 * The character set is assumed to be {@link StandardCharsets#UTF_8} unless
+	 * the protocol's equivalent of <code>Content-Type</code> specifies otherwise or
+	 * the document declares its own charset (e.g. RDF/XML with a 
+	 * <code>&lt;?xml encoding="iso-8859-1"&gt;</code> header).
+	 * <p>
+	 * The {@link #base(IRI)} or {@link #base(String)} MAY be set before
+	 * calling {@link #parse()}, otherwise the source IRI will be used
+	 * as the base IRI.
+	 * <p>
+	 * This method will override any source set with {@link #source(Path)},
+	 * {@link #source(InputStream)} or {@link #source(IRI)}.
+	 * 
+	 * @param iri
+	 *            An IRI to retrieve and parse
+	 * @return An {@link RDFParserBuilder} that will use the specified source.
+	 */	
 	RDFParserBuilder source(String iri);
 
 	/**
