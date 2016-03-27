@@ -29,9 +29,8 @@ import java.util.concurrent.Future;
  * This interface follows the
  * <a href="https://en.wikipedia.org/wiki/Builder_pattern">Builder pattern</a>,
  * allowing to set parser settings like {@link #contentType(RDFSyntax)} and
- * {@link #base(IRI)}. A caller MUST call one of the
- * {@link #source(IRI)} methods before calling {@link #parse()} on the returned
- * RDFParserBuilder.
+ * {@link #base(IRI)}. A caller MUST call one of the {@link #source(IRI)}
+ * methods before calling {@link #parse()} on the returned RDFParserBuilder.
  * <p>
  * It is undefined if a RDFParserBuilder is mutable or thread-safe, so callers
  * should always use the returned modified RDFParserBuilder from the builder
@@ -98,9 +97,8 @@ public interface RDFParserBuilder {
 	 * any <code>Content-Type</code> headers or equivalent.
 	 * <p>
 	 * The content type MAY include a <code>charset</code> parameter if the RDF
-	 * media types permit it; the default charset 
-	 * is {@link StandardCharsets#UTF_8} unless overridden within the
-	 * document.
+	 * media types permit it; the default charset is
+	 * {@link StandardCharsets#UTF_8} unless overridden within the document.
 	 * <p>
 	 * This method will override any contentType set with
 	 * {@link #contentType(RDFSyntax)}.
@@ -112,9 +110,8 @@ public interface RDFParserBuilder {
 	 *            <a href="https://tools.ietf.org/html/rfc7231#section-3.1.1.1">
 	 *            RFC7231</a>.
 	 * @throws IllegalArgumentException
-	 *             If the contentType has an invalid syntax, 
-	 *             or this RDFParserBuilder does not support the specified
-	 *             contentType.
+	 *             If the contentType has an invalid syntax, or this
+	 *             RDFParserBuilder does not support the specified contentType.
 	 * @return An {@link RDFParserBuilder} that will use the specified content
 	 *         type.
 	 */
@@ -125,9 +122,8 @@ public interface RDFParserBuilder {
 	 * <p>
 	 * The default (if this option has not been set) is that each call to
 	 * {@link #parse()} return a new {@link Graph}, which is created using
-	 * {@link RDFTermFactory#createGraph()} 
-	 * if {@link #rdfTermFactory(RDFTermFactory)}
-	 * has been set.
+	 * {@link RDFTermFactory#createGraph()} if
+	 * {@link #rdfTermFactory(RDFTermFactory)} has been set.
 	 * 
 	 * @param graph
 	 *            The {@link Graph} to add triples into.
@@ -145,7 +141,7 @@ public interface RDFParserBuilder {
 	 * <code>@base</code> in Turtle documents).
 	 * <p>
 	 * If the source is in a syntax that does not support relative IRI
-	 * references (e.g. {@link RDFSyntax#NTRIPLES}), setting the 
+	 * references (e.g. {@link RDFSyntax#NTRIPLES}), setting the
 	 * <code>base</code> has no effect.
 	 * <p>
 	 * This method will override any base IRI set with {@link #base(String)}.
@@ -166,7 +162,7 @@ public interface RDFParserBuilder {
 	 * <code>@base</code> in Turtle documents).
 	 * <p>
 	 * If the source is in a syntax that does not support relative IRI
-	 * references (e.g. {@link RDFSyntax#NTRIPLES}), setting the 
+	 * references (e.g. {@link RDFSyntax#NTRIPLES}), setting the
 	 * <code>base</code> has no effect.
 	 * <p>
 	 * This method will override any base IRI set with {@link #base(IRI)}.
@@ -184,18 +180,18 @@ public interface RDFParserBuilder {
 	 * The source set will not be read before the call to {@link #parse()}.
 	 * <p>
 	 * The InputStream will not be closed after parsing. The InputStream does
-	 * not need to support {@link InputStream#markSupported()}. 
+	 * not need to support {@link InputStream#markSupported()}.
 	 * <p>
-	 * The parser might
-	 * not consume the complete stream (e.g. an RDF/XML parser may not read beyond the
-	 * closing tag of <code>&lt;/rdf:Description&gt;</code>).
+	 * The parser might not consume the complete stream (e.g. an RDF/XML parser
+	 * may not read beyond the closing tag of
+	 * <code>&lt;/rdf:Description&gt;</code>).
 	 * <p>
 	 * The {@link #contentType(RDFSyntax)} or {@link #contentType(String)}
 	 * SHOULD be set before calling {@link #parse()}.
 	 * <p>
 	 * The character set is assumed to be {@link StandardCharsets#UTF_8} unless
 	 * the {@link #contentType(String)} specifies otherwise or the document
-	 * declares its own charset (e.g. RDF/XML with a 
+	 * declares its own charset (e.g. RDF/XML with a
 	 * <code>&lt;?xml encoding="iso-8859-1"&gt;</code> header).
 	 * <p>
 	 * The {@link #base(IRI)} or {@link #base(String)} MUST be set before
@@ -217,16 +213,16 @@ public interface RDFParserBuilder {
 	 * The source set will not be read before the call to {@link #parse()}.
 	 * <p>
 	 * The {@link #contentType(RDFSyntax)} or {@link #contentType(String)}
-	 * SHOULD be set before calling {@link #parse()}. 
+	 * SHOULD be set before calling {@link #parse()}.
 	 * <p>
 	 * The character set is assumed to be {@link StandardCharsets#UTF_8} unless
 	 * the {@link #contentType(String)} specifies otherwise or the document
-	 * declares its own charset (e.g. RDF/XML with a 
+	 * declares its own charset (e.g. RDF/XML with a
 	 * <code>&lt;?xml encoding="iso-8859-1"&gt;</code> header).
 	 * <p>
-	 * The {@link #base(IRI)} or {@link #base(String)} MAY be set before
-	 * calling {@link #parse()}, otherwise {@link Path#toUri()} will be used
-	 * as the base IRI.
+	 * The {@link #base(IRI)} or {@link #base(String)} MAY be set before calling
+	 * {@link #parse()}, otherwise {@link Path#toUri()} will be used as the base
+	 * IRI.
 	 * <p>
 	 * This method will override any source set with {@link #source(IRI)},
 	 * {@link #source(InputStream)} or {@link #source(String)}.
@@ -242,24 +238,23 @@ public interface RDFParserBuilder {
 	 * <p>
 	 * The source set will not be read before the call to {@link #parse()}.
 	 * <p>
-	 * If this builder does not support the given IRI 
-	 * (e.g. <code>urn:uuid:ce667463-c5ab-4c23-9b64-701d055c4890</code>),
-	 * this method should succeed, while the {@link #parse()} should 
-	 * throw an {@link IOException}. 
+	 * If this builder does not support the given IRI (e.g.
+	 * <code>urn:uuid:ce667463-c5ab-4c23-9b64-701d055c4890</code>), this method
+	 * should succeed, while the {@link #parse()} should throw an
+	 * {@link IOException}.
 	 * <p>
-	 * The {@link #contentType(RDFSyntax)} or {@link #contentType(String)}
-	 * MAY be set before calling {@link #parse()}, in which case that
-	 * type MAY be used for content negotiation (e.g. <code>Accept</code> header in HTTP),
+	 * The {@link #contentType(RDFSyntax)} or {@link #contentType(String)} MAY
+	 * be set before calling {@link #parse()}, in which case that type MAY be
+	 * used for content negotiation (e.g. <code>Accept</code> header in HTTP),
 	 * and SHOULD be used for selecting the RDFSyntax.
 	 * <p>
 	 * The character set is assumed to be {@link StandardCharsets#UTF_8} unless
-	 * the protocol's equivalent of <code>Content-Type</code> specifies otherwise or
-	 * the document declares its own charset (e.g. RDF/XML with a 
+	 * the protocol's equivalent of <code>Content-Type</code> specifies
+	 * otherwise or the document declares its own charset (e.g. RDF/XML with a
 	 * <code>&lt;?xml encoding="iso-8859-1"&gt;</code> header).
 	 * <p>
-	 * The {@link #base(IRI)} or {@link #base(String)} MAY be set before
-	 * calling {@link #parse()}, otherwise the source IRI will be used
-	 * as the base IRI.
+	 * The {@link #base(IRI)} or {@link #base(String)} MAY be set before calling
+	 * {@link #parse()}, otherwise the source IRI will be used as the base IRI.
 	 * <p>
 	 * This method will override any source set with {@link #source(Path)},
 	 * {@link #source(InputStream)} or {@link #source(String)}.
@@ -275,24 +270,23 @@ public interface RDFParserBuilder {
 	 * <p>
 	 * The source set will not be read before the call to {@link #parse()}.
 	 * <p>
-	 * If this builder does not support the given IRI 
-	 * (e.g. <code>urn:uuid:ce667463-c5ab-4c23-9b64-701d055c4890</code>),
-	 * this method should succeed, while the {@link #parse()} should 
-	 * throw an {@link IOException}. 
+	 * If this builder does not support the given IRI (e.g.
+	 * <code>urn:uuid:ce667463-c5ab-4c23-9b64-701d055c4890</code>), this method
+	 * should succeed, while the {@link #parse()} should throw an
+	 * {@link IOException}.
 	 * <p>
-	 * The {@link #contentType(RDFSyntax)} or {@link #contentType(String)}
-	 * MAY be set before calling {@link #parse()}, in which case that
-	 * type MAY be used for content negotiation (e.g. <code>Accept</code> header in HTTP),
+	 * The {@link #contentType(RDFSyntax)} or {@link #contentType(String)} MAY
+	 * be set before calling {@link #parse()}, in which case that type MAY be
+	 * used for content negotiation (e.g. <code>Accept</code> header in HTTP),
 	 * and SHOULD be used for selecting the RDFSyntax.
 	 * <p>
 	 * The character set is assumed to be {@link StandardCharsets#UTF_8} unless
-	 * the protocol's equivalent of <code>Content-Type</code> specifies otherwise or
-	 * the document declares its own charset (e.g. RDF/XML with a 
+	 * the protocol's equivalent of <code>Content-Type</code> specifies
+	 * otherwise or the document declares its own charset (e.g. RDF/XML with a
 	 * <code>&lt;?xml encoding="iso-8859-1"&gt;</code> header).
 	 * <p>
-	 * The {@link #base(IRI)} or {@link #base(String)} MAY be set before
-	 * calling {@link #parse()}, otherwise the source IRI will be used
-	 * as the base IRI.
+	 * The {@link #base(IRI)} or {@link #base(String)} MAY be set before calling
+	 * {@link #parse()}, otherwise the source IRI will be used as the base IRI.
 	 * <p>
 	 * This method will override any source set with {@link #source(Path)},
 	 * {@link #source(InputStream)} or {@link #source(IRI)}.
@@ -300,15 +294,35 @@ public interface RDFParserBuilder {
 	 * @param iri
 	 *            An IRI to retrieve and parse
 	 * @return An {@link RDFParserBuilder} that will use the specified source.
-	 */	
+	 */
 	RDFParserBuilder source(String iri);
 
 	/**
 	 * Parse the specified source.
+	 * <p>
+	 * A source method (e.g. {@link #source(InputStream)}, {@link #source(IRI)},
+	 * {@link #source(Path)}, {@link #source(String)} or an equivalent subclass
+	 * method) MUST have been called before calling this method, otherwise an
+	 * {@link IllegalStateException} will be thrown.
+	 * <p>
+	 * It is undefined if this method is thread-safe, however the
+	 * {@link RDFParserBuilder} may be reused (e.g. setting a different source)
+	 * as soon as the {@link Future} has been returned from this method.
+	 * <p>
+	 * The RDFParserBuilder SHOULD perform the parsing as an asynchronous
+	 * operation, and return the {@link Future} as soon as preliminary checks
+	 * (such as validity of the {@link #source(IRI)} and
+	 * {@link #contentType(RDFSyntax)} settings) have finished. The future
+	 * SHOULD not mark {@link Future#isDone()} before parsing is complete. A
+	 * synchronous implementation MAY be blocking on the <code>parse()</code>
+	 * call and return a Future that is already {@link Future#isDone()}.
+	 * <p>
+	 * If {@link #intoGraph(Graph)} has been specified, this SHOULD be the same
+	 * {@link Graph} instance returned from {@link Future#get() once parsing has
+	 * completed.
 	 * 
-	 * @return A Future that will return the graph containing (at least) the
-	 *         parsed triples.
-	 * 
+	 * @return A Future that will return the populated graph when the parsing
+	 *         has finished.
 	 * @throws IOException
 	 *             If an error occurred while reading the source.
 	 * @throws IllegalStateException
