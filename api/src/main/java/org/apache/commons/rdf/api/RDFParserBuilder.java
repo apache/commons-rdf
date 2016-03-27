@@ -29,8 +29,8 @@ import java.util.concurrent.Future;
  * This interface follows the
  * <a href="https://en.wikipedia.org/wiki/Builder_pattern">Builder pattern</a>,
  * allowing to set parser settings like {@link #contentType(RDFSyntax)} and
- * {@link #base(IRI)}. A caller MUST at least call one of the
- * <code>source</code> methods before calling {@link #parse()} on the returned
+ * {@link #base(IRI)}. A caller MUST call one of the
+ * {@link #source(IRI)} methods before calling {@link #parse()} on the returned
  * RDFParserBuilder.
  * <p>
  * It is undefined if a RDFParserBuilder is mutable or thread-safe, so callers
@@ -98,8 +98,8 @@ public interface RDFParserBuilder {
 	 * any <code>Content-Type</code> headers or equivalent.
 	 * <p>
 	 * The content type MAY include a <code>charset</code> parameter if the RDF
-	 * media types which permit it; if <code>charset</code> is not specified the
-	 * default is {@link StandardCharsets#UTF_8} unless overridden within the
+	 * media types permit it; the default charset 
+	 * is {@link StandardCharsets#UTF_8} unless overridden within the
 	 * document.
 	 * <p>
 	 * This method will override any contentType set with
@@ -112,21 +112,22 @@ public interface RDFParserBuilder {
 	 *            <a href="https://tools.ietf.org/html/rfc7231#section-3.1.1.1">
 	 *            RFC7231</a>.
 	 * @throws IllegalArgumentException
-	 *             If this RDFParserBuilder does not support the specified
-	 *             content-type, or it has an invalid syntax.
+	 *             If the contentType has an invalid syntax, 
+	 *             or this RDFParserBuilder does not support the specified
+	 *             contentType.
 	 * @return An {@link RDFParserBuilder} that will use the specified content
 	 *         type.
 	 */
 	RDFParserBuilder contentType(String contentType);
 
 	/**
-	 * Specify which {@link Graph} to add triples into.
+	 * Specify which {@link Graph} to add triples to.
 	 * <p>
-	 * The default if this option has not been set is that each call to
-	 * {@link #parse()} will return a new {@link Graph} (created using
+	 * The default (if this option has not been set) is that each call to
+	 * {@link #parse()} return a new {@link Graph}, which is created using
 	 * {@link RDFTermFactory#createGraph()} 
 	 * if {@link #rdfTermFactory(RDFTermFactory)}
-	 * has been set).
+	 * has been set.
 	 * 
 	 * @param graph
 	 *            The {@link Graph} to add triples into.
