@@ -26,7 +26,7 @@ import org.apache.commons.rdf.jena.impl.JCR_Factory;
  *  
  *  @see RDFTermFactory
  */
-public class RDFTermFactoryJena implements RDFTermFactory {
+public final class RDFTermFactoryJena implements RDFTermFactory {
     
     @Override
     public BlankNode createBlankNode() {

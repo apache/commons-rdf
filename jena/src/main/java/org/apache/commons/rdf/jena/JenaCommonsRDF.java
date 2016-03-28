@@ -18,12 +18,17 @@
 
 package org.apache.commons.rdf.jena;
 
+import java.util.Optional;
+
 import org.apache.commons.rdf.api.* ;
 import org.apache.commons.rdf.jena.impl.*;
 import org.apache.jena.datatypes.RDFDatatype ;
 import org.apache.jena.datatypes.xsd.XSDDatatype ;
 import org.apache.jena.graph.Node ;
 import org.apache.jena.graph.NodeFactory ;
+import org.apache.jena.riot.Lang;
+import org.apache.jena.riot.RDFDataMgr;
+import org.apache.jena.riot.RDFLanguages;
 import org.apache.jena.riot.system.StreamRDF ;
 import org.apache.jena.sparql.graph.GraphFactory ;
 
@@ -163,5 +168,12 @@ public class JenaCommonsRDF {
    public static void conversionError(String msg) {
         throw new ConversionException(msg) ;
     }
+
+   public static Optional<Lang> rdfSyntaxToLang(RDFSyntax rdfSyntax) {
+	   return Optional.ofNullable(RDFLanguages.contentTypeToLang(rdfSyntax.mediaType));	
+   }
+   public static Optional<RDFSyntax> langToRdfSyntax(Lang lang) {
+	   return RDFSyntax.byMediaType(lang.getContentType().getContentType());
+   }
 }
 
