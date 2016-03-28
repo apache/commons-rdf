@@ -60,6 +60,7 @@
         <commons.scmPubUrl>https://svn.apache.org/repos/infra/websites/production/commonsrdf/content/</commons.scmPubUrl>
         <commons.scmPubCheckoutDirectory>${project.build.directory}/site-content</commons.scmPubCheckoutDirectory>
         <commons.javadoc.java.link>http://docs.oracle.com/javase/8/docs/api/</commons.javadoc.java.link>
+        <ver.jena>3.0.0</ver.jena> <!-- NOTE: 3.0.1 has a bug in jena-osgi -->
     </properties>
 
     <scm>

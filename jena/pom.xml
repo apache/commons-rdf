@@ -43,7 +43,12 @@
             <groupId>${project.parent.groupId}</groupId>
             <artifactId>commons-rdf-simple</artifactId>
             <version>${project.version}</version>
-        </dependency>        
+        </dependency>
+	    <dependency>
+	      <groupId>org.apache.jena</groupId>
+	      <artifactId>jena-osgi</artifactId>
+	      <version>${ver.jena}</version>
+	    </dependency>        
         <dependency>
             <groupId>${project.parent.groupId}</groupId>
             <artifactId>commons-rdf-api</artifactId>
