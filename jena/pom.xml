@@ -44,6 +44,7 @@
             <artifactId>commons-rdf-simple</artifactId>
             <version>${project.version}</version>
         </dependency>
+<!-- Uncomment below to use instead of jena-osgi to access Jena source code
 	    <dependency>
 	      <groupId>org.apache.jena</groupId>
 	      <artifactId>apache-jena-libs</artifactId>
@@ -51,13 +52,15 @@
 	      <type>pom</type>
 	      <scope>optional</scope>
 	    </dependency>        
-<!-- 
+ -->
+ <!-- 
+ As commons-rdf-jena is an OSGi bundle, we'll use the Jena OSGi bundle
+  -->
 	    <dependency>
 	      <groupId>org.apache.jena</groupId>
 	      <artifactId>jena-osgi</artifactId>
 	      <version>${ver.jena}</version>
 	    </dependency>        
- -->
         <dependency>
             <groupId>${project.parent.groupId}</groupId>
             <artifactId>commons-rdf-api</artifactId>
