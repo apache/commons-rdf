@@ -43,7 +43,7 @@ import org.apache.commons.rdf.api.RDFTermFactory;
  * <p>
  * 
  */
-public abstract class AbstractRDFParserBuilder implements RDFParserBuilder {
+public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Cloneable {
 
 	private static final ThreadGroup threadGroup = new ThreadGroup("Commons RDF parsers");
 	private static final ExecutorService threadpool = Executors.newCachedThreadPool(r -> new Thread(threadGroup, r));
