@@ -17,6 +17,7 @@
  */
 package org.apache.commons.rdf.api;
 
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -153,15 +154,10 @@ public enum RDFSyntax {
 	 *         no matching syntax was found.
 	 */
 	public static Optional<RDFSyntax> byMediaType(String mediaType) {
-		mediaType = mediaType.toLowerCase(Locale.ENGLISH);
-		mediaType = mediaType.split("\\s*[;,]")[0];
-		
-		for (RDFSyntax syntax : RDFSyntax.values()) {
-			if (mediaType.equals(syntax.mediaType)) { 
-				return Optional.of(syntax);
-			}
-		}
-		return Optional.empty();
+		final String type = mediaType.toLowerCase(Locale.ENGLISH).
+				split("\\s*[;,]", 2)[0];
+		return Arrays.stream(RDFSyntax.values()).filter(
+				t -> t.mediaType.equals(type)).findAny();		
 	}
 
 	/**
@@ -178,14 +174,10 @@ public enum RDFSyntax {
 	 *         {@link Optional#empty()} indicating that no matching file
 	 *         extension was found.
 	 */
-	public static Optional<RDFSyntax> byFileExtension(String fileExtension) {
-		fileExtension = fileExtension.toLowerCase(Locale.ENGLISH);
-		for (RDFSyntax syntax : RDFSyntax.values()) {
-			if (fileExtension.equals(syntax.fileExtension)) {
-				return Optional.of(syntax);
-			}
-		}
-		return Optional.empty();
+	public static Optional<RDFSyntax> byFileExtension(String fileExtension) {		
+		final String ext = fileExtension.toLowerCase(Locale.ENGLISH);
+		return Arrays.stream(RDFSyntax.values()).filter(
+				t -> t.fileExtension.equals(ext)).findAny();		
 	}
 
 }
