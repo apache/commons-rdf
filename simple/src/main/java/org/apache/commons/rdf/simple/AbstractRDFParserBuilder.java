@@ -48,6 +48,7 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder {
 	private static final ThreadGroup threadGroup = new ThreadGroup("Commons RDF parsers");
 	private static final ExecutorService threadpool = Executors.newCachedThreadPool(r -> new Thread(threadGroup, r));
 
+	// Basically only used for creating IRIs
 	private static RDFTermFactory internalRdfTermFactory = new SimpleRDFTermFactory();
 
 	protected Optional<RDFTermFactory> rdfTermFactory = Optional.empty();
@@ -243,7 +244,7 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder {
 
 		// Use a fresh SimpleRDFTermFactory for each parse
 		if (!c.rdfTermFactory.isPresent()) {
-			c.rdfTermFactory = Optional.of(new SimpleRDFTermFactory());
+			c.rdfTermFactory = Optional.of(createRDFTermFactory());
 		}
 		// No graph? We'll create one.
 		if (!c.intoGraph.isPresent()) {
@@ -256,6 +257,10 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder {
 			c.base = Optional.of(internalRdfTermFactory.createIRI(baseUri.toString()));
 		}
 		return c;
+	}
+
+	protected RDFTermFactory createRDFTermFactory() {
+		return new SimpleRDFTermFactory();
 	}
 
 	@Override
