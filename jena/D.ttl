@@ -1,0 +1,4 @@
+prefix : <http://example/>
+
+:s :p 123 .
+[ :p1 [ :q "r"@en ] ] .
