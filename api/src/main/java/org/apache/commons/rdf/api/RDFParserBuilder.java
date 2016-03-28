@@ -109,11 +109,11 @@ public interface RDFParserBuilder {
 	 *            or <code>text/turtle;charset="UTF-8"</code> as specified by
 	 *            <a href="https://tools.ietf.org/html/rfc7231#section-3.1.1.1">
 	 *            RFC7231</a>.
+	 * @return An {@link RDFParserBuilder} that will use the specified content
+	 *         type.
 	 * @throws IllegalArgumentException
 	 *             If the contentType has an invalid syntax, or this
 	 *             RDFParserBuilder does not support the specified contentType.
-	 * @return An {@link RDFParserBuilder} that will use the specified content
-	 *         type.
 	 */
 	RDFParserBuilder contentType(String contentType);
 
@@ -171,8 +171,10 @@ public interface RDFParserBuilder {
 	 * @param base
 	 *            An absolute IRI to use as a base.
 	 * @return An {@link RDFParserBuilder} that will use the specified base IRI.
+	 * @throws IllegalArgumentException
+	 *             If the base is not a valid absolute IRI string
 	 */
-	RDFParserBuilder base(String base);
+	RDFParserBuilder base(String base) throws IllegalArgumentException;
 
 	/**
 	 * Specify a source {@link InputStream} to parse.
@@ -294,8 +296,11 @@ public interface RDFParserBuilder {
 	 * @param iri
 	 *            An IRI to retrieve and parse
 	 * @return An {@link RDFParserBuilder} that will use the specified source.
+	 * @throws IllegalArgumentException
+	 *             If the base is not a valid absolute IRI string
+	 * 
 	 */
-	RDFParserBuilder source(String iri);
+	RDFParserBuilder source(String iri) throws IllegalArgumentException;
 
 	/**
 	 * Parse the specified source.
@@ -319,12 +324,23 @@ public interface RDFParserBuilder {
 	 * <p>
 	 * If {@link #intoGraph(Graph)} has been specified, this SHOULD be the same
 	 * {@link Graph} instance returned from {@link Future#get() once parsing has
-	 * completed.
+	 * completed successfully.
+	 * <p>
+	 * If an exception occurs during parsing, (e.g. {@link IOException} or
+	 * {@link java.text.ParseException}, it should be indicated as the
+	 * {@link java.util.concurrent.ExecutionException#getCause()) in the
+	 * {@link java.util.concurrent.ExecutionException) thrown on
+	 * {@link Future#get()}.
 	 * 
-	 * @return A Future that will return the populated graph when the parsing
-	 *         has finished.
+	 * @return A Future that will return the populated {@link Graph} when the
+	 *         parsing has finished.
 	 * @throws IOException
-	 *             If an error occurred while reading the source.
+	 *             If an error occurred while starting to read the source (e.g.
+	 *             file not found, unsupported IRI protocol). Note that IO
+	 *             errors during parsing would instead be the
+	 *             {@link java.util.concurrent.ExecutionException#getCause()) of
+	 *             the {@link java.util.concurrent.ExecutionException) thrown on
+	 *             {@link Future#get()}.
 	 * @throws IllegalStateException
 	 *             If the builder is in an invalid state, e.g. a
 	 *             <code>source</code> has not been set.
