@@ -24,8 +24,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.ParseException;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.FutureTask;
 
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
@@ -43,6 +44,9 @@ import org.apache.commons.rdf.api.RDFTermFactory;
  * 
  */
 public abstract class AbstractRDFParserBuilder implements RDFParserBuilder {
+
+	private static final ThreadGroup threadGroup = new ThreadGroup("Commons RDF parsers");
+	private static final ExecutorService threadpool = Executors.newCachedThreadPool(r -> new Thread(threadGroup, r));
 
 	private static RDFTermFactory internalRdfTermFactory = new SimpleRDFTermFactory();
 
@@ -160,7 +164,7 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder {
 	 * Used by {@link #parse()}.
 	 * 
 	 * @param iri
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	protected void checkSource() throws IOException {
 		if (!sourceFile.isPresent() && !sourceInputStream.isPresent() && !sourceIri.isPresent()) {
@@ -174,24 +178,22 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder {
 		}
 		if (sourceInputStream.isPresent() && sourceFile.isPresent()) {
 			throw new IllegalStateException("Both sourceInputStream and sourceFile have been set");
-		}		
-		if (sourceFile.isPresent() && ! sourceFile.filter(Files::isReadable).isPresent()) {			
+		}
+		if (sourceFile.isPresent() && !sourceFile.filter(Files::isReadable).isPresent()) {
 			throw new IOException("Can't read file: " + sourceFile);
 		}
 	}
 
-	/** 
+	/**
 	 * Check base, if required.
 	 */
-	protected void checkBaseRequired() {		
-		if (! base.isPresent() && sourceInputStream.isPresent() &&
-				! contentTypeSyntax.filter(t ->
-				t == RDFSyntax.NQUADS ||
-				t == RDFSyntax.NTRIPLES).isPresent()) { 
+	protected void checkBaseRequired() {
+		if (!base.isPresent() && sourceInputStream.isPresent()
+				&& !contentTypeSyntax.filter(t -> t == RDFSyntax.NQUADS || t == RDFSyntax.NTRIPLES).isPresent()) {
 			throw new IllegalStateException("base iri required for inputstream source");
 		}
 	}
-	
+
 	/**
 	 * Reset all source* fields to Optional.empty()
 	 * <p>
@@ -206,12 +208,13 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder {
 	}
 
 	/**
-	 * Parse {@link #sourceInputStream}, {@link #sourceFile} or {@link #sourceIri}.
+	 * Parse {@link #sourceInputStream}, {@link #sourceFile} or
+	 * {@link #sourceIri}.
 	 * <p>
 	 * One of the source fields MUST be present.
 	 * <p>
-	 * When this method is called, {@link #intoGraph} MUST always be present, as that
-	 * is where the parsed triples MUST be inserted into.
+	 * When this method is called, {@link #intoGraph} MUST always be present, as
+	 * that is where the parsed triples MUST be inserted into.
 	 * <p>
 	 * 
 	 * @return
@@ -221,14 +224,23 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder {
 	 */
 	protected abstract void parseSynchronusly() throws IOException, IllegalStateException, ParseException;
 
-	@Override
-	public Future<Graph> parse() throws IOException, IllegalStateException {
+	/**
+	 * Prepare a clone of this RDFParserBuilder which have been checked and
+	 * completed.
+	 * <p>
+	 * 
+	 * 
+	 * @return
+	 * @throws IOException
+	 * @throws IllegalStateException
+	 */
+	protected AbstractRDFParserBuilder prepareForParsing() throws IOException, IllegalStateException {
 		checkSource();
 		checkBaseRequired();
 		// We'll make a clone of our current state which will be passed to
 		// parseSynchronously()
-		final AbstractRDFParserBuilder c = clone();
-		
+		AbstractRDFParserBuilder c = clone();
+
 		// Use a fresh SimpleRDFTermFactory for each parse
 		if (!c.rdfTermFactory.isPresent()) {
 			c.rdfTermFactory = Optional.of(new SimpleRDFTermFactory());
@@ -237,15 +249,19 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder {
 		if (!c.intoGraph.isPresent()) {
 			c.intoGraph = c.rdfTermFactory.map(RDFTermFactory::createGraph);
 		}
+		// sourceFile, but no base? Let's follow any symlinks and use
+		// the file:/// URI
+		if (c.sourceFile.isPresent() && !c.base.isPresent()) {
+			URI baseUri = c.sourceFile.get().toRealPath().toUri();
+			c.base = Optional.of(internalRdfTermFactory.createIRI(baseUri.toString()));
+		}
+		return c;
+	}
 
-		// TODO: set c.base based on c.sourceFile.toURI()
-//		if (c.sourceFile.isPresent() && ! c.base.isPresent()) {
-//			Optional<Path> x1 = c.sourceFile.map(Path::toRealPath);
-//			Optional<URI> x = c.sourceFile.map(Path::toRealPath).map(Path::toUri);
-//		    c.base = x.map(u -> internalRdfTermFactory.createIRI(u.toString()));
-//		}
-
-		return new FutureTask<Graph>(() -> {
+	@Override
+	public Future<Graph> parse() throws IOException, IllegalStateException {
+		final AbstractRDFParserBuilder c = prepareForParsing();
+		return threadpool.submit(() -> {
 			c.parseSynchronusly();
 			return c.intoGraph.get();
 		});
