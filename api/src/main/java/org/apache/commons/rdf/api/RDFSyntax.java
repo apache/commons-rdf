@@ -25,7 +25,8 @@ import java.util.Optional;
  * <p>
  * This enumeration lists the W3C standardized 
  * RDF 1.1 syntaxes like {@link #TURTLE} and {@link #JSONLD}.  
- * Note the existence of other RDF syntaxes that are not included here, e.g. <a href="http://www.w3.org/TeamSubmission/n3/">N3</a> 
+ * Note the existence of other RDF syntaxes that are not included here, 
+ * e.g. <a href="http://www.w3.org/TeamSubmission/n3/">N3</a> 
  * and <a href="https://en.wikipedia.org/wiki/TriX_%28syntax%29">TriX</a>.
  * 
  * @see <a href="https://www.w3.org/TR/rdf11-primer/#section-graph-syntax">RDF 1.1 Primer</a>
@@ -39,57 +40,57 @@ public enum RDFSyntax {
 	 * @see <a href="https://www.w3.org/TR/json-ld/">https://www.w3.org/TR/json-ld/</a>
 	 * 
 	 */
-	JSONLD("JSON-LD 1.0", "application/ld+json"),
+	JSONLD("JSON-LD 1.0", "application/ld+json", ".jsonld", true),
 
 	/**
 	 * RDF 1.1 Turtle
 	 * 
-	 * @see <a href="https://www.w3.org/TR/turtle/">RDF 1.1 Turtle</a>
+	 * @see <a href="https://www.w3.org/TR/turtle/">https://www.w3.org/TR/turtle/</a>
 	 *
 	 */
-	TURTLE("RDF 1.1 Turtle", "text/turtle"), 
+	TURTLE("RDF 1.1 Turtle", "text/turtle", ".ttl", false), 
 
 	/**
 	 * RDF 1.1 N-Quads
 	 * 
 	 * @see <a href="https://www.w3.org/TR/n-quads/">https://www.w3.org/TR/n-quads/</a>
 	 */
-	NQUADS("RDF 1.1 N-Quads", "application/n-quads"),
+	NQUADS("RDF 1.1 N-Quads", "application/n-quads", ".nq", true),
 
 	/**
 	 * RDF 1.1 N-Triples
 	 * 
 	 * @see <a href="https://www.w3.org/TR/n-triples/">https://www.w3.org/TR/n-triples/</a>
 	 */
-	NTRIPLES("RDF 1.1 N-Triples", "application/n-triples"),
+	NTRIPLES("RDF 1.1 N-Triples", "application/n-triples", ".nt", false),
 	
 	/**
 	 * HTML+RDFa 1.1
 	 * 
 	 * @see <a href="https://www.w3.org/TR/html-rdfa/">https://www.w3.org/TR/html-rdfa/</a>
 	 */
-	RDFA_HTML("HTML+RDFa 1.1", "text/html"),
+	RDFA_HTML("HTML+RDFa 1.1", "text/html", ".html", false),
 	
 	/**
 	 * XHTML+RDFa 1.1 
 	 * 
 	 * @see <a href="https://www.w3.org/TR/xhtml-rdfa/">https://www.w3.org/TR/xhtml-rdfa/</a> 
 	 */
-	RDFA_XHTML("XHTML+RDFa 1.1", "application/xhtml+xml"),
+	RDFA_XHTML("XHTML+RDFa 1.1", "application/xhtml+xml", ".xhtml", false),
 	
 	/**
 	 * RDF 1.1 XML Syntax
 	 * 
 	 * @see <a href="https://www.w3.org/TR/rdf-syntax-grammar/">https://www.w3.org/TR/rdf-syntax-grammar/</a>
 	 */
-	RDFXML("RDF 1.1 XML Syntax", "application/rdf+xml"),
+	RDFXML("RDF 1.1 XML Syntax", "application/rdf+xml", ".rdf", false),
 	
 	/**
 	 * RDF 1.1 TriG
 	 * 
 	 * @see <a href="https://www.w3.org/TR/trig/">https://www.w3.org/TR/trig/</a>
 	 */
-	TRIG("RDF 1.1 TriG", "application/trig");
+	TRIG("RDF 1.1 TriG", "application/trig", ".trig", true);
 
 	/** 
 	 * The <a href="https://tools.ietf.org/html/rfc2046">IANA media type</a> for the RDF syntax.
@@ -100,7 +101,19 @@ public enum RDFSyntax {
 	 * <a href="https://tools.ietf.org/html/rfc7231#section-3.1.1.1">HTTP protocol</a>. 
 	 */
 	public final String mediaType;
-		
+	
+	/**
+	 * The <a href="https://tools.ietf.org/html/rfc2046">IANA-registered</a> file extension.
+	 * <p>
+	 * The file extension includes the leading period, e.g. <code>.jsonld</code>
+	 */
+	public final String fileExtension;
+	
+	/**
+	 * Indicate if this RDF syntax supports <a href="https://www.w3.org/TR/rdf11-concepts/#section-dataset">RDF Datasets</a>. 
+	 */
+	public final boolean supportsDataset;
+	
 	private final String name;
 	
 	/** 
@@ -113,9 +126,11 @@ public enum RDFSyntax {
 		return name;
 	}
 	
-	private RDFSyntax(String name, String mediaType) {
+	private RDFSyntax(String name, String mediaType, String fileExtension, boolean supportsDataset) {
 		this.name = name;
 		this.mediaType = mediaType;
+		this.fileExtension = fileExtension;
+		this.supportsDataset = supportsDataset;
 	}
 	
 	/**
@@ -143,6 +158,30 @@ public enum RDFSyntax {
 		
 		for (RDFSyntax syntax : RDFSyntax.values()) {
 			if (mediaType.equals(syntax.mediaType)) { 
+				return Optional.of(syntax);
+			}
+		}
+		return Optional.empty();
+	}
+
+	/**
+	 * Return the RDFSyntax with the specified file extension.
+	 * <p>
+	 * The <code>fileExtension</code> is compared in lower case, therefore it
+	 * might not be equal to the {@link RDFSyntax#fileExtension} of the returned
+	 * RDFSyntax.
+	 * 
+	 * @param fileExtension
+	 *            The fileExtension to match, starting with <code>.</code>
+	 * @return If {@link Optional#isPresent()}, the {@link RDFSyntax} which has
+	 *         a matching {@link RDFSyntax#fileExtension}, otherwise
+	 *         {@link Optional#empty()} indicating that no matching file
+	 *         extension was found.
+	 */
+	public static Optional<RDFSyntax> byFileExtension(String fileExtension) {
+		fileExtension = fileExtension.toLowerCase(Locale.ENGLISH);
+		for (RDFSyntax syntax : RDFSyntax.values()) {
+			if (fileExtension.equals(syntax.fileExtension)) {
 				return Optional.of(syntax);
 			}
 		}

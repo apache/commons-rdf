@@ -26,15 +26,30 @@ import org.junit.Test;
 public class RDFSyntaxTest {
 
 	@Test
-	public void mediaType() throws Exception {
-		assertEquals("application/ld+json", RDFSyntax.JSONLD.mediaType);
-		assertEquals("application/n-quads", RDFSyntax.NQUADS.mediaType);
-		assertEquals("application/n-triples", RDFSyntax.NTRIPLES.mediaType);
-		assertEquals("text/html", RDFSyntax.RDFA_HTML.mediaType);
-		assertEquals("application/xhtml+xml", RDFSyntax.RDFA_XHTML.mediaType);
-		assertEquals("application/rdf+xml", RDFSyntax.RDFXML.mediaType);
-		assertEquals("application/trig", RDFSyntax.TRIG.mediaType);
-		assertEquals("text/turtle", RDFSyntax.TURTLE.mediaType);
+	public void byFileExtension() throws Exception {
+		assertEquals(RDFSyntax.JSONLD, RDFSyntax.byFileExtension(".jsonld").get());
+		assertEquals(RDFSyntax.NQUADS, RDFSyntax.byFileExtension(".nq").get());
+		assertEquals(RDFSyntax.NTRIPLES, RDFSyntax.byFileExtension(".nt").get());
+		assertEquals(RDFSyntax.RDFA_HTML, RDFSyntax.byFileExtension(".html").get());
+		assertEquals(RDFSyntax.RDFA_XHTML, RDFSyntax.byFileExtension(".xhtml").get());
+		assertEquals(RDFSyntax.RDFXML, RDFSyntax.byFileExtension(".rdf").get());
+		assertEquals(RDFSyntax.TRIG, RDFSyntax.byFileExtension(".trig").get());
+		assertEquals(RDFSyntax.TURTLE, RDFSyntax.byFileExtension(".ttl").get());
+	}
+
+	@Test
+	public void byFileExtensionFailsWithoutDot() throws Exception {
+		assertEquals(Optional.empty(), RDFSyntax.byFileExtension("rdf"));
+	}
+
+	@Test
+	public void byFileExtensionLowerCase() throws Exception {
+		assertEquals(RDFSyntax.TURTLE, RDFSyntax.byFileExtension(".TtL").get());
+	}
+
+	@Test
+	public void byFileExtensionUnknown() throws Exception {
+		assertEquals(Optional.empty(), RDFSyntax.byFileExtension(".tar"));
 	}
 
 	@Test
@@ -50,14 +65,11 @@ public class RDFSyntaxTest {
 	}
 
 	@Test
-	public void name() throws Exception {
-		assertEquals("JSON-LD 1.0", RDFSyntax.JSONLD.toString());
-		assertEquals("RDF 1.1 Turtle", RDFSyntax.TURTLE.toString());
-	}
-
-	@Test
-	public void byMediaTypeUnknown() throws Exception {
-		assertEquals(Optional.empty(), RDFSyntax.byMediaType("application/octet-stream"));
+	public void byMediaTypeContentType() throws Exception {
+		assertEquals(RDFSyntax.TURTLE, RDFSyntax.byMediaType("text/turtle; charset=\"UTF-8\"").get());
+		assertEquals(RDFSyntax.TURTLE, RDFSyntax.byMediaType("text/turtle ; charset=\"UTF-8\"").get());
+		assertEquals(RDFSyntax.TURTLE, RDFSyntax.byMediaType("text/turtle, text/plain").get());
+		assertEquals(Optional.empty(), RDFSyntax.byMediaType(" text/turtle"));
 	}
 
 	@Test
@@ -66,11 +78,38 @@ public class RDFSyntaxTest {
 	}
 
 	@Test
-	public void byMediaTypeContentType() throws Exception {
-		assertEquals(RDFSyntax.TURTLE, RDFSyntax.byMediaType("text/turtle; charset=\"UTF-8\"").get());
-		assertEquals(RDFSyntax.TURTLE, RDFSyntax.byMediaType("text/turtle ; charset=\"UTF-8\"").get());
-		assertEquals(RDFSyntax.TURTLE, RDFSyntax.byMediaType("text/turtle, text/plain").get());
-		assertEquals(Optional.empty(), RDFSyntax.byMediaType(" text/turtle"));
+	public void byMediaTypeUnknown() throws Exception {
+		assertEquals(Optional.empty(), RDFSyntax.byMediaType("application/octet-stream"));
+	}
+
+	@Test
+	public void fileExtension() throws Exception {
+		assertEquals(".jsonld", RDFSyntax.JSONLD.fileExtension);
+		assertEquals(".nq", RDFSyntax.NQUADS.fileExtension);
+		assertEquals(".nt", RDFSyntax.NTRIPLES.fileExtension);
+		assertEquals(".html", RDFSyntax.RDFA_HTML.fileExtension);
+		assertEquals(".xhtml", RDFSyntax.RDFA_XHTML.fileExtension);
+		assertEquals(".rdf", RDFSyntax.RDFXML.fileExtension);
+		assertEquals(".trig", RDFSyntax.TRIG.fileExtension);
+		assertEquals(".ttl", RDFSyntax.TURTLE.fileExtension);
+	}
+
+	@Test
+	public void mediaType() throws Exception {
+		assertEquals("application/ld+json", RDFSyntax.JSONLD.mediaType);
+		assertEquals("application/n-quads", RDFSyntax.NQUADS.mediaType);
+		assertEquals("application/n-triples", RDFSyntax.NTRIPLES.mediaType);
+		assertEquals("text/html", RDFSyntax.RDFA_HTML.mediaType);
+		assertEquals("application/xhtml+xml", RDFSyntax.RDFA_XHTML.mediaType);
+		assertEquals("application/rdf+xml", RDFSyntax.RDFXML.mediaType);
+		assertEquals("application/trig", RDFSyntax.TRIG.mediaType);
+		assertEquals("text/turtle", RDFSyntax.TURTLE.mediaType);
+	}
+
+	@Test
+	public void name() throws Exception {
+		assertEquals("JSON-LD 1.0", RDFSyntax.JSONLD.toString());
+		assertEquals("RDF 1.1 Turtle", RDFSyntax.TURTLE.toString());
 	}
 
 }
