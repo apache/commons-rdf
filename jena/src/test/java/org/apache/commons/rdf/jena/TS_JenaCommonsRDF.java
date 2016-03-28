@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.apache.jena.commonsrdf;
+package org.apache.commons.rdf.jena;
 
 import org.apache.jena.atlas.logging.LogCtl ;
 import org.junit.BeforeClass ;

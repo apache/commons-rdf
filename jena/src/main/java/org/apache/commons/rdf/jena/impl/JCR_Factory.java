@@ -16,11 +16,11 @@
  * limitations under the License.
  */
 
-package org.apache.jena.commonsrdf.impl;
-import static org.apache.jena.commonsrdf.JenaCommonsRDF.conversionError;
+package org.apache.commons.rdf.jena.impl;
+import static org.apache.commons.rdf.jena.JenaCommonsRDF.conversionError;
 
 import org.apache.commons.rdf.api.* ;
-import org.apache.jena.commonsrdf.JenaCommonsRDF ;
+import org.apache.commons.rdf.jena.JenaCommonsRDF;
 import org.apache.jena.graph.Node ;
 import org.apache.jena.graph.NodeFactory ;
 import org.apache.jena.sparql.graph.GraphFactory ;

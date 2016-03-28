@@ -16,10 +16,10 @@
  * limitations under the License.
  */
 
-package org.apache.jena.commonsrdf;
+package org.apache.commons.rdf.jena;
 
 import org.apache.commons.rdf.api.* ;
-import org.apache.jena.commonsrdf.impl.* ;
+import org.apache.commons.rdf.jena.impl.*;
 import org.apache.jena.datatypes.RDFDatatype ;
 import org.apache.jena.datatypes.xsd.XSDDatatype ;
 import org.apache.jena.graph.Node ;

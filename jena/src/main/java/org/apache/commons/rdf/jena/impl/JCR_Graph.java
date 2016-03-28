@@ -16,15 +16,15 @@
  * limitations under the License.
  */
 
-package org.apache.jena.commonsrdf.impl;
+package org.apache.commons.rdf.jena.impl;
 
 import java.io.StringWriter ;
 import java.util.Iterator ;
 import java.util.stream.Stream ;
 
 import org.apache.commons.rdf.api.* ;
+import org.apache.commons.rdf.jena.JenaCommonsRDF;
 import org.apache.jena.atlas.iterator.Iter ;
-import org.apache.jena.commonsrdf.JenaCommonsRDF ;
 import org.apache.jena.graph.Node ;
 import org.apache.jena.riot.Lang ;
 import org.apache.jena.riot.RDFDataMgr ;

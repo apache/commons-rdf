@@ -16,12 +16,12 @@
  * limitations under the License.
  */
 
-package org.apache.jena.commonsrdf.impl;
+package org.apache.commons.rdf.jena.impl;
 
 import java.util.Objects ;
 
 import org.apache.commons.rdf.api.* ;
-import org.apache.jena.commonsrdf.JenaCommonsRDF ;
+import org.apache.commons.rdf.jena.JenaCommonsRDF;
 
 public class JCR_Triple implements Triple, JenaTriple {
     private final BlankNodeOrIRI subject ;

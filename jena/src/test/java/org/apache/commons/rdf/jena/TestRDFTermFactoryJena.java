@@ -16,11 +16,18 @@
  * limitations under the License.
  */
 
-package org.apache.jena.commonsrdf.impl;
+package org.apache.commons.rdf.jena;
 
-import org.apache.jena.graph.Node ;
+import org.apache.commons.rdf.api.AbstractRDFTermFactoryTest ;
+import org.apache.commons.rdf.api.RDFTermFactory ;
+import org.apache.commons.rdf.jena.RDFTermFactoryJena;
 
-/** Access the Jena node backing this object */ 
-public interface JenaNode {
-    public Node getNode() ;
+public class TestRDFTermFactoryJena extends AbstractRDFTermFactoryTest {
+
+    @Override
+    public RDFTermFactory createFactory() {
+        return new RDFTermFactoryJena() ;
+    }
+
 }
+

@@ -16,32 +16,11 @@
  * limitations under the License.
  */
 
-package org.apache.jena.commonsrdf.impl;
+package org.apache.commons.rdf.jena.impl;
 
-import org.apache.commons.rdf.api.BlankNode ;
-import org.apache.jena.graph.Node ;
+import org.apache.jena.graph.Graph ;
 
-public class JCR_BlankNode extends JCR_Term implements BlankNode, JenaNode {
-
-    /*package*/ JCR_BlankNode(Node node) { super(node) ; }
-
-    @Override
-    public String uniqueReference() {
-        return getNode().getBlankNodeLabel() ;
-    }
-
-    @Override
-    public int hashCode() {
-        return uniqueReference().hashCode() ;
-    }
-    
-    @Override
-    public boolean equals(Object other) {
-        if ( other == this ) return true ;
-        if ( other == null ) return false ;
-        if ( ! ( other instanceof BlankNode ) ) return false ;
-        BlankNode bNode = (BlankNode)other ;
-        return  uniqueReference().equals(bNode.uniqueReference()) ;
-    }
+/** Access the Jena graph backing this object */ 
+public interface JenaGraph {
+    public Graph getGraph() ;
 }
-

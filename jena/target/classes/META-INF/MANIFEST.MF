@@ -7,8 +7,8 @@ Implementation-Vendor-Id: org.apache
 Specification-Title: Commons RDF: Integration: Apache Jena
 Implementation-Vendor: The Apache Software Foundation
 X-Compile-Target-JDK: 1.8
-Implementation-Build: ${scmBranch}@r${buildNumber}; 2016-03-28 01:18:5
- 1+0000
+Implementation-Build: ${scmBranch}@r${buildNumber}; 2016-03-28 01:22:4
+ 4+0000
 X-Compile-Source-JDK: 1.8
 Build-Jdk: 1.8.0_72-internal
 Implementation-URL: http://commonsrdf.incubator.apache.org/commons-rdf

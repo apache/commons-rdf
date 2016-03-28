@@ -16,11 +16,11 @@
  * limitations under the License.
  */
 
-package org.apache.jena.commonsrdf.impl;
+package org.apache.commons.rdf.jena.impl;
 
 import org.apache.commons.rdf.api.Graph ;
 import org.apache.commons.rdf.api.RDFTermFactory ;
-import org.apache.jena.commonsrdf.JenaCommonsRDF ;
+import org.apache.commons.rdf.jena.JenaCommonsRDF;
 import org.apache.jena.riot.system.StreamRDF ;
 
 /** Adapter to go from Jena StreamRDF (e.g. a parser output stream) to a CommonsRDF Graph */

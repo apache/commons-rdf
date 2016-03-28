@@ -16,11 +16,11 @@
  * limitations under the License.
  */
 
-package org.apache.jena.commonsrdf;
+package org.apache.commons.rdf.jena;
 
 import org.apache.commons.rdf.api.AbstractBlankNodeTest ;
 import org.apache.commons.rdf.api.BlankNode ;
-import org.apache.jena.commonsrdf.impl.JCR_Factory ;
+import org.apache.commons.rdf.jena.impl.JCR_Factory;
 
 public class TestBlankNodeJena extends AbstractBlankNodeTest {
     @Override

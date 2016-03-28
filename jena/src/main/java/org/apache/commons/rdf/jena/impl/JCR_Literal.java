@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.apache.jena.commonsrdf.impl;
+package org.apache.commons.rdf.jena.impl;
 
 import java.util.Objects ;
 import java.util.Optional ;

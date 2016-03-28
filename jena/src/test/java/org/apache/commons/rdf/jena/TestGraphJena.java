@@ -16,11 +16,11 @@
  * limitations under the License.
  */
 
-package org.apache.jena.commonsrdf;
+package org.apache.commons.rdf.jena;
 
 import org.apache.commons.rdf.api.AbstractGraphTest ;
 import org.apache.commons.rdf.api.RDFTermFactory ;
-import org.apache.jena.commonsrdf.RDFTermFactoryJena ;
+import org.apache.commons.rdf.jena.RDFTermFactoryJena;
 
 public class TestGraphJena extends AbstractGraphTest {
 

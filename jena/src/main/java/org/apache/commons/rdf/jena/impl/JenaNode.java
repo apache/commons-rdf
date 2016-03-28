@@ -16,40 +16,11 @@
  * limitations under the License.
  */
 
-package org.apache.jena.commonsrdf.impl;
+package org.apache.commons.rdf.jena.impl;
 
 import org.apache.jena.graph.Node ;
-import org.apache.jena.graph.NodeFactory ;
 
-import org.apache.commons.rdf.api.* ;
-
-public class JCR_IRI extends JCR_Term implements IRI, JenaNode {
-
-    /*package*/ JCR_IRI(String iriStr) {
-        super(NodeFactory.createURI(iriStr)) ;
-    }
-    
-    /*package*/ JCR_IRI(Node node) {
-        super(node) ;
-    }
-
-    @Override
-    public String getIRIString() {
-        return getNode().getURI() ;
-    }
-    
-    @Override
-    public int hashCode() {
-        return getIRIString().hashCode() ;
-    }
-    
-    @Override
-    public boolean equals(Object other) {
-        if ( other == this ) return true ;
-        if ( other == null ) return false ;
-        if ( ! ( other instanceof IRI ) ) return false ;
-        IRI iri = (IRI)other ;
-        return getIRIString().equals(iri.getIRIString()) ;
-    }
+/** Access the Jena node backing this object */ 
+public interface JenaNode {
+    public Node getNode() ;
 }
-

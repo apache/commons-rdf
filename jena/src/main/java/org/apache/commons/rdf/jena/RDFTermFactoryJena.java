@@ -16,10 +16,10 @@
  * limitations under the License.
  */
 
-package org.apache.jena.commonsrdf;
+package org.apache.commons.rdf.jena;
 
 import org.apache.commons.rdf.api.* ;
-import org.apache.jena.commonsrdf.impl.JCR_Factory ;
+import org.apache.commons.rdf.jena.impl.JCR_Factory;
 
 /** RDFTermFactory with Jena-backed objects.
  *  See {@link JenaCommonsRDF} for other conversions of existing objects. 

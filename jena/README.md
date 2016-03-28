@@ -3,7 +3,7 @@
 Code showing using [Apache CommonsRDF](http://commonsrdf.incubator.apache.org/)
 with [Apache Jena](http://jena.apache.org/).
 
-`package org.apache.jena.commonsrdf.examples`
+`package org.apache.commons.rdf.jena.examples`
 
 * `Ex_ParseIntoCommonsRDFGraph`
 
