@@ -106,6 +106,10 @@ public class JenaCommonsRDF {
 
     /** Convert from Jena {@link Node} to any RDFCommons implementation */
     public static RDFTerm fromJena(RDFTermFactory factory, Node node) {
+    	if (factory instanceof RDFTermFactoryJena) {
+    		// No need to convert, just wrap
+    		return fromJena(node);
+    	}
         if ( node.isURI() )
             return factory.createIRI(node.getURI()) ;
         if ( node.isLiteral() ) {
@@ -124,6 +128,10 @@ public class JenaCommonsRDF {
 
     /** Convert from Jena {@link org.apache.jena.graph.Triple} to any RDFCommons implementation */
    public static Triple fromJena(RDFTermFactory factory, org.apache.jena.graph.Triple triple) {
+	   	if (factory instanceof RDFTermFactoryJena) {
+			// No need to convert, just wrap
+			return fromJena(triple);
+		}
         BlankNodeOrIRI subject = (BlankNodeOrIRI)(fromJena(factory, triple.getSubject())) ;
         IRI predicate = (IRI)(fromJena(factory, triple.getPredicate())) ;
         RDFTerm object = fromJena(factory, triple.getObject()) ;
@@ -135,7 +143,12 @@ public class JenaCommonsRDF {
     *  Use {@link #fromJena(org.apache.jena.graph.Graph)} for a wrapper.
     */
    public static Graph fromJena(RDFTermFactory factory, org.apache.jena.graph.Graph graph) {
-       Graph g = factory.createGraph() ;
+	   	if (factory instanceof RDFTermFactoryJena) {
+			// No need to convert, just wrap
+			return fromJena(graph);
+		}
+
+	   Graph g = factory.createGraph() ;
        graph.find(Node.ANY, Node.ANY, Node.ANY).forEachRemaining( t-> {
            g.add(fromJena(factory, t) );
        }) ;
