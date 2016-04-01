@@ -61,14 +61,99 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 	// Basically only used for creating IRIs
 	private static RDFTermFactory internalRdfTermFactory = new SimpleRDFTermFactory();
 
-	protected Optional<RDFTermFactory> rdfTermFactory = Optional.empty();
-	protected Optional<RDFSyntax> contentTypeSyntax = Optional.empty();
-	protected Optional<String> contentType = Optional.empty();
-	protected Optional<Graph> intoGraph = Optional.empty();
-	protected Optional<IRI> base = Optional.empty();
-	protected Optional<InputStream> sourceInputStream = Optional.empty();
-	protected Optional<Path> sourceFile = Optional.empty();
-	protected Optional<IRI> sourceIri = Optional.empty();
+	/**
+	 * Get the set {@link RDFTermFactory}, if any.
+	 */
+	public Optional<RDFTermFactory> getRdfTermFactory() {
+		return rdfTermFactory;
+	}
+
+	/**
+	 * Get the set content-type {@link RDFSyntax}, if any.
+	 * <p>
+	 * If this is {@link Optional#isPresent()}, then 
+	 * {@link #getContentType()} contains the 
+	 * value of {@link RDFSyntax#mediaType}. 
+	 */
+	public Optional<RDFSyntax> getContentTypeSyntax() {
+		return contentTypeSyntax;
+	}
+	
+	/**
+	 * Get the set content-type String, if any.
+	 * <p>
+	 * If this is {@link Optional#isPresent()} and 
+	 * is recognized by {@link RDFSyntax#byMediaType(String)}, then
+	 * the corresponding {@link RDFSyntax} is set on 
+	 * {@link #getContentType()}, otherwise that is
+	 * {@link Optional#empty()}. 
+	 */
+	public final Optional<String> getContentType() {
+		return contentType;
+	}
+
+	/**
+	 * Get the set {@link Graph} to insert into, if any.
+	 * <p>
+	 * From the call to {@link #parseSynchronusly()}, this
+	 * method is always {@link Optional#isPresent()}
+	 * with a new {@link Graph} instance, and 
+	 * will be the value returned from {@link #parse()}.
+	 */	
+	public Optional<Graph> getIntoGraph() {
+		return intoGraph;
+	}
+
+	/**
+	 * Get the set base {@link IRI}, if present.
+	 * <p>
+	 * 
+	 */	
+	public Optional<IRI> getBase() {
+		return base;
+	}
+
+	/**
+	 * Get the set source {@link InputStream}.
+	 * <p>
+	 * If this is {@link Optional#isPresent()}, then 
+	 * {@link #getSourceFile()} and {@link #getSourceIri()}
+	 * are {@link Optional#empty()}.
+	 */
+	public Optional<InputStream> getSourceInputStream() {
+		return sourceInputStream;
+	}
+
+	/**
+	 * Get the set source {@link Path}.
+	 * <p>
+	 * If this is {@link Optional#isPresent()}, then 
+	 * {@link #getSourceInputStream()} and {@link #getSourceIri()}
+	 * are {@link Optional#empty()}.
+	 */	
+	public Optional<Path> getSourceFile() {
+		return sourceFile;
+	}
+
+	/**
+	 * Get the set source {@link Path}.
+	 * <p>
+	 * If this is {@link Optional#isPresent()}, then 
+	 * {@link #getSourceInputStream()} and {@link #getSourceInputStream()()}
+	 * are {@link Optional#empty()}.
+	 */		
+	public Optional<IRI> getSourceIri() {
+		return sourceIri;
+	}
+
+	private Optional<RDFTermFactory> rdfTermFactory = Optional.empty();
+	private Optional<RDFSyntax> contentTypeSyntax = Optional.empty();
+	private Optional<String> contentType = Optional.empty();
+	private Optional<Graph> intoGraph = Optional.empty();
+	private Optional<IRI> base = Optional.empty();
+	private Optional<InputStream> sourceInputStream = Optional.empty();
+	private Optional<Path> sourceFile = Optional.empty();
+	private Optional<IRI> sourceIri = Optional.empty();
 
 	@Override
 	public AbstractRDFParserBuilder clone() {
@@ -196,7 +281,9 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 	}
 
 	/**
-	 * Check base, if required.
+	 * Check if base is required.
+	 * 
+	 * @throws IllegalStateException if base is required, but not set.
 	 */
 	protected void checkBaseRequired() {
 		if (!base.isPresent() && sourceInputStream.isPresent()
@@ -208,8 +295,8 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 	/**
 	 * Reset all source* fields to Optional.empty()
 	 * <p>
-	 * Subclasses should override this if they need to reset any additional
-	 * source* fields.
+	 * Subclasses should override this and call <code>super.resetSource()</code>
+	 * if they need to reset any additional source* fields.
 	 * 
 	 */
 	protected void resetSource() {
@@ -222,7 +309,9 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 	 * Parse {@link #sourceInputStream}, {@link #sourceFile} or
 	 * {@link #sourceIri}.
 	 * <p>
-	 * One of the source fields MUST be present.
+	 * One of the source fields MUST be present, as checked by {@link #checkSource()}.
+	 * <p>
+	 * {@link #checkBaseRequired()} is called to verify if {@link #getBase()} is required.
 	 * <p>
 	 * When this method is called, {@link #intoGraph} MUST always be present, as
 	 * that is where the parsed triples MUST be inserted into.
@@ -239,8 +328,14 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 	 * Prepare a clone of this RDFParserBuilder which have been checked and
 	 * completed.
 	 * <p>
-	 * 
-	 * 
+	 * The returned clone will always have
+	 * {@link #getIntoGraph()} and {@link #getRdfTermFactory()} present.
+	 * <p>
+	 * If the {@link #getSourceFile()} is present, but the 
+	 * {@link #getBase()} is not present, the base will be set to the
+	 * <code>file:///</code> IRI for the Path's real path (e.g. resolving any 
+	 * symbolic links).  
+	 *  
 	 * @return
 	 * @throws IOException
 	 * @throws IllegalStateException
@@ -269,6 +364,19 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 		return c;
 	}
 
+	/**
+	 * Create a new {@link RDFTermFactory} for a parse session.
+	 * <p>
+	 * This is called by {@link #parse()} to set 
+	 * {@link #rdfTermFactory(RDFTermFactory)} if it is
+	 * {@link Optional#empty()}, and therefore used also for 
+	 * creating a new {@link Graph} if 
+	 * {@link #getIntoGraph()} is {@link Optional#empty()}.
+	 * <p>
+	 * 
+	 * 
+	 * @return
+	 */
 	protected RDFTermFactory createRDFTermFactory() {
 		return new SimpleRDFTermFactory();
 	}
