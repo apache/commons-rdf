@@ -38,6 +38,9 @@
  * MAY be mutable (e.g. support methods like
  * {@link org.apache.commons.rdf.api.Graph#add(Triple)}).
  * <p>
+ * {@link org.apache.commons.rdf.api.RDFSyntax} enumerates the 
+ * W3C standard RDF 1.1 syntaxes and their media types.
+ * <p>
  * For further documentation and contact details, see the
  * <a href="http://commonsrdf.incubator.apache.org/">Commons RDF</a>
  * web site.
