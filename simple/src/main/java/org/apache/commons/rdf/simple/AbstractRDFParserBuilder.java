@@ -41,11 +41,21 @@ import org.apache.commons.rdf.api.RDFTermFactory;
  * {@link #sourceFile} using {@link Optional}. Some basic checking like
  * {@link #checkIsAbsolute(IRI)} is performed.
  * <p>
- * 
+ * This class and its subclasses are {@link Cloneable}, immutable and
+ * (therefore) thread-safe - each call to option methods like
+ * {@link #contentType(String)} or {@link #source(IRI)} will return a cloned,
+ * mutated copy.
+ * <p>
+ * By default, parsing is done by the abstract method
+ * {@link #parseSynchronusly()} - which is executed in a cloned snapshot - hence
+ * multiple {@link #parse()} calls are thread-safe. The default {@link #parse()}
+ * uses a thread pool in {@link #threadGroup} - but implementations can override
+ * {@link #parse()} (e.g. because it has its own threading model or use
+ * asynchronou  remote execution).
  */
 public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Cloneable {
 
-	private static final ThreadGroup threadGroup = new ThreadGroup("Commons RDF parsers");
+	public static final ThreadGroup threadGroup = new ThreadGroup("Commons RDF parsers");
 	private static final ExecutorService threadpool = Executors.newCachedThreadPool(r -> new Thread(threadGroup, r));
 
 	// Basically only used for creating IRIs
