@@ -361,8 +361,49 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 			URI baseUri = c.sourceFile.get().toRealPath().toUri();
 			c.base = Optional.of(internalRdfTermFactory.createIRI(baseUri.toString()));
 		}
+
 		return c;
 	}
+
+	/**
+	 * Guess RDFSyntax from a local file's extension.
+	 * <p>
+	 * This method can be used by subclasses if {@link #getContentType()} is not
+	 * present and {@link #getSourceFile()} is set.
+	 * 
+	 * @param path Path which extension should be checked
+	 * @return The {@link RDFSyntax} which has a matching {@link RDFSyntax#fileExtension}, 
+	 * 	otherwise {@link Optional#empty()}. 
+	 */
+	protected static Optional<RDFSyntax> guessRDFSyntax(Path path) {
+			return fileExtension(path).flatMap(RDFSyntax::byFileExtension);
+	}
+
+	/**
+	 * Return the file extension of a Path - if any.
+	 * <p>
+	 * The returned file extension includes the leading <code>.</code>
+	 * <p>
+	 * Note that this only returns the last extension, e.g. the 
+	 * file extension for <code>archive.tar.gz</code> would be <code>.gz</code>
+	 * 
+	 * @param path Path which filename might contain an extension
+	 * @return File extension (including the leading <code>.</code>, 
+	 * 	or {@link Optional#empty()} if the path has no extension
+	 */
+	private static Optional<String> fileExtension(Path path) {
+		Path fileName = path.getFileName();
+		if (fileName == null) { 
+			return Optional.empty();
+		}
+		String filenameStr = fileName.toString();
+		int last = filenameStr.lastIndexOf(".");
+		if (last > -1) { 
+			return Optional.of(filenameStr.substring(last));				
+		}
+		return Optional.empty();
+	}
+	
 
 	/**
 	 * Create a new {@link RDFTermFactory} for a parse session.
