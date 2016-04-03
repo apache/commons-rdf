@@ -258,9 +258,12 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 	 * Check that one and only one source is present and valid.
 	 * <p>
 	 * Used by {@link #parse()}.
+	 * <p>
+	 * Subclasses might override this method, e.g. to support other
+	 * source combinations, or to check if the sourceIri is 
+	 * resolvable. 
 	 * 
-	 * @param iri
-	 * @throws IOException
+	 * @throws IOException If a source file can't be read
 	 */
 	protected void checkSource() throws IOException {
 		if (!sourceFile.isPresent() && !sourceInputStream.isPresent() && !sourceIri.isPresent()) {
