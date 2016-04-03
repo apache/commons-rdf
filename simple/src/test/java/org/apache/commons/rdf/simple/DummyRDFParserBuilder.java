@@ -19,42 +19,78 @@ package org.apache.commons.rdf.simple;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.UUID;
 
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
-import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.api.RDFParserBuilder;
 import org.apache.commons.rdf.api.RDFTermFactory;
 
 /** 
- * For test purposes - a {@link RDFParserBuilder} that always insert a single triple.
+ * For test purposes - a {@link RDFParserBuilder} that inserts information
+ * about what it has been asked to parse instead of actually parsing anything.
  * <p>
- * This dummy RDF parser always sleeps for at least 1000 ms
- * before inserting the triple:
+ * This always insert at least the triple equivalent to:
  * <pre>
- *    <http://example.com/test1> <http://example.com/greeting> "Hello world" .
+ *    <urn:uuid:b7ac3fcc-4d86-4d28-8358-a1cd094974a6> <http://example.com/greeting> "Hello world" .
  * </pre>
+ * Additional triples match the corresponding getter in AbstractRDFParserBuilder,
+ * e.g.:
+ * <pre>
+ *   <urn:uuid:b7ac3fcc-4d86-4d28-8358-a1cd094974a6> <http://example.com/base> <http://www.example.org/> .
+ *   <urn:uuid:b7ac3fcc-4d86-4d28-8358-a1cd094974a6> <http://example.com/sourceFile> "/tmp/file.ttl" .   
+ * </pre> 
+ * 
  *
  */
 public class DummyRDFParserBuilder extends AbstractRDFParserBuilder {
-
+	
 	@Override
 	protected void parseSynchronusly() throws IOException, IllegalStateException, ParseException {		
 		// From parseSynchronusly both of these are always present
 		RDFTermFactory factory = getRdfTermFactory().get();
 		Graph graph = getIntoGraph().get();
+				
+		// well - each parsing is unique. This should hopefully
+		// catch any accidental double parsing
+		IRI parsing = factory.createIRI("urn:uuid:" + UUID.randomUUID());
+		graph.add(parsing, factory.createIRI("http://example.com/greeting"), 
+				factory.createLiteral("Hello world"));
 		
-		// Let's always insert the same triple
-		IRI test1 = factory.createIRI("http://example.com/test1");
-		IRI greeting = factory.createIRI("http://example.com/greeting");
-		Literal hello = factory.createLiteral("Hello world");
-		try {
-			// Pretend we take a while to parse
-			Thread.sleep(1000);			
-		} catch (InterruptedException e) {
-			return;
-		} 
-		graph.add(test1, greeting, hello); 		
+		// Now we'll expose the finalized AbstractRDFParserBuilder settings
+		// so they can be inspected by the junit test
+
+		if (getSourceIri().isPresent()) {
+			graph.add(parsing, 
+					factory.createIRI("http://example.com/source"),
+					getSourceIri().get());			
+		}		
+		if (getSourceFile().isPresent()) {
+			graph.add(parsing, 
+					factory.createIRI("http://example.com/source"),
+					factory.createIRI(getSourceFile().get().toUri().toString()));
+		}
+		if (getSourceInputStream().isPresent()) { 
+			graph.add(parsing, 
+					factory.createIRI("http://example.com/source"),
+					factory.createBlankNode());
+		}
+
+		if (getBase().isPresent()) { 
+			graph.add(parsing, 
+					factory.createIRI("http://example.com/base"),
+					getBase().get());
+		}
+		if (getContentType().isPresent()) {
+			graph.add(parsing, 
+					factory.createIRI("http://example.com/contentType"),
+					factory.createLiteral(getContentType().get()));
+		}
+		if (getContentTypeSyntax().isPresent()) {
+			graph.add(parsing, 
+					factory.createIRI("http://example.com/contentTypeSyntax"),
+					factory.createLiteral(getContentTypeSyntax().get().name()));
+		}		
 	}
 
 }
