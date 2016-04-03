@@ -317,12 +317,10 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 	 * that is where the parsed triples MUST be inserted into.
 	 * <p>
 	 * 
-	 * @return
-	 * @throws IOException
-	 * @throws IllegalStateException
-	 * @throws ParseException
+	 * @throws IOException If the source could not be read 
+	 * @throws ParseException If the source could not be parsed (e.g. a .ttl file was not valid Turtle)
 	 */
-	protected abstract void parseSynchronusly() throws IOException, IllegalStateException, ParseException;
+	protected abstract void parseSynchronusly() throws IOException, ParseException;
 
 	/**
 	 * Prepare a clone of this RDFParserBuilder which have been checked and
@@ -336,9 +334,9 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 	 * <code>file:///</code> IRI for the Path's real path (e.g. resolving any 
 	 * symbolic links).  
 	 *  
-	 * @return
-	 * @throws IOException
-	 * @throws IllegalStateException
+	 * @return A completed and checked clone of this RDFParserBuilder
+	 * @throws IOException If the source was not accessible (e.g. a file was not found)
+	 * @throws IllegalStateException If the parser was not in a compatible setting (e.g. contentType was an invalid string) 
 	 */
 	protected AbstractRDFParserBuilder prepareForParsing() throws IOException, IllegalStateException {
 		checkSource();
@@ -414,9 +412,12 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 	 * creating a new {@link Graph} if 
 	 * {@link #getIntoGraph()} is {@link Optional#empty()}.
 	 * <p>
+	 * As parsed blank nodes might be made with 
+	 * {@link RDFTermFactory#createBlankNode(String)}, 
+	 * each call to this method should return 
+	 * a new RDFTermFactory instance.
 	 * 
-	 * 
-	 * @return
+	 * @return A new {@link RDFTermFactory}
 	 */
 	protected RDFTermFactory createRDFTermFactory() {
 		return new SimpleRDFTermFactory();
