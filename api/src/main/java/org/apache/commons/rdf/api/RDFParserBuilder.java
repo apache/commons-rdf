@@ -55,6 +55,12 @@ public interface RDFParserBuilder {
 	 * <p>
 	 * This option may be used together with {@link #intoGraph(Graph)} to
 	 * override the implementation's default factory and graph.
+	 * <p>
+	 * <strong>Warning:</strong> Using the same {@link RDFTermFactory} for 
+	 * multiple {@link #parse()} calls  may accidentally merge 
+	 * {@link BlankNode}s having the same label, as the parser may 
+	 * use the {@link RDFTermFactory#createBlankNode(String)} method
+	 * from the parsed blank node labels.
 	 * 
 	 * @see #intoGraph(Graph)
 	 * @param rdfTermFactory
@@ -323,13 +329,13 @@ public interface RDFParserBuilder {
 	 * call and return a Future that is already {@link Future#isDone()}.
 	 * <p>
 	 * If {@link #intoGraph(Graph)} has been specified, this SHOULD be the same
-	 * {@link Graph} instance returned from {@link Future#get() once parsing has
+	 * {@link Graph} instance returned from {@link Future#get()} once parsing has
 	 * completed successfully.
 	 * <p>
 	 * If an exception occurs during parsing, (e.g. {@link IOException} or
-	 * {@link java.text.ParseException}, it should be indicated as the
-	 * {@link java.util.concurrent.ExecutionException#getCause()) in the
-	 * {@link java.util.concurrent.ExecutionException) thrown on
+	 * {@link java.text.ParseException}), it should be indicated as the
+	 * {@link java.util.concurrent.ExecutionException#getCause()} in the
+	 * {@link java.util.concurrent.ExecutionException} thrown on
 	 * {@link Future#get()}.
 	 * 
 	 * @return A Future that will return the populated {@link Graph} when the
@@ -338,8 +344,8 @@ public interface RDFParserBuilder {
 	 *             If an error occurred while starting to read the source (e.g.
 	 *             file not found, unsupported IRI protocol). Note that IO
 	 *             errors during parsing would instead be the
-	 *             {@link java.util.concurrent.ExecutionException#getCause()) of
-	 *             the {@link java.util.concurrent.ExecutionException) thrown on
+	 *             {@link java.util.concurrent.ExecutionException#getCause()} of
+	 *             the {@link java.util.concurrent.ExecutionException} thrown on
 	 *             {@link Future#get()}.
 	 * @throws IllegalStateException
 	 *             If the builder is in an invalid state, e.g. a
