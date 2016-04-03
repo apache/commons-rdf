@@ -29,8 +29,16 @@ import java.util.concurrent.Future;
  * This interface follows the
  * <a href="https://en.wikipedia.org/wiki/Builder_pattern">Builder pattern</a>,
  * allowing to set parser settings like {@link #contentType(RDFSyntax)} and
- * {@link #base(IRI)}. A caller MUST call one of the {@link #source(IRI)}
- * methods before calling {@link #parse()} on the returned RDFParserBuilder.
+ * {@link #base(IRI)}. A caller MUST call one of the <code>source</code> methods
+ * (e.g. {@link #source(IRI)}, {@link #source(Path)},
+ * {@link #source(InputStream)}) before calling {@link #parse()} on the returned
+ * RDFParserBuilder - however methods can be called in any order.
+ * <p>
+ * Setting a method that has already been set will override any existing value
+ * in the returned builder - irregardless of the parameter type (e.g.
+ * {@link #source(IRI)} will override a previous {@link #source(Path)}. Settings
+ * can be unset by passing <code>null</code> - this may require casting, e.g.
+ * <code>contentType( (RDFSyntax) null )</code>.
  * <p>
  * It is undefined if a RDFParserBuilder is mutable or thread-safe, so callers
  * should always use the returned modified RDFParserBuilder from the builder
