@@ -17,22 +17,40 @@
  */
 package org.apache.commons.rdf.jsonldjava;
 
-import org.apache.commons.rdf.api.AbstractGraphTest;
-import org.apache.commons.rdf.api.Graph;
-import org.apache.commons.rdf.api.RDFTermFactory;
-import org.apache.commons.rdf.simple.SimpleRDFTermFactory;
+import org.apache.commons.rdf.api.BlankNode;
 
-public class JsonLDGraphTest extends AbstractGraphTest {
+import com.github.jsonldjava.core.RDFDataset.Node;
+
+final class JsonLdBlankNode implements BlankNode {
+	private final Node node;
+	private String blankNodePrefix;
+
+	JsonLdBlankNode(Node node, String blankNodePrefix) {
+		this.blankNodePrefix = blankNodePrefix;
+		this.node = node;
+	}
 
 	@Override
-	public RDFTermFactory createFactory() {
-		return new SimpleRDFTermFactory() {
-			@Override
-			public Graph createGraph() throws UnsupportedOperationException {
-				return new JsonLDGraph();
-			}
-		};
+	public String ntriplesString() {
+		return node.getValue();
 	}
-	
 
+	@Override
+	public String uniqueReference() {					
+		return blankNodePrefix + node.getValue();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (! ( obj instanceof BlankNode)) {
+			return false;
+		}
+		BlankNode other = (BlankNode) obj;
+		return uniqueReference().equals(other.uniqueReference());
+	}
+
+	@Override
+	public int hashCode() {
+		return uniqueReference().hashCode();
+	}
 }

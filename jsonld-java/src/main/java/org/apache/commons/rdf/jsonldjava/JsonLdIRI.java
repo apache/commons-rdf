@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -15,10 +15,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/**
- * Integration with jsonld-java
- * 
- * @see org.apache.commons.rdf.jsonldjava.JsonLdGraph
- * 
- */
 package org.apache.commons.rdf.jsonldjava;
+
+import org.apache.commons.rdf.api.IRI;
+
+import com.github.jsonldjava.core.RDFDataset.Node;
+
+final class JsonLdIRI implements IRI {
+	private final Node node;
+
+	JsonLdIRI(Node node) {
+		this.node = node;
+	}
+
+	@Override
+	public String ntriplesString() {
+		return "<" + node.getValue() + ">";
+	}
+
+	@Override
+	public String getIRIString() {
+		return node.getValue();
+	}
+
+	@Override
+	public int hashCode() {
+		return node.getValue().hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (! (obj instanceof IRI)) {
+			return false;
+		} 
+		IRI other = (IRI) obj;
+		return node.getValue().equals(other.getIRIString());
+	}
+}

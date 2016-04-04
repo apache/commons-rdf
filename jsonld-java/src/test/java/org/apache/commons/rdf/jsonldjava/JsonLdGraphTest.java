@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -15,10 +15,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/**
- * Integration with jsonld-java
- * 
- * @see org.apache.commons.rdf.jsonldjava.JsonLdGraph
- * 
- */
 package org.apache.commons.rdf.jsonldjava;
+
+import org.apache.commons.rdf.api.AbstractGraphTest;
+import org.apache.commons.rdf.api.Graph;
+import org.apache.commons.rdf.api.RDFTermFactory;
+import org.apache.commons.rdf.simple.SimpleRDFTermFactory;
+
+public class JsonLdGraphTest extends AbstractGraphTest {
+
+	@Override
+	public RDFTermFactory createFactory() {
+		return new SimpleRDFTermFactory() {
+			@Override
+			public Graph createGraph() throws UnsupportedOperationException {
+				return new JsonLdGraph();
+			}
+		};
+	}
+	
+
+}
