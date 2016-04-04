@@ -17,7 +17,6 @@
  */
 package org.apache.commons.rdf.jsonldjava;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -105,6 +104,10 @@ public class JsonLDGraph implements Graph {
 		};
 	}
 	
+	private String bnodePrefix() {
+		return "urn:uuid:" + SALT + "#" +  "g"+ System.identityHashCode(rdfDataSet);
+	}
+	
 	private RDFTerm asTerm(final Node node) {		
 		if (node.isIRI()) {
 			return new IRI() {				
@@ -141,7 +144,7 @@ public class JsonLDGraph implements Graph {
 				
 				@Override
 				public String uniqueReference() {					
-					return "urn:uuid:" + SALT + "#" +  "g"+ System.identityHashCode(rdfDataSet) + node.getValue();
+					return bnodePrefix() + node.getValue();
 				}
 				
 				@Override
@@ -187,7 +190,14 @@ public class JsonLDGraph implements Graph {
 			return new RDFDataset.IRI( ((IRI)term).getIRIString() );
 		}
 		if (term instanceof BlankNode) {
-			return new RDFDataset.BlankNode( ((BlankNode)term).uniqueReference() );
+			
+			String uniqueReference = ((BlankNode)term).uniqueReference();
+			if (uniqueReference.startsWith(bnodePrefix())) {
+				// one of our own
+				// TODO: Retrieve the original BlankNode
+				return new RDFDataset.BlankNode(term.ntriplesString());
+			} 
+			return new RDFDataset.BlankNode( "_:" + uniqueReference );
 		}
 		if (term instanceof Literal) {
 			Literal literal = (Literal) term;
@@ -234,11 +244,7 @@ public class JsonLDGraph implements Graph {
 
 	@Override
 	public void remove(Triple triple) {
-		// rdfDataSet has no remove method - so we'll have to remove them
-		// from the inner Lists' iterator					
-		for (Iterator<? extends Triple> it = getTriples().filter(Predicate.isEqual(triple)).iterator() ;; it.hasNext()) {
-			it.remove();
-		}		
+		remove(triple.getSubject(), triple.getPredicate(), triple.getObject());
 	}
 
 	@Override
@@ -257,13 +263,13 @@ public class JsonLDGraph implements Graph {
 		Optional<Node> objectNode = Optional.ofNullable(object).map(this::asJsonLdNode);
 		
 		return q -> {
-		    if (subjectNode.isPresent() && subjectNode.get().compareTo(q.getSubject()) == 0) {
+		    if (subjectNode.isPresent() && subjectNode.get().compareTo(q.getSubject()) != 0) {
 		        return false;
 		    }
-		    if (predicateNode.isPresent() && predicateNode.get().compareTo(q.getPredicate()) == 0) {	          
+		    if (predicateNode.isPresent() && predicateNode.get().compareTo(q.getPredicate()) != 0) {	          
 		        return false;
 		    }
-		    if (objectNode.isPresent() && objectNode.get().compareTo(q.getObject()) == 0) {
+		    if (objectNode.isPresent() && objectNode.get().compareTo(q.getObject()) != 0) {
 		        return false;
 		    }
 		    return true;			
