@@ -41,10 +41,12 @@ import com.github.jsonldjava.core.RDFDataset.Quad;
 
 public class JsonLDGraph implements Graph {
 	
-	private final class JsonLdBlankNode implements BlankNode {
+	private static final class JsonLdBlankNode implements BlankNode {
 		private final Node node;
+		private String blankNodePrefix;
 
-		private JsonLdBlankNode(Node node) {
+		private JsonLdBlankNode(Node node, String blankNodePrefix) {
+			this.blankNodePrefix = blankNodePrefix;
 			this.node = node;
 		}
 
@@ -55,7 +57,7 @@ public class JsonLDGraph implements Graph {
 
 		@Override
 		public String uniqueReference() {					
-			return bnodePrefix() + node.getValue();
+			return blankNodePrefix + node.getValue();
 		}
 
 		@Override
@@ -73,7 +75,7 @@ public class JsonLDGraph implements Graph {
 		}
 	}
 
-	private final class JsonLdIRI implements IRI {
+	private static final class JsonLdIRI implements IRI {
 		private final Node node;
 
 		private JsonLdIRI(Node node) {
@@ -105,26 +107,28 @@ public class JsonLDGraph implements Graph {
 		}
 	}
 
-	private final class JsonLdTriple implements Triple {
+	private static final class JsonLdTriple implements Triple {
 		private final Quad quad;
+		private String blankNodePrefix;
 
-		private JsonLdTriple(Quad quad) {
+		private JsonLdTriple(Quad quad, String blankNodePrefix) {
 			this.quad = quad;
+			this.blankNodePrefix = blankNodePrefix;			
 		}
 
 		@Override
 		public BlankNodeOrIRI getSubject() {
-			return (BlankNodeOrIRI) asTerm(quad.getSubject());
+			return (BlankNodeOrIRI) asTerm(quad.getSubject(), blankNodePrefix);
 		}
 
 		@Override
 		public IRI getPredicate() {
-			return (IRI) asTerm(quad.getPredicate());
+			return (IRI) asTerm(quad.getPredicate(), blankNodePrefix);
 		}
 
 		@Override
 		public RDFTerm getObject() {
-			return asTerm(quad.getObject());
+			return asTerm(quad.getObject(), blankNodePrefix);
 		}
 
 		@Override
@@ -170,18 +174,18 @@ public class JsonLDGraph implements Graph {
 	private static RDFTermFactory rdfTermFactory = new SimpleRDFTermFactory();
 
 	private Triple asTriple(final RDFDataset.Quad quad) {
-		return new JsonLdTriple(quad);
+		return new JsonLdTriple(quad, bnodePrefix());
 	}
 	
 	private String bnodePrefix() {
 		return "urn:uuid:" + SALT + "#" +  "g"+ System.identityHashCode(rdfDataSet);
 	}
 	
-	private RDFTerm asTerm(final Node node) {		
+	private static RDFTerm asTerm(final Node node, String blankNodePrefix) {		
 		if (node.isIRI()) {
 			return new JsonLdIRI(node);
 		} else if (node.isBlankNode()) {
-			return new JsonLdBlankNode(node);
+			return new JsonLdBlankNode(node, blankNodePrefix);
 		} else if (node.isLiteral()) {
 			// TODO: Our own JsonLdLiteral
 			if (node.getLanguage() != null) {
