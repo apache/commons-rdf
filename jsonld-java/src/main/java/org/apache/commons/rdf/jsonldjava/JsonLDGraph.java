@@ -162,7 +162,7 @@ public class JsonLDGraph implements Graph {
 			if (node.getLanguage() != null) {
 				return rdfTermFactory.createLiteral(node.getValue(), node.getLanguage());
 			} else {
-				return rdfTermFactory.createLiteral(node.getValue(), node.getDatatype());
+				return rdfTermFactory.createLiteral(node.getValue(), rdfTermFactory.createIRI(node.getDatatype()));
 			}
 		} else {
 			throw new IllegalArgumentException("Node is neither IRI, BlankNode nor Literal: " + node);
