@@ -19,13 +19,20 @@ package org.apache.commons.rdf.jsonldjava;
 
 import org.apache.commons.rdf.api.IRI;
 
+import com.github.jsonldjava.core.RDFDataset;
 import com.github.jsonldjava.core.RDFDataset.Node;
 
-final class JsonLdIRI implements IRI {
-	private final Node node;
+final class JsonLdIRI extends JsonLdTerm implements IRI {
 
 	JsonLdIRI(Node node) {
-		this.node = node;
+		super(node);
+		if (! node.isIRI()) {
+			throw new IllegalArgumentException("Node is not an IRI:" + node);
+		}
+	}
+
+	public JsonLdIRI(String iri) {
+		super(new RDFDataset.IRI(iri));
 	}
 
 	@Override

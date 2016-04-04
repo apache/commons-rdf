@@ -21,13 +21,15 @@ import org.apache.commons.rdf.api.BlankNode;
 
 import com.github.jsonldjava.core.RDFDataset.Node;
 
-final class JsonLdBlankNode implements BlankNode {
-	private final Node node;
+final class JsonLdBlankNode extends JsonLdTerm implements BlankNode {
 	private String blankNodePrefix;
 
 	JsonLdBlankNode(Node node, String blankNodePrefix) {
+		super(node);
 		this.blankNodePrefix = blankNodePrefix;
-		this.node = node;
+		if (! node.isBlankNode()) {
+			throw new IllegalArgumentException("Node is not a BlankNode:" + node);
+		}
 	}
 
 	@Override

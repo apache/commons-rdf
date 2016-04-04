@@ -25,13 +25,13 @@ import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.api.RDFTerm;
+import org.apache.commons.rdf.api.RDFTermFactory;
 import org.apache.commons.rdf.api.Triple;
-import org.apache.commons.rdf.simple.SimpleRDFTermFactory;
 
 import com.github.jsonldjava.core.RDFDataset;
 import com.github.jsonldjava.core.RDFDataset.Node;
 
-final class JsonLdRDFTermFactory extends SimpleRDFTermFactory {
+final class JsonLdRDFTermFactory implements RDFTermFactory {
 	
 	public JsonLdRDFTermFactory() {
 		// An "outside Graph" bnodePrefix
@@ -51,7 +51,7 @@ final class JsonLdRDFTermFactory extends SimpleRDFTermFactory {
 	
 	@Override
 	public IRI createIRI(String iri) {
-		return new JsonLdIRI(new RDFDataset.IRI(iri));
+		return new JsonLdIRI(iri);
 	}
 	
 	@Override
@@ -69,11 +69,27 @@ final class JsonLdRDFTermFactory extends SimpleRDFTermFactory {
 	
 	@Override
 	public Triple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		return super.createTriple(subject, predicate, object);
+		return new JsonLdTriple(asJsonLdQuad(subject, predicate, object), bnodePrefix);
+	}
+	
+	@Override
+	public Literal createLiteral(String literal) {		
+		return new JsonLdLiteral(new RDFDataset.Literal(literal, null, null));
+	}
+	@Override
+	public Literal createLiteral(String literal, IRI dataType) {
+		return new JsonLdLiteral(new RDFDataset.Literal(literal, dataType.getIRIString(), null));	}
+	@Override
+	public Literal createLiteral(String literal, String language) {
+		return new JsonLdLiteral(new RDFDataset.Literal(literal, null, language));		
 	}
 
 
 	private Node asJsonLdNode(RDFTerm term) {
+		if (term instanceof JsonLdTerm) {
+			// Return original Node
+			return ((JsonLdTerm)term).asNode();
+		}
 		if (term instanceof IRI) {
 			return new RDFDataset.IRI( ((IRI)term).getIRIString() );
 		}
@@ -96,19 +112,21 @@ final class JsonLdRDFTermFactory extends SimpleRDFTermFactory {
 	}
 	
 
-	public RDFDataset.Quad asJsonLdQuad(Triple triple) {
-		Node subject = asJsonLdNode(triple.getSubject());
-		Node predicate = asJsonLdNode(triple.getPredicate());
-		Node object = asJsonLdNode(triple.getObject());
+	public RDFDataset.Quad asJsonLdQuad(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
 		String graph = null;
 		// TODO: Add Quad to commons-rdf
 //		if (triple instanceof Quad) {
 //			String graph = triple.getGraph().getIRIString();
 //		}
-		return new RDFDataset.Quad(subject, predicate, object, graph);
-		
+		return new RDFDataset.Quad(asJsonLdNode(subject), asJsonLdNode(predicate), asJsonLdNode(object), graph);
 	}
+
+
 	
+	public RDFDataset.Quad asJsonLdQuad(Triple triple) {
+		return asJsonLdQuad(triple.getSubject(), triple.getPredicate(), triple.getObject());
+	}
+
 	RDFTerm asTerm(final Node node, String blankNodePrefix) {		
 		if (node.isIRI()) {
 			return new JsonLdIRI(node);
