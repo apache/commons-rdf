@@ -17,6 +17,11 @@
  */
 package org.apache.commons.rdf.jsonldjava;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.UUID;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.rdf.api.BlankNode;
@@ -25,13 +30,18 @@ import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.api.RDFTerm;
+import org.apache.commons.rdf.api.RDFTermFactory;
 import org.apache.commons.rdf.api.Triple;
+import org.apache.commons.rdf.simple.SimpleRDFTermFactory;
 
 import com.github.jsonldjava.core.RDFDataset;
 import com.github.jsonldjava.core.RDFDataset.Node;
 import com.github.jsonldjava.core.RDFDataset.Quad;
 
 public class JsonLDGraph implements Graph {
+	
+	private static UUID SALT = UUID.randomUUID(); 
+	
 	private RDFDataset rdfDataSet;
 
 	/**
@@ -48,10 +58,98 @@ public class JsonLDGraph implements Graph {
 
 	@Override
 	public void add(Triple triple) {
-		Quad q = asJsonLdQuad(triple);
+		// Quad q = asJsonLdQuad(triple);
+		// rdfDataSet.addQuad(q);
+		
+		add(triple.getSubject(), triple.getPredicate(), triple.getObject());
 	}
+	private static RDFTermFactory rdfTermFactory = new SimpleRDFTermFactory();
 
-	private Quad asJsonLdQuad(Triple triple) {
+	private Triple asTriple(final RDFDataset.Quad quad) {
+		return new Triple() {
+			
+			@Override
+			public BlankNodeOrIRI getSubject() {
+				return (BlankNodeOrIRI) asTerm(quad.getSubject());
+			}
+			
+			@Override
+			public IRI getPredicate() {
+				return (IRI) asTerm(quad.getPredicate());
+			}
+			
+			@Override
+			public RDFTerm getObject() {
+				return asTerm(quad.getObject());
+			}
+		};
+	}
+	
+	private RDFTerm asTerm(final Node node) {		
+		if (node.isIRI()) {
+			return new IRI() {				
+				@Override
+				public String ntriplesString() {
+					return "<" + node.getValue() + ">";
+				}
+				
+				@Override
+				public String getIRIString() {
+					return node.getValue();
+				}
+				
+				@Override
+				public int hashCode() {
+					return node.getValue().hashCode();
+				}
+				
+				@Override
+				public boolean equals(Object obj) {
+					if (! (obj instanceof IRI)) {
+						return false;
+					} 
+					IRI other = (IRI) obj;
+					return node.getValue().equals(other.getIRIString());
+				}
+			};
+		} else if (node.isBlankNode()) {
+			return new BlankNode() {				
+				@Override
+				public String ntriplesString() {
+					return node.getValue();
+				}
+				
+				@Override
+				public String uniqueReference() {					
+					return "urn:uuid:" + SALT + "#" +  "g"+ System.identityHashCode(rdfDataSet) + node.getValue();
+				}
+				
+				@Override
+				public boolean equals(Object obj) {
+					if (! ( obj instanceof BlankNode)) {
+						return false;
+					}
+					BlankNode other = (BlankNode) obj;
+					return uniqueReference().equals(other.uniqueReference());
+				}
+				
+				@Override
+				public int hashCode() {
+					return uniqueReference().hashCode();
+				}				
+			};
+		} else if (node.isLiteral()) {			
+			if (node.getLanguage() != null) {
+				return rdfTermFactory.createLiteral(node.getValue(), node.getLanguage());
+			} else {
+				return rdfTermFactory.createLiteral(node.getValue(), node.getDatatype());
+			}
+		} else {
+			throw new IllegalArgumentException("Node is neither IRI, BlankNode nor Literal: " + node);
+		}
+	}
+	
+	private RDFDataset.Quad asJsonLdQuad(Triple triple) {
 		Node subject = asJsonLdNode(triple.getSubject());
 		Node predicate = asJsonLdNode(triple.getPredicate());
 		Node object = asJsonLdNode(triple.getObject());
@@ -60,76 +158,121 @@ public class JsonLDGraph implements Graph {
 //		if (triple instanceof Quad) {
 //			String graph = triple.getGraph().getIRIString();
 //		}
-		return new Quad(subject, predicate, object, graph);
+		return new RDFDataset.Quad(subject, predicate, object, graph);
 		
 	}
 
-	private Node asJsonLdNode(RDFTerm object) {
-		if (object instanceof IRI) {
-			return new RDFDataset.IRI( ((IRI)object).getIRIString() );
+	private Node asJsonLdNode(RDFTerm term) {
+		if (term instanceof IRI) {
+			return new RDFDataset.IRI( ((IRI)term).getIRIString() );
 		}
-		if (object instanceof BlankNode) {
-			return new RDFDataset.BlankNode( ((BlankNode)object).uniqueReference() );
+		if (term instanceof BlankNode) {
+			return new RDFDataset.BlankNode( ((BlankNode)term).uniqueReference() );
 		}
-		if (object instanceof Literal) {
-			Literal literal = (Literal) object;
+		if (term instanceof Literal) {
+			Literal literal = (Literal) term;
 			return new RDFDataset.Literal(literal.getLexicalForm(), literal.getDatatype().getIRIString(), 
-					literal.getLanguageTag().get());
+					literal.getLanguageTag().orElse(null));
 		}
-		throw new IllegalArgumentException("RDFTerm not instanceof IRI, BlankNode or Literal: " + object);
+		throw new IllegalArgumentException("RDFTerm not instanceof IRI, BlankNode or Literal: " + term);
 	}
 
 	@Override
 	public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		new RDFDataset.Quad(asJsonLdNode(subject), asJsonLdNode(predicate), asJsonLdNode(object), null); 
+		String subjectStr;
+		if (subject instanceof BlankNode) { 
+			subjectStr = subject.ntriplesString();
+		} else if (subject instanceof IRI){
+			subjectStr = ((IRI)subject).getIRIString();
+		} else { 
+			throw new IllegalStateException("Subject was neither IRI or BlankNode: " + subject);
+		}
 		
+		String predicateStr = predicate.getIRIString();
+		
+		if (object instanceof Literal) {
+			Literal literal = (Literal) object;
+			rdfDataSet.addTriple(subjectStr, predicateStr, literal.getLexicalForm(), literal.getDatatype().getIRIString(), literal.getLanguageTag().orElse(null));			
+		} else if (object instanceof BlankNode) {
+			rdfDataSet.addTriple(subjectStr, predicateStr, object.ntriplesString());
+		} else if (object instanceof IRI) { 
+			rdfDataSet.addTriple(subjectStr, predicateStr, ((IRI)object).getIRIString());
+		} else { 
+			throw new IllegalStateException("Object was neither IRI, BlankNode nor Literal: " + object);
+		}				
 	}
 
 	@Override
 	public boolean contains(Triple triple) {
-		// TODO Auto-generated method stub
-		return false;
+		return getTriples().anyMatch(Predicate.isEqual(triple));
 	}
 
 	@Override
 	public boolean contains(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		// TODO Auto-generated method stub
-		return false;
+		return getTriples(subject, predicate, object).findAny().isPresent();
 	}
 
 	@Override
 	public void remove(Triple triple) {
-		// TODO Auto-generated method stub
-		
+		// rdfDataSet has no remove method - so we'll have to remove them
+		// from the inner Lists' iterator					
+		for (Iterator<? extends Triple> it = getTriples().filter(Predicate.isEqual(triple)).iterator() ;; it.hasNext()) {
+			it.remove();
+		}		
 	}
 
 	@Override
 	public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		// TODO Auto-generated method stub
-		
+		// rdfDataSet has no remove method - so we'll have to remove them
+		// from the inner Lists' iterator					
+		for (Iterator<? extends Triple> it = getTriples(subject, predicate, object).iterator() ;; it.hasNext()) {
+			it.remove();
+		}		
 	}
 
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-		
+		if (unionGraph) {
+			// Delete all quads
+			rdfDataSet.clear();
+		} else {
+			// Only the @default quads removed
+			rdfDataSet.getQuads("@default").clear();
+		}
 	}
 
 	@Override
 	public long size() {
-		// TODO Auto-generated method stub
-		return 0;
+		if (! unionGraph) {
+			return rdfDataSet.getQuads("@default").size();
+		} else {
+			// Summarize graph.size() for all graphs
+			return rdfDataSet.graphNames().parallelStream().map(rdfDataSet::getQuads).collect(Collectors.summingLong(List::size));
+		}
 	}
 
 	@Override
 	public Stream<? extends Triple> getTriples() {
-		// TODO Auto-generated method stub
-		return null;
+		if (! unionGraph) {
+			return rdfDataSet.getQuads("@default").parallelStream().map(this::asTriple);
+		}
+		return rdfDataSet.graphNames().parallelStream().map(rdfDataSet::getQuads).flatMap(List<Quad>::parallelStream).map(this::asTriple);
 	}
 
 	@Override
 	public Stream<? extends Triple> getTriples(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		// TODO Auto-generated method stub
-		return null;
+		// RDFDataSet has no optimizations to help us, so we'll dispatch to filter()
+        return getTriples().filter(t -> {
+            if (subject != null && !t.getSubject().equals(subject)) {
+                return false;
+            }
+            if (predicate != null && !t.getPredicate().equals(predicate)) {
+                return false;
+            }
+            if (object != null && !t.getObject().equals(object)) {
+                return false;
+            }
+            return true;
+        });
 	}
 }
