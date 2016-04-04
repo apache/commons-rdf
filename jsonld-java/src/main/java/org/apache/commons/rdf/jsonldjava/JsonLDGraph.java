@@ -19,6 +19,7 @@ package org.apache.commons.rdf.jsonldjava;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Predicate;
@@ -83,6 +84,24 @@ public class JsonLDGraph implements Graph {
 			public RDFTerm getObject() {
 				return asTerm(quad.getObject());
 			}
+			
+			@Override
+			public boolean equals(Object obj) {
+				if (! (obj instanceof Triple)) {
+					return false;
+				}
+				Triple other = (Triple) obj;
+				return getSubject().equals(other.getSubject()) && 
+						getPredicate().equals(other.getPredicate()) && 
+						getObject().equals(other.getObject());
+				
+			}
+			
+			@Override
+			public int hashCode() {
+				return Objects.hash(getSubject(), getPredicate(), getObject());
+			}
+			
 		};
 	}
 	
