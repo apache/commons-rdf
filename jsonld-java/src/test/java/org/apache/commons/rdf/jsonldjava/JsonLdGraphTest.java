@@ -24,7 +24,7 @@ public class JsonLdGraphTest extends AbstractGraphTest {
 
 	@Override
 	public RDFTermFactory createFactory() {
-		return new JsonLDRDFTermFactory();
+		return new JsonLdRDFTermFactory();
 	}
 	
 

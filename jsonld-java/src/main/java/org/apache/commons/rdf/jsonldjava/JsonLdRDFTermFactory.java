@@ -20,7 +20,7 @@ package org.apache.commons.rdf.jsonldjava;
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.simple.SimpleRDFTermFactory;
 
-final class JsonLDRDFTermFactory extends SimpleRDFTermFactory {
+final class JsonLdRDFTermFactory extends SimpleRDFTermFactory {
 	@Override
 	public Graph createGraph() throws UnsupportedOperationException {
 		return new JsonLdGraph();
