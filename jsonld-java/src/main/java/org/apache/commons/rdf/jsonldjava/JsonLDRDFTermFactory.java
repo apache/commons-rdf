@@ -17,15 +17,12 @@
  */
 package org.apache.commons.rdf.jsonldjava;
 
-import org.apache.commons.rdf.api.AbstractGraphTest;
-import org.apache.commons.rdf.api.RDFTermFactory;
+import org.apache.commons.rdf.api.Graph;
+import org.apache.commons.rdf.simple.SimpleRDFTermFactory;
 
-public class JsonLdGraphTest extends AbstractGraphTest {
-
+final class JsonLDRDFTermFactory extends SimpleRDFTermFactory {
 	@Override
-	public RDFTermFactory createFactory() {
-		return new JsonLDRDFTermFactory();
+	public Graph createGraph() throws UnsupportedOperationException {
+		return new JsonLdGraph();
 	}
-	
-
 }

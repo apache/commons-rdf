@@ -19,6 +19,7 @@
  * Integration with jsonld-java
  * 
  * @see org.apache.commons.rdf.jsonldjava.JsonLdGraph
+ * @see org.apache.commons.rdf.jsonldjava.JsonLDRDFTermFactory
  * 
  */
 package org.apache.commons.rdf.jsonldjava;
