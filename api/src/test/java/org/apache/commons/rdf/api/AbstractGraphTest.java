@@ -43,20 +43,20 @@ import org.junit.Test;
  */
 public abstract class AbstractGraphTest {
 
-    private RDFTermFactory factory;
-    private Graph graph;
-    private IRI alice;
-    private IRI bob;
-    private IRI name;
-    private IRI knows;
-    private IRI member;
-    private BlankNode bnode1;
-    private BlankNode bnode2;
-    private Literal aliceName;
-    private Literal bobName;
-    private Literal secretClubName;
-    private Literal companyName;
-    private Triple bobNameTriple;
+    protected RDFTermFactory factory;
+    protected Graph graph;
+    protected IRI alice;
+    protected IRI bob;
+    protected IRI name;
+    protected IRI knows;
+    protected IRI member;
+    protected BlankNode bnode1;
+    protected BlankNode bnode2;
+    protected Literal aliceName;
+    protected Literal bobName;
+    protected Literal secretClubName;
+    protected Literal companyName;
+    protected Triple bobNameTriple;
 
     public abstract RDFTermFactory createFactory();
 
@@ -116,19 +116,7 @@ public abstract class AbstractGraphTest {
         }
     }
 
-    @Test
-    public void graphToString() {
-        Assume.assumeNotNull(aliceName, companyName);
-        //System.out.println(graph);
-        assertTrue(graph
-                .toString()
-                .contains(
-                        "<http://example.com/alice> <http://xmlns.com/foaf/0.1/name> \"Alice\" ."));
-        assertTrue(graph.toString().contains(
-                " <http://xmlns.com/foaf/0.1/name> \"A company\" ."));
-
-    }
-
+ 
     @Test
     public void size() throws Exception {
         assertTrue(graph.size() > 0);

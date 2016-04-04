@@ -17,8 +17,12 @@
  */
 package org.apache.commons.rdf.simple;
 
+import static org.junit.Assert.assertTrue;
+
 import org.apache.commons.rdf.api.AbstractGraphTest;
 import org.apache.commons.rdf.api.RDFTermFactory;
+import org.junit.Assume;
+import org.junit.Test;
 
 /**
  * Test SimpleRDFTermFactory with AbstractGraphTest
@@ -28,6 +32,19 @@ public class SimpleGraphTest extends AbstractGraphTest {
     @Override
     public RDFTermFactory createFactory() {
         return new SimpleRDFTermFactory();
+    }
+
+    @Test
+    public void graphToString() {
+        Assume.assumeNotNull(aliceName, companyName);
+        System.out.println(graph);
+        assertTrue(graph
+                .toString()
+                .contains(
+                        "<http://example.com/alice> <http://xmlns.com/foaf/0.1/name> \"Alice\" ."));
+        assertTrue(graph.toString().contains(
+                " <http://xmlns.com/foaf/0.1/name> \"A company\" ."));
+
     }
 
 }
