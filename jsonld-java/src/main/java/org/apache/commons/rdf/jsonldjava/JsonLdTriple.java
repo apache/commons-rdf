@@ -30,6 +30,8 @@ final class JsonLdTriple implements Triple {
 	private final Quad quad;
 	private String blankNodePrefix;
 
+	private static JsonLdRDFTermFactory rdfTermFactory = new JsonLdRDFTermFactory();
+	
 	JsonLdTriple(Quad quad, String blankNodePrefix) {
 		this.quad = quad;
 		this.blankNodePrefix = blankNodePrefix;			
@@ -37,17 +39,17 @@ final class JsonLdTriple implements Triple {
 
 	@Override
 	public BlankNodeOrIRI getSubject() {
-		return (BlankNodeOrIRI) JsonLdGraph.asTerm(quad.getSubject(), blankNodePrefix);
+		return (BlankNodeOrIRI) rdfTermFactory.asTerm(quad.getSubject(), blankNodePrefix);
 	}
 
 	@Override
 	public IRI getPredicate() {
-		return (IRI) JsonLdGraph.asTerm(quad.getPredicate(), blankNodePrefix);
+		return (IRI) rdfTermFactory.asTerm(quad.getPredicate(), blankNodePrefix);
 	}
 
 	@Override
 	public RDFTerm getObject() {
-		return JsonLdGraph.asTerm(quad.getObject(), blankNodePrefix);
+		return rdfTermFactory.asTerm(quad.getObject(), blankNodePrefix);
 	}
 
 	@Override

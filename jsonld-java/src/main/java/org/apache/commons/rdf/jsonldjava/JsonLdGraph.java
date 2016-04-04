@@ -32,7 +32,6 @@ import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.RDFTermFactory;
 import org.apache.commons.rdf.api.Triple;
-import org.apache.commons.rdf.simple.SimpleRDFTermFactory;
 
 import com.github.jsonldjava.core.RDFDataset;
 import com.github.jsonldjava.core.RDFDataset.Node;
@@ -40,9 +39,40 @@ import com.github.jsonldjava.core.RDFDataset.Quad;
 
 public class JsonLdGraph implements Graph {
 	
-	private static UUID SALT = UUID.randomUUID(); 
+	/** 
+	 * Used by {@link #bnodePrefix()} to get a unique UUID per JVM run
+	 */
+	private static UUID SALT = UUID.randomUUID();
 	
-	private RDFDataset rdfDataSet = new RDFDataset();
+	private JsonLdRDFTermFactory rdfTermFactory;
+
+	public JsonLdGraph() {
+		this(new RDFDataset(), false);
+	}
+
+	public JsonLdGraph(RDFDataset rdfDataset) {
+		this(rdfDataset, false);
+	}
+
+	public JsonLdGraph(RDFDataset rdfDataset, boolean unionGraph) {
+		this.rdfDataSet = rdfDataset;	
+		this.unionGraph = unionGraph;
+	}
+	
+	public RDFTermFactory getContext() {
+		// Note: This does not need to be synchronized, it's OK 
+		// if you get a few accidental copies as the
+		// same bnodePrefix() is passed to each
+		if (rdfTermFactory == null) {
+			rdfTermFactory = new JsonLdRDFTermFactory(bnodePrefix());
+		}
+		return rdfTermFactory;
+	}
+
+	/**
+	 * The underlying JSON-LD {@link RDFDataset}.
+	 */
+	private RDFDataset rdfDataSet;
 
 	/**
 	 * If true, include all Quad statements as Triples. If false, 
@@ -53,6 +83,7 @@ public class JsonLdGraph implements Graph {
 
 	@Override
 	public void close() throws Exception {
+		// Drop the memory reference, but don't clear it
 		rdfDataSet = null;		
 	}
 
@@ -63,44 +94,12 @@ public class JsonLdGraph implements Graph {
 		
 		add(triple.getSubject(), triple.getPredicate(), triple.getObject());
 	}
-	private static RDFTermFactory rdfTermFactory = new SimpleRDFTermFactory();
-
 	private Triple asTriple(final RDFDataset.Quad quad) {
 		return new JsonLdTriple(quad, bnodePrefix());
 	}
 	
 	private String bnodePrefix() {
 		return "urn:uuid:" + SALT + "#" +  "g"+ System.identityHashCode(rdfDataSet);
-	}
-	
-	static RDFTerm asTerm(final Node node, String blankNodePrefix) {		
-		if (node.isIRI()) {
-			return new JsonLdIRI(node);
-		} else if (node.isBlankNode()) {
-			return new JsonLdBlankNode(node, blankNodePrefix);
-		} else if (node.isLiteral()) {
-			// TODO: Our own JsonLdLiteral
-			if (node.getLanguage() != null) {
-				return rdfTermFactory.createLiteral(node.getValue(), node.getLanguage());
-			} else {
-				return rdfTermFactory.createLiteral(node.getValue(), rdfTermFactory.createIRI(node.getDatatype()));
-			}
-		} else {
-			throw new IllegalArgumentException("Node is neither IRI, BlankNode nor Literal: " + node);
-		}
-	}
-	
-	private RDFDataset.Quad asJsonLdQuad(Triple triple) {
-		Node subject = asJsonLdNode(triple.getSubject());
-		Node predicate = asJsonLdNode(triple.getPredicate());
-		Node object = asJsonLdNode(triple.getObject());
-		String graph = null;
-		// TODO: Add Quad to commons-rdf
-//		if (triple instanceof Quad) {
-//			String graph = triple.getGraph().getIRIString();
-//		}
-		return new RDFDataset.Quad(subject, predicate, object, graph);
-		
 	}
 
 	private Node asJsonLdNode(RDFTerm term) {
