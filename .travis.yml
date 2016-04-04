@@ -13,8 +13,6 @@ install: /bin/true
 
 notifications:
   email:
-    - ansell.peter@gmail.com
-    - sergio@wikier.org
     - commits@commonsrdf.incubator.apache.org
 
 after_success:
