@@ -41,6 +41,109 @@ import com.github.jsonldjava.core.RDFDataset.Quad;
 
 public class JsonLDGraph implements Graph {
 	
+	private final class JsonLdBlankNode implements BlankNode {
+		private final Node node;
+
+		private JsonLdBlankNode(Node node) {
+			this.node = node;
+		}
+
+		@Override
+		public String ntriplesString() {
+			return node.getValue();
+		}
+
+		@Override
+		public String uniqueReference() {					
+			return bnodePrefix() + node.getValue();
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (! ( obj instanceof BlankNode)) {
+				return false;
+			}
+			BlankNode other = (BlankNode) obj;
+			return uniqueReference().equals(other.uniqueReference());
+		}
+
+		@Override
+		public int hashCode() {
+			return uniqueReference().hashCode();
+		}
+	}
+
+	private final class JsonLdIRI implements IRI {
+		private final Node node;
+
+		private JsonLdIRI(Node node) {
+			this.node = node;
+		}
+
+		@Override
+		public String ntriplesString() {
+			return "<" + node.getValue() + ">";
+		}
+
+		@Override
+		public String getIRIString() {
+			return node.getValue();
+		}
+
+		@Override
+		public int hashCode() {
+			return node.getValue().hashCode();
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (! (obj instanceof IRI)) {
+				return false;
+			} 
+			IRI other = (IRI) obj;
+			return node.getValue().equals(other.getIRIString());
+		}
+	}
+
+	private final class JsonLdTriple implements Triple {
+		private final Quad quad;
+
+		private JsonLdTriple(Quad quad) {
+			this.quad = quad;
+		}
+
+		@Override
+		public BlankNodeOrIRI getSubject() {
+			return (BlankNodeOrIRI) asTerm(quad.getSubject());
+		}
+
+		@Override
+		public IRI getPredicate() {
+			return (IRI) asTerm(quad.getPredicate());
+		}
+
+		@Override
+		public RDFTerm getObject() {
+			return asTerm(quad.getObject());
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (! (obj instanceof Triple)) {
+				return false;
+			}
+			Triple other = (Triple) obj;
+			return getSubject().equals(other.getSubject()) && 
+					getPredicate().equals(other.getPredicate()) && 
+					getObject().equals(other.getObject());
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(getSubject(), getPredicate(), getObject());
+		}
+	}
+
 	private static UUID SALT = UUID.randomUUID(); 
 	
 	private RDFDataset rdfDataSet = new RDFDataset();
@@ -67,41 +170,7 @@ public class JsonLDGraph implements Graph {
 	private static RDFTermFactory rdfTermFactory = new SimpleRDFTermFactory();
 
 	private Triple asTriple(final RDFDataset.Quad quad) {
-		return new Triple() {
-			
-			@Override
-			public BlankNodeOrIRI getSubject() {
-				return (BlankNodeOrIRI) asTerm(quad.getSubject());
-			}
-			
-			@Override
-			public IRI getPredicate() {
-				return (IRI) asTerm(quad.getPredicate());
-			}
-			
-			@Override
-			public RDFTerm getObject() {
-				return asTerm(quad.getObject());
-			}
-			
-			@Override
-			public boolean equals(Object obj) {
-				if (! (obj instanceof Triple)) {
-					return false;
-				}
-				Triple other = (Triple) obj;
-				return getSubject().equals(other.getSubject()) && 
-						getPredicate().equals(other.getPredicate()) && 
-						getObject().equals(other.getObject());
-				
-			}
-			
-			@Override
-			public int hashCode() {
-				return Objects.hash(getSubject(), getPredicate(), getObject());
-			}
-			
-		};
+		return new JsonLdTriple(quad);
 	}
 	
 	private String bnodePrefix() {
@@ -110,58 +179,11 @@ public class JsonLDGraph implements Graph {
 	
 	private RDFTerm asTerm(final Node node) {		
 		if (node.isIRI()) {
-			return new IRI() {				
-				@Override
-				public String ntriplesString() {
-					return "<" + node.getValue() + ">";
-				}
-				
-				@Override
-				public String getIRIString() {
-					return node.getValue();
-				}
-				
-				@Override
-				public int hashCode() {
-					return node.getValue().hashCode();
-				}
-				
-				@Override
-				public boolean equals(Object obj) {
-					if (! (obj instanceof IRI)) {
-						return false;
-					} 
-					IRI other = (IRI) obj;
-					return node.getValue().equals(other.getIRIString());
-				}
-			};
+			return new JsonLdIRI(node);
 		} else if (node.isBlankNode()) {
-			return new BlankNode() {				
-				@Override
-				public String ntriplesString() {
-					return node.getValue();
-				}
-				
-				@Override
-				public String uniqueReference() {					
-					return bnodePrefix() + node.getValue();
-				}
-				
-				@Override
-				public boolean equals(Object obj) {
-					if (! ( obj instanceof BlankNode)) {
-						return false;
-					}
-					BlankNode other = (BlankNode) obj;
-					return uniqueReference().equals(other.uniqueReference());
-				}
-				
-				@Override
-				public int hashCode() {
-					return uniqueReference().hashCode();
-				}				
-			};
-		} else if (node.isLiteral()) {			
+			return new JsonLdBlankNode(node);
+		} else if (node.isLiteral()) {
+			// TODO: Our own JsonLdLiteral
 			if (node.getLanguage() != null) {
 				return rdfTermFactory.createLiteral(node.getValue(), node.getLanguage());
 			} else {
