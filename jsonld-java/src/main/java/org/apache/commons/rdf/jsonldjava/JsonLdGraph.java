@@ -44,35 +44,12 @@ public class JsonLdGraph implements Graph {
 	 */
 	private static UUID SALT = UUID.randomUUID();
 	
-	private JsonLdRDFTermFactory rdfTermFactory;
-
-	public JsonLdGraph() {
-		this(new RDFDataset(), false);
-	}
-
-	public JsonLdGraph(RDFDataset rdfDataset) {
-		this(rdfDataset, false);
-	}
-
-	public JsonLdGraph(RDFDataset rdfDataset, boolean unionGraph) {
-		this.rdfDataSet = rdfDataset;	
-		this.unionGraph = unionGraph;
-	}
-	
-	public RDFTermFactory getContext() {
-		// Note: This does not need to be synchronized, it's OK 
-		// if you get a few accidental copies as the
-		// same bnodePrefix() is passed to each
-		if (rdfTermFactory == null) {
-			rdfTermFactory = new JsonLdRDFTermFactory(bnodePrefix());
-		}
-		return rdfTermFactory;
-	}
-
 	/**
 	 * The underlying JSON-LD {@link RDFDataset}.
 	 */
 	private RDFDataset rdfDataSet;
+
+	private JsonLdRDFTermFactory rdfTermFactory;
 
 	/**
 	 * If true, include all Quad statements as Triples. If false, 
@@ -81,47 +58,17 @@ public class JsonLdGraph implements Graph {
 	 */
 	private boolean unionGraph = false;
 
-	@Override
-	public void close() throws Exception {
-		// Drop the memory reference, but don't clear it
-		rdfDataSet = null;		
-	}
-
-	@Override
-	public void add(Triple triple) {
-		// Quad q = asJsonLdQuad(triple);
-		// rdfDataSet.addQuad(q);
-		
-		add(triple.getSubject(), triple.getPredicate(), triple.getObject());
-	}
-	private Triple asTriple(final RDFDataset.Quad quad) {
-		return new JsonLdTriple(quad, bnodePrefix());
+	public JsonLdGraph() {
+		this(new RDFDataset(), false);
 	}
 	
-	private String bnodePrefix() {
-		return "urn:uuid:" + SALT + "#" +  "g"+ System.identityHashCode(rdfDataSet);
+	public JsonLdGraph(RDFDataset rdfDataset) {
+		this(rdfDataset, false);
 	}
 
-	private Node asJsonLdNode(RDFTerm term) {
-		if (term instanceof IRI) {
-			return new RDFDataset.IRI( ((IRI)term).getIRIString() );
-		}
-		if (term instanceof BlankNode) {
-			
-			String uniqueReference = ((BlankNode)term).uniqueReference();
-			if (uniqueReference.startsWith(bnodePrefix())) {
-				// one of our own
-				// TODO: Retrieve the original BlankNode
-				return new RDFDataset.BlankNode(term.ntriplesString());
-			} 
-			return new RDFDataset.BlankNode( "_:" + uniqueReference );
-		}
-		if (term instanceof Literal) {
-			Literal literal = (Literal) term;
-			return new RDFDataset.Literal(literal.getLexicalForm(), literal.getDatatype().getIRIString(), 
-					literal.getLanguageTag().orElse(null));
-		}
-		throw new IllegalArgumentException("RDFTerm not instanceof IRI, BlankNode or Literal: " + term);
+	public JsonLdGraph(RDFDataset rdfDataset, boolean unionGraph) {
+		this.rdfDataSet = rdfDataset;	
+		this.unionGraph = unionGraph;
 	}
 
 	@Override
@@ -150,47 +97,11 @@ public class JsonLdGraph implements Graph {
 	}
 
 	@Override
-	public boolean contains(Triple triple) {
-		return getTriples().anyMatch(Predicate.isEqual(triple));
-	}
-
-	@Override
-	public boolean contains(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		return getTriples(subject, predicate, object).findAny().isPresent();
-	}
-
-	@Override
-	public void remove(Triple triple) {
-		remove(triple.getSubject(), triple.getPredicate(), triple.getObject());
-	}
-
-	@Override
-	public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {		
-		Predicate<? super Quad> filter = quadFilter(subject, predicate, object);
-		if (! unionGraph) {
-			rdfDataSet.getQuads("@default").removeIf(filter);
-		} else {
-			rdfDataSet.graphNames().parallelStream().map(rdfDataSet::getQuads).map(t -> t.removeIf(filter));
-		}
-	}
-
-	private Predicate<? super Quad> quadFilter(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		Optional<Node> subjectNode = Optional.ofNullable(subject).map(this::asJsonLdNode);
-		Optional<Node> predicateNode = Optional.ofNullable(predicate).map(this::asJsonLdNode);
-		Optional<Node> objectNode = Optional.ofNullable(object).map(this::asJsonLdNode);
+	public void add(Triple triple) {
+		// Quad q = asJsonLdQuad(triple);
+		// rdfDataSet.addQuad(q);
 		
-		return q -> {
-		    if (subjectNode.isPresent() && subjectNode.get().compareTo(q.getSubject()) != 0) {
-		        return false;
-		    }
-		    if (predicateNode.isPresent() && predicateNode.get().compareTo(q.getPredicate()) != 0) {	          
-		        return false;
-		    }
-		    if (objectNode.isPresent() && objectNode.get().compareTo(q.getObject()) != 0) {
-		        return false;
-		    }
-		    return true;			
-		};
+		add(triple.getSubject(), triple.getPredicate(), triple.getObject());
 	}
 
 	@Override
@@ -203,15 +114,30 @@ public class JsonLdGraph implements Graph {
 			rdfDataSet.getQuads("@default").clear();
 		}
 	}
+	@Override
+	public void close() throws Exception {
+		// Drop the memory reference, but don't clear it
+		rdfDataSet = null;		
+	}
+	
+	@Override
+	public boolean contains(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+		return getTriples(subject, predicate, object).findAny().isPresent();
+	}
 
 	@Override
-	public long size() {
-		if (! unionGraph) {
-			return rdfDataSet.getQuads("@default").size();
-		} else {
-			// Summarize graph.size() for all graphs
-			return rdfDataSet.graphNames().parallelStream().map(rdfDataSet::getQuads).collect(Collectors.summingLong(List::size));
+	public boolean contains(Triple triple) {
+		return getTriples().anyMatch(Predicate.isEqual(triple));
+	}
+
+	public RDFTermFactory getContext() {
+		// Note: This does not need to be synchronized, it's OK 
+		// if you get a few accidental copies as the
+		// same bnodePrefix() is passed to each
+		if (rdfTermFactory == null) {
+			rdfTermFactory = new JsonLdRDFTermFactory(bnodePrefix());
 		}
+		return rdfTermFactory;
 	}
 
 	@Override
@@ -237,5 +163,79 @@ public class JsonLdGraph implements Graph {
             }
             return true;
         });
+	}
+
+	@Override
+	public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {		
+		Predicate<? super Quad> filter = quadFilter(subject, predicate, object);
+		if (! unionGraph) {
+			rdfDataSet.getQuads("@default").removeIf(filter);
+		} else {
+			rdfDataSet.graphNames().parallelStream().map(rdfDataSet::getQuads).map(t -> t.removeIf(filter));
+		}
+	}
+
+	@Override
+	public void remove(Triple triple) {
+		remove(triple.getSubject(), triple.getPredicate(), triple.getObject());
+	}
+
+	@Override
+	public long size() {
+		if (! unionGraph) {
+			return rdfDataSet.getQuads("@default").size();
+		} else {
+			// Summarize graph.size() for all graphs
+			return rdfDataSet.graphNames().parallelStream().map(rdfDataSet::getQuads).collect(Collectors.summingLong(List::size));
+		}
+	}
+
+	private Node asJsonLdNode(RDFTerm term) {
+		if (term instanceof IRI) {
+			return new RDFDataset.IRI( ((IRI)term).getIRIString() );
+		}
+		if (term instanceof BlankNode) {
+			
+			String uniqueReference = ((BlankNode)term).uniqueReference();
+			if (uniqueReference.startsWith(bnodePrefix())) {
+				// one of our own
+				// TODO: Retrieve the original BlankNode
+				return new RDFDataset.BlankNode(term.ntriplesString());
+			} 
+			return new RDFDataset.BlankNode( "_:" + uniqueReference );
+		}
+		if (term instanceof Literal) {
+			Literal literal = (Literal) term;
+			return new RDFDataset.Literal(literal.getLexicalForm(), literal.getDatatype().getIRIString(), 
+					literal.getLanguageTag().orElse(null));
+		}
+		throw new IllegalArgumentException("RDFTerm not instanceof IRI, BlankNode or Literal: " + term);
+	}
+
+	private Triple asTriple(final RDFDataset.Quad quad) {
+		return new JsonLdTriple(quad, bnodePrefix());
+	}
+
+	private String bnodePrefix() {
+		return "urn:uuid:" + SALT + "#" +  "g"+ System.identityHashCode(rdfDataSet);
+	}
+
+	private Predicate<? super Quad> quadFilter(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+		Optional<Node> subjectNode = Optional.ofNullable(subject).map(this::asJsonLdNode);
+		Optional<Node> predicateNode = Optional.ofNullable(predicate).map(this::asJsonLdNode);
+		Optional<Node> objectNode = Optional.ofNullable(object).map(this::asJsonLdNode);
+		
+		return q -> {
+		    if (subjectNode.isPresent() && subjectNode.get().compareTo(q.getSubject()) != 0) {
+		        return false;
+		    }
+		    if (predicateNode.isPresent() && predicateNode.get().compareTo(q.getPredicate()) != 0) {	          
+		        return false;
+		    }
+		    if (objectNode.isPresent() && objectNode.get().compareTo(q.getObject()) != 0) {
+		        return false;
+		    }
+		    return true;			
+		};
 	}
 }
