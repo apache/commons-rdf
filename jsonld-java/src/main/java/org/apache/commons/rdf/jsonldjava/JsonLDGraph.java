@@ -42,7 +42,7 @@ public class JsonLDGraph implements Graph {
 	
 	private static UUID SALT = UUID.randomUUID(); 
 	
-	private RDFDataset rdfDataSet;
+	private RDFDataset rdfDataSet = new RDFDataset();
 
 	/**
 	 * If true, include all Quad statements as Triples. If false, 
