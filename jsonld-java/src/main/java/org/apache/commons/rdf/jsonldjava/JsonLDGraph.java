@@ -19,6 +19,7 @@ package org.apache.commons.rdf.jsonldjava;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -222,12 +223,32 @@ public class JsonLDGraph implements Graph {
 	}
 
 	@Override
-	public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		// rdfDataSet has no remove method - so we'll have to remove them
-		// from the inner Lists' iterator					
-		for (Iterator<? extends Triple> it = getTriples(subject, predicate, object).iterator() ;; it.hasNext()) {
-			it.remove();
-		}		
+	public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {		
+		Predicate<? super Quad> filter = quadFilter(subject, predicate, object);
+		if (! unionGraph) {
+			rdfDataSet.getQuads("@default").removeIf(filter);
+		} else {
+			rdfDataSet.graphNames().parallelStream().map(rdfDataSet::getQuads).map(t -> t.removeIf(filter));
+		}
+	}
+
+	private Predicate<? super Quad> quadFilter(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+		Optional<Node> subjectNode = Optional.ofNullable(subject).map(this::asJsonLdNode);
+		Optional<Node> predicateNode = Optional.ofNullable(predicate).map(this::asJsonLdNode);
+		Optional<Node> objectNode = Optional.ofNullable(object).map(this::asJsonLdNode);
+		
+		return q -> {
+		    if (subjectNode.isPresent() && subjectNode.get().compareTo(q.getSubject()) == 0) {
+		        return false;
+		    }
+		    if (predicateNode.isPresent() && predicateNode.get().compareTo(q.getPredicate()) == 0) {	          
+		        return false;
+		    }
+		    if (objectNode.isPresent() && objectNode.get().compareTo(q.getObject()) == 0) {
+		        return false;
+		    }
+		    return true;			
+		};
 	}
 
 	@Override
