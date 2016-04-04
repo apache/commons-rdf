@@ -27,6 +27,7 @@ import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.RDFTermFactory;
 import org.apache.commons.rdf.api.Triple;
+import org.apache.commons.rdf.simple.Types;
 
 import com.github.jsonldjava.core.RDFDataset;
 import com.github.jsonldjava.core.RDFDataset.Node;
@@ -81,7 +82,7 @@ final class JsonLdRDFTermFactory implements RDFTermFactory {
 		return new JsonLdLiteral(new RDFDataset.Literal(literal, dataType.getIRIString(), null));	}
 	@Override
 	public Literal createLiteral(String literal, String language) {
-		return new JsonLdLiteral(new RDFDataset.Literal(literal, null, language));		
+		return new JsonLdLiteral(new RDFDataset.Literal(literal, Types.RDF_LANGSTRING.getIRIString(), language));		
 	}
 
 
