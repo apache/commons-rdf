@@ -27,15 +27,15 @@ import java.util.stream.Stream;
  * href="http://www.w3.org/TR/rdf11-concepts/" >RDF-1.1 Concepts and Abstract
  * Syntax</a>, a W3C Recommendation published on 25 February 2014.
  */
-public interface Graph extends AutoCloseable, GraphOrDataset<Triple> {
-
+public interface GraphOrDataset<T extends TripleOrQuad> extends AutoCloseable {
+	
     /**
      * Add a triple to the graph, possibly mapping any of the components of the
      * Triple to those supported by this Graph.
      *
-     * @param triple The triple to add
+     * @param triple The triple or quad to add
      */
-    void add(Triple triple);
+    void add(T triple);
 
     /**
      * Add a triple to the graph, possibly mapping any of the components to
@@ -53,7 +53,7 @@ public interface Graph extends AutoCloseable, GraphOrDataset<Triple> {
      * @param triple The triple to check.
      * @return True if the Graph contains the given Triple.
      */
-    boolean contains(Triple triple);
+    boolean contains(T triple);
 
     /**
      * Check if graph contains a pattern of triples.
@@ -87,7 +87,7 @@ public interface Graph extends AutoCloseable, GraphOrDataset<Triple> {
      *
      * @param triple triple to remove
      */
-    void remove(Triple triple);
+    void remove(T triple);
 
     /**
      * Remove a concrete pattern of triples from the graph.
@@ -107,7 +107,7 @@ public interface Graph extends AutoCloseable, GraphOrDataset<Triple> {
      * Number of triples contained by the graph.
      * <p>
      * The count of a set does not include duplicates, consistent with the
-     * {@link Triple#equals(Object)} equals method for each {@link Triple}.
+     * {@link T#equals(Object)} equals method for each {@link T}.
      *
      * @return The number of triples in the graph
      */
@@ -117,28 +117,28 @@ public interface Graph extends AutoCloseable, GraphOrDataset<Triple> {
      * Get all triples contained by the graph.<br>
      * <p>
      * The iteration does not contain any duplicate triples, as determined by
-     * the {@link Triple#equals(Object)} method for each {@link Triple}.
+     * the {@link T#equals(Object)} method for each {@link T}.
      * <p>
-     * The behaviour of the {@link Stream} is not specified if {@link #add(Triple)},
-     * {@link #remove(Triple)} or {@link #clear()} are called on the
-     * {@link Graph} before it terminates.
+     * The behaviour of the {@link Stream} is not specified if {@link #add(T)},
+     * {@link #remove(T)} or {@link #clear()} are called on the
+     * {@link GraphOrDataset} before it terminates.
      * <p>
      * Implementations may throw {@link ConcurrentModificationException} from Stream
      * methods if they detect a conflict while the Stream is active.
      *
      * @return A {@link Stream} over all of the triples in the graph
      */
-    Stream<? extends Triple> getTriples();
+    Stream<? extends T> getTriples();
 
     /**
      * Get all triples contained by the graph matched with the pattern.
      * <p>
      * The iteration does not contain any duplicate triples, as determined by
-     * the {@link Triple#equals(Object)} method for each {@link Triple}.
+     * the {@link T#equals(Object)} method for each {@link T}.
      * <p>
-     * The behaviour of the {@link Stream} is not specified if {@link #add(Triple)},
-     * {@link #remove(Triple)} or {@link #clear()} are called on the
-     * {@link Graph} before it terminates.
+     * The behaviour of the {@link Stream} is not specified if {@link #add(T)},
+     * {@link #remove(T)} or {@link #clear()} are called on the
+     * {@link GraphOrDataset} before it terminates.
      * <p>
      * Implementations may throw {@link ConcurrentModificationException} from Stream
      * methods if they detect a conflict while the Stream is active.
@@ -148,7 +148,7 @@ public interface Graph extends AutoCloseable, GraphOrDataset<Triple> {
      * @param object    The triple object (null is a wildcard)
      * @return A {@link Stream} over the matched triples.
      */
-    Stream<? extends Triple> getTriples(BlankNodeOrIRI subject, IRI predicate,
+    Stream<? extends T> getTriples(BlankNodeOrIRI subject, IRI predicate,
                                         RDFTerm object);
 
     /**
@@ -160,9 +160,9 @@ public interface Graph extends AutoCloseable, GraphOrDataset<Triple> {
      *      System.out.println(t);
      *  }
      * </pre>
-     * The behaviour of the iterator is not specified if {@link #add(Triple)},
-     * {@link #remove(Triple)} or {@link #clear()}, are called on the
-     * {@link Graph} before it terminates. It is undefined if the returned
+     * The behaviour of the iterator is not specified if {@link #add(T)},
+     * {@link #remove(T)} or {@link #clear()}, are called on the
+     * {@link GraphOrDataset} before it terminates. It is undefined if the returned
      * {@link Iterator} supports the {@link Iterator#remove()} method.
      * <p>
      * Implementations may throw {@link ConcurrentModificationException} from
@@ -182,9 +182,9 @@ public interface Graph extends AutoCloseable, GraphOrDataset<Triple> {
      *             active.
      */
     @SuppressWarnings("unchecked")
-    default Iterable<Triple> iterate()
+    default Iterable<T> iterate()
             throws ConcurrentModificationException, IllegalStateException {
-        return ((Stream<Triple>)getTriples())::iterator;
+        return ((Stream<T>)getTriples())::iterator;
     }
 
     /**
@@ -201,8 +201,8 @@ public interface Graph extends AutoCloseable, GraphOrDataset<Triple> {
      * </pre>
      * <p>
      * The behaviour of the iterator is not specified if
-     * {@link #add(Triple)}, {@link #remove(Triple)} or {@link #clear()}, are
-     * called on the {@link Graph} before it terminates. It is undefined if the
+     * {@link #add(T)}, {@link #remove(T)} or {@link #clear()}, are
+     * called on the {@link GraphOrDataset} before it terminates. It is undefined if the
      * returned {@link Iterator} supports the {@link Iterator#remove()} method.
      * <p>
      * Implementations may throw {@link ConcurrentModificationException} from
@@ -228,9 +228,9 @@ public interface Graph extends AutoCloseable, GraphOrDataset<Triple> {
      *             active.
      */
     @SuppressWarnings("unchecked")
-    default Iterable<Triple> iterate(
+    default Iterable<T> iterate(
             BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
         throws ConcurrentModificationException, IllegalStateException {
-        return ((Stream<Triple>) getTriples(subject, predicate, object))::iterator;
+        return ((Stream<T>) getTriples(subject, predicate, object))::iterator;
     }
 }
