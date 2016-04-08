@@ -180,7 +180,7 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 	}
 
 	@Override
-	public RDFParserBuilder contentType(String contentType) {
+	public RDFParserBuilder contentType(String contentType) throws IllegalArgumentException {
 		AbstractRDFParserBuilder c = clone();
 		c.contentType = Optional.ofNullable(contentType);
 		c.contentTypeSyntax = c.contentType.flatMap(RDFSyntax::byMediaType);
@@ -344,6 +344,7 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 	protected AbstractRDFParserBuilder prepareForParsing() throws IOException, IllegalStateException {
 		checkSource();
 		checkBaseRequired();
+		checkContentType();
 		// We'll make a clone of our current state which will be passed to
 		// parseSynchronously()
 		AbstractRDFParserBuilder c = clone();
@@ -364,6 +365,17 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 		}
 
 		return c;
+	}
+	
+	/**
+	 * Subclasses can override this method to check compatibility with the
+	 * contentType setting.
+	 * 
+	 * @throws IllegalStateException
+	 *             if the {@link #getContentType()} or
+	 *             {@link #getContentTypeSyntax()} is not compatible or invalid
+	 */
+	protected void checkContentType() throws IllegalStateException {
 	}
 
 	/**
