@@ -141,7 +141,7 @@ public interface RDFParserBuilder {
 	 *             If the contentType has an invalid syntax, or this
 	 *             RDFParserBuilder does not support the specified contentType.
 	 */
-	RDFParserBuilder contentType(String contentType);
+	RDFParserBuilder contentType(String contentType) throws IllegalArgumentException;
 
 	/**
 	 * Specify which {@link Graph} to add triples to.
