@@ -37,6 +37,18 @@ import org.apache.commons.rdf.api.Triple;
  */
 public class SimpleRDFTermFactory implements RDFTermFactory {
 
+	/**
+	 * Marker interface to say that this RDFTerm is part of the 
+	 * Simple implementation. Used by {@link GraphImpl} to avoid
+	 * double remapping. 
+	 * <p>
+	 * This method is package protected to avoid any third-party
+	 * subclasses.
+	 *
+	 */
+	static interface SimpleRDFTerm extends RDFTerm {		
+	}
+	
     /** Unique salt per instance, for {@link #createBlankNode(String)}
      */
     private final UUID SALT = UUID.randomUUID();

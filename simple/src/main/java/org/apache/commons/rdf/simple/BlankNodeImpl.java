@@ -23,11 +23,12 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.commons.rdf.api.BlankNode;
+import org.apache.commons.rdf.simple.SimpleRDFTermFactory.SimpleRDFTerm;
 
 /**
  * A simple implementation of BlankNode.
  */
-final class BlankNodeImpl implements BlankNode {
+final class BlankNodeImpl implements BlankNode, SimpleRDFTerm {
 
     private static final UUID SALT = UUID.randomUUID();
     private static final AtomicLong COUNTER = new AtomicLong();

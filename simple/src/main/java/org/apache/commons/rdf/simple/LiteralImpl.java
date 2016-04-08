@@ -28,7 +28,7 @@ import org.apache.commons.rdf.api.Literal;
 /**
  * A simple implementation of Literal.
  */
-final class LiteralImpl implements Literal {
+final class LiteralImpl implements Literal, SimpleRDFTermFactory.SimpleRDFTerm {
 
     private static final String QUOTE = "\"";
 
