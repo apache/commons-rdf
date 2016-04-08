@@ -86,20 +86,18 @@ public interface Quad extends TripleOrQuad {
 	RDFTerm getObject();
 
 	/**
-	 * Convert this {@link Quad} to a {@link Triple}.
+	 * Convert this Quad to a Triple.
 	 * <p>
 	 * The returned {@link Triple} will have equivalent values returned from the
 	 * methods {@link TripleOrQuad#getSubject()},
-	 * {@link TripleOrQuad#getPredicate()} and {@link TripleOrQuad#getObject()}
-	 * (their values MUST be {@link RDFTerm#equals(Object)}) - however the
-	 * property values MAY be different instances.
+	 * {@link TripleOrQuad#getPredicate()} and {@link TripleOrQuad#getObject()}.
 	 * <p>
 	 * The returned {@link Triple} MUST NOT be {@link #equals(Object)} to this
 	 * {@link Quad}, even if this quad has a default graph
 	 * {@link #getGraphName()} value of {@link Optional#empty()}, but MUST
-	 * follow the {@link Triple#equals(Object)) semantics. This means that the
+	 * follow the {@link Triple#equals(Object)} semantics. This means that the
 	 * following MUST be true:
-	 * 
+     * 
 	 * <pre>
 	 * Quad q1, q2;
 	 * if (q1.equals(q2)) {
@@ -193,7 +191,7 @@ public interface Quad extends TripleOrQuad {
 	 * <p>
 	 * The returned hash code MUST be equal to the result of
 	 * {@link Objects#hash(Object...)} with the arguments {@link #getSubject()},
-	 * {@link #getPredicate()}, {@link #getObject(), #getGraphName()}.
+	 * {@link #getPredicate()}, {@link #getObject()}, {@link #getGraphName()}.
 	 * <p>
 	 * This method MUST be implemented in conjunction with
 	 * {@link #equals(Object)} so that two equal {@link Quad}s produce the same

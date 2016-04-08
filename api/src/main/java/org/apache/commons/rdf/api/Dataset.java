@@ -144,8 +144,6 @@ public interface Dataset extends AutoCloseable, GraphOrDataset<Quad> {
 	/**
 	 * Remove a concrete pattern of quads from the default graph of the dataset.
 	 *
-	 * @param graphName
-	 *            The graph the quad belongs to
 	 * @param subject
 	 *            The quad subject (<code>null</code> is a wildcard)
 	 * @param predicate

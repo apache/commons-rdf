@@ -23,8 +23,8 @@ package org.apache.commons.rdf.api;
  * A TripleOrQuad has at least a 
  * {@link #getSubject()}, {@link #getPredicate()} and 
  * {@link #getObject()}, but unlike a {@link Triple} does not have a
- * formalized {@link Triple#equals(Object)} semantics, and does not 
- * neccesarily have a {@link Quad#getGraphLabel()}
+ * formalised {@link Triple#equals(Object)} semantics, and does not 
+ * necessarily have a {@link Quad#getGraphName()}
  * <p>
  * Implementations of this interface SHOULD also implement {@link Triple}
  * or {@link Quad}, but MUST NOT implement both interfaces.

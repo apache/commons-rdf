@@ -22,24 +22,24 @@ import java.util.Iterator;
 import java.util.stream.Stream;
 
 /**
- * An <a href="http://www.w3.org/TR/rdf11-concepts/#section-rdf-graph"> RDF 1.1
- * Graph</a>, a set of RDF triples, as defined by <a
- * href="http://www.w3.org/TR/rdf11-concepts/" >RDF-1.1 Concepts and Abstract
- * Syntax</a>, a W3C Recommendation published on 25 February 2014.
+ * Common interface for {@link Graph} and {@link Dataset}
+ * <p>
+ * 
  */
 public interface GraphOrDataset<T extends TripleOrQuad> extends AutoCloseable {
 	
     /**
-     * Add a triple to the graph, possibly mapping any of the components of the
-     * Triple to those supported by this Graph.
+     * Add a triple/quad to the graph, possibly mapping any of the components of the
+     * TripleOrQuad to those supported by this Graph.
      *
-     * @param triple The triple or quad to add
+     * @param tripleOrQuad The triple or quad to add
      */
-    void add(T triple);
+    void add(T tripleOrQuad);
 
     /**
-     * Add a triple to the graph, possibly mapping any of the components to
-     * those supported by this Graph.
+     * Add a triple to the Graph, (or the default graph of a Dataset), 
+     * possibly mapping any of the components to
+     * those supported by this graph/dataset.
      *
      * @param subject   The triple subject
      * @param predicate The triple predicate
@@ -48,26 +48,30 @@ public interface GraphOrDataset<T extends TripleOrQuad> extends AutoCloseable {
     void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
 
     /**
-     * Check if graph contains triple.
+     * Check if graph/dataset contains triple/quad.
      *
-     * @param triple The triple to check.
-     * @return True if the Graph contains the given Triple.
+     * @param tripleOrQuad The triple/quad to check.
+     * @return True if this graph/dataset contains the given Triple.
      */
-    boolean contains(T triple);
+    boolean contains(T tripleOrQuad);
 
     /**
-     * Check if graph contains a pattern of triples.
-     *
-     * @param subject   The triple subject (null is a wildcard)
-     * @param predicate The triple predicate (null is a wildcard)
-     * @param object    The triple object (null is a wildcard)
-     * @return True if the Graph contains any Triples that match the given
-     * pattern.
-     */
+	 * Check if graph/dataset contains a pattern of triples or quads in the
+	 * default graph of a dataset.
+	 *
+	 * @param subject
+	 *            The triple subject (null is a wildcard)
+	 * @param predicate
+	 *            The triple predicate (null is a wildcard)
+	 * @param object
+	 *            The triple object (null is a wildcard)
+	 * @return True if this graph/dataset contains any triples/quads 
+	 * 	that match the given pattern.
+	 */
     boolean contains(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
 
     /**
-     * Close the graph, relinquishing any underlying resources.
+     * Close the graph/dataset, relinquishing any underlying resources.
      * <p>
      * For example, this would close any open file and network streams and free
      * database locks held by the Graph implementation.
@@ -83,14 +87,15 @@ public interface GraphOrDataset<T extends TripleOrQuad> extends AutoCloseable {
     }
 
     /**
-     * Remove a concrete triple from the graph.
+     * Remove a concrete triple/quad from the graph.
      *
-     * @param triple triple to remove
+     * @param tripleOrQuad triple/quad to remove
      */
-    void remove(T triple);
+    void remove(T tripleOrQuad);
 
     /**
-     * Remove a concrete pattern of triples from the graph.
+     * Remove a concrete pattern of triples from the graph, or
+     * quads from the default graph of a dataset.
      *
      * @param subject   The triple subject (null is a wildcard)
      * @param predicate The triple predicate (null is a wildcard)
@@ -99,28 +104,27 @@ public interface GraphOrDataset<T extends TripleOrQuad> extends AutoCloseable {
     void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
 
     /**
-     * Clear the graph, removing all triples.
+     * Clear the graph/dataset, removing all triples/quads.
      */
     void clear();
 
     /**
-     * Number of triples contained by the graph.
-     * <p>
-     * The count of a set does not include duplicates, consistent with the
-     * {@link T#equals(Object)} equals method for each {@link T}.
+     * Number of triples/quads contained by the graph/dataset.
      *
-     * @return The number of triples in the graph
+     * @return The number of triples/quads in the graph/dataset
      */
     long size();
 
     /**
-     * Get all triples contained by the graph.<br>
+     * Get all triples contained by the graph, or 
+     * the equivalent of {@link Quad#asTriple()} 
+     * for all quads of the default graph of a dataset.
      * <p>
      * The iteration does not contain any duplicate triples, as determined by
-     * the {@link T#equals(Object)} method for each {@link T}.
+     * the {@link Triple#equals(Object)} method for each {@link Triple}.
      * <p>
-     * The behaviour of the {@link Stream} is not specified if {@link #add(T)},
-     * {@link #remove(T)} or {@link #clear()} are called on the
+     * The behaviour of the {@link Stream} is not specified if {@link #add(TripleOrQuad)},
+     * {@link #remove(TripleOrQuad)} or {@link #clear()} are called on the
      * {@link GraphOrDataset} before it terminates.
      * <p>
      * Implementations may throw {@link ConcurrentModificationException} from Stream
@@ -128,16 +132,18 @@ public interface GraphOrDataset<T extends TripleOrQuad> extends AutoCloseable {
      *
      * @return A {@link Stream} over all of the triples in the graph
      */
-    Stream<? extends T> getTriples();
+    Stream<? extends Triple> getTriples();
 
     /**
-     * Get all triples contained by the graph matched with the pattern.
+     * Get all triples contained by the graph matched with the pattern, or
+     * the equivalent of {@link Quad#asTriple()} 
+     * for all quads of the default graph of a dataset that match the pattern.
      * <p>
      * The iteration does not contain any duplicate triples, as determined by
-     * the {@link T#equals(Object)} method for each {@link T}.
+     * the {@link Triple#equals(Object)} method for each {@link Triple}.
      * <p>
-     * The behaviour of the {@link Stream} is not specified if {@link #add(T)},
-     * {@link #remove(T)} or {@link #clear()} are called on the
+     * The behaviour of the {@link Stream} is not specified if {@link #add(TripleOrQuad)},
+     * {@link #remove(TripleOrQuad)} or {@link #clear()} are called on the
      * {@link GraphOrDataset} before it terminates.
      * <p>
      * Implementations may throw {@link ConcurrentModificationException} from Stream
@@ -148,7 +154,7 @@ public interface GraphOrDataset<T extends TripleOrQuad> extends AutoCloseable {
      * @param object    The triple object (null is a wildcard)
      * @return A {@link Stream} over the matched triples.
      */
-    Stream<? extends T> getTriples(BlankNodeOrIRI subject, IRI predicate,
+    Stream<? extends Triple> getTriples(BlankNodeOrIRI subject, IRI predicate,
                                         RDFTerm object);
 
     /**
@@ -156,12 +162,12 @@ public interface GraphOrDataset<T extends TripleOrQuad> extends AutoCloseable {
      * <p>
      * This method is meant to be used with a Java for-each loop, e.g.:
      * <pre>
-     *  for (Triple t : graph.iterate()) {
+     *  for (TripleOrQuad t : graphOrDataset.iterate()) {
      *      System.out.println(t);
      *  }
      * </pre>
-     * The behaviour of the iterator is not specified if {@link #add(T)},
-     * {@link #remove(T)} or {@link #clear()}, are called on the
+     * The behaviour of the iterator is not specified if {@link #add(TripleOrQuad)},
+     * {@link #remove(TripleOrQuad)} or {@link #clear()}, are called on the
      * {@link GraphOrDataset} before it terminates. It is undefined if the returned
      * {@link Iterator} supports the {@link Iterator#remove()} method.
      * <p>
@@ -188,20 +194,21 @@ public interface GraphOrDataset<T extends TripleOrQuad> extends AutoCloseable {
     }
 
     /**
-     * Get an Iterable for iterating over the triples in the graph that match
-     * the pattern.
+     * Get an Iterable for iterating over the triples in the graph 
+     * or quads in the default graph of a dataset that  
+     * match the pattern.
      * <p>
      * This method is meant to be used with a Java for-each loop, e.g.:
      * <pre>
      *  IRI alice = factory.createIRI("http://example.com/alice");
      *  IRI knows = factory.createIRI("http://xmlns.com/foaf/0.1/");
-     *  for (Triple t : graph.iterate(alice, knows, null)) {
+     *  for (Triple t : graphOrDataset.iterate(alice, knows, null)) {
      *      System.out.println(t.getObject());
      *  }
      * </pre>
      * <p>
      * The behaviour of the iterator is not specified if
-     * {@link #add(T)}, {@link #remove(T)} or {@link #clear()}, are
+     * {@link #add(TripleOrQuad)}, {@link #remove(TripleOrQuad)} or {@link #clear()}, are
      * called on the {@link GraphOrDataset} before it terminates. It is undefined if the
      * returned {@link Iterator} supports the {@link Iterator#remove()} method.
      * <p>
