@@ -216,7 +216,7 @@ public class JsonLdGraph implements Graph {
 		return new JsonLdTriple(quad, bnodePrefix());
 	}
 
-	private String bnodePrefix() {
+	public String bnodePrefix() {
 		return "urn:uuid:" + SALT + "#" +  "g"+ System.identityHashCode(rdfDataSet);
 	}
 
