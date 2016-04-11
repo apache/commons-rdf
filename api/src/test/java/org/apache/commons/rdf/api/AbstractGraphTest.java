@@ -273,21 +273,30 @@ public abstract class AbstractGraphTest {
     public void addBlankNodesFromMultipleGraphs() {
 
         try {
+        	// Create two separate Graph instances
             Graph g1 = createGraph1();
             Graph g2 = createGraph2();
-            Graph g3 = factory.createGraph();
 
+            // and add them to a new Graph g3
+            Graph g3 = factory.createGraph();  
             addAllTriples(g1, g3);
             addAllTriples(g2, g3);
 
-            IRI name = factory.createIRI("http://xmlns.com/foaf/0.1/name");
+            
+            // Let's make a map to find all those blank nodes after insertion
+            // (The Graph implementation is not currently required to 
+            // keep supporting those BlankNodes with contains() - see COMMONSRDF-15)
 
             final Map<String, BlankNodeOrIRI> whoIsWho = new ConcurrentHashMap<>();
             // ConcurrentHashMap as we will try parallel forEach below,
             // which should not give inconsistent results (it does with a
             // HashMap!)
+            
+            // look up BlankNodes by name
+            IRI name = factory.createIRI("http://xmlns.com/foaf/0.1/name");
             g3.getTriples(null, name, null).parallel().forEach( t ->
                 whoIsWho.put( t.getObject().ntriplesString(), t.getSubject()));
+                        
             assertEquals(4, whoIsWho.size());
             // and contains 4 unique values
             assertEquals(4, new HashSet<BlankNodeOrIRI>(whoIsWho.values()).size());
@@ -301,6 +310,7 @@ public abstract class AbstractGraphTest {
             BlankNodeOrIRI b2Dave = whoIsWho.get("\"Dave\"");
             assertNotNull(b2Dave);
 
+            // All blank nodes should differ
             notEquals(b1Alice, b2Bob);
             notEquals(b1Alice, b1Charlie);
             notEquals(b1Alice, b2Dave);
@@ -308,6 +318,8 @@ public abstract class AbstractGraphTest {
             notEquals(b2Bob, b2Dave);
             notEquals(b1Charlie, b2Dave);
 
+            // And we should be able to query with them again
+            // as we got them back from g3
             IRI hasChild = factory.createIRI("http://example.com/hasChild");
             assertTrue(g3.contains(b1Alice, hasChild, b2Bob));
             assertTrue(g3.contains(b2Dave, hasChild, b1Charlie));
@@ -352,16 +364,13 @@ public abstract class AbstractGraphTest {
 
     private Graph createGraph1() {
         RDFTermFactory factory1 = createFactory();
-        // Let's assume this is parsed from
-        // a Turtle file <g1.ttl>, and faithfully keeps its
-        // internal blank node identifiers _:b1 and _:b2
 
         IRI name = factory1.createIRI("http://xmlns.com/foaf/0.1/name");
         Graph g1 = factory1.createGraph();
-        BlankNode b1 = factory1.createBlankNode("b1");
+        BlankNode b1 = factory1.createBlankNode();
         g1.add(b1, name, factory1.createLiteral("Alice"));
 
-        BlankNode b2 = factory1.createBlankNode("b2");
+        BlankNode b2 = factory1.createBlankNode();
         g1.add(b2, name, factory1.createLiteral("Bob"));
 
         IRI hasChild = factory1.createIRI("http://example.com/hasChild");
@@ -371,19 +380,15 @@ public abstract class AbstractGraphTest {
     }
 
     private Graph createGraph2() {
-        // Let's assume this is parsed from
-        // a Turtle file <g2.ttl>, which also uses the
-        // internal blank node identifiers _:b1 and _:b2,
-        // but is describing someone else.
         RDFTermFactory factory2 = createFactory();
         IRI name = factory2.createIRI("http://xmlns.com/foaf/0.1/name");
 
         Graph g2 = factory2.createGraph();
 
-        BlankNode b1 = factory2.createBlankNode("b1");
+        BlankNode b1 = factory2.createBlankNode();
         g2.add(b1, name, factory2.createLiteral("Charlie"));
 
-        BlankNode b2 = factory2.createBlankNode("b2");
+        BlankNode b2 = factory2.createBlankNode();
         g2.add(b2, name, factory2.createLiteral("Dave"));
 
         IRI hasChild = factory2.createIRI("http://example.com/hasChild");
