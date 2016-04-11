@@ -18,6 +18,7 @@
 package org.apache.commons.rdf.simple;
 
 import org.apache.commons.rdf.api.*;
+import org.apache.commons.rdf.simple.SimpleRDFTermFactory.SimpleRDFTerm;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -72,18 +73,23 @@ final class GraphImpl implements Graph {
     }
 
     private <T extends RDFTerm> RDFTerm internallyMap(T object) {
-        if (object instanceof BlankNode && !(object instanceof BlankNodeImpl)) {
+    	if (object == null || object instanceof SimpleRDFTerm) {
+    		// No need to re-map our own objects.
+    		// We support null as internallyMap() is also used by the filters, and the
+    		// factory constructors later do null checks
+    		return object;
+    	}
+        if (object instanceof BlankNode) {
             BlankNode blankNode = (BlankNode) object;
             // This guarantees that adding the same BlankNode multiple times to
             // this graph will generate a local object that is mapped to an
             // equivalent object, based on the code in the package private
             // BlankNodeImpl class
             return factory.createBlankNode(blankNode.uniqueReference());
-        } else if (object instanceof IRI && !(object instanceof IRIImpl)) {
+        } else if (object instanceof IRI) {
             IRI iri = (IRI) object;
             return factory.createIRI(iri.getIRIString());
-        } else if (object instanceof Literal
-                && !(object instanceof LiteralImpl)) {
+        } else if (object instanceof Literal) {
             Literal literal = (Literal) object;
             if (literal.getLanguageTag().isPresent()) {
                 return factory.createLiteral(literal.getLexicalForm(), literal
@@ -93,9 +99,7 @@ final class GraphImpl implements Graph {
                         (IRI) internallyMap(literal.getDatatype()));
             }
         } else {
-            // The object is a local implementation, and is not a BlankNode, so
-            // can be returned directly
-            return object;
+        	throw new IllegalArgumentException("RDFTerm was neither a BlankNode, IRI nor Literal: " + object);
         }
     }
 
