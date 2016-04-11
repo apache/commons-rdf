@@ -372,11 +372,11 @@ public abstract class AbstractGraphTest {
 
         IRI name = factory1.createIRI("http://xmlns.com/foaf/0.1/name");
         Graph g1 = factory1.createGraph();
-        BlankNode b1 = createOwnBlankNode("b1");
+        BlankNode b1 = createOwnBlankNode("b1", "0240eaaa-d33e-4fc0-a4f1-169d6ced3680");
         g1.add(b1, name, factory1.createLiteral("Alice"));
         
         
-        BlankNode b2 = createOwnBlankNode("b2");
+        BlankNode b2 = createOwnBlankNode("b2", "9de7db45-0ce7-4b0f-a1ce-c9680ffcfd9f");
         g1.add(b2, name, factory1.createLiteral("Bob"));
 
         IRI hasChild = factory1.createIRI("http://example.com/hasChild");
@@ -394,7 +394,7 @@ public abstract class AbstractGraphTest {
      * @param name
      * @return
      */
-	private BlankNode createOwnBlankNode(String name) {
+	private BlankNode createOwnBlankNode(String name, String uuid) {
 		return new BlankNode() {			
 			@Override
 			public String ntriplesString() {
@@ -402,11 +402,11 @@ public abstract class AbstractGraphTest {
 			}
 			@Override
 			public String uniqueReference() {
-				return "urn:uuid:" + UUID.randomUUID().toString();
+				return uuid;
 			}
 			@Override
 			public int hashCode() {
-				return uniqueReference().hashCode();
+				return uuid.hashCode();
 			}
 			@Override
 			public boolean equals(Object obj) {
@@ -414,7 +414,7 @@ public abstract class AbstractGraphTest {
 					return false;
 				}
 				BlankNode other = (BlankNode)obj;
-				return uniqueReference().equals(other.uniqueReference());
+				return uuid.equals(other.uniqueReference());
 			}
 		};
 	}
@@ -425,10 +425,10 @@ public abstract class AbstractGraphTest {
 
         Graph g2 = factory2.createGraph();
 
-        BlankNode b1 = createOwnBlankNode("b1");
+        BlankNode b1 = createOwnBlankNode("b1", "bc8d3e45-a08f-421d-85b3-c25b373abf87");
         g2.add(b1, name, factory2.createLiteral("Charlie"));
 
-        BlankNode b2 = createOwnBlankNode("b2");
+        BlankNode b2 = createOwnBlankNode("b2", "2209097a-5078-4b03-801a-6a2d2f50d739");
         g2.add(b2, name, factory2.createLiteral("Dave"));
 
         IRI hasChild = factory2.createIRI("http://example.com/hasChild");
