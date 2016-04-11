@@ -19,7 +19,6 @@ package org.apache.commons.rdf.api;
 
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
-import java.util.stream.Stream;
 
 /**
  * Common interface for {@link Graph} and {@link Dataset}
@@ -37,38 +36,12 @@ public interface GraphOrDataset<T extends TripleOrQuad> extends AutoCloseable {
     void add(T tripleOrQuad);
 
     /**
-     * Add a triple to the Graph, (or the default graph of a Dataset), 
-     * possibly mapping any of the components to
-     * those supported by this graph/dataset.
-     *
-     * @param subject   The triple subject
-     * @param predicate The triple predicate
-     * @param object    The triple object
-     */
-    void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
-
-    /**
      * Check if graph/dataset contains triple/quad.
      *
      * @param tripleOrQuad The triple/quad to check.
      * @return True if this graph/dataset contains the given Triple.
      */
     boolean contains(T tripleOrQuad);
-
-    /**
-	 * Check if graph/dataset contains a pattern of triples or quads in the
-	 * default graph of a dataset.
-	 *
-	 * @param subject
-	 *            The triple subject (null is a wildcard)
-	 * @param predicate
-	 *            The triple predicate (null is a wildcard)
-	 * @param object
-	 *            The triple object (null is a wildcard)
-	 * @return True if this graph/dataset contains any triples/quads 
-	 * 	that match the given pattern.
-	 */
-    boolean contains(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
 
     /**
      * Close the graph/dataset, relinquishing any underlying resources.
@@ -94,16 +67,6 @@ public interface GraphOrDataset<T extends TripleOrQuad> extends AutoCloseable {
     void remove(T tripleOrQuad);
 
     /**
-     * Remove a concrete pattern of triples from the graph, or
-     * quads from the default graph of a dataset.
-     *
-     * @param subject   The triple subject (null is a wildcard)
-     * @param predicate The triple predicate (null is a wildcard)
-     * @param object    The triple object (null is a wildcard)
-     */
-    void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
-
-    /**
      * Clear the graph/dataset, removing all triples/quads.
      */
     void clear();
@@ -116,49 +79,7 @@ public interface GraphOrDataset<T extends TripleOrQuad> extends AutoCloseable {
     long size();
 
     /**
-     * Get all triples contained by the graph, or 
-     * the equivalent of {@link Quad#asTriple()} 
-     * for all quads of the default graph of a dataset.
-     * <p>
-     * The iteration does not contain any duplicate triples, as determined by
-     * the {@link Triple#equals(Object)} method for each {@link Triple}.
-     * <p>
-     * The behaviour of the {@link Stream} is not specified if {@link #add(TripleOrQuad)},
-     * {@link #remove(TripleOrQuad)} or {@link #clear()} are called on the
-     * {@link GraphOrDataset} before it terminates.
-     * <p>
-     * Implementations may throw {@link ConcurrentModificationException} from Stream
-     * methods if they detect a conflict while the Stream is active.
-     *
-     * @return A {@link Stream} over all of the triples in the graph
-     */
-    Stream<? extends Triple> getTriples();
-
-    /**
-     * Get all triples contained by the graph matched with the pattern, or
-     * the equivalent of {@link Quad#asTriple()} 
-     * for all quads of the default graph of a dataset that match the pattern.
-     * <p>
-     * The iteration does not contain any duplicate triples, as determined by
-     * the {@link Triple#equals(Object)} method for each {@link Triple}.
-     * <p>
-     * The behaviour of the {@link Stream} is not specified if {@link #add(TripleOrQuad)},
-     * {@link #remove(TripleOrQuad)} or {@link #clear()} are called on the
-     * {@link GraphOrDataset} before it terminates.
-     * <p>
-     * Implementations may throw {@link ConcurrentModificationException} from Stream
-     * methods if they detect a conflict while the Stream is active.
-     *
-     * @param subject   The triple subject (null is a wildcard)
-     * @param predicate The triple predicate (null is a wildcard)
-     * @param object    The triple object (null is a wildcard)
-     * @return A {@link Stream} over the matched triples.
-     */
-    Stream<? extends Triple> getTriples(BlankNodeOrIRI subject, IRI predicate,
-                                        RDFTerm object);
-
-    /**
-     * Get an Iterable for iterating over all triples in the graph.
+     * Get an Iterable for iterating over all triples/quads in the graph/dataset.
      * <p>
      * This method is meant to be used with a Java for-each loop, e.g.:
      * <pre>
@@ -187,57 +108,7 @@ public interface GraphOrDataset<T extends TripleOrQuad> extends AutoCloseable {
      *             if a concurrency conflict occurs while the Iterator is
      *             active.
      */
-    @SuppressWarnings("unchecked")
-    default Iterable<T> iterate()
-            throws ConcurrentModificationException, IllegalStateException {
-        return ((Stream<T>)getTriples())::iterator;
-    }
+    Iterable<T> iterate()
+            throws ConcurrentModificationException, IllegalStateException;
 
-    /**
-     * Get an Iterable for iterating over the triples in the graph 
-     * or quads in the default graph of a dataset that  
-     * match the pattern.
-     * <p>
-     * This method is meant to be used with a Java for-each loop, e.g.:
-     * <pre>
-     *  IRI alice = factory.createIRI("http://example.com/alice");
-     *  IRI knows = factory.createIRI("http://xmlns.com/foaf/0.1/");
-     *  for (Triple t : graphOrDataset.iterate(alice, knows, null)) {
-     *      System.out.println(t.getObject());
-     *  }
-     * </pre>
-     * <p>
-     * The behaviour of the iterator is not specified if
-     * {@link #add(TripleOrQuad)}, {@link #remove(TripleOrQuad)} or {@link #clear()}, are
-     * called on the {@link GraphOrDataset} before it terminates. It is undefined if the
-     * returned {@link Iterator} supports the {@link Iterator#remove()} method.
-     * <p>
-     * Implementations may throw {@link ConcurrentModificationException} from
-     * Iterator methods if they detect a concurrency conflict while the Iterator
-     * is active.
-     * <p>
-     * The {@link Iterable#iterator()} must only be called once, that is the
-     * Iterable must only be iterated over once. A {@link IllegalStateException}
-     * may be thrown on attempt to reuse the Iterable.
-     *
-     * @param subject
-     *            The triple subject (null is a wildcard)
-     * @param predicate
-     *            The triple predicate (null is a wildcard)
-     * @param object
-     *            The triple object (null is a wildcard)
-     * @return A {@link Iterable} that returns {@link Iterator} over the
-     *         matching triples in the graph
-     * @throws IllegalStateException
-     *             if the {@link Iterable} has been reused
-     * @throws ConcurrentModificationException
-     *             if a concurrency conflict occurs while the Iterator is
-     *             active.
-     */
-    @SuppressWarnings("unchecked")
-    default Iterable<T> iterate(
-            BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
-        throws ConcurrentModificationException, IllegalStateException {
-        return ((Stream<T>) getTriples(subject, predicate, object))::iterator;
-    }
 }

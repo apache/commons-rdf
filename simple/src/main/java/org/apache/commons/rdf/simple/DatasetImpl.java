@@ -17,9 +17,6 @@
  */
 package org.apache.commons.rdf.simple;
 
-import org.apache.commons.rdf.api.*;
-import org.apache.commons.rdf.simple.SimpleRDFTermFactory.SimpleRDFTerm;
-
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
@@ -27,6 +24,15 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.apache.commons.rdf.api.BlankNode;
+import org.apache.commons.rdf.api.BlankNodeOrIRI;
+import org.apache.commons.rdf.api.Dataset;
+import org.apache.commons.rdf.api.IRI;
+import org.apache.commons.rdf.api.Literal;
+import org.apache.commons.rdf.api.Quad;
+import org.apache.commons.rdf.api.RDFTerm;
+import org.apache.commons.rdf.simple.SimpleRDFTermFactory.SimpleRDFTerm;
 
 /**
  * A simple, memory-based implementation of Dataset.
@@ -43,12 +49,6 @@ final class DatasetImpl implements Dataset {
 
     DatasetImpl(SimpleRDFTermFactory simpleRDFTermFactory) {
         this.factory = simpleRDFTermFactory;
-    }
-
-    @Override
-    public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-    	// TODO: Should this method be promoted as a default method in Dataset?     	    	    	
-    	add(null, subject, predicate, object);
     }
     
 	@Override
@@ -117,13 +117,6 @@ final class DatasetImpl implements Dataset {
         quads.clear();
     }
 
-    @Override
-    public boolean contains(BlankNodeOrIRI subject, IRI predicate,
-                            RDFTerm object) {
-    	// TODO: Should this method be promoted as a default method in Dataset?     	    	
-        return getQuads(Optional.empty(), subject, predicate, object).findAny().isPresent();
-    }
-
 	@Override
 	public boolean contains(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
 		return getQuads(graphName, subject, predicate, object).findAny().isPresent();
@@ -165,27 +158,8 @@ final class DatasetImpl implements Dataset {
         });
 	}    
 
-    @Override
-    public Stream<Triple> getTriples() {
-    	// TODO: Should this method be promoted as a default method in Dataset?     	
-    	return getQuads(Optional.empty(), null, null, null).map(Quad::asTriple);
-    }
-
-    @Override
-    public Stream<Triple> getTriples(final BlankNodeOrIRI subject,
-                                     final IRI predicate, final RDFTerm object) {
-    	// TODO: Should this method be promoted as a default method in Dataset?     	
-    	return getQuads(Optional.empty(), subject, predicate, object).map(Quad::asTriple);
-    }
-
     private Stream<Quad> getQuads(final Predicate<Quad> filter) {
         return getQuads().filter(filter);
-    }
-
-    @Override
-    public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-    	// TODO: Should this method be promoted as a default method in Dataset?     	    	
-    	remove(Optional.empty(), subject, predicate, object);
     }
 
 	@Override
@@ -196,7 +170,6 @@ final class DatasetImpl implements Dataset {
             remove(t);
         }
 	}
-
 
     @Override
     public void remove(Quad quad) {
@@ -210,7 +183,7 @@ final class DatasetImpl implements Dataset {
 
     @Override
     public String toString() {
-        String s = getTriples().limit(TO_STRING_MAX).map(Object::toString)
+        String s = getQuads().limit(TO_STRING_MAX).map(Object::toString)
                 .collect(Collectors.joining("\n"));
         if (size() > TO_STRING_MAX) {
             return s + "\n# ... +" + (size() - TO_STRING_MAX) + " more";

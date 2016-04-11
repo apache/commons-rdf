@@ -40,23 +40,6 @@ public interface Dataset extends AutoCloseable, GraphOrDataset<Quad> {
 	void add(Quad quad);
 
 	/**
-	 * Add a triple to the default graph of this dataset, possibly mapping any
-	 * of the components to those supported by this dataset.
-	 * <p>
-	 * This method is equivalent to
-	 * {@link #add(BlankNodeOrIRI, BlankNodeOrIRI, IRI, RDFTerm)} with
-	 * <code>graphName</code> set as <code>null</code>.
-	 *
-	 * @param subject
-	 *            The quad subject
-	 * @param predicate
-	 *            The quad predicate
-	 * @param object
-	 *            The quad object
-	 */
-	void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
-
-	/**
 	 * Add a quad to the dataset, possibly mapping any of the components to
 	 * those supported by this dataset.
 	 *
@@ -80,24 +63,6 @@ public interface Dataset extends AutoCloseable, GraphOrDataset<Quad> {
 	 * @return True if the dataset contains the given Quad.
 	 */
 	boolean contains(Quad quad);
-
-	/**
-	 * Check if the default graph in the dataset contains a triple pattern.
-	 * <p>
-	 * This method is equivalent to
-	 * {@link #contains(Optional, BlankNodeOrIRI, IRI, RDFTerm)} with a
-	 * <code>graphName</code> set to <code>null</code>
-	 *
-	 * @param subject
-	 *            The quad subject (<code>null</code> is a wildcard)
-	 * @param predicate
-	 *            The quad predicate (<code>null</code> is a wildcard)
-	 * @param object
-	 *            The quad object (<code>null</code> is a wildcard)
-	 * @return True if the default graph in the dataset contains any quads that
-	 *         match the given pattern.
-	 */
-	boolean contains(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
 
 	/**
 	 * Check if dataset contains a pattern of quads.
@@ -140,18 +105,6 @@ public interface Dataset extends AutoCloseable, GraphOrDataset<Quad> {
 	 *            quad to remove
 	 */
 	void remove(Quad quad);
-
-	/**
-	 * Remove a concrete pattern of quads from the default graph of the dataset.
-	 *
-	 * @param subject
-	 *            The quad subject (<code>null</code> is a wildcard)
-	 * @param predicate
-	 *            The quad predicate (<code>null</code> is a wildcard)
-	 * @param object
-	 *            The quad object (<code>null</code> is a wildcard)
-	 */
-	void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
 
 	/**
 	 * Remove a concrete pattern of quads from the default graph of the dataset.
@@ -315,6 +268,6 @@ public interface Dataset extends AutoCloseable, GraphOrDataset<Quad> {
 	@SuppressWarnings("unchecked")
 	default Iterable<Quad> iterate(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate,
 			RDFTerm object) throws ConcurrentModificationException, IllegalStateException {
-		return ((Stream<Quad>) getQuads(null, subject, predicate, object))::iterator;
+		return ((Stream<Quad>) getQuads(graphName, subject, predicate, object))::iterator;
 	}
 }
