@@ -28,6 +28,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.junit.Assume;
@@ -362,15 +364,19 @@ public abstract class AbstractGraphTest {
         source.getTriples().unordered().sequential().forEach(t -> target.add(t));
     }
 
+    /**
+     * Make a new graph with two BlankNodes - each with a different uniqueReference
+     */
     private Graph createGraph1() {
         RDFTermFactory factory1 = createFactory();
 
         IRI name = factory1.createIRI("http://xmlns.com/foaf/0.1/name");
         Graph g1 = factory1.createGraph();
-        BlankNode b1 = factory1.createBlankNode();
+        BlankNode b1 = createOwnBlankNode("b1");
         g1.add(b1, name, factory1.createLiteral("Alice"));
-
-        BlankNode b2 = factory1.createBlankNode();
+        
+        
+        BlankNode b2 = createOwnBlankNode("b2");
         g1.add(b2, name, factory1.createLiteral("Bob"));
 
         IRI hasChild = factory1.createIRI("http://example.com/hasChild");
@@ -379,16 +385,50 @@ public abstract class AbstractGraphTest {
         return g1;
     }
 
+    /** 
+     * Create a different implementation of BlankNode to be tested with
+     * graph.add(a,b,c);
+     * (the implementation may or may not then choose to translate such to 
+     * its own instances)
+     * 
+     * @param name
+     * @return
+     */
+	private BlankNode createOwnBlankNode(String name) {
+		return new BlankNode() {			
+			@Override
+			public String ntriplesString() {
+				return "_: " + name;
+			}
+			@Override
+			public String uniqueReference() {
+				return "urn:uuid:" + UUID.randomUUID().toString();
+			}
+			@Override
+			public int hashCode() {
+				return uniqueReference().hashCode();
+			}
+			@Override
+			public boolean equals(Object obj) {
+				if (!( obj instanceof BlankNode)) {
+					return false;
+				}
+				BlankNode other = (BlankNode)obj;
+				return uniqueReference().equals(other.uniqueReference());
+			}
+		};
+	}
+
     private Graph createGraph2() {
         RDFTermFactory factory2 = createFactory();
         IRI name = factory2.createIRI("http://xmlns.com/foaf/0.1/name");
 
         Graph g2 = factory2.createGraph();
 
-        BlankNode b1 = factory2.createBlankNode();
+        BlankNode b1 = createOwnBlankNode("b1");
         g2.add(b1, name, factory2.createLiteral("Charlie"));
 
-        BlankNode b2 = factory2.createBlankNode();
+        BlankNode b2 = createOwnBlankNode("b2");
         g2.add(b2, name, factory2.createLiteral("Dave"));
 
         IRI hasChild = factory2.createIRI("http://example.com/hasChild");
