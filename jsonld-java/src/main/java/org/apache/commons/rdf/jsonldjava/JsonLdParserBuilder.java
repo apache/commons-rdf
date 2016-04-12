@@ -24,18 +24,19 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.text.ParseException;
-import java.util.Optional;
 import java.util.function.Predicate;
 
+import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDFParserBuilder;
 import org.apache.commons.rdf.api.RDFSyntax;
 import org.apache.commons.rdf.api.RDFTermFactory;
 import org.apache.commons.rdf.simple.AbstractRDFParserBuilder;
 
-import com.fasterxml.jackson.core.JsonParseException;
+import com.github.jsonldjava.core.JsonLdError;
+import com.github.jsonldjava.core.JsonLdOptions;
+import com.github.jsonldjava.core.JsonLdProcessor;
+import com.github.jsonldjava.core.RDFDataset;
 import com.github.jsonldjava.utils.JsonUtils;
 
 public class JsonLdParserBuilder extends AbstractRDFParserBuilder {
@@ -85,11 +86,36 @@ public class JsonLdParserBuilder extends AbstractRDFParserBuilder {
 	}
 	
 	@Override
-	protected void parseSynchronusly() throws IOException, ParseException {		
+	protected void parseSynchronusly() throws IOException, RDFParseException {		
 		Object json = readSource();
-	}
+		JsonLdOptions options = new JsonLdOptions();
+		getBase().map(IRI::getIRIString).ifPresent(options::setBase);
+		// TODO: base from readSource() (after redirection and Content-Location header) 
+		// should be forwarded		
 
-	private Object readSource() throws IOException, ParseException {
+		// TODO: Modify JsonLdProcessor to accept the target RDFDataset
+		RDFDataset rdfDataset;
+		try {
+			rdfDataset = (RDFDataset) JsonLdProcessor.toRDF(json, options);
+		} catch (JsonLdError e) {
+			throw new RDFParseException(e);
+		}
+
+		Graph intoGraph = getIntoGraph().get();
+		if (intoGraph instanceof JsonLdGraph) {
+			// We can just move over the map content directly:
+			JsonLdGraph jsonLdGraph = (JsonLdGraph) intoGraph;
+			jsonLdGraph.getRdfDataSet().putAll(rdfDataset);				
+		} else {
+			// TODO: Modify JsonLdProcessor to have an actual triple callback
+			try (JsonLdGraph parsedGraph = new JsonLdGraph(rdfDataset)) {
+				// sequential() as we don't know if intoGraph is thread safe :-/
+				parsedGraph.getTriples().sequential().forEach(intoGraph::add);
+			}
+		}
+	}
+	
+	private Object readSource() throws IOException, RDFParseException {
 		// Due to checked IOException we can't easily 
 		// do this with .map and .orElseGet()
 		
@@ -97,6 +123,7 @@ public class JsonLdParserBuilder extends AbstractRDFParserBuilder {
 			return JsonUtils.fromInputStream(getSourceInputStream().get());
 		}
 		if (getSourceIri().isPresent()) {
+			// TODO: propagate @base from content
 			return JsonUtils.fromURL(asURL(getSourceIri().get()), 
 					JsonUtils.getDefaultHttpClient());			
 		}

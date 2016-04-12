@@ -49,6 +49,10 @@ public class JsonLdGraph implements Graph {
 	 */
 	private RDFDataset rdfDataSet;
 
+	public RDFDataset getRdfDataSet() {
+		return rdfDataSet;
+	}
+
 	private JsonLdRDFTermFactory rdfTermFactory;
 
 	/**
@@ -115,7 +119,7 @@ public class JsonLdGraph implements Graph {
 		}
 	}
 	@Override
-	public void close() throws Exception {
+	public void close() {
 		// Drop the memory reference, but don't clear it
 		rdfDataSet = null;		
 	}
