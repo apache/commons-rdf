@@ -43,14 +43,7 @@ public class JsonLdParserBuilder extends AbstractRDFParserBuilder {
 
 	@Override
 	protected RDFTermFactory createRDFTermFactory() {
-		if (getIntoGraph().map(x -> x instanceof JsonLdGraph).orElse(true)) {
-			JsonLdGraph graph = (JsonLdGraph) getIntoGraph().get();
-			return new JsonLdRDFTermFactory(graph.bnodePrefix());
-		} else {
-			// other kind of intoGraph - we'll let SimpleRDFTermFactory
-			// do the job slightly more efficiently instead
-			return super.createRDFTermFactory();
-		}
+		return new JsonLdRDFTermFactory();
 	}
 
 	@Override
