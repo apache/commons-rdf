@@ -46,7 +46,7 @@ import org.apache.commons.rdf.api.RDFTermFactory;
 public class DummyRDFParserBuilder extends AbstractRDFParserBuilder {
 	
 	@Override
-	protected void parseSynchronusly() throws IOException, IllegalStateException, ParseException {		
+	protected void parseSynchronusly() throws IOException, IllegalStateException, RDFParseException {		
 		// From parseSynchronusly both of these are always present
 		RDFTermFactory factory = getRdfTermFactory().get();
 		Graph graph = getIntoGraph().get();
