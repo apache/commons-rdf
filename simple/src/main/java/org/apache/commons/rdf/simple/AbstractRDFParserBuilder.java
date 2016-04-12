@@ -22,7 +22,6 @@ import java.io.InputStream;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.text.ParseException;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -55,6 +54,25 @@ import org.apache.commons.rdf.api.RDFTermFactory;
  */
 public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Cloneable {
 
+	public class RDFParseException extends Exception {		
+		private static final long serialVersionUID = 5427752643780702976L;
+		public RDFParseException() {
+			super();
+		}
+		public RDFParseException(String message, Throwable cause) {
+			super(message, cause);
+		}
+		public RDFParseException(String message) {
+			super(message);
+		}
+		public RDFParseException(Throwable cause) {
+			super(cause);
+		}
+		public RDFParserBuilder getRDFParserBuilder() {
+			return AbstractRDFParserBuilder.this;
+		}
+	}
+	
 	public static final ThreadGroup threadGroup = new ThreadGroup("Commons RDF parsers");
 	private static final ExecutorService threadpool = Executors.newCachedThreadPool(r -> new Thread(threadGroup, r));
 
@@ -321,9 +339,9 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 	 * <p>
 	 * 
 	 * @throws IOException If the source could not be read 
-	 * @throws ParseException If the source could not be parsed (e.g. a .ttl file was not valid Turtle)
+	 * @throws RDFParseException If the source could not be parsed (e.g. a .ttl file was not valid Turtle)
 	 */
-	protected abstract void parseSynchronusly() throws IOException, ParseException;
+	protected abstract void parseSynchronusly() throws IOException, RDFParseException;
 
 	/**
 	 * Prepare a clone of this RDFParserBuilder which have been checked and
