@@ -20,7 +20,6 @@ package org.apache.commons.rdf.jena;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.text.ParseException;
 
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDFParserBuilder;
@@ -37,20 +36,20 @@ public class JenaRDFParserBuilder extends AbstractRDFParserBuilder implements RD
 	}
 
 	@Override
-	protected void parseSynchronusly() throws IOException, IllegalStateException, ParseException {
-		StreamRDF dest = JenaCommonsRDF.streamJenaToCommonsRDF(rdfTermFactory.get(), intoGraph.get());
+	protected void parseSynchronusly() throws IOException {
+		StreamRDF dest = JenaCommonsRDF.streamJenaToCommonsRDF(getRdfTermFactory().get(), getIntoGraph().get());
 
-		Lang lang = contentTypeSyntax.flatMap(JenaCommonsRDF::rdfSyntaxToLang).orElse(null);
-		String baseStr = base.map(IRI::getIRIString).orElse(null);
+		Lang lang = getContentTypeSyntax().flatMap(JenaCommonsRDF::rdfSyntaxToLang).orElse(null);
+		String baseStr = getBase().map(IRI::getIRIString).orElse(null);
 
-		if (sourceIri.isPresent()) {
-			RDFDataMgr.parse(dest, sourceIri.get().toString(), baseStr, lang, null);
-		} else if (sourceFile.isPresent()) {
-			try (InputStream s = Files.newInputStream(sourceFile.get())) {
+		if (getSourceIri().isPresent()) {
+			RDFDataMgr.parse(dest, getSourceIri().get().toString(), baseStr, lang, null);
+		} else if (getSourceFile().isPresent()) {
+			try (InputStream s = Files.newInputStream(getSourceFile().get())) {
 				RDFDataMgr.parse(dest, s, baseStr, lang, null);
 			}
 		} else {
-			RDFDataMgr.parse(dest, sourceInputStream.get(), baseStr, lang, null);
+			RDFDataMgr.parse(dest, getSourceInputStream().get(), baseStr, lang, null);
 		}
 	}
 
