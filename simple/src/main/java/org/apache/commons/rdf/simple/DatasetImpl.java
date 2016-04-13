@@ -28,6 +28,7 @@ import java.util.stream.Stream;
 import org.apache.commons.rdf.api.BlankNode;
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.Dataset;
+import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.api.Quad;
@@ -191,6 +192,35 @@ final class DatasetImpl implements Dataset {
             return s;
         }
     }
+
+	@Override
+	public void close() {
+	}
+
+	@Override
+	public Graph getGraph() {
+		return getGraph(null).get();
+	}
+
+	@Override
+	public Optional<Graph> getGraph(BlankNodeOrIRI graphName) {
+		// NOTE: Always returns a new copy
+		Graph g = new GraphImpl(factory);
+		getQuads(Optional.ofNullable(graphName), null, null, null)
+			.map(Quad::asTriple)
+			.sequential()
+			.forEach(g::add);
+		return Optional.of(g);
+	}
+
+	@Override
+	public Stream<BlankNodeOrIRI> getGraphNames() {
+		// Not very efficient..
+		return getQuads()
+				.map(Quad::getGraphName)
+				.filter(Optional::isPresent).map(Optional::get)
+				.distinct();
+	}
 
 
 }

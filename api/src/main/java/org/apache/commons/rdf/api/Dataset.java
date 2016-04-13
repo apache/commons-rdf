@@ -99,6 +99,71 @@ public interface Dataset extends AutoCloseable {
 	}
 
 	/**
+	 * Get the default graph of this dataset.
+	 * <p>
+	 * The {@link Triple}s of the default graph are equivalent to the
+	 * {@link Quad}s in this Dataset which has the {@link Quad#getGraphName()}
+	 * set to {@link Optional#empty()}.
+	 * <p>
+	 * It is unspecified if modifications to the returned Graph are reflected in
+	 * this Dataset.
+	 * <p>
+	 * The returned graph MAY be empty.
+	 * 
+	 * @see #getGraph(BlankNodeOrIRI)
+	 * @return The default graph of this Dataset
+	 */
+	Graph getGraph();
+	
+	/**
+	 * Get a named graph in this dataset.
+	 * <p>
+	 * The {@link Triple}s of the named graph are equivalent to the
+	 * the Quads of this Dataset which has the
+	 * {@link Quad#getGraphName()} equal to the provided <code>graphName</code>, or
+	 * equal to {@link Optional#empty()} if the provided <code>graphName</code> is
+	 * <code>null</code>.
+	 * <p>
+	 * It is unspecified if modifications to the returned Graph are reflected in
+	 * this Dataset.
+	 * <p>
+	 * It is unspecified if requesting an unknown or empty graph will return
+	 * {@link Optional#empty()} or create a new empty {@link Graph}.
+	 * 
+	 * @see #getGraph()
+	 * @see #getGraphNames()
+	 * @param graphName
+	 *            The name of the graph, or <code>null</code> for the default
+	 *            graph.
+	 * @return The named Graph, or {@link Optional#empty()} if the dataset do
+	 *         not contain the named graph.
+	 */	
+	Optional<Graph> getGraph(BlankNodeOrIRI graphName);	
+	
+	/**
+	 * Get the graph names in this Dataset.
+	 * <p>
+	 * The set of returned graph names is equivalent to the set of unique
+	 * {@link Quad#getGraphName()} of all the {@link #getQuads()} of this
+	 * dataset (excluding the default graph).
+	 * <p>
+	 * The returned {@link Stream} SHOULD NOT contain duplicate graph names.
+	 * <p>
+	 * The graph names can be used with {@link #getGraph(BlankNodeOrIRI)} to
+	 * retrieve the corresponding {@link Graph}, however callers should be aware
+	 * of any concurrent modifications to the Dataset may cause such calls to
+	 * return {@link Optional#empty()}.
+	 * <p>
+	 * Note that a Dataset always contains a <strong>default graph</strong>
+	 * which is not named, and thus is not represented in the returned Stream.
+	 * The default graph is accessible via {@link #getGraph()} or by using
+	 * {@link Optional#empty()} in the Quad access methods).
+	 * 
+	 * @return A {@link Stream} of the graph names of this Dataset.
+	 */
+	Stream<BlankNodeOrIRI> getGraphNames();
+	
+	/**
 	 * Remove a concrete quad from the dataset.
 	 *
 	 * @param quad
