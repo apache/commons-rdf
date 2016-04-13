@@ -17,7 +17,10 @@
  */
 package org.apache.commons.rdf.simple;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -102,9 +105,10 @@ public class AbstractRDFParserBuilderTest {
 	}
 	
 	@Test
-	public void parseFile() throws Exception {
-		RDFParserBuilder parser = dummyParser.source(testNt);
-		Graph g = parser.parse().get(5, TimeUnit.SECONDS);
+	public void parseFile() throws Exception {	
+		Graph g = factory.createGraph();
+		RDFParserBuilder parser = dummyParser.source(testNt).target(g);
+		parser.parse().get(5, TimeUnit.SECONDS);
 		checkGraph(g);
 		// FIXME: this could potentially break if the equivalent of /tmp includes
 		// international characters
@@ -148,8 +152,12 @@ public class AbstractRDFParserBuilderTest {
 	
 	@Test
 	public void parseFileContentType() throws Exception {
-		RDFParserBuilder parser = dummyParser.source(testNt).contentType(RDFSyntax.NTRIPLES);
-		Graph g = parser.parse().get(5, TimeUnit.SECONDS);
+		Graph g = factory.createGraph();
+		RDFParserBuilder parser = dummyParser
+				.source(testNt)
+				.contentType(RDFSyntax.NTRIPLES)
+				.target(g);
+		parser.parse().get(5, TimeUnit.SECONDS);
 		checkGraph(g);
 		// FIXME: this could potentially break if the equivalent of /tmp includes
 		// international characters
@@ -183,8 +191,9 @@ public class AbstractRDFParserBuilderTest {
 	public void parseInputStreamWithBase() throws Exception {
 		InputStream inputStream = new ByteArrayInputStream(new byte[0]);
 		IRI base = dummyParser.createRDFTermFactory().createIRI("http://www.example.org/test.rdf");
-		RDFParserBuilder parser = dummyParser.source(inputStream).base(base);		
-		Graph g = parser.parse().get(5, TimeUnit.SECONDS);
+		Graph g = factory.createGraph();
+		RDFParserBuilder parser = dummyParser.source(inputStream).base(base).target(g);		
+		parser.parse().get(5, TimeUnit.SECONDS);
 		checkGraph(g);
 		assertEquals("<http://www.example.org/test.rdf>", firstPredicate(g, "base"));
 		// in our particular debug output, 
@@ -197,8 +206,9 @@ public class AbstractRDFParserBuilderTest {
 	@Test
 	public void parseInputStreamWithNQuads() throws Exception {
 		InputStream inputStream = new ByteArrayInputStream(new byte[0]);
-		RDFParserBuilder parser = dummyParser.source(inputStream).contentType(RDFSyntax.NQUADS);		
-		Graph g = parser.parse().get(5, TimeUnit.SECONDS);
+		Graph g = factory.createGraph();
+		RDFParserBuilder parser = dummyParser.source(inputStream).contentType(RDFSyntax.NQUADS).target(g);		
+		parser.parse().get(5, TimeUnit.SECONDS);
 		checkGraph(g);
 		assertNull(firstPredicate(g, "base"));
 		// in our particular debug output, 
@@ -211,8 +221,9 @@ public class AbstractRDFParserBuilderTest {
 	@Test
 	public void parseIRI() throws Exception {
 		IRI iri = dummyParser.createRDFTermFactory().createIRI("http://www.example.net/test.ttl");
-		RDFParserBuilder parser = dummyParser.source(iri);		
-		Graph g = parser.parse().get(5, TimeUnit.SECONDS);
+		Graph g = factory.createGraph();
+		RDFParserBuilder parser = dummyParser.source(iri).target(g);		
+		parser.parse().get(5, TimeUnit.SECONDS);
 		checkGraph(g);
 		assertEquals("<http://www.example.net/test.ttl>", firstPredicate(g, "source"));
 		// No base - assuming the above IRI is always 
@@ -228,8 +239,9 @@ public class AbstractRDFParserBuilderTest {
 	@Test
 	public void parseIRIBaseContentType() throws Exception {
 		IRI iri = dummyParser.createRDFTermFactory().createIRI("http://www.example.net/test.ttl");
-		RDFParserBuilder parser = dummyParser.source(iri).base(iri).contentType(RDFSyntax.TURTLE);
-		Graph g = parser.parse().get(5, TimeUnit.SECONDS);
+		Graph g = factory.createGraph();
+		RDFParserBuilder parser = dummyParser.source(iri).base(iri).contentType(RDFSyntax.TURTLE).target(g);
+		parser.parse().get(5, TimeUnit.SECONDS);
 		checkGraph(g);
 		assertEquals("<http://www.example.net/test.ttl>", firstPredicate(g, "source"));
 		assertEquals("<http://www.example.net/test.ttl>", firstPredicate(g, "base"));

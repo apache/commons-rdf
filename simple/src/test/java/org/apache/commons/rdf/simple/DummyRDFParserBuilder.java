@@ -18,11 +18,11 @@
 package org.apache.commons.rdf.simple;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.UUID;
+import java.util.function.Consumer;
 
-import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
+import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFParserBuilder;
 import org.apache.commons.rdf.api.RDFTermFactory;
 
@@ -49,47 +49,47 @@ public class DummyRDFParserBuilder extends AbstractRDFParserBuilder {
 	protected void parseSynchronusly() throws IOException, IllegalStateException, RDFParseException {		
 		// From parseSynchronusly both of these are always present
 		RDFTermFactory factory = getRdfTermFactory().get();
-		Graph graph = getIntoGraph().get();
+		Consumer<Quad> t = getTarget();
 				
 		// well - each parsing is unique. This should hopefully
 		// catch any accidental double parsing
 		IRI parsing = factory.createIRI("urn:uuid:" + UUID.randomUUID());
-		graph.add(parsing, factory.createIRI("http://example.com/greeting"), 
-				factory.createLiteral("Hello world"));
+		t.accept(factory.createQuad(null, parsing, factory.createIRI("http://example.com/greeting"), 
+				factory.createLiteral("Hello world")));
 		
 		// Now we'll expose the finalized AbstractRDFParserBuilder settings
 		// so they can be inspected by the junit test
 
 		if (getSourceIri().isPresent()) {
-			graph.add(parsing, 
+			t.accept(factory.createQuad(null, parsing, 
 					factory.createIRI("http://example.com/source"),
-					getSourceIri().get());			
+					getSourceIri().get()));			
 		}		
 		if (getSourceFile().isPresent()) {
-			graph.add(parsing, 
+			t.accept(factory.createQuad(null, parsing, 
 					factory.createIRI("http://example.com/source"),
-					factory.createIRI(getSourceFile().get().toUri().toString()));
+					factory.createIRI(getSourceFile().get().toUri().toString())));
 		}
 		if (getSourceInputStream().isPresent()) { 
-			graph.add(parsing, 
+			t.accept(factory.createQuad(null, parsing, 
 					factory.createIRI("http://example.com/source"),
-					factory.createBlankNode());
+					factory.createBlankNode()));
 		}
 
 		if (getBase().isPresent()) { 
-			graph.add(parsing, 
+			t.accept(factory.createQuad(null, parsing, 
 					factory.createIRI("http://example.com/base"),
-					getBase().get());
+					getBase().get()));
 		}
 		if (getContentType().isPresent()) {
-			graph.add(parsing, 
+			t.accept(factory.createQuad(null, parsing, 
 					factory.createIRI("http://example.com/contentType"),
-					factory.createLiteral(getContentType().get()));
+					factory.createLiteral(getContentType().get())));
 		}
 		if (getContentTypeSyntax().isPresent()) {
-			graph.add(parsing, 
+			t.accept(factory.createQuad(null, parsing, 
 					factory.createIRI("http://example.com/contentTypeSyntax"),
-					factory.createLiteral(getContentTypeSyntax().get().name()));
+					factory.createLiteral(getContentTypeSyntax().get().name())));
 		}		
 	}
 

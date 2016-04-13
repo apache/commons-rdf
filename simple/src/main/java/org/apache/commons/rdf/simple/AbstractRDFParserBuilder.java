@@ -26,9 +26,10 @@ import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.function.Consumer;
 
-import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
+import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFParserBuilder;
 import org.apache.commons.rdf.api.RDFSyntax;
 import org.apache.commons.rdf.api.RDFTermFactory;
@@ -111,15 +112,14 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 	}
 
 	/**
-	 * Get the set {@link Graph} to insert into, if any.
+	 * Get the target to consume parsed Quads.
 	 * <p>
 	 * From the call to {@link #parseSynchronusly()}, this
-	 * method is always {@link Optional#isPresent()}
-	 * with a new {@link Graph} instance, and 
-	 * will be the value returned from {@link #parse()}.
+	 * method is always {@link Optional#isPresent()}.
+	 * 
 	 */	
-	public Optional<Graph> getIntoGraph() {
-		return intoGraph;
+	public Consumer<Quad> getTarget() {
+		return target;
 	}
 
 	/**
@@ -167,11 +167,11 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 	private Optional<RDFTermFactory> rdfTermFactory = Optional.empty();
 	private Optional<RDFSyntax> contentTypeSyntax = Optional.empty();
 	private Optional<String> contentType = Optional.empty();
-	private Optional<Graph> intoGraph = Optional.empty();
 	private Optional<IRI> base = Optional.empty();
 	private Optional<InputStream> sourceInputStream = Optional.empty();
 	private Optional<Path> sourceFile = Optional.empty();
 	private Optional<IRI> sourceIri = Optional.empty();
+	private Consumer<Quad> target;
 
 	@Override
 	public AbstractRDFParserBuilder clone() {
@@ -202,13 +202,6 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 		AbstractRDFParserBuilder c = clone();
 		c.contentType = Optional.ofNullable(contentType);
 		c.contentTypeSyntax = c.contentType.flatMap(RDFSyntax::byMediaType);
-		return c;
-	}
-
-	@Override
-	public RDFParserBuilder intoGraph(Graph graph) {
-		AbstractRDFParserBuilder c = clone();
-		c.intoGraph = Optional.ofNullable(graph);
 		return c;
 	}
 
@@ -361,8 +354,10 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 	 */
 	protected AbstractRDFParserBuilder prepareForParsing() throws IOException, IllegalStateException {
 		checkSource();
-		checkBaseRequired();
+		checkBaseRequired();		
 		checkContentType();
+		checkTarget();
+
 		// We'll make a clone of our current state which will be passed to
 		// parseSynchronously()
 		AbstractRDFParserBuilder c = clone();
@@ -370,10 +365,6 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 		// Use a fresh SimpleRDFTermFactory for each parse
 		if (!c.rdfTermFactory.isPresent()) {
 			c.rdfTermFactory = Optional.of(createRDFTermFactory());
-		}
-		// No graph? We'll create one.
-		if (!c.intoGraph.isPresent()) {
-			c.intoGraph = c.rdfTermFactory.map(RDFTermFactory::createGraph);
 		}
 		// sourceFile, but no base? Let's follow any symlinks and use
 		// the file:/// URI
@@ -385,6 +376,19 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 		return c;
 	}
 	
+	/**
+	 * Subclasses can override this method to check the target is 
+	 * valid.
+	 * <p>
+	 * The default implementation throws an IllegalStateException if the 
+	 * target has not been set.
+	 */
+	protected void checkTarget() {
+		if (target == null) {
+			throw new IllegalStateException("target has not been set");
+		}
+	}
+
 	/**
 	 * Subclasses can override this method to check compatibility with the
 	 * contentType setting.
@@ -441,13 +445,11 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 	 * <p>
 	 * This is called by {@link #parse()} to set 
 	 * {@link #rdfTermFactory(RDFTermFactory)} if it is
-	 * {@link Optional#empty()}, and therefore used also for 
-	 * creating a new {@link Graph} if 
-	 * {@link #getIntoGraph()} is {@link Optional#empty()}.
+	 * {@link Optional#empty()}.
 	 * <p>
 	 * As parsed blank nodes might be made with 
 	 * {@link RDFTermFactory#createBlankNode(String)}, 
-	 * each call to this method should return 
+	 * each call to this method SHOULD return 
 	 * a new RDFTermFactory instance.
 	 * 
 	 * @return A new {@link RDFTermFactory}
@@ -457,12 +459,19 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 	}
 
 	@Override
-	public Future<Graph> parse() throws IOException, IllegalStateException {
+	public Future<ParseResult> parse() throws IOException, IllegalStateException {
 		final AbstractRDFParserBuilder c = prepareForParsing();
 		return threadpool.submit(() -> {
 			c.parseSynchronusly();
-			return c.intoGraph.get();
+			return null;
 		});
+	}
+
+	@Override
+	public RDFParserBuilder target(Consumer<Quad> consumer) {
+		AbstractRDFParserBuilder c = clone();
+		c.target = consumer;
+		return c;
 	}
 
 }
