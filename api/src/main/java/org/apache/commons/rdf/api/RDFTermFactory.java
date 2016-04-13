@@ -22,17 +22,17 @@ import java.util.Locale;
 
 /**
  * Factory for creating RDFTerm and Graph instances.
- *
+ * <p>
  * It is not specified how an implementation should provide a RDFTermFactory.
- *
+ * <p>
  * If an implementation does not support a particular method (e.g. it requires
  * additional parameters or can't create graphs), then it MAY throw
- * UnsupportedOperationException, as provided by the default implementations
- * here.
- *
+ * {@link UnsupportedOperationException}, as provided by the <code>default</code>
+ * implementations in this interface.
+ * <p>
  * If a factory method does not allow or support a provided parameter, e.g.
  * because an IRI is considered invalid, then it SHOULD throw
- * IllegalArgumentException.
+ * {@link IllegalArgumentException}.
  *
  * @see RDFTerm
  * @see Graph

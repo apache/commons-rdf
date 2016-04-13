@@ -22,7 +22,6 @@ import java.io.InputStream;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.text.ParseException;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -55,6 +54,25 @@ import org.apache.commons.rdf.api.RDFTermFactory;
  */
 public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Cloneable {
 
+	public class RDFParseException extends Exception {		
+		private static final long serialVersionUID = 5427752643780702976L;
+		public RDFParseException() {
+			super();
+		}
+		public RDFParseException(String message, Throwable cause) {
+			super(message, cause);
+		}
+		public RDFParseException(String message) {
+			super(message);
+		}
+		public RDFParseException(Throwable cause) {
+			super(cause);
+		}
+		public RDFParserBuilder getRDFParserBuilder() {
+			return AbstractRDFParserBuilder.this;
+		}
+	}
+	
 	public static final ThreadGroup threadGroup = new ThreadGroup("Commons RDF parsers");
 	private static final ExecutorService threadpool = Executors.newCachedThreadPool(r -> new Thread(threadGroup, r));
 
@@ -180,7 +198,7 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 	}
 
 	@Override
-	public RDFParserBuilder contentType(String contentType) {
+	public RDFParserBuilder contentType(String contentType) throws IllegalArgumentException {
 		AbstractRDFParserBuilder c = clone();
 		c.contentType = Optional.ofNullable(contentType);
 		c.contentTypeSyntax = c.contentType.flatMap(RDFSyntax::byMediaType);
@@ -258,9 +276,12 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 	 * Check that one and only one source is present and valid.
 	 * <p>
 	 * Used by {@link #parse()}.
+	 * <p>
+	 * Subclasses might override this method, e.g. to support other
+	 * source combinations, or to check if the sourceIri is 
+	 * resolvable. 
 	 * 
-	 * @param iri
-	 * @throws IOException
+	 * @throws IOException If a source file can't be read
 	 */
 	protected void checkSource() throws IOException {
 		if (!sourceFile.isPresent() && !sourceInputStream.isPresent() && !sourceIri.isPresent()) {
@@ -317,12 +338,10 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 	 * that is where the parsed triples MUST be inserted into.
 	 * <p>
 	 * 
-	 * @return
-	 * @throws IOException
-	 * @throws IllegalStateException
-	 * @throws ParseException
+	 * @throws IOException If the source could not be read 
+	 * @throws RDFParseException If the source could not be parsed (e.g. a .ttl file was not valid Turtle)
 	 */
-	protected abstract void parseSynchronusly() throws IOException, IllegalStateException, ParseException;
+	protected abstract void parseSynchronusly() throws IOException, RDFParseException;
 
 	/**
 	 * Prepare a clone of this RDFParserBuilder which have been checked and
@@ -336,13 +355,14 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 	 * <code>file:///</code> IRI for the Path's real path (e.g. resolving any 
 	 * symbolic links).  
 	 *  
-	 * @return
-	 * @throws IOException
-	 * @throws IllegalStateException
+	 * @return A completed and checked clone of this RDFParserBuilder
+	 * @throws IOException If the source was not accessible (e.g. a file was not found)
+	 * @throws IllegalStateException If the parser was not in a compatible setting (e.g. contentType was an invalid string) 
 	 */
 	protected AbstractRDFParserBuilder prepareForParsing() throws IOException, IllegalStateException {
 		checkSource();
 		checkBaseRequired();
+		checkContentType();
 		// We'll make a clone of our current state which will be passed to
 		// parseSynchronously()
 		AbstractRDFParserBuilder c = clone();
@@ -361,8 +381,60 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 			URI baseUri = c.sourceFile.get().toRealPath().toUri();
 			c.base = Optional.of(internalRdfTermFactory.createIRI(baseUri.toString()));
 		}
+
 		return c;
 	}
+	
+	/**
+	 * Subclasses can override this method to check compatibility with the
+	 * contentType setting.
+	 * 
+	 * @throws IllegalStateException
+	 *             if the {@link #getContentType()} or
+	 *             {@link #getContentTypeSyntax()} is not compatible or invalid
+	 */
+	protected void checkContentType() throws IllegalStateException {
+	}
+
+	/**
+	 * Guess RDFSyntax from a local file's extension.
+	 * <p>
+	 * This method can be used by subclasses if {@link #getContentType()} is not
+	 * present and {@link #getSourceFile()} is set.
+	 * 
+	 * @param path Path which extension should be checked
+	 * @return The {@link RDFSyntax} which has a matching {@link RDFSyntax#fileExtension}, 
+	 * 	otherwise {@link Optional#empty()}. 
+	 */
+	protected static Optional<RDFSyntax> guessRDFSyntax(Path path) {
+			return fileExtension(path).flatMap(RDFSyntax::byFileExtension);
+	}
+
+	/**
+	 * Return the file extension of a Path - if any.
+	 * <p>
+	 * The returned file extension includes the leading <code>.</code>
+	 * <p>
+	 * Note that this only returns the last extension, e.g. the 
+	 * file extension for <code>archive.tar.gz</code> would be <code>.gz</code>
+	 * 
+	 * @param path Path which filename might contain an extension
+	 * @return File extension (including the leading <code>.</code>, 
+	 * 	or {@link Optional#empty()} if the path has no extension
+	 */
+	private static Optional<String> fileExtension(Path path) {
+		Path fileName = path.getFileName();
+		if (fileName == null) { 
+			return Optional.empty();
+		}
+		String filenameStr = fileName.toString();
+		int last = filenameStr.lastIndexOf(".");
+		if (last > -1) { 
+			return Optional.of(filenameStr.substring(last));				
+		}
+		return Optional.empty();
+	}
+	
 
 	/**
 	 * Create a new {@link RDFTermFactory} for a parse session.
@@ -373,9 +445,12 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 	 * creating a new {@link Graph} if 
 	 * {@link #getIntoGraph()} is {@link Optional#empty()}.
 	 * <p>
+	 * As parsed blank nodes might be made with 
+	 * {@link RDFTermFactory#createBlankNode(String)}, 
+	 * each call to this method should return 
+	 * a new RDFTermFactory instance.
 	 * 
-	 * 
-	 * @return
+	 * @return A new {@link RDFTermFactory}
 	 */
 	protected RDFTermFactory createRDFTermFactory() {
 		return new SimpleRDFTermFactory();

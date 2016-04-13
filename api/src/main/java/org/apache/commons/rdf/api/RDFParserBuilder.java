@@ -29,19 +29,39 @@ import java.util.concurrent.Future;
  * This interface follows the
  * <a href="https://en.wikipedia.org/wiki/Builder_pattern">Builder pattern</a>,
  * allowing to set parser settings like {@link #contentType(RDFSyntax)} and
- * {@link #base(IRI)}. A caller MUST call one of the {@link #source(IRI)}
- * methods before calling {@link #parse()} on the returned RDFParserBuilder.
+ * {@link #base(IRI)}. A caller MUST call one of the <code>source</code> methods
+ * (e.g. {@link #source(IRI)}, {@link #source(Path)},
+ * {@link #source(InputStream)}) before calling {@link #parse()} on the returned
+ * RDFParserBuilder - however methods can be called in any order.
+ * <p>
+ * The call to {@link #parse()} returns a {@link Future}, allowing asynchronous parse
+ * operations. This can be combined with {@link #intoGraph(Graph)}
+ * allowing access to the graph before parsing has completed,
+ * however callers are still recommended to to check 
+ * {@link Future#get()} for any exceptions thrown during parsing.
+ * <p>
+ * Setting a method that has already been set will override any existing value
+ * in the returned builder - irregardless of the parameter type (e.g.
+ * {@link #source(IRI)} will override a previous {@link #source(Path)}. Settings
+ * can be unset by passing <code>null</code> - this may require casting, e.g.
+ * <code>contentType( (RDFSyntax) null )</code> to undo a previous call to
+ * {@link #contentType(RDFSyntax)}.
  * <p>
  * It is undefined if a RDFParserBuilder is mutable or thread-safe, so callers
  * should always use the returned modified RDFParserBuilder from the builder
  * methods. The builder may return itself, or a cloned builder with the modified
- * settings applied.
+ * settings applied. Implementations are however encouraged to be 
+ * immutable and thread-safe and document this, 
+ * as an example starting point, see 
+ * {@link org.apache.commons.rdf.simple.AbstractRDFParserBuilder}.
  * <p>
  * Example usage:
  * </p>
  * 
  * <pre>
- *   Graph g1 = ExampleRDFParserBuilder.source("http://example.com/graph.rdf").parse();
+ *   // Retrieve populated graph from the Future
+ *   Graph g1 = ExampleRDFParserBuilder.source("http://example.com/graph.rdf").parse().get(30, TimeUnit.Seconds);
+ *   // Or parsing into an existing Graph:
  *   ExampleRDFParserBuilder.source(Paths.get("/tmp/graph.ttl").contentType(RDFSyntax.TURTLE).intoGraph(g1).parse();
  * </pre>
  * 
@@ -55,6 +75,12 @@ public interface RDFParserBuilder {
 	 * <p>
 	 * This option may be used together with {@link #intoGraph(Graph)} to
 	 * override the implementation's default factory and graph.
+	 * <p>
+	 * <strong>Warning:</strong> Using the same {@link RDFTermFactory} for 
+	 * multiple {@link #parse()} calls  may accidentally merge 
+	 * {@link BlankNode}s having the same label, as the parser may 
+	 * use the {@link RDFTermFactory#createBlankNode(String)} method
+	 * from the parsed blank node labels.
 	 * 
 	 * @see #intoGraph(Graph)
 	 * @param rdfTermFactory
@@ -115,7 +141,7 @@ public interface RDFParserBuilder {
 	 *             If the contentType has an invalid syntax, or this
 	 *             RDFParserBuilder does not support the specified contentType.
 	 */
-	RDFParserBuilder contentType(String contentType);
+	RDFParserBuilder contentType(String contentType) throws IllegalArgumentException;
 
 	/**
 	 * Specify which {@link Graph} to add triples to.
@@ -124,6 +150,15 @@ public interface RDFParserBuilder {
 	 * {@link #parse()} return a new {@link Graph}, which is created using
 	 * {@link RDFTermFactory#createGraph()} if
 	 * {@link #rdfTermFactory(RDFTermFactory)} has been set.
+	 * <p>
+	 * It is undefined if any triples are added to the specified
+	 * {@link Graph} if the {@link Future#get()} returned from 
+	 * {@link #parse()} throws any exceptions. (However 
+	 * implementations are free to prevent this using transaction 
+	 * mechanisms or similar).  However, if {@link Future#get()}
+	 * does not indicatean exception, the 
+	 * parser implementation SHOULD have inserted all parsed triples 
+	 * to the specified graph.
 	 * 
 	 * @param graph
 	 *            The {@link Graph} to add triples into.
@@ -323,13 +358,13 @@ public interface RDFParserBuilder {
 	 * call and return a Future that is already {@link Future#isDone()}.
 	 * <p>
 	 * If {@link #intoGraph(Graph)} has been specified, this SHOULD be the same
-	 * {@link Graph} instance returned from {@link Future#get() once parsing has
+	 * {@link Graph} instance returned from {@link Future#get()} once parsing has
 	 * completed successfully.
 	 * <p>
 	 * If an exception occurs during parsing, (e.g. {@link IOException} or
-	 * {@link java.text.ParseException}, it should be indicated as the
-	 * {@link java.util.concurrent.ExecutionException#getCause()) in the
-	 * {@link java.util.concurrent.ExecutionException) thrown on
+	 * {@link java.text.ParseException}), it should be indicated as the
+	 * {@link java.util.concurrent.ExecutionException#getCause()} in the
+	 * {@link java.util.concurrent.ExecutionException} thrown on
 	 * {@link Future#get()}.
 	 * 
 	 * @return A Future that will return the populated {@link Graph} when the
@@ -338,8 +373,8 @@ public interface RDFParserBuilder {
 	 *             If an error occurred while starting to read the source (e.g.
 	 *             file not found, unsupported IRI protocol). Note that IO
 	 *             errors during parsing would instead be the
-	 *             {@link java.util.concurrent.ExecutionException#getCause()) of
-	 *             the {@link java.util.concurrent.ExecutionException) thrown on
+	 *             {@link java.util.concurrent.ExecutionException#getCause()} of
+	 *             the {@link java.util.concurrent.ExecutionException} thrown on
 	 *             {@link Future#get()}.
 	 * @throws IllegalStateException
 	 *             If the builder is in an invalid state, e.g. a
