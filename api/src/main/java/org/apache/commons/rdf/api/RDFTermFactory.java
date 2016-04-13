@@ -99,6 +99,19 @@ public interface RDFTermFactory {
     }
 
     /**
+     * Create a new dataset.
+     *
+     * It is undefined if the dataset will be persisted by any underlying storage
+     * mechanism.
+     *
+     * @return A new Dataset
+     * @throws UnsupportedOperationException If the operation is not supported.
+     */
+    default Dataset createDataset() throws UnsupportedOperationException {
+        throw new UnsupportedOperationException("createDataset() not supported");
+    }
+
+    /**
      * Create an IRI from a (possibly escaped) String.
      *
      * The provided iri string MUST be valid according to the <a
@@ -228,6 +241,33 @@ public interface RDFTermFactory {
      * @throws UnsupportedOperationException If the operation is not supported.
      */
     default Triple createTriple(BlankNodeOrIRI subject, IRI predicate,
+                                RDFTerm object) throws IllegalArgumentException,
+            UnsupportedOperationException {
+        throw new UnsupportedOperationException(
+                "createTriple(BlankNodeOrIRI,IRI,RDFTerm) not supported");
+    }
+
+    /**
+     * Create a quad.
+     * <p>
+     * The returned Quad SHOULD have a
+     * {@link Quad#getGraphName()} that is equal to the provided graphName, a
+     * {@link Quad#getSubject()} that is
+     * equal to the provided subject, a {@link Quad#getPredicate()} that is
+     * equal to the provided predicate, and a {@link Quad#getObject()} that is
+     * equal to the provided object.
+     *
+     * @param graphName The IRI or BlankNode that this quad belongs to, or <code>null</code> for the default graph
+     * @param subject   The IRI or BlankNode that is the subject of the quad
+     * @param predicate The IRI that is the predicate of the quad
+     * @param object    The IRI, BlankNode or Literal that is the object of the quad
+     * @return The created Quad
+     * @throws IllegalArgumentException      If any of the provided arguments are not acceptable, e.g.
+     *                                       because a Literal has a lexicalForm that is too large for an
+     *                                       underlying storage.
+     * @throws UnsupportedOperationException If the operation is not supported.
+     */
+    default Quad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate,
                                 RDFTerm object) throws IllegalArgumentException,
             UnsupportedOperationException {
         throw new UnsupportedOperationException(

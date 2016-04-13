@@ -27,7 +27,7 @@ import java.util.Set;
 /**
  * Types from the RDF and XML Schema vocabularies.
  */
-public final class Types implements IRI {
+public final class Types implements IRI, SimpleRDFTermFactory.SimpleRDFTerm {
 
     /**
      * <tt>http://www.w3.org/1999/02/22-rdf-syntax-ns#HTML</tt>
