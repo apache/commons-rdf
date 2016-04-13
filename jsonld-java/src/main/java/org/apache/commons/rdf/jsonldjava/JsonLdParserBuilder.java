@@ -95,8 +95,8 @@ public class JsonLdParserBuilder extends AbstractRDFParserBuilder {
 		}
 
 		Graph intoGraph = getIntoGraph().get();
-		if (intoGraph instanceof JsonLdGraph) {
-			// We can just move over the map content directly:
+		if (intoGraph instanceof JsonLdGraph && ! intoGraph.contains(null, null, null)) {
+			// Empty graph, we can just move over the map content directly:
 			JsonLdGraph jsonLdGraph = (JsonLdGraph) intoGraph;
 			jsonLdGraph.getRdfDataSet().putAll(rdfDataset);				
 		} else {
