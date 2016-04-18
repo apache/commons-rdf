@@ -231,7 +231,7 @@
     </dependencyManagement>
 
     <build>
-        <finalName>apache-commons-rdf</finalName>
+        <!--<finalName>apache-${project.artifactId}-${project.version}</finalName>-->
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -429,6 +429,9 @@
                             <exclude>examples/.settings/**</exclude>
                             <exclude>examples/.project</exclude>
                             <exclude>examples/.classpath</exclude>
+                            <exclude>**/META-INF/services/*</exclude>
+                            <exclude>**/src/main/resources/NOTICE</exclude>
+                            <exclude>**/src/main/resources/LICENSE</exclude>
                         </excludes>
                     </configuration>
                 </plugin>
