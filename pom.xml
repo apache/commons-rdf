@@ -264,7 +264,7 @@
                 <executions>
                     <execution>
                         <configuration>
-                            <descriptor>src/main/assembly/src.xml</descriptor>
+                            <descriptor>src/assembly/src.xml</descriptor>
                             <finalName>apache-commons-rdf-${project.version}</finalName>
                             <tarLongFileMode>gnu</tarLongFileMode>
                         </configuration>
