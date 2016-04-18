@@ -429,7 +429,9 @@
                             <exclude>examples/.settings/**</exclude>
                             <exclude>examples/.project</exclude>
                             <exclude>examples/.classpath</exclude>
+                            <!-- ServiceLoader file -->
                             <exclude>**/META-INF/services/*</exclude>
+                            <!-- Duplicates of NOTICE and LICENSE -->
                             <exclude>**/src/main/resources/NOTICE</exclude>
                             <exclude>**/src/main/resources/LICENSE</exclude>
                         </excludes>
