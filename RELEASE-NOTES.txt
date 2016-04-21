@@ -1,6 +1,6 @@
 # Apache Commons RDF (incubating)
 
-## 0.2.0-incubating (TODO)
+## 0.2.0-incubating (2016-04)
 
 This release clarifies .equals() and .hashCode() for RDFTerms so that they can
 be compared across graphs and implementations.
@@ -9,11 +9,11 @@ be compared across graphs and implementations.
 * [COMMONSRDF-20] - ServiceLoader mechanism to load RDFTermFactory
 * [COMMONSRDF-21] - Remove BlankNode requirements from RDFTermFactory.createGraph()
 * [COMMONSRDF-25] - Remove mentions of "local scope" in .equals()
-* Add RDFSyntax constants (e.g. TURTLE)
-* RDFTermFactory no longer require BlankNode mapping
-* Add internal SimpleRDFTerm marker interface
+* [COMMONSRDF-26] - Add RDFSyntax constants (e.g. TURTLE)
+* [COMMONSRDF-27] - RDFTermFactory no longer require BlankNode mapping
+* [COMMONSRDF-28] - Add internal SimpleRDFTerm marker interface
 
-## 0.1.0-incubating (2015-05-15)
+## 0.1.0-incubating (2015-05)
 
 This is the first release after moving to Apache Incubator.
 
@@ -22,9 +22,9 @@ This is the first release after moving to Apache Incubator.
 * [COMMONSRDF-8] - simple .GraphImpl.add() must clone BlankNode
 * [COMMONSRDF-11] - Simple should be extendable classes
 * [COMMONSRDF-12] - Graph to be Iterable
-* BlankNode.internalIdentifier() renamed to BlankNode.uniqueReference()
-* Add "simple" implementation and unit tests
-* Add RDFTermFactory
+* [COMMONSRDF-29] - BlankNode.internalIdentifier() renamed to BlankNode.uniqueReference()
+* [COMMONSRDF-30] - Add "simple" implementation and unit tests
+* [COMMONSRDF-31] - Add RDFTermFactory
 * Added user guide to website
 
 
