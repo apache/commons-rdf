@@ -104,7 +104,7 @@
             <email>lewismc[at]apache[dot]org</email>
             <roles>
                 <role>Committer</role>
-                <role>PMC Member</role>
+                <role>PPMC Member</role>
                 <role>Champion</role>
             </roles>
             <timezone>+1</timezone>
@@ -115,8 +115,8 @@
             <email>rvesse[at]apache[dot]org</email>
             <roles>
                 <role>Committer</role>
-                <role>PMC Member</role>
-                <role>Mentor</role>
+                <role>PPMC Member</role>
+                <role>Emeritus Mentor</role>
             </roles>
             <timezone>+0</timezone>
         </developer>
@@ -126,7 +126,7 @@
             <email>johndament[at]apache[dot]org</email>
             <roles>
                 <role>Committer</role>
-                <role>PMC Member</role>
+                <role>PPMC Member</role>
                 <role>Mentor</role>
             </roles>
             <timezone>+1</timezone>
@@ -137,7 +137,7 @@
             <email>ggregory[at]apache[dot]org</email>
             <roles>
                 <role>Committer</role>
-                <role>PMC Member</role>
+                <role>PPMC Member</role>
                 <role>Mentor</role>
             </roles>
             <timezone>+1</timezone>
@@ -149,7 +149,7 @@
             <url>http://www.wikier.org</url>
             <roles>
                 <role>Committer</role>
-                <role>PMC Member</role>
+                <role>PPMC Member</role>
             </roles>
             <timezone>+1</timezone>
         </developer>
@@ -159,7 +159,7 @@
             <email>andy[at]apache[dot]org</email>
             <roles>
                 <role>Committer</role>
-                <role>PMC Member</role>
+                <role>Emeritus PPPMC Member</role>
             </roles>
             <timezone>+0</timezone>
         </developer>
@@ -167,21 +167,12 @@
             <id>stain</id>
             <name>Stian Soiland-Reyes</name>
             <email>stain[at]apache[dot]org</email>
+            <url>http://orcid.org/0000-0001-9842-9718</url>
             <roles>
                 <role>Committer</role>
-                <role>PMC Member</role>
+                <role>PPMC Member</role>
             </roles>
             <timezone>+0</timezone>
-        </developer>
-        <developer>
-            <id>reto</id>
-            <name>Reto Gmür</name>
-            <email>reto[at]apache[dot]org</email>
-            <roles>
-                <role>Committer</role>
-                <role>PMC Member</role>
-            </roles>
-            <timezone>+1</timezone>
         </developer>
         <developer>
             <id>enridaga</id>
@@ -189,7 +180,7 @@
             <email>enridaga[at]apache[dot]org</email>
             <roles>
                 <role>Committer</role>
-                <role>PMC Member</role>
+                <role>PPMC Member</role>
             </roles>
             <timezone>+0</timezone>
         </developer>
@@ -199,7 +190,7 @@
             <email>britter[at]apache[dot]org</email>
             <roles>
                 <role>Committer</role>
-                <role>PMC Member</role>
+                <role>PPMC Member</role>
                 <role>Apache Commons Representative</role>
             </roles>
             <timezone>+1</timezone>
@@ -211,6 +202,20 @@
             <name>Peter Ansell</name>
             <email>ansell[at]apache[dot]org</email>
             <url>http://github.com/ansell</url>
+            <roles>
+                <role>Emeritus Committer</role>
+                <role>Emeritus PPMC Member</role>
+            </roles>
+        </contributor>
+        <contributor>
+            <id>reto</id>
+            <name>Reto Gmür</name>
+            <email>reto[at]apache[dot]org</email>
+            <roles>
+                <role>Emeritus Committer</role>
+                <role>Emeritus PPMC Member</role>
+            </roles>
+            <timezone>+1</timezone>
         </contributor>
     </contributors>
 
