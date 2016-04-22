@@ -206,7 +206,7 @@
             </roles>
             <timezone>+1</timezone>
         </contributor>
-        <developer>
+        <contributor>
             <name>Andy Seaborne</name>
             <email>andy[at]apache[dot]org</email>
             <roles>
@@ -214,7 +214,7 @@
                 <role>Emeritus PPPMC Member</role>
             </roles>
             <timezone>+0</timezone>
-        </developer>
+        </contributor>
     </contributors>
 
     <modules>
