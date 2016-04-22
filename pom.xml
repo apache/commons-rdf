@@ -154,16 +154,6 @@
             <timezone>+1</timezone>
         </developer>
         <developer>
-            <id>andy</id>
-            <name>Andy Seaborne</name>
-            <email>andy[at]apache[dot]org</email>
-            <roles>
-                <role>Committer</role>
-                <role>Emeritus PPPMC Member</role>
-            </roles>
-            <timezone>+0</timezone>
-        </developer>
-        <developer>
             <id>stain</id>
             <name>Stian Soiland-Reyes</name>
             <email>stain[at]apache[dot]org</email>
@@ -216,6 +206,15 @@
             </roles>
             <timezone>+1</timezone>
         </contributor>
+        <developer>
+            <name>Andy Seaborne</name>
+            <email>andy[at]apache[dot]org</email>
+            <roles>
+                <role>Emeritus Committer</role>
+                <role>Emeritus PPPMC Member</role>
+            </roles>
+            <timezone>+0</timezone>
+        </developer>
     </contributors>
 
     <modules>
