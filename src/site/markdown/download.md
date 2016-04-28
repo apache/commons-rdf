@@ -39,13 +39,13 @@ To use Commons RDF with [Maven](https://maven.apache.org/), add to your `pom.xml
   <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-rdf-api</artifactId>
-      <version>0.1.0-incubating</version>
+      <version>0.2.0-incubating</version>
   </dependency>
   <!-- and optionally: -->
   <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-rdf-simple</artifactId>
-      <version>0.1.0-incubating</version>
+      <version>0.2.0-incubating</version>
       <optional>true</optional>
   </dependency>
 </dependencies>
@@ -65,21 +65,25 @@ For the latest developments
 you may also be interested in the [source code repository](source-repository.html),
 which is also [mirrored to GitHub](http://github.com/apache/incubator-commonsrdf).
 
-### 0.1.0-incubating
+### 0.2.0-incubating
 
-**Apache Commons RDF 0.1.0-incubating** was published on 2015-05-15, and is available for download
+**Apache Commons RDF 0.2.0-incubating** was published on 2016-04-28, and is available for download
 from official mirrors of the
-ASF Distribution Directory [incubator/commonsrdf](https://www.apache.org/dyn/closer.lua/incubator/commonsrdf/0.1.0-incubating/):
+ASF Distribution Directory [incubator/commonsrdf](https://www.apache.org/dyn/closer.lua/incubator/commonsrdf/0.2.0-incubating/):
 
-* [apache-commons-rdf-0.1.0-incubating-src.zip](https://www.apache.org/dyn/closer.lua/incubator/commonsrdf/0.1.0-incubating/apache-commons-rdf-0.1.0-incubating-src.zip)
-  ([asc](https://dist.apache.org/repos/dist/release/incubator/commonsrdf/0.1.0-incubating/apache-commons-rdf-0.1.0-incubating-src.zip.asc),
-  [md5](https://dist.apache.org/repos/dist/release/incubator/commonsrdf/0.1.0-incubating/apache-commons-rdf-0.1.0-incubating-src.zip.md5),
-  [sha1](https://dist.apache.org/repos/dist/release/incubator/commonsrdf/0.1.0-incubating/apache-commons-rdf-0.1.0-incubating-src.zip.sha1))
-* [apache-commons-rdf-0.1.0-incubating-src.tar.gz](https://www.apache.org/dyn/closer.lua/incubator/commonsrdf/0.1.0-incubating/apache-commons-rdf-0.1.0-incubating-src.tar.gz)
-  ([asc](https://dist.apache.org/repos/dist/release/incubator/commonsrdf/0.1.0-incubating/apache-commons-rdf-0.1.0-incubating-src.tar.gz.asc),
-  [md5](https://dist.apache.org/repos/dist/release/incubator/commonsrdf/0.1.0-incubating//apache-commons-rdf-0.1.0-incubating-src.tar.gz.md5),
-  [sha1](https://dist.apache.org/repos/dist/release/incubator/commonsrdf/0.1.0-incubating/apache-commons-rdf-0.1.0-incubating-src.tar.gz.sha1))
+* [apache-commons-rdf-0.2.0-incubating-src.zip](https://www.apache.org/dyn/closer.lua/incubator/commonsrdf/0.2.0-incubating/apache-commons-rdf-0.2.0-incubating-src.zip)
+  ([asc](https://dist.apache.org/repos/dist/release/incubator/commonsrdf/0.2.0-incubating/apache-commons-rdf-0.2.0-incubating-src.zip.asc),
+  [md5](https://dist.apache.org/repos/dist/release/incubator/commonsrdf/0.2.0-incubating/apache-commons-rdf-0.2.0-incubating-src.zip.md5),
+  [sha1](https://dist.apache.org/repos/dist/release/incubator/commonsrdf/0.2.0-incubating/apache-commons-rdf-0.2.0-incubating-src.zip.sha1))
+* [apache-commons-rdf-0.2.0-incubating-src.tar.gz](https://www.apache.org/dyn/closer.lua/incubator/commonsrdf/0.2.0-incubating/apache-commons-rdf-0.2.0-incubating-src.tar.gz)
+  ([asc](https://dist.apache.org/repos/dist/release/incubator/commonsrdf/0.2.0-incubating/apache-commons-rdf-0.2.0-incubating-src.tar.gz.asc),
+  [md5](https://dist.apache.org/repos/dist/release/incubator/commonsrdf/0.2.0-incubating//apache-commons-rdf-0.2.0-incubating-src.tar.gz.md5),
+  [sha1](https://dist.apache.org/repos/dist/release/incubator/commonsrdf/0.2.0-incubating/apache-commons-rdf-0.2.0-incubating-src.tar.gz.sha1))
 
 After downloading the files, check the signatures using the following [KEYS](https://dist.apache.org/repos/dist/release/incubator/commonsrdf/KEYS)
-file. The [changelog](https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12316620&amp;version=12332056)
+file. The [changelog](https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12316620&version=12332057)
 is available from the [Apache Commons RDF Jira](https://issues.apache.org/jira/browse/COMMONSRDF).
+
+### Previous Releases
+
+Previous release are available from [archive.apache.org](http://archive.apache.org/dist/incubator/commonsrdf/).

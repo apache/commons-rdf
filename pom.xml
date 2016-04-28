@@ -53,7 +53,7 @@
         <project.build.encoding>UTF-8</project.build.encoding>
         <commons.encoding>UTF-8</commons.encoding>
         <commons.componentid>rdf</commons.componentid>
-        <commons.release.version>0.1.0</commons.release.version>
+        <commons.release.version>0.2.0</commons.release.version>
         <commons.jira.id>COMMONSRDF</commons.jira.id>
         <commons.jira.pid>12316620</commons.jira.pid>
         <commons.site.path>rdf</commons.site.path>
