@@ -81,7 +81,7 @@ ASF Distribution Directory [incubator/commonsrdf](https://www.apache.org/dyn/clo
   [sha1](https://dist.apache.org/repos/dist/release/incubator/commonsrdf/0.2.0-incubating/apache-commons-rdf-0.2.0-incubating-src.tar.gz.sha1))
 
 After downloading the files, check the signatures using the following [KEYS](https://dist.apache.org/repos/dist/release/incubator/commonsrdf/KEYS)
-file. The [changelog](https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12316620&version=12332057)
+file. The [changelog](https://s.apache.org/0.2.0-incubating)
 is available from the [Apache Commons RDF Jira](https://issues.apache.org/jira/browse/COMMONSRDF).
 
 ### Previous Releases
