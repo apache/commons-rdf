@@ -110,17 +110,6 @@
             <timezone>+1</timezone>
         </developer>
         <developer>
-            <id>rvesse</id>
-            <name>Rob Vesse</name>
-            <email>rvesse[at]apache[dot]org</email>
-            <roles>
-                <role>Committer</role>
-                <role>PPMC Member</role>
-                <role>Emeritus Mentor</role>
-            </roles>
-            <timezone>+0</timezone>
-        </developer>
-        <developer>
             <id>johndament</id>
             <name>John D Ament</name>
             <email>johndament[at]apache[dot]org</email>
@@ -212,6 +201,14 @@
             <roles>
                 <role>Emeritus Committer</role>
                 <role>Emeritus PPPMC Member</role>
+            </roles>
+            <timezone>+0</timezone>
+        </contributor>
+        <contributor>
+            <name>Rob Vesse</name>
+            <email>rvesse[at]apache[dot]org</email>
+            <roles>
+                <role>Emeritus Mentor</role>
             </roles>
             <timezone>+0</timezone>
         </contributor>
