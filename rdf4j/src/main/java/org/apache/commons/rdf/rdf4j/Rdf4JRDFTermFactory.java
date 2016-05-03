@@ -43,6 +43,224 @@ import org.openrdf.model.impl.SimpleValueFactory;
 import org.openrdf.rio.turtle.TurtleUtil;
 
 public class Rdf4JRDFTermFactory implements RDFTermFactory {
+	private final class GraphImplementation implements org.apache.commons.rdf.api.Graph {
+		
+		private Model model;
+
+		public GraphImplementation(Model model) {
+			this.model = model;		
+		}
+		
+		@Override
+		public long size() {
+			int size = model.size();
+			if (size < Integer.MAX_VALUE) {
+				return size;
+			} else {
+				// Collection.size() can't help us, we'll have to count
+				return model.parallelStream().count();
+			}				
+		}
+
+		@Override
+		public void remove(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
+			model.remove(
+					(Resource)asValue(subject), 
+					(org.openrdf.model.IRI)asValue(predicate), 
+					asValue(object));
+			
+		}
+
+		@Override
+		public void remove(Triple triple) { 
+			model.remove(asStatement(triple));				
+		}
+
+		@Override
+		public Stream<? extends Triple> getTriples(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
+			return model.filter(
+					(Resource)asValue(subject), 
+					(org.openrdf.model.IRI)asValue(predicate), 
+					asValue(object)).parallelStream()
+				.map(Rdf4JRDFTermFactory.this::asTriple);
+		}
+
+		@Override
+		public Stream<Triple> getTriples() {
+			return model.parallelStream().map(Rdf4JRDFTermFactory.this::asTriple);
+		}
+
+		@Override
+		public boolean contains(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
+			return model.contains(
+					(Resource)asValue(subject), 
+					(org.openrdf.model.IRI)asValue(predicate), 
+					asValue(object));
+		}
+
+		@Override
+		public boolean contains(Triple triple) {
+			return model.contains(asStatement(triple));
+		}
+
+		@Override
+		public void clear() {
+			model.clear();
+		}
+
+		@Override
+		public void add(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
+			model.add(
+					(Resource)asValue(subject), 
+					(org.openrdf.model.IRI)asValue(predicate), 
+					asValue(object));				
+		}
+
+		@Override
+		public void add(Triple triple) {
+			model.add(asStatement(triple));
+		}
+	}
+
+	private final class TripleImplementation implements Triple {
+		private final Statement statement;
+
+		private TripleImplementation(Statement statement) {
+			this.statement = statement;
+		}
+
+		@Override
+		public BlankNodeOrIRI getSubject() {
+			return (BlankNodeOrIRI) asRDFTerm(statement.getSubject());
+		}
+
+		@Override
+		public org.apache.commons.rdf.api.IRI getPredicate() {
+			return (org.apache.commons.rdf.api.IRI) asRDFTerm(statement.getPredicate());
+		}
+
+		@Override
+		public RDFTerm getObject() {
+			return asRDFTerm(statement.getObject());
+		}
+	}
+
+	private final class IRIImplementation implements org.apache.commons.rdf.api.IRI {
+		private org.openrdf.model.IRI iri;
+
+		public IRIImplementation(org.openrdf.model.IRI iri) {
+			this.iri = iri;			
+		}
+		@Override
+		public String ntriplesString() {
+			return "<" + iri.toString() +  ">";
+		}
+
+		@Override
+		public String getIRIString() {
+			return iri.toString();
+		}
+
+		@Override
+		public String toString() {
+			return iri.toString();
+		}
+
+		public int hashCode() {
+			// Same definition
+			return iri.hashCode();
+		}
+	}
+
+	private final class LiteralImplementation implements org.apache.commons.rdf.api.Literal {
+		
+		private org.openrdf.model.Literal literal;
+
+		public LiteralImplementation(org.openrdf.model.Literal literal) {
+			this.literal = literal;			
+		}
+		@Override
+		public String ntriplesString() {
+			// TODO: Use a more efficient StringBuffer
+			String escaped = QUOTE + TurtleUtil.encodeString(literal.getLabel()) + QUOTE;
+			if (literal.getLanguage().isPresent()) {
+				return escaped + "@" + literal.getLanguage();
+			}
+			if (literal.getDatatype().equals(Types.XSD_STRING)) { 
+				return escaped;
+			}
+			return escaped + "^^" + literal.getDatatype();
+		}
+
+		@Override
+		public String getLexicalForm() {
+			return literal.getLabel();
+		}
+
+		@Override
+		public org.apache.commons.rdf.api.IRI getDatatype() {
+			return (org.apache.commons.rdf.api.IRI) asRDFTerm(literal.getDatatype());
+		}
+
+		@Override
+		public Optional<String> getLanguageTag() {
+			return literal.getLanguage();
+		}
+
+		@Override
+		public String toString() {
+			return ntriplesString();
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (obj instanceof org.apache.commons.rdf.api.Literal) {
+				org.apache.commons.rdf.api.Literal other = (org.apache.commons.rdf.api.Literal) obj;
+				return getLexicalForm().equals(other.getLexicalForm()) &&
+						getDatatype().equals(other.getDatatype()) && 
+						getLanguageTag().equals(other.getLanguageTag());
+				
+			}
+			return false;
+		}
+
+		public int hashCode() {
+			return Objects.hash(literal.getLabel(), literal.getDatatype(), literal.getLanguage());
+		}
+	}
+
+	private final class BlankNodeImplementation implements BlankNode {
+		
+		private BNode bNode;
+
+		public BlankNodeImplementation(BNode bNode) {
+			this.bNode = bNode;			
+		}
+		
+		@Override
+		public String ntriplesString() {
+			return "_:" + bNode.getID();
+		}
+
+		@Override
+		public String uniqueReference() {
+			return salt + bNode.getID();
+		}
+
+		@Override
+		public int hashCode() {
+			return uniqueReference().hashCode();
+		}
+
+		public boolean equals(Object obj) { 
+			if (obj instanceof BlankNode) {
+				BlankNode blankNode = (BlankNode) obj;
+				return uniqueReference().equals(blankNode.uniqueReference());								
+			}
+			return false;
+		}
+	}
+
 	private static final String QUOTE = "\"";
 
 	private ValueFactory valueFactory;
@@ -146,195 +364,22 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 	}
 
 	private org.apache.commons.rdf.api.Graph asRDFTermGraph(Model model) {
-		return new org.apache.commons.rdf.api.Graph() {
-			
-			@Override
-			public long size() {
-				int size = model.size();
-				if (size < Integer.MAX_VALUE) {
-					return size;
-				} else {
-					// Collection.size() can't help us, we'll have to count
-					return model.parallelStream().count();
-				}				
-			}
-			
-			@Override
-			public void remove(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
-				model.remove(
-						(Resource)asValue(subject), 
-						(org.openrdf.model.IRI)asValue(predicate), 
-						asValue(object));
-				
-			}
-			
-			@Override
-			public void remove(Triple triple) { 
-				model.remove(asStatement(triple));				
-			}
-			
-			@Override
-			public Stream<? extends Triple> getTriples(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
-				return model.filter(
-						(Resource)asValue(subject), 
-						(org.openrdf.model.IRI)asValue(predicate), 
-						asValue(object)).parallelStream()
-					.map(Rdf4JRDFTermFactory.this::asTriple);
-			}
-			
-			@Override
-			public Stream<Triple> getTriples() {
-				return model.parallelStream().map(Rdf4JRDFTermFactory.this::asTriple);
-			}
-			
-			@Override
-			public boolean contains(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
-				return model.contains(
-						(Resource)asValue(subject), 
-						(org.openrdf.model.IRI)asValue(predicate), 
-						asValue(object));
-			}
-			
-			@Override
-			public boolean contains(Triple triple) {
-				return model.contains(asStatement(triple));
-			}
-			
-
-			@Override
-			public void clear() {
-				model.clear();
-			}
-			
-			@Override
-			public void add(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
-				model.add(
-						(Resource)asValue(subject), 
-						(org.openrdf.model.IRI)asValue(predicate), 
-						asValue(object));				
-			}
-			
-			@Override
-			public void add(Triple triple) {
-				model.add(asStatement(triple));
-			}
-		};
+		return new GraphImplementation(model);
 	}
 
 	protected Triple asTriple(final Statement statement) {
-		return new Triple() {			
-			@Override
-			public BlankNodeOrIRI getSubject() {
-				return (BlankNodeOrIRI) asRDFTerm(statement.getSubject());
-			}
-			@Override
-			public org.apache.commons.rdf.api.IRI getPredicate() {
-				return (org.apache.commons.rdf.api.IRI) asRDFTerm(statement.getPredicate());
-			}
-			@Override
-			public RDFTerm getObject() {
-				return asRDFTerm(statement.getObject());
-			}
-		};
+		return new TripleImplementation(statement);
 	}
 
 	private RDFTerm asRDFTerm(final org.openrdf.model.Value value) {
 		if (value instanceof BNode) {
-			BNode bNode = (BNode) value;
-			
-			return new BlankNode() {
-				@Override
-				public String ntriplesString() {
-					return "_:" + bNode.getID();
-				}
-				
-				@Override
-				public String uniqueReference() {
-					return salt + bNode.getID();
-				}
-				@Override
-				public int hashCode() {
-					return uniqueReference().hashCode();
-				}
-				public boolean equals(Object obj) { 
-					if (obj instanceof BlankNode) {
-						BlankNode blankNode = (BlankNode) obj;
-						return uniqueReference().equals(blankNode.uniqueReference());								
-					}
-					return false;
-				}
-				
-			};
+			return new BlankNodeImplementation((BNode) value);
 		}
 		if (value instanceof org.openrdf.model.Literal) {
-			org.openrdf.model.Literal literal = (org.openrdf.model.Literal) value; 
-			return new org.apache.commons.rdf.api.Literal() {
-				@Override
-				public String ntriplesString() {
-					// TODO: Use a more efficient StringBuffer
-					String escaped = QUOTE + TurtleUtil.encodeString(literal.getLabel()) + QUOTE;
-					if (literal.getLanguage().isPresent()) {
-						return escaped + "@" + literal.getLanguage();
-					}
-					if (literal.getDatatype().equals(Types.XSD_STRING)) { 
-						return escaped;
-					}
-					return escaped + "^^" + literal.getDatatype();
-				}
-				@Override
-				public String getLexicalForm() {
-					return literal.getLabel();
-				}
-				@Override
-				public org.apache.commons.rdf.api.IRI getDatatype() {
-					return (org.apache.commons.rdf.api.IRI) asRDFTerm(literal.getDatatype());
-				}
-				@Override
-				public Optional<String> getLanguageTag() {
-					return literal.getLanguage();
-				} 
-				@Override
-				public String toString() {
-					return ntriplesString();
-				}
-				@Override
-				public boolean equals(Object obj) {
-					if (obj instanceof org.apache.commons.rdf.api.Literal) {
-						org.apache.commons.rdf.api.Literal other = (org.apache.commons.rdf.api.Literal) obj;
-						return getLexicalForm().equals(other.getLexicalForm()) &&
-								getDatatype().equals(other.getDatatype()) && 
-								getLanguageTag().equals(other.getLanguageTag());
-						
-					}
-					return false;
-				}
-				public int hashCode() {
-					return Objects.hash(literal.getLabel(), literal.getDatatype(), literal.getLanguage());
-				}
-				
-			};
+			return new LiteralImplementation((org.openrdf.model.Literal) value);
 		}
 		if (value instanceof org.openrdf.model.IRI) {
-			org.openrdf.model.IRI iri = (org.openrdf.model.IRI) value;
-			return new org.apache.commons.rdf.api.IRI() {
-				@Override
-				public String ntriplesString() {
-					return "<" + iri.toString() +  ">";
-				}
-				@Override
-				public String getIRIString() {
-					return iri.toString();
-				}
-				
-				@Override
-				public String toString() {
-					return iri.toString();
-				}				
-				public int hashCode() {
-					// Same definition
-					return iri.hashCode();
-				}				
-			};
+			return new IRIImplementation((org.openrdf.model.IRI) value);
 		}
 		throw new IllegalArgumentException("Value is not a BNode, Literal or IRI: " + value.getClass());		
 	}
