@@ -72,10 +72,10 @@ import org.openrdf.rio.turtle.TurtleUtil;
  * 
  */
 public class RDF4JTermFactory implements RDFTermFactory {
-	
-	private ValueFactory valueFactory;
-	
+		
 	private String salt = "urn:uuid:" + UUID.randomUUID() + "#";
+
+	private ValueFactory valueFactory;
 	
 	public RDF4JTermFactory() {
 		this.valueFactory = SimpleValueFactory.getInstance();
@@ -83,49 +83,51 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	
 	public RDF4JTermFactory(ValueFactory valueFactory) { 
 		this.valueFactory = valueFactory;
-	}	
-	
-	@Override
-	public BlankNodeImpl createBlankNode() throws UnsupportedOperationException {
-		BNode bnode = valueFactory.createBNode();
-		return (BlankNodeImpl)asRDFTerm(bnode);
 	}
 	
-	@Override
-	public BlankNodeImpl createBlankNode(String name) throws UnsupportedOperationException {
-		BNode bnode = valueFactory.createBNode(name);
-		return (BlankNodeImpl)asRDFTerm(bnode);
+	/**
+	 * 
+	 * Adapt a RDF4J {@link Value} as a Commons RDF 
+	 * {@link RDFTerm}.
+	 * <p>
+	 * <p>
+	 * The value will be of the same kind as the term, e.g. a
+	 * {@link org.openrdf.model.BNode} is converted to a
+	 * {@link org.apache.commons.rdf.api.BlankNode}, 
+	 * a {@link org.openrdf.model.IRI}
+	 * is converted to a {@link org.apache.commons.rdf.api.IRI}
+	 * and a {@link org.openrdf.model.Literal}.
+	 * is converted to a 
+	 * {@link org.apache.commons.rdf.api.Literal} 
+	 * 
+	 * @param value
+	 * @return
+	 */
+	public RDF4JTerm<?> asRDFTerm(final org.openrdf.model.Value value) {		
+		if (value instanceof BNode) {
+			return new BlankNodeImpl((BNode) value);
+		}
+		if (value instanceof org.openrdf.model.Literal) {
+			return new LiteralImpl((org.openrdf.model.Literal) value);
+		}
+		if (value instanceof org.openrdf.model.IRI) {
+			return new IRIImpl((org.openrdf.model.IRI) value);
+		}
+		throw new IllegalArgumentException("Value is not a BNode, Literal or IRI: " + value.getClass());		
 	}
 	
-	@Override
-	public LiteralImpl createLiteral(String lexicalForm) throws IllegalArgumentException, UnsupportedOperationException {
-		org.openrdf.model.Literal lit = valueFactory.createLiteral(lexicalForm);
-		return (LiteralImpl)asRDFTerm(lit);
-	}
-
-	@Override
-	public org.apache.commons.rdf.api.Literal createLiteral(String lexicalForm, org.apache.commons.rdf.api.IRI dataType)
-			throws IllegalArgumentException, UnsupportedOperationException {
-		org.openrdf.model.IRI iri = valueFactory.createIRI(dataType.getIRIString());
-		org.openrdf.model.Literal lit = valueFactory.createLiteral(lexicalForm, iri);
-		return (org.apache.commons.rdf.api.Literal)asRDFTerm(lit);
-	}
-	
-	@Override
-	public org.apache.commons.rdf.api.Literal createLiteral(String lexicalForm, String languageTag)
-			throws IllegalArgumentException, UnsupportedOperationException {
-		org.openrdf.model.Literal lit = valueFactory.createLiteral(lexicalForm, languageTag);
-		return (org.apache.commons.rdf.api.Literal)asRDFTerm(lit);
-	}
-	
-	@Override
-	public RDF4JIRI createIRI(String iri) throws IllegalArgumentException, UnsupportedOperationException {
-		return (RDF4JIRI) asRDFTerm(valueFactory.createIRI(iri));
-	}
-	
-	@Override
-	public RDF4JGraph createGraph() throws UnsupportedOperationException {
-		return asRDFTermGraph(new LinkedHashModel());
+	/**
+	 * Adapt an RDF4J {@link Model} as a 
+	 * Commons RDF {@link Graph}.
+	 * <p>
+	 * Changes to the graph are reflected in the model, and
+	 * vice versa. 
+	 * 
+	 * @param model RDF4J {@link Model} to adapt.
+	 * @return Adapted {@link Graph}.
+	 */
+	public RDF4JGraph asRDFTermGraph(Model model) {
+		return new GraphImpl(model);
 	}
 	
 	public Statement asStatement(Triple triple) {
@@ -133,18 +135,19 @@ public class RDF4JTermFactory implements RDFTermFactory {
 				(org.openrdf.model.Resource) asValue(triple.getSubject()), 
 				(org.openrdf.model.IRI) asValue(triple.getPredicate()), 
 				asValue(triple.getObject()));
-	}
-	
-	@Override
-	public RDF4JTriple createTriple(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object)
-			throws IllegalArgumentException, UnsupportedOperationException {
-		final Statement statement = valueFactory.createStatement(
-				(org.openrdf.model.Resource) asValue(subject), 
-				(org.openrdf.model.IRI) asValue(predicate), 
-				asValue(object));
-		return asTriple(statement);
 	}	
 	
+	/**
+	 * Adapt a RDF4J {@link Statement} as a Commons RDF 
+	 * {@link Triple}.
+	 * 
+	 * @param statement
+	 * @return
+	 */
+	public RDF4JTriple asTriple(final Statement statement) {
+		return new TripleImpl(statement);
+	}
+
 	/**
 	 * Adapt a Commons RDF {@link RDFTerm} as a RDF4J {@link Value}.
 	 * <p>
@@ -199,306 +202,60 @@ public class RDF4JTermFactory implements RDFTermFactory {
 		throw new IllegalArgumentException("RDFTerm was not an IRI, Literal or BlankNode: " + term.getClass());
 	}
 
-	/**
-	 * Adapt an RDF4J {@link Model} as a 
-	 * Commons RDF {@link Graph}.
-	 * <p>
-	 * Changes to the graph are reflected in the model, and
-	 * vice versa. 
-	 * 
-	 * @param model RDF4J {@link Model} to adapt.
-	 * @return Adapted {@link Graph}.
-	 */
-	public RDF4JGraph asRDFTermGraph(Model model) {
-		return new GraphImpl(model);
+	@Override
+	public BlankNodeImpl createBlankNode() throws UnsupportedOperationException {
+		BNode bnode = valueFactory.createBNode();
+		return (BlankNodeImpl)asRDFTerm(bnode);
 	}
 
-	/**
-	 * Adapt a RDF4J {@link Statement} as a Commons RDF 
-	 * {@link Triple}.
-	 * 
-	 * @param statement
-	 * @return
-	 */
-	public RDF4JTriple asTriple(final Statement statement) {
-		return new TripleImpl(statement);
+	@Override
+	public BlankNodeImpl createBlankNode(String name) throws UnsupportedOperationException {
+		BNode bnode = valueFactory.createBNode(name);
+		return (BlankNodeImpl)asRDFTerm(bnode);
 	}
 
-	/**
-	 * 
-	 * Adapt a RDF4J {@link Value} as a Commons RDF 
-	 * {@link RDFTerm}.
-	 * <p>
-	 * <p>
-	 * The value will be of the same kind as the term, e.g. a
-	 * {@link org.openrdf.model.BNode} is converted to a
-	 * {@link org.apache.commons.rdf.api.BlankNode}, 
-	 * a {@link org.openrdf.model.IRI}
-	 * is converted to a {@link org.apache.commons.rdf.api.IRI}
-	 * and a {@link org.openrdf.model.Literal}.
-	 * is converted to a 
-	 * {@link org.apache.commons.rdf.api.Literal} 
-	 * 
-	 * @param value
-	 * @return
-	 */
-	public RDF4JTerm<?> asRDFTerm(final org.openrdf.model.Value value) {		
-		if (value instanceof BNode) {
-			return new BlankNodeImpl((BNode) value);
-		}
-		if (value instanceof org.openrdf.model.Literal) {
-			return new LiteralImpl((org.openrdf.model.Literal) value);
-		}
-		if (value instanceof org.openrdf.model.IRI) {
-			return new IRIImpl((org.openrdf.model.IRI) value);
-		}
-		throw new IllegalArgumentException("Value is not a BNode, Literal or IRI: " + value.getClass());		
-	}
-
-	private abstract class RDFTermImpl<T extends Value> implements RDF4JTerm<T> {
-		T value;
-
-		public T asValue() { 
-			return value;
-		}
-		
-		RDFTermImpl(T value) {
-			this.value = value;			
-		}
+	@Override
+	public RDF4JGraph createGraph() throws UnsupportedOperationException {
+		return asRDFTermGraph(new LinkedHashModel());
 	}
 	
-	private final class GraphImpl implements RDF4JGraph {
-		
-		private Model model;
-
-		public Model asModel() { 
-			return model;
-		}
-		
-		GraphImpl(Model model) {
-			this.model = model;		
-		}
-		
-		@Override
-		public long size() {
-			int size = model.size();
-			if (size < Integer.MAX_VALUE) {
-				return size;
-			} else {
-				// Collection.size() can't help us, we'll have to count
-				return model.parallelStream().count();
-			}				
-		}
-
-		@Override
-		public void remove(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
-			model.remove(
-					(Resource)asValue(subject), 
-					(org.openrdf.model.IRI)asValue(predicate), 
-					asValue(object));
-			
-		}
-
-		@Override
-		public void remove(Triple triple) { 
-			model.remove(asStatement(triple));
-		}
-
-		@Override
-		public Stream<RDF4JTriple> getTriples(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
-			return model.filter(
-					(Resource)asValue(subject), 
-					(org.openrdf.model.IRI)asValue(predicate), 
-					asValue(object)).parallelStream()
-				.map(RDF4JTermFactory.this::asTriple);
-		}
-
-		@Override
-		public Stream<RDF4JTriple> getTriples() {
-			return model.parallelStream().map(RDF4JTermFactory.this::asTriple);
-		}
-
-		@Override
-		public boolean contains(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
-			return model.contains(
-					(Resource)asValue(subject), 
-					(org.openrdf.model.IRI)asValue(predicate), 
-					asValue(object));
-		}
-
-		@Override
-		public boolean contains(Triple triple) {
-			return model.contains(asStatement(triple));
-		}
-
-		@Override
-		public void clear() {
-			model.clear();
-		}
-
-		@Override
-		public void add(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
-			model.add(
-					(Resource)asValue(subject), 
-					(org.openrdf.model.IRI)asValue(predicate), 
-					asValue(object));				
-		}
-
-		@Override
-		public void add(Triple triple) {
-			model.add(asStatement(triple));
-		}
+	@Override
+	public RDF4JIRI createIRI(String iri) throws IllegalArgumentException, UnsupportedOperationException {
+		return (RDF4JIRI) asRDFTerm(valueFactory.createIRI(iri));
 	}
 
-	private final class TripleImpl implements Triple, RDF4JTriple {
-		private final Statement statement;
-
-		TripleImpl(Statement statement) {
-			this.statement = statement;
-		}
-
-		public Statement asStatement() { 
-			return statement;
-		}
-		
-		@Override
-		public BlankNodeOrIRI getSubject() {
-			return (BlankNodeOrIRI) asRDFTerm(statement.getSubject());
-		}
-
-		@Override
-		public org.apache.commons.rdf.api.IRI getPredicate() {
-			return (org.apache.commons.rdf.api.IRI) asRDFTerm(statement.getPredicate());
-		}
-
-		@Override
-		public RDFTerm getObject() {
-			return asRDFTerm(statement.getObject());
-		}
-		
-		@Override
-		public boolean equals(Object obj) {
-			if (obj instanceof Triple) {
-				Triple triple = (Triple) obj;
-				return getSubject().equals(triple.getSubject()) &&
-						getPredicate().equals(triple.getPredicate()) && 
-						getObject().equals(triple.getObject());
-			}
-			return false;
-		}
-
-		@Override
-		public int hashCode() {
-			return Objects.hash(getSubject(), getPredicate(), getObject());
-		}
-		
-		@Override
-		public String toString() {
-			return statement.toString();
-		}
+	@Override
+	public LiteralImpl createLiteral(String lexicalForm) throws IllegalArgumentException, UnsupportedOperationException {
+		org.openrdf.model.Literal lit = valueFactory.createLiteral(lexicalForm);
+		return (LiteralImpl)asRDFTerm(lit);
 	}
 
-	private final class IRIImpl extends RDFTermImpl<org.openrdf.model.IRI> 
-		implements RDF4JIRI {
-
-		IRIImpl(org.openrdf.model.IRI iri) {
-			super(iri);			
-		}
-		@Override
-		public String ntriplesString() {
-			return "<" + value.toString() +  ">";
-		}
-
-		@Override
-		public String getIRIString() {
-			return value.toString();
-		}
-
-		@Override
-		public String toString() {
-			return value.toString();
-		}
-
-		public int hashCode() {
-			// Same definition
-			return value.hashCode();
-		}
-		@Override
-		public boolean equals(Object obj) {
-			if (obj == this) { return true; }
-			if (obj instanceof IRIImpl) {
-				IRIImpl impl = (IRIImpl) obj; 
-				return asValue().equals(impl.asValue());
-			}
-			if (obj instanceof org.apache.commons.rdf.api.IRI) {
-				org.apache.commons.rdf.api.IRI iri = (org.apache.commons.rdf.api.IRI) obj;
-				return value.toString().equals(iri.getIRIString());
-			}
-			return false;
-		}
-		
+	@Override
+	public org.apache.commons.rdf.api.Literal createLiteral(String lexicalForm, org.apache.commons.rdf.api.IRI dataType)
+			throws IllegalArgumentException, UnsupportedOperationException {
+		org.openrdf.model.IRI iri = valueFactory.createIRI(dataType.getIRIString());
+		org.openrdf.model.Literal lit = valueFactory.createLiteral(lexicalForm, iri);
+		return (org.apache.commons.rdf.api.Literal)asRDFTerm(lit);
 	}
 
-	private final class LiteralImpl 
-		extends RDFTermImpl<org.openrdf.model.Literal>
-	    implements RDF4JLiteral {		
-
-		private static final String QUOTE = "\"";
-		
-		LiteralImpl(org.openrdf.model.Literal literal) {
-			super(literal);			
-		}
-		@Override
-		public String ntriplesString() {
-			// TODO: Use a more efficient StringBuffer
-			String escaped = QUOTE + TurtleUtil.encodeString(value.getLabel()) + QUOTE;
-			if (value.getLanguage().isPresent()) {
-				return escaped + "@" + value.getLanguage().get();
-			}
-			if (value.getDatatype().equals(XMLSchema.STRING)) { 
-				return escaped;
-			}
-			return escaped + "^^<" + TurtleUtil.encodeURIString(value.getDatatype().toString()) + ">";
-		}
-
-		@Override
-		public String getLexicalForm() {
-			return value.getLabel();
-		}
-
-		@Override
-		public org.apache.commons.rdf.api.IRI getDatatype() {
-			return (org.apache.commons.rdf.api.IRI) asRDFTerm(value.getDatatype());
-		}
-
-		@Override
-		public Optional<String> getLanguageTag() {
-			return value.getLanguage();
-		}
-
-		@Override
-		public String toString() {
-			return ntriplesString();
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (obj == this) { return true; }
-			if (obj instanceof org.apache.commons.rdf.api.Literal) {
-				org.apache.commons.rdf.api.Literal other = (org.apache.commons.rdf.api.Literal) obj;
-				return getLexicalForm().equals(other.getLexicalForm()) &&
-						getDatatype().equals(other.getDatatype()) && 
-						getLanguageTag().equals(other.getLanguageTag());
-				
-			}
-			return false;
-		}
-
-		public int hashCode() {
-			return Objects.hash(value.getLabel(), value.getDatatype(), value.getLanguage());
-		}
+	@Override
+	public org.apache.commons.rdf.api.Literal createLiteral(String lexicalForm, String languageTag)
+			throws IllegalArgumentException, UnsupportedOperationException {
+		org.openrdf.model.Literal lit = valueFactory.createLiteral(lexicalForm, languageTag);
+		return (org.apache.commons.rdf.api.Literal)asRDFTerm(lit);
 	}
 
+	@Override
+	public RDF4JTriple createTriple(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object)
+			throws IllegalArgumentException, UnsupportedOperationException {
+		final Statement statement = valueFactory.createStatement(
+				(org.openrdf.model.Resource) asValue(subject), 
+				(org.openrdf.model.IRI) asValue(predicate), 
+				asValue(object));
+		return asTriple(statement);
+	}
+
+	
 	private final class BlankNodeImpl extends RDFTermImpl<BNode>
 		implements RDF4JBlankNode {
 		
@@ -506,6 +263,24 @@ public class RDF4JTermFactory implements RDFTermFactory {
 			super(bNode);			
 		}
 		
+		public boolean equals(Object obj) { 
+			if (obj == this) { 
+				return true;
+			}
+			// NOTE: Do NOT use Bnode.equals() as it has a more generous
+			// equality based only on the value.getID();			
+			if (obj instanceof BlankNode) {
+				BlankNode blankNode = (BlankNode) obj;
+				return uniqueReference().equals(blankNode.uniqueReference());								
+			}
+			return false;
+		}
+	
+		@Override
+		public int hashCode() {
+			return uniqueReference().hashCode();
+		}
+	
 		@Override
 		public String ntriplesString() {
 			if (isValidBlankNodeLabel(value.getID())) { 
@@ -514,7 +289,12 @@ public class RDF4JTermFactory implements RDFTermFactory {
 				return "_:" + UUID.nameUUIDFromBytes(value.getID().getBytes(StandardCharsets.UTF_8));
 			}
 		}
-
+	
+		@Override
+		public String uniqueReference() {
+			return salt + value.getID();
+		}
+	
 		private boolean isValidBlankNodeLabel(String id) {
 			// FIXME: Replace with a regular expression?			
 			if (id.isEmpty()) { 
@@ -530,29 +310,251 @@ public class RDF4JTermFactory implements RDFTermFactory {
 			}
 			return true;
 		}
+	}
 
-		@Override
-		public String uniqueReference() {
-			return salt + value.getID();
+	private final class GraphImpl implements RDF4JGraph {
+		
+		private Model model;
+	
+		GraphImpl(Model model) {
+			this.model = model;		
 		}
-
+		
 		@Override
-		public int hashCode() {
-			return uniqueReference().hashCode();
+		public void add(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
+			model.add(
+					(Resource)asValue(subject), 
+					(org.openrdf.model.IRI)asValue(predicate), 
+					asValue(object));				
 		}
+		
+		@Override
+		public void add(Triple triple) {
+			model.add(asStatement(triple));
+		}
+	
+		public Model asModel() { 
+			return model;
+		}
+	
+		@Override
+		public void clear() {
+			model.clear();
+		}
+	
+		@Override
+		public boolean contains(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
+			return model.contains(
+					(Resource)asValue(subject), 
+					(org.openrdf.model.IRI)asValue(predicate), 
+					asValue(object));
+		}
+	
+		@Override
+		public boolean contains(Triple triple) {
+			return model.contains(asStatement(triple));
+		}
+	
+		@Override
+		public Stream<RDF4JTriple> getTriples() {
+			return model.parallelStream().map(RDF4JTermFactory.this::asTriple);
+		}
+	
+		@Override
+		public Stream<RDF4JTriple> getTriples(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
+			return model.filter(
+					(Resource)asValue(subject), 
+					(org.openrdf.model.IRI)asValue(predicate), 
+					asValue(object)).parallelStream()
+				.map(RDF4JTermFactory.this::asTriple);
+		}
+	
+		@Override
+		public void remove(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
+			model.remove(
+					(Resource)asValue(subject), 
+					(org.openrdf.model.IRI)asValue(predicate), 
+					asValue(object));
+			
+		}
+	
+		@Override
+		public void remove(Triple triple) { 
+			model.remove(asStatement(triple));
+		}
+	
+		@Override
+		public long size() {
+			int size = model.size();
+			if (size < Integer.MAX_VALUE) {
+				return size;
+			} else {
+				// Collection.size() can't help us, we'll have to count
+				return model.parallelStream().count();
+			}				
+		}
+	}
 
-		public boolean equals(Object obj) { 
-			if (obj == this) { 
-				return true;
+	private final class IRIImpl extends RDFTermImpl<org.openrdf.model.IRI> 
+		implements RDF4JIRI {
+	
+		IRIImpl(org.openrdf.model.IRI iri) {
+			super(iri);			
+		}
+		@Override
+		public boolean equals(Object obj) {
+			if (obj == this) { return true; }
+			if (obj instanceof IRIImpl) {
+				IRIImpl impl = (IRIImpl) obj; 
+				return asValue().equals(impl.asValue());
 			}
-			// NOTE: Do NOT use Bnode.equals() as it has a more generous
-			// equality based only on the value.getID();			
-			if (obj instanceof BlankNode) {
-				BlankNode blankNode = (BlankNode) obj;
-				return uniqueReference().equals(blankNode.uniqueReference());								
+			if (obj instanceof org.apache.commons.rdf.api.IRI) {
+				org.apache.commons.rdf.api.IRI iri = (org.apache.commons.rdf.api.IRI) obj;
+				return value.toString().equals(iri.getIRIString());
 			}
 			return false;
 		}
+	
+		@Override
+		public String getIRIString() {
+			return value.toString();
+		}
+	
+		public int hashCode() {
+			// Same definition
+			return value.hashCode();
+		}
+	
+		@Override
+		public String ntriplesString() {
+			return "<" + value.toString() +  ">";
+		}
+		@Override
+		public String toString() {
+			return value.toString();
+		}
+		
 	}
+
+	private final class LiteralImpl 
+		extends RDFTermImpl<org.openrdf.model.Literal>
+	    implements RDF4JLiteral {		
+	
+		private static final String QUOTE = "\"";
+		
+		LiteralImpl(org.openrdf.model.Literal literal) {
+			super(literal);			
+		}
+		@Override
+		public boolean equals(Object obj) {
+			if (obj == this) { return true; }
+			if (obj instanceof org.apache.commons.rdf.api.Literal) {
+				org.apache.commons.rdf.api.Literal other = (org.apache.commons.rdf.api.Literal) obj;
+				return getLexicalForm().equals(other.getLexicalForm()) &&
+						getDatatype().equals(other.getDatatype()) && 
+						getLanguageTag().equals(other.getLanguageTag());
+				
+			}
+			return false;
+		}
+	
+		@Override
+		public org.apache.commons.rdf.api.IRI getDatatype() {
+			return (org.apache.commons.rdf.api.IRI) asRDFTerm(value.getDatatype());
+		}
+	
+		@Override
+		public Optional<String> getLanguageTag() {
+			return value.getLanguage();
+		}
+	
+		@Override
+		public String getLexicalForm() {
+			return value.getLabel();
+		}
+	
+		public int hashCode() {
+			return Objects.hash(value.getLabel(), value.getDatatype(), value.getLanguage());
+		}
+	
+		@Override
+		public String ntriplesString() {
+			// TODO: Use a more efficient StringBuffer
+			String escaped = QUOTE + TurtleUtil.encodeString(value.getLabel()) + QUOTE;
+			if (value.getLanguage().isPresent()) {
+				return escaped + "@" + value.getLanguage().get();
+			}
+			if (value.getDatatype().equals(XMLSchema.STRING)) { 
+				return escaped;
+			}
+			return escaped + "^^<" + TurtleUtil.encodeURIString(value.getDatatype().toString()) + ">";
+		}
+	
+		@Override
+		public String toString() {
+			return ntriplesString();
+		}
+	}	
+
+	private abstract class RDFTermImpl<T extends Value> implements RDF4JTerm<T> {
+		T value;
+	
+		RDFTermImpl(T value) {
+			this.value = value;			
+		}
+		
+		public T asValue() { 
+			return value;
+		}
+	}
+	
+	private final class TripleImpl implements Triple, RDF4JTriple {
+		private final Statement statement;
+	
+		TripleImpl(Statement statement) {
+			this.statement = statement;
+		}
+	
+		public Statement asStatement() { 
+			return statement;
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if (obj instanceof Triple) {
+				Triple triple = (Triple) obj;
+				return getSubject().equals(triple.getSubject()) &&
+						getPredicate().equals(triple.getPredicate()) && 
+						getObject().equals(triple.getObject());
+			}
+			return false;
+		}
+	
+		@Override
+		public RDFTerm getObject() {
+			return asRDFTerm(statement.getObject());
+		}
+	
+		@Override
+		public org.apache.commons.rdf.api.IRI getPredicate() {
+			return (org.apache.commons.rdf.api.IRI) asRDFTerm(statement.getPredicate());
+		}
+		
+		@Override
+		public BlankNodeOrIRI getSubject() {
+			return (BlankNodeOrIRI) asRDFTerm(statement.getSubject());
+		}
+	
+		@Override
+		public int hashCode() {
+			return Objects.hash(getSubject(), getPredicate(), getObject());
+		}
+		
+		@Override
+		public String toString() {
+			return statement.toString();
+		}
+}
+
 	
 }
