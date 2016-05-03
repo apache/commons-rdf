@@ -248,7 +248,7 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 			if (getDatatype().equals(Types.XSD_STRING)) { 
 				return escaped;
 			}
-			return escaped + "^^" + value.getDatatype();
+			return escaped + "^^<" + TurtleUtil.encodeURIString(value.getDatatype().toString()) + ">";
 		}
 
 		@Override
@@ -298,6 +298,7 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 		
 		@Override
 		public String ntriplesString() {
+			// FIXME: Don't expose value.getID() if it's not valid ntriplesString();
 			return "_:" + value.getID();
 		}
 
