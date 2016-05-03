@@ -17,6 +17,7 @@
  */
 package org.apache.commons.rdf.rdf4j;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -298,8 +299,27 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 		
 		@Override
 		public String ntriplesString() {
-			// FIXME: Don't expose value.getID() if it's not valid ntriplesString();
-			return "_:" + value.getID();
+			if (isValidBlankNodeLabel(value.getID())) { 
+				return "_:" + value.getID();
+			} else {
+				return "_:" + UUID.nameUUIDFromBytes(value.getID().getBytes(StandardCharsets.UTF_8));
+			}
+		}
+
+		private boolean isValidBlankNodeLabel(String id) {
+			// FIXME: Replace with a regular expression?			
+			if (id.isEmpty()) { 
+				return false;
+			}
+			if (! TurtleUtil.isBLANK_NODE_LABEL_StartChar(id.codePointAt(0)))  {
+				return false;
+			}
+			for (int i=1; i<id.length(); i++) { 
+				if (! TurtleUtil.isBLANK_NODE_LABEL_Char(id.codePointAt(i))) { 
+					return false;
+				}
+			}
+			return true;
 		}
 
 		@Override
