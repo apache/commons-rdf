@@ -20,6 +20,7 @@ package org.apache.commons.rdf.rdf4j;
 import org.apache.commons.rdf.api.AbstractGraphTest;
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.RDFTermFactory;
+import org.junit.Ignore;
 import org.openrdf.sail.NotifyingSailConnection;
 import org.openrdf.sail.memory.MemoryStore;
 import org.openrdf.sail.memory.model.MemValueFactory;
@@ -32,16 +33,16 @@ public class MemoryGraphTest extends AbstractGraphTest {
 			super(new MemValueFactory());
 		}
 
-		@Override
-		public Graph createGraph() throws UnsupportedOperationException {
-			MemoryStore x = new MemoryStore();
-			x.initialize();						
-			NotifyingSailConnection c = x.getConnection();
-			// FIXME: This transaction does not seem to survive for long enough
-			c.begin();
-			SailModel model = new SailModel(x.getConnection(), false);
-			return asRDFTermGraph(model);
-		}
+//		@Override
+//		public Graph createGraph() throws UnsupportedOperationException {
+//			MemoryStore x = new MemoryStore();
+//			x.initialize();						
+//			NotifyingSailConnection c = x.getConnection();
+//			// FIXME: This transaction does not seem to survive for long enough
+//			c.begin();
+//			SailModel model = new SailModel(x.getConnection(), false);
+//			return asRDFTermGraph(model);
+//		}
 	}
 
 	@Override
