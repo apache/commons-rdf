@@ -243,7 +243,7 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 			// TODO: Use a more efficient StringBuffer
 			String escaped = QUOTE + TurtleUtil.encodeString(value.getLabel()) + QUOTE;
 			if (value.getLanguage().isPresent()) {
-				return escaped + "@" + value.getLanguage();
+				return escaped + "@" + value.getLanguage().get();
 			}
 			if (getDatatype().equals(Types.XSD_STRING)) { 
 				return escaped;
