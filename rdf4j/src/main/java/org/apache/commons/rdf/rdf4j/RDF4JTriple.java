@@ -20,6 +20,16 @@ package org.apache.commons.rdf.rdf4j;
 import org.apache.commons.rdf.api.Triple;
 import org.openrdf.model.Statement;
 
+/**
+ * Marker interface for RDF4J implementations of Triple.
+ * 
+ */
 public interface RDF4JTriple extends Triple {
+	
+	/**
+	 * Return the corresponding RDF4J {@link Statement}.
+	 * 
+	 * @return The corresponding RDF4J Statement.
+	 */
 	public Statement asStatement();
 }

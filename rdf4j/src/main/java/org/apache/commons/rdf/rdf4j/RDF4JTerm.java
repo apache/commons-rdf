@@ -20,6 +20,16 @@ package org.apache.commons.rdf.rdf4j;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.openrdf.model.Value;
 
+/**
+ * Marker interface for RDF4J implementations of RDFTerm.
+ *  
+ */
 public interface RDF4JTerm<T extends Value> extends RDFTerm {
+	
+	/**
+	 * Return the RDF4J {@link Value} that this RDFTerm represents.
+	 * 
+	 * @return
+	 */
 	public T asValue();
 }

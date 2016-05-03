@@ -20,6 +20,20 @@ package org.apache.commons.rdf.rdf4j;
 import org.apache.commons.rdf.api.Graph;
 import org.openrdf.model.Model;
 
+
+/**
+ * Marker interface for RDF4J implementations of Graph.
+ * 
+ */
 public interface RDF4JGraph extends Graph {
+	
+	/**
+	 * Return the corresponding RDF4J {@link Model}.
+	 * <p>
+	 * Changes to the Model are reflected in this Graph, and
+	 * vice versa.
+	 * 
+	 * @return The corresponding RDF4J Model.
+	 */
 	public Model asModel();
 }

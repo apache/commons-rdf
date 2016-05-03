@@ -17,7 +17,19 @@
  */
 package org.apache.commons.rdf.rdf4j;
 
+import org.openrdf.model.BNode;
+
+/**
+ * Marker interface for RDF4J implementations of BlankNode.
+ * 
+ */
 public interface RDF4JBlankNode 
 	extends RDF4JTerm<org.openrdf.model.BNode>, org.apache.commons.rdf.api.BlankNode {
 
+	/**
+	 * Return the corresponding RDF4J {@link BNode}.
+	 * 
+	 * @return The corresponding RDF4J BNode
+	 */
+	BNode asValue();
 }

@@ -17,6 +17,19 @@
  */
 package org.apache.commons.rdf.rdf4j;
 
+/**
+ * Marker interface for RDF4J implementations of IRI.
+ * 
+ */
 public interface RDF4JIRI 
 	extends RDF4JTerm<org.openrdf.model.IRI>, org.apache.commons.rdf.api.IRI {
+	
+	/**
+	 * Return the corresponding RDF4J {@link org.openrdf.model.IRI}.
+	 * 
+	 * @return The corresponding RDF4J IRI
+	 */
+	public org.openrdf.model.IRI asValue();
+	
+	
 }
