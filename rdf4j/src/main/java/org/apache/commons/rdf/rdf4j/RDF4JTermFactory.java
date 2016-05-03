@@ -43,7 +43,7 @@ import org.openrdf.model.impl.SimpleValueFactory;
 import org.openrdf.model.vocabulary.XMLSchema;
 import org.openrdf.rio.turtle.TurtleUtil;
 
-public class Rdf4JRDFTermFactory implements RDFTermFactory {
+public class RDF4JTermFactory implements RDFTermFactory {
 	
 	private abstract class RDFTermImpl<T extends Value> implements RDF4JTerm<T> {
 		T value;
@@ -103,12 +103,12 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 					(Resource)asValue(subject), 
 					(org.openrdf.model.IRI)asValue(predicate), 
 					asValue(object)).parallelStream()
-				.map(Rdf4JRDFTermFactory.this::asTriple);
+				.map(RDF4JTermFactory.this::asTriple);
 		}
 
 		@Override
 		public Stream<Triple> getTriples() {
-			return model.parallelStream().map(Rdf4JRDFTermFactory.this::asTriple);
+			return model.parallelStream().map(RDF4JTermFactory.this::asTriple);
 		}
 
 		@Override
@@ -354,11 +354,11 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 	
 	private String salt = "urn:uuid:" + UUID.randomUUID() + "#";
 	
-	public Rdf4JRDFTermFactory() {
+	public RDF4JTermFactory() {
 		this.valueFactory = SimpleValueFactory.getInstance();
 	}
 	
-	public Rdf4JRDFTermFactory(ValueFactory valueFactory) { 
+	public RDF4JTermFactory(ValueFactory valueFactory) { 
 		this.valueFactory = valueFactory;
 	}	
 	

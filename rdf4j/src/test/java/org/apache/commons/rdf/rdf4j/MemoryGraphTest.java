@@ -23,7 +23,7 @@ import org.openrdf.sail.memory.model.MemValueFactory;
 
 public class MemoryGraphTest extends AbstractGraphTest {
 
-	public static final class MemoryStoreFactory extends Rdf4JRDFTermFactory {
+	public static final class MemoryStoreFactory extends RDF4JTermFactory {
 		MemoryStoreFactory() {
 			super(new MemValueFactory());
 		}
