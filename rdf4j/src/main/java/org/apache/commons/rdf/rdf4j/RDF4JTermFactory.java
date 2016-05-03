@@ -45,6 +45,132 @@ import org.openrdf.rio.turtle.TurtleUtil;
 
 public class RDF4JTermFactory implements RDFTermFactory {
 	
+	private ValueFactory valueFactory;
+	
+	private String salt = "urn:uuid:" + UUID.randomUUID() + "#";
+	
+	public RDF4JTermFactory() {
+		this.valueFactory = SimpleValueFactory.getInstance();
+	}
+	
+	public RDF4JTermFactory(ValueFactory valueFactory) { 
+		this.valueFactory = valueFactory;
+	}	
+	
+	@Override
+	public BlankNodeImpl createBlankNode() throws UnsupportedOperationException {
+		BNode bnode = valueFactory.createBNode();
+		return (BlankNodeImpl)asRDFTerm(bnode);
+	}
+	
+	@Override
+	public BlankNodeImpl createBlankNode(String name) throws UnsupportedOperationException {
+		BNode bnode = valueFactory.createBNode(name);
+		return (BlankNodeImpl)asRDFTerm(bnode);
+	}
+	
+	@Override
+	public LiteralImpl createLiteral(String lexicalForm) throws IllegalArgumentException, UnsupportedOperationException {
+		org.openrdf.model.Literal lit = valueFactory.createLiteral(lexicalForm);
+		return (LiteralImpl)asRDFTerm(lit);
+	}
+
+	@Override
+	public org.apache.commons.rdf.api.Literal createLiteral(String lexicalForm, org.apache.commons.rdf.api.IRI dataType)
+			throws IllegalArgumentException, UnsupportedOperationException {
+		org.openrdf.model.IRI iri = valueFactory.createIRI(dataType.getIRIString());
+		org.openrdf.model.Literal lit = valueFactory.createLiteral(lexicalForm, iri);
+		return (org.apache.commons.rdf.api.Literal)asRDFTerm(lit);
+	}
+	
+	@Override
+	public org.apache.commons.rdf.api.Literal createLiteral(String lexicalForm, String languageTag)
+			throws IllegalArgumentException, UnsupportedOperationException {
+		org.openrdf.model.Literal lit = valueFactory.createLiteral(lexicalForm, languageTag);
+		return (org.apache.commons.rdf.api.Literal)asRDFTerm(lit);
+	}
+	
+	@Override
+	public RDF4JIRI createIRI(String iri) throws IllegalArgumentException, UnsupportedOperationException {
+		return (RDF4JIRI) asRDFTerm(valueFactory.createIRI(iri));
+	}
+	
+	@Override
+	public GraphImpl createGraph() throws UnsupportedOperationException {
+		return asRDFTermGraph(new LinkedHashModel());
+	}
+	
+	public Statement asStatement(Triple triple) {
+		return valueFactory.createStatement(
+				(org.openrdf.model.Resource) asValue(triple.getSubject()), 
+				(org.openrdf.model.IRI) asValue(triple.getPredicate()), 
+				asValue(triple.getObject()));
+	}
+	
+	@Override
+	public Triple createTriple(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object)
+			throws IllegalArgumentException, UnsupportedOperationException {
+		final Statement statement = valueFactory.createStatement(
+				(org.openrdf.model.Resource) asValue(subject), 
+				(org.openrdf.model.IRI) asValue(predicate), 
+				asValue(object));
+		return asTriple(statement);
+	}	
+	
+	public Value asValue(RDFTerm object) {		
+		if (object == null) { 
+			return null;
+		}
+		if (object instanceof RDFTermImpl) {
+			// One of our own - avoid converting again.
+			// (This is crucial to avoid double-escaping in BlankNode)
+			return ((RDFTermImpl<?>)object).asValue();
+		}
+		if (object instanceof org.apache.commons.rdf.api.IRI) {
+			org.apache.commons.rdf.api.IRI iri = (org.apache.commons.rdf.api.IRI) object;
+			return valueFactory.createIRI(iri.getIRIString());
+		}
+		if (object instanceof org.apache.commons.rdf.api.Literal) {
+			org.apache.commons.rdf.api.Literal literal = (org.apache.commons.rdf.api.Literal) object;
+			String label = literal.getLexicalForm();
+			if (literal.getLanguageTag().isPresent()) {
+				String lang = literal.getLanguageTag().get();
+				return valueFactory.createLiteral(label, lang);
+			}
+			org.openrdf.model.IRI dataType = (org.openrdf.model.IRI ) asValue(literal.getDatatype());
+			return valueFactory.createLiteral(label, dataType);
+		}
+		if (object instanceof BlankNode) {
+			// This is where it gets tricky to support round trips!			
+			BlankNode blankNode = (BlankNode) object;
+			// FIXME: The uniqueReference might not be a valid BlankNode identifier..
+			// does it have to be?
+			return valueFactory.createBNode(blankNode.uniqueReference());
+		}
+		throw new IllegalArgumentException("RDFTerm was not an IRI, Literal or BlankNode: " + object.getClass());
+	}
+
+	public GraphImpl asRDFTermGraph(Model model) {
+		return new GraphImpl(model);
+	}
+
+	public RDF4JTriple asTriple(final Statement statement) {
+		return new TripleImpl(statement);
+	}
+
+	public RDF4JTerm<?> asRDFTerm(final org.openrdf.model.Value value) {		
+		if (value instanceof BNode) {
+			return new BlankNodeImpl((BNode) value);
+		}
+		if (value instanceof org.openrdf.model.Literal) {
+			return new LiteralImpl((org.openrdf.model.Literal) value);
+		}
+		if (value instanceof org.openrdf.model.IRI) {
+			return new IRIImpl((org.openrdf.model.IRI) value);
+		}
+		throw new IllegalArgumentException("Value is not a BNode, Literal or IRI: " + value.getClass());		
+	}
+
 	private abstract class RDFTermImpl<T extends Value> implements RDF4JTerm<T> {
 		T value;
 
@@ -346,134 +472,6 @@ public class RDF4JTermFactory implements RDFTermFactory {
 			}
 			return false;
 		}
-	}
-
-	
-
-	private ValueFactory valueFactory;
-	
-	private String salt = "urn:uuid:" + UUID.randomUUID() + "#";
-	
-	public RDF4JTermFactory() {
-		this.valueFactory = SimpleValueFactory.getInstance();
-	}
-	
-	public RDF4JTermFactory(ValueFactory valueFactory) { 
-		this.valueFactory = valueFactory;
-	}	
-	
-	@Override
-	public BlankNodeImpl createBlankNode() throws UnsupportedOperationException {
-		BNode bnode = valueFactory.createBNode();
-		return (BlankNodeImpl)asRDFTerm(bnode);
-	}
-	
-	@Override
-	public BlankNodeImpl createBlankNode(String name) throws UnsupportedOperationException {
-		BNode bnode = valueFactory.createBNode(name);
-		return (BlankNodeImpl)asRDFTerm(bnode);
-	}
-	
-	@Override
-	public LiteralImpl createLiteral(String lexicalForm) throws IllegalArgumentException, UnsupportedOperationException {
-		org.openrdf.model.Literal lit = valueFactory.createLiteral(lexicalForm);
-		return (LiteralImpl)asRDFTerm(lit);
-	}
-
-	@Override
-	public org.apache.commons.rdf.api.Literal createLiteral(String lexicalForm, org.apache.commons.rdf.api.IRI dataType)
-			throws IllegalArgumentException, UnsupportedOperationException {
-		org.openrdf.model.IRI iri = valueFactory.createIRI(dataType.getIRIString());
-		org.openrdf.model.Literal lit = valueFactory.createLiteral(lexicalForm, iri);
-		return (org.apache.commons.rdf.api.Literal)asRDFTerm(lit);
-	}
-	
-	@Override
-	public org.apache.commons.rdf.api.Literal createLiteral(String lexicalForm, String languageTag)
-			throws IllegalArgumentException, UnsupportedOperationException {
-		org.openrdf.model.Literal lit = valueFactory.createLiteral(lexicalForm, languageTag);
-		return (org.apache.commons.rdf.api.Literal)asRDFTerm(lit);
-	}
-	
-	@Override
-	public RDF4JIRI createIRI(String iri) throws IllegalArgumentException, UnsupportedOperationException {
-		return (RDF4JIRI) asRDFTerm(valueFactory.createIRI(iri));
-	}
-	
-	@Override
-	public GraphImpl createGraph() throws UnsupportedOperationException {
-		return asRDFTermGraph(new LinkedHashModel());
-	}
-	
-	public Statement asStatement(Triple triple) {
-		return valueFactory.createStatement(
-				(org.openrdf.model.Resource) asValue(triple.getSubject()), 
-				(org.openrdf.model.IRI) asValue(triple.getPredicate()), 
-				asValue(triple.getObject()));
-	}
-	
-	@Override
-	public Triple createTriple(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object)
-			throws IllegalArgumentException, UnsupportedOperationException {
-		final Statement statement = valueFactory.createStatement(
-				(org.openrdf.model.Resource) asValue(subject), 
-				(org.openrdf.model.IRI) asValue(predicate), 
-				asValue(object));
-		return asTriple(statement);
-	}	
-	
-	public Value asValue(RDFTerm object) {		
-		if (object == null) { 
-			return null;
-		}
-		if (object instanceof RDFTermImpl) {
-			// One of our own - avoid converting again.
-			// (This is crucial to avoid double-escaping in BlankNode)
-			return ((RDFTermImpl<?>)object).asValue();
-		}
-		if (object instanceof org.apache.commons.rdf.api.IRI) {
-			org.apache.commons.rdf.api.IRI iri = (org.apache.commons.rdf.api.IRI) object;
-			return valueFactory.createIRI(iri.getIRIString());
-		}
-		if (object instanceof org.apache.commons.rdf.api.Literal) {
-			org.apache.commons.rdf.api.Literal literal = (org.apache.commons.rdf.api.Literal) object;
-			String label = literal.getLexicalForm();
-			if (literal.getLanguageTag().isPresent()) {
-				String lang = literal.getLanguageTag().get();
-				return valueFactory.createLiteral(label, lang);
-			}
-			org.openrdf.model.IRI dataType = (org.openrdf.model.IRI ) asValue(literal.getDatatype());
-			return valueFactory.createLiteral(label, dataType);
-		}
-		if (object instanceof BlankNode) {
-			// This is where it gets tricky to support round trips!			
-			BlankNode blankNode = (BlankNode) object;
-			// FIXME: The uniqueReference might not be a valid BlankNode identifier..
-			// does it have to be?
-			return valueFactory.createBNode(blankNode.uniqueReference());
-		}
-		throw new IllegalArgumentException("RDFTerm was not an IRI, Literal or BlankNode: " + object.getClass());
-	}
-
-	public GraphImpl asRDFTermGraph(Model model) {
-		return new GraphImpl(model);
-	}
-
-	public RDF4JTriple asTriple(final Statement statement) {
-		return new TripleImpl(statement);
-	}
-
-	public RDF4JTerm<?> asRDFTerm(final org.openrdf.model.Value value) {		
-		if (value instanceof BNode) {
-			return new BlankNodeImpl((BNode) value);
-		}
-		if (value instanceof org.openrdf.model.Literal) {
-			return new LiteralImpl((org.openrdf.model.Literal) value);
-		}
-		if (value instanceof org.openrdf.model.IRI) {
-			return new IRIImpl((org.openrdf.model.IRI) value);
-		}
-		throw new IllegalArgumentException("Value is not a BNode, Literal or IRI: " + value.getClass());		
 	}
 	
 }
