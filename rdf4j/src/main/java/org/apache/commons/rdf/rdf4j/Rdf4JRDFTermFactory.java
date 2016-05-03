@@ -32,7 +32,6 @@ import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.RDFTermFactory;
 import org.apache.commons.rdf.api.Triple;
-import org.apache.commons.rdf.simple.Types;
 import org.openrdf.model.BNode;
 import org.openrdf.model.Model;
 import org.openrdf.model.Resource;
@@ -41,23 +40,24 @@ import org.openrdf.model.Value;
 import org.openrdf.model.ValueFactory;
 import org.openrdf.model.impl.LinkedHashModel;
 import org.openrdf.model.impl.SimpleValueFactory;
+import org.openrdf.model.vocabulary.XMLSchema;
 import org.openrdf.rio.turtle.TurtleUtil;
 
 public class Rdf4JRDFTermFactory implements RDFTermFactory {
 	
-	private abstract class RDFTermImplementation<T extends Value> implements RDFTerm {
+	public abstract class RDFTermImpl<T extends Value> implements RDFTerm {
 		T value;
 
 		public T asValue() { 
 			return value;
 		}
 		
-		RDFTermImplementation(T value) {
+		RDFTermImpl(T value) {
 			this.value = value;			
 		}
 	}
 	
-	private final class GraphImplementation implements org.apache.commons.rdf.api.Graph {
+	private final class GraphImpl implements org.apache.commons.rdf.api.Graph {
 		
 		private Model model;
 
@@ -65,7 +65,7 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 			return model;
 		}
 		
-		public GraphImplementation(Model model) {
+		public GraphImpl(Model model) {
 			this.model = model;		
 		}
 		
@@ -143,10 +143,10 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 		}
 	}
 
-	private final class TripleImplementation implements Triple {
+	private final class TripleImpl implements Triple {
 		private final Statement statement;
 
-		private TripleImplementation(Statement statement) {
+		private TripleImpl(Statement statement) {
 			this.statement = statement;
 		}
 
@@ -191,10 +191,10 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 		}
 	}
 
-	private final class IRIImplementation extends RDFTermImplementation<org.openrdf.model.IRI> 
+	private final class IRIImpl extends RDFTermImpl<org.openrdf.model.IRI> 
 		implements org.apache.commons.rdf.api.IRI {
 
-		public IRIImplementation(org.openrdf.model.IRI iri) {
+		public IRIImpl(org.openrdf.model.IRI iri) {
 			super(iri);			
 		}
 		@Override
@@ -219,8 +219,8 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 		@Override
 		public boolean equals(Object obj) {
 			if (obj == this) { return true; }
-			if (obj instanceof IRIImplementation) {
-				IRIImplementation impl = (IRIImplementation) obj; 
+			if (obj instanceof IRIImpl) {
+				IRIImpl impl = (IRIImpl) obj; 
 				return asValue().equals(impl.asValue());
 			}
 			if (obj instanceof org.apache.commons.rdf.api.IRI) {
@@ -232,11 +232,11 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 		
 	}
 
-	private final class LiteralImplementation 
-		extends RDFTermImplementation<org.openrdf.model.Literal>
+	private final class LiteralImpl 
+		extends RDFTermImpl<org.openrdf.model.Literal>
 		implements org.apache.commons.rdf.api.Literal {
 
-		public LiteralImplementation(org.openrdf.model.Literal literal) {
+		public LiteralImpl(org.openrdf.model.Literal literal) {
 			super(literal);			
 		}
 		@Override
@@ -246,7 +246,7 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 			if (value.getLanguage().isPresent()) {
 				return escaped + "@" + value.getLanguage().get();
 			}
-			if (getDatatype().equals(Types.XSD_STRING)) { 
+			if (value.getDatatype().equals(XMLSchema.STRING)) { 
 				return escaped;
 			}
 			return escaped + "^^<" + TurtleUtil.encodeURIString(value.getDatatype().toString()) + ">";
@@ -290,10 +290,10 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 		}
 	}
 
-	private final class BlankNodeImplementation extends RDFTermImplementation<BNode>
+	private final class BlankNodeImpl extends RDFTermImpl<BNode>
 		implements BlankNode {
 		
-		public BlankNodeImplementation(BNode bNode) {
+		public BlankNodeImpl(BNode bNode) {
 			super(bNode);			
 		}
 		
@@ -424,10 +424,10 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 		if (object == null) { 
 			return null;
 		}
-		if (object instanceof RDFTermImplementation) {
+		if (object instanceof RDFTermImpl) {
 			// One of our own - avoid converting again.
 			// (This is crucial to avoid double-escaping in BlankNode)
-			return ((RDFTermImplementation<?>)object).asValue();
+			return ((RDFTermImpl<?>)object).asValue();
 		}
 		if (object instanceof org.apache.commons.rdf.api.IRI) {
 			org.apache.commons.rdf.api.IRI iri = (org.apache.commons.rdf.api.IRI) object;
@@ -454,22 +454,22 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 	}
 
 	public org.apache.commons.rdf.api.Graph asRDFTermGraph(Model model) {
-		return new GraphImplementation(model);
+		return new GraphImpl(model);
 	}
 
 	public Triple asTriple(final Statement statement) {
-		return new TripleImplementation(statement);
+		return new TripleImpl(statement);
 	}
 
 	public RDFTerm asRDFTerm(final org.openrdf.model.Value value) {		
 		if (value instanceof BNode) {
-			return new BlankNodeImplementation((BNode) value);
+			return new BlankNodeImpl((BNode) value);
 		}
 		if (value instanceof org.openrdf.model.Literal) {
-			return new LiteralImplementation((org.openrdf.model.Literal) value);
+			return new LiteralImpl((org.openrdf.model.Literal) value);
 		}
 		if (value instanceof org.openrdf.model.IRI) {
-			return new IRIImplementation((org.openrdf.model.IRI) value);
+			return new IRIImpl((org.openrdf.model.IRI) value);
 		}
 		throw new IllegalArgumentException("Value is not a BNode, Literal or IRI: " + value.getClass());		
 	}

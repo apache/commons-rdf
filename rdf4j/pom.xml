@@ -43,11 +43,6 @@
             <version>${project.version}</version>
         </dependency>
 	<dependency>
-            <groupId>${project.parent.groupId}</groupId>
-            <artifactId>commons-rdf-simple</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-	<dependency>
 		<groupId>org.openrdf.sesame</groupId>
 		<artifactId>sesame-runtime</artifactId>
 		<version>${sesame.version}</version>
