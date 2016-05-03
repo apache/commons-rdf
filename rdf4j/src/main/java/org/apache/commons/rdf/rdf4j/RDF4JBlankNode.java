@@ -17,32 +17,7 @@
  */
 package org.apache.commons.rdf.rdf4j;
 
-import org.apache.commons.rdf.api.AbstractGraphTest;
-import org.apache.commons.rdf.api.RDFTermFactory;
-import org.openrdf.sail.memory.model.MemValueFactory;
-
-public class MemoryGraphTest extends AbstractGraphTest {
-
-	public static final class MemoryStoreFactory extends Rdf4JRDFTermFactory {
-		MemoryStoreFactory() {
-			super(new MemValueFactory());
-		}
-
-//		@Override
-//		public Graph createGraph() throws UnsupportedOperationException {
-//			MemoryStore x = new MemoryStore();
-//			x.initialize();						
-//			NotifyingSailConnection c = x.getConnection();
-//			// FIXME: This transaction does not seem to survive for long enough
-//			c.begin();
-//			SailModel model = new SailModel(x.getConnection(), false);
-//			return asRDFTermGraph(model);
-//		}
-	}
-
-	@Override
-	public RDFTermFactory createFactory() {
-		return new MemoryStoreFactory();
-	}
+public interface RDF4JBlankNode 
+	extends RDF4JTerm<org.openrdf.model.BNode>, org.apache.commons.rdf.api.BlankNode {
 
 }

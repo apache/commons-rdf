@@ -45,7 +45,7 @@ import org.openrdf.rio.turtle.TurtleUtil;
 
 public class Rdf4JRDFTermFactory implements RDFTermFactory {
 	
-	public abstract class RDFTermImpl<T extends Value> implements RDFTerm {
+	private abstract class RDFTermImpl<T extends Value> implements RDF4JTerm<T> {
 		T value;
 
 		public T asValue() { 
@@ -57,7 +57,7 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 		}
 	}
 	
-	public final class GraphImpl implements org.apache.commons.rdf.api.Graph {
+	private final class GraphImpl implements RDF4JGraph {
 		
 		private Model model;
 
@@ -143,7 +143,7 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 		}
 	}
 
-	public final class TripleImpl implements Triple {
+	private final class TripleImpl implements Triple, RDF4JTriple {
 		private final Statement statement;
 
 		TripleImpl(Statement statement) {
@@ -191,8 +191,8 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 		}
 	}
 
-	public final class IRIImpl extends RDFTermImpl<org.openrdf.model.IRI> 
-		implements org.apache.commons.rdf.api.IRI {
+	private final class IRIImpl extends RDFTermImpl<org.openrdf.model.IRI> 
+		implements RDF4JIRI {
 
 		IRIImpl(org.openrdf.model.IRI iri) {
 			super(iri);			
@@ -232,10 +232,12 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 		
 	}
 
-	public final class LiteralImpl 
+	private final class LiteralImpl 
 		extends RDFTermImpl<org.openrdf.model.Literal>
-		implements org.apache.commons.rdf.api.Literal {
+	    implements RDF4JLiteral {		
 
+		private static final String QUOTE = "\"";
+		
 		LiteralImpl(org.openrdf.model.Literal literal) {
 			super(literal);			
 		}
@@ -290,8 +292,8 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 		}
 	}
 
-	public final class BlankNodeImpl extends RDFTermImpl<BNode>
-		implements BlankNode {
+	private final class BlankNodeImpl extends RDFTermImpl<BNode>
+		implements RDF4JBlankNode {
 		
 		BlankNodeImpl(BNode bNode) {
 			super(bNode);			
@@ -346,7 +348,7 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 		}
 	}
 
-	private static final String QUOTE = "\"";
+	
 
 	private ValueFactory valueFactory;
 	
@@ -361,21 +363,21 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 	}	
 	
 	@Override
-	public BlankNode createBlankNode() throws UnsupportedOperationException {
+	public BlankNodeImpl createBlankNode() throws UnsupportedOperationException {
 		BNode bnode = valueFactory.createBNode();
-		return (BlankNode)asRDFTerm(bnode);
+		return (BlankNodeImpl)asRDFTerm(bnode);
 	}
 	
 	@Override
-	public BlankNode createBlankNode(String name) throws UnsupportedOperationException {
+	public BlankNodeImpl createBlankNode(String name) throws UnsupportedOperationException {
 		BNode bnode = valueFactory.createBNode(name);
-		return (BlankNode)asRDFTerm(bnode);
+		return (BlankNodeImpl)asRDFTerm(bnode);
 	}
 	
 	@Override
-	public org.apache.commons.rdf.api.Literal createLiteral(String lexicalForm) throws IllegalArgumentException, UnsupportedOperationException {
+	public LiteralImpl createLiteral(String lexicalForm) throws IllegalArgumentException, UnsupportedOperationException {
 		org.openrdf.model.Literal lit = valueFactory.createLiteral(lexicalForm);
-		return (org.apache.commons.rdf.api.Literal)asRDFTerm(lit);
+		return (LiteralImpl)asRDFTerm(lit);
 	}
 
 	@Override
@@ -394,12 +396,12 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 	}
 	
 	@Override
-	public org.apache.commons.rdf.api.IRI createIRI(String iri) throws IllegalArgumentException, UnsupportedOperationException {
-		return (org.apache.commons.rdf.api.IRI) asRDFTerm(valueFactory.createIRI(iri));
+	public RDF4JIRI createIRI(String iri) throws IllegalArgumentException, UnsupportedOperationException {
+		return (RDF4JIRI) asRDFTerm(valueFactory.createIRI(iri));
 	}
 	
 	@Override
-	public org.apache.commons.rdf.api.Graph createGraph() throws UnsupportedOperationException {
+	public GraphImpl createGraph() throws UnsupportedOperationException {
 		return asRDFTermGraph(new LinkedHashModel());
 	}
 	
@@ -453,15 +455,15 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 		throw new IllegalArgumentException("RDFTerm was not an IRI, Literal or BlankNode: " + object.getClass());
 	}
 
-	public org.apache.commons.rdf.api.Graph asRDFTermGraph(Model model) {
+	public GraphImpl asRDFTermGraph(Model model) {
 		return new GraphImpl(model);
 	}
 
-	public Triple asTriple(final Statement statement) {
+	public RDF4JTriple asTriple(final Statement statement) {
 		return new TripleImpl(statement);
 	}
 
-	public RDFTerm asRDFTerm(final org.openrdf.model.Value value) {		
+	public RDF4JTerm<?> asRDFTerm(final org.openrdf.model.Value value) {		
 		if (value instanceof BNode) {
 			return new BlankNodeImpl((BNode) value);
 		}
