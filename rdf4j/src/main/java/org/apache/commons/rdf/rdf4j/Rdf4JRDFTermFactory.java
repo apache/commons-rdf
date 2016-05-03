@@ -57,7 +57,7 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 		}
 	}
 	
-	private final class GraphImpl implements org.apache.commons.rdf.api.Graph {
+	public final class GraphImpl implements org.apache.commons.rdf.api.Graph {
 		
 		private Model model;
 
@@ -65,7 +65,7 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 			return model;
 		}
 		
-		public GraphImpl(Model model) {
+		GraphImpl(Model model) {
 			this.model = model;		
 		}
 		
@@ -143,10 +143,10 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 		}
 	}
 
-	private final class TripleImpl implements Triple {
+	public final class TripleImpl implements Triple {
 		private final Statement statement;
 
-		private TripleImpl(Statement statement) {
+		TripleImpl(Statement statement) {
 			this.statement = statement;
 		}
 
@@ -191,10 +191,10 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 		}
 	}
 
-	private final class IRIImpl extends RDFTermImpl<org.openrdf.model.IRI> 
+	public final class IRIImpl extends RDFTermImpl<org.openrdf.model.IRI> 
 		implements org.apache.commons.rdf.api.IRI {
 
-		public IRIImpl(org.openrdf.model.IRI iri) {
+		IRIImpl(org.openrdf.model.IRI iri) {
 			super(iri);			
 		}
 		@Override
@@ -232,11 +232,11 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 		
 	}
 
-	private final class LiteralImpl 
+	public final class LiteralImpl 
 		extends RDFTermImpl<org.openrdf.model.Literal>
 		implements org.apache.commons.rdf.api.Literal {
 
-		public LiteralImpl(org.openrdf.model.Literal literal) {
+		LiteralImpl(org.openrdf.model.Literal literal) {
 			super(literal);			
 		}
 		@Override
@@ -290,10 +290,10 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 		}
 	}
 
-	private final class BlankNodeImpl extends RDFTermImpl<BNode>
+	public final class BlankNodeImpl extends RDFTermImpl<BNode>
 		implements BlankNode {
 		
-		public BlankNodeImpl(BNode bNode) {
+		BlankNodeImpl(BNode bNode) {
 			super(bNode);			
 		}
 		
