@@ -496,7 +496,7 @@ public class RDF4JTermFactory implements RDFTermFactory {
 		}
 	}	
 
-	private abstract class RDFTermImpl<T extends Value> implements RDF4JTerm<T> {
+	private static abstract class RDFTermImpl<T extends Value> implements RDF4JTerm<T> {
 		T value;
 	
 		RDFTermImpl(T value) {
