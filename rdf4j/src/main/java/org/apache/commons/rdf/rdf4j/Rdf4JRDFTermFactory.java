@@ -215,6 +215,20 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 			// Same definition
 			return value.hashCode();
 		}
+		@Override
+		public boolean equals(Object obj) {
+			if (obj == this) { return true; }
+			if (obj instanceof IRIImplementation) {
+				IRIImplementation impl = (IRIImplementation) obj; 
+				return asValue().equals(impl.asValue());
+			}
+			if (obj instanceof org.apache.commons.rdf.api.IRI) {
+				org.apache.commons.rdf.api.IRI iri = (org.apache.commons.rdf.api.IRI) obj;
+				return value.toString().equals(iri.getIRIString());
+			}
+			return false;
+		}
+		
 	}
 
 	private final class LiteralImplementation 
@@ -231,7 +245,7 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 			if (value.getLanguage().isPresent()) {
 				return escaped + "@" + value.getLanguage();
 			}
-			if (value.getDatatype().equals(Types.XSD_STRING)) { 
+			if (getDatatype().equals(Types.XSD_STRING)) { 
 				return escaped;
 			}
 			return escaped + "^^" + value.getDatatype();
@@ -259,6 +273,7 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 
 		@Override
 		public boolean equals(Object obj) {
+			if (obj == this) { return true; }
 			if (obj instanceof org.apache.commons.rdf.api.Literal) {
 				org.apache.commons.rdf.api.Literal other = (org.apache.commons.rdf.api.Literal) obj;
 				return getLexicalForm().equals(other.getLexicalForm()) &&
@@ -297,6 +312,11 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 		}
 
 		public boolean equals(Object obj) { 
+			if (obj == this) { 
+				return true;
+			}
+			// NOTE: Do NOT use Bnode.equals() as it has a more generous
+			// equality based only on the value.getID();			
 			if (obj instanceof BlankNode) {
 				BlankNode blankNode = (BlankNode) obj;
 				return uniqueReference().equals(blankNode.uniqueReference());								
@@ -362,7 +382,7 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 		return asRDFTermGraph(new LinkedHashModel());
 	}
 	
-	private Statement asStatement(Triple triple) {
+	public Statement asStatement(Triple triple) {
 		return valueFactory.createStatement(
 				(org.openrdf.model.Resource) asValue(triple.getSubject()), 
 				(org.openrdf.model.IRI) asValue(triple.getPredicate()), 
@@ -379,9 +399,14 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 		return asTriple(statement);
 	}	
 	
-	private Value asValue(RDFTerm object) {
+	public Value asValue(RDFTerm object) {		
 		if (object == null) { 
 			return null;
+		}
+		if (object instanceof RDFTermImplementation) {
+			// One of our own - avoid converting again.
+			// (This is crucial to avoid double-escaping in BlankNode)
+			return ((RDFTermImplementation<?>)object).asValue();
 		}
 		if (object instanceof org.apache.commons.rdf.api.IRI) {
 			org.apache.commons.rdf.api.IRI iri = (org.apache.commons.rdf.api.IRI) object;
@@ -407,15 +432,15 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 		throw new IllegalArgumentException("RDFTerm was not an IRI, Literal or BlankNode: " + object.getClass());
 	}
 
-	protected org.apache.commons.rdf.api.Graph asRDFTermGraph(Model model) {
+	public org.apache.commons.rdf.api.Graph asRDFTermGraph(Model model) {
 		return new GraphImplementation(model);
 	}
 
-	protected Triple asTriple(final Statement statement) {
+	public Triple asTriple(final Statement statement) {
 		return new TripleImplementation(statement);
 	}
 
-	private RDFTerm asRDFTerm(final org.openrdf.model.Value value) {
+	public RDFTerm asRDFTerm(final org.openrdf.model.Value value) {		
 		if (value instanceof BNode) {
 			return new BlankNodeImplementation((BNode) value);
 		}
