@@ -29,6 +29,7 @@ import java.util.stream.Stream;
 // commons.rdf and openrdf.model (e.g. IRI)
 import org.apache.commons.rdf.api.BlankNode;
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
+import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.RDFTermFactory;
 import org.apache.commons.rdf.api.Triple;
@@ -43,6 +44,33 @@ import org.openrdf.model.impl.SimpleValueFactory;
 import org.openrdf.model.vocabulary.XMLSchema;
 import org.openrdf.rio.turtle.TurtleUtil;
 
+/**
+ * RDF4J implementation of RDFTermFactory
+ * <p>
+ * The {@link #RDF4JTermFactory()} constructor
+ * uses a {@link SimpleValueFactory} to create corresponding
+ * RDF4J {@link Value} instances. Alternatively, 
+ * this factory can be constructed with a {@link ValueFactory} using
+ * {@link #RDF4JTermFactory(ValueFactory)}.  
+ * <p>
+ * {@link #asRDFTerm(Value)} can be used to convert any RDF4J {@link Value}
+ * to an RDFTerm. Note that adapted {@link BNode}s are considered equal if they
+ * are converted with the same {@link RDF4JTermFactory} instance and have the same
+ * {@link BNode#getID()}. 
+ * <p>
+ * {@link #createGraph()} creates a new Graph backed by {@link LinkedHashModel}. To 
+ * use other models, see {@link #asRDFTermGraph(Model)}.
+ * <p>
+ * {@link #asTriple(Statement)} can be used to convert a RDF4J {@link Statement} to
+ * a Commons RDF {@link Triple}.
+ * <p>
+ * {@link #asStatement(Triple)} can be used to convert any Commons RDF {@link Triple} 
+ * to a RDF4J {@link Statement}.
+ * <p
+ * {@link #asValue(RDFTerm)} can be used to convert any Commons RDF {@link RDFTerm} to 
+ * a corresponding RDF4J {@link Value}.
+ * 
+ */
 public class RDF4JTermFactory implements RDFTermFactory {
 	
 	private ValueFactory valueFactory;
@@ -96,7 +124,7 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	}
 	
 	@Override
-	public GraphImpl createGraph() throws UnsupportedOperationException {
+	public RDF4JGraph createGraph() throws UnsupportedOperationException {
 		return asRDFTermGraph(new LinkedHashModel());
 	}
 	
@@ -108,7 +136,7 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	}
 	
 	@Override
-	public Triple createTriple(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object)
+	public RDF4JTriple createTriple(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object)
 			throws IllegalArgumentException, UnsupportedOperationException {
 		final Statement statement = valueFactory.createStatement(
 				(org.openrdf.model.Resource) asValue(subject), 
@@ -117,21 +145,42 @@ public class RDF4JTermFactory implements RDFTermFactory {
 		return asTriple(statement);
 	}	
 	
-	public Value asValue(RDFTerm object) {		
-		if (object == null) { 
+	/**
+	 * Adapt a Commons RDF {@link RDFTerm} as a RDF4J {@link Value}.
+	 * <p>
+	 * The value will be of the same kind as the term, e.g. a
+	 * {@link org.apache.commons.rdf.api.BlankNode} is converted to a
+	 * {@link org.openrdf.model.BNode}, a {@link org.apache.commons.rdf.api.IRI}
+	 * is converted to a {@link org.openrdf.model.IRI} and a
+	 * {@link org.apache.commons.rdf.api.Literal} is converted to a
+	 * {@link org.openrdf.model.Literal}.
+	 * <p>
+	 * If the provided {@link RDFTerm} is <code>null</code>, then the returned
+	 * value is <code>null</code>.
+	 * <p>
+	 * If the provided term is an instance of {@link RDF4JTerm}, then the
+	 * {@link RDF4JTerm#asValue()} is returned without any conversion. Note that
+	 * this could mean that a {@link Value} from a different kind of 
+	 * {@link ValueFactory} could be returned.
+	 * 
+	 * @param term RDFTerm to adapt to RDF4J Value 
+	 * @return Adapted RDF4J {@link Value}
+	 */
+	public Value asValue(RDFTerm term) {		
+		if (term == null) { 
 			return null;
 		}
-		if (object instanceof RDFTermImpl) {
+		if (term instanceof RDF4JTerm) {
 			// One of our own - avoid converting again.
 			// (This is crucial to avoid double-escaping in BlankNode)
-			return ((RDFTermImpl<?>)object).asValue();
+			return ((RDF4JTerm<?>)term).asValue();
 		}
-		if (object instanceof org.apache.commons.rdf.api.IRI) {
-			org.apache.commons.rdf.api.IRI iri = (org.apache.commons.rdf.api.IRI) object;
+		if (term instanceof org.apache.commons.rdf.api.IRI) {
+			org.apache.commons.rdf.api.IRI iri = (org.apache.commons.rdf.api.IRI) term;
 			return valueFactory.createIRI(iri.getIRIString());
 		}
-		if (object instanceof org.apache.commons.rdf.api.Literal) {
-			org.apache.commons.rdf.api.Literal literal = (org.apache.commons.rdf.api.Literal) object;
+		if (term instanceof org.apache.commons.rdf.api.Literal) {
+			org.apache.commons.rdf.api.Literal literal = (org.apache.commons.rdf.api.Literal) term;
 			String label = literal.getLexicalForm();
 			if (literal.getLanguageTag().isPresent()) {
 				String lang = literal.getLanguageTag().get();
@@ -140,24 +189,59 @@ public class RDF4JTermFactory implements RDFTermFactory {
 			org.openrdf.model.IRI dataType = (org.openrdf.model.IRI ) asValue(literal.getDatatype());
 			return valueFactory.createLiteral(label, dataType);
 		}
-		if (object instanceof BlankNode) {
+		if (term instanceof BlankNode) {
 			// This is where it gets tricky to support round trips!			
-			BlankNode blankNode = (BlankNode) object;
+			BlankNode blankNode = (BlankNode) term;
 			// FIXME: The uniqueReference might not be a valid BlankNode identifier..
 			// does it have to be?
 			return valueFactory.createBNode(blankNode.uniqueReference());
 		}
-		throw new IllegalArgumentException("RDFTerm was not an IRI, Literal or BlankNode: " + object.getClass());
+		throw new IllegalArgumentException("RDFTerm was not an IRI, Literal or BlankNode: " + term.getClass());
 	}
 
-	public GraphImpl asRDFTermGraph(Model model) {
+	/**
+	 * Adapt an RDF4J {@link Model} as a 
+	 * Commons RDF {@link Graph}.
+	 * <p>
+	 * Changes to the graph are reflected in the model, and
+	 * vice versa. 
+	 * 
+	 * @param model RDF4J {@link Model} to adapt.
+	 * @return Adapted {@link Graph}.
+	 */
+	public RDF4JGraph asRDFTermGraph(Model model) {
 		return new GraphImpl(model);
 	}
 
+	/**
+	 * Adapt a RDF4J {@link Statement} as a Commons RDF 
+	 * {@link Triple}.
+	 * 
+	 * @param statement
+	 * @return
+	 */
 	public RDF4JTriple asTriple(final Statement statement) {
 		return new TripleImpl(statement);
 	}
 
+	/**
+	 * 
+	 * Adapt a RDF4J {@link Value} as a Commons RDF 
+	 * {@link RDFTerm}.
+	 * <p>
+	 * <p>
+	 * The value will be of the same kind as the term, e.g. a
+	 * {@link org.openrdf.model.BNode} is converted to a
+	 * {@link org.apache.commons.rdf.api.BlankNode}, 
+	 * a {@link org.openrdf.model.IRI}
+	 * is converted to a {@link org.apache.commons.rdf.api.IRI}
+	 * and a {@link org.openrdf.model.Literal}.
+	 * is converted to a 
+	 * {@link org.apache.commons.rdf.api.Literal} 
+	 * 
+	 * @param value
+	 * @return
+	 */
 	public RDF4JTerm<?> asRDFTerm(final org.openrdf.model.Value value) {		
 		if (value instanceof BNode) {
 			return new BlankNodeImpl((BNode) value);
@@ -217,14 +301,11 @@ public class RDF4JTermFactory implements RDFTermFactory {
 
 		@Override
 		public void remove(Triple triple) { 
-			remove(triple.getSubject(), triple.getPredicate(), triple.getObject());
-			
-			// This however fails:
-			// model.remove(asStatement(triple));
+			model.remove(asStatement(triple));
 		}
 
 		@Override
-		public Stream<? extends Triple> getTriples(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
+		public Stream<RDF4JTriple> getTriples(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
 			return model.filter(
 					(Resource)asValue(subject), 
 					(org.openrdf.model.IRI)asValue(predicate), 
@@ -233,7 +314,7 @@ public class RDF4JTermFactory implements RDFTermFactory {
 		}
 
 		@Override
-		public Stream<Triple> getTriples() {
+		public Stream<RDF4JTriple> getTriples() {
 			return model.parallelStream().map(RDF4JTermFactory.this::asTriple);
 		}
 
