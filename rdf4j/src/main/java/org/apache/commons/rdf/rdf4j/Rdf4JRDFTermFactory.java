@@ -22,6 +22,10 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
+
+// To avoid confusion, avoid importing 
+// classes that are in both
+// commons.rdf and openrdf.model (e.g. IRI)
 import org.apache.commons.rdf.api.BlankNode;
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.RDFTerm;
@@ -29,8 +33,8 @@ import org.apache.commons.rdf.api.RDFTermFactory;
 import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.simple.Types;
 import org.openrdf.model.BNode;
-import org.openrdf.model.IRI;
 import org.openrdf.model.Model;
+import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.Value;
 import org.openrdf.model.ValueFactory;
@@ -41,9 +45,17 @@ import org.openrdf.rio.turtle.TurtleUtil;
 public class Rdf4JRDFTermFactory implements RDFTermFactory {
 	private static final String QUOTE = "\"";
 
-	ValueFactory valueFactory = SimpleValueFactory.getInstance();
+	private ValueFactory valueFactory;
 	
-	String salt = "urn:uuid:" + UUID.randomUUID() + "#";
+	private String salt = "urn:uuid:" + UUID.randomUUID() + "#";
+	
+	public Rdf4JRDFTermFactory() {
+		this.valueFactory = SimpleValueFactory.getInstance();
+	}
+	
+	public Rdf4JRDFTermFactory(ValueFactory valueFactory) { 
+		this.valueFactory = valueFactory;
+	}	
 	
 	@Override
 	public BlankNode createBlankNode() throws UnsupportedOperationException {
@@ -88,6 +100,13 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 		return asRDFTermGraph(new LinkedHashModel());
 	}
 	
+	private Statement asStatement(Triple triple) {
+		return valueFactory.createStatement(
+				(org.openrdf.model.Resource) asValue(triple.getSubject()), 
+				(org.openrdf.model.IRI) asValue(triple.getPredicate()), 
+				asValue(triple.getObject()));
+	}
+	
 	@Override
 	public Triple createTriple(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object)
 			throws IllegalArgumentException, UnsupportedOperationException {
@@ -95,23 +114,13 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 				(org.openrdf.model.Resource) asValue(subject), 
 				(org.openrdf.model.IRI) asValue(predicate), 
 				asValue(object));
-		return new Triple() {			
-			@Override
-			public BlankNodeOrIRI getSubject() {
-				return (BlankNodeOrIRI) asRDFTerm(statement.getSubject());
-			}
-			@Override
-			public org.apache.commons.rdf.api.IRI getPredicate() {
-				return (org.apache.commons.rdf.api.IRI) asRDFTerm(statement.getPredicate());
-			}
-			@Override
-			public RDFTerm getObject() {
-				return asRDFTerm(statement.getObject());
-			}
-		};
+		return asTriple(statement);
 	}	
 	
 	private Value asValue(RDFTerm object) {
+		if (object == null) { 
+			return null;
+		}
 		if (object instanceof org.apache.commons.rdf.api.IRI) {
 			org.apache.commons.rdf.api.IRI iri = (org.apache.commons.rdf.api.IRI) object;
 			return valueFactory.createIRI(iri.getIRIString());
@@ -146,62 +155,85 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 					return size;
 				} else {
 					// Collection.size() can't help us, we'll have to count
-					return model.stream().count();
+					return model.parallelStream().count();
 				}				
 			}
 			
 			@Override
-			public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-				// TODO Auto-generated method stub
+			public void remove(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
+				model.remove(
+						(Resource)asValue(subject), 
+						(org.openrdf.model.IRI)asValue(predicate), 
+						asValue(object));
 				
 			}
 			
 			@Override
-			public void remove(Triple triple) {
-				// TODO Auto-generated method stub
-				
+			public void remove(Triple triple) { 
+				model.remove(asStatement(triple));				
 			}
 			
 			@Override
 			public Stream<? extends Triple> getTriples(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
-				// TODO Auto-generated method stub
-				return null;
+				return model.filter(
+						(Resource)asValue(subject), 
+						(org.openrdf.model.IRI)asValue(predicate), 
+						asValue(object)).parallelStream()
+					.map(Rdf4JRDFTermFactory.this::asTriple);
 			}
 			
 			@Override
-			public Stream<? extends Triple> getTriples() {
-				// TODO Auto-generated method stub
-				return null;
+			public Stream<Triple> getTriples() {
+				return model.parallelStream().map(Rdf4JRDFTermFactory.this::asTriple);
 			}
 			
 			@Override
 			public boolean contains(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
-				// TODO Auto-generated method stub
-				return false;
+				return model.contains(
+						(Resource)asValue(subject), 
+						(org.openrdf.model.IRI)asValue(predicate), 
+						asValue(object));
 			}
 			
 			@Override
 			public boolean contains(Triple triple) {
-				// TODO Auto-generated method stub
-				return false;
+				return model.contains(asStatement(triple));
 			}
 			
+
 			@Override
 			public void clear() {
-				// TODO Auto-generated method stub
-				
+				model.clear();
 			}
 			
 			@Override
-			public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-				// TODO Auto-generated method stub
-				
+			public void add(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
+				model.add(
+						(Resource)asValue(subject), 
+						(org.openrdf.model.IRI)asValue(predicate), 
+						asValue(object));				
 			}
 			
 			@Override
 			public void add(Triple triple) {
-				// TODO Auto-generated method stub
-				
+				model.add(asStatement(triple));
+			}
+		};
+	}
+
+	protected Triple asTriple(final Statement statement) {
+		return new Triple() {			
+			@Override
+			public BlankNodeOrIRI getSubject() {
+				return (BlankNodeOrIRI) asRDFTerm(statement.getSubject());
+			}
+			@Override
+			public org.apache.commons.rdf.api.IRI getPredicate() {
+				return (org.apache.commons.rdf.api.IRI) asRDFTerm(statement.getPredicate());
+			}
+			@Override
+			public RDFTerm getObject() {
+				return asRDFTerm(statement.getObject());
 			}
 		};
 	}
