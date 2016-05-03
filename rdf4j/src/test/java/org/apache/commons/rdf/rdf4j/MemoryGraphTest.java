@@ -35,7 +35,10 @@ public class MemoryGraphTest extends AbstractGraphTest {
 		@Override
 		public Graph createGraph() throws UnsupportedOperationException {
 			MemoryStore x = new MemoryStore();
+			x.initialize();						
 			NotifyingSailConnection c = x.getConnection();
+			// FIXME: This transaction does not seem to survive for long enough
+			c.begin();
 			SailModel model = new SailModel(x.getConnection(), false);
 			return asRDFTermGraph(model);
 		}
