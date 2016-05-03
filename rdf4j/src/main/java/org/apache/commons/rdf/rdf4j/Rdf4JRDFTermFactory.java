@@ -43,10 +43,27 @@ import org.openrdf.model.impl.SimpleValueFactory;
 import org.openrdf.rio.turtle.TurtleUtil;
 
 public class Rdf4JRDFTermFactory implements RDFTermFactory {
+	
+	private abstract class RDFTermImplementation<T extends Value> implements RDFTerm {
+		T value;
+
+		public T asValue() { 
+			return value;
+		}
+		
+		RDFTermImplementation(T value) {
+			this.value = value;			
+		}
+	}
+	
 	private final class GraphImplementation implements org.apache.commons.rdf.api.Graph {
 		
 		private Model model;
 
+		public Model asModel() { 
+			return model;
+		}
+		
 		public GraphImplementation(Model model) {
 			this.model = model;		
 		}
@@ -73,7 +90,10 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 
 		@Override
 		public void remove(Triple triple) { 
-			model.remove(asStatement(triple));				
+			remove(triple.getSubject(), triple.getPredicate(), triple.getObject());
+			
+			// This however fails:
+			// model.remove(asStatement(triple));
 		}
 
 		@Override
@@ -129,6 +149,10 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 			this.statement = statement;
 		}
 
+		public Statement asStatement() { 
+			return statement;
+		}
+		
 		@Override
 		public BlankNodeOrIRI getSubject() {
 			return (BlankNodeOrIRI) asRDFTerm(statement.getSubject());
@@ -143,68 +167,89 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 		public RDFTerm getObject() {
 			return asRDFTerm(statement.getObject());
 		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if (obj instanceof Triple) {
+				Triple triple = (Triple) obj;
+				return getSubject().equals(triple.getSubject()) &&
+						getPredicate().equals(triple.getPredicate()) && 
+						getObject().equals(triple.getObject());
+			}
+			return false;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(getSubject(), getPredicate(), getObject());
+		}
+		
+		@Override
+		public String toString() {
+			return statement.toString();
+		}
 	}
 
-	private final class IRIImplementation implements org.apache.commons.rdf.api.IRI {
-		private org.openrdf.model.IRI iri;
+	private final class IRIImplementation extends RDFTermImplementation<org.openrdf.model.IRI> 
+		implements org.apache.commons.rdf.api.IRI {
 
 		public IRIImplementation(org.openrdf.model.IRI iri) {
-			this.iri = iri;			
+			super(iri);			
 		}
 		@Override
 		public String ntriplesString() {
-			return "<" + iri.toString() +  ">";
+			return "<" + value.toString() +  ">";
 		}
 
 		@Override
 		public String getIRIString() {
-			return iri.toString();
+			return value.toString();
 		}
 
 		@Override
 		public String toString() {
-			return iri.toString();
+			return value.toString();
 		}
 
 		public int hashCode() {
 			// Same definition
-			return iri.hashCode();
+			return value.hashCode();
 		}
 	}
 
-	private final class LiteralImplementation implements org.apache.commons.rdf.api.Literal {
-		
-		private org.openrdf.model.Literal literal;
+	private final class LiteralImplementation 
+		extends RDFTermImplementation<org.openrdf.model.Literal>
+		implements org.apache.commons.rdf.api.Literal {
 
 		public LiteralImplementation(org.openrdf.model.Literal literal) {
-			this.literal = literal;			
+			super(literal);			
 		}
 		@Override
 		public String ntriplesString() {
 			// TODO: Use a more efficient StringBuffer
-			String escaped = QUOTE + TurtleUtil.encodeString(literal.getLabel()) + QUOTE;
-			if (literal.getLanguage().isPresent()) {
-				return escaped + "@" + literal.getLanguage();
+			String escaped = QUOTE + TurtleUtil.encodeString(value.getLabel()) + QUOTE;
+			if (value.getLanguage().isPresent()) {
+				return escaped + "@" + value.getLanguage();
 			}
-			if (literal.getDatatype().equals(Types.XSD_STRING)) { 
+			if (value.getDatatype().equals(Types.XSD_STRING)) { 
 				return escaped;
 			}
-			return escaped + "^^" + literal.getDatatype();
+			return escaped + "^^" + value.getDatatype();
 		}
 
 		@Override
 		public String getLexicalForm() {
-			return literal.getLabel();
+			return value.getLabel();
 		}
 
 		@Override
 		public org.apache.commons.rdf.api.IRI getDatatype() {
-			return (org.apache.commons.rdf.api.IRI) asRDFTerm(literal.getDatatype());
+			return (org.apache.commons.rdf.api.IRI) asRDFTerm(value.getDatatype());
 		}
 
 		@Override
 		public Optional<String> getLanguageTag() {
-			return literal.getLanguage();
+			return value.getLanguage();
 		}
 
 		@Override
@@ -225,26 +270,25 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 		}
 
 		public int hashCode() {
-			return Objects.hash(literal.getLabel(), literal.getDatatype(), literal.getLanguage());
+			return Objects.hash(value.getLabel(), value.getDatatype(), value.getLanguage());
 		}
 	}
 
-	private final class BlankNodeImplementation implements BlankNode {
+	private final class BlankNodeImplementation extends RDFTermImplementation<BNode>
+		implements BlankNode {
 		
-		private BNode bNode;
-
 		public BlankNodeImplementation(BNode bNode) {
-			this.bNode = bNode;			
+			super(bNode);			
 		}
 		
 		@Override
 		public String ntriplesString() {
-			return "_:" + bNode.getID();
+			return "_:" + value.getID();
 		}
 
 		@Override
 		public String uniqueReference() {
-			return salt + bNode.getID();
+			return salt + value.getID();
 		}
 
 		@Override
@@ -363,7 +407,7 @@ public class Rdf4JRDFTermFactory implements RDFTermFactory {
 		throw new IllegalArgumentException("RDFTerm was not an IRI, Literal or BlankNode: " + object.getClass());
 	}
 
-	private org.apache.commons.rdf.api.Graph asRDFTermGraph(Model model) {
+	protected org.apache.commons.rdf.api.Graph asRDFTermGraph(Model model) {
 		return new GraphImplementation(model);
 	}
 
