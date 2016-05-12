@@ -24,7 +24,7 @@
     <parent>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-rdf-parent</artifactId>
-        <version>0.2.0-incubating</version>
+        <version>0.3.0-incubating-SNAPSHOT</version>
     </parent>
 
     <artifactId>commons-rdf-simple</artifactId>
@@ -52,9 +52,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-
-  <scm>
-    <tag>0.2.0-incubating-RC3</tag>
-  </scm>
 </project>
