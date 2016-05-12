@@ -231,7 +231,7 @@
     </dependencyManagement>
 
     <build>
-        <!--<finalName>apache-${project.artifactId}-${project.version}</finalName>-->
+        <finalName>apache-commonsrdf-${project.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
