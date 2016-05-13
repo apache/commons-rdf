@@ -80,7 +80,7 @@
             <post>dev@commonsrdf.incubator.apache.org</post>
             <subscribe>dev-subscribe@commonsrdf.incubator.apache.org</subscribe>
             <unsubscribe>dev-unsubscribe@commonsrdf.incubator.apache.org</unsubscribe>
-            <archive>http://mail-archives.apache.org/mod_mbox/commonsrdf-dev/</archive>
+            <archive>https://lists.apache.org/list.html?dev@commonsrdf.apache.org</archive>
             <otherArchives>
                 <otherArchive>http://markmail.org/search/?q=list%3Aorg.apache.commonsrdf.dev</otherArchive>
             </otherArchives>
@@ -90,7 +90,7 @@
             <post>commits@commonsrdf.incubator.apache.org</post>
             <subscribe>commits-subscribe@commonsrdf.incubator.apache.org</subscribe>
             <unsubscribe>commits-unsubscribe@commonsrdf.incubator.apache.org</unsubscribe>
-            <archive>http://mail-archives.apache.org/mod_mbox/commonsrdf-commits/</archive>
+            <archive>https://lists.apache.org/list.html?commits@commonsrdf.apache.org</archive>
             <otherArchives>
                 <otherArchive>http://markmail.org/search/?q=list%3Aorg.apache.commonsrdf.commits</otherArchive>
             </otherArchives>
