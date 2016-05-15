@@ -830,7 +830,7 @@ not change, and so calling a method like
 [IRI.getIRIString](apidocs/org/apache/commons/rdf/api/IRI.html#getIRIString--)
 or
 [Literal.getDatatype](apidocs/org/apache/commons/rdf/api/Literal.html#getDatatype--)
-will always have return values that are `.equal()` to any earlier return
+will always have return values that are `.equals()` to any earlier return
 values. Being immutable, the `Triple` and `RDFTerm` types should be
 considered thread-safe.
 
