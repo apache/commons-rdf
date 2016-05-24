@@ -71,14 +71,10 @@ which is also [mirrored to GitHub](http://github.com/apache/incubator-commonsrdf
 from official mirrors of the
 ASF Distribution Directory [incubator/commonsrdf](https://www.apache.org/dyn/closer.lua/incubator/commonsrdf/0.2.0-incubating/):
 
-* [apache-commons-rdf-0.2.0-incubating-src.zip](https://www.apache.org/dyn/closer.lua/incubator/commonsrdf/0.2.0-incubating/apache-commons-rdf-0.2.0-incubating-src.zip)
-  ([asc](https://dist.apache.org/repos/dist/release/incubator/commonsrdf/0.2.0-incubating/apache-commons-rdf-0.2.0-incubating-src.zip.asc),
-  [md5](https://dist.apache.org/repos/dist/release/incubator/commonsrdf/0.2.0-incubating/apache-commons-rdf-0.2.0-incubating-src.zip.md5),
-  [sha1](https://dist.apache.org/repos/dist/release/incubator/commonsrdf/0.2.0-incubating/apache-commons-rdf-0.2.0-incubating-src.zip.sha1))
-* [apache-commons-rdf-0.2.0-incubating-src.tar.gz](https://www.apache.org/dyn/closer.lua/incubator/commonsrdf/0.2.0-incubating/apache-commons-rdf-0.2.0-incubating-src.tar.gz)
-  ([asc](https://dist.apache.org/repos/dist/release/incubator/commonsrdf/0.2.0-incubating/apache-commons-rdf-0.2.0-incubating-src.tar.gz.asc),
-  [md5](https://dist.apache.org/repos/dist/release/incubator/commonsrdf/0.2.0-incubating//apache-commons-rdf-0.2.0-incubating-src.tar.gz.md5),
-  [sha1](https://dist.apache.org/repos/dist/release/incubator/commonsrdf/0.2.0-incubating/apache-commons-rdf-0.2.0-incubating-src.tar.gz.sha1))
+* [apache-commonsrdf-0.2.0-incubating-source-release.zip](https://www.apache.org/dyn/closer.lua/incubator/commonsrdf/0.2.0-incubating/apache-commonsrdf-0.2.0-incubating-source-release.zip)
+  ([asc](https://dist.apache.org/repos/dist/release/incubator/commonsrdf/0.2.0-incubating/apache-commonsrdf-0.2.0-incubating-source-release.zip.asc),
+  [md5](https://dist.apache.org/repos/dist/release/incubator/commonsrdf/0.2.0-incubating/apache-commonsrdf-0.2.0-incubating-source-release.zip.md5),
+  [sha1](https://dist.apache.org/repos/dist/release/incubator/commonsrdf/0.2.0-incubating/apache-commonsrdf-0.2.0-incubating-source-release.zip.sha1))
 
 After downloading the files, check the signatures using the following [KEYS](https://dist.apache.org/repos/dist/release/incubator/commonsrdf/KEYS)
 file. The [changelog](https://s.apache.org/0.2.0-incubating)
