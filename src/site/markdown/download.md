@@ -72,14 +72,14 @@ from official mirrors of the
 ASF Distribution Directory [incubator/commonsrdf](https://www.apache.org/dyn/closer.lua/incubator/commonsrdf/0.2.0-incubating/):
 
 * [apache-commonsrdf-0.2.0-incubating-source-release.zip](https://www.apache.org/dyn/closer.lua/incubator/commonsrdf/0.2.0-incubating/apache-commonsrdf-0.2.0-incubating-source-release.zip)
-  ([asc](https://dist.apache.org/repos/dist/release/incubator/commonsrdf/0.2.0-incubating/apache-commonsrdf-0.2.0-incubating-source-release.zip.asc),
-  [md5](https://dist.apache.org/repos/dist/release/incubator/commonsrdf/0.2.0-incubating/apache-commonsrdf-0.2.0-incubating-source-release.zip.md5),
-  [sha1](https://dist.apache.org/repos/dist/release/incubator/commonsrdf/0.2.0-incubating/apache-commonsrdf-0.2.0-incubating-source-release.zip.sha1))
+  ([asc](https://www.apache.org/dist/incubator/commonsrdf/0.2.0-incubating/apache-commonsrdf-0.2.0-incubating-source-release.zip.asc),
+  [md5](https://www.apache.org/dist/incubator/commonsrdf/0.2.0-incubating/apache-commonsrdf-0.2.0-incubating-source-release.zip.md5),
+  [sha1](https://www.apache.org/dist/incubator/commonsrdf/0.2.0-incubating/apache-commonsrdf-0.2.0-incubating-source-release.zip.sha1))
 
-After downloading the files, check the signatures using the following [KEYS](https://dist.apache.org/repos/dist/release/incubator/commonsrdf/KEYS)
+After downloading the files, check the signatures using the following [KEYS](https://www.apache.org/dist/incubator/commonsrdf/KEYS)
 file. The [changelog](https://s.apache.org/0.2.0-incubating)
 is available from the [Apache Commons RDF Jira](https://issues.apache.org/jira/browse/COMMONSRDF).
 
 ### Previous Releases
 
-Previous release are available from [archive.apache.org](http://archive.apache.org/dist/incubator/commonsrdf/).
+Previous release are available from [archive.apache.org](https://archive.apache.org/dist/incubator/commonsrdf/).
