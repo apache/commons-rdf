@@ -27,7 +27,7 @@ import java.util.stream.Stream;
  * href="http://www.w3.org/TR/rdf11-concepts/" >RDF-1.1 Concepts and Abstract
  * Syntax</a>, a W3C Recommendation published on 25 February 2014.
  */
-public interface Graph extends AutoCloseable {
+public interface Graph extends AutoCloseable,GraphLike<Triple, BlankNodeOrIRI, IRI, RDFTerm> {
 
     /**
      * Add a triple to the graph, possibly mapping any of the components of the
@@ -128,7 +128,7 @@ public interface Graph extends AutoCloseable {
      *
      * @return A {@link Stream} over all of the triples in the graph
      */
-    Stream<? extends Triple> getTriples();
+    Stream<? extends Triple> stream();
 
     /**
      * Get all triples contained by the graph matched with the pattern.
@@ -148,7 +148,7 @@ public interface Graph extends AutoCloseable {
      * @param object    The triple object (null is a wildcard)
      * @return A {@link Stream} over the matched triples.
      */
-    Stream<? extends Triple> getTriples(BlankNodeOrIRI subject, IRI predicate,
+    Stream<? extends Triple> stream(BlankNodeOrIRI subject, IRI predicate,
                                         RDFTerm object);
 
     /**
@@ -184,7 +184,7 @@ public interface Graph extends AutoCloseable {
     @SuppressWarnings("unchecked")
     default Iterable<Triple> iterate()
             throws ConcurrentModificationException, IllegalStateException {
-        return ((Stream<Triple>)getTriples())::iterator;
+        return ((Stream<Triple>)stream())::iterator;
     }
 
     /**
@@ -231,6 +231,6 @@ public interface Graph extends AutoCloseable {
     default Iterable<Triple> iterate(
             BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
         throws ConcurrentModificationException, IllegalStateException {
-        return ((Stream<Triple>) getTriples(subject, predicate, object))::iterator;
+        return ((Stream<Triple>) stream(subject, predicate, object))::iterator;
     }
 }

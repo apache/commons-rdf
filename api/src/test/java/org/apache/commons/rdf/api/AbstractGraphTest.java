@@ -177,7 +177,7 @@ public abstract class AbstractGraphTest {
 
         assertTrue(graph.contains(alice, knows, bob));
 
-        Optional<? extends Triple> first = graph.getTriples().skip(4)
+        Optional<? extends Triple> first = graph.stream().skip(4)
                 .findFirst();
         Assume.assumeTrue(first.isPresent());
         Triple existingTriple = first.get();
@@ -218,7 +218,7 @@ public abstract class AbstractGraphTest {
         graph.remove(alice, knows, bob);
         assertEquals(shrunkSize, graph.size());
 
-        Optional<? extends Triple> anyTriple = graph.getTriples().findAny();
+        Optional<? extends Triple> anyTriple = graph.stream().findAny();
         Assume.assumeTrue(anyTriple.isPresent());
 
         Triple otherTriple = anyTriple.get();
@@ -242,9 +242,9 @@ public abstract class AbstractGraphTest {
     @Test
     public void getTriples() throws Exception {
 
-        long tripleCount = graph.getTriples().count();
+        long tripleCount = graph.stream().count();
         assertTrue(tripleCount > 0);
-        assertTrue(graph.getTriples().allMatch(t -> graph.contains(t)));
+        assertTrue(graph.stream().allMatch(t -> graph.contains(t)));
         // Check exact count
         Assume.assumeNotNull(bnode1, bnode2, aliceName, bobName, secretClubName,
                 companyName, bobNameTriple);
@@ -254,15 +254,15 @@ public abstract class AbstractGraphTest {
     @Test
     public void getTriplesQuery() throws Exception {
 
-        long aliceCount = graph.getTriples(alice, null, null).count();
+        long aliceCount = graph.stream(alice, null, null).count();
         assertTrue(aliceCount > 0);
         Assume.assumeNotNull(aliceName);
         assertEquals(3, aliceCount);
 
         Assume.assumeNotNull(bnode1, bnode2, bobName, companyName, secretClubName);
-        assertEquals(4, graph.getTriples(null, name, null).count());
+        assertEquals(4, graph.stream(null, name, null).count());
         Assume.assumeNotNull(bnode1);
-        assertEquals(3, graph.getTriples(null, member, null).count());
+        assertEquals(3, graph.stream(null, member, null).count());
     }
 
     /**
@@ -287,14 +287,14 @@ public abstract class AbstractGraphTest {
         // Find a secret organizations
         assertEquals(
                 "\"The Secret Club\"",
-                graph.getTriples(null, knows, null)
+                graph.stream(null, knows, null)
                         // Find One-way "knows"
                         .filter(t -> !graph.contains(
                                 (BlankNodeOrIRI) t.getObject(), knows,
                                 t.getSubject()))
                         .map(knowsTriple -> graph
                                 // and those they know, what are they member of?
-                                .getTriples(
+                                .stream(
                                         (BlankNodeOrIRI) knowsTriple
                                                 .getObject(), member, null)
                                         // keep those which first-guy is a member of
@@ -305,7 +305,7 @@ public abstract class AbstractGraphTest {
                                 .get().getObject())
                                 // then look up the name of that org
                         .map(org -> graph
-                                .getTriples((BlankNodeOrIRI) org, name, null)
+                                .stream((BlankNodeOrIRI) org, name, null)
                                 .findFirst().get().getObject().ntriplesString())
                         .findFirst().get());
 

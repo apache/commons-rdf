@@ -28,7 +28,7 @@ import java.util.stream.Stream;
  * <a href="http://www.w3.org/TR/rdf11-concepts/" >RDF-1.1 Concepts and Abstract
  * Syntax</a>, a W3C Recommendation published on 25 February 2014.
  */
-public interface Dataset extends AutoCloseable {
+public interface Dataset extends AutoCloseable, GraphLike<Quad, BlankNodeOrIRI, IRI, RDFTerm> {
 
 	/**
 	 * Add a quad to the dataset, possibly mapping any of the components of the
@@ -144,7 +144,7 @@ public interface Dataset extends AutoCloseable {
 	 * Get the graph names in this Dataset.
 	 * <p>
 	 * The set of returned graph names is equivalent to the set of unique
-	 * {@link Quad#getGraphName()} of all the {@link #getQuads()} of this
+	 * {@link Quad#getGraphName()} of all the {@link #stream()} of this
 	 * dataset (excluding the default graph).
 	 * <p>
 	 * The returned {@link Stream} SHOULD NOT contain duplicate graph names.
@@ -217,7 +217,7 @@ public interface Dataset extends AutoCloseable {
 	 *
 	 * @return A {@link Stream} over all of the quads in the dataset
 	 */
-	Stream<? extends Quad> getQuads();
+	Stream<? extends Quad> stream();
 
 	/**
 	 * Get all quads contained by the dataset matched with the pattern.
@@ -244,7 +244,7 @@ public interface Dataset extends AutoCloseable {
 	 *            The quad object (<code>null</code> is a wildcard)
 	 * @return A {@link Stream} over the matched quads.
 	 */
-	Stream<? extends Quad> getQuads(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate,
+	Stream<? extends Quad> stream(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate,
 			RDFTerm object);
 
 	/**
@@ -281,7 +281,7 @@ public interface Dataset extends AutoCloseable {
 	 */
 	@SuppressWarnings("unchecked")
 	default Iterable<Quad> iterate() throws ConcurrentModificationException, IllegalStateException {
-		return ((Stream<Quad>) getQuads())::iterator;
+		return ((Stream<Quad>) stream())::iterator;
 	}
 
 	/**
@@ -333,6 +333,6 @@ public interface Dataset extends AutoCloseable {
 	@SuppressWarnings("unchecked")
 	default Iterable<Quad> iterate(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate,
 			RDFTerm object) throws ConcurrentModificationException, IllegalStateException {
-		return ((Stream<Quad>) getQuads(graphName, subject, predicate, object))::iterator;
+		return ((Stream<Quad>) stream(graphName, subject, predicate, object))::iterator;
 	}
 }
