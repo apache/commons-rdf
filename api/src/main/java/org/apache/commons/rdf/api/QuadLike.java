@@ -22,42 +22,35 @@ import java.util.Optional;
 /**
  * A generalised "quad-like" interface, extended by {@link Quad}.
  * <p>
- * A QuadLike has at least a 
- * {@link #getSubject()}, {@link #getPredicate()} and 
- * {@link #getObject()}, and a {@link #getGraphName()}, 
- * but unlike a {@link Quad} does not have a
- * formalised {@link Quad#equals(Object)} semantics, and allow
- * generalised quads (e.g. a BlankNode as predicate).
+ * A QuadLike statement has at least a {@link #getSubject()},
+ * {@link #getPredicate()}, {@link #getObject()} and {@link #getGraphName()},
+ * but unlike a {@link Quad} does not have a formalised
+ * {@link Quad#equals(Object)} semantics, and can allow generalised quads (e.g.
+ * a {@link BlankNode} as predicate).
  * <p>
- * Implementations should specialise which RDFTerm 
- * subclasses they return for subject {@link S}, 
- * predicate {@link P}, object {@link O} and graph name {@link G}.
+ * Implementations should specialise which {@link RDFTerm} subclasses they
+ * return for subject {@link S}, predicate {@link P}, object {@link O} and graph
+ * name {@link G}.
  * <p>
+ * 
  * @see Quad
  */
-public interface QuadLike <S extends RDFTerm, P extends RDFTerm, O extends RDFTerm, G extends RDFTerm> 
-	extends TripleLike<S,P,O> {
-
+public interface QuadLike<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm, G extends RDFTerm>
+		extends TripleLike<S, P, O> {
 
 	/**
-	 * The graph name (graph label) of this quad, if present.
-	 * 
-	 * If {@link Optional#isPresent()}, then the {@link Optional#get()} 
-	 * indicate the
-	 * <a href="https://www.w3.org/TR/rdf11-concepts/#dfn-named-graph">graph
-	 * name of this Quad. If the graph name is not present (e.g. the value is
-	 * {@link Optional#empty()}), it indicates that this Quad is in the
-	 * <a href="https://www.w3.org/TR/rdf11-concepts/#dfn-default-graph">default
-	 * graph.
+	 * The graph name (graph label) of this statement, if present.
+	 * <p>
+	 * If {@link Optional#isPresent()}, then the {@link Optional#get()} indicate
+	 * the graph name of this statement. If the graph name is not present,e.g.
+	 * the value is {@link Optional#empty()}, it indicates that this Quad is in
+	 * the default graph.
 	 *
-	 * @return If {@link Optional#isPresent()}, the graph name
-	 *         of this quad, otherwise. The graph name is typically an
-	 *         {@link IRI} or {@link BlankNode}.
-	 *         {@link Optional#empty()}, indicating the default graph.
-	 * 
-	 * @see <a href="https://www.w3.org/TR/rdf11-concepts/#dfn-rdf-dataset">RDF-
-	 *      1.1 Dataset</a>
+	 * @return If {@link Optional#isPresent()}, the graph name of this quad,
+	 *         otherwise {@link Optional#empty()}, indicating the default
+	 *         graph. The graph name is typically an {@link IRI} or
+	 *         {@link BlankNode}.
 	 */
 	Optional<G> getGraphName();
-	
+
 }

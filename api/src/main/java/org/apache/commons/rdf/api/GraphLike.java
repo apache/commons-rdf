@@ -26,10 +26,10 @@ import java.util.stream.Stream;
  * Extended by {@link Graph} (for {@link Triple}) and {@link Dataset} (for
  * {@link Quad}).
  * <p>
- * Unlike {@link Graph} and {@link Dataset}, this interface can support
- * with generalised {@link TripleLike} or {@link QuadLike} statements, and
- * does not include semantics like {@link #size()} or the requirement of
- * mapping {@link RDFTerm} instances from different implementations.
+ * Unlike {@link Graph} and {@link Dataset}, this interface can support with
+ * generalised {@link TripleLike} or {@link QuadLike} statements, and does not
+ * include semantics like {@link #size()} or the requirement of mapping
+ * {@link RDFTerm} instances from different implementations.
  * 
  * @see Graph
  * @see Dataset
@@ -83,14 +83,14 @@ public interface GraphLike<T extends TripleLike<S, P, O>, S extends RDFTerm, P e
 
 	/**
 	 * Iterate over contained statements.
-	 *  
+	 * 
 	 * @return An {@link Iterable} of {@link TripleLike} statements.
 	 * 
-     * @throws IllegalStateException
-     *             if the {@link Iterable} has been reused
-     * @throws ConcurrentModificationException
-     *             if a concurrency conflict occurs while the Iterator is
-     *             active.
+	 * @throws IllegalStateException
+	 *             if the {@link Iterable} has been reused
+	 * @throws ConcurrentModificationException
+	 *             if a concurrency conflict occurs while the Iterator is
+	 *             active.
 	 */
 	Iterable<T> iterate() throws ConcurrentModificationException, IllegalStateException;
 
