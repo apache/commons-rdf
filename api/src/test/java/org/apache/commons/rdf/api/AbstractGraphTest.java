@@ -296,7 +296,7 @@ public abstract class AbstractGraphTest {
             
             // look up BlankNodes by name
             IRI name = factory.createIRI("http://xmlns.com/foaf/0.1/name");
-            g3.getTriples(null, name, null).parallel().forEach( t ->
+            g3.stream(null, name, null).parallel().forEach( t ->
                 whoIsWho.put( t.getObject().ntriplesString(), t.getSubject()));
                         
             assertEquals(4, whoIsWho.size());
@@ -361,7 +361,7 @@ public abstract class AbstractGraphTest {
 
         // unordered() as we don't need to preserve triple order
         // sequential() as we don't (currently) require target Graph to be thread-safe
-        source.getTriples().unordered().sequential().forEach(t -> target.add(t));
+        source.stream().unordered().sequential().forEach(t -> target.add(t));
     }
 
     /**

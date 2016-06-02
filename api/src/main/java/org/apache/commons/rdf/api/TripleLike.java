@@ -29,6 +29,7 @@ package org.apache.commons.rdf.api;
  * Implementations should specialise which {@link RDFTerm} subclasses they
  * return for subject {@link S}, predicate {@link P} and object {@link O}.
  * 
+ * @since 0.3.0-incubating
  * @see Triple
  * @see Quad
  * @see QuadLike

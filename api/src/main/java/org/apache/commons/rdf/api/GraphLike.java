@@ -31,6 +31,7 @@ import java.util.stream.Stream;
  * include semantics like {@link #size()} or the requirement of mapping
  * {@link RDFTerm} instances from different implementations.
  * 
+ * @since 0.3.0-incubating
  * @see Graph
  * @see Dataset
  * @see TripleLike

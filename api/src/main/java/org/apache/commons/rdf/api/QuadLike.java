@@ -33,6 +33,7 @@ import java.util.Optional;
  * name {@link G}.
  * <p>
  * 
+ * @since 0.3.0-incubating
  * @see Quad
  */
 public interface QuadLike<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm, G extends RDFTerm>

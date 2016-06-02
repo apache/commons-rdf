@@ -28,6 +28,7 @@ import java.util.Optional;
  * Concepts and Abstract Syntax</a>, a W3C Working Group Note published on 25
  * February 2014.
  * 
+ * @since 0.3.0-incubating
  * @see <a href="http://www.w3.org/TR/2014/NOTE-rdf11-datasets-20140225/">RDF
  *      1.1: On Semantics of RDF Datasets</a>
  * @see <a href="http://www.w3.org/TR/rdf11-concepts/#section-dataset"> </a>

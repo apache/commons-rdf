@@ -125,11 +125,12 @@ public interface Graph extends AutoCloseable,GraphLike<Triple, BlankNodeOrIRI, I
      * <p>
      * Implementations may throw {@link ConcurrentModificationException} from Stream
      * methods if they detect a conflict while the Stream is active.
-     *
+     * 
+     * @since 0.3.0-incubating
      * @return A {@link Stream} over all of the triples in the graph
      */
     Stream<? extends Triple> stream();
-
+    
     /**
      * Get all triples contained by the graph matched with the pattern.
      * <p>
@@ -142,7 +143,9 @@ public interface Graph extends AutoCloseable,GraphLike<Triple, BlankNodeOrIRI, I
      * <p>
      * Implementations may throw {@link ConcurrentModificationException} from Stream
      * methods if they detect a conflict while the Stream is active.
-     *
+     * <p>
+     * 
+     * @since 0.3.0-incubating
      * @param subject   The triple subject (null is a wildcard)
      * @param predicate The triple predicate (null is a wildcard)
      * @param object    The triple object (null is a wildcard)
@@ -151,6 +154,27 @@ public interface Graph extends AutoCloseable,GraphLike<Triple, BlankNodeOrIRI, I
     Stream<? extends Triple> stream(BlankNodeOrIRI subject, IRI predicate,
                                         RDFTerm object);
 
+    /**
+     * This method is deprecated, use the equivalent method 
+     * {@link #stream()} instead. 
+     * 
+     */
+    @Deprecated
+    default Stream<? extends Triple> getTriples() {
+    	return stream();
+    }
+
+    /**
+     * This method is deprecated, use the equivalent method 
+     * {@link #stream(BlankNodeOrIRI, IRI, RDFTerm)} instead.
+     * 
+     */
+    @Deprecated    
+    default Stream<? extends Triple> getTriples(BlankNodeOrIRI subject, IRI predicate,
+            RDFTerm object) {
+    	return stream(subject, predicate, object);
+    }
+    
     /**
      * Get an Iterable for iterating over all triples in the graph.
      * <p>
