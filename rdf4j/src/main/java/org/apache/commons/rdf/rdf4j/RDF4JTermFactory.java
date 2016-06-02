@@ -356,12 +356,12 @@ public class RDF4JTermFactory implements RDFTermFactory {
 		}
 	
 		@Override
-		public Stream<RDF4JTriple> getTriples() {
+		public Stream<RDF4JTriple> stream() {
 			return model.parallelStream().map(RDF4JTermFactory.this::asTriple);
 		}
 	
 		@Override
-		public Stream<RDF4JTriple> getTriples(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
+		public Stream<RDF4JTriple> stream(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
 			return model.filter(
 					(Resource)asValue(subject), 
 					(org.eclipse.rdf4j.model.IRI)asValue(predicate), 
