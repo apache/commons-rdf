@@ -356,25 +356,32 @@ public class RDF4JTermFactory implements RDFTermFactory {
 		}
 	}
 
-	private final class GraphImpl implements RDF4JGraph {
+	private final static class GraphImpl implements RDF4JGraph {
 		
 		private Model model;
+		private RDF4JTermFactory rdf4jTermFactory;
 	
 		GraphImpl(Model model) {
-			this.model = model;		
+			this.model = model;	
+			this.rdf4jTermFactory = new RDF4JTermFactory();
+		}
+
+		GraphImpl(Model model, RDF4JTermFactory rdf4jTermFactory) {
+			this.model = model;	
+			this.rdf4jTermFactory = rdf4jTermFactory;
 		}
 		
 		@Override
 		public void add(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
 			model.add(
-					(Resource)asValue(subject), 
-					(org.eclipse.rdf4j.model.IRI)asValue(predicate), 
-					asValue(object));				
+					(Resource)rdf4jTermFactory.asValue(subject), 
+					(org.eclipse.rdf4j.model.IRI)rdf4jTermFactory.asValue(predicate), 
+					rdf4jTermFactory.asValue(object));				
 		}
 		
 		@Override
 		public void add(Triple triple) {
-			model.add(asStatement(triple));
+			model.add(rdf4jTermFactory.asStatement(triple));
 		}
 	
 		public Model asModel() { 
@@ -389,42 +396,42 @@ public class RDF4JTermFactory implements RDFTermFactory {
 		@Override
 		public boolean contains(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
 			return model.contains(
-					(Resource)asValue(subject), 
-					(org.eclipse.rdf4j.model.IRI)asValue(predicate), 
-					asValue(object));
+					(Resource)rdf4jTermFactory.asValue(subject), 
+					(org.eclipse.rdf4j.model.IRI)rdf4jTermFactory.asValue(predicate), 
+					rdf4jTermFactory.asValue(object));
 		}
 	
 		@Override
 		public boolean contains(Triple triple) {
-			return model.contains(asStatement(triple));
+			return model.contains(rdf4jTermFactory.asStatement(triple));
 		}
 	
 		@Override
 		public Stream<RDF4JTriple> stream() {
-			return model.parallelStream().map(RDF4JTermFactory.this::asTriple);
+			return model.parallelStream().map(rdf4jTermFactory::asTriple);
 		}
 	
 		@Override
 		public Stream<RDF4JTriple> stream(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
 			return model.filter(
-					(Resource)asValue(subject), 
-					(org.eclipse.rdf4j.model.IRI)asValue(predicate), 
-					asValue(object)).parallelStream()
-				.map(RDF4JTermFactory.this::asTriple);
+					(Resource)rdf4jTermFactory.asValue(subject), 
+					(org.eclipse.rdf4j.model.IRI)rdf4jTermFactory.asValue(predicate), 
+					rdf4jTermFactory.asValue(object)).parallelStream()
+				.map(rdf4jTermFactory::asTriple);
 		}
 	
 		@Override
 		public void remove(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
 			model.remove(
-					(Resource)asValue(subject), 
-					(org.eclipse.rdf4j.model.IRI)asValue(predicate), 
-					asValue(object));
+					(Resource)rdf4jTermFactory.asValue(subject), 
+					(org.eclipse.rdf4j.model.IRI)rdf4jTermFactory.asValue(predicate), 
+					rdf4jTermFactory.asValue(object));
 			
 		}
 	
 		@Override
 		public void remove(Triple triple) { 
-			model.remove(asStatement(triple));
+			model.remove(rdf4jTermFactory.asStatement(triple));
 		}
 	
 		@Override
