@@ -114,6 +114,35 @@ public abstract class AbstractRDFTermFactoryTest {
     }
 
     @Test
+    public void testCreateBlankNodeIdentifierTwiceDifferentFactories() throws Exception {
+        BlankNode bnode1, differentFactory;
+        try {
+            bnode1 = factory.createBlankNode();
+            // it MUST differ from a second factory
+            differentFactory = createFactory().createBlankNode();
+            
+            // NOTE: We can't make similar assumption if we provide a 
+            // name to createBlankNode(String) as its documentation
+            // only says:
+            // 
+            // * BlankNodes created using this method with the same parameter, for
+            // * different instances of RDFTermFactory, SHOULD NOT be equivalent.
+            //
+            // https://github.com/apache/incubator-commonsrdf/pull/7#issuecomment-92312779
+        } catch (UnsupportedOperationException ex) {
+            Assume.assumeNoException(ex);
+            return;
+        }
+        //
+        assertNotEquals(bnode1, differentFactory);
+        assertNotEquals(bnode1.uniqueReference(),
+                differentFactory.uniqueReference());
+        // but we can't require:
+        //assertNotEquals(bnode1.ntriplesString(), differentFactory.ntriplesString());
+    }
+
+
+    @Test
     public void testCreateGraph() {
         Graph graph;
         try {
