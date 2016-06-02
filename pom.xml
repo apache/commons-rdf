@@ -217,6 +217,7 @@
     <modules>
         <module>api</module>
         <module>simple</module>
+        <module>rdf4j</module>
     </modules>
 
     <dependencyManagement>
