@@ -73,7 +73,7 @@ import org.eclipse.rdf4j.rio.turtle.TurtleUtil;
  */
 public class RDF4JTermFactory implements RDFTermFactory {
 		
-	private String salt = "urn:uuid:" + UUID.randomUUID() + "#";
+	private UUID salt = UUID.randomUUID();
 
 	private ValueFactory valueFactory;
 	
@@ -104,8 +104,30 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	 * @return
 	 */
 	public RDF4JTerm<?> asRDFTerm(final org.eclipse.rdf4j.model.Value value) {		
+		return asRDFTerm(value, salt);	
+	}
+
+	/**
+	 * 
+	 * Adapt a RDF4J {@link Value} as a Commons RDF 
+	 * {@link RDFTerm}.
+	 * <p>
+	 * <p>
+	 * The value will be of the same kind as the term, e.g. a
+	 * {@link org.eclipse.rdf4j.model.BNode} is converted to a
+	 * {@link org.apache.commons.rdf.api.BlankNode}, 
+	 * a {@link org.eclipse.rdf4j.model.IRI}
+	 * is converted to a {@link org.apache.commons.rdf.api.IRI}
+	 * and a {@link org.eclipse.rdf4j.model.Literal}.
+	 * is converted to a 
+	 * {@link org.apache.commons.rdf.api.Literal} 
+	 * 
+	 * @param value
+	 * @return
+	 */
+	public static RDF4JTerm<?> asRDFTerm(final org.eclipse.rdf4j.model.Value value, UUID salt) {		
 		if (value instanceof BNode) {
-			return new BlankNodeImpl((BNode) value);
+			return new BlankNodeImpl((BNode) value, salt);
 		}
 		if (value instanceof org.eclipse.rdf4j.model.Literal) {
 			return new LiteralImpl((org.eclipse.rdf4j.model.Literal) value);
@@ -114,7 +136,7 @@ public class RDF4JTermFactory implements RDFTermFactory {
 			return new IRIImpl((org.eclipse.rdf4j.model.IRI) value);
 		}
 		throw new IllegalArgumentException("Value is not a BNode, Literal or IRI: " + value.getClass());		
-	}
+	}	
 	
 	/**
 	 * Adapt an RDF4J {@link Model} as a 
@@ -145,9 +167,20 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	 * @return
 	 */
 	public RDF4JTriple asTriple(final Statement statement) {
-		return new TripleImpl(statement);
+		return new TripleImpl(statement, salt);
 	}
 
+	/**
+	 * Adapt a RDF4J {@link Statement} as a Commons RDF 
+	 * {@link Triple}.
+	 * 
+	 * @param statement
+	 * @return
+	 */
+	public static RDF4JTriple asTriple(final Statement statement, UUID salt) {
+		return new TripleImpl(statement, salt);
+	}
+	
 	/**
 	 * Adapt a Commons RDF {@link RDFTerm} as a RDF4J {@link Value}.
 	 * <p>
@@ -256,11 +289,18 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	}
 
 	
-	private final class BlankNodeImpl extends RDFTermImpl<BNode>
+	private static final class BlankNodeImpl extends RDFTermImpl<BNode>
 		implements RDF4JBlankNode {
 		
-		BlankNodeImpl(BNode bNode) {
+		private transient int hashCode = 0;
+		private long saltUUIDmost;
+		private long saltUUIDleast;
+		
+		BlankNodeImpl(BNode bNode, UUID salt) {
 			super(bNode);			
+			// Space-efficient storage of salt UUID
+			saltUUIDmost = salt.getMostSignificantBits();
+			saltUUIDleast = salt.getLeastSignificantBits();
 		}
 		
 		public boolean equals(Object obj) { 
@@ -278,7 +318,10 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	
 		@Override
 		public int hashCode() {
-			return uniqueReference().hashCode();
+			if (hashCode != 0) {
+				return hashCode;
+			}
+			return hashCode = uniqueReference().hashCode();
 		}
 	
 		@Override
@@ -292,7 +335,8 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	
 		@Override
 		public String uniqueReference() {
-			return salt + value.getID();
+			UUID uuid = new UUID(saltUUIDmost, saltUUIDleast);
+			return "urn:uuid:" + uuid + "#" + value.getID();
 		}
 	
 		private boolean isValidBlankNodeLabel(String id) {
@@ -395,7 +439,7 @@ public class RDF4JTermFactory implements RDFTermFactory {
 		}
 	}
 
-	private final class IRIImpl extends RDFTermImpl<org.eclipse.rdf4j.model.IRI> 
+	private final static class IRIImpl extends RDFTermImpl<org.eclipse.rdf4j.model.IRI> 
 		implements RDF4JIRI {
 	
 		IRIImpl(org.eclipse.rdf4j.model.IRI iri) {
@@ -436,7 +480,7 @@ public class RDF4JTermFactory implements RDFTermFactory {
 		
 	}
 
-	private final class LiteralImpl 
+	private final static class LiteralImpl 
 		extends RDFTermImpl<org.eclipse.rdf4j.model.Literal>
 	    implements RDF4JLiteral {		
 	
@@ -460,7 +504,7 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	
 		@Override
 		public org.apache.commons.rdf.api.IRI getDatatype() {
-			return (org.apache.commons.rdf.api.IRI) asRDFTerm(value.getDatatype());
+			return new IRIImpl(value.getDatatype());
 		}
 	
 		@Override
@@ -508,11 +552,13 @@ public class RDF4JTermFactory implements RDFTermFactory {
 		}
 	}
 	
-	private final class TripleImpl implements Triple, RDF4JTriple {
-		private final Statement statement;
-	
-		TripleImpl(Statement statement) {
+	private final static class TripleImpl implements Triple, RDF4JTriple {
+		private final Statement statement;	
+		private UUID salt;
+		
+		TripleImpl(Statement statement, UUID salt) {
 			this.statement = statement;
+			this.salt = salt;
 		}
 	
 		public Statement asStatement() { 
@@ -532,17 +578,17 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	
 		@Override
 		public RDFTerm getObject() {
-			return asRDFTerm(statement.getObject());
+			return asRDFTerm(statement.getObject(), salt);
 		}
 	
 		@Override
 		public org.apache.commons.rdf.api.IRI getPredicate() {
-			return (org.apache.commons.rdf.api.IRI) asRDFTerm(statement.getPredicate());
+			return (org.apache.commons.rdf.api.IRI) asRDFTerm(statement.getPredicate(), null);
 		}
 		
 		@Override
 		public BlankNodeOrIRI getSubject() {
-			return (BlankNodeOrIRI) asRDFTerm(statement.getSubject());
+			return (BlankNodeOrIRI) asRDFTerm(statement.getSubject(), salt);
 		}
 	
 		@Override
