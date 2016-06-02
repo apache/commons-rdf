@@ -29,24 +29,25 @@
 
     <artifactId>commons-rdf-rdf4j</artifactId>
     <packaging>jar</packaging>
-<properties>
-	<sesame.version>4.1.2</sesame.version>
+<properties>	
+	<rdf4j.version>2.0M2</rdf4j.version>
 </properties>
 
     <name>Commons RDF: Integration: RDF4j</name>
-    <description>Eclipse RDF4j (formerly OpenRDF Sesame) implementation of Commons RDF API</description>
+    <description>Eclipse RDF4j implementation of Commons RDF API</description>
 
-    <dependencies>
-        <dependency>
-            <groupId>${project.parent.groupId}</groupId>
-            <artifactId>commons-rdf-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-	<dependency>
-		<groupId>org.openrdf.sesame</groupId>
-		<artifactId>sesame-runtime</artifactId>
-		<version>${sesame.version}</version>
-        </dependency>
+	<dependencies>
+		<dependency>
+			<groupId>${project.parent.groupId}</groupId>
+			<artifactId>commons-rdf-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.rdf4j</groupId>
+			<artifactId>rdf4j-runtime</artifactId>
+			<version>${rdr4j.version}</version>
+		</dependency>
+        
         <dependency>
             <groupId>${project.parent.groupId}</groupId>
             <artifactId>commons-rdf-api</artifactId>
@@ -65,9 +66,9 @@
 <dependencyManagement>
     <dependencies>
         <dependency>
-            <groupId>org.openrdf.sesame</groupId>
-            <artifactId>sesame-bom</artifactId>
-            <version>${sesame.version}</version>
+            <groupId>org.eclipse.rdf4j</groupId>
+            <artifactId>rdf4j-bom</artifactId>
+            <version>${rdr4j.version}</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>

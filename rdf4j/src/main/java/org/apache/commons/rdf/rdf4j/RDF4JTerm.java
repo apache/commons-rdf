@@ -18,7 +18,7 @@
 package org.apache.commons.rdf.rdf4j;
 
 import org.apache.commons.rdf.api.RDFTerm;
-import org.openrdf.model.Value;
+import org.eclipse.rdf4j.model.Value;
 
 /**
  * Marker interface for RDF4J implementations of RDFTerm.

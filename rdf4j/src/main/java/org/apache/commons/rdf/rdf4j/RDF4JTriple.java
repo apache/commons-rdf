@@ -18,7 +18,7 @@
 package org.apache.commons.rdf.rdf4j;
 
 import org.apache.commons.rdf.api.Triple;
-import org.openrdf.model.Statement;
+import org.eclipse.rdf4j.model.Statement;
 
 /**
  * Marker interface for RDF4J implementations of Triple.

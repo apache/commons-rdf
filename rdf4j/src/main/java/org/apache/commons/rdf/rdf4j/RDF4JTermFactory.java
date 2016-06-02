@@ -33,16 +33,16 @@ import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.RDFTermFactory;
 import org.apache.commons.rdf.api.Triple;
-import org.openrdf.model.BNode;
-import org.openrdf.model.Model;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.Value;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.impl.LinkedHashModel;
-import org.openrdf.model.impl.SimpleValueFactory;
-import org.openrdf.model.vocabulary.XMLSchema;
-import org.openrdf.rio.turtle.TurtleUtil;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.impl.LinkedHashModel;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.model.vocabulary.XMLSchema;
+import org.eclipse.rdf4j.rio.turtle.TurtleUtil;
 
 /**
  * RDF4J implementation of RDFTermFactory
@@ -92,26 +92,26 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	 * <p>
 	 * <p>
 	 * The value will be of the same kind as the term, e.g. a
-	 * {@link org.openrdf.model.BNode} is converted to a
+	 * {@link org.eclipse.rdf4j.model.BNode} is converted to a
 	 * {@link org.apache.commons.rdf.api.BlankNode}, 
-	 * a {@link org.openrdf.model.IRI}
+	 * a {@link org.eclipse.rdf4j.model.IRI}
 	 * is converted to a {@link org.apache.commons.rdf.api.IRI}
-	 * and a {@link org.openrdf.model.Literal}.
+	 * and a {@link org.eclipse.rdf4j.model.Literal}.
 	 * is converted to a 
 	 * {@link org.apache.commons.rdf.api.Literal} 
 	 * 
 	 * @param value
 	 * @return
 	 */
-	public RDF4JTerm<?> asRDFTerm(final org.openrdf.model.Value value) {		
+	public RDF4JTerm<?> asRDFTerm(final org.eclipse.rdf4j.model.Value value) {		
 		if (value instanceof BNode) {
 			return new BlankNodeImpl((BNode) value);
 		}
-		if (value instanceof org.openrdf.model.Literal) {
-			return new LiteralImpl((org.openrdf.model.Literal) value);
+		if (value instanceof org.eclipse.rdf4j.model.Literal) {
+			return new LiteralImpl((org.eclipse.rdf4j.model.Literal) value);
 		}
-		if (value instanceof org.openrdf.model.IRI) {
-			return new IRIImpl((org.openrdf.model.IRI) value);
+		if (value instanceof org.eclipse.rdf4j.model.IRI) {
+			return new IRIImpl((org.eclipse.rdf4j.model.IRI) value);
 		}
 		throw new IllegalArgumentException("Value is not a BNode, Literal or IRI: " + value.getClass());		
 	}
@@ -132,8 +132,8 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	
 	public Statement asStatement(Triple triple) {
 		return valueFactory.createStatement(
-				(org.openrdf.model.Resource) asValue(triple.getSubject()), 
-				(org.openrdf.model.IRI) asValue(triple.getPredicate()), 
+				(org.eclipse.rdf4j.model.Resource) asValue(triple.getSubject()), 
+				(org.eclipse.rdf4j.model.IRI) asValue(triple.getPredicate()), 
 				asValue(triple.getObject()));
 	}	
 	
@@ -153,10 +153,10 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	 * <p>
 	 * The value will be of the same kind as the term, e.g. a
 	 * {@link org.apache.commons.rdf.api.BlankNode} is converted to a
-	 * {@link org.openrdf.model.BNode}, a {@link org.apache.commons.rdf.api.IRI}
-	 * is converted to a {@link org.openrdf.model.IRI} and a
+	 * {@link org.eclipse.rdf4j.model.BNode}, a {@link org.apache.commons.rdf.api.IRI}
+	 * is converted to a {@link org.eclipse.rdf4j.model.IRI} and a
 	 * {@link org.apache.commons.rdf.api.Literal} is converted to a
-	 * {@link org.openrdf.model.Literal}.
+	 * {@link org.eclipse.rdf4j.model.Literal}.
 	 * <p>
 	 * If the provided {@link RDFTerm} is <code>null</code>, then the returned
 	 * value is <code>null</code>.
@@ -189,7 +189,7 @@ public class RDF4JTermFactory implements RDFTermFactory {
 				String lang = literal.getLanguageTag().get();
 				return valueFactory.createLiteral(label, lang);
 			}
-			org.openrdf.model.IRI dataType = (org.openrdf.model.IRI ) asValue(literal.getDatatype());
+			org.eclipse.rdf4j.model.IRI dataType = (org.eclipse.rdf4j.model.IRI ) asValue(literal.getDatatype());
 			return valueFactory.createLiteral(label, dataType);
 		}
 		if (term instanceof BlankNode) {
@@ -226,22 +226,22 @@ public class RDF4JTermFactory implements RDFTermFactory {
 
 	@Override
 	public LiteralImpl createLiteral(String lexicalForm) throws IllegalArgumentException, UnsupportedOperationException {
-		org.openrdf.model.Literal lit = valueFactory.createLiteral(lexicalForm);
+		org.eclipse.rdf4j.model.Literal lit = valueFactory.createLiteral(lexicalForm);
 		return (LiteralImpl)asRDFTerm(lit);
 	}
 
 	@Override
 	public org.apache.commons.rdf.api.Literal createLiteral(String lexicalForm, org.apache.commons.rdf.api.IRI dataType)
 			throws IllegalArgumentException, UnsupportedOperationException {
-		org.openrdf.model.IRI iri = valueFactory.createIRI(dataType.getIRIString());
-		org.openrdf.model.Literal lit = valueFactory.createLiteral(lexicalForm, iri);
+		org.eclipse.rdf4j.model.IRI iri = valueFactory.createIRI(dataType.getIRIString());
+		org.eclipse.rdf4j.model.Literal lit = valueFactory.createLiteral(lexicalForm, iri);
 		return (org.apache.commons.rdf.api.Literal)asRDFTerm(lit);
 	}
 
 	@Override
 	public org.apache.commons.rdf.api.Literal createLiteral(String lexicalForm, String languageTag)
 			throws IllegalArgumentException, UnsupportedOperationException {
-		org.openrdf.model.Literal lit = valueFactory.createLiteral(lexicalForm, languageTag);
+		org.eclipse.rdf4j.model.Literal lit = valueFactory.createLiteral(lexicalForm, languageTag);
 		return (org.apache.commons.rdf.api.Literal)asRDFTerm(lit);
 	}
 
@@ -249,8 +249,8 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	public RDF4JTriple createTriple(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object)
 			throws IllegalArgumentException, UnsupportedOperationException {
 		final Statement statement = valueFactory.createStatement(
-				(org.openrdf.model.Resource) asValue(subject), 
-				(org.openrdf.model.IRI) asValue(predicate), 
+				(org.eclipse.rdf4j.model.Resource) asValue(subject), 
+				(org.eclipse.rdf4j.model.IRI) asValue(predicate), 
 				asValue(object));
 		return asTriple(statement);
 	}
@@ -324,7 +324,7 @@ public class RDF4JTermFactory implements RDFTermFactory {
 		public void add(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
 			model.add(
 					(Resource)asValue(subject), 
-					(org.openrdf.model.IRI)asValue(predicate), 
+					(org.eclipse.rdf4j.model.IRI)asValue(predicate), 
 					asValue(object));				
 		}
 		
@@ -346,7 +346,7 @@ public class RDF4JTermFactory implements RDFTermFactory {
 		public boolean contains(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
 			return model.contains(
 					(Resource)asValue(subject), 
-					(org.openrdf.model.IRI)asValue(predicate), 
+					(org.eclipse.rdf4j.model.IRI)asValue(predicate), 
 					asValue(object));
 		}
 	
@@ -364,7 +364,7 @@ public class RDF4JTermFactory implements RDFTermFactory {
 		public Stream<RDF4JTriple> getTriples(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
 			return model.filter(
 					(Resource)asValue(subject), 
-					(org.openrdf.model.IRI)asValue(predicate), 
+					(org.eclipse.rdf4j.model.IRI)asValue(predicate), 
 					asValue(object)).parallelStream()
 				.map(RDF4JTermFactory.this::asTriple);
 		}
@@ -373,7 +373,7 @@ public class RDF4JTermFactory implements RDFTermFactory {
 		public void remove(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
 			model.remove(
 					(Resource)asValue(subject), 
-					(org.openrdf.model.IRI)asValue(predicate), 
+					(org.eclipse.rdf4j.model.IRI)asValue(predicate), 
 					asValue(object));
 			
 		}
@@ -395,10 +395,10 @@ public class RDF4JTermFactory implements RDFTermFactory {
 		}
 	}
 
-	private final class IRIImpl extends RDFTermImpl<org.openrdf.model.IRI> 
+	private final class IRIImpl extends RDFTermImpl<org.eclipse.rdf4j.model.IRI> 
 		implements RDF4JIRI {
 	
-		IRIImpl(org.openrdf.model.IRI iri) {
+		IRIImpl(org.eclipse.rdf4j.model.IRI iri) {
 			super(iri);			
 		}
 		@Override
@@ -437,12 +437,12 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	}
 
 	private final class LiteralImpl 
-		extends RDFTermImpl<org.openrdf.model.Literal>
+		extends RDFTermImpl<org.eclipse.rdf4j.model.Literal>
 	    implements RDF4JLiteral {		
 	
 		private static final String QUOTE = "\"";
 		
-		LiteralImpl(org.openrdf.model.Literal literal) {
+		LiteralImpl(org.eclipse.rdf4j.model.Literal literal) {
 			super(literal);			
 		}
 		@Override

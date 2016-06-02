@@ -18,7 +18,7 @@
 package org.apache.commons.rdf.rdf4j;
 
 import org.apache.commons.rdf.api.Graph;
-import org.openrdf.model.Model;
+import org.eclipse.rdf4j.model.Model;
 
 
 /**

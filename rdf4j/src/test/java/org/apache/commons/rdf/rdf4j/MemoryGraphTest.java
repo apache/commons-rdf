@@ -19,7 +19,7 @@ package org.apache.commons.rdf.rdf4j;
 
 import org.apache.commons.rdf.api.AbstractGraphTest;
 import org.apache.commons.rdf.api.RDFTermFactory;
-import org.openrdf.sail.memory.model.MemValueFactory;
+import org.eclipse.rdf4j.sail.memory.model.MemValueFactory;
 
 public class MemoryGraphTest extends AbstractGraphTest {
 

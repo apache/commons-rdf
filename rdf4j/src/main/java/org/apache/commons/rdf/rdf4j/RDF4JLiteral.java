@@ -17,17 +17,17 @@
  */
 package org.apache.commons.rdf.rdf4j;
 
-import org.openrdf.model.Literal;
+import org.eclipse.rdf4j.model.Literal;
 
 /**
  * Marker interface for RDF4J implementations of Literal.
  * 
  */
 public interface RDF4JLiteral 
-	extends RDF4JTerm<org.openrdf.model.Literal>, org.apache.commons.rdf.api.Literal {
+	extends RDF4JTerm<org.eclipse.rdf4j.model.Literal>, org.apache.commons.rdf.api.Literal {
 	
 	/**
-	 * Return the corresponding RDF4J {@link org.openrdf.model.Literal}.
+	 * Return the corresponding RDF4J {@link org.eclipse.rdf4j.model.Literal}.
 	 * 
 	 * @return The corresponding RDF4J Literal
 	 */
