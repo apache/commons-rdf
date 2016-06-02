@@ -32,7 +32,7 @@ import java.util.Optional;
  *      1.1: On Semantics of RDF Datasets</a>
  * @see <a href="http://www.w3.org/TR/rdf11-concepts/#section-dataset"> </a>
  */
-public interface Quad extends TripleOrQuad {
+public interface Quad extends QuadLike<BlankNodeOrIRI,IRI,RDFTerm,BlankNodeOrIRI> {
 
 	/**
 	 * The graph name (graph label) of this quad, if present.

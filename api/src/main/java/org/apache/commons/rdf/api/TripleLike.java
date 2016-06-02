@@ -18,47 +18,48 @@
 package org.apache.commons.rdf.api;
 
 /**
- * Common "triple-like" interface for {@link Triple} and {@link Quad}
+ * A generalised "triple-like" interface, extended by {@link Triple} and {@link Quad}.
  * <p>
- * A TripleOrQuad has at least a 
+ * A TripleLike has at least a 
  * {@link #getSubject()}, {@link #getPredicate()} and 
  * {@link #getObject()}, but unlike a {@link Triple} does not have a
- * formalised {@link Triple#equals(Object)} semantics, and does not 
- * necessarily have a {@link Quad#getGraphName()}
+ * formalised {@link Triple#equals(Object)} semantics, and allow
+ * generalised triples (e.g. a BlankNode as predicate).
  * <p>
- * Implementations of this interface SHOULD also implement {@link Triple}
- * or {@link Quad}, but MUST NOT implement both interfaces.
+ * Implementations should specialise which RDFTerms subclasses 
+ * they return for subject, predicate and object.
+ * <p>
+ * @see Triple
+ * @see Quad
+ * @see QuadLike
+ * 
  */
-public interface TripleOrQuad {
+public interface TripleLike <S extends RDFTerm, P extends RDFTerm, O extends RDFTerm> {
 
     /**
-     * The subject of this triple/quad, which may be either a {@link BlankNode} or an
-     * {@link IRI}, which are represented in Commons RDF by the interface
-     * {@link BlankNodeOrIRI}.
+     * The subject of this statement.
      *
-     * @return The subject {@link BlankNodeOrIRI} of this triple/quad.
+     * @return The subject, typically an {@link IRI} or {@link BlankNode}.
      * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-subject">RDF-1.1
      * Triple subject</a>
      */
-    BlankNodeOrIRI getSubject();
+    S getSubject();
 
     /**
-     * The predicate {@link IRI} of this triple/quad.
+     * The predicate of this statement.
      *
-     * @return The predicate {@link IRI} of this triple/quad.
+     * @return The predicate, typically an {@link IRI}.
      * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-predicate">RDF-1.1
      * Triple predicate</a>
      */
-    IRI getPredicate();
+    P getPredicate();
 
     /**
-     * The object of this triple/quad, which may be either a {@link BlankNode}, an
-     * {@link IRI}, or a {@link Literal}, which are represented in Commons RDF
-     * by the interface {@link RDFTerm}.
+     * The object of this statement.
      *
-     * @return The object {@link RDFTerm} of this triple/quad.
+     * @return The object, typically an {@link IRI}, {@link BlankNode} or {@link Literal}.
      * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-object">RDF-1.1
      * Triple object</a>
      */
-    RDFTerm getObject();
+    O getObject();
 }
