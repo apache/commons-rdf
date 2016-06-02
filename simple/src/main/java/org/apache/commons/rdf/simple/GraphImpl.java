@@ -111,7 +111,7 @@ final class GraphImpl implements Graph {
     @Override
     public boolean contains(BlankNodeOrIRI subject, IRI predicate,
                             RDFTerm object) {
-        return getTriples(subject, predicate, object).findFirst().isPresent();
+        return stream(subject, predicate, object).findFirst().isPresent();
     }
 
     @Override
@@ -120,12 +120,12 @@ final class GraphImpl implements Graph {
     }
 
     @Override
-    public Stream<Triple> getTriples() {
+    public Stream<Triple> stream() {
         return triples.parallelStream().unordered();
     }
 
     @Override
-    public Stream<Triple> getTriples(final BlankNodeOrIRI subject,
+    public Stream<Triple> stream(final BlankNodeOrIRI subject,
                                      final IRI predicate, final RDFTerm object) {
         final BlankNodeOrIRI newSubject = (BlankNodeOrIRI) internallyMap(subject);
         final IRI newPredicate = (IRI) internallyMap(predicate);
@@ -148,12 +148,12 @@ final class GraphImpl implements Graph {
     }
 
     private Stream<Triple> getTriples(final Predicate<Triple> filter) {
-        return getTriples().filter(filter);
+        return stream().filter(filter);
     }
 
     @Override
     public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-        Stream<Triple> toRemove = getTriples(subject, predicate, object);
+        Stream<Triple> toRemove = stream(subject, predicate, object);
         for (Triple t : toRemove.collect(Collectors.toList())) {
             // Avoid ConcurrentModificationException in ArrayList
             remove(t);
@@ -172,7 +172,7 @@ final class GraphImpl implements Graph {
 
     @Override
     public String toString() {
-        String s = getTriples().limit(TO_STRING_MAX).map(Object::toString)
+        String s = stream().limit(TO_STRING_MAX).map(Object::toString)
                 .collect(Collectors.joining("\n"));
         if (size() > TO_STRING_MAX) {
             return s + "\n# ... +" + (size() - TO_STRING_MAX) + " more";

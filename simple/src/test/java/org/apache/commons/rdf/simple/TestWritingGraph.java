@@ -102,7 +102,7 @@ public class TestWritingGraph {
     public void countQuery() {
         IRI subject = factory.createIRI("subj");
         IRI predicate = factory.createIRI("pred");
-        long count = graph.getTriples(subject, predicate, null).unordered()
+        long count = graph.stream(subject, predicate, null).unordered()
                 .parallel().count();
         //System.out.println("Counted - " + count);
         assertEquals(count, TRIPLES);
@@ -123,7 +123,7 @@ public class TestWritingGraph {
             graphFile.toFile().deleteOnExit();
         }
 
-        Stream<CharSequence> stream = graph.getTriples().map(TestWritingGraph::tripleAsString);
+        Stream<CharSequence> stream = graph.stream().map(TestWritingGraph::tripleAsString);
         Files.write(graphFile, stream::iterator, StandardCharsets.UTF_8);
     }
 
@@ -139,7 +139,7 @@ public class TestWritingGraph {
         IRI subject = factory.createIRI("subj");
         IRI predicate = factory.createIRI("pred");
         Stream<CharSequence> stream = graph
-                .getTriples(subject, predicate, null).map(TestWritingGraph::tripleAsString);
+                .stream(subject, predicate, null).map(TestWritingGraph::tripleAsString);
         Files.write(graphFile, stream::iterator, StandardCharsets.UTF_8);
 
     }
@@ -156,7 +156,7 @@ public class TestWritingGraph {
         IRI subject = factory.createIRI("nonexistent");
         IRI predicate = factory.createIRI("pred");
         Stream<CharSequence> stream = graph
-                .getTriples(subject, predicate, null).map(Object::toString);
+                .stream(subject, predicate, null).map(Object::toString);
         Files.write(graphFile, stream::iterator, StandardCharsets.UTF_8);
 
     }
