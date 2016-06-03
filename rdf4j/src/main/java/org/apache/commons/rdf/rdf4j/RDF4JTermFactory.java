@@ -25,6 +25,7 @@ import java.util.UUID;
 import org.apache.commons.rdf.api.BlankNode;
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.Graph;
+import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.RDFTermFactory;
 import org.apache.commons.rdf.api.Triple;
@@ -32,6 +33,7 @@ import org.apache.commons.rdf.rdf4j.impl.BlankNodeImpl;
 import org.apache.commons.rdf.rdf4j.impl.GraphImpl;
 import org.apache.commons.rdf.rdf4j.impl.IRIImpl;
 import org.apache.commons.rdf.rdf4j.impl.LiteralImpl;
+import org.apache.commons.rdf.rdf4j.impl.QuadImpl;
 import org.apache.commons.rdf.rdf4j.impl.TripleImpl;
 import org.eclipse.rdf4j.model.BNode;
 import org.eclipse.rdf4j.model.Model;
@@ -155,18 +157,38 @@ public class RDF4JTermFactory implements RDFTermFactory {
 				(org.eclipse.rdf4j.model.IRI) asValue(triple.getPredicate()), 
 				asValue(triple.getObject()));
 	}	
+
+	public Statement asStatement(Quad quad) {
+		return valueFactory.createStatement(
+				(org.eclipse.rdf4j.model.Resource) asValue(quad.getSubject()), 
+				(org.eclipse.rdf4j.model.IRI) asValue(quad.getPredicate()), 
+				asValue(quad.getObject()), 
+				(org.eclipse.rdf4j.model.Resource) asValue(quad.getGraphName().orElse(null))
+				);
+	}	
 	
 	/**
 	 * Adapt a RDF4J {@link Statement} as a Commons RDF 
 	 * {@link Triple}.
 	 * 
 	 * @param statement
-	 * @return
+	 * @return A {@link RDF4JTriple} that is equivalent to the statement
 	 */
 	public RDF4JTriple asTriple(final Statement statement) {
 		return new TripleImpl(statement, salt);
 	}
 
+	/**
+	 * Adapt a RDF4J {@link Statement} as a Commons RDF 
+	 * {@link Quad}.
+	 * 
+	 * @param statement
+	 * @return A {@link RDF4JQuad} that is equivalent to the statement
+	 */
+	public RDF4JQuad asQuad(final Statement statement) {
+		return new QuadImpl(statement, salt);
+	}
+	
 	/**
 	 * Adapt a RDF4J {@link Statement} as a Commons RDF 
 	 * {@link Triple}.
