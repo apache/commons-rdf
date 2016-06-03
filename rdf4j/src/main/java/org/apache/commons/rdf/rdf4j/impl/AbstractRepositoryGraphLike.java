@@ -22,7 +22,6 @@ import java.util.Optional;
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDFTerm;
-//import org.apache.commons.rdf.api.tripleLike;
 import org.apache.commons.rdf.api.TripleLike;
 import org.apache.commons.rdf.rdf4j.RDF4JGraphLike;
 import org.apache.commons.rdf.rdf4j.RDF4JTermFactory;

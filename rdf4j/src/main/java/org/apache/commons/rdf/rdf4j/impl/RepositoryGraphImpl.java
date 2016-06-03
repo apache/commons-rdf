@@ -36,12 +36,16 @@ import org.eclipse.rdf4j.repository.RepositoryResult;
 
 public class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> implements Graph, RDF4JGraph {
 
+	private Resource[] contextFilter;
+
 	public RepositoryGraphImpl(Repository repository) {
-		super(repository, false);
+		// All contexts (supplying null would mean default graph only)
+		this(repository, false);
 	}
 
-	public RepositoryGraphImpl(Repository repository, boolean includeInferred) {
+	public RepositoryGraphImpl(Repository repository, boolean includeInferred, Resource... contextFilter) {
 		super(repository, includeInferred);
+		this.contextFilter = contextFilter;
 	}
 
 	@Override
@@ -50,12 +54,10 @@ public class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> imp
 		org.eclipse.rdf4j.model.IRI pred = (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate);
 		Value obj = rdf4jTermFactory.asValue(object);
 		try (RepositoryConnection conn = getRepositoryConnection()) {
-			conn.add(subj, pred, obj);
+			conn.add(subj, pred, obj, contextFilter);
 			conn.commit();
 		}
 	}
-	
-	
 
 	@Override
 	public boolean contains(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
@@ -63,7 +65,7 @@ public class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> imp
 		org.eclipse.rdf4j.model.IRI pred = (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate);
 		Value obj = rdf4jTermFactory.asValue(object);
 		try (RepositoryConnection conn = getRepositoryConnection()) {
-			return conn.hasStatement(subj, pred, obj, includeInferred);
+			return conn.hasStatement(subj, pred, obj, includeInferred, contextFilter);
 		}
 	}
 
@@ -73,7 +75,7 @@ public class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> imp
 		org.eclipse.rdf4j.model.IRI pred = (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate);
 		Value obj = rdf4jTermFactory.asValue(object);
 		try (RepositoryConnection conn = getRepositoryConnection()) {
-			conn.remove(subj, pred, obj);
+			conn.remove(subj, pred, obj, contextFilter);
 			conn.commit();
 		}
 	}
@@ -90,7 +92,7 @@ public class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> imp
 		Value obj = rdf4jTermFactory.asValue(object);
 		RepositoryConnection conn = getRepositoryConnection();
 		// FIXME: Is it OK that we don't close the connection?
-		RepositoryResult<Statement> statements = conn.getStatements(subj, pred, obj);
+		RepositoryResult<Statement> statements = conn.getStatements(subj, pred, obj, contextFilter);
 		return Iterations.stream(statements).map(this::asTripleLike);
 	}
 	
