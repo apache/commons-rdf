@@ -17,6 +17,7 @@
  */
 package org.apache.commons.rdf.rdf4j.impl;
 
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
@@ -27,6 +28,7 @@ import org.apache.commons.rdf.rdf4j.RDF4JTermFactory;
 import org.apache.commons.rdf.rdf4j.RDF4JTriple;
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.repository.Repository;
 
 public final class GraphImpl implements RDF4JGraph {
 	
@@ -56,10 +58,15 @@ public final class GraphImpl implements RDF4JGraph {
 		model.add(rdf4jTermFactory.asStatement(triple));
 	}
 
-	public Model asModel() { 
-		return model;
+	public Optional<Model> asModel() { 
+		return Optional.of(model);
 	}
 
+	@Override
+	public Optional<Repository> asRepository() {
+		return Optional.empty();
+	}
+	
 	@Override
 	public void clear() {
 		model.clear();
@@ -79,26 +86,11 @@ public final class GraphImpl implements RDF4JGraph {
 	}
 
 	@Override
-	public Stream<RDF4JTriple> stream() {
-		return model.parallelStream().map(rdf4jTermFactory::asTriple);
-	}
-
-	@Override
-	public Stream<RDF4JTriple> stream(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
-		return model.filter(
-				(Resource)rdf4jTermFactory.asValue(subject), 
-				(org.eclipse.rdf4j.model.IRI)rdf4jTermFactory.asValue(predicate), 
-				rdf4jTermFactory.asValue(object)).parallelStream()
-			.map(rdf4jTermFactory::asTriple);
-	}
-
-	@Override
 	public void remove(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
 		model.remove(
 				(Resource)rdf4jTermFactory.asValue(subject), 
 				(org.eclipse.rdf4j.model.IRI)rdf4jTermFactory.asValue(predicate), 
-				rdf4jTermFactory.asValue(object));
-		
+				rdf4jTermFactory.asValue(object));		
 	}
 
 	@Override
@@ -112,8 +104,24 @@ public final class GraphImpl implements RDF4JGraph {
 		if (size < Integer.MAX_VALUE) {
 			return size;
 		} else {
+			// TODO: Check if this can really happen with RDF4J models
 			// Collection.size() can't help us, we'll have to count
 			return model.parallelStream().count();
 		}				
 	}
+
+	@Override
+	public Stream<RDF4JTriple> stream() {
+		return model.parallelStream().map(rdf4jTermFactory::asTriple);
+	}
+
+	@Override
+	public Stream<RDF4JTriple> stream(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
+		return model.filter(
+				(Resource)rdf4jTermFactory.asValue(subject), 
+				(org.eclipse.rdf4j.model.IRI)rdf4jTermFactory.asValue(predicate), 
+				rdf4jTermFactory.asValue(object)).parallelStream()
+			.map(rdf4jTermFactory::asTriple);
+	}
+	
 }

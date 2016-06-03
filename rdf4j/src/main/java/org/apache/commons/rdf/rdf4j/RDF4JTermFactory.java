@@ -34,6 +34,7 @@ import org.apache.commons.rdf.rdf4j.impl.GraphImpl;
 import org.apache.commons.rdf.rdf4j.impl.IRIImpl;
 import org.apache.commons.rdf.rdf4j.impl.LiteralImpl;
 import org.apache.commons.rdf.rdf4j.impl.QuadImpl;
+import org.apache.commons.rdf.rdf4j.impl.RepositoryGraphImpl;
 import org.apache.commons.rdf.rdf4j.impl.TripleImpl;
 import org.eclipse.rdf4j.model.BNode;
 import org.eclipse.rdf4j.model.Model;
@@ -42,6 +43,7 @@ import org.eclipse.rdf4j.model.Value;
 import org.eclipse.rdf4j.model.ValueFactory;
 import org.eclipse.rdf4j.model.impl.LinkedHashModel;
 import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.repository.Repository;
 
 /**
  * RDF4J implementation of RDFTermFactory
@@ -72,40 +74,6 @@ import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
  */
 public class RDF4JTermFactory implements RDFTermFactory {
 		
-	private UUID salt = UUID.randomUUID();
-
-	private ValueFactory valueFactory;
-	
-	public RDF4JTermFactory() {
-		this.valueFactory = SimpleValueFactory.getInstance();
-	}
-	
-	public RDF4JTermFactory(ValueFactory valueFactory) { 
-		this.valueFactory = valueFactory;
-	}
-	
-	/**
-	 * 
-	 * Adapt a RDF4J {@link Value} as a Commons RDF 
-	 * {@link RDFTerm}.
-	 * <p>
-	 * <p>
-	 * The value will be of the same kind as the term, e.g. a
-	 * {@link org.eclipse.rdf4j.model.BNode} is converted to a
-	 * {@link org.apache.commons.rdf.api.BlankNode}, 
-	 * a {@link org.eclipse.rdf4j.model.IRI}
-	 * is converted to a {@link org.apache.commons.rdf.api.IRI}
-	 * and a {@link org.eclipse.rdf4j.model.Literal}.
-	 * is converted to a 
-	 * {@link org.apache.commons.rdf.api.Literal} 
-	 * 
-	 * @param value
-	 * @return
-	 */
-	public RDF4JTerm<?> asRDFTerm(final org.eclipse.rdf4j.model.Value value) {		
-		return asRDFTerm(value, salt);	
-	}
-
 	/**
 	 * 
 	 * Adapt a RDF4J {@link Value} as a Commons RDF 
@@ -135,8 +103,64 @@ public class RDF4JTermFactory implements RDFTermFactory {
 			return new IRIImpl((org.eclipse.rdf4j.model.IRI) value);
 		}
 		throw new IllegalArgumentException("Value is not a BNode, Literal or IRI: " + value.getClass());		
+	}
+
+	/**
+	 * Adapt a RDF4J {@link Statement} as a Commons RDF 
+	 * {@link Triple}.
+	 * 
+	 * @param statement
+	 * @return
+	 */
+	public static RDF4JTriple asTriple(final Statement statement, UUID salt) {
+		return new TripleImpl(statement, salt);
+	}
+	
+	private UUID salt = UUID.randomUUID();
+	
+	private ValueFactory valueFactory;
+	
+	public RDF4JTermFactory() {
+		this.valueFactory = SimpleValueFactory.getInstance();
+	}
+
+	public RDF4JTermFactory(ValueFactory valueFactory) { 
+		this.valueFactory = valueFactory;
 	}	
 	
+	/**
+	 * Adapt a RDF4J {@link Statement} as a Commons RDF 
+	 * {@link Quad}.
+	 * 
+	 * @param statement
+	 * @return A {@link RDF4JQuad} that is equivalent to the statement
+	 */
+	public RDF4JQuad asQuad(final Statement statement) {
+		return new QuadImpl(statement, salt);
+	}
+	
+	/**
+	 * 
+	 * Adapt a RDF4J {@link Value} as a Commons RDF 
+	 * {@link RDFTerm}.
+	 * <p>
+	 * <p>
+	 * The value will be of the same kind as the term, e.g. a
+	 * {@link org.eclipse.rdf4j.model.BNode} is converted to a
+	 * {@link org.apache.commons.rdf.api.BlankNode}, 
+	 * a {@link org.eclipse.rdf4j.model.IRI}
+	 * is converted to a {@link org.apache.commons.rdf.api.IRI}
+	 * and a {@link org.eclipse.rdf4j.model.Literal}.
+	 * is converted to a 
+	 * {@link org.apache.commons.rdf.api.Literal} 
+	 * 
+	 * @param value
+	 * @return
+	 */
+	public RDF4JTerm<?> asRDFTerm(final org.eclipse.rdf4j.model.Value value) {		
+		return asRDFTerm(value, salt);	
+	}	
+
 	/**
 	 * Adapt an RDF4J {@link Model} as a 
 	 * Commons RDF {@link Graph}.
@@ -150,7 +174,30 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	public RDF4JGraph asRDFTermGraph(Model model) {
 		return new GraphImpl(model);
 	}
+
+	/**
+	 * Adapt an RDF4J {@link Repository} as a 
+	 * Commons RDF {@link Graph}.
+	 * <p>
+	 * Changes to the graph are reflected in the repository, and
+	 * vice versa. 
+	 * 
+	 * @param model RDF4J {@link Repository} to connect to.
+	 * @return Adapted {@link Graph}.
+	 */
+	public RDF4JGraph asRDFTermGraph(Repository repository) {
+		return new RepositoryGraphImpl(repository);
+	}	
 	
+	public Statement asStatement(Quad quad) {
+		return valueFactory.createStatement(
+				(org.eclipse.rdf4j.model.Resource) asValue(quad.getSubject()), 
+				(org.eclipse.rdf4j.model.IRI) asValue(quad.getPredicate()), 
+				asValue(quad.getObject()), 				
+				(org.eclipse.rdf4j.model.Resource) asValue(quad.getGraphName().orElse(null))
+				);
+	}
+
 	public Statement asStatement(Triple triple) {
 		if (triple instanceof RDF4JTripleLike) { 
 			// This covers both RDF4JQuad and RDF4JTriple
@@ -161,16 +208,7 @@ public class RDF4JTermFactory implements RDFTermFactory {
 				(org.eclipse.rdf4j.model.Resource) asValue(triple.getSubject()), 
 				(org.eclipse.rdf4j.model.IRI) asValue(triple.getPredicate()), 
 				asValue(triple.getObject()));
-	}	
-
-	public Statement asStatement(Quad quad) {
-		return valueFactory.createStatement(
-				(org.eclipse.rdf4j.model.Resource) asValue(quad.getSubject()), 
-				(org.eclipse.rdf4j.model.IRI) asValue(quad.getPredicate()), 
-				asValue(quad.getObject()), 				
-				(org.eclipse.rdf4j.model.Resource) asValue(quad.getGraphName().orElse(null))
-				);
-	}	
+	}
 	
 	/**
 	 * Adapt a RDF4J {@link Statement} as a Commons RDF 
@@ -180,28 +218,6 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	 * @return A {@link RDF4JTriple} that is equivalent to the statement
 	 */
 	public RDF4JTriple asTriple(final Statement statement) {
-		return new TripleImpl(statement, salt);
-	}
-
-	/**
-	 * Adapt a RDF4J {@link Statement} as a Commons RDF 
-	 * {@link Quad}.
-	 * 
-	 * @param statement
-	 * @return A {@link RDF4JQuad} that is equivalent to the statement
-	 */
-	public RDF4JQuad asQuad(final Statement statement) {
-		return new QuadImpl(statement, salt);
-	}
-	
-	/**
-	 * Adapt a RDF4J {@link Statement} as a Commons RDF 
-	 * {@link Triple}.
-	 * 
-	 * @param statement
-	 * @return
-	 */
-	public static RDF4JTriple asTriple(final Statement statement, UUID salt) {
 		return new TripleImpl(statement, salt);
 	}
 	

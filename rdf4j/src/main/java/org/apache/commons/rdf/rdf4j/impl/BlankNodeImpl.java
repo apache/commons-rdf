@@ -29,8 +29,8 @@ public final class BlankNodeImpl extends AbstractRDFTerm<BNode>
 	implements RDF4JBlankNode {
 	
 	private transient int hashCode = 0;
-	private long saltUUIDmost;
 	private long saltUUIDleast;
+	private long saltUUIDmost;
 	
 	public BlankNodeImpl(BNode bNode, UUID salt) {
 		super(bNode);			
@@ -60,21 +60,6 @@ public final class BlankNodeImpl extends AbstractRDFTerm<BNode>
 		return hashCode = uniqueReference().hashCode();
 	}
 
-	@Override
-	public String ntriplesString() {
-		if (isValidBlankNodeLabel(value.getID())) { 
-			return "_:" + value.getID();
-		} else {
-			return "_:" + UUID.nameUUIDFromBytes(value.getID().getBytes(StandardCharsets.UTF_8));
-		}
-	}
-
-	@Override
-	public String uniqueReference() {
-		UUID uuid = new UUID(saltUUIDmost, saltUUIDleast);
-		return "urn:uuid:" + uuid + "#" + value.getID();
-	}
-
 	private boolean isValidBlankNodeLabel(String id) {
 		// FIXME: Replace with a regular expression?			
 		if (id.isEmpty()) { 
@@ -89,5 +74,20 @@ public final class BlankNodeImpl extends AbstractRDFTerm<BNode>
 			}
 		}
 		return true;
+	}
+
+	@Override
+	public String ntriplesString() {
+		if (isValidBlankNodeLabel(value.getID())) { 
+			return "_:" + value.getID();
+		} else {
+			return "_:" + UUID.nameUUIDFromBytes(value.getID().getBytes(StandardCharsets.UTF_8));
+		}
+	}
+
+	@Override
+	public String uniqueReference() {
+		UUID uuid = new UUID(saltUUIDmost, saltUUIDleast);
+		return "urn:uuid:" + uuid + "#" + value.getID();
 	}
 }

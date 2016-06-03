@@ -13,9 +13,9 @@ import org.apache.commons.rdf.rdf4j.RDF4JTermFactory;
 import org.eclipse.rdf4j.model.Statement;
 
 public final class QuadImpl implements Quad, RDF4JQuad {
-		private final Statement statement;	
+		private transient int hashCode = 0;	
 		private UUID salt;
-		private transient int hashCode = 0;
+		private final Statement statement;
 		
 		public QuadImpl(Statement statement, UUID salt) {
 			this.statement = statement;
@@ -27,6 +27,11 @@ public final class QuadImpl implements Quad, RDF4JQuad {
 		}
 		
 		@Override
+		public Triple asTriple() {
+			return new TripleImpl(statement, salt);
+		}
+	
+		@Override
 		public boolean equals(Object obj) {
 			if (obj instanceof Triple) {
 				Triple triple = (Triple) obj;
@@ -37,6 +42,15 @@ public final class QuadImpl implements Quad, RDF4JQuad {
 			return false;
 		}
 	
+		@Override
+		public Optional<BlankNodeOrIRI> getGraphName() {
+			if (statement.getContext() == null) { 
+				return Optional.empty();
+			}
+			BlankNodeOrIRI g = (BlankNodeOrIRI) RDF4JTermFactory.asRDFTerm(statement.getContext(), salt);
+			return Optional.of(g);
+		}
+		
 		@Override
 		public RDFTerm getObject() {
 			return RDF4JTermFactory.asRDFTerm(statement.getObject(), salt);
@@ -51,7 +65,7 @@ public final class QuadImpl implements Quad, RDF4JQuad {
 		public BlankNodeOrIRI getSubject() {
 			return (BlankNodeOrIRI) RDF4JTermFactory.asRDFTerm(statement.getSubject(), salt);
 		}
-	
+
 		@Override
 		public int hashCode() {
 			if (hashCode  != 0) {
@@ -63,19 +77,5 @@ public final class QuadImpl implements Quad, RDF4JQuad {
 		@Override
 		public String toString() {
 			return statement.toString();
-		}
-
-		@Override
-		public Optional<BlankNodeOrIRI> getGraphName() {
-			if (statement.getContext() == null) { 
-				return Optional.empty();
-			}
-			BlankNodeOrIRI g = (BlankNodeOrIRI) RDF4JTermFactory.asRDFTerm(statement.getContext(), salt);
-			return Optional.of(g);
-		}
-		
-		@Override
-		public Triple asTriple() {
-			return new TripleImpl(statement, salt);
 		}
 }

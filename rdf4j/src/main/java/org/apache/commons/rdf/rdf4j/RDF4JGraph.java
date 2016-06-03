@@ -17,8 +17,11 @@
  */
 package org.apache.commons.rdf.rdf4j;
 
+import java.util.Optional;
+
 import org.apache.commons.rdf.api.Graph;
 import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.repository.Repository;
 
 
 /**
@@ -28,12 +31,29 @@ import org.eclipse.rdf4j.model.Model;
 public interface RDF4JGraph extends Graph {
 	
 	/**
-	 * Return the corresponding RDF4J {@link Model}.
+	 * Return the corresponding RDF4J {@link Model}, if present.
+	 * <p>
+	 * The return value is {@link Optional#isPresent()} if this graph is
+	 * backed by a Model.
 	 * <p>
 	 * Changes to the Model are reflected in this Graph, and
 	 * vice versa.
 	 * 
 	 * @return The corresponding RDF4J Model.
 	 */
-	public Model asModel();
+	public Optional<Model> asModel();
+	
+	/**
+	 * Return the corresponding RDF4J {@link Repository}, if present.
+	 * <p>
+	 * The return value is {@link Optional#isPresent()} if this graph is
+	 * backed by a Repository.
+	 * <p>
+	 * Changes to the Repository are reflected in this Graph, and
+	 * vice versa.
+	 * 
+	 * @return The corresponding RDF4J Repository.
+	 */
+	public Optional<Repository> asRepository();
+
 }

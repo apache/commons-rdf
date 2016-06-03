@@ -11,8 +11,8 @@ import org.apache.commons.rdf.rdf4j.RDF4JTriple;
 import org.eclipse.rdf4j.model.Statement;
 
 public final class TripleImpl implements Triple, RDF4JTriple {
-		private final Statement statement;	
-		private UUID salt;
+		private UUID salt;	
+		private final Statement statement;
 		
 		public TripleImpl(Statement statement, UUID salt) {
 			this.statement = statement;
