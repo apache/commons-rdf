@@ -34,27 +34,28 @@ public class RepositoryGraphImpl implements Graph, RDF4JGraph {
 	public RepositoryGraphImpl(Repository repository, boolean includeInferred) {
 		this.repository = repository;
 		this.includeInferred = includeInferred;
-		if (! repository.isInitialized()) {
+		if (!repository.isInitialized()) {
 			repository.initialize();
 			shouldWeShutdown = true;
 		}
-		rdf4jTermFactory = new RDF4JTermFactory(repository.getValueFactory());		
+		rdf4jTermFactory = new RDF4JTermFactory(repository.getValueFactory());
 	}
 
-	
 	@Override
 	public void close() throws Exception {
-		if (shouldWeShutdown) {		
+		if (shouldWeShutdown) {
 			repository.shutDown();
 		}
-		// else: repository was initialized outside, so we should not shut it down
+		// else: repository was initialized outside, so we should not shut it
+		// down
 	}
 
 	@Override
 	public void add(Triple triple) {
 		Statement statement = rdf4jTermFactory.asStatement(triple);
-		try (RepositoryConnection conn = getRepositoryConnection()) {			
+		try (RepositoryConnection conn = getRepositoryConnection()) {
 			conn.add(statement);
+			conn.commit();
 		}
 	}
 
@@ -65,14 +66,15 @@ public class RepositoryGraphImpl implements Graph, RDF4JGraph {
 		Value obj = rdf4jTermFactory.asValue(object);
 		try (RepositoryConnection conn = getRepositoryConnection()) {
 			conn.add(subj, pred, obj);
+			conn.commit();
 		}
 	}
 
 	@Override
 	public boolean contains(Triple triple) {
 		Statement statement = rdf4jTermFactory.asStatement(triple);
-		try (RepositoryConnection conn = getRepositoryConnection()) {			
-			return conn.hasStatement(statement, includeInferred );
+		try (RepositoryConnection conn = getRepositoryConnection()) {
+			return conn.hasStatement(statement, includeInferred);
 		}
 	}
 
@@ -89,8 +91,9 @@ public class RepositoryGraphImpl implements Graph, RDF4JGraph {
 	@Override
 	public void remove(Triple triple) {
 		Statement statement = rdf4jTermFactory.asStatement(triple);
-		try (RepositoryConnection conn = getRepositoryConnection()) {			
+		try (RepositoryConnection conn = getRepositoryConnection()) {
 			conn.remove(statement);
+			conn.commit();
 		}
 	}
 
@@ -101,6 +104,7 @@ public class RepositoryGraphImpl implements Graph, RDF4JGraph {
 		Value obj = rdf4jTermFactory.asValue(object);
 		try (RepositoryConnection conn = getRepositoryConnection()) {
 			conn.remove(subj, pred, obj);
+			conn.commit();
 		}
 	}
 
@@ -108,16 +112,18 @@ public class RepositoryGraphImpl implements Graph, RDF4JGraph {
 	public void clear() {
 		try (RepositoryConnection conn = getRepositoryConnection()) {
 			conn.clear();
+			conn.commit();
 		}
 	}
 
 	@Override
 	public long size() {
 		try (RepositoryConnection conn = getRepositoryConnection()) {
-			// FIXME: The below might contain duplicate statements across multiple contexts
+			// FIXME: The below might contain duplicate statements across
+			// multiple contexts
 			return conn.size();
 		}
-		
+
 	}
 
 	@Override
@@ -130,11 +136,11 @@ public class RepositoryGraphImpl implements Graph, RDF4JGraph {
 		Resource subj = (Resource) rdf4jTermFactory.asValue(subject);
 		org.eclipse.rdf4j.model.IRI pred = (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate);
 		Value obj = rdf4jTermFactory.asValue(object);
-		try (RepositoryConnection conn = getRepositoryConnection()) {
-			// FIXME: Will the above close too early? (e.g. when returning iterator)
-			RepositoryResult<Statement> statements = conn.getStatements(subj, pred, obj);
-			return Iterations.stream(statements).map(rdf4jTermFactory::asTriple);
-		}		
+		RepositoryConnection conn = getRepositoryConnection();
+		// FIXME: Is it OK that we don't close the connection?
+		RepositoryResult<Statement> statements = conn.getStatements(subj, pred, obj);
+		return Iterations.stream(statements).map(rdf4jTermFactory::asTriple);
+
 	}
 
 	private RepositoryConnection getRepositoryConnection() {
@@ -148,6 +154,6 @@ public class RepositoryGraphImpl implements Graph, RDF4JGraph {
 	@Override
 	public Optional<Model> asModel() {
 		return Optional.empty();
-	}	
-	
+	}
+
 }

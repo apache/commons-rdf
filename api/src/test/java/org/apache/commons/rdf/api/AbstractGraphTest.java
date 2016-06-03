@@ -119,7 +119,7 @@ public abstract class AbstractGraphTest {
                 graph.add(bnode1, name, secretClubName);
                 graph.add(bnode2, name, companyName);
             }
-        }
+        }        
     }
 
  
@@ -247,7 +247,6 @@ public abstract class AbstractGraphTest {
 
     @Test
     public void getTriples() throws Exception {
-
         long tripleCount = graph.stream().count();
         assertTrue(tripleCount > 0);
         assertTrue(graph.stream().allMatch(t -> graph.contains(t)));
