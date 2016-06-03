@@ -29,16 +29,23 @@ import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.rdf4j.RDF4JDataset;
 import org.apache.commons.rdf.rdf4j.RDF4JQuad;
-import org.apache.commons.rdf.rdf4j.RDF4JTriple;
 import org.eclipse.rdf4j.common.iteration.Iterations;
 import org.eclipse.rdf4j.model.Resource;
 import org.eclipse.rdf4j.model.Statement;
 import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.repository.Repository;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryResult;
 
 public class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> implements RDF4JDataset, Dataset {
 
+	public RepositoryDatasetImpl(Repository repository, boolean includeInferred) {
+		super(repository, includeInferred);
+	}
+
+	public RepositoryDatasetImpl(Repository repository) {
+		super(repository);
+	}
 
 	@Override
 	public void add(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
@@ -127,8 +134,8 @@ public class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> imp
 
 	@Override
 	public Optional<Graph> getGraph(BlankNodeOrIRI graphName) {
-		Resource context = (Resource) rdf4jTermFactory.asValue(graphName);
-		return new RepositoryGraphImpl(repository, includeInferred, context);		
+		Resource context = (Resource) rdf4jTermFactory.asValue(graphName);		
+		return Optional.of(new RepositoryGraphImpl(repository, includeInferred, context));		
 	}
 
 	@Override
