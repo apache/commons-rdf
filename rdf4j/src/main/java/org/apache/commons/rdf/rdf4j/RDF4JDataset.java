@@ -17,14 +17,14 @@
  */
 package org.apache.commons.rdf.rdf4j;
 
-import org.apache.commons.rdf.api.Graph;
-import org.apache.commons.rdf.api.Triple;
+import org.apache.commons.rdf.api.Dataset;
+import org.apache.commons.rdf.api.Quad;
 
 
 /**
- * Marker interface for RDF4J implementations of Graph.
+ * Marker interface for RDF4J implementations of Dataset.
  * 
  */
-public interface RDF4JGraph extends Graph, RDF4JGraphLike<Triple> {
+public interface RDF4JDataset extends Dataset, RDF4JGraphLike<Quad> {
 	
 }
