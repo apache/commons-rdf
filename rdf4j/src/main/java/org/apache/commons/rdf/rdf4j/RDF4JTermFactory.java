@@ -30,7 +30,7 @@ import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.RDFTermFactory;
 import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.rdf4j.impl.BlankNodeImpl;
-import org.apache.commons.rdf.rdf4j.impl.GraphImpl;
+import org.apache.commons.rdf.rdf4j.impl.ModelGraphImpl;
 import org.apache.commons.rdf.rdf4j.impl.IRIImpl;
 import org.apache.commons.rdf.rdf4j.impl.LiteralImpl;
 import org.apache.commons.rdf.rdf4j.impl.QuadImpl;
@@ -172,7 +172,7 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	 * @return Adapted {@link Graph}.
 	 */
 	public RDF4JGraph asRDFTermGraph(Model model) {
-		return new GraphImpl(model);
+		return new ModelGraphImpl(model);
 	}
 
 	/**
