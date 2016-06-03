@@ -73,4 +73,9 @@ public final class QuadImpl implements Quad, RDF4JQuad {
 			BlankNodeOrIRI g = (BlankNodeOrIRI) RDF4JTermFactory.asRDFTerm(statement.getContext(), salt);
 			return Optional.of(g);
 		}
+		
+		@Override
+		public Triple asTriple() {
+			return new TripleImpl(statement, salt);
+		}
 }

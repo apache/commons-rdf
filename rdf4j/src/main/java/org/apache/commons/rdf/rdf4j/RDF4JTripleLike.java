@@ -17,12 +17,26 @@
  */
 package org.apache.commons.rdf.rdf4j;
 
-import org.apache.commons.rdf.api.Triple;
+import org.apache.commons.rdf.api.BlankNodeOrIRI;
+import org.apache.commons.rdf.api.IRI;
+import org.apache.commons.rdf.api.RDFTerm;
+import org.apache.commons.rdf.api.TripleLike;
+import org.eclipse.rdf4j.model.Statement;
 
 /**
- * Marker interface for RDF4J implementations of Triple.
+ * Marker interface for RDF4J implementations of TripleLike statements.
+ * <p>
+ * This is backed by a {@link Statement} retrievable with {@link #asStatement()}.
  * 
+ * @see RDF4JTriple
+ * @see RDF4JQuad
  */
-public interface RDF4JTriple extends Triple, RDF4JTripleLike {
+public interface RDF4JTripleLike extends TripleLike<BlankNodeOrIRI, IRI, RDFTerm> {
 	
+	/**
+	 * Return the corresponding RDF4J {@link Statement}.
+	 * 
+	 * @return The corresponding RDF4J Statement.
+	 */
+	public Statement asStatement();
 }

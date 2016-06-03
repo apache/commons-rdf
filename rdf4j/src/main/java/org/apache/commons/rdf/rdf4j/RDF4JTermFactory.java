@@ -152,6 +152,11 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	}
 	
 	public Statement asStatement(Triple triple) {
+		if (triple instanceof RDF4JTripleLike) { 
+			// This covers both RDF4JQuad and RDF4JTriple
+			RDF4JTripleLike rdf4jTriple = (RDF4JTriple) triple;
+			return rdf4jTriple.asStatement();
+		}
 		return valueFactory.createStatement(
 				(org.eclipse.rdf4j.model.Resource) asValue(triple.getSubject()), 
 				(org.eclipse.rdf4j.model.IRI) asValue(triple.getPredicate()), 
@@ -162,7 +167,7 @@ public class RDF4JTermFactory implements RDFTermFactory {
 		return valueFactory.createStatement(
 				(org.eclipse.rdf4j.model.Resource) asValue(quad.getSubject()), 
 				(org.eclipse.rdf4j.model.IRI) asValue(quad.getPredicate()), 
-				asValue(quad.getObject()), 
+				asValue(quad.getObject()), 				
 				(org.eclipse.rdf4j.model.Resource) asValue(quad.getGraphName().orElse(null))
 				);
 	}	
@@ -248,7 +253,7 @@ public class RDF4JTermFactory implements RDFTermFactory {
 			// This is where it gets tricky to support round trips!			
 			BlankNode blankNode = (BlankNode) term;
 			// FIXME: The uniqueReference might not be a valid BlankNode identifier..
-			// does it have to be?
+			// does it have to be in RDF4J?
 			return valueFactory.createBNode(blankNode.uniqueReference());
 		}
 		throw new IllegalArgumentException("RDFTerm was not an IRI, Literal or BlankNode: " + term.getClass());

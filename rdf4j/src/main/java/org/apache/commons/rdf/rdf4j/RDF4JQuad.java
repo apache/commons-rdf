@@ -18,18 +18,11 @@
 package org.apache.commons.rdf.rdf4j;
 
 import org.apache.commons.rdf.api.Quad;
-import org.eclipse.rdf4j.model.Statement;
 
 /**
  * Marker interface for RDF4J implementations of Quad.
  * 
  */
-public interface RDF4JQuad extends Quad {
+public interface RDF4JQuad extends Quad, RDF4JTripleLike {
 	
-	/**
-	 * Return the corresponding RDF4J {@link Statement}.
-	 * 
-	 * @return The corresponding RDF4J Statement.
-	 */
-	public Statement asStatement();
 }
