@@ -204,13 +204,7 @@ final class DatasetImpl implements Dataset {
 
 	@Override
 	public Optional<Graph> getGraph(BlankNodeOrIRI graphName) {
-		// NOTE: Always returns a new copy
-		Graph g = new GraphImpl(factory);
-		stream(Optional.ofNullable(graphName), null, null, null)
-			.map(Quad::asTriple)
-			.sequential()
-			.forEach(g::add);
-		return Optional.of(g);
+		return Optional.of(new DatasetGraphView(this, graphName));
 	}
 
 	@Override
