@@ -19,11 +19,15 @@ package org.apache.commons.rdf.rdf4j;
 
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.Triple;
+import org.apache.commons.rdf.rdf4j.impl.ModelGraphImpl;
+import org.apache.commons.rdf.rdf4j.impl.RepositoryGraphImpl;
 
 
 /**
  * Marker interface for RDF4J implementations of Graph.
  * 
+ * @see ModelGraphImpl
+ * @see RepositoryGraphImpl
  */
 public interface RDF4JGraph extends Graph, RDF4JGraphLike<Triple> {
 	

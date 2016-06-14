@@ -61,51 +61,7 @@ public abstract class AbstractRepositoryGraphLike<T extends TripleLike<BlankNode
 		// down
 	}
 
-	@Override
-	public void add(T tripleLike) {
-		Statement statement = rdf4jTermFactory.asStatement(tripleLike);
-		try (RepositoryConnection conn = getRepositoryConnection()) {
-			conn.add(statement);
-			conn.commit();
-		}
-	}
-
-
-	@Override
-	public boolean contains(T tripleLike) {
-		Statement statement = rdf4jTermFactory.asStatement(tripleLike);
-		try (RepositoryConnection conn = getRepositoryConnection()) {
-			return conn.hasStatement(statement, includeInferred);
-		}
-	}
-
-	@Override
-	public void remove(T tripleLike) {
-		Statement statement = rdf4jTermFactory.asStatement(tripleLike);
-		try (RepositoryConnection conn = getRepositoryConnection()) {
-			conn.remove(statement);
-			conn.commit();
-		}
-	}
-
-	@Override
-	public void clear() {
-		try (RepositoryConnection conn = getRepositoryConnection()) {
-			conn.clear();
-			conn.commit();
-		}
-	}
-
-	@Override
-	public long size() {
-		try (RepositoryConnection conn = getRepositoryConnection()) {
-			// FIXME: The below might contain duplicate statements across
-			// multiple contexts
-			return conn.size();
-		}
-
-	}
-
+	
 	protected abstract T asTripleLike(Statement s);
 
 	protected RepositoryConnection getRepositoryConnection() {

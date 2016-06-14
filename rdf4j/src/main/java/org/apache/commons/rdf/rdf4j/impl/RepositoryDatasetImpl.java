@@ -47,6 +47,50 @@ public class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> imp
 		super(repository);
 	}
 
+
+	@Override
+	public void add(Quad tripleLike) {
+		Statement statement = rdf4jTermFactory.asStatement(tripleLike);
+		try (RepositoryConnection conn = getRepositoryConnection()) {
+			conn.add(statement);
+			conn.commit();
+		}
+	}
+
+
+	@Override
+	public boolean contains(Quad tripleLike) {
+		Statement statement = rdf4jTermFactory.asStatement(tripleLike);
+		try (RepositoryConnection conn = getRepositoryConnection()) {
+			return conn.hasStatement(statement, includeInferred);
+		}
+	}
+
+	@Override
+	public void remove(Quad tripleLike) {
+		Statement statement = rdf4jTermFactory.asStatement(tripleLike);
+		try (RepositoryConnection conn = getRepositoryConnection()) {
+			conn.remove(statement);
+			conn.commit();
+		}
+	}
+
+	@Override
+	public void clear() {
+		try (RepositoryConnection conn = getRepositoryConnection()) {
+			conn.clear();
+			conn.commit();
+		}
+	}
+
+	@Override
+	public long size() {
+		try (RepositoryConnection conn = getRepositoryConnection()) {
+			return conn.size();
+		}
+	}
+
+	
 	@Override
 	public void add(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
 		Resource context = (Resource) rdf4jTermFactory.asValue(graphName);
@@ -128,7 +172,7 @@ public class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> imp
 
 	@Override
 	public Graph getGraph() {
-		// TODO:  Specify default context only
+		// TODO:  Specify default context only? (the below will give the union graph)
 		return new RepositoryGraphImpl(repository, includeInferred);		
 	}
 

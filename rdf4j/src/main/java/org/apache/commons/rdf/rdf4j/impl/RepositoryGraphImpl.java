@@ -48,6 +48,54 @@ public class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> imp
 		this.contextFilter = contextFilter;
 	}
 
+
+	@Override
+	public void add(Triple tripleLike) {
+		Statement statement = rdf4jTermFactory.asStatement(tripleLike);
+		try (RepositoryConnection conn = getRepositoryConnection()) {
+			conn.add(statement, contextFilter);
+			conn.commit();
+		}
+	}
+
+
+	@Override
+	public boolean contains(Triple tripleLike) {
+		Statement statement = rdf4jTermFactory.asStatement(tripleLike);
+		try (RepositoryConnection conn = getRepositoryConnection()) {
+			return conn.hasStatement(statement, includeInferred, contextFilter);
+		}
+	}
+
+	@Override
+	public void remove(Triple tripleLike) {
+		Statement statement = rdf4jTermFactory.asStatement(tripleLike);
+		try (RepositoryConnection conn = getRepositoryConnection()) {
+			conn.remove(statement, contextFilter);
+			conn.commit();
+		}
+	}
+
+	@Override
+	public void clear() {
+		try (RepositoryConnection conn = getRepositoryConnection()) {
+			conn.clear(contextFilter);
+			conn.commit();
+		}
+	}
+
+	@Override
+	public long size() {
+		try (RepositoryConnection conn = getRepositoryConnection()) {
+			if (! includeInferred && contextFilter.length == 0) { 
+				return conn.size();
+			} else {
+				return stream().count();
+			}
+		}
+	}
+
+	
 	@Override
 	public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
 		Resource subj = (Resource) rdf4jTermFactory.asValue(subject);
