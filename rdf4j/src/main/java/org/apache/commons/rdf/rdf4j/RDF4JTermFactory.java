@@ -24,6 +24,7 @@ import java.util.UUID;
 // commons.rdf and openrdf.model (e.g. IRI)
 import org.apache.commons.rdf.api.BlankNode;
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
+import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFTerm;
@@ -35,6 +36,7 @@ import org.apache.commons.rdf.rdf4j.impl.IRIImpl;
 import org.apache.commons.rdf.rdf4j.impl.LiteralImpl;
 import org.apache.commons.rdf.rdf4j.impl.ModelGraphImpl;
 import org.apache.commons.rdf.rdf4j.impl.QuadImpl;
+import org.apache.commons.rdf.rdf4j.impl.RepositoryDatasetImpl;
 import org.apache.commons.rdf.rdf4j.impl.RepositoryGraphImpl;
 import org.apache.commons.rdf.rdf4j.impl.TripleImpl;
 import org.eclipse.rdf4j.model.BNode;
@@ -155,6 +157,34 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	}
 
 	/**
+	 * Adapt an RDF4J {@link Repository} as a Commons RDF {@link Dataset}.
+	 * <p>
+	 * Changes to the dataset are reflected in the repository, and vice versa.
+	 * 
+	 * @param repository
+	 *            RDF4J {@link Repository} to connect to.
+	 * @return A {@link Dataset} backed by the RDF4J repository.
+	 */
+	public RDF4JDataset asRDFTermDataset(Repository repository) {
+		return new RepositoryDatasetImpl(repository);
+	}
+
+	/**
+	 * Adapt an RDF4J {@link Repository} as a Commons RDF {@link Dataset}.
+	 * <p>
+	 * Changes to the dataset are reflected in the repository, and vice versa.
+	 * 
+	 * @param repository
+	 *            RDF4J {@link Repository} to connect to.
+	 * @param includeInferred
+	 *            If true, any inferred quads are included in the dataset
+	 * @return A {@link Dataset} backed by the RDF4J repository.
+	 */
+	public RDF4JDataset asRDFTermDataset(Repository repository, boolean includeInferred) {
+		return new RepositoryDatasetImpl(repository, includeInferred);
+	}
+	
+	/**
 	 * Adapt an RDF4J {@link Model} as a Commons RDF {@link Graph}.
 	 * <p>
 	 * Changes to the graph are reflected in the model, and vice versa.
@@ -174,7 +204,7 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	 * <p>
 	 * Changes to the graph are reflected in the repository, and vice versa.
 	 * 
-	 * @param model
+	 * @param repository
 	 *            RDF4J {@link Repository} to connect to.
 	 * @return A {@link Graph} backed by the RDF4J repository.
 	 */
