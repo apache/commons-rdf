@@ -17,7 +17,6 @@
  */
 package org.apache.commons.rdf.rdf4j.impl;
 
-import java.util.ConcurrentModificationException;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -85,6 +84,11 @@ public class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> imp
 
 	@Override
 	public long size() {
+		if (includeInferred) { 
+			// We'll need to count them all
+			return stream().count();
+		} 
+		// else: Ask directly
 		try (RepositoryConnection conn = getRepositoryConnection()) {
 			return conn.size();
 		}
@@ -165,19 +169,14 @@ public class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> imp
 	}
 
 	@Override
-	public Iterable<Quad> iterate() throws ConcurrentModificationException, IllegalStateException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Graph getGraph() {
-		// TODO:  Specify default context only? (the below will give the union graph)
-		return new RepositoryGraphImpl(repository, includeInferred);		
+		// default context only
+		return new RepositoryGraphImpl(repository, includeInferred, (Resource)null);		
 	}
 
 	@Override
 	public Optional<Graph> getGraph(BlankNodeOrIRI graphName) {
+		// NOTE: May be null to indicate default context
 		Resource context = (Resource) rdf4jTermFactory.asValue(graphName);		
 		return Optional.of(new RepositoryGraphImpl(repository, includeInferred, context));		
 	}

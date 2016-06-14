@@ -170,19 +170,43 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	/**
 	 * Adapt an RDF4J {@link Repository} as a Commons RDF {@link Graph}.
 	 * <p>
+	 * The graph will include triples in any contexts (e.g. the union graph).
+	 * <p>
 	 * Changes to the graph are reflected in the repository, and vice versa.
 	 * 
 	 * @param model
 	 *            RDF4J {@link Repository} to connect to.
-	 * @return Adapted {@link Graph}.
+	 * @return A {@link Graph} backed by the RDF4J repository.
 	 */
 	public RDF4JGraph asRDFTermGraph(Repository repository) {
-		return new RepositoryGraphImpl(repository);
+		return new RepositoryGraphImpl(repository, false, true);
+	}
+
+	/**
+	 * Adapt an RDF4J {@link Repository} as a Commons RDF {@link Graph}.
+	 * <p>
+	 * The graph will include triples in any contexts (e.g. the union graph).
+	 * <p>
+	 * Changes to the graph are reflected in the repository, and vice versa.
+	 * 
+	 * @param repository
+	 *            RDF4J {@link Repository} to connect to.
+	 * @param includeInferred
+	 *            If true, any inferred triples are included in the graph
+	 * @param unionGraph
+	 *            If true, triples from any context is included in the graph,
+	 *            otherwise only triples in the default context
+	 *            <code>null</code>.
+	 * @return A {@link Graph} backed by the RDF4J repository.
+	 */
+	public RDF4JGraph asRDFTermGraph(Repository repository, boolean includeInferred, boolean unionGraph) {
+		return new RepositoryGraphImpl(repository, includeInferred, unionGraph);
 	}
 
 	public Statement asStatement(TripleLike<BlankNodeOrIRI, org.apache.commons.rdf.api.IRI, RDFTerm> tripleLike) {
 		if (tripleLike instanceof RDF4JTripleLike) {
-			// Return original statement - this covers both RDF4JQuad and RDF4JTriple
+			// Return original statement - this covers both RDF4JQuad and
+			// RDF4JTriple
 			RDF4JTripleLike rdf4jTriple = (RDF4JTripleLike) tripleLike;
 			return rdf4jTriple.asStatement();
 		}
@@ -190,13 +214,13 @@ public class RDF4JTermFactory implements RDFTermFactory {
 		org.eclipse.rdf4j.model.Resource subject = (org.eclipse.rdf4j.model.Resource) asValue(tripleLike.getSubject());
 		org.eclipse.rdf4j.model.IRI predicate = (org.eclipse.rdf4j.model.IRI) asValue(tripleLike.getPredicate());
 		Value object = asValue(tripleLike.getObject());
-		
+
 		org.eclipse.rdf4j.model.Resource context = null;
 		if (tripleLike instanceof Quad) {
 			Quad quad = (Quad) tripleLike;
 			context = (org.eclipse.rdf4j.model.Resource) asValue(quad.getGraphName().orElse(null));
 		}
-		
+
 		return valueFactory.createStatement(subject, predicate, object, context);
 	}
 

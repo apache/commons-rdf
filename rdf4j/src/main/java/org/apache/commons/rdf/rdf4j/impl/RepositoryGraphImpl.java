@@ -36,11 +36,16 @@ import org.eclipse.rdf4j.repository.RepositoryResult;
 
 public class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> implements Graph, RDF4JGraph {
 
-	private Resource[] contextFilter;
+	private final Resource[] contextFilter;
 
-	public RepositoryGraphImpl(Repository repository) {
-		// All contexts (supplying null would mean default graph only)
-		this(repository, false);
+	public RepositoryGraphImpl(Repository repository, boolean includeInferred, boolean unionGraph) {
+		super(repository, includeInferred);
+		if (unionGraph) {
+			this.contextFilter = null;
+		} else {
+			// default context: null
+			this.contextFilter = new Resource[] { null };
+		}
 	}
 
 	public RepositoryGraphImpl(Repository repository, boolean includeInferred, Resource... contextFilter) {
@@ -140,7 +145,7 @@ public class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> imp
 		Value obj = rdf4jTermFactory.asValue(object);
 		RepositoryConnection conn = getRepositoryConnection();
 		// FIXME: Is it OK that we don't close the connection?
-		RepositoryResult<Statement> statements = conn.getStatements(subj, pred, obj, contextFilter);
+		RepositoryResult<Statement> statements = conn.getStatements(subj, pred, obj, includeInferred, contextFilter);
 		return Iterations.stream(statements).map(this::asTripleLike);
 	}
 	
