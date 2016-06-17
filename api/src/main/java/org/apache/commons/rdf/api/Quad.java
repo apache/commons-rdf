@@ -28,11 +28,12 @@ import java.util.Optional;
  * Concepts and Abstract Syntax</a>, a W3C Working Group Note published on 25
  * February 2014.
  * 
+ * @since 0.3.0-incubating
  * @see <a href="http://www.w3.org/TR/2014/NOTE-rdf11-datasets-20140225/">RDF
  *      1.1: On Semantics of RDF Datasets</a>
  * @see <a href="http://www.w3.org/TR/rdf11-concepts/#section-dataset"> </a>
  */
-public interface Quad extends TripleOrQuad {
+public interface Quad extends QuadLike<BlankNodeOrIRI,IRI,RDFTerm,BlankNodeOrIRI> {
 
 	/**
 	 * The graph name (graph label) of this quad, if present.
@@ -40,8 +41,8 @@ public interface Quad extends TripleOrQuad {
 	 * If {@link Optional#isPresent()}, then the {@link Optional#get()} is
 	 * either a {@link BlankNode} or an {@link IRI}, indicating the
 	 * <a href="https://www.w3.org/TR/rdf11-concepts/#dfn-named-graph">graph
-	 * name of this Quad. If the graph name is not present (e.g. the value is
-	 * {@link Optional#empty()}), it indicates that this Quad is in the
+	 * name of this Quad. If the graph name is not present, e.g. the value is
+	 * {@link Optional#empty()}, it indicates that this Quad is in the
 	 * <a href="https://www.w3.org/TR/rdf11-concepts/#dfn-default-graph">default
 	 * graph.
 	 *

@@ -120,7 +120,7 @@ final class DatasetImpl implements Dataset {
 
 	@Override
 	public boolean contains(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		return getQuads(graphName, subject, predicate, object).findAny().isPresent();
+		return stream(graphName, subject, predicate, object).findAny().isPresent();
 	}
     
     @Override
@@ -129,12 +129,12 @@ final class DatasetImpl implements Dataset {
     }
     
 	@Override
-	public Stream<Quad> getQuads() {
+	public Stream<Quad> stream() {
         return quads.parallelStream().unordered();
 	}
 
 	@Override
-	public Stream<Quad> getQuads(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate,
+	public Stream<Quad> stream(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate,
 			RDFTerm object) {
 		final Optional<BlankNodeOrIRI> newGraphName = graphName.map(g -> (BlankNodeOrIRI)internallyMap(g));
         final BlankNodeOrIRI newSubject = (BlankNodeOrIRI) internallyMap(subject);
@@ -160,12 +160,12 @@ final class DatasetImpl implements Dataset {
 	}    
 
     private Stream<Quad> getQuads(final Predicate<Quad> filter) {
-        return getQuads().filter(filter);
+        return stream().filter(filter);
     }
 
 	@Override
 	public void remove(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-        Stream<Quad> toRemove = getQuads(graphName, subject, predicate, object);
+        Stream<Quad> toRemove = stream(graphName, subject, predicate, object);
         for (Quad t : toRemove.collect(Collectors.toList())) {
             // Avoid ConcurrentModificationException in ArrayList
             remove(t);
@@ -184,7 +184,7 @@ final class DatasetImpl implements Dataset {
 
     @Override
     public String toString() {
-        String s = getQuads().limit(TO_STRING_MAX).map(Object::toString)
+        String s = stream().limit(TO_STRING_MAX).map(Object::toString)
                 .collect(Collectors.joining("\n"));
         if (size() > TO_STRING_MAX) {
             return s + "\n# ... +" + (size() - TO_STRING_MAX) + " more";
@@ -204,23 +204,18 @@ final class DatasetImpl implements Dataset {
 
 	@Override
 	public Optional<Graph> getGraph(BlankNodeOrIRI graphName) {
-		// NOTE: Always returns a new copy
-		Graph g = new GraphImpl(factory);
-		getQuads(Optional.ofNullable(graphName), null, null, null)
-			.map(Quad::asTriple)
-			.sequential()
-			.forEach(g::add);
-		return Optional.of(g);
+		return Optional.of(new DatasetGraphView(this, graphName));
 	}
 
 	@Override
 	public Stream<BlankNodeOrIRI> getGraphNames() {
 		// Not very efficient..
-		return getQuads()
+		return stream()
 				.map(Quad::getGraphName)
 				.filter(Optional::isPresent).map(Optional::get)
 				.distinct();
 	}
+
 
 
 }
