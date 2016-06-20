@@ -17,7 +17,6 @@
  */
 package org.apache.commons.rdf.rdf4j.impl;
 
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -43,7 +42,8 @@ public class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> imp
 	public RepositoryGraphImpl(Repository repository, boolean includeInferred, boolean unionGraph) {
 		super(repository, includeInferred);
 		if (unionGraph) {
-			this.contextFilter = null;
+			// no context filter aka any context
+			this.contextFilter = new Resource[] { };
 		} else {
 			// default context: null
 			this.contextFilter = new Resource[] { null };
