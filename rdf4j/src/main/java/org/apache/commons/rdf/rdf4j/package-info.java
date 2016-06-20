@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -15,24 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/**
+ * Commons RDF integration with <a href="http://rdf4j.org/">RDF4J</a>.
+ * <p>
+ * 
+ *
+ */
 package org.apache.commons.rdf.rdf4j;
 
-import org.apache.commons.rdf.api.RDFTerm;
-import org.eclipse.rdf4j.model.BNode;
-import org.eclipse.rdf4j.model.IRI;
-import org.eclipse.rdf4j.model.Literal;
-import org.eclipse.rdf4j.model.Value;
 
-/**
- * Marker interface for RDF4J implementations of RDFTerm.
- *  
- */
-public interface RDF4JTerm<T extends Value> extends RDFTerm {
-	
-	/**
-	 * Return the RDF4J {@link Value} that this RDFTerm represents.
-	 * 
-	 * @return The wrapped {@link Value} (e.g. a {@link Literal}, {@link IRI} or {@link BNode}.
-	 */
-	public T asValue();
-}

@@ -54,7 +54,7 @@ import org.eclipse.rdf4j.repository.Repository;
  * <p>
  * The {@link #RDF4JTermFactory()} constructor uses a {@link SimpleValueFactory}
  * to create corresponding RDF4J {@link Value} instances. Alternatively, this
- * factory can be constructed with a {@link ValueFactory} using
+ * factory can be constructed with a different {@link ValueFactory} using
  * {@link #RDF4JTermFactory(ValueFactory)}.
  * <p>
  * {@link #asRDFTerm(Value)} can be used to convert any RDF4J {@link Value} to
@@ -65,13 +65,37 @@ import org.eclipse.rdf4j.repository.Repository;
  * {@link #createGraph()} creates a new Graph backed by {@link LinkedHashModel}.
  * To use other models, see {@link #asRDFTermGraph(Model)}.
  * <p>
- * {@link #asTriple(Statement)} can be used to convert a RDF4J {@link Statement}
- * to a Commons RDF {@link Triple}.
+ * To adapt a RDF4J {@link Repository} as a {@link Dataset} or {@link Graph},
+ * use {@link #asRDFTermDataset(Repository)} or
+ * {@link #asRDFTermGraph(Repository)}.
  * <p>
- * {@link #asStatement(Triple)} can be used to convert any Commons RDF
- * {@link Triple} to a RDF4J {@link Statement}. <p {@link #asValue(RDFTerm)} can
- * be used to convert any Commons RDF {@link RDFTerm} to a corresponding RDF4J
- * {@link Value}.
+ * {@link #asTriple(Statement)} can be used to convert a RDF4J {@link Statement}
+ * to a Commons RDF {@link Triple}, and equivalent {@link #asQuad(Statement)} to
+ * convert a {@link Quad}.
+ * <p>
+ * To convert any {@link Triple} or {@link Quad} to to RDF4J {@link Statement},
+ * use {@link #asStatement(TripleLike)}. This recognises previously converted
+ * {@link RDF4JTriple}s and {@link RDF4JQuad}s without re-converting their
+ * {@link RDF4JTripleLike#asStatement()}.
+ * <p>
+ * Likewise, {@link #asValue(RDFTerm)} can be used to convert any Commons RDF
+ * {@link RDFTerm} to a corresponding RDF4J {@link Value}. This recognises
+ * previously converted {@link RDF4JTerm}s without re-converting their
+ * {@link RDF4JTerm#asValue()}.
+ * <p>
+ * For the purpose of {@link BlankNode} equivalence, this factory contains an
+ * internal {@link UUID} salt that is used by adapter methods like
+ * {@link #asQuad(Statement)}, {@link #asTriple(Statement)},
+ * {@link #asRDFTerm(Value)} as well as {@link #createBlankNode(String)}. As
+ * RDF4J {@link BNode} instances from multiple repositories or models may have
+ * the same {@link BNode#getID()}, converting them with the above methods might
+ * cause accidental {@link BlankNode} equivalence. Note that the {@link Graph}
+ * and {@link Dataset} adapter methods like
+ * {@link #asRDFTermDataset(Repository)} and {@link #asRDFTermGraph(Model)}
+ * therefore uses a unique {@link RDF4JTermFactory} internally. An alternative
+ * is to use the static methods {@link #asRDFTerm(Value, UUID)},
+ * {@link #asQuad(Statement, UUID)} or {@link #asTriple(Statement, UUID)} with
+ * a provided {@link UUID} salt.
  * 
  */
 public class RDF4JTermFactory implements RDFTermFactory {
@@ -89,18 +113,26 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	 * {@link org.eclipse.rdf4j.model.Literal}. is converted to a
 	 * {@link org.apache.commons.rdf.api.Literal}
 	 * 
-	 * @param value
-	 * @return
+	 * @param value The RDF4J {@link Value} to convert.
+	 * @param salt
+	 *            A {@link UUID} salt to use for uniquely mapping any
+	 *            {@link BNode}s. The salt should typically be the same for
+	 *            multiple statements in the same {@link Repository} or
+	 *            {@link Model} to ensure {@link BlankNode#equals(Object)} and
+	 *            {@link BlankNode#uniqueReference()} works as intended.
+	 * @return A {@link RDFTerm} that corresponds to the RDF4J value
+	 * @throws IllegalArgumentException if the value is not a BNode, Literal or IRI 
 	 */
-	public static RDF4JTerm<?> asRDFTerm(final org.eclipse.rdf4j.model.Value value, UUID salt) {
+	@SuppressWarnings("unchecked")
+	public static <T extends Value> RDF4JTerm<T> asRDFTerm(final T value, UUID salt) {
 		if (value instanceof BNode) {
-			return new BlankNodeImpl((BNode) value, salt);
+			return (RDF4JTerm<T>) new BlankNodeImpl((BNode) value, salt);
 		}
 		if (value instanceof org.eclipse.rdf4j.model.Literal) {
-			return new LiteralImpl((org.eclipse.rdf4j.model.Literal) value);
+			return (RDF4JTerm<T>) new LiteralImpl((org.eclipse.rdf4j.model.Literal) value);
 		}
 		if (value instanceof org.eclipse.rdf4j.model.IRI) {
-			return new IRIImpl((org.eclipse.rdf4j.model.IRI) value);
+			return (RDF4JTerm<T>) new IRIImpl((org.eclipse.rdf4j.model.IRI) value);
 		}
 		throw new IllegalArgumentException("Value is not a BNode, Literal or IRI: " + value.getClass());
 	}
@@ -109,7 +141,14 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	 * Adapt a RDF4J {@link Statement} as a Commons RDF {@link Triple}.
 	 * 
 	 * @param statement
-	 * @return
+	 *            The statement to convert
+	 * @param salt
+	 *            A {@link UUID} salt to use for uniquely mapping any
+	 *            {@link BNode}s. The salt should typically be the same for
+	 *            multiple statements in the same {@link Repository} or
+	 *            {@link Model} to ensure {@link BlankNode#equals(Object)} and
+	 *            {@link BlankNode#uniqueReference()} works as intended.
+	 * @return A {@link Triple} that corresponds to the RDF4J statement
 	 */
 	public static RDF4JTriple asTriple(final Statement statement, UUID salt) {
 		return new TripleImpl(statement, salt);
@@ -129,14 +168,47 @@ public class RDF4JTermFactory implements RDFTermFactory {
 
 	/**
 	 * Adapt a RDF4J {@link Statement} as a Commons RDF {@link Quad}.
+	 * <p>
+	 * For the purpose of {@link BlankNode} equivalence, this 
+	 * method will use an internal salt UUID that is unique per instance of 
+	 * {@link RDF4JTermFactory}. 
+	 * <p>
+	 * <strong>NOTE:</strong> If combining RDF4J {@link Statement}s
+	 * multiple repositories or models, then their {@link BNode}s 
+	 * may have the same {@link BNode#getID()}, which with this method 
+	 * would become equivalent according to {@link BlankNode#equals(Object)} and
+	 * {@link BlankNode#uniqueReference()}, 
+	 * unless a separate {@link RDF4JTermFactory}
+	 * instance is used per RDF4J repository/model.  
 	 * 
+	 * @see #asQuad(Statement, UUID)
 	 * @param statement
+	 *            The statement to convert
 	 * @return A {@link RDF4JQuad} that is equivalent to the statement
 	 */
 	public RDF4JQuad asQuad(final Statement statement) {
 		return new QuadImpl(statement, salt);
 	}
 
+	/**
+	 * Adapt a RDF4J {@link Statement} as a Commons RDF {@link Quad}.
+	 *
+	 * @see #asQuad(Statement)
+	 * @param statement
+	 *            The statement to convert
+	 * @param salt
+	 *            A {@link UUID} salt to use for uniquely mapping any
+	 *            {@link BNode}s. The salt should typically be the same for
+	 *            multiple statements in the same {@link Repository} or
+	 *            {@link Model} to ensure {@link BlankNode#equals(Object)} and
+	 *            {@link BlankNode#uniqueReference()} works as intended.
+	 * @return A {@link RDF4JQuad} that is equivalent to the statement
+	 */
+	public static RDF4JQuad asQuad(final Statement statement, UUID salt) {
+		return new QuadImpl(statement, salt);
+	}
+
+	
 	/**
 	 * 
 	 * Adapt a RDF4J {@link Value} as a Commons RDF {@link RDFTerm}.
@@ -149,11 +221,24 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	 * {@link org.apache.commons.rdf.api.IRI} and a
 	 * {@link org.eclipse.rdf4j.model.Literal}. is converted to a
 	 * {@link org.apache.commons.rdf.api.Literal}
+	 * <p>
+	 * For the purpose of {@link BlankNode} equivalence, this 
+	 * method will use an internal salt UUID that is unique per instance of 
+	 * {@link RDF4JTermFactory}. 
+	 * <p>
+	 * <strong>NOTE:</strong> If combining RDF4J values from
+	 * multiple repositories or models, then their {@link BNode}s 
+	 * may have the same {@link BNode#getID()}, which with this method 
+	 * would become equivalent according to {@link BlankNode#equals(Object)} and
+	 * {@link BlankNode#uniqueReference()}, 
+	 * unless a separate {@link RDF4JTermFactory}
+	 * instance is used per RDF4J repository/model.  
 	 * 
-	 * @param value
-	 * @return
+	 * @param value The RDF4J {@link Value} to convert.
+	 * @return A {@link RDFTerm} that corresponds to the RDF4J value
+	 * @throws IllegalArgumentException if the value is not a BNode, Literal or IRI 
 	 */
-	public RDF4JTerm<?> asRDFTerm(final org.eclipse.rdf4j.model.Value value) {
+	public <T extends Value> RDF4JTerm<T> asRDFTerm(T value) {
 		return asRDFTerm(value, salt);
 	}
 
@@ -234,6 +319,21 @@ public class RDF4JTermFactory implements RDFTermFactory {
 		return new RepositoryGraphImpl(repository, includeInferred, unionGraph);
 	}
 
+	/**
+	 * Adapt a Commons RDF {@link Triple} or {@link Quad} as a RDF4J
+	 * {@link Statement}.
+	 * <p>
+	 * If the <code>tripleLike</code> argument is an {@link RDF4JTriple} or
+	 * a {@link RDF4JQuad}, then its {@link RDF4JTripleLike#asStatement()} is
+	 * returned as-is. Note that this means that a {@link RDF4JTriple} would
+	 * preserve its {@link Statement#getContext()}, and that any 
+	 * {@link BlankNode}s would be deemed equivalent in RDF4J
+	 * if they have the same {@link BNode#getID()}.
+	 * 
+	 * @param tripleLike
+	 *            A {@link Triple} or {@link Quad} to adapt
+	 * @return A corresponding {@link Statement}
+	 */
 	public Statement asStatement(TripleLike<BlankNodeOrIRI, org.apache.commons.rdf.api.IRI, RDFTerm> tripleLike) {
 		if (tripleLike instanceof RDF4JTripleLike) {
 			// Return original statement - this covers both RDF4JQuad and
@@ -257,6 +357,18 @@ public class RDF4JTermFactory implements RDFTermFactory {
 
 	/**
 	 * Adapt a RDF4J {@link Statement} as a Commons RDF {@link Triple}.
+	 * <p>
+	 * For the purpose of {@link BlankNode} equivalence, this 
+	 * method will use an internal salt UUID that is unique per instance of 
+	 * {@link RDF4JTermFactory}. 
+	 * <p>
+	 * <strong>NOTE:</strong> If combining RDF4J statements from
+	 * multiple repositories or models, then their {@link BNode}s 
+	 * may have the same {@link BNode#getID()}, which with this method 
+	 * would become equivalent according to {@link BlankNode#equals(Object)} and
+	 * {@link BlankNode#uniqueReference()}, 
+	 * unless a separate {@link RDF4JTermFactory}
+	 * instance is used per RDF4J repository/model.
 	 * 
 	 * @param statement
 	 * @return A {@link RDF4JTriple} that is equivalent to the statement

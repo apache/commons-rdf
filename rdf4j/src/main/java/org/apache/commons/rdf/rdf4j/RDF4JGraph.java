@@ -23,7 +23,9 @@ import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.rdf4j.impl.ModelGraphImpl;
 import org.apache.commons.rdf.rdf4j.impl.RepositoryGraphImpl;
+import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.repository.Repository;
 
 
 /**
@@ -37,23 +39,27 @@ public interface RDF4JGraph extends Graph, RDF4JGraphLike<Triple> {
 	/**
 	 * Return a copy of the context filter, if present.
 	 * <p>
-	 * If {@link Optional#isPresent()}, the filter determines which contexts
-	 * this graph reflect. Modifications to the graph (e.g. {@link #add(Triple)
-	 * will be performed for all the specified contexts, while retrieval (e.g.
-	 * {@link #contains(Triple)}) will succeed if the triple is in at least one
-	 * of the specified contexts.
+	 * If {@link Optional#isPresent()}, the filter determines which
+	 * <em>contexts</em> in the corresponding RDF4J {@link Model} or
+	 * {@link Repository} that this graph reflect. Modifications to the graph
+	 * (e.g. {@link #add(Triple)} will be performed for all the specified
+	 * contexts, while retrieval (e.g. {@link #contains(Triple)}) will succeed
+	 * if the triple is in at least one of the specified contexts.
 	 * <p>
 	 * The context filter array may contain <code>null</code>, indicating the
 	 * default context (the <em>default graph</em> in RDF datasets).
 	 * <p>
-	 * If the context filter is {@link Optional#empty()}, then this is a union
-	 * graph which triples reflecting statements in any contexts. Triples added
-	 * to the graph will be added in the default context <code>null</code>.
+	 * If the context filter is {@link Optional#empty()}, then this is a
+	 * <em>union graph</em> which triples reflecting statements in any contexts.
+	 * Triples added to the graph will be added in the default context
+	 * <code>null</code>.
 	 * <p>
-	 * The returned filter is a copy and thus any modifications are not
-	 * reflected in the RDF4JGraph.
+	 * The filter array is a copy, and thus any modifications are not reflected
+	 * in the RDF4JGraph.
 	 * 
-	 * @return
+	 * @return The context filter as an array of {@link Resource}s, or
+	 *         {@link Optional#empty()} indicating the union graph (any
+	 *         context).
 	 */
 	public Optional<Resource[]> getContextFilter();
 	
