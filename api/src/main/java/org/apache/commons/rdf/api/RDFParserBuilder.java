@@ -191,8 +191,6 @@ public interface RDFParserBuilder {
 		});
 	}
 
-	RDFParserBuilder target(Consumer<Triple> tripleConsumer);
-	
 	/**
 	 * Specify a {@link Dataset} to add parsed quads to.
 	 * <p>
