@@ -18,23 +18,43 @@
     limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.apache.commons</groupId>
-        <artifactId>commons-rdf-parent</artifactId>
-        <version>0.3.0-incubating-SNAPSHOT</version>
-    </parent>
+	<parent>
+		<groupId>org.apache.commons</groupId>
+		<artifactId>commons-rdf-parent</artifactId>
+		<version>0.3.0-incubating-SNAPSHOT</version>
+	</parent>
 
-    <artifactId>commons-rdf-rdf4j</artifactId>
-    <packaging>jar</packaging>
-	<properties>	
+	<artifactId>commons-rdf-rdf4j</artifactId>
+	<packaging>jar</packaging>
+	<properties>
 		<rdf4j.version>2.0M2</rdf4j.version>
 	</properties>
 
-    <name>Commons RDF: Integration: RDF4j</name>
-    <description>Eclipse RDF4j implementation of Commons RDF API</description>
+	<name>Commons RDF: Integration: RDF4j</name>
+	<description>Eclipse RDF4j implementation of Commons RDF API</description>
+
+	<build>
+		<plugins>
+			<plugin>
+
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<configuration>
+					<instructions>
+						<!-- Not sure why this is needed, .impl and .internal is normally hidden 
+							by the Bundle Plugin.. -->
+
+						<Export-Package>org.apache.commons.rdf.rdf4j</Export-Package>
+						<Private-Package>org.apache.commons.rdf.rdf4j.impl</Private-Package>
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 	<dependencies>
 		<dependency>
@@ -47,37 +67,107 @@
 			<artifactId>commons-rdf-simple</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+
+		<!-- Selected rdf4j dependencies We don't use rdf4j-runtime or rdf4j-runtime-osgi 
+			here, as they pull in various depenencies like lucene, which might not be 
+			needed. -->
+
 		<dependency>
 			<groupId>org.eclipse.rdf4j</groupId>
-			<artifactId>rdf4j-runtime</artifactId>
+			<artifactId>rdf4j-model</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.rdf4j</groupId>
+			<artifactId>rdf4j-repository-api</artifactId>
+		</dependency>
+
+		<!-- For RDF4JParserBuilder, these are the RIO dependencies for the standard 
+			RDF 1.1 languages -->
+		<dependency>
+			<groupId>org.eclipse.rdf4j</groupId>
+			<artifactId>rdf4j-rio-turtle</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.rdf4j</groupId>
+			<artifactId>rdf4j-rio-ntriples</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.rdf4j</groupId>
+			<artifactId>rdf4j-rio-nquads</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.rdf4j</groupId>
+			<artifactId>rdf4j-rio-rdfxml</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.rdf4j</groupId>
+			<artifactId>rdf4j-rio-trig</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.rdf4j</groupId>
+			<artifactId>rdf4j-rio-jsonld</artifactId>
+			<!-- FIXME: version should be in rdf4j-bom https://github.com/eclipse/rdf4j/issues/189 -->
 			<version>${rdf4j.version}</version>
 		</dependency>
-        
-        <dependency>
-            <groupId>${project.parent.groupId}</groupId>
-            <artifactId>commons-rdf-api</artifactId>
-            <version>${project.version}</version>
-            <classifier>tests</classifier>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+		<!-- Languages notably missing, and why: 
+		
+		rdf4j-rio-rdfjson: standard, but https://www.w3.org/TR/rdf-json/ says:
+			"The syntax defined in this document should not be used unless there is a specific reason to do so" 
+			
+		rdf4j-rio-binary: non-standard 
+		
+		rdf4j-rio-n3: unofficial standard, super-seeded by Turtle
+			
+		rdf4j-rio-trix: unofficial standard 
+		-->
 
-<!-- Ensure consistent rdf4j versions across the board -->
-<dependencyManagement>
-    <dependencies>
-        <dependency>
-            <groupId>org.eclipse.rdf4j</groupId>
-            <artifactId>rdf4j-bom</artifactId>
-            <version>${rdf4j.version}</version>
-            <type>pom</type>
-            <scope>import</scope>
-        </dependency>
-    </dependencies>
-</dependencyManagement>
+
+		<!-- There are multiple RDF4J sail/repository implementations, we use the 
+			below for testing. -->
+		<dependency>
+			<groupId>org.eclipse.rdf4j</groupId>
+			<artifactId>rdf4j-sail-memory</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.rdf4j</groupId>
+			<artifactId>rdf4j-sail-nativerdf</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.rdf4j</groupId>
+			<artifactId>rdf4j-repository-sail</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+
+		<dependency>
+			<groupId>${project.parent.groupId}</groupId>
+			<artifactId>commons-rdf-api</artifactId>
+			<version>${project.version}</version>
+			<classifier>tests</classifier>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+
+
+	<!-- Ensure consistent rdf4j versions across the board -->
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.eclipse.rdf4j</groupId>
+				<artifactId>rdf4j-bom</artifactId>
+				<version>${rdf4j.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 </project>
