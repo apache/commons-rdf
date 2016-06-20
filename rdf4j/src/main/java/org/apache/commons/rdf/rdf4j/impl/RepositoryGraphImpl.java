@@ -17,6 +17,8 @@
  */
 package org.apache.commons.rdf.rdf4j.impl;
 
+import java.util.Arrays;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
@@ -154,4 +156,9 @@ public class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> imp
 		return rdf4jTermFactory.asTriple(statement);
 	}
 
+	public Optional<Resource[]> getContextFilter() {
+		// Make sure we clone
+		return Optional.ofNullable(contextFilter).map(f -> f.clone());		
+	}
+	
 }

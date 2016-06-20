@@ -124,4 +124,11 @@ public final class ModelGraphImpl implements RDF4JGraph {
 			.map(rdf4jTermFactory::asTriple);
 	}
 	
+	@Override
+	public Optional<Resource[]> getContextFilter() {
+		// ModelGraph always do the unionGraph
+		return Optional.empty();
+		// TODO: Should we support contextFilter like in RepositoryGraphImpl?
+	}
+	
 }

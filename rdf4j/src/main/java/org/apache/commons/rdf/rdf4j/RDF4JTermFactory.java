@@ -26,6 +26,7 @@ import org.apache.commons.rdf.api.BlankNode;
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.Graph;
+import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.RDFTermFactory;
@@ -116,7 +117,7 @@ public class RDF4JTermFactory implements RDFTermFactory {
 
 	private UUID salt = UUID.randomUUID();
 
-	private ValueFactory valueFactory;
+	private final ValueFactory valueFactory;
 
 	public RDF4JTermFactory() {
 		this.valueFactory = SimpleValueFactory.getInstance();
@@ -251,7 +252,7 @@ public class RDF4JTermFactory implements RDFTermFactory {
 			context = (org.eclipse.rdf4j.model.Resource) asValue(quad.getGraphName().orElse(null));
 		}
 
-		return valueFactory.createStatement(subject, predicate, object, context);
+		return getValueFactory().createStatement(subject, predicate, object, context);
 	}
 
 	/**
@@ -298,17 +299,17 @@ public class RDF4JTermFactory implements RDFTermFactory {
 		}
 		if (term instanceof org.apache.commons.rdf.api.IRI) {
 			org.apache.commons.rdf.api.IRI iri = (org.apache.commons.rdf.api.IRI) term;
-			return valueFactory.createIRI(iri.getIRIString());
+			return getValueFactory().createIRI(iri.getIRIString());
 		}
 		if (term instanceof org.apache.commons.rdf.api.Literal) {
 			org.apache.commons.rdf.api.Literal literal = (org.apache.commons.rdf.api.Literal) term;
 			String label = literal.getLexicalForm();
 			if (literal.getLanguageTag().isPresent()) {
 				String lang = literal.getLanguageTag().get();
-				return valueFactory.createLiteral(label, lang);
+				return getValueFactory().createLiteral(label, lang);
 			}
 			org.eclipse.rdf4j.model.IRI dataType = (org.eclipse.rdf4j.model.IRI) asValue(literal.getDatatype());
-			return valueFactory.createLiteral(label, dataType);
+			return getValueFactory().createLiteral(label, dataType);
 		}
 		if (term instanceof BlankNode) {
 			// This is where it gets tricky to support round trips!
@@ -316,20 +317,20 @@ public class RDF4JTermFactory implements RDFTermFactory {
 			// FIXME: The uniqueReference might not be a valid BlankNode
 			// identifier..
 			// does it have to be in RDF4J?
-			return valueFactory.createBNode(blankNode.uniqueReference());
+			return getValueFactory().createBNode(blankNode.uniqueReference());
 		}
 		throw new IllegalArgumentException("RDFTerm was not an IRI, Literal or BlankNode: " + term.getClass());
 	}
 
 	@Override
 	public RDF4JBlankNode createBlankNode() throws UnsupportedOperationException {
-		BNode bnode = valueFactory.createBNode();
+		BNode bnode = getValueFactory().createBNode();
 		return (RDF4JBlankNode) asRDFTerm(bnode);
 	}
 
 	@Override
 	public RDF4JBlankNode createBlankNode(String name) throws UnsupportedOperationException {
-		BNode bnode = valueFactory.createBNode(name);
+		BNode bnode = getValueFactory().createBNode(name);
 		return (RDF4JBlankNode) asRDFTerm(bnode);
 	}
 
@@ -340,37 +341,54 @@ public class RDF4JTermFactory implements RDFTermFactory {
 
 	@Override
 	public RDF4JIRI createIRI(String iri) throws IllegalArgumentException, UnsupportedOperationException {
-		return (RDF4JIRI) asRDFTerm(valueFactory.createIRI(iri));
+		return (RDF4JIRI) asRDFTerm(getValueFactory().createIRI(iri));
 	}
 
 	@Override
 	public RDF4JLiteral createLiteral(String lexicalForm)
 			throws IllegalArgumentException, UnsupportedOperationException {
-		org.eclipse.rdf4j.model.Literal lit = valueFactory.createLiteral(lexicalForm);
+		org.eclipse.rdf4j.model.Literal lit = getValueFactory().createLiteral(lexicalForm);
 		return (RDF4JLiteral) asRDFTerm(lit);
 	}
 
 	@Override
 	public org.apache.commons.rdf.api.Literal createLiteral(String lexicalForm, org.apache.commons.rdf.api.IRI dataType)
 			throws IllegalArgumentException, UnsupportedOperationException {
-		org.eclipse.rdf4j.model.IRI iri = valueFactory.createIRI(dataType.getIRIString());
-		org.eclipse.rdf4j.model.Literal lit = valueFactory.createLiteral(lexicalForm, iri);
+		org.eclipse.rdf4j.model.IRI iri = getValueFactory().createIRI(dataType.getIRIString());
+		org.eclipse.rdf4j.model.Literal lit = getValueFactory().createLiteral(lexicalForm, iri);
 		return (org.apache.commons.rdf.api.Literal) asRDFTerm(lit);
 	}
 
 	@Override
 	public org.apache.commons.rdf.api.Literal createLiteral(String lexicalForm, String languageTag)
 			throws IllegalArgumentException, UnsupportedOperationException {
-		org.eclipse.rdf4j.model.Literal lit = valueFactory.createLiteral(lexicalForm, languageTag);
+		org.eclipse.rdf4j.model.Literal lit = getValueFactory().createLiteral(lexicalForm, languageTag);
 		return (org.apache.commons.rdf.api.Literal) asRDFTerm(lit);
 	}
 
 	@Override
 	public RDF4JTriple createTriple(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object)
 			throws IllegalArgumentException, UnsupportedOperationException {
-		final Statement statement = valueFactory.createStatement((org.eclipse.rdf4j.model.Resource) asValue(subject),
-				(org.eclipse.rdf4j.model.IRI) asValue(predicate), asValue(object));
+		final Statement statement = getValueFactory().createStatement(
+				(org.eclipse.rdf4j.model.Resource) asValue(subject),
+				(org.eclipse.rdf4j.model.IRI) asValue(predicate), 
+				asValue(object));
 		return asTriple(statement);
+	}
+
+	@Override
+	public Quad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
+			throws IllegalArgumentException, UnsupportedOperationException {
+		final Statement statement = getValueFactory().createStatement(
+				(org.eclipse.rdf4j.model.Resource) asValue(subject),
+				(org.eclipse.rdf4j.model.IRI) asValue(predicate), 
+				asValue(object), 
+				(org.eclipse.rdf4j.model.Resource)asValue(graphName));
+		return asQuad(statement);
+	}
+	
+	public ValueFactory getValueFactory() {
+		return valueFactory;
 	}
 
 }
