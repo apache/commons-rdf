@@ -28,6 +28,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.function.Consumer;
 
+import org.apache.commons.rdf.api.Dataset;
+import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFParserBuilder;
@@ -123,6 +125,40 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 	}
 
 	/**
+	 * Get the target dataset as set by {@link #target(Dataset)}.
+	 * <p>
+	 * The return value is {@link Optional#isPresent()} if and only if
+	 * {@link #target(Dataset)} has been set, meaning that the implementation
+	 * may choose to append parsed quads to the {@link Dataset} directly instead
+	 * of relying on the generated {@link #getTarget()} consumer.
+	 * <p>
+	 * If this value is present, then {@link #getTargetGraph()} MUST 
+	 * be {@link Optional#empty()}.
+	 * 
+	 * @return The target Dataset, or {@link Optional#empty()} if another kind of target has been set.
+	 */
+	public Optional<Dataset> getTargetDataset() {
+		return targetDataset;
+	}
+
+	/**
+	 * Get the target graph as set by {@link #target(Graph)}.
+	 * <p>
+	 * The return value is {@link Optional#isPresent()} if and only if
+	 * {@link #target(Graph)} has been set, meaning that the implementation
+	 * may choose to append parsed triples to the {@link Graph} directly instead
+	 * of relying on the generated {@link #getTarget()} consumer.
+	 * <p>
+	 * If this value is present, then {@link #getTargetDataset()} MUST 
+	 * be {@link Optional#empty()}.
+	 * 
+	 * @return The target Graph, or {@link Optional#empty()} if another kind of target has been set.
+	 */	
+	public Optional<Graph>  getTargetGraph() {
+		return targetGraph;
+	}
+	
+	/**
 	 * Get the set base {@link IRI}, if present.
 	 * <p>
 	 * 
@@ -164,6 +200,7 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 		return sourceIri;
 	}
 
+
 	private Optional<RDFTermFactory> rdfTermFactory = Optional.empty();
 	private Optional<RDFSyntax> contentTypeSyntax = Optional.empty();
 	private Optional<String> contentType = Optional.empty();
@@ -172,6 +209,8 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 	private Optional<Path> sourceFile = Optional.empty();
 	private Optional<IRI> sourceIri = Optional.empty();
 	private Consumer<Quad> target;
+	private Optional<Dataset> targetDataset;
+	private Optional<Graph> targetGraph;
 
 	@Override
 	public AbstractRDFParserBuilder clone() {
@@ -319,6 +358,22 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 		sourceFile = Optional.empty();
 	}
 
+
+	/**
+	 * Reset all optional target* fields to Optional.empty()</code>
+	 * <p>
+	 * Note that the consumer set for {@link #getTarget()} is
+	 * NOT reset.
+	 * <p>
+	 * Subclasses should override this and call <code>super.resetTarget()</code>
+	 * if they need to reset any additional target* fields.
+	 * 
+	 */
+	protected void resetTarget() {
+		targetDataset = Optional.empty();
+		targetGraph = Optional.empty();
+	}	
+	
 	/**
 	 * Parse {@link #sourceInputStream}, {@link #sourceFile} or
 	 * {@link #sourceIri}.
@@ -386,6 +441,10 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 	protected void checkTarget() {
 		if (target == null) {
 			throw new IllegalStateException("target has not been set");
+		}
+		if (targetGraph.isPresent() && targetDataset.isPresent()) {
+			// This should not happen as each target(..) method resets the optionals
+			throw new IllegalStateException("targetGraph and targetDataset can't both be set");
 		}
 	}
 
@@ -470,8 +529,27 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 	@Override
 	public RDFParserBuilder target(Consumer<Quad> consumer) {
 		AbstractRDFParserBuilder c = clone();
+		c.resetTarget();
 		c.target = consumer;
 		return c;
 	}
+	
+	@Override
+	public RDFParserBuilder target(Dataset dataset) {
+		AbstractRDFParserBuilder c = (AbstractRDFParserBuilder) RDFParserBuilder.super.target(dataset);
+		c.resetTarget();
+		c.targetDataset = Optional.of(dataset);
+		return c;
+	}
+	
+	@Override
+	public RDFParserBuilder target(Graph graph) {
+		AbstractRDFParserBuilder c = (AbstractRDFParserBuilder) RDFParserBuilder.super.target(graph);
+		c.resetTarget();
+		c.targetGraph = Optional.of(graph);
+		return c;
+	}
+	
+
 
 }
