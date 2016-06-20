@@ -20,7 +20,6 @@ package org.apache.commons.rdf.rdf4j;
 import org.apache.commons.rdf.api.AbstractRDFTermFactoryTest;
 import org.apache.commons.rdf.api.RDFTermFactory;
 import org.junit.Assume;
-import org.junit.Ignore;
 
 public class Rdf4JRDFTermFactoryTest extends AbstractRDFTermFactoryTest {
 
