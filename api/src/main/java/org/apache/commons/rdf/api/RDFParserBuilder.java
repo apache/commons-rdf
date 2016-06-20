@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.concurrent.Future;
+import java.util.function.Consumer;
 
 /**
  * Builder for parsing an RDF source into a Graph.
@@ -35,7 +36,7 @@ import java.util.concurrent.Future;
  * RDFParserBuilder - however methods can be called in any order.
  * <p>
  * The call to {@link #parse()} returns a {@link Future}, allowing asynchronous parse
- * operations. This can be combined with {@link #intoGraph(Graph)}
+ * operations. This can be combined with {@link #target(Graph)}
  * allowing access to the graph before parsing has completed,
  * however callers are still recommended to to check 
  * {@link Future#get()} for any exceptions thrown during parsing.
@@ -73,7 +74,7 @@ public interface RDFParserBuilder {
 	 * Specify which {@link RDFTermFactory} to use for generating
 	 * {@link RDFTerm}s.
 	 * <p>
-	 * This option may be used together with {@link #intoGraph(Graph)} to
+	 * This option may be used together with {@link #target(Graph)} to
 	 * override the implementation's default factory and graph.
 	 * <p>
 	 * <strong>Warning:</strong> Using the same {@link RDFTermFactory} for 
@@ -82,7 +83,7 @@ public interface RDFParserBuilder {
 	 * use the {@link RDFTermFactory#createBlankNode(String)} method
 	 * from the parsed blank node labels.
 	 * 
-	 * @see #intoGraph(Graph)
+	 * @see #target(Graph)
 	 * @param rdfTermFactory
 	 *            {@link RDFTermFactory} to use for generating RDFTerms.
 	 * @return An {@link RDFParserBuilder} that will use the specified
@@ -165,8 +166,12 @@ public interface RDFParserBuilder {
 	 * @return An {@link RDFParserBuilder} that will insert triples into the
 	 *         specified graph.
 	 */
-	RDFParserBuilder intoGraph(Graph graph);
+	default RDFParserBuilder target(Graph graph) {
+		return target(graph::add);
+	}
 
+	RDFParserBuilder target(Consumer<Triple> tripleConsumer);
+	
 	/**
 	 * Specify a base IRI to use for parsing any relative IRI references.
 	 * <p>
@@ -357,7 +362,7 @@ public interface RDFParserBuilder {
 	 * synchronous implementation MAY be blocking on the <code>parse()</code>
 	 * call and return a Future that is already {@link Future#isDone()}.
 	 * <p>
-	 * If {@link #intoGraph(Graph)} has been specified, this SHOULD be the same
+	 * If {@link #target(Graph)} has been specified, this SHOULD be the same
 	 * {@link Graph} instance returned from {@link Future#get()} once parsing has
 	 * completed successfully.
 	 * <p>
