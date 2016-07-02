@@ -22,58 +22,71 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.concurrent.Future;
+import java.util.function.Consumer;
 
 /**
- * Builder for parsing an RDF source into a Graph.
+ * Builder for parsing an RDF source into a target (e.g. a Graph/Dataset).
  * <p>
  * This interface follows the
  * <a href="https://en.wikipedia.org/wiki/Builder_pattern">Builder pattern</a>,
  * allowing to set parser settings like {@link #contentType(RDFSyntax)} and
  * {@link #base(IRI)}. A caller MUST call one of the <code>source</code> methods
  * (e.g. {@link #source(IRI)}, {@link #source(Path)},
- * {@link #source(InputStream)}) before calling {@link #parse()} on the returned
+ * {@link #source(InputStream)}), and MUST call one of the <code>target</code>
+ * methods (e.g. {@link #target(Consumer)}, {@link #target(Dataset)},
+ * {@link #target(Graph)}) before calling {@link #parse()} on the returned
  * RDFParserBuilder - however methods can be called in any order.
  * <p>
- * The call to {@link #parse()} returns a {@link Future}, allowing asynchronous parse
- * operations. This can be combined with {@link #intoGraph(Graph)}
- * allowing access to the graph before parsing has completed,
- * however callers are still recommended to to check 
- * {@link Future#get()} for any exceptions thrown during parsing.
+ * The call to {@link #parse()} returns a {@link Future}, allowing asynchronous
+ * parse operations. Callers are recommended to check {@link Future#get()} to
+ * ensure parsing completed successfully, or catch exceptions thrown during
+ * parsing.
  * <p>
  * Setting a method that has already been set will override any existing value
  * in the returned builder - irregardless of the parameter type (e.g.
  * {@link #source(IRI)} will override a previous {@link #source(Path)}. Settings
- * can be unset by passing <code>null</code> - this may require casting, e.g.
- * <code>contentType( (RDFSyntax) null )</code> to undo a previous call to
- * {@link #contentType(RDFSyntax)}.
+ * can be unset by passing <code>null</code> - note that this may 
+ * require casting, e.g. <code>contentType( (RDFSyntax) null )</code> 
+ * to undo a previous call to {@link #contentType(RDFSyntax)}.
  * <p>
  * It is undefined if a RDFParserBuilder is mutable or thread-safe, so callers
  * should always use the returned modified RDFParserBuilder from the builder
- * methods. The builder may return itself, or a cloned builder with the modified
- * settings applied. Implementations are however encouraged to be 
- * immutable and thread-safe and document this, 
- * as an example starting point, see 
+ * methods. The builder may return itself after modification, 
+ * or a cloned builder with the modified settings applied. 
+ * Implementations are however encouraged to be immutable,
+ * thread-safe and document this. As an example starting point, see
  * {@link org.apache.commons.rdf.simple.AbstractRDFParserBuilder}.
  * <p>
  * Example usage:
  * </p>
  * 
  * <pre>
- *   // Retrieve populated graph from the Future
- *   Graph g1 = ExampleRDFParserBuilder.source("http://example.com/graph.rdf").parse().get(30, TimeUnit.Seconds);
- *   // Or parsing into an existing Graph:
- *   ExampleRDFParserBuilder.source(Paths.get("/tmp/graph.ttl").contentType(RDFSyntax.TURTLE).intoGraph(g1).parse();
+ *   Graph g1 = rDFTermFactory.createGraph();
+ *   new ExampleRDFParserBuilder()
+ *    	.source(Paths.get("/tmp/graph.ttl"))
+ *    	.contentType(RDFSyntax.TURTLE)
+ *   	.target(g1)
+ *   	.parse().get(30, TimeUnit.Seconds);
  * </pre>
- * 
  *
  */
 public interface RDFParserBuilder {
+
+	/** 
+	 * The result of {@link RDFParserBuilder#parse()} indicating
+	 * parsing completed.
+	 * <p>
+	 * This is a marker interface that may be subclassed to include
+	 * parser details, e.g. warning messages or triple counts.
+	 */
+	public interface ParseResult {		
+	}
 
 	/**
 	 * Specify which {@link RDFTermFactory} to use for generating
 	 * {@link RDFTerm}s.
 	 * <p>
-	 * This option may be used together with {@link #intoGraph(Graph)} to
+	 * This option may be used together with {@link #target(Graph)} to
 	 * override the implementation's default factory and graph.
 	 * <p>
 	 * <strong>Warning:</strong> Using the same {@link RDFTermFactory} for 
@@ -82,7 +95,7 @@ public interface RDFParserBuilder {
 	 * use the {@link RDFTermFactory#createBlankNode(String)} method
 	 * from the parsed blank node labels.
 	 * 
-	 * @see #intoGraph(Graph)
+	 * @see #target(Graph)
 	 * @param rdfTermFactory
 	 *            {@link RDFTermFactory} to use for generating RDFTerms.
 	 * @return An {@link RDFParserBuilder} that will use the specified
@@ -144,29 +157,96 @@ public interface RDFParserBuilder {
 	RDFParserBuilder contentType(String contentType) throws IllegalArgumentException;
 
 	/**
-	 * Specify which {@link Graph} to add triples to.
+	 * Specify a {@link Graph} to add parsed triples to.
 	 * <p>
-	 * The default (if this option has not been set) is that each call to
-	 * {@link #parse()} return a new {@link Graph}, which is created using
-	 * {@link RDFTermFactory#createGraph()} if
-	 * {@link #rdfTermFactory(RDFTermFactory)} has been set.
+	 * If the source supports datasets (e.g. the {@link #contentType(RDFSyntax)}
+	 * set has {@link RDFSyntax#supportsDataset} is true)), then only quads in
+	 * the <em>default graph</em> will be added to the Graph as {@link Triple}s.
 	 * <p>
-	 * It is undefined if any triples are added to the specified
-	 * {@link Graph} if the {@link Future#get()} returned from 
-	 * {@link #parse()} throws any exceptions. (However 
-	 * implementations are free to prevent this using transaction 
-	 * mechanisms or similar).  However, if {@link Future#get()}
-	 * does not indicatean exception, the 
-	 * parser implementation SHOULD have inserted all parsed triples 
-	 * to the specified graph.
+	 * It is undefined if any triples are added to the specified {@link Graph}
+	 * if {@link #parse()} throws any exceptions. (However implementations are
+	 * free to prevent this using transaction mechanisms or similar). If
+	 * {@link Future#get()} does not indicate an exception, the parser
+	 * implementation SHOULD have inserted all parsed triples to the specified
+	 * graph.
+	 * <p>
+	 * Calling this method will override any earlier targets set with
+	 * {@link #target(Graph)}, {@link #target(Consumer)} or
+	 * {@link #target(Dataset)}.
+	 * <p>
+	 * The default implementation of this method calls {@link #target(Consumer)}
+	 * with a {@link Consumer} that does {@link Graph#add(Triple)} with
+	 * {@link Quad#asTriple()} if the quad is in the default graph.
 	 * 
 	 * @param graph
-	 *            The {@link Graph} to add triples into.
+	 *            The {@link Graph} to add triples to.
 	 * @return An {@link RDFParserBuilder} that will insert triples into the
 	 *         specified graph.
 	 */
-	RDFParserBuilder intoGraph(Graph graph);
+	default RDFParserBuilder target(Graph graph) {		
+		return target(q -> { 
+			if (! q.getGraphName().isPresent()) { 
+				graph.add(q.asTriple());
+			}
+		});
+	}
 
+	/**
+	 * Specify a {@link Dataset} to add parsed quads to.
+	 * <p>
+	 * It is undefined if any quads are added to the specified
+	 * {@link Dataset} if {@link #parse()} throws any exceptions. 
+	 * (However implementations are free to prevent this using transaction 
+	 * mechanisms or similar).  On the other hand, if {@link #parse()}
+	 * does not indicate an exception, the 
+	 * implementation SHOULD have inserted all parsed quads 
+	 * to the specified dataset.
+	 * <p>
+	 * Calling this method will override any earlier targets set with 
+	 * {@link #target(Graph)}, {@link #target(Consumer)} or {@link #target(Dataset)}.
+	 * <p>
+	 * The default implementation of this method calls {@link #target(Consumer)}
+	 * with a {@link Consumer} that does {@link Dataset#add(Quad)}.
+	 * 
+	 * @param dataset
+	 *            The {@link Dataset} to add quads to.
+	 * @return An {@link RDFParserBuilder} that will insert triples into the
+	 *         specified dataset.
+	 */
+	default RDFParserBuilder target(Dataset dataset) {
+		return target(dataset::add);
+	}
+
+	/**
+	 * Specify a consumer for parsed quads.
+	 * <p>
+	 * It is undefined if any quads are consumed if {@link #parse()} throws any
+	 * exceptions. On the other hand, if {@link #parse()} does not indicate an
+	 * exception, the implementation SHOULD have produced all parsed quads to
+	 * the specified consumer.
+	 * <p>
+	 * Calling this method will override any earlier targets set with
+	 * {@link #target(Graph)}, {@link #target(Consumer)} or
+	 * {@link #target(Dataset)}.
+	 * <p>
+	 * The consumer is not assumed to be thread safe - only one
+	 * {@link Consumer#accept(Object)} is delivered at a time for a given
+	 * {@link RDFParserBuilder#parse()} call.
+	 * <p>
+	 * This method is typically called with a functional consumer, for example:
+	 * <pre>
+	 * List<Quad> quads = new ArrayList<Quad>;
+	 * parserBuilder.target(quads::add).parse();
+	 * </pre>
+	 * 
+	 * @param consumer
+	 *            A {@link Consumer} of {@link Quad}s
+	 * @return An {@link RDFParserBuilder} that will call the consumer for into
+	 *         the specified dataset.
+	 * @return
+	 */
+	RDFParserBuilder target(Consumer<Quad> consumer);
+	
 	/**
 	 * Specify a base IRI to use for parsing any relative IRI references.
 	 * <p>
@@ -345,6 +425,11 @@ public interface RDFParserBuilder {
 	 * method) MUST have been called before calling this method, otherwise an
 	 * {@link IllegalStateException} will be thrown.
 	 * <p>
+	 * A target method (e.g. {@link #target(Consumer)}, {@link #target(Dataset)}
+	 * , {@link #target(Graph)} or an equivalent subclass method) MUST have been
+	 * called before calling this method, otherwise an
+	 * {@link IllegalStateException} will be thrown.
+	 * <p>
 	 * It is undefined if this method is thread-safe, however the
 	 * {@link RDFParserBuilder} may be reused (e.g. setting a different source)
 	 * as soon as the {@link Future} has been returned from this method.
@@ -357,12 +442,15 @@ public interface RDFParserBuilder {
 	 * synchronous implementation MAY be blocking on the <code>parse()</code>
 	 * call and return a Future that is already {@link Future#isDone()}.
 	 * <p>
-	 * If {@link #intoGraph(Graph)} has been specified, this SHOULD be the same
-	 * {@link Graph} instance returned from {@link Future#get()} once parsing has
-	 * completed successfully.
+	 * The returned {@link Future} contains a {@link ParseResult}. 
+	 * Implementations may subclass this interface to provide any 
+	 * parser details, e.g. list of warnings. <code>null</code> is a
+	 * possible return value if no details are available, but 
+	 * parsing succeeded.
 	 * <p>
 	 * If an exception occurs during parsing, (e.g. {@link IOException} or
-	 * {@link java.text.ParseException}), it should be indicated as the
+	 * {@link org.apache.commons.rdf.simple.AbstractRDFParserBuilder.RDFParseException}), 
+	 * it should be indicated as the
 	 * {@link java.util.concurrent.ExecutionException#getCause()} in the
 	 * {@link java.util.concurrent.ExecutionException} thrown on
 	 * {@link Future#get()}.
@@ -380,5 +468,5 @@ public interface RDFParserBuilder {
 	 *             If the builder is in an invalid state, e.g. a
 	 *             <code>source</code> has not been set.
 	 */
-	Future<Graph> parse() throws IOException, IllegalStateException;
+	Future<? extends ParseResult> parse() throws IOException, IllegalStateException;
 }

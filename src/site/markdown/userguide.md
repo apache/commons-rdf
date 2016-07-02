@@ -21,13 +21,15 @@
 # User Guide
 
 This page shows some examples of a client using the Commons RDF API.
-It was last updated for version `0.1.0-incubating` of the
+It was last updated for version `0.2.0-incubating` of the
 Commons RDF [API](apidocs/).
 
 * [Introduction](#Introduction)
     * [RDF concepts](#RDF_concepts)
 * [Using Commons RDF from Maven](#Using_Commons_RDF_from_Maven)
 * [Creating Commons RDF instances](#Creating_Commons_RDF_instances)
+  * [Creating a RDFTermFactory](#Creating_a_RDFTermFactory)
+  * [Using a RDFTermFactory](#Using_a_RDFTermFactory)
 * [RDF terms](#RDF_terms)
     * [N-Triples string](#N-Triples_string)
     * [IRI](#IRI)
@@ -84,7 +86,7 @@ add the following dependency to your `pom.xml`:
     <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-rdf-api</artifactId>
-        <version>0.1.0-incubating</version>
+        <version>0.2.0-incubating</version>
     </dependency>
 </dependencies>
 ```
@@ -128,7 +130,7 @@ _simple_ implementation, add to your `<dependencies>`:
     <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-rdf-simple</artifactId>
-        <version>0.1.0-incubating</version>
+        <version>0.2.0-incubating</version>
     </dependency>
 ```
 
@@ -143,7 +145,9 @@ To create instances of Commons RDF interfaces like
 [`IRI`](apidocs/org/apache/commons/rdf/api/IRI.html) you will need a
 [RDFTermFactory](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html).
 
-How to get an instance of this factory is implementation specific, for the
+### Creating a RDFTermFactory
+
+How to get an instance of this factory is implementation-specific, for the
 _simple_ implementation, you can construct the
 [SimpleRDFTermFactory](apidocs/org/apache/commons/rdf/simple/SimpleRDFTermFactory.html):
 
@@ -169,6 +173,12 @@ ServiceLoader<RDFTermFactory> loader = ServiceLoader.load(RDFTermFactory.class);
 Iterator<RDFTermFactory> iterator = loader.iterator();
 RDFTermFactory factory = iterator.next();
 ```
+
+Note that the `ServiceLoader` approach above might not work well within
+split classloader systems like OSGi.
+
+
+### Using a RDFTermFactory
 
 Using the factory you can construct
 any [RDFTerm](apidocs/org/apache/commons/rdf/api/RDFTerm.html), e.g. to create a
@@ -331,7 +341,7 @@ System.out.println(iri.equals(factory.createLiteral("http://example.com/alice"))
 
 A [blank node](http://www.w3.org/TR/rdf11-concepts/#section-blank-nodes) is a
 resource which, unlike an IRI, is not directly identified. Blank nodes can be
-used as _subject_ or _object_ of a `Triple`
+used as _subject_ or _object_ of a
 [Triple](apidocs/org/apache/commons/rdf/api/Triple.html).
 
 To create a new
@@ -394,6 +404,7 @@ System.out.println(b1.equals(new SimpleRDFTermFactory().createBlankNode("b1")));
 > `true`
 >
 > `false`
+
 
 #### Blank node reference
 
@@ -688,7 +699,7 @@ graph.add(triple);
 ```
 As an alternative to creating the `Triple` first, you can use the expanded
 _subject/predicate/object_ form of
-[Graph.add](apidocs/org/apache/commons/rdf/api/Graph.html#add-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-()):
+[Graph.add](apidocs/org/apache/commons/rdf/api/Graph.html#add-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-):
 
 ```java
 IRI bob = factory.createIRI("http://example.com/bob");
@@ -803,6 +814,8 @@ graph.remove(triple);
 System.out.println(graph.contains(triple));
 ```
 
+> `false`
+
 The expanded _subject/predicate/object_ form of
 [remove()](apidocs/org/apache/commons/rdf/api/Graph.html#remove-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-)
 can be used without needing to construct a `Triple` first. It also
@@ -818,7 +831,7 @@ To remove all triples, use [clear](apidocs/org/apache/commons/rdf/api/Graph.html
 graph.clear();
 System.out.println(graph.contains(null, null, null));
 ```
-> false
+> `false`
 
 ## Mutability and thread safety
 
@@ -830,15 +843,22 @@ not change, and so calling a method like
 [IRI.getIRIString](apidocs/org/apache/commons/rdf/api/IRI.html#getIRIString--)
 or
 [Literal.getDatatype](apidocs/org/apache/commons/rdf/api/Literal.html#getDatatype--)
-will always have return values that are `.equal()` to any earlier return
+will have a return value which `.equals()` any earlier return
 values. Being immutable, the `Triple` and `RDFTerm` types should be
-considered thread-safe.
+considered thread-safe. Similarly their `hashCode()` should be
+considered stable, so any `RDFTerm` or `Triple` can be used
+in hashing collections like
+[HashMap](https://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html).
 
 A `Graph` may be _mutable_, particular if it supports methods like
 [Graph.add](apidocs/org/apache/commons/rdf/api/Graph.html#add-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-)
-and [Graph.remove](apidocs/org/apache/commons/rdf/api/Graph.html#remove-org.apache.commons.rdf.api.Triple-). That means that responses to methods like [size](apidocs/org/apache/commons/rdf/api/Graph.html#size--) and [contains](apidocs/org/apache/commons/rdf/api/Graph.html#contains-org.apache.commons.rdf.api.Triple-) might change during its lifetime.
+and [Graph.remove](apidocs/org/apache/commons/rdf/api/Graph.html#remove-org.apache.commons.rdf.api.Triple-). That means that responses to methods like [size](apidocs/org/apache/commons/rdf/api/Graph.html#size--) and [contains](apidocs/org/apache/commons/rdf/api/Graph.html#contains-org.apache.commons.rdf.api.Triple-) might change during its lifetime. A mutable `Graph`
+might also be modified by operations outside Commons RDF, e.g. because it is
+backed by a shared datastore with multiple clients.
 
-Implementations of Commons RDF may specify the (im)mutability of `Graph` in further details. If a graph is immutable, the methods `add` and `remove` may throw a `UnsupportedOperationException`.
+Implementations of Commons RDF may specify the (im)mutability of `Graph` in further details
+in their documentation. If a graph is immutable, the methods `add` and `remove`
+may throw a `UnsupportedOperationException`.
 
 Commons RDF does not specify if methods on a `Graph` are thread-safe. Iterator
 methods like [iterate](apidocs/org/apache/commons/rdf/api/Graph.html#iterate--)
@@ -868,7 +888,7 @@ synchronized(graph) {
 ## Implementations
 
 The [Commons RDF API](apidocs/org/apache/commons/rdf/api/package-summary.html)
-is a set of Java interfaces, with implementations provided by several Java RDF
+is a set of Java interfaces, which can be implemented by several Java RDF
 frameworks.  See the [implementations](implementations.html) page for an
 updated list of providers.
 
@@ -913,8 +933,14 @@ for (Triple t1: g1.getTriples(null, iri1, null)) {
 ```
 
 _Note: Special care might need to be taken for cross-interoperability of
-`BlankNode` instances. This is currently under discussion. See
-[COMMONSRDF-15](https://issues.apache.org/jira/browse/COMMONSRDF-15)_
+`BlankNode` instances. While multiple triples with the same
+"foreign" `BlankNode` can be added without breaking their
+connections, the `Graph` is not required to
+return blank node instances that `.equals()` those
+inserted - specifically it is **not** required to persist the
+blank node [uniqueReference](apidocs/org/apache/commons/rdf/api/BlankNode.html#uniqueReference--).
+ See
+[COMMONSRDF-15](https://issues.apache.org/jira/browse/COMMONSRDF-15)._
 
 The `.equals()` methods of `RDFTerm` interfaces are explicitly defined, so
 their instances can be compared across implementations.
@@ -922,13 +948,9 @@ their instances can be compared across implementations.
 _Note: The `Graph` implementation is not required to keep the JVM object
 reference, e.g. after  `g2.add(subj1, pred, obj)` it is not required to later
 return the same `subj1` implementation in `g2.getTriples()`. Special care
-should be taken if returned values are needs to be casted to implementation
+should be taken if returned values needs to be casted to implementation
 specific types._
 
-The `.hashCode()` is not currently explicitly defined, hence
-special care should be taken for cross-interoperability within hashing data
-structures like `HashMap`. See
-[COMMONSRDF-14](https://issues.apache.org/jira/browse/COMMONSRDF-14)
 
 ## Complete example
 

@@ -24,12 +24,12 @@
     <parent>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-parent</artifactId>
-        <version>39</version>
+        <version>40</version>
     </parent>
 
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-rdf-parent</artifactId>
-    <version>0.2.0-incubating-SNAPSHOT</version>
+    <version>0.3.0-incubating-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Commons RDF</name>
@@ -53,7 +53,7 @@
         <project.build.encoding>UTF-8</project.build.encoding>
         <commons.encoding>UTF-8</commons.encoding>
         <commons.componentid>rdf</commons.componentid>
-        <commons.release.version>0.1.0</commons.release.version>
+        <commons.release.version>0.2.0</commons.release.version>
         <commons.jira.id>COMMONSRDF</commons.jira.id>
         <commons.jira.pid>12316620</commons.jira.pid>
         <commons.site.path>rdf</commons.site.path>
@@ -81,7 +81,7 @@
             <post>dev@commonsrdf.incubator.apache.org</post>
             <subscribe>dev-subscribe@commonsrdf.incubator.apache.org</subscribe>
             <unsubscribe>dev-unsubscribe@commonsrdf.incubator.apache.org</unsubscribe>
-            <archive>http://mail-archives.apache.org/mod_mbox/commonsrdf-dev/</archive>
+            <archive>https://lists.apache.org/list.html?dev@commonsrdf.apache.org</archive>
             <otherArchives>
                 <otherArchive>http://markmail.org/search/?q=list%3Aorg.apache.commonsrdf.dev</otherArchive>
             </otherArchives>
@@ -91,7 +91,7 @@
             <post>commits@commonsrdf.incubator.apache.org</post>
             <subscribe>commits-subscribe@commonsrdf.incubator.apache.org</subscribe>
             <unsubscribe>commits-unsubscribe@commonsrdf.incubator.apache.org</unsubscribe>
-            <archive>http://mail-archives.apache.org/mod_mbox/commonsrdf-commits/</archive>
+            <archive>https://lists.apache.org/list.html?commits@commonsrdf.apache.org</archive>
             <otherArchives>
                 <otherArchive>http://markmail.org/search/?q=list%3Aorg.apache.commonsrdf.commits</otherArchive>
             </otherArchives>
@@ -105,21 +105,10 @@
             <email>lewismc[at]apache[dot]org</email>
             <roles>
                 <role>Committer</role>
-                <role>PMC Member</role>
+                <role>PPMC Member</role>
                 <role>Champion</role>
             </roles>
             <timezone>+1</timezone>
-        </developer>
-        <developer>
-            <id>rvesse</id>
-            <name>Rob Vesse</name>
-            <email>rvesse[at]apache[dot]org</email>
-            <roles>
-                <role>Committer</role>
-                <role>PMC Member</role>
-                <role>Mentor</role>
-            </roles>
-            <timezone>+0</timezone>
         </developer>
         <developer>
             <id>johndament</id>
@@ -127,7 +116,7 @@
             <email>johndament[at]apache[dot]org</email>
             <roles>
                 <role>Committer</role>
-                <role>PMC Member</role>
+                <role>PPMC Member</role>
                 <role>Mentor</role>
             </roles>
             <timezone>+1</timezone>
@@ -138,7 +127,7 @@
             <email>ggregory[at]apache[dot]org</email>
             <roles>
                 <role>Committer</role>
-                <role>PMC Member</role>
+                <role>PPMC Member</role>
                 <role>Mentor</role>
             </roles>
             <timezone>+1</timezone>
@@ -150,39 +139,20 @@
             <url>http://www.wikier.org</url>
             <roles>
                 <role>Committer</role>
-                <role>PMC Member</role>
+                <role>PPMC Member</role>
             </roles>
             <timezone>+1</timezone>
-        </developer>
-        <developer>
-            <id>andy</id>
-            <name>Andy Seaborne</name>
-            <email>andy[at]apache[dot]org</email>
-            <roles>
-                <role>Committer</role>
-                <role>PMC Member</role>
-            </roles>
-            <timezone>+0</timezone>
         </developer>
         <developer>
             <id>stain</id>
             <name>Stian Soiland-Reyes</name>
             <email>stain[at]apache[dot]org</email>
+            <url>http://orcid.org/0000-0001-9842-9718</url>
             <roles>
                 <role>Committer</role>
-                <role>PMC Member</role>
+                <role>PPMC Member</role>
             </roles>
             <timezone>+0</timezone>
-        </developer>
-        <developer>
-            <id>reto</id>
-            <name>Reto Gmür</name>
-            <email>reto[at]apache[dot]org</email>
-            <roles>
-                <role>Committer</role>
-                <role>PMC Member</role>
-            </roles>
-            <timezone>+1</timezone>
         </developer>
         <developer>
             <id>enridaga</id>
@@ -190,7 +160,7 @@
             <email>enridaga[at]apache[dot]org</email>
             <roles>
                 <role>Committer</role>
-                <role>PMC Member</role>
+                <role>PPMC Member</role>
             </roles>
             <timezone>+0</timezone>
         </developer>
@@ -200,7 +170,7 @@
             <email>britter[at]apache[dot]org</email>
             <roles>
                 <role>Committer</role>
-                <role>PMC Member</role>
+                <role>PPMC Member</role>
                 <role>Apache Commons Representative</role>
             </roles>
             <timezone>+1</timezone>
@@ -212,6 +182,36 @@
             <name>Peter Ansell</name>
             <email>ansell[at]apache[dot]org</email>
             <url>http://github.com/ansell</url>
+            <roles>
+                <role>Emeritus Committer</role>
+                <role>Emeritus PPMC Member</role>
+            </roles>
+        </contributor>
+        <contributor>
+            <name>Reto Gmür</name>
+            <email>reto[at]apache[dot]org</email>
+            <roles>
+                <role>Emeritus Committer</role>
+                <role>Emeritus PPMC Member</role>
+            </roles>
+            <timezone>+1</timezone>
+        </contributor>
+        <contributor>
+            <name>Andy Seaborne</name>
+            <email>andy[at]apache[dot]org</email>
+            <roles>
+                <role>Emeritus Committer</role>
+                <role>Emeritus PPPMC Member</role>
+            </roles>
+            <timezone>+0</timezone>
+        </contributor>
+        <contributor>
+            <name>Rob Vesse</name>
+            <email>rvesse[at]apache[dot]org</email>
+            <roles>
+                <role>Emeritus Mentor</role>
+            </roles>
+            <timezone>+0</timezone>
         </contributor>
     </contributors>
 
@@ -233,7 +233,7 @@
     </dependencyManagement>
 
     <build>
-        <finalName>apache-commons-rdf</finalName>
+        <finalName>apache-commonsrdf-${project.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -266,7 +266,7 @@
                 <executions>
                     <execution>
                         <configuration>
-                            <descriptor>src/main/assembly/src.xml</descriptor>
+                            <descriptor>src/assembly/src.xml</descriptor>
                             <finalName>apache-commons-rdf-${project.version}</finalName>
                             <tarLongFileMode>gnu</tarLongFileMode>
                         </configuration>
@@ -431,6 +431,11 @@
                             <exclude>examples/.settings/**</exclude>
                             <exclude>examples/.project</exclude>
                             <exclude>examples/.classpath</exclude>
+                            <!-- ServiceLoader file -->
+                            <exclude>**/META-INF/services/*</exclude>
+                            <!-- Duplicates of NOTICE and LICENSE -->
+                            <exclude>**/src/main/resources/NOTICE</exclude>
+                            <exclude>**/src/main/resources/LICENSE</exclude>
                         </excludes>
                     </configuration>
                 </plugin>

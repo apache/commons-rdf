@@ -18,6 +18,7 @@
 package org.apache.commons.rdf.simple;
 
 import org.apache.commons.rdf.api.*;
+import org.apache.commons.rdf.simple.SimpleRDFTermFactory.SimpleRDFTerm;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -72,18 +73,23 @@ final class GraphImpl implements Graph {
     }
 
     private <T extends RDFTerm> RDFTerm internallyMap(T object) {
-        if (object instanceof BlankNode && !(object instanceof BlankNodeImpl)) {
+    	if (object == null || object instanceof SimpleRDFTerm) {
+    		// No need to re-map our own objects.
+    		// We support null as internallyMap() is also used by the filters, and the
+    		// factory constructors later do null checks
+    		return object;
+    	}
+        if (object instanceof BlankNode) {
             BlankNode blankNode = (BlankNode) object;
             // This guarantees that adding the same BlankNode multiple times to
             // this graph will generate a local object that is mapped to an
             // equivalent object, based on the code in the package private
             // BlankNodeImpl class
             return factory.createBlankNode(blankNode.uniqueReference());
-        } else if (object instanceof IRI && !(object instanceof IRIImpl)) {
+        } else if (object instanceof IRI) {
             IRI iri = (IRI) object;
             return factory.createIRI(iri.getIRIString());
-        } else if (object instanceof Literal
-                && !(object instanceof LiteralImpl)) {
+        } else if (object instanceof Literal) {
             Literal literal = (Literal) object;
             if (literal.getLanguageTag().isPresent()) {
                 return factory.createLiteral(literal.getLexicalForm(), literal
@@ -93,9 +99,7 @@ final class GraphImpl implements Graph {
                         (IRI) internallyMap(literal.getDatatype()));
             }
         } else {
-            // The object is a local implementation, and is not a BlankNode, so
-            // can be returned directly
-            return object;
+        	throw new IllegalArgumentException("RDFTerm was neither a BlankNode, IRI nor Literal: " + object);
         }
     }
 
@@ -107,7 +111,7 @@ final class GraphImpl implements Graph {
     @Override
     public boolean contains(BlankNodeOrIRI subject, IRI predicate,
                             RDFTerm object) {
-        return getTriples(subject, predicate, object).findFirst().isPresent();
+        return stream(subject, predicate, object).findFirst().isPresent();
     }
 
     @Override
@@ -116,12 +120,12 @@ final class GraphImpl implements Graph {
     }
 
     @Override
-    public Stream<Triple> getTriples() {
+    public Stream<Triple> stream() {
         return triples.parallelStream().unordered();
     }
 
     @Override
-    public Stream<Triple> getTriples(final BlankNodeOrIRI subject,
+    public Stream<Triple> stream(final BlankNodeOrIRI subject,
                                      final IRI predicate, final RDFTerm object) {
         final BlankNodeOrIRI newSubject = (BlankNodeOrIRI) internallyMap(subject);
         final IRI newPredicate = (IRI) internallyMap(predicate);
@@ -144,12 +148,12 @@ final class GraphImpl implements Graph {
     }
 
     private Stream<Triple> getTriples(final Predicate<Triple> filter) {
-        return getTriples().filter(filter);
+        return stream().filter(filter);
     }
 
     @Override
     public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-        Stream<Triple> toRemove = getTriples(subject, predicate, object);
+        Stream<Triple> toRemove = stream(subject, predicate, object);
         for (Triple t : toRemove.collect(Collectors.toList())) {
             // Avoid ConcurrentModificationException in ArrayList
             remove(t);
@@ -168,7 +172,7 @@ final class GraphImpl implements Graph {
 
     @Override
     public String toString() {
-        String s = getTriples().limit(TO_STRING_MAX).map(Object::toString)
+        String s = stream().limit(TO_STRING_MAX).map(Object::toString)
                 .collect(Collectors.joining("\n"));
         if (size() > TO_STRING_MAX) {
             return s + "\n# ... +" + (size() - TO_STRING_MAX) + " more";
