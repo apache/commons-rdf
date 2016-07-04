@@ -23,6 +23,8 @@ import org.apache.commons.rdf.api.BlankNode ;
 import org.apache.commons.rdf.jena.impl.JenaFactory;
 
 public class TestBlankNodeJena extends AbstractBlankNodeTest {
+
+	
     @Override
     protected BlankNode getBlankNode() {
         return JenaFactory.createBlankNode() ;

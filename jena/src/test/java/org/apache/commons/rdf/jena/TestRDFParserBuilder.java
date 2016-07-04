@@ -18,24 +18,44 @@
 
 package org.apache.commons.rdf.jena;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.RDFParserBuilder.ParseResult;
 import org.apache.commons.rdf.api.RDFSyntax;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 public class TestRDFParserBuilder {
+	
+	private Path turtleFile;
+
+	@Before
+	public void preparePath() throws IOException {
+		turtleFile = Files.createTempFile("commonsrdf", "test.ttl");
+		Files.copy(getClass().getResourceAsStream("/D.ttl"), turtleFile, StandardCopyOption.REPLACE_EXISTING);
+	}
+
+	@After
+	public void deletePath() throws IOException {
+		if (turtleFile != null) {
+			Files.deleteIfExists(turtleFile);
+		}
+	}
+
 	@Test
 	public void parseTurtle() throws Exception {
-		Path d = Paths.get("D.ttl");
-		Graph g = new RDFTermFactoryJena().createGraph();		
-		Future<ParseResult> gFuture = new JenaRDFParserBuilder().contentType(RDFSyntax.TURTLE).source(d).target(g).parse();
+		Graph g = new RDFTermFactoryJena().createGraph();
+		Future<ParseResult> gFuture = new JenaRDFParserBuilder().contentType(RDFSyntax.TURTLE).source(turtleFile)
+				.target(g).parse();
 		gFuture.get(5, TimeUnit.SECONDS);
 		assertEquals(3, g.size());
 	}

@@ -18,23 +18,42 @@
 
 package org.apache.commons.rdf.jena;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+
 import org.apache.commons.rdf.api.Graph ;
 import org.apache.commons.rdf.api.RDFTermFactory ;
 import org.apache.jena.riot.Lang ;
 import org.apache.jena.riot.RDFDataMgr ;
 import org.apache.jena.sparql.graph.GraphFactory ;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 /** Adapt a Jena Graph after parsing data into it */
 public class TestJenaGraphToCommonsRDFGraph {
-    static { 
-    	//LogCtl.setCmdLogging(); 
+    private Path turtleFile;
+
+    
+    @Before
+    public void preparePath() throws IOException {    	
+    	turtleFile = Files.createTempFile("commonsrdf", "test.ttl");    	
+    	Files.copy(getClass().getResourceAsStream("/D.ttl"), turtleFile, StandardCopyOption.REPLACE_EXISTING);
+    }
+    
+    @After
+    public void deletePath() throws IOException {
+    	if (turtleFile != null) { 
+    		Files.deleteIfExists(turtleFile);
+    	}
     }
     
     @Test
 	public void jenaToCommonsRDF() throws Exception {
-        org.apache.jena.graph.Graph jGraph = GraphFactory.createGraphMem() ;
-        RDFDataMgr.read(jGraph, "D.ttl") ;
+        org.apache.jena.graph.Graph jGraph = GraphFactory.createGraphMem() ;        
+        RDFDataMgr.read(jGraph, turtleFile.toUri().toString()) ;
         
         // "graph" is a CommonsRDF graph 
         Graph graph = JenaCommonsRDF.fromJena(jGraph) ;
