@@ -25,9 +25,11 @@ import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDFParserBuilder;
 import org.apache.commons.rdf.api.RDFTermFactory;
 import org.apache.commons.rdf.simple.AbstractRDFParserBuilder;
+import org.apache.jena.graph.Graph;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.system.StreamRDF;
+import org.apache.jena.riot.system.StreamRDFLib;
 
 public class JenaRDFParserBuilder extends AbstractRDFParserBuilder implements RDFParserBuilder {
 
@@ -37,7 +39,13 @@ public class JenaRDFParserBuilder extends AbstractRDFParserBuilder implements RD
 
 	@Override
 	protected void parseSynchronusly() throws IOException {
-		StreamRDF dest = JenaCommonsRDF.streamJenaToCommonsRDF(getRdfTermFactory().get(), getIntoGraph().get());
+		StreamRDF dest;
+		if (getTargetGraph().isPresent() && getTargetGraph().get() instanceof JenaGraph) {
+			Graph jenaGraph = ((JenaGraph)getTargetGraph().get()).getGraph();
+			dest = StreamRDFLib.graph(jenaGraph);
+		} else {		
+			dest = JenaCommonsRDF.streamJenaToCommonsRDF(getRdfTermFactory().get(), getTarget());
+		}
 
 		Lang lang = getContentTypeSyntax().flatMap(JenaCommonsRDF::rdfSyntaxToLang).orElse(null);
 		String baseStr = getBase().map(IRI::getIRIString).orElse(null);

@@ -19,6 +19,7 @@
 package org.apache.commons.rdf.jena;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import org.apache.commons.rdf.api.* ;
 import org.apache.commons.rdf.jena.impl.*;
@@ -30,6 +31,7 @@ import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFLanguages;
 import org.apache.jena.riot.system.StreamRDF ;
+import org.apache.jena.riot.system.StreamRDFBase;
 import org.apache.jena.sparql.graph.GraphFactory ;
 
 /** A set of utilities for moving between CommonsRDF and Jena
@@ -111,6 +113,9 @@ public class JenaCommonsRDF {
 
     /** Convert from Jena {@link Node} to any RDFCommons implementation */
     public static RDFTerm fromJena(RDFTermFactory factory, Node node) {
+    	if (node == null) { 
+    		return null;
+    	}
     	if (factory instanceof RDFTermFactoryJena) {
     		// No need to convert, just wrap
     		return fromJena(node);
@@ -161,11 +166,34 @@ public class JenaCommonsRDF {
    }
    
    /** Create a {@link StreamRDF} that inserts into any RDFCommons implementation of Graph */
-   public static StreamRDF streamJenaToCommonsRDF(RDFTermFactory factory, Graph graph) {
-       return new ToGraph(factory, graph) ;
+   public static StreamRDF streamJenaToCommonsRDF(RDFTermFactory factory, Consumer<Quad> consumer) {
+       return new StreamRDFBase() {
+    	   @Override
+    	public void quad(org.apache.jena.sparql.core.Quad quad) {
+    		consumer.accept(JenaCommonsRDF.fromJena(factory, quad));
+    	}
+       };
    }
 
-   public static void conversionError(String msg) {
+
+
+public static Quad fromJena(RDFTermFactory factory, org.apache.jena.sparql.core.Quad quad) {
+   	if (factory instanceof RDFTermFactoryJena) {
+		// No need to convert, just wrap
+		return fromJena(quad);
+	}
+    BlankNodeOrIRI graphName = (BlankNodeOrIRI)(fromJena(factory, quad.getGraph())) ;
+    BlankNodeOrIRI subject = (BlankNodeOrIRI)(fromJena(factory, quad.getSubject())) ;
+    IRI predicate = (IRI)(fromJena(factory, triple.getPredicate())) ;
+    RDFTerm object = fromJena(factory, triple.getObject()) ;
+    return factory.createQuad(graphName, subject, predicate, object);
+}
+
+public static Quad fromJena(org.apache.jena.sparql.core.Quad quad) {	// 
+	return JCR_Factory.fromJena(quad) ;
+}
+
+public static void conversionError(String msg) {
         throw new ConversionException(msg) ;
     }
 

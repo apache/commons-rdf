@@ -25,6 +25,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.rdf.api.Graph;
+import org.apache.commons.rdf.api.RDFParserBuilder.ParseResult;
 import org.apache.commons.rdf.api.RDFSyntax;
 import org.junit.Test;
 
@@ -32,7 +33,8 @@ public class TestRDFParserBuilder {
 	@Test
 	public void parseTurtle() throws Exception {
 		Path d = Paths.get("D.ttl");
-		Future<Graph> gFuture = new JenaRDFParserBuilder().contentType(RDFSyntax.TURTLE).source(d).parse();
+		Graph g = new RDFTermFactoryJena().createGraph();
+		Future<ParseResult> gFuture = new JenaRDFParserBuilder().contentType(RDFSyntax.TURTLE).source(d).target(g).parse();
 		Graph g = gFuture.get(5, TimeUnit.SECONDS);
 		assertEquals(3, g.size());
 	}
