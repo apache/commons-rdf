@@ -24,6 +24,7 @@ import java.util.stream.Stream ;
 
 import org.apache.commons.rdf.api.* ;
 import org.apache.commons.rdf.jena.JenaCommonsRDF;
+import org.apache.commons.rdf.jena.JenaGraph;
 import org.apache.jena.atlas.iterator.Iter ;
 import org.apache.jena.graph.Node ;
 import org.apache.jena.riot.Lang ;

@@ -82,5 +82,9 @@ public class JCR_Factory {
         conversionError("Node is not a concrete RDF Term: "+node) ;
         return null ;
     }
+
+	public static Quad fromJena(org.apache.jena.sparql.core.Quad quad) {
+		 return new JCR_Quad(quad) ;
+	}
 }
 

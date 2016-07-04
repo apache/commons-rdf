@@ -16,11 +16,12 @@
  * limitations under the License.
  */
 
-package org.apache.commons.rdf.jena.impl;
+package org.apache.commons.rdf.jena;
 
+import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.jena.graph.Node ;
 
 /** Access the Jena node backing this object */ 
-public interface JenaNode {
+public interface JenaNode extends RDFTerm {
     public Node getNode() ;
 }

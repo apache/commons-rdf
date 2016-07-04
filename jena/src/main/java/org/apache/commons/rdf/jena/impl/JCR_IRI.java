@@ -22,6 +22,7 @@ import org.apache.jena.graph.Node ;
 import org.apache.jena.graph.NodeFactory ;
 
 import org.apache.commons.rdf.api.* ;
+import org.apache.commons.rdf.jena.JenaNode;
 
 public class JCR_IRI extends JCR_Term implements IRI, JenaNode {
 

@@ -22,6 +22,7 @@ import java.util.Objects ;
 
 import org.apache.commons.rdf.api.* ;
 import org.apache.commons.rdf.jena.JenaCommonsRDF;
+import org.apache.commons.rdf.jena.JenaTriple;
 
 public class JCR_Triple implements Triple, JenaTriple {
     private final BlankNodeOrIRI subject ;

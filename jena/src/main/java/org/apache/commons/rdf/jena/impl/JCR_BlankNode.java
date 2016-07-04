@@ -19,6 +19,7 @@
 package org.apache.commons.rdf.jena.impl;
 
 import org.apache.commons.rdf.api.BlankNode ;
+import org.apache.commons.rdf.jena.JenaNode;
 import org.apache.jena.graph.Node ;
 
 public class JCR_BlankNode extends JCR_Term implements BlankNode, JenaNode {
