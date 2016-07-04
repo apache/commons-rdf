@@ -23,5 +23,5 @@ import org.apache.jena.graph.Node ;
 
 /** Access the Jena node backing this object */ 
 public interface JenaNode extends RDFTerm {
-    public Node getNode() ;
+    public Node asJenaNode() ;
 }

@@ -22,5 +22,5 @@ import org.apache.jena.graph.Graph ;
 
 /** Access the Jena graph backing this object */ 
 public interface JenaGraph extends org.apache.commons.rdf.api.Graph {
-    public Graph getGraph() ;
+    public Graph asJenaGraph() ;
 }

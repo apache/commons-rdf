@@ -36,7 +36,7 @@ public class IRIImpl extends AbstractRDFTerm implements IRI, JenaNode {
 
     @Override
     public String getIRIString() {
-        return getNode().getURI() ;
+        return asJenaNode().getURI() ;
     }
     
     @Override

@@ -22,5 +22,5 @@ import org.apache.jena.sparql.core.Quad;
 
 /** Access the Jena quad backing this object */ 
 public interface JenaQuad extends org.apache.commons.rdf.api.Quad {
-    public Quad getQuad() ;
+    public Quad asJenaQuad() ;
 }

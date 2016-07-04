@@ -53,7 +53,7 @@ public class QuadImpl implements Quad, JenaQuad {
     }
 
     @Override
-    public org.apache.jena.sparql.core.Quad getQuad() {
+    public org.apache.jena.sparql.core.Quad asJenaQuad() {
         if ( quad == null ) {
             quad = org.apache.jena.sparql.core.Quad.create(
             		JenaCommonsRDF.toJena(graphName.orElse(null)), 

@@ -33,17 +33,17 @@ public class LiteralImpl extends AbstractRDFTerm implements Literal {
 
     @Override
     public String getLexicalForm() {
-        return getNode().getLiteralLexicalForm() ;
+        return asJenaNode().getLiteralLexicalForm() ;
     }
 
     @Override
     public IRI getDatatype() {
-        return JenaFactory.createIRI(getNode().getLiteralDatatype().getURI()) ;
+        return JenaFactory.createIRI(asJenaNode().getLiteralDatatype().getURI()) ;
     }
 
     @Override
     public Optional<String> getLanguageTag() {
-        String x = getNode().getLiteralLanguage() ;
+        String x = asJenaNode().getLiteralLanguage() ;
         if ( x == null || x.isEmpty() )
             return Optional.empty() ; 
         return Optional.of(x) ;

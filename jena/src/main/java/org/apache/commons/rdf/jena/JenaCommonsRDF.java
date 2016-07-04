@@ -59,7 +59,7 @@ public class JenaCommonsRDF {
      */
     public static Node toJena(RDFTerm term) {
         if ( term instanceof JenaNode )
-            return ((JenaNode)term).getNode() ;
+            return ((JenaNode)term).asJenaNode() ;
         
         if ( term instanceof IRI ) 
             return NodeFactory.createURI(((IRI)term).getIRIString()) ;
@@ -85,7 +85,7 @@ public class JenaCommonsRDF {
      */
     public static org.apache.jena.graph.Triple toJena(Triple triple) {
         if ( triple instanceof JenaTriple )
-            return ((JenaTriple)triple).getTriple() ;
+            return ((JenaTriple)triple).asJenaTriple() ;
         return new org.apache.jena.graph.Triple(toJena(triple.getSubject()), toJena(triple.getPredicate()), toJena(triple.getObject()) ) ;   
     }
 
@@ -95,7 +95,7 @@ public class JenaCommonsRDF {
      */
     public static org.apache.jena.graph.Graph toJena(Graph graph) {
         if ( graph instanceof JenaGraph )
-            return ((JenaGraph)graph).getGraph() ;
+            return ((JenaGraph)graph).asJenaGraph() ;
         org.apache.jena.graph.Graph g = GraphFactory.createGraphMem() ;
         graph.stream().forEach(t->g.add(toJena(t))) ; 
         return g ;   

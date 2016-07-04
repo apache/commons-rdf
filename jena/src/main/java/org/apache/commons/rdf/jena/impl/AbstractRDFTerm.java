@@ -34,7 +34,7 @@ class AbstractRDFTerm implements JenaNode, RDFTerm {
     }
     
     @Override
-    public Node getNode() {
+    public Node asJenaNode() {
         return node ;
     }
 

@@ -43,7 +43,7 @@ public class JenaRDFParserBuilder extends AbstractRDFParserBuilder<JenaRDFParser
 	protected void parseSynchronusly() throws IOException {
 		StreamRDF dest;
 		if (getTargetGraph().isPresent() && getTargetGraph().get() instanceof JenaGraph) {
-			Graph jenaGraph = ((JenaGraph)getTargetGraph().get()).getGraph();
+			Graph jenaGraph = ((JenaGraph)getTargetGraph().get()).asJenaGraph();
 			dest = StreamRDFLib.graph(jenaGraph);
 		} else {		
 			dest = JenaCommonsRDF.streamJenaToCommonsRDF(getRdfTermFactory().get(), getTarget());

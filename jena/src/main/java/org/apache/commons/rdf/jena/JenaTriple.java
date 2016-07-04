@@ -22,5 +22,5 @@ import org.apache.jena.graph.Triple ;
 
 /** Access the Jena triple backing this object */ 
 public interface JenaTriple extends org.apache.commons.rdf.api.Triple {
-    public Triple getTriple() ;
+    public Triple asJenaTriple() ;
 }

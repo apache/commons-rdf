@@ -42,7 +42,7 @@ public class GraphImpl implements Graph, JenaGraph {
     }
     
     @Override
-    public org.apache.jena.graph.Graph getGraph() {
+    public org.apache.jena.graph.Graph asJenaGraph() {
         return graph ;
     }
 

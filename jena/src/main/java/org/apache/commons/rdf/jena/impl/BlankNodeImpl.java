@@ -28,7 +28,7 @@ public class BlankNodeImpl extends AbstractRDFTerm implements BlankNode, JenaNod
 
     @Override
     public String uniqueReference() {
-        return getNode().getBlankNodeLabel() ;
+        return asJenaNode().getBlankNodeLabel() ;
     }
 
     @Override

@@ -44,7 +44,7 @@ public class TripleImpl implements Triple, JenaTriple {
     }
 
     @Override
-    public org.apache.jena.graph.Triple getTriple() {
+    public org.apache.jena.graph.Triple asJenaTriple() {
         if ( triple == null )
             triple = org.apache.jena.graph.Triple.create(JenaCommonsRDF.toJena(subject), JenaCommonsRDF.toJena(predicate), JenaCommonsRDF.toJena(object)) ;
         return triple ;
