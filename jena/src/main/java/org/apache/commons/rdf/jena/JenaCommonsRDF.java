@@ -184,8 +184,8 @@ public static Quad fromJena(RDFTermFactory factory, org.apache.jena.sparql.core.
 	}
     BlankNodeOrIRI graphName = (BlankNodeOrIRI)(fromJena(factory, quad.getGraph())) ;
     BlankNodeOrIRI subject = (BlankNodeOrIRI)(fromJena(factory, quad.getSubject())) ;
-    IRI predicate = (IRI)(fromJena(factory, triple.getPredicate())) ;
-    RDFTerm object = fromJena(factory, triple.getObject()) ;
+    IRI predicate = (IRI)(fromJena(factory, quad.getPredicate())) ;
+    RDFTerm object = fromJena(factory, quad.getObject()) ;
     return factory.createQuad(graphName, subject, predicate, object);
 }
 

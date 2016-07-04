@@ -16,22 +16,23 @@
  * limitations under the License.
  */
 
-package org.apache.commons.rdf.jena.examples;
+package org.apache.commons.rdf.jena;
 
 import org.apache.commons.rdf.api.Graph ;
 import org.apache.commons.rdf.api.RDFTermFactory ;
-import org.apache.commons.rdf.jena.JenaCommonsRDF;
-import org.apache.commons.rdf.jena.RDFTermFactoryJena;
-import org.apache.jena.atlas.logging.LogCtl ;
 import org.apache.jena.riot.Lang ;
 import org.apache.jena.riot.RDFDataMgr ;
 import org.apache.jena.sparql.graph.GraphFactory ;
+import org.junit.Test;
 
 /** Adapt a Jena Graph after parsing data into it */
-public class Ex_JenaGraphToCommonsRDFGraph {
-    static { LogCtl.setCmdLogging(); }
+public class TestJenaGraphToCommonsRDFGraph {
+    static { 
+    	//LogCtl.setCmdLogging(); 
+    }
     
-    public static void main(String ...a) {
+    @Test
+	public void jenaToCommonsRDF() throws Exception {
         org.apache.jena.graph.Graph jGraph = GraphFactory.createGraphMem() ;
         RDFDataMgr.read(jGraph, "D.ttl") ;
         
@@ -44,7 +45,7 @@ public class Ex_JenaGraphToCommonsRDFGraph {
                   rft.createIRI("http://example/p2"),
                   rft.createLiteral("foo")) ;
         System.out.println("==== Write CommonsRDF graph\n") ;
-        graph.getTriples().forEach(System.out::println) ;
+        graph.stream().forEach(System.out::println) ;
         
         System.out.println("\n==== Write Jena graph directly\n") ;
         // And its in the Jena graph
