@@ -43,7 +43,7 @@ import org.apache.commons.rdf.api.RDFTermFactory;
  * 
  *
  */
-public class DummyRDFParserBuilder extends AbstractRDFParserBuilder {
+public class DummyRDFParserBuilder extends AbstractRDFParserBuilder<DummyRDFParserBuilder> {
 	
 	@Override
 	protected void parseSynchronusly() throws IOException, IllegalStateException, RDFParseException {		
