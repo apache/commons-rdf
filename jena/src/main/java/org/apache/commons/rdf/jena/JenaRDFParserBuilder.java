@@ -15,6 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.rdf.jena;
 
 import java.io.IOException;
@@ -31,7 +32,8 @@ import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.system.StreamRDF;
 import org.apache.jena.riot.system.StreamRDFLib;
 
-public class JenaRDFParserBuilder extends AbstractRDFParserBuilder implements RDFParserBuilder {
+public class JenaRDFParserBuilder extends AbstractRDFParserBuilder<JenaRDFParserBuilder> 
+	implements RDFParserBuilder {
 
 	protected RDFTermFactory createRDFTermFactory() {
 		return new RDFTermFactoryJena();
@@ -60,5 +62,6 @@ public class JenaRDFParserBuilder extends AbstractRDFParserBuilder implements RD
 			RDFDataMgr.parse(dest, getSourceInputStream().get(), baseStr, lang, null);
 		}
 	}
+
 
 }
