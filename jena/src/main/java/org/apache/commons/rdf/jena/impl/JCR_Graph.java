@@ -19,10 +19,13 @@
 package org.apache.commons.rdf.jena.impl;
 
 import java.io.StringWriter ;
-import java.util.Iterator ;
 import java.util.stream.Stream ;
 
-import org.apache.commons.rdf.api.* ;
+import org.apache.commons.rdf.api.BlankNodeOrIRI;
+import org.apache.commons.rdf.api.Graph;
+import org.apache.commons.rdf.api.IRI;
+import org.apache.commons.rdf.api.RDFTerm;
+import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.jena.JenaCommonsRDF;
 import org.apache.commons.rdf.jena.JenaGraph;
 import org.apache.jena.atlas.iterator.Iter ;
@@ -84,16 +87,14 @@ public class JCR_Graph implements Graph, JenaGraph {
     }
 
     @Override
-    public Stream<? extends Triple> getTriples() {
-        return getTriples(null, null, null) ;
+    public Stream<? extends Triple> stream() {
+    	return Iter.asStream(graph.find(null, null, null), true).map(JenaCommonsRDF::fromJena);
     }
 
     @Override
-    public Stream<? extends Triple> getTriples(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-        Iterator<org.apache.jena.graph.Triple> iter = graph.find(toJenaAny(subject),toJenaAny(predicate),toJenaAny(object)) ;
-        Iterator<Triple> iter2 = Iter.map(iter, t-> JenaCommonsRDF.fromJena(t)) ;
-        return Iter.asStream(iter2) ;
-                        
+    public Stream<? extends Triple> stream(BlankNodeOrIRI s, IRI p, RDFTerm o) {
+        return Iter.asStream(graph.find(toJenaAny(s),toJenaAny(p),toJenaAny(o)), true).
+        		map(JenaCommonsRDF::fromJena);
     }
 
     private Node toJenaAny(RDFTerm term) {

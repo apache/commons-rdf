@@ -21,14 +21,22 @@ package org.apache.commons.rdf.jena;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import org.apache.commons.rdf.api.* ;
-import org.apache.commons.rdf.jena.impl.*;
+import org.apache.commons.rdf.api.BlankNode;
+import org.apache.commons.rdf.api.BlankNodeOrIRI;
+import org.apache.commons.rdf.api.Graph;
+import org.apache.commons.rdf.api.IRI;
+import org.apache.commons.rdf.api.Literal;
+import org.apache.commons.rdf.api.Quad;
+import org.apache.commons.rdf.api.RDFSyntax;
+import org.apache.commons.rdf.api.RDFTerm;
+import org.apache.commons.rdf.api.RDFTermFactory;
+import org.apache.commons.rdf.api.Triple;
+import org.apache.commons.rdf.jena.impl.JCR_Factory;
 import org.apache.jena.datatypes.RDFDatatype ;
 import org.apache.jena.datatypes.xsd.XSDDatatype ;
 import org.apache.jena.graph.Node ;
 import org.apache.jena.graph.NodeFactory ;
 import org.apache.jena.riot.Lang;
-import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFLanguages;
 import org.apache.jena.riot.system.StreamRDF ;
 import org.apache.jena.riot.system.StreamRDFBase;
@@ -89,7 +97,7 @@ public class JenaCommonsRDF {
         if ( graph instanceof JenaGraph )
             return ((JenaGraph)graph).getGraph() ;
         org.apache.jena.graph.Graph g = GraphFactory.createGraphMem() ;
-        graph.getTriples().forEach(t->g.add(toJena(t))) ; 
+        graph.stream().forEach(t->g.add(toJena(t))) ; 
         return g ;   
     }
 
