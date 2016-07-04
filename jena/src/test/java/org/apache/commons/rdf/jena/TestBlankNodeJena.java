@@ -20,17 +20,17 @@ package org.apache.commons.rdf.jena;
 
 import org.apache.commons.rdf.api.AbstractBlankNodeTest ;
 import org.apache.commons.rdf.api.BlankNode ;
-import org.apache.commons.rdf.jena.impl.JCR_Factory;
+import org.apache.commons.rdf.jena.impl.JenaFactory;
 
 public class TestBlankNodeJena extends AbstractBlankNodeTest {
     @Override
     protected BlankNode getBlankNode() {
-        return JCR_Factory.createBlankNode() ;
+        return JenaFactory.createBlankNode() ;
     }
     
     @Override
     protected BlankNode getBlankNode(String identifier) {
-        return JCR_Factory.createBlankNode(identifier) ;
+        return JenaFactory.createBlankNode(identifier) ;
     }
 }
 

@@ -33,11 +33,11 @@ import org.apache.jena.graph.Node ;
 import org.apache.jena.riot.Lang ;
 import org.apache.jena.riot.RDFDataMgr ;
 
-public class JCR_Graph implements Graph, JenaGraph {
+public class GraphImpl implements Graph, JenaGraph {
 
     private org.apache.jena.graph.Graph graph;
 
-    /*package*/ JCR_Graph(org.apache.jena.graph.Graph graph) {
+    /*package*/ GraphImpl(org.apache.jena.graph.Graph graph) {
         this.graph = graph ;
     }
     

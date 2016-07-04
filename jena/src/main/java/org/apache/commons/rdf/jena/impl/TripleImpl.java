@@ -24,22 +24,22 @@ import org.apache.commons.rdf.api.* ;
 import org.apache.commons.rdf.jena.JenaCommonsRDF;
 import org.apache.commons.rdf.jena.JenaTriple;
 
-public class JCR_Triple implements Triple, JenaTriple {
+public class TripleImpl implements Triple, JenaTriple {
     private final BlankNodeOrIRI subject ;
     private final IRI predicate ;
     private final RDFTerm object ;
     private org.apache.jena.graph.Triple triple = null ;
 
-    /* package */ JCR_Triple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    /* package */ TripleImpl(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
         this.subject = subject ;
         this.predicate = predicate ;
         this.object = object ;
     }
     
-    /* package */ JCR_Triple(org.apache.jena.graph.Triple triple) {
-        this.subject = (BlankNodeOrIRI)JCR_Factory.fromJena(triple.getSubject()) ;
-        this.predicate = (IRI)JCR_Factory.fromJena(triple.getPredicate()) ;
-        this.object = JCR_Factory.fromJena(triple.getObject()) ;
+    /* package */ TripleImpl(org.apache.jena.graph.Triple triple) {
+        this.subject = (BlankNodeOrIRI)JenaFactory.fromJena(triple.getSubject()) ;
+        this.predicate = (IRI)JenaFactory.fromJena(triple.getPredicate()) ;
+        this.object = JenaFactory.fromJena(triple.getObject()) ;
         this.triple = triple ;
     }
 

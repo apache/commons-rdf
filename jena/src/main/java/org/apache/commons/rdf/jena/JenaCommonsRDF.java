@@ -31,7 +31,7 @@ import org.apache.commons.rdf.api.RDFSyntax;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.RDFTermFactory;
 import org.apache.commons.rdf.api.Triple;
-import org.apache.commons.rdf.jena.impl.JCR_Factory;
+import org.apache.commons.rdf.jena.impl.JenaFactory;
 import org.apache.jena.datatypes.RDFDatatype ;
 import org.apache.jena.datatypes.xsd.XSDDatatype ;
 import org.apache.jena.graph.Node ;
@@ -103,12 +103,12 @@ public class JenaCommonsRDF {
 
     /** Adapt an existing Jena Node to CommonsRDF {@link RDFTerm}. */
     public static RDFTerm fromJena( Node node) {
-        return JCR_Factory.fromJena(node) ;
+        return JenaFactory.fromJena(node) ;
     }
 
     /** Adapt an existing Jena Triple to CommonsRDF {@link Triple}. */
     public static Triple fromJena(org.apache.jena.graph.Triple triple) {
-        return JCR_Factory.fromJena(triple) ;
+        return JenaFactory.fromJena(triple) ;
     }
 
     /** Adapt an existring Jena Graph to CommonsRDF {@link Graph}.
@@ -116,7 +116,7 @@ public class JenaCommonsRDF {
      * Changes to the CommonsRDF Graph are reflected in the jena graph.
      */    
     public static Graph fromJena(org.apache.jena.graph.Graph graph) {
-        return JCR_Factory.fromJena(graph) ;
+        return JenaFactory.fromJena(graph) ;
     }
 
     /** Convert from Jena {@link Node} to any RDFCommons implementation */
@@ -198,7 +198,7 @@ public static Quad fromJena(RDFTermFactory factory, org.apache.jena.sparql.core.
 }
 
 public static Quad fromJena(org.apache.jena.sparql.core.Quad quad) {	// 
-	return JCR_Factory.fromJena(quad) ;
+	return JenaFactory.fromJena(quad) ;
 }
 
 public static void conversionError(String msg) {

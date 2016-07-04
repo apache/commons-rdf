@@ -18,17 +18,18 @@
 
 package org.apache.commons.rdf.jena.impl;
 
+import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.jena.JenaNode;
 import org.apache.jena.graph.Node ;
 import org.apache.jena.riot.out.NodeFmtLib ;
 import org.apache.jena.shared.PrefixMapping ;
 import org.apache.jena.shared.impl.PrefixMappingImpl ;
 
-class JCR_Term implements JenaNode {
+class AbstractRDFTerm implements JenaNode, RDFTerm {
     private Node node;
     static private PrefixMapping empty = new PrefixMappingImpl() ; 
     
-    protected JCR_Term(Node node) {
+    protected AbstractRDFTerm(Node node) {
         this.node = node ;
     }
     

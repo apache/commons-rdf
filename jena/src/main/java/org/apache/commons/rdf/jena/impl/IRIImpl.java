@@ -24,13 +24,13 @@ import org.apache.jena.graph.NodeFactory ;
 import org.apache.commons.rdf.api.* ;
 import org.apache.commons.rdf.jena.JenaNode;
 
-public class JCR_IRI extends JCR_Term implements IRI, JenaNode {
+public class IRIImpl extends AbstractRDFTerm implements IRI, JenaNode {
 
-    /*package*/ JCR_IRI(String iriStr) {
+    /*package*/ IRIImpl(String iriStr) {
         super(NodeFactory.createURI(iriStr)) ;
     }
     
-    /*package*/ JCR_IRI(Node node) {
+    /*package*/ IRIImpl(Node node) {
         super(node) ;
     }
 

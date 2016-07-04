@@ -18,51 +18,31 @@
 
 package org.apache.commons.rdf.jena.impl;
 
-import java.util.Objects ;
-import java.util.Optional ;
-
-import org.apache.commons.rdf.api.IRI ;
-import org.apache.commons.rdf.api.Literal ;
+import org.apache.commons.rdf.api.BlankNode ;
+import org.apache.commons.rdf.jena.JenaNode;
 import org.apache.jena.graph.Node ;
 
-public class JCR_Literal extends JCR_Term implements Literal {
+public class BlankNodeImpl extends AbstractRDFTerm implements BlankNode, JenaNode {
 
-    /* package */ JCR_Literal(Node node) {
-        super(node) ;
-    }
+    /*package*/ BlankNodeImpl(Node node) { super(node) ; }
 
     @Override
-    public String getLexicalForm() {
-        return getNode().getLiteralLexicalForm() ;
+    public String uniqueReference() {
+        return getNode().getBlankNodeLabel() ;
     }
 
-    @Override
-    public IRI getDatatype() {
-        return JCR_Factory.createIRI(getNode().getLiteralDatatype().getURI()) ;
-    }
-
-    @Override
-    public Optional<String> getLanguageTag() {
-        String x = getNode().getLiteralLanguage() ;
-        if ( x == null || x.isEmpty() )
-            return Optional.empty() ; 
-        return Optional.of(x) ;
-    }
-    
     @Override
     public int hashCode() {
-        return Objects.hash(getLexicalForm(), getDatatype(), getLanguageTag()) ;
+        return uniqueReference().hashCode() ;
     }
     
     @Override
     public boolean equals(Object other) {
         if ( other == this ) return true ;
         if ( other == null ) return false ;
-        if ( ! ( other instanceof Literal ) ) return false ;
-        Literal literal = (Literal)other ;
-        return  getLexicalForm().equals(literal.getLexicalForm()) &&
-                getLanguageTag().equals(literal.getLanguageTag()) &&
-                getDatatype().equals(literal.getDatatype()) ;
+        if ( ! ( other instanceof BlankNode ) ) return false ;
+        BlankNode bNode = (BlankNode)other ;
+        return  uniqueReference().equals(bNode.uniqueReference()) ;
     }
 }
 

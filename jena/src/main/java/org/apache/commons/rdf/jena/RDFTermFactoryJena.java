@@ -19,7 +19,7 @@
 package org.apache.commons.rdf.jena;
 
 import org.apache.commons.rdf.api.* ;
-import org.apache.commons.rdf.jena.impl.JCR_Factory;
+import org.apache.commons.rdf.jena.impl.JenaFactory;
 
 /** RDFTermFactory with Jena-backed objects.
  *  See {@link JenaCommonsRDF} for other conversions of existing objects. 
@@ -30,23 +30,23 @@ public final class RDFTermFactoryJena implements RDFTermFactory {
     
     @Override
     public BlankNode createBlankNode() {
-        return JCR_Factory.createBlankNode() ;
+        return JenaFactory.createBlankNode() ;
     }
 
     @Override
     public BlankNode createBlankNode(String name) {
-        return JCR_Factory.createBlankNode(name) ;
+        return JenaFactory.createBlankNode(name) ;
     }
 
     @Override
     public Graph createGraph() {
-        return JCR_Factory.createGraph() ;
+        return JenaFactory.createGraph() ;
     }
 
     @Override
     public IRI createIRI(String iri) {
         validateIRI(iri) ;
-        return JCR_Factory.createIRI(iri) ;
+        return JenaFactory.createIRI(iri) ;
     }
 
     // Some simple validations - full IRI parsing is not cheap. 
@@ -58,18 +58,18 @@ public final class RDFTermFactoryJena implements RDFTermFactory {
 
     @Override
     public Literal createLiteral(String lexicalForm) {
-        return JCR_Factory.createLiteral(lexicalForm) ;
+        return JenaFactory.createLiteral(lexicalForm) ;
     }
 
     @Override
     public Literal createLiteral(String lexicalForm, IRI dataType) {
-        return JCR_Factory.createLiteralDT(lexicalForm, dataType.getIRIString()) ;
+        return JenaFactory.createLiteralDT(lexicalForm, dataType.getIRIString()) ;
     }
 
     @Override
     public Literal createLiteral(String lexicalForm, String languageTag) {
         validateLang(languageTag) ;
-        return JCR_Factory.createLiteralLang(lexicalForm, languageTag) ;
+        return JenaFactory.createLiteralLang(lexicalForm, languageTag) ;
     }
 
     private static void validateLang(String languageTag) {
@@ -78,7 +78,7 @@ public final class RDFTermFactoryJena implements RDFTermFactory {
 
     @Override
     public Triple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-        return JCR_Factory.createTriple(subject, predicate, object) ;
+        return JenaFactory.createTriple(subject, predicate, object) ;
     }
 
 }

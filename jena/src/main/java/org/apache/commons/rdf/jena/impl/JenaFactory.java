@@ -25,51 +25,51 @@ import org.apache.jena.graph.Node ;
 import org.apache.jena.graph.NodeFactory ;
 import org.apache.jena.sparql.graph.GraphFactory ;
 
-public class JCR_Factory {
+public class JenaFactory {
     // basic components to commonsrdf backed by Jena. 
     public static IRI createIRI(String iriStr) {
         return (IRI)JenaCommonsRDF.fromJena(NodeFactory.createURI(iriStr));
     }
 
     public static Literal createLiteral(String lexStr) {
-        return new JCR_Literal(NodeFactory.createLiteral(lexStr));
+        return new LiteralImpl(NodeFactory.createLiteral(lexStr));
     }
 
     public static Literal createLiteralDT(String lexStr, String datatypeIRI) {
-        return new JCR_Literal(NodeFactory.createLiteral(lexStr, NodeFactory.getType(datatypeIRI))) ;
+        return new LiteralImpl(NodeFactory.createLiteral(lexStr, NodeFactory.getType(datatypeIRI))) ;
     }
 
     public static Literal createLiteralLang(String lexStr, String langTag) {
-        return new JCR_Literal(NodeFactory.createLiteral(lexStr, langTag));
+        return new LiteralImpl(NodeFactory.createLiteral(lexStr, langTag));
     }
 
     public static BlankNode createBlankNode() {
-        return new JCR_BlankNode(NodeFactory.createBlankNode());
+        return new BlankNodeImpl(NodeFactory.createBlankNode());
     }
 
     public static BlankNode createBlankNode(String id) {
-        return new JCR_BlankNode(NodeFactory.createBlankNode(id));
+        return new BlankNodeImpl(NodeFactory.createBlankNode(id));
     }
     
-    public static Graph createGraph() { return new JCR_Graph(GraphFactory.createDefaultGraph()) ; }
+    public static Graph createGraph() { return new GraphImpl(GraphFactory.createDefaultGraph()) ; }
     
     public static Triple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) { 
-        return new JCR_Triple(subject, predicate, object) ;
+        return new TripleImpl(subject, predicate, object) ;
     }
     
     public static Triple fromJena(org.apache.jena.graph.Triple triple) {
-        return new JCR_Triple(triple) ;
+        return new TripleImpl(triple) ;
     }
 
     public static Graph fromJena(org.apache.jena.graph.Graph graph) {
-        return new JCR_Graph(graph) ;
+        return new GraphImpl(graph) ;
     }
 
     public static RDFTerm fromJena(Node node) {
         if ( node.isURI() )
-            return new JCR_IRI(node) ; 
+            return new IRIImpl(node) ; 
         if ( node.isLiteral() ) {
-            return new JCR_Literal(node) ; 
+            return new LiteralImpl(node) ; 
 //            String lang = node.getLiteralLanguage() ;
 //            if ( lang != null && lang.isEmpty() )
 //                return createLiteralLang(node.getLiteralLexicalForm(), lang) ;
@@ -78,13 +78,13 @@ public class JCR_Factory {
 //            return createLiteralDT(node.getLiteralLexicalForm(), node.getLiteralDatatype().getURI());
         }
         if ( node.isBlank() )
-            return new JCR_BlankNode(node) ; 
+            return new BlankNodeImpl(node) ; 
         conversionError("Node is not a concrete RDF Term: "+node) ;
         return null ;
     }
 
 	public static Quad fromJena(org.apache.jena.sparql.core.Quad quad) {
-		 return new JCR_Quad(quad) ;
+		 return new QuadImpl(quad) ;
 	}
 }
 
