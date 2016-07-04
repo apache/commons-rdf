@@ -58,6 +58,9 @@ public class JenaCommonsRDF {
      * create a copy using Jena objects. 
      */
     public static Node toJena(RDFTerm term) {
+    	if (term == null) { 
+    		return null;
+    	}
         if ( term instanceof JenaNode )
             return ((JenaNode)term).asJenaNode() ;
         
