@@ -18,61 +18,69 @@
     limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.apache.commons</groupId>
-        <artifactId>commons-rdf-parent</artifactId>
-        <version>0.3.0-incubating-SNAPSHOT</version>
-    </parent>
+	<parent>
+		<groupId>org.apache.commons</groupId>
+		<artifactId>commons-rdf-parent</artifactId>
+		<version>0.3.0-incubating-SNAPSHOT</version>
+	</parent>
 
-    <artifactId>commons-rdf-jena</artifactId>
-    <packaging>jar</packaging>
+	<artifactId>commons-rdf-jena</artifactId>
+	<packaging>jar</packaging>
 
-    <name>Commons RDF: Integration: Apache Jena</name>
-    <description>Apache Jena implementation of Commons RDF API</description>
+	<name>Commons RDF: Integration: Apache Jena</name>
+	<description>Apache Jena implementation of Commons RDF API</description>
 
-    <dependencies>
-        <dependency>
-            <groupId>${project.parent.groupId}</groupId>
-            <artifactId>commons-rdf-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+	<dependencies>
 		<dependency>
-            <groupId>${project.parent.groupId}</groupId>
-            <artifactId>commons-rdf-simple</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-<!-- Uncomment below to use instead of jena-osgi to access Jena source code
- -->
-	    <dependency>
-	      <groupId>org.apache.jena</groupId>
-	      <artifactId>apache-jena-libs</artifactId>
-	      <version>${ver.jena}</version>
-	      <type>pom</type>
-	      <scope>optional</scope>
-	    </dependency>        
- <!-- 
- As commons-rdf-jena is an OSGi bundle, we'll use the Jena OSGi bundle
-  -->
-	    <dependency>
-	      <groupId>org.apache.jena</groupId>
-	      <artifactId>jena-osgi</artifactId>
-	      <version>${ver.jena}</version>
-	    </dependency>        
-        <dependency>
-            <groupId>${project.parent.groupId}</groupId>
-            <artifactId>commons-rdf-api</artifactId>
-            <version>${project.version}</version>
-            <classifier>tests</classifier>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+			<groupId>${project.parent.groupId}</groupId>
+			<artifactId>commons-rdf-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.parent.groupId}</groupId>
+			<artifactId>commons-rdf-simple</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<!-- Uncomment below to use instead of jena-osgi to access Jena source 
+			code <dependency> <groupId>org.apache.jena</groupId> <artifactId>apache-jena-libs</artifactId> 
+			<version>${ver.jena}</version> <type>pom</type> <scope>optional</scope> </dependency> -->
+
+		<!-- As commons-rdf-jena is an OSGi bundle, we'll use the Jena OSGi bundle -->
+		<dependency>
+			<groupId>org.apache.jena</groupId>
+			<artifactId>jena-osgi</artifactId>
+			<version>${ver.jena}</version>
+		</dependency>
+
+		<!-- Additional bundles needed by jena-osgi -->
+		<dependency>
+			<groupId>org.apache.servicemix.bundles</groupId>
+			<artifactId>org.apache.servicemix.bundles.xerces</artifactId>
+			<version>${servicemix.xerces.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.andrewoma.dexx</groupId>
+			<artifactId>collection</artifactId>
+			<version>${dexx.collection.version}</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>${project.parent.groupId}</groupId>
+			<artifactId>commons-rdf-api</artifactId>
+			<version>${project.version}</version>
+			<classifier>tests</classifier>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
 </project>
