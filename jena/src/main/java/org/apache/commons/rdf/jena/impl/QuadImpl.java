@@ -20,6 +20,7 @@ package org.apache.commons.rdf.jena.impl;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.IRI;
@@ -44,12 +45,12 @@ public class QuadImpl implements Quad, JenaQuad {
         this.object = Objects.requireNonNull(object) ;
     }
     
-    /* package */ QuadImpl(org.apache.jena.sparql.core.Quad quad) {
+    /* package */ QuadImpl(org.apache.jena.sparql.core.Quad quad, UUID salt) {
         this.quad = Objects.requireNonNull(quad) ;
-    	this.graphName = Optional.of((BlankNodeOrIRI)JenaFactory.fromJena(quad.getGraph())) ;
-        this.subject = (BlankNodeOrIRI)JenaFactory.fromJena(quad.getSubject()) ;
-        this.predicate = (IRI)JenaFactory.fromJena(quad.getPredicate()) ;
-        this.object = JenaFactory.fromJena(quad.getObject()) ;
+    	this.graphName = Optional.of((BlankNodeOrIRI)JenaFactory.fromJena(quad.getGraph(), salt)) ;
+        this.subject = (BlankNodeOrIRI)JenaFactory.fromJena(quad.getSubject(), salt) ;
+        this.predicate = (IRI)JenaFactory.fromJena(quad.getPredicate(), salt) ;
+        this.object = JenaFactory.fromJena(quad.getObject(), salt) ;
     }
 
     @Override

@@ -19,6 +19,7 @@
 package org.apache.commons.rdf.jena.impl;
 
 import java.util.Objects ;
+import java.util.UUID;
 
 import org.apache.commons.rdf.api.* ;
 import org.apache.commons.rdf.jena.JenaCommonsRDF;
@@ -36,10 +37,10 @@ public class TripleImpl implements Triple, JenaTriple {
         this.object = object ;
     }
     
-    /* package */ TripleImpl(org.apache.jena.graph.Triple triple) {
-        this.subject = (BlankNodeOrIRI)JenaFactory.fromJena(triple.getSubject()) ;
-        this.predicate = (IRI)JenaFactory.fromJena(triple.getPredicate()) ;
-        this.object = JenaFactory.fromJena(triple.getObject()) ;
+    /* package */ TripleImpl(org.apache.jena.graph.Triple triple, UUID salt) {
+        this.subject = (BlankNodeOrIRI)JenaFactory.fromJena(triple.getSubject(), salt) ;
+        this.predicate = (IRI)JenaFactory.fromJena(triple.getPredicate(), salt) ;
+        this.object = JenaFactory.fromJena(triple.getObject(), salt) ;
         this.triple = triple ;
     }
 

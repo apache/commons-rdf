@@ -22,12 +22,10 @@ import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.jena.JenaNode;
 import org.apache.jena.graph.Node ;
 import org.apache.jena.riot.out.NodeFmtLib ;
-import org.apache.jena.shared.PrefixMapping ;
-import org.apache.jena.shared.impl.PrefixMappingImpl ;
 
 class AbstractRDFTerm implements JenaNode, RDFTerm {
     private Node node;
-    static private PrefixMapping empty = new PrefixMappingImpl() ; 
+    //static private PrefixMapping empty = new PrefixMappingImpl() ; 
     
     protected AbstractRDFTerm(Node node) {
         this.node = node ;

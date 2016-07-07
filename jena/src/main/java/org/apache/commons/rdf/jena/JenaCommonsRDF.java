@@ -19,6 +19,7 @@
 package org.apache.commons.rdf.jena;
 
 import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 import org.apache.commons.rdf.api.BlankNode;
@@ -104,14 +105,16 @@ public class JenaCommonsRDF {
         return g ;   
     }
 
-    /** Adapt an existing Jena Node to CommonsRDF {@link RDFTerm}. */
-    public static RDFTerm fromJena( Node node) {
-        return JenaFactory.fromJena(node) ;
+    /** Adapt an existing Jena Node to CommonsRDF {@link RDFTerm}. 
+     * @param salt */
+    public static RDFTerm fromJena( Node node, UUID salt) {
+        return JenaFactory.fromJena(node, salt) ;
     }
 
-    /** Adapt an existing Jena Triple to CommonsRDF {@link Triple}. */
-    public static Triple fromJena(org.apache.jena.graph.Triple triple) {
-        return JenaFactory.fromJena(triple) ;
+    /** Adapt an existing Jena Triple to CommonsRDF {@link Triple}. 
+     * @param salt */
+    public static Triple fromJena(org.apache.jena.graph.Triple triple, UUID salt) {
+        return JenaFactory.fromJena(triple, salt) ;
     }
 
     /** Adapt an existring Jena Graph to CommonsRDF {@link Graph}.
@@ -122,14 +125,15 @@ public class JenaCommonsRDF {
         return JenaFactory.fromJena(graph) ;
     }
 
-    /** Convert from Jena {@link Node} to any RDFCommons implementation */
-    public static RDFTerm fromJena(RDFTermFactory factory, Node node) {
+    /** Convert from Jena {@link Node} to any RDFCommons implementation 
+     * @param salt */
+    public static RDFTerm fromJena(RDFTermFactory factory, Node node, UUID salt) {
     	if (node == null) { 
     		return null;
     	}
     	if (factory instanceof RDFTermFactoryJena) {
     		// No need to convert, just wrap
-    		return fromJena(node);
+    		return fromJena(node, salt);
     	}
         if ( node.isURI() )
             return factory.createIRI(node.getURI()) ;

@@ -19,6 +19,8 @@
 package org.apache.commons.rdf.jena.impl;
 import static org.apache.commons.rdf.jena.JenaCommonsRDF.conversionError;
 
+import java.util.UUID;
+
 import org.apache.commons.rdf.api.* ;
 import org.apache.commons.rdf.jena.JenaCommonsRDF;
 import org.apache.jena.graph.Node ;
@@ -44,11 +46,15 @@ public class JenaFactory {
     }
 
     public static BlankNode createBlankNode() {
-        return new BlankNodeImpl(NodeFactory.createBlankNode());
+        return new BlankNodeImpl(NodeFactory.createBlankNode(), UUID.randomUUID());
+    }
+    
+    public static BlankNode createBlankNode(UUID salt) {
+        return new BlankNodeImpl(NodeFactory.createBlankNode(), salt);
     }
 
-    public static BlankNode createBlankNode(String id) {
-        return new BlankNodeImpl(NodeFactory.createBlankNode(id));
+    public static BlankNode createBlankNode(String id, UUID salt) {
+        return new BlankNodeImpl(NodeFactory.createBlankNode(id), salt);
     }
     
     public static Graph createGraph() { return new GraphImpl(GraphFactory.createDefaultGraph()) ; }
@@ -57,15 +63,15 @@ public class JenaFactory {
         return new TripleImpl(subject, predicate, object) ;
     }
     
-    public static Triple fromJena(org.apache.jena.graph.Triple triple) {
-        return new TripleImpl(triple) ;
+    public static Triple fromJena(org.apache.jena.graph.Triple triple, UUID salt) {
+        return new TripleImpl(triple, salt) ;
     }
 
     public static Graph fromJena(org.apache.jena.graph.Graph graph) {
         return new GraphImpl(graph) ;
     }
 
-    public static RDFTerm fromJena(Node node) {
+    public static RDFTerm fromJena(Node node, UUID salt) {
         if ( node.isURI() )
             return new IRIImpl(node) ; 
         if ( node.isLiteral() ) {
@@ -78,13 +84,13 @@ public class JenaFactory {
 //            return createLiteralDT(node.getLiteralLexicalForm(), node.getLiteralDatatype().getURI());
         }
         if ( node.isBlank() )
-            return new BlankNodeImpl(node) ; 
+            return new BlankNodeImpl(node, salt) ; 
         conversionError("Node is not a concrete RDF Term: "+node) ;
         return null ;
     }
 
-	public static Quad fromJena(org.apache.jena.sparql.core.Quad quad) {
-		 return new QuadImpl(quad) ;
+	public static Quad fromJena(org.apache.jena.sparql.core.Quad quad, UUID salt) {
+		 return new QuadImpl(quad, salt) ;
 	}
 }
 

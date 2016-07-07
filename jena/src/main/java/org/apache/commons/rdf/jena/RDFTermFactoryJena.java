@@ -18,6 +18,8 @@
 
 package org.apache.commons.rdf.jena;
 
+import java.util.UUID;
+
 import org.apache.commons.rdf.api.* ;
 import org.apache.commons.rdf.jena.impl.JenaFactory;
 
@@ -28,14 +30,16 @@ import org.apache.commons.rdf.jena.impl.JenaFactory;
  */
 public final class RDFTermFactoryJena implements RDFTermFactory {
     
+	private UUID salt = UUID.randomUUID(); 
+	
     @Override
     public BlankNode createBlankNode() {
-        return JenaFactory.createBlankNode() ;
+        return JenaFactory.createBlankNode(salt) ;
     }
 
     @Override
     public BlankNode createBlankNode(String name) {
-        return JenaFactory.createBlankNode(name) ;
+        return JenaFactory.createBlankNode(name, salt) ;
     }
 
     @Override

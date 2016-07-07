@@ -18,17 +18,24 @@
 
 package org.apache.commons.rdf.jena.impl;
 
+import java.util.UUID;
+
 import org.apache.commons.rdf.api.BlankNode ;
 import org.apache.commons.rdf.jena.JenaNode;
 import org.apache.jena.graph.Node ;
 
 public class BlankNodeImpl extends AbstractRDFTerm implements BlankNode, JenaNode {
 
-    /*package*/ BlankNodeImpl(Node node) { super(node) ; }
+    private UUID salt;
+
+	/* package */ BlankNodeImpl(Node node, UUID salt) {
+		super(node);
+		this.salt = salt;
+	}
 
     @Override
     public String uniqueReference() {
-        return asJenaNode().getBlankNodeLabel() ;
+        return salt + asJenaNode().getBlankNodeLabel() ;
     }
 
     @Override
@@ -44,5 +51,7 @@ public class BlankNodeImpl extends AbstractRDFTerm implements BlankNode, JenaNod
         BlankNode bNode = (BlankNode)other ;
         return  uniqueReference().equals(bNode.uniqueReference()) ;
     }
+    
+    
 }
 
