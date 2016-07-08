@@ -414,7 +414,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	}
 
 	/**
-	 * Adapt an existing Jena Quad to CommonsRDF {@link Quad}.
+	 * Adapt an existing Jena {@link org.apache.jena.sparql.core.Quad} to CommonsRDF {@link Quad}.
 	 * <p>
 	 * If the quad contains any {@link Node#isBlank()}, then any corresponding
 	 * {@link BlankNode} will use a {@link UUID} salt from this 
@@ -431,7 +431,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	}
 	
 	/**
-	 * Adapt an existing Jena Quad to CommonsRDF {@link Quad}.
+	 * Adapt an existing Jena {@link org.apache.jena.sparql.core.Quad} to CommonsRDF {@link Quad}.
 	 * <p>
 	 * If the quad contains any {@link Node#isBlank()}, then any corresponding
 	 * {@link BlankNode} will use the provided {@link UUID} salt
@@ -449,17 +449,46 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	}
 
 	/**
-	 * Adapt an existing Jena Graph to CommonsRDF {@link Graph}. This does not
+	 * Adapt an existing Jena {@link org.apache.jena.graph.Graph} to CommonsRDF {@link Graph}. 
+	 * <p>
+	 * This does not
 	 * take a copy, changes to the CommonsRDF Graph are reflected in the jena
-	 * graph.
+	 * graph, which is accessible from {@link JenaGraph#asJenaGraph()}.
+	 * <p>
+	 * If the graph contains any {@link Node#isBlank()}, then any corresponding
+	 * {@link BlankNode} will use a {@link UUID} salt from this 
+	 * {@link JenaRDFTermFactory} instance
+	 * in combination with {@link Node#getBlankNodeId()} 
+	 * for the purpose of its {@link BlankNode#uniqueReference()}.
+
 	 */
-	public static Graph fromJena(org.apache.jena.graph.Graph graph) {
-		// NOTE: This generates a new UUID salt per graph
-		return JenaFactory.fromJena(graph);
+	public Graph fromJena(org.apache.jena.graph.Graph graph) {
+		return JenaFactory.fromJena(graph, salt);
 	}
+
 	
 
+	/**
+	 * Adapt an existing Jena {@link org.apache.jena.graph.Graph} to CommonsRDF {@link Graph}. 
+	 * <p>
+	 * This does not
+	 * take a copy, changes to the CommonsRDF Graph are reflected in the jena
+	 * graph, which is accessible from {@link JenaGraph#asJenaGraph()}.
+	 * <p>
+	 * If the graph contains any {@link Node#isBlank()}, then any corresponding
+	 * {@link BlankNode} will use the provided {@link UUID} salt
+	 * in combination with {@link Node#getBlankNodeId()} 
+	 * for the purpose of its {@link BlankNode#uniqueReference()}.
+	 * 
+	 * @param graph Jena graph to adapt
+	 * @param salt A {@link UUID} salt for adapting any {@link BlankNode}s
+	 * @return Adapted graph 
+	 */
+	public static JenaGraph fromJena(org.apache.jena.graph.Graph graph, UUID salt) {
+		return JenaFactory.fromJena(graph, salt);
+	}
 
+	
 	/**
 	 * Convert from Jena to any RDFCommons implementation. This is a copy, even
 	 * if the factory is a RDFTermFactoryJena. Use
@@ -468,7 +497,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	public static Graph fromJena(RDFTermFactory factory, org.apache.jena.graph.Graph graph) {
 		if (factory instanceof JenaRDFTermFactory) {
 			// No need to convert, just wrap
-			return fromJena(graph);
+			return ((JenaRDFTermFactory)factory).fromJena(graph);
 		}
 
 		Graph g = factory.createGraph();
