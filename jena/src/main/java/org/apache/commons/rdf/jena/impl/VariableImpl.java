@@ -18,6 +18,8 @@
 
 package org.apache.commons.rdf.jena.impl;
 
+import java.util.Objects;
+
 import org.apache.commons.rdf.jena.JenaRDFTerm;
 import org.apache.commons.rdf.jena.JenaVariable;
 import org.apache.jena.graph.Node;
@@ -46,6 +48,17 @@ public class VariableImpl implements JenaRDFTerm, JenaVariable {
 	@Override
 	public Node asJenaNode() {
 		return node;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) { 
+			return true;
+		}
+		if (! (obj instanceof JenaVariable)) { 
+			return false;
+		}
+		return Objects.equals(getVariableName(), ((JenaVariable)obj).getVariableName());
 	}
 
 }

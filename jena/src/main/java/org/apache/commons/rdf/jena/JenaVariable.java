@@ -17,7 +17,22 @@
  */
 package org.apache.commons.rdf.jena;
 
+import org.apache.commons.rdf.api.BlankNode;
+import org.apache.jena.graph.Node;
 
+/**
+ * A placeholder for a variable RDFTerm.
+ * <p>
+ * Equivalent to <code>?variable</code> in SPARQL. This is a Jena-specific
+ * RDFTerm extension used in SPARQL queries.
+ * <p>
+ * Note that any JenaVariable is {@link Object#equals(Object)} equal to 
+ * any other JenaVariable if they have the same {@link #getVariableName()}. There
+ * is no equivalent of {@link BlankNode#uniqueReference()} and actual equality depend
+ * on the SPARQL query using the variable.
+ * 
+ * @see Node#isVariable()
+ */
 public interface JenaVariable extends JenaRDFTerm {
 	public String getVariableName();
 

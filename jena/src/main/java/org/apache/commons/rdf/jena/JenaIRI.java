@@ -19,7 +19,13 @@
 package org.apache.commons.rdf.jena;
 
 import org.apache.commons.rdf.api.IRI;
+import org.apache.jena.graph.Node;
 
+/**
+ * A Jena-backed {@link IRI}.
+ * 
+ * @see Node#isURI()
+ */
 public interface JenaIRI extends JenaRDFTerm, IRI {
 
 }

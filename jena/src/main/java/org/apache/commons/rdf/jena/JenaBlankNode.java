@@ -19,7 +19,13 @@
 package org.apache.commons.rdf.jena;
 
 import org.apache.commons.rdf.api.BlankNode;
+import org.apache.jena.graph.Node;
 
+/**
+ * A Jena-backed {@link BlankNode}.
+ * 
+ * @see Node#isBlank()
+ */
 public interface JenaBlankNode extends JenaRDFTerm, BlankNode {
 
 }

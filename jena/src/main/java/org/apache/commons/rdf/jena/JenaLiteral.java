@@ -19,7 +19,13 @@
 package org.apache.commons.rdf.jena;
 
 import org.apache.commons.rdf.api.Literal;
+import org.apache.jena.graph.Node;
 
+/**
+ * A Jena-backed {@link Literal}
+ * 
+ * @see Node#isLiteral()
+ */
 public interface JenaLiteral extends JenaRDFTerm, Literal {
 
 }

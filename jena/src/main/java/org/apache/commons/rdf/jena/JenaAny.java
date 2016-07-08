@@ -18,6 +18,22 @@
 
 package org.apache.commons.rdf.jena;
 
+import org.apache.jena.graph.Node;
+
+/**
+ * A placeholder for "any" RDFTerm.
+ * <p>
+ * Equivalent to <code>[]</code> in SPARQL. This is a Jena-specific
+ * RDFTerm extension used in SPARQL queries.
+ * <p>
+ * Note that any JenaAny is {@link Object#equals(Object)} equal to 
+ * any other JenaAny - in practice there is only a singleton instance -
+ * but  every ocurrance of JenaAny in a generalized statement 
+ * would independently represent "any" RDFTerm.
+ * 
+ * @see Node#ANY
+ * 
+ */
 public interface JenaAny extends JenaRDFTerm {
 
 }

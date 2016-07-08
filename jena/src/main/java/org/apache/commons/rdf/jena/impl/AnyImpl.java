@@ -45,5 +45,10 @@ public class AnyImpl implements JenaRDFTerm, JenaAny {
 	public Node asJenaNode() {
 		return Node.ANY;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		return obj == this || obj instanceof JenaAny;
+	}
 
 }
