@@ -18,8 +18,6 @@
 
 package org.apache.commons.rdf.jena.impl;
 
-import static org.apache.commons.rdf.jena.RDFTermFactoryJena.conversionError;
-
 import java.util.UUID;
 
 import org.apache.commons.rdf.api.BlankNode;
@@ -30,6 +28,7 @@ import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.Triple;
+import org.apache.commons.rdf.jena.ConversionException;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.NodeFactory;
 import org.apache.jena.sparql.graph.GraphFactory;
@@ -76,7 +75,7 @@ public class JenaFactory {
 		return new TripleImpl(subject, predicate, object);
 	}
 
-	public static RDFTerm fromJena(Node node, UUID salt) {
+	public static RDFTerm fromJena(Node node, UUID salt) throws ConversionException {
 		if (node.isURI())
 			return new IRIImpl(node);
 		if (node.isLiteral()) {
@@ -90,8 +89,7 @@ public class JenaFactory {
 		}
 		if (node.isBlank())
 			return new BlankNodeImpl(node, salt);
-		conversionError("Node is not a concrete RDF Term: " + node);
-		return null;
+		throw new ConversionException("Node is not a concrete RDF Term: " + node);
 	}
 
 	public static Graph fromJena(org.apache.jena.graph.Graph graph) {
