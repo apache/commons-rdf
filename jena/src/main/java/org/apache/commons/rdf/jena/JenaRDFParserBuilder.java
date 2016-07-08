@@ -46,10 +46,10 @@ public class JenaRDFParserBuilder extends AbstractRDFParserBuilder<JenaRDFParser
 			Graph jenaGraph = ((JenaGraph)getTargetGraph().get()).asJenaGraph();
 			dest = StreamRDFLib.graph(jenaGraph);
 		} else {		
-			dest = JenaCommonsRDF.streamJenaToCommonsRDF(getRdfTermFactory().get(), getTarget());
+			dest = RDFTermFactoryJena.streamJenaToCommonsRDF(getRdfTermFactory().get(), getTarget());
 		}
 
-		Lang lang = getContentTypeSyntax().flatMap(JenaCommonsRDF::rdfSyntaxToLang).orElse(null);
+		Lang lang = getContentTypeSyntax().flatMap(RDFTermFactoryJena::rdfSyntaxToLang).orElse(null);
 		String baseStr = getBase().map(IRI::getIRIString).orElse(null);
 
 		if (getSourceIri().isPresent()) {

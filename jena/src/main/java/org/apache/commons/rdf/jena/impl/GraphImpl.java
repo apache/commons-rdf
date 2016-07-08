@@ -19,6 +19,7 @@
 package org.apache.commons.rdf.jena.impl;
 
 import java.io.StringWriter ;
+import java.util.UUID;
 import java.util.stream.Stream ;
 
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
@@ -26,8 +27,9 @@ import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.Triple;
-import org.apache.commons.rdf.jena.JenaCommonsRDF;
+import org.apache.commons.rdf.jena.RDFTermFactoryJena;
 import org.apache.commons.rdf.jena.JenaGraph;
+import org.apache.commons.rdf.jena.RDFTermFactoryJena;
 import org.apache.jena.atlas.iterator.Iter ;
 import org.apache.jena.graph.Node ;
 import org.apache.jena.riot.Lang ;
@@ -36,9 +38,11 @@ import org.apache.jena.riot.RDFDataMgr ;
 public class GraphImpl implements Graph, JenaGraph {
 
     private org.apache.jena.graph.Graph graph;
+	private UUID salt;
 
-    /*package*/ GraphImpl(org.apache.jena.graph.Graph graph) {
-        this.graph = graph ;
+    /*package*/ GraphImpl(org.apache.jena.graph.Graph graph, UUID salt) {
+        this.graph = graph ;        
+		this.salt = salt;
     }
     
     @Override
@@ -47,35 +51,35 @@ public class GraphImpl implements Graph, JenaGraph {
     }
 
     @Override
-    public void add(Triple triple) { graph.add(JenaCommonsRDF.toJena(triple)); }
+    public void add(Triple triple) { graph.add(RDFTermFactoryJena.toJena(triple)); }
 
     @Override
     public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) { 
-        graph.add(org.apache.jena.graph.Triple.create(JenaCommonsRDF.toJena(subject),
-                                                      JenaCommonsRDF.toJena(predicate),
-                                                      JenaCommonsRDF.toJena(object)));
+        graph.add(org.apache.jena.graph.Triple.create(RDFTermFactoryJena.toJena(subject),
+				        		RDFTermFactoryJena.toJena(predicate),
+				        		RDFTermFactoryJena.toJena(object)));
     }
 
     @Override
     public boolean contains(Triple triple) {
-        return graph.contains(JenaCommonsRDF.toJena(triple)) ; 
+        return graph.contains(RDFTermFactoryJena.toJena(triple)) ; 
     }
 
     @Override
     public boolean contains(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-        return graph.contains(JenaCommonsRDF.toJena(subject),
-                              JenaCommonsRDF.toJena(predicate),
-                              JenaCommonsRDF.toJena(object) );
+        return graph.contains(RDFTermFactoryJena.toJena(subject),
+        		RDFTermFactoryJena.toJena(predicate),
+                              RDFTermFactoryJena.toJena(object) );
     }
 
     @Override
-    public void remove(Triple triple) { graph.delete(JenaCommonsRDF.toJena(triple)); }
+    public void remove(Triple triple) { graph.delete(RDFTermFactoryJena.toJena(triple)); }
 
     @Override
     public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-        graph.delete(org.apache.jena.graph.Triple.create(JenaCommonsRDF.toJena(subject),
-                                                         JenaCommonsRDF.toJena(predicate),
-                                                         JenaCommonsRDF.toJena(object)));
+        graph.delete(org.apache.jena.graph.Triple.create(RDFTermFactoryJena.toJena(subject),
+        		RDFTermFactoryJena.toJena(predicate),
+                                                         RDFTermFactoryJena.toJena(object)));
     }
 
     @Override
@@ -88,19 +92,20 @@ public class GraphImpl implements Graph, JenaGraph {
 
     @Override
     public Stream<? extends Triple> stream() {
-    	return Iter.asStream(graph.find(null, null, null), true).map(JenaCommonsRDF::fromJena);
+    	return Iter.asStream(graph.find(null, null, null), true).map(RDFTermFactoryJena::fromJena);
     }
 
     @Override
     public Stream<? extends Triple> stream(BlankNodeOrIRI s, IRI p, RDFTerm o) {
+    	RDFTermFactoryJena factory = new RDFTermFactoryJena();
         return Iter.asStream(graph.find(toJenaAny(s),toJenaAny(p),toJenaAny(o)), true).
-        		map(JenaCommonsRDF::fromJena);
+        		map(factory::fromJena);
     }
 
     private Node toJenaAny(RDFTerm term) {
         if ( term == null )
             return Node.ANY ;
-        return JenaCommonsRDF.toJena(term) ;
+        return RDFTermFactoryJena.toJena(term) ;
     }
 
     @Override

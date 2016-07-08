@@ -22,7 +22,7 @@ import java.util.Objects ;
 import java.util.UUID;
 
 import org.apache.commons.rdf.api.* ;
-import org.apache.commons.rdf.jena.JenaCommonsRDF;
+import org.apache.commons.rdf.jena.RDFTermFactoryJena;
 import org.apache.commons.rdf.jena.JenaTriple;
 
 public class TripleImpl implements Triple, JenaTriple {
@@ -47,7 +47,10 @@ public class TripleImpl implements Triple, JenaTriple {
     @Override
     public org.apache.jena.graph.Triple asJenaTriple() {
         if ( triple == null )
-            triple = org.apache.jena.graph.Triple.create(JenaCommonsRDF.toJena(subject), JenaCommonsRDF.toJena(predicate), JenaCommonsRDF.toJena(object)) ;
+            triple = org.apache.jena.graph.Triple.create(
+            		RDFTermFactoryJena.toJena(subject), 
+            		RDFTermFactoryJena.toJena(predicate), 
+            		RDFTermFactoryJena.toJena(object)) ;
         return triple ;
     }
 

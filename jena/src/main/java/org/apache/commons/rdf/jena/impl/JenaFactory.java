@@ -17,80 +17,92 @@
  */
 
 package org.apache.commons.rdf.jena.impl;
-import static org.apache.commons.rdf.jena.JenaCommonsRDF.conversionError;
+
+import static org.apache.commons.rdf.jena.RDFTermFactoryJena.conversionError;
 
 import java.util.UUID;
 
-import org.apache.commons.rdf.api.* ;
-import org.apache.commons.rdf.jena.JenaCommonsRDF;
-import org.apache.jena.graph.Node ;
-import org.apache.jena.graph.NodeFactory ;
-import org.apache.jena.sparql.graph.GraphFactory ;
+import org.apache.commons.rdf.api.BlankNode;
+import org.apache.commons.rdf.api.BlankNodeOrIRI;
+import org.apache.commons.rdf.api.Graph;
+import org.apache.commons.rdf.api.IRI;
+import org.apache.commons.rdf.api.Literal;
+import org.apache.commons.rdf.api.Quad;
+import org.apache.commons.rdf.api.RDFTerm;
+import org.apache.commons.rdf.api.Triple;
+import org.apache.jena.graph.Node;
+import org.apache.jena.graph.NodeFactory;
+import org.apache.jena.sparql.graph.GraphFactory;
 
 public class JenaFactory {
-    // basic components to commonsrdf backed by Jena. 
-    public static IRI createIRI(String iriStr) {
-        return (IRI)JenaCommonsRDF.fromJena(NodeFactory.createURI(iriStr));
-    }
+	// basic components to commonsrdf backed by Jena.
+	public static IRI createIRI(String iriStr) {
+		return new IRIImpl(iriStr);
+	}
 
-    public static Literal createLiteral(String lexStr) {
-        return new LiteralImpl(NodeFactory.createLiteral(lexStr));
-    }
+	public static Literal createLiteral(String lexStr) {
+		return new LiteralImpl(NodeFactory.createLiteral(lexStr));
+	}
 
-    public static Literal createLiteralDT(String lexStr, String datatypeIRI) {
-        return new LiteralImpl(NodeFactory.createLiteral(lexStr, NodeFactory.getType(datatypeIRI))) ;
-    }
+	public static Literal createLiteralDT(String lexStr, String datatypeIRI) {
+		return new LiteralImpl(NodeFactory.createLiteral(lexStr, NodeFactory.getType(datatypeIRI)));
+	}
 
-    public static Literal createLiteralLang(String lexStr, String langTag) {
-        return new LiteralImpl(NodeFactory.createLiteral(lexStr, langTag));
-    }
+	public static Literal createLiteralLang(String lexStr, String langTag) {
+		return new LiteralImpl(NodeFactory.createLiteral(lexStr, langTag));
+	}
 
-    public static BlankNode createBlankNode() {
-        return new BlankNodeImpl(NodeFactory.createBlankNode(), UUID.randomUUID());
-    }
-    
-    public static BlankNode createBlankNode(UUID salt) {
-        return new BlankNodeImpl(NodeFactory.createBlankNode(), salt);
-    }
+	public static BlankNode createBlankNode() {
+		return new BlankNodeImpl(NodeFactory.createBlankNode(), UUID.randomUUID());
+	}
 
-    public static BlankNode createBlankNode(String id, UUID salt) {
-        return new BlankNodeImpl(NodeFactory.createBlankNode(id), salt);
-    }
-    
-    public static Graph createGraph() { return new GraphImpl(GraphFactory.createDefaultGraph()) ; }
-    
-    public static Triple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) { 
-        return new TripleImpl(subject, predicate, object) ;
-    }
-    
-    public static Triple fromJena(org.apache.jena.graph.Triple triple, UUID salt) {
-        return new TripleImpl(triple, salt) ;
-    }
+	public static BlankNode createBlankNode(UUID salt) {
+		return new BlankNodeImpl(NodeFactory.createBlankNode(), salt);
+	}
 
-    public static Graph fromJena(org.apache.jena.graph.Graph graph) {
-        return new GraphImpl(graph) ;
-    }
+	public static BlankNode createBlankNode(String id, UUID salt) {
+		return new BlankNodeImpl(NodeFactory.createBlankNode(id), salt);
+	}
 
-    public static RDFTerm fromJena(Node node, UUID salt) {
-        if ( node.isURI() )
-            return new IRIImpl(node) ; 
-        if ( node.isLiteral() ) {
-            return new LiteralImpl(node) ; 
-//            String lang = node.getLiteralLanguage() ;
-//            if ( lang != null && lang.isEmpty() )
-//                return createLiteralLang(node.getLiteralLexicalForm(), lang) ;
-//            if ( node.getLiteralDatatype().equals(XSDDatatype.XSDstring) )
-//                return createLiteral(node.getLiteralLexicalForm()) ;
-//            return createLiteralDT(node.getLiteralLexicalForm(), node.getLiteralDatatype().getURI());
-        }
-        if ( node.isBlank() )
-            return new BlankNodeImpl(node, salt) ; 
-        conversionError("Node is not a concrete RDF Term: "+node) ;
-        return null ;
-    }
+	public static Graph createGraph() {
+		return createGraph(UUID.randomUUID());
+	}
+
+	public static Triple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+		return new TripleImpl(subject, predicate, object);
+	}
+
+	public static Triple fromJena(org.apache.jena.graph.Triple triple, UUID salt) {
+		return new TripleImpl(triple, salt);
+	}
+
+	public static Graph fromJena(org.apache.jena.graph.Graph graph) {
+		return new GraphImpl(graph, UUID.randomUUID());
+	}
+
+	public static RDFTerm fromJena(Node node, UUID salt) {
+		if (node.isURI())
+			return new IRIImpl(node);
+		if (node.isLiteral()) {
+			return new LiteralImpl(node);
+//			String lang = node.getLiteralLanguage();
+//			if (lang != null && lang.isEmpty())
+//				return createLiteralLang(node.getLiteralLexicalForm(), lang);
+//			if (node.getLiteralDatatype().equals(XSDDatatype.XSDstring))
+//				return createLiteral(node.getLiteralLexicalForm());
+//			return createLiteralDT(node.getLiteralLexicalForm(), node.getLiteralDatatype().getURI());
+		}
+		if (node.isBlank())
+			return new BlankNodeImpl(node, salt);
+		conversionError("Node is not a concrete RDF Term: " + node);
+		return null;
+	}
 
 	public static Quad fromJena(org.apache.jena.sparql.core.Quad quad, UUID salt) {
-		 return new QuadImpl(quad, salt) ;
+		return new QuadImpl(quad, salt);
+	}
+
+	public static Graph createGraph(UUID salt) {
+		return new GraphImpl(GraphFactory.createDefaultGraph(), salt);
 	}
 }
-
