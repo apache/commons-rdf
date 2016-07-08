@@ -20,38 +20,39 @@ package org.apache.commons.rdf.jena.impl;
 
 import java.util.UUID;
 
-import org.apache.commons.rdf.api.BlankNode ;
+import org.apache.commons.rdf.api.BlankNode;
 import org.apache.commons.rdf.jena.JenaNode;
-import org.apache.jena.graph.Node ;
+import org.apache.jena.graph.Node;
 
 public class BlankNodeImpl extends AbstractRDFTerm implements BlankNode, JenaNode {
 
-    private UUID salt;
+	private UUID salt;
 
 	/* package */ BlankNodeImpl(Node node, UUID salt) {
 		super(node);
 		this.salt = salt;
 	}
 
-    @Override
-    public String uniqueReference() {
-        return salt + asJenaNode().getBlankNodeLabel() ;
-    }
+	@Override
+	public boolean equals(Object other) {
+		if (other == this)
+			return true;
+		if (other == null)
+			return false;
+		if (!(other instanceof BlankNode))
+			return false;
+		BlankNode bNode = (BlankNode) other;
+		return uniqueReference().equals(bNode.uniqueReference());
+	}
 
-    @Override
-    public int hashCode() {
-        return uniqueReference().hashCode() ;
-    }
-    
-    @Override
-    public boolean equals(Object other) {
-        if ( other == this ) return true ;
-        if ( other == null ) return false ;
-        if ( ! ( other instanceof BlankNode ) ) return false ;
-        BlankNode bNode = (BlankNode)other ;
-        return  uniqueReference().equals(bNode.uniqueReference()) ;
-    }
-    
-    
+	@Override
+	public int hashCode() {
+		return uniqueReference().hashCode();
+	}
+
+	@Override
+	public String uniqueReference() {
+		return salt + asJenaNode().getBlankNodeLabel();
+	}
+
 }
-

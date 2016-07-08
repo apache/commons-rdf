@@ -19,9 +19,9 @@
 package org.apache.commons.rdf.jena;
 
 import org.apache.commons.rdf.api.RDFTerm;
-import org.apache.jena.graph.Node ;
+import org.apache.jena.graph.Node;
 
-/** Access the Jena node backing this object */ 
+/** Access the Jena node backing this object */
 public interface JenaNode extends RDFTerm {
-    public Node asJenaNode() ;
+	public Node asJenaNode();
 }

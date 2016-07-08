@@ -18,9 +18,9 @@
 
 package org.apache.commons.rdf.jena;
 
-import org.apache.jena.graph.Graph ;
+import org.apache.jena.graph.Graph;
 
-/** Access the Jena graph backing this object */ 
+/** Access the Jena graph backing this object */
 public interface JenaGraph extends org.apache.commons.rdf.api.Graph {
-    public Graph asJenaGraph() ;
+	public Graph asJenaGraph();
 }

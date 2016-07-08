@@ -32,8 +32,7 @@ import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.system.StreamRDF;
 import org.apache.jena.riot.system.StreamRDFLib;
 
-public class JenaRDFParserBuilder extends AbstractRDFParserBuilder<JenaRDFParserBuilder> 
-	implements RDFParserBuilder {
+public class JenaRDFParserBuilder extends AbstractRDFParserBuilder<JenaRDFParserBuilder> implements RDFParserBuilder {
 
 	protected RDFTermFactory createRDFTermFactory() {
 		return new RDFTermFactoryJena();
@@ -43,9 +42,9 @@ public class JenaRDFParserBuilder extends AbstractRDFParserBuilder<JenaRDFParser
 	protected void parseSynchronusly() throws IOException {
 		StreamRDF dest;
 		if (getTargetGraph().isPresent() && getTargetGraph().get() instanceof JenaGraph) {
-			Graph jenaGraph = ((JenaGraph)getTargetGraph().get()).asJenaGraph();
+			Graph jenaGraph = ((JenaGraph) getTargetGraph().get()).asJenaGraph();
 			dest = StreamRDFLib.graph(jenaGraph);
-		} else {		
+		} else {
 			dest = RDFTermFactoryJena.streamJenaToCommonsRDF(getRdfTermFactory().get(), getTarget());
 		}
 
@@ -62,6 +61,5 @@ public class JenaRDFParserBuilder extends AbstractRDFParserBuilder<JenaRDFParser
 			RDFDataMgr.parse(dest, getSourceInputStream().get(), baseStr, lang, null);
 		}
 	}
-
 
 }

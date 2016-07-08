@@ -27,93 +27,94 @@ import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.Triple;
-import org.apache.commons.rdf.jena.RDFTermFactoryJena;
 import org.apache.commons.rdf.jena.JenaQuad;
+import org.apache.commons.rdf.jena.RDFTermFactoryJena;
 
 public class QuadImpl implements Quad, JenaQuad {
 
-	private final Optional<BlankNodeOrIRI> graphName;	
-    private final BlankNodeOrIRI subject ;
-    private final IRI predicate ;
-    private final RDFTerm object ;
-    private org.apache.jena.sparql.core.Quad quad = null ;
+	private final Optional<BlankNodeOrIRI> graphName;
+	private final RDFTerm object;
+	private final IRI predicate;
+	private org.apache.jena.sparql.core.Quad quad = null;
+	private final BlankNodeOrIRI subject;
 
-    /* package */ QuadImpl(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-        this.graphName = Objects.requireNonNull(graphName);
-		this.subject = Objects.requireNonNull(subject) ;
-        this.predicate = Objects.requireNonNull(predicate) ;
-        this.object = Objects.requireNonNull(object) ;
-    }
-    
-    /* package */ QuadImpl(org.apache.jena.sparql.core.Quad quad, UUID salt) {
-        this.quad = Objects.requireNonNull(quad) ;
-    	this.graphName = Optional.of((BlankNodeOrIRI)JenaFactory.fromJena(quad.getGraph(), salt)) ;
-        this.subject = (BlankNodeOrIRI)JenaFactory.fromJena(quad.getSubject(), salt) ;
-        this.predicate = (IRI)JenaFactory.fromJena(quad.getPredicate(), salt) ;
-        this.object = JenaFactory.fromJena(quad.getObject(), salt) ;
-    }
+	/* package */ QuadImpl(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+		this.graphName = Objects.requireNonNull(graphName);
+		this.subject = Objects.requireNonNull(subject);
+		this.predicate = Objects.requireNonNull(predicate);
+		this.object = Objects.requireNonNull(object);
+	}
 
-    @Override
-    public org.apache.jena.sparql.core.Quad asJenaQuad() {
-        if ( quad == null ) {
-            quad = org.apache.jena.sparql.core.Quad.create(
-            		RDFTermFactoryJena.toJena(graphName.orElse(null)), 
-            		RDFTermFactoryJena.toJena(subject), 
-            		RDFTermFactoryJena.toJena(predicate), 
-            		RDFTermFactoryJena.toJena(object)) ;
-        }
-        return quad ;
-    }
+	/* package */ QuadImpl(org.apache.jena.sparql.core.Quad quad, UUID salt) {
+		this.quad = Objects.requireNonNull(quad);
+		this.graphName = Optional.of((BlankNodeOrIRI) JenaFactory.fromJena(quad.getGraph(), salt));
+		this.subject = (BlankNodeOrIRI) JenaFactory.fromJena(quad.getSubject(), salt);
+		this.predicate = (IRI) JenaFactory.fromJena(quad.getPredicate(), salt);
+		this.object = JenaFactory.fromJena(quad.getObject(), salt);
+	}
 
-    @Override
-    public BlankNodeOrIRI getSubject() {
-        return subject ;
-    }
+	@Override
+	public org.apache.jena.sparql.core.Quad asJenaQuad() {
+		if (quad == null) {
+			quad = org.apache.jena.sparql.core.Quad.create(
+					RDFTermFactoryJena.toJena(graphName.orElse(null)),
+					RDFTermFactoryJena.toJena(subject), 
+					RDFTermFactoryJena.toJena(predicate),
+					RDFTermFactoryJena.toJena(object));
+		}
+		return quad;
+	}
 
-    @Override
-    public IRI getPredicate() {
-        return predicate ;
-    }
+	@Override
+	public Triple asTriple() {
+		return new TripleImpl(getSubject(), getPredicate(), getObject());
+	}
 
-    @Override
-    public RDFTerm getObject() {
-        return object ;
-    }
+	@Override
+	public boolean equals(Object other) {
+		if (other == this)
+			return true;
+		if (other == null)
+			return false;
+		if (!(other instanceof Quad))
+			return false;
+		Quad quad = (Quad) other;
+		return getGraphName().equals(quad.getGraphName()) && getSubject().equals(quad.getSubject())
+				&& getPredicate().equals(quad.getPredicate()) && getObject().equals(quad.getObject());
+	}
 
-    @Override
+	@Override
 	public Optional<BlankNodeOrIRI> getGraphName() {
 		return graphName;
 	}
-    
-    @Override
-    public int hashCode() {
-        return Objects.hash(getSubject(), getPredicate(), getObject(), getGraphName()) ;
-    }
 
-    @Override
-    public boolean equals(Object other) {
-        if ( other == this ) return true ;
-        if ( other == null ) return false ;
-        if ( ! ( other instanceof Quad ) ) return false ;
-        Quad quad = (Quad)other ;
-        return getGraphName().equals(quad.getGraphName()) &&
-        		getSubject().equals(quad.getSubject()) &&
-        		getPredicate().equals(quad.getPredicate()) &&
-        		getObject().equals(quad.getObject()) ;
-    }
-    
-    @Override 
-    public String toString() {
-    	// kind of nquad syntax
+	@Override
+	public RDFTerm getObject() {
+		return object;
+	}
+
+	@Override
+	public IRI getPredicate() {
+		return predicate;
+	}
+
+	@Override
+	public BlankNodeOrIRI getSubject() {
+		return subject;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(getSubject(), getPredicate(), getObject(), getGraphName());
+	}
+
+	@Override
+	public String toString() {
+		// kind of nquad syntax
 		return getSubject().ntriplesString() + " " + 
-    			getPredicate().ntriplesString() + " " + 
-    			getObject().ntriplesString() + " " + 
-    			getGraphName().map(RDFTerm::ntriplesString).orElse("") +  ".";
-    }
-
-    @Override
-    public Triple asTriple() {
-    	return new TripleImpl(getSubject(), getPredicate(), getObject());
-    }
+				getPredicate().ntriplesString() + " "
+				+ getObject().ntriplesString() + " " + 
+				getGraphName().map(RDFTerm::ntriplesString).orElse("") + ".";
+	}
 
 }

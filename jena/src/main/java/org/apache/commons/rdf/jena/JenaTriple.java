@@ -18,9 +18,9 @@
 
 package org.apache.commons.rdf.jena;
 
-import org.apache.jena.graph.Triple ;
+import org.apache.jena.graph.Triple;
 
-/** Access the Jena triple backing this object */ 
+/** Access the Jena triple backing this object */
 public interface JenaTriple extends org.apache.commons.rdf.api.Triple {
-    public Triple asJenaTriple() ;
+	public Triple asJenaTriple();
 }

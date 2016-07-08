@@ -18,20 +18,30 @@
 
 package org.apache.commons.rdf.jena;
 
-import org.apache.jena.shared.JenaException ;
+import org.apache.jena.shared.JenaException;
 
 /**
  * Exception thrown when a problem arises across the Jena-CommonRDF boundary.
  * This should not happen in well-formed RDF data but, for example, Jena triples
- * allow 
- * <a href="http://www.w3.org/TR/rdf11-concepts/#section-generalized-rdf"
- * >generalized RDF</a>.
+ * allow
+ * <a href="http://www.w3.org/TR/rdf11-concepts/#section-generalized-rdf" >
+ * generalized RDF</a>.
  */
 
 public class ConversionException extends JenaException {
-    public ConversionException()                                  { super(); }
-    public ConversionException(String message)                    { super(message); }
-    public ConversionException(Throwable cause)                   { super(cause) ; }
-    public ConversionException(String message, Throwable cause)   { super(message, cause) ; }
-}
+	public ConversionException() {
+		super();
+	}
 
+	public ConversionException(String message) {
+		super(message);
+	}
+
+	public ConversionException(Throwable cause) {
+		super(cause);
+	}
+
+	public ConversionException(String message, Throwable cause) {
+		super(message, cause);
+	}
+}

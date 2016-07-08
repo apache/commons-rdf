@@ -20,7 +20,7 @@ package org.apache.commons.rdf.jena;
 
 import org.apache.jena.sparql.core.Quad;
 
-/** Access the Jena quad backing this object */ 
+/** Access the Jena quad backing this object */
 public interface JenaQuad extends org.apache.commons.rdf.api.Quad {
-    public Quad asJenaQuad() ;
+	public Quad asJenaQuad();
 }

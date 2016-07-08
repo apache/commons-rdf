@@ -18,39 +18,40 @@
 
 package org.apache.commons.rdf.jena.impl;
 
-import org.apache.jena.graph.Node ;
-import org.apache.jena.graph.NodeFactory ;
-
-import org.apache.commons.rdf.api.* ;
+import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.jena.JenaNode;
+import org.apache.jena.graph.Node;
+import org.apache.jena.graph.NodeFactory;
 
 public class IRIImpl extends AbstractRDFTerm implements IRI, JenaNode {
 
-    /*package*/ IRIImpl(String iriStr) {
-        super(NodeFactory.createURI(iriStr)) ;
-    }
-    
-    /*package*/ IRIImpl(Node node) {
-        super(node) ;
-    }
+	/* package */ IRIImpl(Node node) {
+		super(node);
+	}
 
-    @Override
-    public String getIRIString() {
-        return asJenaNode().getURI() ;
-    }
-    
-    @Override
-    public int hashCode() {
-        return getIRIString().hashCode() ;
-    }
-    
-    @Override
-    public boolean equals(Object other) {
-        if ( other == this ) return true ;
-        if ( other == null ) return false ;
-        if ( ! ( other instanceof IRI ) ) return false ;
-        IRI iri = (IRI)other ;
-        return getIRIString().equals(iri.getIRIString()) ;
-    }
+	/* package */ IRIImpl(String iriStr) {
+		super(NodeFactory.createURI(iriStr));
+	}
+
+	@Override
+	public boolean equals(Object other) {
+		if (other == this)
+			return true;
+		if (other == null)
+			return false;
+		if (!(other instanceof IRI))
+			return false;
+		IRI iri = (IRI) other;
+		return getIRIString().equals(iri.getIRIString());
+	}
+
+	@Override
+	public String getIRIString() {
+		return asJenaNode().getURI();
+	}
+
+	@Override
+	public int hashCode() {
+		return getIRIString().hashCode();
+	}
 }
-

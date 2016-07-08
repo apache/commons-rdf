@@ -20,29 +20,28 @@ package org.apache.commons.rdf.jena.impl;
 
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.jena.JenaNode;
-import org.apache.jena.graph.Node ;
-import org.apache.jena.riot.out.NodeFmtLib ;
+import org.apache.jena.graph.Node;
+import org.apache.jena.riot.out.NodeFmtLib;
 
 class AbstractRDFTerm implements JenaNode, RDFTerm {
-    private Node node;
-    //static private PrefixMapping empty = new PrefixMappingImpl() ; 
-    
-    protected AbstractRDFTerm(Node node) {
-        this.node = node ;
-    }
-    
-    @Override
-    public Node asJenaNode() {
-        return node ;
-    }
+	private Node node;
+	// static private PrefixMapping empty = new PrefixMappingImpl() ;
 
-    public String ntriplesString() {
-        return NodeFmtLib.str(node) ;
-    }
-    
-    @Override
-    public String toString() {
-        return ntriplesString() ; 
-    }
+	protected AbstractRDFTerm(Node node) {
+		this.node = node;
+	}
+
+	@Override
+	public Node asJenaNode() {
+		return node;
+	}
+
+	public String ntriplesString() {
+		return NodeFmtLib.str(node);
+	}
+
+	@Override
+	public String toString() {
+		return ntriplesString();
+	}
 }
-

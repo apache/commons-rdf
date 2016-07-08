@@ -35,6 +35,26 @@ import org.apache.jena.graph.NodeFactory;
 import org.apache.jena.sparql.graph.GraphFactory;
 
 public class JenaFactory {
+	public static BlankNode createBlankNode() {
+		return new BlankNodeImpl(NodeFactory.createBlankNode(), UUID.randomUUID());
+	}
+
+	public static BlankNode createBlankNode(String id, UUID salt) {
+		return new BlankNodeImpl(NodeFactory.createBlankNode(id), salt);
+	}
+
+	public static BlankNode createBlankNode(UUID salt) {
+		return new BlankNodeImpl(NodeFactory.createBlankNode(), salt);
+	}
+
+	public static Graph createGraph() {
+		return createGraph(UUID.randomUUID());
+	}
+
+	public static Graph createGraph(UUID salt) {
+		return new GraphImpl(GraphFactory.createDefaultGraph(), salt);
+	}
+
 	// basic components to commonsrdf backed by Jena.
 	public static IRI createIRI(String iriStr) {
 		return new IRIImpl(iriStr);
@@ -52,38 +72,10 @@ public class JenaFactory {
 		return new LiteralImpl(NodeFactory.createLiteral(lexStr, langTag));
 	}
 
-	public static BlankNode createBlankNode() {
-		return new BlankNodeImpl(NodeFactory.createBlankNode(), UUID.randomUUID());
-	}
-
-	public static BlankNode createBlankNode(UUID salt) {
-		return new BlankNodeImpl(NodeFactory.createBlankNode(), salt);
-	}
-
-	public static BlankNode createBlankNode(String id, UUID salt) {
-		return new BlankNodeImpl(NodeFactory.createBlankNode(id), salt);
-	}
-
-	public static Graph createGraph() {
-		return createGraph(UUID.randomUUID());
-	}
-
 	public static Triple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
 		return new TripleImpl(subject, predicate, object);
 	}
 
-	public static Triple fromJena(org.apache.jena.graph.Triple triple, UUID salt) {
-		return new TripleImpl(triple, salt);
-	}
-
-	public static Graph fromJena(org.apache.jena.graph.Graph graph) {
-		return new GraphImpl(graph, UUID.randomUUID());
-	}
-
-	public static Graph fromJena(org.apache.jena.graph.Graph graph, UUID salt) {
-		return new GraphImpl(graph, salt);
-	}
-	
 	public static RDFTerm fromJena(Node node, UUID salt) {
 		if (node.isURI())
 			return new IRIImpl(node);
@@ -102,11 +94,19 @@ public class JenaFactory {
 		return null;
 	}
 
-	public static Quad fromJena(org.apache.jena.sparql.core.Quad quad, UUID salt) {
-		return new QuadImpl(quad, salt);
+	public static Graph fromJena(org.apache.jena.graph.Graph graph) {
+		return new GraphImpl(graph, UUID.randomUUID());
 	}
 
-	public static Graph createGraph(UUID salt) {
-		return new GraphImpl(GraphFactory.createDefaultGraph(), salt);
+	public static Graph fromJena(org.apache.jena.graph.Graph graph, UUID salt) {
+		return new GraphImpl(graph, salt);
+	}
+
+	public static Triple fromJena(org.apache.jena.graph.Triple triple, UUID salt) {
+		return new TripleImpl(triple, salt);
+	}
+
+	public static Quad fromJena(org.apache.jena.sparql.core.Quad quad, UUID salt) {
+		return new QuadImpl(quad, salt);
 	}
 }

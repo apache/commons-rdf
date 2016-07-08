@@ -18,76 +18,78 @@
 
 package org.apache.commons.rdf.jena.impl;
 
-import java.util.Objects ;
+import java.util.Objects;
 import java.util.UUID;
 
-import org.apache.commons.rdf.api.* ;
-import org.apache.commons.rdf.jena.RDFTermFactoryJena;
+import org.apache.commons.rdf.api.BlankNodeOrIRI;
+import org.apache.commons.rdf.api.IRI;
+import org.apache.commons.rdf.api.RDFTerm;
+import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.jena.JenaTriple;
+import org.apache.commons.rdf.jena.RDFTermFactoryJena;
 
 public class TripleImpl implements Triple, JenaTriple {
-    private final BlankNodeOrIRI subject ;
-    private final IRI predicate ;
-    private final RDFTerm object ;
-    private org.apache.jena.graph.Triple triple = null ;
+	private final RDFTerm object;
+	private final IRI predicate;
+	private final BlankNodeOrIRI subject;
+	private org.apache.jena.graph.Triple triple = null;
 
-    /* package */ TripleImpl(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-        this.subject = subject ;
-        this.predicate = predicate ;
-        this.object = object ;
-    }
-    
-    /* package */ TripleImpl(org.apache.jena.graph.Triple triple, UUID salt) {
-        this.subject = (BlankNodeOrIRI)JenaFactory.fromJena(triple.getSubject(), salt) ;
-        this.predicate = (IRI)JenaFactory.fromJena(triple.getPredicate(), salt) ;
-        this.object = JenaFactory.fromJena(triple.getObject(), salt) ;
-        this.triple = triple ;
-    }
+	/* package */ TripleImpl(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+		this.subject = subject;
+		this.predicate = predicate;
+		this.object = object;
+	}
 
-    @Override
-    public org.apache.jena.graph.Triple asJenaTriple() {
-        if ( triple == null )
-            triple = org.apache.jena.graph.Triple.create(
-            		RDFTermFactoryJena.toJena(subject), 
-            		RDFTermFactoryJena.toJena(predicate), 
-            		RDFTermFactoryJena.toJena(object)) ;
-        return triple ;
-    }
+	/* package */ TripleImpl(org.apache.jena.graph.Triple triple, UUID salt) {
+		this.subject = (BlankNodeOrIRI) JenaFactory.fromJena(triple.getSubject(), salt);
+		this.predicate = (IRI) JenaFactory.fromJena(triple.getPredicate(), salt);
+		this.object = JenaFactory.fromJena(triple.getObject(), salt);
+		this.triple = triple;
+	}
 
-    @Override
-    public BlankNodeOrIRI getSubject() {
-        return subject ;
-    }
+	@Override
+	public org.apache.jena.graph.Triple asJenaTriple() {
+		if (triple == null)
+			triple = org.apache.jena.graph.Triple.create(RDFTermFactoryJena.toJena(subject),
+					RDFTermFactoryJena.toJena(predicate), RDFTermFactoryJena.toJena(object));
+		return triple;
+	}
 
-    @Override
-    public IRI getPredicate() {
-        return predicate ;
-    }
+	@Override
+	public boolean equals(Object other) {
+		if (other == this)
+			return true;
+		if (other == null)
+			return false;
+		if (!(other instanceof Triple))
+			return false;
+		Triple triple = (Triple) other;
+		return getSubject().equals(triple.getSubject()) && getPredicate().equals(triple.getPredicate())
+				&& getObject().equals(triple.getObject());
+	}
 
-    @Override
-    public RDFTerm getObject() {
-        return object ;
-    }
+	@Override
+	public RDFTerm getObject() {
+		return object;
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getSubject(), getPredicate(), getObject()) ;
-    }
+	@Override
+	public IRI getPredicate() {
+		return predicate;
+	}
 
-    @Override
-    public boolean equals(Object other) {
-        if ( other == this ) return true ;
-        if ( other == null ) return false ;
-        if ( ! ( other instanceof Triple ) ) return false ;
-        Triple triple = (Triple)other ;
-        return  getSubject().equals(triple.getSubject()) &&
-            getPredicate().equals(triple.getPredicate()) &&
-            getObject().equals(triple.getObject()) ;
-    }
-    
-    @Override 
-    public String toString() {
-        return getSubject()+" "+getPredicate()+" "+getObject()+" ." ;
-    }
+	@Override
+	public BlankNodeOrIRI getSubject() {
+		return subject;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(getSubject(), getPredicate(), getObject());
+	}
+
+	@Override
+	public String toString() {
+		return getSubject() + " " + getPredicate() + " " + getObject() + " .";
+	}
 }
-
