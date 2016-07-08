@@ -22,7 +22,16 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import org.apache.commons.rdf.api.*;
+import org.apache.commons.rdf.api.BlankNode;
+import org.apache.commons.rdf.api.BlankNodeOrIRI;
+import org.apache.commons.rdf.api.Graph;
+import org.apache.commons.rdf.api.IRI;
+import org.apache.commons.rdf.api.Literal;
+import org.apache.commons.rdf.api.Quad;
+import org.apache.commons.rdf.api.RDFSyntax;
+import org.apache.commons.rdf.api.RDFTerm;
+import org.apache.commons.rdf.api.RDFTermFactory;
+import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.jena.impl.JenaFactory;
 import org.apache.jena.datatypes.RDFDatatype;
 import org.apache.jena.datatypes.xsd.XSDDatatype;
@@ -45,7 +54,15 @@ import org.apache.jena.sparql.graph.GraphFactory;
  */
 public final class RDFTermFactoryJena implements RDFTermFactory {
 
-	private UUID salt = UUID.randomUUID();
+	private UUID salt;
+
+	public RDFTermFactoryJena() { 
+		this.salt = UUID.randomUUID();
+	}
+	
+	public RDFTermFactoryJena(UUID salt) {
+		this.salt = salt;
+	}
 
 	@Override
 	public BlankNode createBlankNode() {
@@ -186,7 +203,7 @@ public final class RDFTermFactoryJena implements RDFTermFactory {
 	/**
 	 * Adapt an existing Jena Triple to CommonsRDF {@link Triple}.
 	 * 
-	 * @param salt
+	 * @param triple Jena triple
 	 */
 	public Triple fromJena(org.apache.jena.graph.Triple triple) {
 		return JenaFactory.fromJena(triple, salt);
@@ -195,19 +212,30 @@ public final class RDFTermFactoryJena implements RDFTermFactory {
 	/**
 	 * Adapt an existing Jena Triple to CommonsRDF {@link Triple}.
 	 * 
-	 * @param salt
+	 * @param triple Jena triple
+	 * @param salt A {@link UUID} salt for adapting any {@link BlankNode}s 
 	 */
 	public static Triple fromJena(org.apache.jena.graph.Triple triple, UUID salt) {
 		return JenaFactory.fromJena(triple, salt);
 	}
+	
+	public Quad fromJena(org.apache.jena.sparql.core.Quad quad) {
+		return JenaFactory.fromJena(quad, salt);
+	}
+
+	public static Quad fromJena(org.apache.jena.sparql.core.Quad quad, UUID salt) {
+		return JenaFactory.fromJena(quad, salt);
+	}
+	
 
 	/**
 	 * Adapt an existring Jena Graph to CommonsRDF {@link Graph}. This does not
 	 * take a copy. Changes to the CommonsRDF Graph are reflected in the jena
 	 * graph.
 	 */
-	public static Graph fromJena(org.apache.jena.graph.Graph graph) {
-		return fromJena(new RDFTermFactoryJena(), graph);
+	public static Graph fromJena(org.apache.jena.graph.Graph graph) {	
+		// NOTE: This generates a new UUID salt per graph
+		return JenaFactory.fromJena(graph);
 	}
 	
 	/**
@@ -215,13 +243,13 @@ public final class RDFTermFactoryJena implements RDFTermFactory {
 	 * 
 	 * @param salt
 	 */
-	public static RDFTerm fromJena(RDFTermFactory factory, Node node, UUID salt) {
+	public static RDFTerm fromJena(RDFTermFactory factory, Node node) {
 		if (node == null) {
 			return null;
 		}
 		if (factory instanceof RDFTermFactoryJena) {
-			// No need to convert, just wrap (we'll use the parameter-provided salt)
-			return fromJena(node, salt);
+			// No need to convert, just wrap
+			return ((RDFTermFactoryJena)factory).fromJena(node);
 		}
 		if (node.isURI())
 			return factory.createIRI(node.getURI());
@@ -288,7 +316,7 @@ public final class RDFTermFactoryJena implements RDFTermFactory {
 	public static Quad fromJena(RDFTermFactory factory, org.apache.jena.sparql.core.Quad quad) {
 		if (factory instanceof RDFTermFactoryJena) {
 			// No need to convert, just wrap
-			return fromJena(quad);
+			return ((RDFTermFactoryJena)factory).fromJena(quad);
 		}
 		BlankNodeOrIRI graphName = (BlankNodeOrIRI) (fromJena(factory, quad.getGraph()));
 		BlankNodeOrIRI subject = (BlankNodeOrIRI) (fromJena(factory, quad.getSubject()));

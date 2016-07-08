@@ -92,12 +92,13 @@ public class GraphImpl implements Graph, JenaGraph {
 
     @Override
     public Stream<? extends Triple> stream() {
-    	return Iter.asStream(graph.find(null, null, null), true).map(RDFTermFactoryJena::fromJena);
+    	RDFTermFactoryJena factory = new RDFTermFactoryJena(salt);
+    	return Iter.asStream(graph.find(null, null, null), true).map(factory::fromJena);
     }
 
     @Override
     public Stream<? extends Triple> stream(BlankNodeOrIRI s, IRI p, RDFTerm o) {
-    	RDFTermFactoryJena factory = new RDFTermFactoryJena();
+    	RDFTermFactoryJena factory = new RDFTermFactoryJena(salt);
         return Iter.asStream(graph.find(toJenaAny(s),toJenaAny(p),toJenaAny(o)), true).
         		map(factory::fromJena);
     }

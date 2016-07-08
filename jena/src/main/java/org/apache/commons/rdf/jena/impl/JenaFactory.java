@@ -80,6 +80,10 @@ public class JenaFactory {
 		return new GraphImpl(graph, UUID.randomUUID());
 	}
 
+	public static Graph fromJena(org.apache.jena.graph.Graph graph, UUID salt) {
+		return new GraphImpl(graph, salt);
+	}
+	
 	public static RDFTerm fromJena(Node node, UUID salt) {
 		if (node.isURI())
 			return new IRIImpl(node);
