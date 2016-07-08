@@ -21,10 +21,14 @@ package org.apache.commons.rdf.jena;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.function.Consumer;
 
 import org.apache.commons.rdf.api.IRI;
+import org.apache.commons.rdf.api.QuadLike;
 import org.apache.commons.rdf.api.RDFParserBuilder;
+import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.RDFTermFactory;
+import org.apache.commons.rdf.api.TripleLike;
 import org.apache.commons.rdf.simple.AbstractRDFParserBuilder;
 import org.apache.jena.graph.Graph;
 import org.apache.jena.riot.Lang;
@@ -34,16 +38,44 @@ import org.apache.jena.riot.system.StreamRDFLib;
 
 public class JenaRDFParserBuilder extends AbstractRDFParserBuilder<JenaRDFParserBuilder> implements RDFParserBuilder {
 
+	private Consumer<TripleLike<RDFTerm, RDFTerm, RDFTerm>> generalizedConsumerTriple;
+	private Consumer<QuadLike<RDFTerm, RDFTerm, RDFTerm, RDFTerm>> generalizedConsumerQuad;
+
 	protected RDFTermFactory createRDFTermFactory() {
 		return new JenaRDFTermFactory();
 	}
 
+	public JenaRDFParserBuilder targetGeneralizedTriple(Consumer<TripleLike<RDFTerm,RDFTerm,RDFTerm>> consumer) {
+		JenaRDFParserBuilder c = this.clone();
+		c.resetTarget();		
+		c.generalizedConsumerTriple = consumer;
+		return c;
+	}
+
+	public JenaRDFParserBuilder targetGeneralizedQuad(Consumer<QuadLike<RDFTerm,RDFTerm,RDFTerm,RDFTerm>> consumer) {
+		JenaRDFParserBuilder c = this.clone();
+		c.resetTarget();		
+		c.generalizedConsumerQuad = consumer;
+		return c;
+	}
+	
+	@Override
+	protected void resetTarget() {		
+		super.resetTarget();
+		this.generalizedConsumerTriple = null;
+		this.generalizedConsumerQuad = null;
+	}
+	
 	@Override
 	protected void parseSynchronusly() throws IOException {
 		StreamRDF dest;
 		if (getTargetGraph().isPresent() && getTargetGraph().get() instanceof JenaGraph) {
 			Graph jenaGraph = ((JenaGraph) getTargetGraph().get()).asJenaGraph();
 			dest = StreamRDFLib.graph(jenaGraph);
+		} else if (generalizedConsumerQuad != null) {				
+			dest = getJenaFactory().streamJenaToGeneralizedQuad(generalizedConsumerQuad);			
+		} else if (generalizedConsumerTriple != null) {				
+			dest = getJenaFactory().streamJenaToGeneralizedTriple(generalizedConsumerTriple);			
 		} else {
 			dest = JenaRDFTermFactory.streamJenaToCommonsRDF(getRdfTermFactory().get(), getTarget());
 		}
@@ -60,6 +92,12 @@ public class JenaRDFParserBuilder extends AbstractRDFParserBuilder<JenaRDFParser
 		} else {
 			RDFDataMgr.parse(dest, getSourceInputStream().get(), baseStr, lang, null);
 		}
+	}
+
+	private JenaRDFTermFactory getJenaFactory() {
+		return (JenaRDFTermFactory) getRdfTermFactory()
+				.filter(JenaRDFTermFactory.class::isInstance)
+				.orElseGet(this::createRDFTermFactory);		
 	}
 
 }

@@ -18,11 +18,18 @@
 
 package org.apache.commons.rdf.jena;
 
-import org.apache.commons.rdf.api.BlankNodeOrIRI;
-import org.apache.commons.rdf.api.IRI;
+import org.apache.commons.rdf.api.QuadLike;
 import org.apache.commons.rdf.api.RDFTerm;
+import org.apache.jena.sparql.core.Quad;
 
 /** Access the Jena quad backing this object */
-public interface JenaQuad extends org.apache.commons.rdf.api.Quad, 
-	JenaQuadLike<BlankNodeOrIRI,IRI,RDFTerm,BlankNodeOrIRI> {	
+public interface JenaQuadLike<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm, G extends RDFTerm> 
+	extends JenaTripleLike<S,P,O>, QuadLike<S,P,O,G> {
+
+	/**
+	 * Return the adapted Jena quad
+	 * 
+	 * @return Adapted Jena {@link Quad}.
+	 */
+	public Quad asJenaQuad();
 }

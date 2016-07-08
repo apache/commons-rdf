@@ -18,6 +18,7 @@
 
 package org.apache.commons.rdf.jena.impl;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.apache.commons.rdf.api.BlankNode;
@@ -31,6 +32,8 @@ import org.apache.commons.rdf.jena.JenaBlankNode;
 import org.apache.commons.rdf.jena.JenaGraph;
 import org.apache.commons.rdf.jena.JenaIRI;
 import org.apache.commons.rdf.jena.JenaLiteral;
+import org.apache.commons.rdf.jena.JenaQuad;
+import org.apache.commons.rdf.jena.JenaQuadLike;
 import org.apache.commons.rdf.jena.JenaRDFTerm;
 import org.apache.commons.rdf.jena.JenaTriple;
 import org.apache.commons.rdf.jena.JenaTripleLike;
@@ -79,6 +82,10 @@ public class JenaFactory {
 	public static JenaTriple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
 		return new TripleImpl(subject, predicate, object);
 	}
+
+	public static JenaQuad createQuad(BlankNodeOrIRI subject, IRI predicate, RDFTerm object, BlankNodeOrIRI graphName) {
+		return new QuadImpl(subject, predicate, object, Optional.ofNullable(graphName));
+	}
 	
 	public static JenaVariable createVariable(String name) {
 		return new VariableImpl(NodeFactory.createVariable(name));
@@ -88,8 +95,12 @@ public class JenaFactory {
 		return AnyImpl.Singleton.instance;
 	}
 
-	public static JenaTripleLike<RDFTerm, RDFTerm, RDFTerm> createGeneralizedTriple(RDFTerm subject, RDFTerm predicate, RDFTerm object) {
-		return new GeneralizedTripleImpl(subject, predicate, object);
+	public static JenaTripleLike<RDFTerm,RDFTerm,RDFTerm> createGeneralizedTriple(RDFTerm subject, RDFTerm predicate, RDFTerm object) {
+		return new GeneralizedQuadImpl<RDFTerm,RDFTerm,RDFTerm,RDFTerm>(subject, predicate, object);
+	}
+
+	public static JenaQuadLike<RDFTerm,RDFTerm,RDFTerm,RDFTerm> createGeneralizedQuad(RDFTerm subject, RDFTerm predicate, RDFTerm object, RDFTerm graphName) {
+		return new GeneralizedQuadImpl<RDFTerm,RDFTerm,RDFTerm,RDFTerm>(subject, predicate, object, Optional.ofNullable(graphName));
 	}
 	
 	public static JenaRDFTerm fromJena(Node node, UUID salt) throws ConversionException {
@@ -131,7 +142,11 @@ public class JenaFactory {
 	}
 
 	public static JenaTripleLike<RDFTerm, RDFTerm, RDFTerm> fromJenaGeneralized(org.apache.jena.graph.Triple triple, UUID salt) {
-		return new GeneralizedTripleImpl(triple, salt);
+		return new GeneralizedQuadImpl<RDFTerm,RDFTerm,RDFTerm,RDFTerm>(triple, salt);
+	}
+
+	public static JenaQuadLike<RDFTerm,RDFTerm,RDFTerm,RDFTerm> fromJenaGeneralized(org.apache.jena.sparql.core.Quad quad, UUID salt) {
+		return new GeneralizedQuadImpl<RDFTerm,RDFTerm,RDFTerm,RDFTerm>(quad, salt);
 	}
 	
 	public static Quad fromJena(org.apache.jena.sparql.core.Quad quad, UUID salt) {

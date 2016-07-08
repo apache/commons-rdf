@@ -27,37 +27,22 @@ import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.jena.ConversionException;
 import org.apache.commons.rdf.jena.JenaTriple;
-import org.apache.commons.rdf.jena.JenaRDFTermFactory;
 
-public class TripleImpl implements Triple, JenaTriple {
-	private final RDFTerm object;
-	private final IRI predicate;
-	private final BlankNodeOrIRI subject;
-	private org.apache.jena.graph.Triple triple = null;
+public class TripleImpl extends GeneralizedQuadImpl<BlankNodeOrIRI, IRI, RDFTerm, RDFTerm>
+		implements JenaTriple {
 
-	/* package */ TripleImpl(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		this.subject = subject;
-		this.predicate = predicate;
-		this.object = object;
+	TripleImpl(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+		super(subject, predicate, object);
 	}
 
-	/* package */ TripleImpl(org.apache.jena.graph.Triple triple, UUID salt) throws ConversionException {
-		try {
-			this.subject = (BlankNodeOrIRI) JenaFactory.fromJena(triple.getSubject(), salt);
-			this.predicate = (IRI) JenaFactory.fromJena(triple.getPredicate(), salt);
-		} catch (ClassCastException ex) {
-			throw new ConversionException("Can't adapt generalized triple: " + triple, ex);
+	TripleImpl(org.apache.jena.graph.Triple triple, UUID salt) throws ConversionException {
+		super(triple, salt);
+		// Check the conversion
+		if (! (subject instanceof BlankNodeOrIRI) ||
+			! (predicate instanceof IRI) ||
+			! (object instanceof RDFTerm)) {
+			throw new ConversionException("Can't adapt generalized triple: " + quad);	
 		}
-		this.object = JenaFactory.fromJena(triple.getObject(), salt);
-		this.triple = triple;
-	}
-
-	@Override
-	public org.apache.jena.graph.Triple asJenaTriple() {
-		if (triple == null)
-			triple = org.apache.jena.graph.Triple.create(JenaRDFTermFactory.toJena(subject),
-					JenaRDFTermFactory.toJena(predicate), JenaRDFTermFactory.toJena(object));
-		return triple;
 	}
 
 	@Override
@@ -74,27 +59,9 @@ public class TripleImpl implements Triple, JenaTriple {
 	}
 
 	@Override
-	public RDFTerm getObject() {
-		return object;
-	}
-
-	@Override
-	public IRI getPredicate() {
-		return predicate;
-	}
-
-	@Override
-	public BlankNodeOrIRI getSubject() {
-		return subject;
-	}
-
-	@Override
 	public int hashCode() {
 		return Objects.hash(getSubject(), getPredicate(), getObject());
 	}
 
-	@Override
-	public String toString() {
-		return getSubject() + " " + getPredicate() + " " + getObject() + " .";
-	}
+	
 }
