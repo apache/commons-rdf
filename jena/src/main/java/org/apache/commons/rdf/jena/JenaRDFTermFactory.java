@@ -44,6 +44,7 @@ import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFLanguages;
 import org.apache.jena.riot.system.StreamRDF;
 import org.apache.jena.riot.system.StreamRDFBase;
+import org.apache.jena.sparql.core.DatasetGraph;
 import org.apache.jena.sparql.graph.GraphFactory;
 
 /**
@@ -462,11 +463,10 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * for the purpose of its {@link BlankNode#uniqueReference()}.
 
 	 */
-	public Graph fromJena(org.apache.jena.graph.Graph graph) {
+	public JenaGraph fromJena(org.apache.jena.graph.Graph graph) {
 		return JenaFactory.fromJena(graph, salt);
 	}
 
-	
 
 	/**
 	 * Adapt an existing Jena {@link org.apache.jena.graph.Graph} to CommonsRDF {@link Graph}. 
@@ -488,6 +488,45 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 		return JenaFactory.fromJena(graph, salt);
 	}
 
+	/**
+	 * Adapt an existing Jena {@link DatasetGraph} to CommonsRDF {@link Dataset}. 
+	 * <p>
+	 * This does not
+	 * take a copy, changes to the CommonsRDF Dataset are reflected in the jena
+	 * dataset graph, which is accessible from {@link JenaDataset#asJenaDatasetGraph()}.
+	 * <p>
+	 * If the dataset contains any {@link Node#isBlank()}, then any corresponding
+	 * {@link BlankNode} will use a {@link UUID} salt from this 
+	 * {@link JenaRDFTermFactory} instance
+	 * in combination with {@link Node#getBlankNodeId()} 
+	 * for the purpose of its {@link BlankNode#uniqueReference()}.
+	 * 
+	 * @param datasetGraph Jena dataset graph to adapt
+	 * @return Adapted dataset 
+	 */
+	public JenaDataset fromJena(DatasetGraph datasetGraph) {
+		return JenaFactory.fromJena(datasetGraph, salt);
+	}	
+	
+	/**
+	 * Adapt an existing Jena {@link DatasetGraph} to CommonsRDF {@link Dataset}. 
+	 * <p>
+	 * This does not
+	 * take a copy, changes to the CommonsRDF Dataset are reflected in the jena
+	 * dataset graph, which is accessible from {@link JenaDataset#asJenaDatasetGraph()}.
+	 * <p>
+	 * If the dataset contains any {@link Node#isBlank()}, then any corresponding
+	 * {@link BlankNode} will use the provided {@link UUID} salt
+	 * in combination with {@link Node#getBlankNodeId()} 
+	 * for the purpose of its {@link BlankNode#uniqueReference()}.
+	 * 
+	 * @param datasetGraph Jena dataset graph to adapt
+	 * @param salt A {@link UUID} salt for adapting any {@link BlankNode}s
+	 * @return Adapted dataset 
+	 */
+	public static JenaDataset fromJena(DatasetGraph datasetGraph, UUID salt) {
+		return JenaFactory.fromJena(datasetGraph, salt);
+	}	
 	
 	/**
 	 * Convert from Jena to any RDFCommons implementation. This is a copy, even

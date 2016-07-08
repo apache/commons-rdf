@@ -30,6 +30,7 @@ import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.jena.ConversionException;
 import org.apache.commons.rdf.jena.JenaAny;
 import org.apache.commons.rdf.jena.JenaBlankNode;
+import org.apache.commons.rdf.jena.JenaDataset;
 import org.apache.commons.rdf.jena.JenaGraph;
 import org.apache.commons.rdf.jena.JenaIRI;
 import org.apache.commons.rdf.jena.JenaLiteral;
@@ -150,6 +151,14 @@ public class JenaFactory {
 		return new GraphImpl(graph, salt);
 	}
 
+	public static JenaDataset fromJena(DatasetGraph datasetGraph) {
+		return new DatasetImpl(datasetGraph, UUID.randomUUID());
+	}
+
+	public static JenaDataset fromJena(DatasetGraph datasetGraph, UUID salt) {
+		return new DatasetImpl(datasetGraph, salt);
+	}
+	
 	public static JenaTriple fromJena(org.apache.jena.graph.Triple triple, UUID salt) {
 		return new TripleImpl(triple, salt);
 	}
