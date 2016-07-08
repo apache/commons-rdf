@@ -23,7 +23,6 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
-import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.Triple;
@@ -34,7 +33,7 @@ import org.apache.jena.graph.Node;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 
-public class GraphImpl implements Graph, JenaGraph {
+public class GraphImpl implements JenaGraph {
 
 	private org.apache.jena.graph.Graph graph;
 	private UUID salt;
