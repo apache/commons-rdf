@@ -23,6 +23,7 @@ import java.util.UUID;
 
 import org.apache.commons.rdf.api.BlankNode;
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
+import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFTerm;
@@ -40,6 +41,8 @@ import org.apache.commons.rdf.jena.JenaTripleLike;
 import org.apache.commons.rdf.jena.JenaVariable;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.NodeFactory;
+import org.apache.jena.sparql.core.DatasetGraph;
+import org.apache.jena.sparql.core.DatasetGraphFactory;
 import org.apache.jena.sparql.graph.GraphFactory;
 
 public class JenaFactory {
@@ -53,6 +56,16 @@ public class JenaFactory {
 
 	public static JenaBlankNode createBlankNode(UUID salt) {
 		return new BlankNodeImpl(NodeFactory.createBlankNode(), salt);
+	}
+
+	public static Dataset createDataset() {
+		return createDataset(UUID.randomUUID());
+	}
+	
+	public static Dataset createDataset(UUID salt) {
+		DatasetGraph dg = DatasetGraphFactory.createGeneral();
+		// Or which createMethod() -- a bit confusing with lots of choice..
+		return new DatasetImpl(dg, salt);
 	}
 
 	public static JenaGraph createGraph() {
@@ -91,7 +104,7 @@ public class JenaFactory {
 		return new VariableImpl(NodeFactory.createVariable(name));
 	}
 	
-	public static JenaAny createVariable() {
+	public static JenaAny createAnyVariable() {
 		return AnyImpl.Singleton.instance;
 	}
 
@@ -152,4 +165,5 @@ public class JenaFactory {
 	public static Quad fromJena(org.apache.jena.sparql.core.Quad quad, UUID salt) {
 		return new QuadImpl(quad, salt);
 	}
+
 }

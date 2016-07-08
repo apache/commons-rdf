@@ -24,6 +24,7 @@ import java.util.function.Consumer;
 
 import org.apache.commons.rdf.api.BlankNode;
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
+import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Literal;
@@ -73,6 +74,11 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	@Override
 	public JenaBlankNode createBlankNode(String name) {
 		return JenaFactory.createBlankNode(name, salt);
+	}
+	
+	@Override
+	public Dataset createDataset() throws UnsupportedOperationException {
+		return JenaFactory.createDataset(salt);
 	}
 
 	@Override
@@ -578,17 +584,38 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	}
 
 	/**
-	 * Convert a CommonsRDF Triple to a Jena Triple. If the Triple was from Jena
-	 * originally, return that original object else create a copy using Jena
-	 * objects.
+	 * Convert a CommonsRDF {@link Triple} to a Jena
+	 * {@link org.apache.jena.graph.Triple}.
+	 * <p>
+	 * If the triple was from Jena originally, return that original object, else
+	 * create a copy using Jena objects.
 	 */
 	public static org.apache.jena.graph.Triple toJena(Triple triple) {
 		if (triple instanceof JenaTriple)
 			return ((JenaTriple) triple).asJenaTriple();
-		return new org.apache.jena.graph.Triple(
+		return org.apache.jena.graph.Triple.create(
 				toJena(triple.getSubject()), 
 				toJena(triple.getPredicate()),
 				toJena(triple.getObject()));
+	}
+
+
+	/**
+	 * Convert a CommonsRDF {@link Quad} to a Jena
+	 * {@link org.apache.jena.sparql.core.Quad}.
+	 * <p>
+	 * If the quad was from Jena originally, return that original object,
+	 * otherwise create a copy using Jena objects.
+	 */
+	public static org.apache.jena.sparql.core.Quad toJena(Quad quad) {
+		if (quad instanceof JenaQuad) {
+			return ((JenaQuad) quad).asJenaQuad();
+		}
+		return org.apache.jena.sparql.core.Quad.create(
+				toJena(quad.getGraphName().orElse(null)),
+				toJena(quad.getSubject()), 
+				toJena(quad.getPredicate()), 
+				toJena(quad.getObject()));
 	}
 
 	// Some simple validations - full IRI parsing is not cheap.
