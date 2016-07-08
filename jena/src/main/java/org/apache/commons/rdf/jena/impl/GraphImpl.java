@@ -27,7 +27,7 @@ import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.jena.JenaGraph;
-import org.apache.commons.rdf.jena.RDFTermFactoryJena;
+import org.apache.commons.rdf.jena.JenaRDFTermFactory;
 import org.apache.jena.atlas.iterator.Iter;
 import org.apache.jena.graph.Node;
 import org.apache.jena.riot.Lang;
@@ -46,14 +46,14 @@ public class GraphImpl implements JenaGraph {
 	@Override
 	public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
 		graph.add(org.apache.jena.graph.Triple.create(
-				RDFTermFactoryJena.toJena(subject),
-				RDFTermFactoryJena.toJena(predicate), 
-				RDFTermFactoryJena.toJena(object)));
+				JenaRDFTermFactory.toJena(subject),
+				JenaRDFTermFactory.toJena(predicate), 
+				JenaRDFTermFactory.toJena(object)));
 	}
 
 	@Override
 	public void add(Triple triple) {
-		graph.add(RDFTermFactoryJena.toJena(triple));
+		graph.add(JenaRDFTermFactory.toJena(triple));
 	}
 
 	@Override
@@ -74,27 +74,27 @@ public class GraphImpl implements JenaGraph {
 	@Override
 	public boolean contains(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
 		return graph.contains(
-				RDFTermFactoryJena.toJena(subject), 
-				RDFTermFactoryJena.toJena(predicate),
-				RDFTermFactoryJena.toJena(object));
+				JenaRDFTermFactory.toJena(subject), 
+				JenaRDFTermFactory.toJena(predicate),
+				JenaRDFTermFactory.toJena(object));
 	}
 
 	@Override
 	public boolean contains(Triple triple) {
-		return graph.contains(RDFTermFactoryJena.toJena(triple));
+		return graph.contains(JenaRDFTermFactory.toJena(triple));
 	}
 
 	@Override
 	public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
 		graph.delete(org.apache.jena.graph.Triple.create(
-				RDFTermFactoryJena.toJena(subject),
-				RDFTermFactoryJena.toJena(predicate), 
-				RDFTermFactoryJena.toJena(object)));
+				JenaRDFTermFactory.toJena(subject),
+				JenaRDFTermFactory.toJena(predicate), 
+				JenaRDFTermFactory.toJena(object)));
 	}
 
 	@Override
 	public void remove(Triple triple) {
-		graph.delete(RDFTermFactoryJena.toJena(triple));
+		graph.delete(JenaRDFTermFactory.toJena(triple));
 	}
 
 	@Override
@@ -104,13 +104,13 @@ public class GraphImpl implements JenaGraph {
 
 	@Override
 	public Stream<? extends Triple> stream() {
-		RDFTermFactoryJena factory = new RDFTermFactoryJena(salt);
+		JenaRDFTermFactory factory = new JenaRDFTermFactory(salt);
 		return Iter.asStream(graph.find(null, null, null), true).map(factory::fromJena);
 	}
 
 	@Override
 	public Stream<? extends Triple> stream(BlankNodeOrIRI s, IRI p, RDFTerm o) {
-		RDFTermFactoryJena factory = new RDFTermFactoryJena(salt);
+		JenaRDFTermFactory factory = new JenaRDFTermFactory(salt);
 		return Iter.asStream(graph.find(toJenaAny(s), toJenaAny(p), toJenaAny(o)), true)
 				.map(factory::fromJena);
 	}
@@ -118,7 +118,7 @@ public class GraphImpl implements JenaGraph {
 	private Node toJenaAny(RDFTerm term) {
 		if (term == null)
 			return Node.ANY;
-		return RDFTermFactoryJena.toJena(term);
+		return JenaRDFTermFactory.toJena(term);
 	}
 
 	@Override

@@ -27,7 +27,7 @@ import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.jena.ConversionException;
 import org.apache.commons.rdf.jena.JenaTriple;
-import org.apache.commons.rdf.jena.RDFTermFactoryJena;
+import org.apache.commons.rdf.jena.JenaRDFTermFactory;
 
 public class TripleImpl implements Triple, JenaTriple {
 	private final RDFTerm object;
@@ -55,8 +55,8 @@ public class TripleImpl implements Triple, JenaTriple {
 	@Override
 	public org.apache.jena.graph.Triple asJenaTriple() {
 		if (triple == null)
-			triple = org.apache.jena.graph.Triple.create(RDFTermFactoryJena.toJena(subject),
-					RDFTermFactoryJena.toJena(predicate), RDFTermFactoryJena.toJena(object));
+			triple = org.apache.jena.graph.Triple.create(JenaRDFTermFactory.toJena(subject),
+					JenaRDFTermFactory.toJena(predicate), JenaRDFTermFactory.toJena(object));
 		return triple;
 	}
 

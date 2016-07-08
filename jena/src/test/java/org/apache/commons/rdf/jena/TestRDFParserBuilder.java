@@ -53,7 +53,7 @@ public class TestRDFParserBuilder {
 
 	@Test
 	public void parseTurtle() throws Exception {
-		Graph g = new RDFTermFactoryJena().createGraph();
+		Graph g = new JenaRDFTermFactory().createGraph();
 		Future<ParseResult> gFuture = new JenaRDFParserBuilder().contentType(RDFSyntax.TURTLE).source(turtleFile)
 				.target(g).parse();
 		gFuture.get(5, TimeUnit.SECONDS);

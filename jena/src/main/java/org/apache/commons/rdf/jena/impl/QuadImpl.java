@@ -28,7 +28,7 @@ import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.jena.JenaQuad;
-import org.apache.commons.rdf.jena.RDFTermFactoryJena;
+import org.apache.commons.rdf.jena.JenaRDFTermFactory;
 
 public class QuadImpl implements JenaQuad {
 
@@ -57,10 +57,10 @@ public class QuadImpl implements JenaQuad {
 	public org.apache.jena.sparql.core.Quad asJenaQuad() {
 		if (quad == null) {
 			quad = org.apache.jena.sparql.core.Quad.create(
-					RDFTermFactoryJena.toJena(graphName.orElse(null)),
-					RDFTermFactoryJena.toJena(subject), 
-					RDFTermFactoryJena.toJena(predicate),
-					RDFTermFactoryJena.toJena(object));
+					JenaRDFTermFactory.toJena(graphName.orElse(null)),
+					JenaRDFTermFactory.toJena(subject), 
+					JenaRDFTermFactory.toJena(predicate),
+					JenaRDFTermFactory.toJena(object));
 		}
 		return quad;
 	}

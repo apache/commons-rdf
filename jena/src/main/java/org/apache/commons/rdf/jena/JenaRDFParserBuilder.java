@@ -35,7 +35,7 @@ import org.apache.jena.riot.system.StreamRDFLib;
 public class JenaRDFParserBuilder extends AbstractRDFParserBuilder<JenaRDFParserBuilder> implements RDFParserBuilder {
 
 	protected RDFTermFactory createRDFTermFactory() {
-		return new RDFTermFactoryJena();
+		return new JenaRDFTermFactory();
 	}
 
 	@Override
@@ -45,10 +45,10 @@ public class JenaRDFParserBuilder extends AbstractRDFParserBuilder<JenaRDFParser
 			Graph jenaGraph = ((JenaGraph) getTargetGraph().get()).asJenaGraph();
 			dest = StreamRDFLib.graph(jenaGraph);
 		} else {
-			dest = RDFTermFactoryJena.streamJenaToCommonsRDF(getRdfTermFactory().get(), getTarget());
+			dest = JenaRDFTermFactory.streamJenaToCommonsRDF(getRdfTermFactory().get(), getTarget());
 		}
 
-		Lang lang = getContentTypeSyntax().flatMap(RDFTermFactoryJena::rdfSyntaxToLang).orElse(null);
+		Lang lang = getContentTypeSyntax().flatMap(JenaRDFTermFactory::rdfSyntaxToLang).orElse(null);
 		String baseStr = getBase().map(IRI::getIRIString).orElse(null);
 
 		if (getSourceIri().isPresent()) {

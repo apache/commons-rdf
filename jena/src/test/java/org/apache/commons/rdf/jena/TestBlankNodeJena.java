@@ -18,6 +18,8 @@
 
 package org.apache.commons.rdf.jena;
 
+import java.util.UUID;
+
 import org.apache.commons.rdf.api.AbstractBlankNodeTest ;
 import org.apache.commons.rdf.api.BlankNode ;
 import org.apache.commons.rdf.jena.impl.JenaFactory;
@@ -25,14 +27,16 @@ import org.apache.commons.rdf.jena.impl.JenaFactory;
 public class TestBlankNodeJena extends AbstractBlankNodeTest {
 
 	
-    @Override
+    private static final UUID SALT = UUID.fromString("ccfde817-55b8-4a5f-bc2d-6bfd8eaa41ce");
+
+	@Override
     protected BlankNode getBlankNode() {
         return JenaFactory.createBlankNode() ;
     }
     
     @Override
     protected BlankNode getBlankNode(String identifier) {
-        return JenaFactory.createBlankNode(identifier) ;
+        return JenaFactory.createBlankNode(identifier, SALT) ;
     }
 }
 
