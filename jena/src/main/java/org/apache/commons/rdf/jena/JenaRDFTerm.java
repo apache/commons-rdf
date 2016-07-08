@@ -16,32 +16,12 @@
  * limitations under the License.
  */
 
-package org.apache.commons.rdf.jena.impl;
+package org.apache.commons.rdf.jena;
 
 import org.apache.commons.rdf.api.RDFTerm;
-import org.apache.commons.rdf.jena.JenaRDFTerm;
 import org.apache.jena.graph.Node;
-import org.apache.jena.riot.out.NodeFmtLib;
 
-class AbstractRDFTerm implements JenaRDFTerm, RDFTerm {
-	private Node node;
-	// static private PrefixMapping empty = new PrefixMappingImpl() ;
-
-	protected AbstractRDFTerm(Node node) {
-		this.node = node;
-	}
-
-	@Override
-	public Node asJenaNode() {
-		return node;
-	}
-
-	public String ntriplesString() {
-		return NodeFmtLib.str(node);
-	}
-
-	@Override
-	public String toString() {
-		return ntriplesString();
-	}
+/** Access the Jena node backing this object */
+public interface JenaRDFTerm extends RDFTerm {
+	public Node asJenaNode();
 }

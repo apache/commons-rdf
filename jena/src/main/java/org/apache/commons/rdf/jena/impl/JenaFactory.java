@@ -22,13 +22,17 @@ import java.util.UUID;
 
 import org.apache.commons.rdf.api.BlankNode;
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
-import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
-import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFTerm;
-import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.jena.ConversionException;
+import org.apache.commons.rdf.jena.JenaBlankNode;
+import org.apache.commons.rdf.jena.JenaGraph;
+import org.apache.commons.rdf.jena.JenaIRI;
+import org.apache.commons.rdf.jena.JenaLiteral;
+import org.apache.commons.rdf.jena.JenaRDFTerm;
+import org.apache.commons.rdf.jena.JenaTriple;
+import org.apache.commons.rdf.jena.JenaTripleLike;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.NodeFactory;
 import org.apache.jena.sparql.graph.GraphFactory;
@@ -38,44 +42,48 @@ public class JenaFactory {
 		return new BlankNodeImpl(NodeFactory.createBlankNode(), UUID.randomUUID());
 	}
 
-	public static BlankNode createBlankNode(String id, UUID salt) {
+	public static JenaBlankNode createBlankNode(String id, UUID salt) {
 		return new BlankNodeImpl(NodeFactory.createBlankNode(id), salt);
 	}
 
-	public static BlankNode createBlankNode(UUID salt) {
+	public static JenaBlankNode createBlankNode(UUID salt) {
 		return new BlankNodeImpl(NodeFactory.createBlankNode(), salt);
 	}
 
-	public static Graph createGraph() {
+	public static JenaGraph createGraph() {
 		return createGraph(UUID.randomUUID());
 	}
 
-	public static Graph createGraph(UUID salt) {
+	public static JenaGraph createGraph(UUID salt) {
 		return new GraphImpl(GraphFactory.createDefaultGraph(), salt);
 	}
 
 	// basic components to commonsrdf backed by Jena.
-	public static IRI createIRI(String iriStr) {
+	public static JenaIRI createIRI(String iriStr) {
 		return new IRIImpl(iriStr);
 	}
 
-	public static Literal createLiteral(String lexStr) {
+	public static JenaLiteral createLiteral(String lexStr) {
 		return new LiteralImpl(NodeFactory.createLiteral(lexStr));
 	}
 
-	public static Literal createLiteralDT(String lexStr, String datatypeIRI) {
+	public static JenaLiteral createLiteralDT(String lexStr, String datatypeIRI) {
 		return new LiteralImpl(NodeFactory.createLiteral(lexStr, NodeFactory.getType(datatypeIRI)));
 	}
 
-	public static Literal createLiteralLang(String lexStr, String langTag) {
+	public static JenaLiteral createLiteralLang(String lexStr, String langTag) {
 		return new LiteralImpl(NodeFactory.createLiteral(lexStr, langTag));
 	}
 
-	public static Triple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+	public static JenaTriple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
 		return new TripleImpl(subject, predicate, object);
 	}
 
-	public static RDFTerm fromJena(Node node, UUID salt) throws ConversionException {
+	public static JenaTripleLike<RDFTerm, RDFTerm, RDFTerm> createGeneralizedTriple(RDFTerm subject, RDFTerm predicate, RDFTerm object) {
+		return new GeneralizedTripleImpl(subject, predicate, object);
+	}
+	
+	public static JenaRDFTerm fromJena(Node node, UUID salt) throws ConversionException {
 		if (node.isURI())
 			return new IRIImpl(node);
 		if (node.isLiteral()) {
@@ -92,18 +100,22 @@ public class JenaFactory {
 		throw new ConversionException("Node is not a concrete RDF Term: " + node);
 	}
 
-	public static Graph fromJena(org.apache.jena.graph.Graph graph) {
+	public static JenaGraph fromJena(org.apache.jena.graph.Graph graph) {
 		return new GraphImpl(graph, UUID.randomUUID());
 	}
 
-	public static Graph fromJena(org.apache.jena.graph.Graph graph, UUID salt) {
+	public static JenaGraph fromJena(org.apache.jena.graph.Graph graph, UUID salt) {
 		return new GraphImpl(graph, salt);
 	}
 
-	public static Triple fromJena(org.apache.jena.graph.Triple triple, UUID salt) {
+	public static JenaTriple fromJena(org.apache.jena.graph.Triple triple, UUID salt) {
 		return new TripleImpl(triple, salt);
 	}
 
+	public static JenaTripleLike<RDFTerm, RDFTerm, RDFTerm> fromJenaGeneralized(org.apache.jena.graph.Triple triple, UUID salt) {
+		return new GeneralizedTripleImpl(triple, salt);
+	}
+	
 	public static Quad fromJena(org.apache.jena.sparql.core.Quad quad, UUID salt) {
 		return new QuadImpl(quad, salt);
 	}

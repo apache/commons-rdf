@@ -18,9 +18,10 @@
 
 package org.apache.commons.rdf.jena;
 
-import org.apache.jena.graph.Triple;
+import org.apache.commons.rdf.api.BlankNodeOrIRI;
+import org.apache.commons.rdf.api.IRI;
+import org.apache.commons.rdf.api.RDFTerm;
 
 /** Access the Jena triple backing this object */
-public interface JenaTriple extends org.apache.commons.rdf.api.Triple {
-	public Triple asJenaTriple();
+public interface JenaTriple extends org.apache.commons.rdf.api.Triple, JenaTripleLike<BlankNodeOrIRI, IRI, RDFTerm> {
 }

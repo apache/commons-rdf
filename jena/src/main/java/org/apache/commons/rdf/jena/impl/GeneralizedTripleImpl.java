@@ -18,36 +18,28 @@
 
 package org.apache.commons.rdf.jena.impl;
 
-import java.util.Objects;
 import java.util.UUID;
 
-import org.apache.commons.rdf.api.BlankNodeOrIRI;
-import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDFTerm;
-import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.jena.ConversionException;
-import org.apache.commons.rdf.jena.JenaTriple;
+import org.apache.commons.rdf.jena.JenaTripleLike;
 import org.apache.commons.rdf.jena.RDFTermFactoryJena;
 
-public class TripleImpl implements Triple, JenaTriple {
+public class GeneralizedTripleImpl implements JenaTripleLike<RDFTerm, RDFTerm, RDFTerm> {
 	private final RDFTerm object;
-	private final IRI predicate;
-	private final BlankNodeOrIRI subject;
+	private final RDFTerm predicate;
+	private final RDFTerm subject;
 	private org.apache.jena.graph.Triple triple = null;
 
-	/* package */ TripleImpl(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+	/* package */ GeneralizedTripleImpl(RDFTerm subject, RDFTerm predicate, RDFTerm object) {
 		this.subject = subject;
 		this.predicate = predicate;
 		this.object = object;
 	}
 
-	/* package */ TripleImpl(org.apache.jena.graph.Triple triple, UUID salt) throws ConversionException {
-		try {
-			this.subject = (BlankNodeOrIRI) JenaFactory.fromJena(triple.getSubject(), salt);
-			this.predicate = (IRI) JenaFactory.fromJena(triple.getPredicate(), salt);
-		} catch (ClassCastException ex) {
-			throw new ConversionException("Can't adapt generalized triple: " + triple, ex);
-		}
+	/* package */ GeneralizedTripleImpl(org.apache.jena.graph.Triple triple, UUID salt) throws ConversionException {
+		this.subject = JenaFactory.fromJena(triple.getSubject(), salt);
+		this.predicate = JenaFactory.fromJena(triple.getPredicate(), salt);
 		this.object = JenaFactory.fromJena(triple.getObject(), salt);
 		this.triple = triple;
 	}
@@ -59,42 +51,24 @@ public class TripleImpl implements Triple, JenaTriple {
 					RDFTermFactoryJena.toJena(predicate), RDFTermFactoryJena.toJena(object));
 		return triple;
 	}
-
-	@Override
-	public boolean equals(Object other) {
-		if (other == this)
-			return true;
-		if (other == null)
-			return false;
-		if (!(other instanceof Triple))
-			return false;
-		Triple triple = (Triple) other;
-		return getSubject().equals(triple.getSubject()) && getPredicate().equals(triple.getPredicate())
-				&& getObject().equals(triple.getObject());
-	}
-
 	@Override
 	public RDFTerm getObject() {
 		return object;
 	}
 
 	@Override
-	public IRI getPredicate() {
+	public RDFTerm getPredicate() {
 		return predicate;
 	}
 
 	@Override
-	public BlankNodeOrIRI getSubject() {
+	public RDFTerm getSubject() {
 		return subject;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(getSubject(), getPredicate(), getObject());
 	}
 
 	@Override
 	public String toString() {
 		return getSubject() + " " + getPredicate() + " " + getObject() + " .";
 	}
+	
 }

@@ -23,9 +23,10 @@ import java.util.Optional;
 
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Literal;
+import org.apache.commons.rdf.jena.JenaLiteral;
 import org.apache.jena.graph.Node;
 
-public class LiteralImpl extends AbstractRDFTerm implements Literal {
+public class LiteralImpl extends AbstractRDFTerm implements JenaLiteral {
 
 	/* package */ LiteralImpl(Node node) {
 		super(node);

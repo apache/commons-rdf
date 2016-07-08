@@ -19,11 +19,11 @@
 package org.apache.commons.rdf.jena.impl;
 
 import org.apache.commons.rdf.api.IRI;
-import org.apache.commons.rdf.jena.JenaNode;
+import org.apache.commons.rdf.jena.JenaIRI;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.NodeFactory;
 
-public class IRIImpl extends AbstractRDFTerm implements IRI, JenaNode {
+public class IRIImpl extends AbstractRDFTerm implements JenaIRI {
 
 	/* package */ IRIImpl(Node node) {
 		super(node);

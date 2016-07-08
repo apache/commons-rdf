@@ -19,9 +19,16 @@
 package org.apache.commons.rdf.jena;
 
 import org.apache.commons.rdf.api.RDFTerm;
-import org.apache.jena.graph.Node;
+import org.apache.jena.graph.Triple;
 
-/** Access the Jena node backing this object */
-public interface JenaNode extends RDFTerm {
-	public Node asJenaNode();
+/** Access the Jena triple backing this object */
+public interface JenaTripleLike<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm> 
+	extends org.apache.commons.rdf.api.TripleLike<S,P,O> {
+
+	/**
+	 * Return the adapted Jena triple
+	 * 
+	 * @return Adapted Jena {@link Triple}.
+	 */
+	Triple asJenaTriple();
 }

@@ -30,7 +30,7 @@ import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.jena.JenaQuad;
 import org.apache.commons.rdf.jena.RDFTermFactoryJena;
 
-public class QuadImpl implements Quad, JenaQuad {
+public class QuadImpl implements JenaQuad {
 
 	private final Optional<BlankNodeOrIRI> graphName;
 	private final RDFTerm object;

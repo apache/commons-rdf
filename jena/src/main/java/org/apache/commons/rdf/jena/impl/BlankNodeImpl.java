@@ -21,10 +21,10 @@ package org.apache.commons.rdf.jena.impl;
 import java.util.UUID;
 
 import org.apache.commons.rdf.api.BlankNode;
-import org.apache.commons.rdf.jena.JenaNode;
+import org.apache.commons.rdf.jena.JenaBlankNode;
 import org.apache.jena.graph.Node;
 
-public class BlankNodeImpl extends AbstractRDFTerm implements BlankNode, JenaNode {
+public class BlankNodeImpl extends AbstractRDFTerm implements JenaBlankNode {
 
 	private UUID salt;
 
