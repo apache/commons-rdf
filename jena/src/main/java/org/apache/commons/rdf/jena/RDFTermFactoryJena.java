@@ -32,6 +32,7 @@ import org.apache.commons.rdf.api.RDFSyntax;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.RDFTermFactory;
 import org.apache.commons.rdf.api.Triple;
+import org.apache.commons.rdf.api.TripleLike;
 import org.apache.commons.rdf.jena.impl.JenaFactory;
 import org.apache.jena.datatypes.RDFDatatype;
 import org.apache.jena.datatypes.xsd.XSDDatatype;
@@ -103,6 +104,34 @@ public final class RDFTermFactoryJena implements RDFTermFactory {
 	@Override
 	public JenaTriple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
 		return JenaFactory.createTriple(subject, predicate, object);
+	}
+	
+	/**
+	 * Adapt a generalized Jena Triple to a CommonsRDF {@link TripleLike} statement.
+	 * <p>
+	 * The generalized triple supports any {@link RDFTerm} as its {@link TripleLike#getSubject()}
+	 * {@link TripleLike#getPredicate()} or {@link TripleLike#getObject()}. 
+	 * <p>
+	 * If the Jena triple contains any {@link Node#isBlank()}, then any corresponding
+	 * {@link BlankNode} will use a {@link UUID} salt from this
+	 * {@link RDFTermFactoryJena} instance in combination with
+	 * {@link Node#getBlankNodeId()} for the purpose of its
+	 * {@link BlankNode#uniqueReference()}.
+	 *
+	 * @see #fromJena(org.apache.jena.graph.Triple, UUID)
+	 * @see #fromJena(RDFTermFactory, org.apache.jena.graph.Triple)
+	 * 
+	 * @param subject The subject of the statement
+	 *            
+	 * @return Adapted {@link TripleLike}. Note that the generalized triple does
+	 *         <strong>not</strong> implement {@link Triple#equals(Object)} or
+	 *         {@link Triple#hashCode()}.
+	 * @throws ConversionException
+	 *             if any of the triple's nodes are not concrete
+	 */
+	public JenaTripleLike<RDFTerm, RDFTerm, RDFTerm> createGeneralizedTriple(
+			RDFTerm subject, RDFTerm predicate, RDFTerm object) {
+		return JenaFactory.createGeneralizedTriple(subject, predicate, object);
 	}
 
 	/**
@@ -219,6 +248,65 @@ public final class RDFTermFactoryJena implements RDFTermFactory {
 		return JenaFactory.fromJena(triple, salt);
 	}
 
+
+	/**
+	 * Adapt a generalized Jena Triple to a CommonsRDF {@link TripleLike}.
+	 * <p>
+	 * The generalized triple supports any {@link RDFTerm} as its {@link TripleLike#getSubject()}
+	 * {@link TripleLike#getPredicate()} or {@link TripleLike#getObject()}. 
+	 * <p>
+	 * If the Jena triple contains any {@link Node#isBlank()}, then any corresponding
+	 * {@link BlankNode} will use the provided {@link UUID} salt 
+	 * in combination with
+	 * {@link Node#getBlankNodeId()} for the purpose of its
+	 * {@link BlankNode#uniqueReference()}.
+	 *
+	 * @see #fromJena(org.apache.jena.graph.Triple, UUID)
+	 * @see #fromJena(RDFTermFactory, org.apache.jena.graph.Triple)
+	 * 
+	 * @param triple
+	 *            Jena triple
+	 * @param salt
+	 *            UUID salt for the purpose of
+	 *            {@link BlankNode#uniqueReference()}
+	 * @return Adapted {@link TripleLike}. Note that the generalized triple does
+	 *         <strong>not</strong> implement {@link Triple#equals(Object)} or
+	 *         {@link Triple#hashCode()}.
+	 * @throws ConversionException
+	 *             if any of the triple's nodes are not concrete
+	 */
+	public JenaTripleLike<RDFTerm, RDFTerm, RDFTerm> fromJenaGeneralized(org.apache.jena.graph.Triple triple, UUID salt) throws ConversionException {
+		return JenaFactory.fromJenaGeneralized(triple, salt);
+	}
+	
+	/**
+	 * Adapt a generalized Jena Triple to a CommonsRDF {@link TripleLike}.
+	 * <p>
+	 * The generalized triple supports any {@link RDFTerm} as its {@link TripleLike#getSubject()}
+	 * {@link TripleLike#getPredicate()} or {@link TripleLike#getObject()}. 
+	 * <p>
+	 * If the Jena triple contains any {@link Node#isBlank()}, then any corresponding
+	 * {@link BlankNode} will use a {@link UUID} salt from this
+	 * {@link RDFTermFactoryJena} instance in combination with
+	 * {@link Node#getBlankNodeId()} for the purpose of its
+	 * {@link BlankNode#uniqueReference()}.
+	 *
+	 * @see #fromJena(org.apache.jena.graph.Triple, UUID)
+	 * @see #fromJena(RDFTermFactory, org.apache.jena.graph.Triple)
+	 * 
+	 * @param triple
+	 *            Jena triple
+	 * @return Adapted {@link TripleLike}. Note that the generalized triple does
+	 *         <strong>not</strong> implement {@link Triple#equals(Object)} or
+	 *         {@link Triple#hashCode()}.
+	 * @throws ConversionException
+	 *             if any of the triple's nodes are not concrete
+	 */
+	public JenaTripleLike<RDFTerm, RDFTerm, RDFTerm> fromJenaGeneralized(org.apache.jena.graph.Triple triple) throws ConversionException {
+		return JenaFactory.fromJenaGeneralized(triple, salt);
+	}
+	
+	
 	/**
 	 * Adapt an existing Jena Triple to CommonsRDF {@link Triple}.
 	 * <p>
@@ -270,9 +358,9 @@ public final class RDFTermFactoryJena implements RDFTermFactory {
 		BlankNodeOrIRI subject;
 		IRI predicate;
 		try {
-			subject = (BlankNodeOrIRI) (fromJena(factory, triple.getSubject()));
-			predicate = (IRI) (fromJena(factory, triple.getPredicate()));
-		} (catch ClassCastException ex) {
+			subject = (BlankNodeOrIRI) fromJena(factory, triple.getSubject());
+			predicate = (IRI) fromJena(factory, triple.getPredicate());
+		} catch (ClassCastException ex) {
 			throw new ConversionException("Can't convert generalized triple: " + triple, ex);
 		}
 		RDFTerm object = fromJena(factory, triple.getObject());
@@ -400,11 +488,11 @@ public final class RDFTermFactoryJena implements RDFTermFactory {
 		if (term == null) {
 			return null;
 		}
-		if (term instanceof JenaNode)
+		if (term instanceof JenaRDFTerm)
 			// TODO: What if it's a BlankNodeImpl with
 			// a different salt? Do we need to rewrite the
 			// jena blanknode identifier?
-			return ((JenaNode) term).asJenaNode();
+			return ((JenaRDFTerm) term).asJenaNode();
 
 		if (term instanceof IRI)
 			return NodeFactory.createURI(((IRI) term).getIRIString());

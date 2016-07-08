@@ -30,6 +30,9 @@ public class BlankNodeImpl extends AbstractRDFTerm implements JenaBlankNode {
 
 	/* package */ BlankNodeImpl(Node node, UUID salt) {
 		super(node);
+		if (! node.isBlank()) {
+			throw new IllegalArgumentException("Node is not a blank node: " + node);
+		}				
 		this.salt = salt;
 	}
 

@@ -27,6 +27,10 @@ public class IRIImpl extends AbstractRDFTerm implements JenaIRI {
 
 	/* package */ IRIImpl(Node node) {
 		super(node);
+		if (! node.isURI()) {
+			throw new IllegalArgumentException("Node is not a blank node: " + node);
+		}				
+		
 	}
 
 	/* package */ IRIImpl(String iriStr) {

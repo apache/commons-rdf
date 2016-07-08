@@ -26,6 +26,7 @@ import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.jena.ConversionException;
+import org.apache.commons.rdf.jena.JenaAny;
 import org.apache.commons.rdf.jena.JenaBlankNode;
 import org.apache.commons.rdf.jena.JenaGraph;
 import org.apache.commons.rdf.jena.JenaIRI;
@@ -33,6 +34,7 @@ import org.apache.commons.rdf.jena.JenaLiteral;
 import org.apache.commons.rdf.jena.JenaRDFTerm;
 import org.apache.commons.rdf.jena.JenaTriple;
 import org.apache.commons.rdf.jena.JenaTripleLike;
+import org.apache.commons.rdf.jena.JenaVariable;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.NodeFactory;
 import org.apache.jena.sparql.graph.GraphFactory;
@@ -58,7 +60,6 @@ public class JenaFactory {
 		return new GraphImpl(GraphFactory.createDefaultGraph(), salt);
 	}
 
-	// basic components to commonsrdf backed by Jena.
 	public static JenaIRI createIRI(String iriStr) {
 		return new IRIImpl(iriStr);
 	}
@@ -78,28 +79,45 @@ public class JenaFactory {
 	public static JenaTriple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
 		return new TripleImpl(subject, predicate, object);
 	}
+	
+	public static JenaVariable createVariable(String name) {
+		return new VariableImpl(NodeFactory.createVariable(name));
+	}
+	
+	public static JenaAny createVariable() {
+		return AnyImpl.Singleton.instance;
+	}
 
 	public static JenaTripleLike<RDFTerm, RDFTerm, RDFTerm> createGeneralizedTriple(RDFTerm subject, RDFTerm predicate, RDFTerm object) {
 		return new GeneralizedTripleImpl(subject, predicate, object);
 	}
 	
 	public static JenaRDFTerm fromJena(Node node, UUID salt) throws ConversionException {
-		if (node.isURI())
-			return new IRIImpl(node);
-		if (node.isLiteral()) {
-			return new LiteralImpl(node);
-//			String lang = node.getLiteralLanguage();
-//			if (lang != null && lang.isEmpty())
-//				return createLiteralLang(node.getLiteralLexicalForm(), lang);
-//			if (node.getLiteralDatatype().equals(XSDDatatype.XSDstring))
-//				return createLiteral(node.getLiteralLexicalForm());
-//			return createLiteralDT(node.getLiteralLexicalForm(), node.getLiteralDatatype().getURI());
+		if (! node.isConcrete()) {
+			throw new ConversionException("Node is not a concrete RDF Term: " + node); 
 		}
-		if (node.isBlank())
-			return new BlankNodeImpl(node, salt);
-		throw new ConversionException("Node is not a concrete RDF Term: " + node);
+		return fromJenaGeneralized(node, salt);		
 	}
 
+	public static JenaRDFTerm fromJenaGeneralized(Node node, UUID salt) {
+		if (node.isURI()) {
+			return new IRIImpl(node);
+		}
+		if (node.isLiteral()) {
+			return new LiteralImpl(node);
+		}
+		if (node.isBlank()) {
+			return new BlankNodeImpl(node, salt);
+		}
+		if (node.equals(Node.ANY)) {
+			return AnyImpl.Singleton.instance;
+		}
+		if (node.isVariable()) {
+			return new VariableImpl(node);
+		}
+		throw new IllegalArgumentException("Unrecognized node type: " + node);
+	}
+	
 	public static JenaGraph fromJena(org.apache.jena.graph.Graph graph) {
 		return new GraphImpl(graph, UUID.randomUUID());
 	}

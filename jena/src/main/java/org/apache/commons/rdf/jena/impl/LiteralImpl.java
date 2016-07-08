@@ -30,6 +30,9 @@ public class LiteralImpl extends AbstractRDFTerm implements JenaLiteral {
 
 	/* package */ LiteralImpl(Node node) {
 		super(node);
+		if (! node.isLiteral()) {
+			throw new IllegalArgumentException("Node is not a literal: " + node);
+		}		
 	}
 
 	@Override
