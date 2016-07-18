@@ -509,6 +509,26 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	}	
 	
 	/**
+	 * Adapt an existing Jena {@link org.apache.jena.query.Dataset} to CommonsRDF {@link Dataset}. 
+	 * <p>
+	 * This does not
+	 * take a copy, changes to the CommonsRDF Dataset are reflected in the jena
+	 * dataset graph, which is accessible from {@link JenaDataset#asJenaDatasetGraph()}.
+	 * <p>
+	 * If the dataset contains any {@link Node#isBlank()}, then any corresponding
+	 * {@link BlankNode} will use a {@link UUID} salt from this 
+	 * {@link JenaRDFTermFactory} instance
+	 * in combination with {@link Node#getBlankNodeId()} 
+	 * for the purpose of its {@link BlankNode#uniqueReference()}.
+	 * 
+	 * @param datasetGraph Jena dataset graph to adapt
+	 * @return Adapted dataset 
+	 */
+	public JenaDataset fromJena(org.apache.jena.query.Dataset datasetGraph) {
+		return JenaFactory.fromJena(datasetGraph.asDatasetGraph(), salt);
+	}		
+	
+	/**
 	 * Adapt an existing Jena {@link DatasetGraph} to CommonsRDF {@link Dataset}. 
 	 * <p>
 	 * This does not
