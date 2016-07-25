@@ -33,6 +33,7 @@ import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFParserBuilder;
+import org.apache.commons.rdf.api.RDFParserBuilder.ParseResult;
 import org.apache.commons.rdf.api.RDFSyntax;
 import org.apache.commons.rdf.api.RDFTermFactory;
 
@@ -53,28 +54,10 @@ import org.apache.commons.rdf.api.RDFTermFactory;
  * multiple {@link #parse()} calls are thread-safe. The default {@link #parse()}
  * uses a thread pool in {@link #threadGroup} - but implementations can override
  * {@link #parse()} (e.g. because it has its own threading model or use
- * asynchronou  remote execution).
+ * asynchronous remote execution).
  */
-public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Cloneable {
-
-	public class RDFParseException extends Exception {		
-		private static final long serialVersionUID = 5427752643780702976L;
-		public RDFParseException() {
-			super();
-		}
-		public RDFParseException(String message, Throwable cause) {
-			super(message, cause);
-		}
-		public RDFParseException(String message) {
-			super(message);
-		}
-		public RDFParseException(Throwable cause) {
-			super(cause);
-		}
-		public RDFParserBuilder getRDFParserBuilder() {
-			return AbstractRDFParserBuilder.this;
-		}
-	}
+public abstract class AbstractRDFParserBuilder<T extends AbstractRDFParserBuilder<T>> 
+	implements RDFParserBuilder, Cloneable {
 	
 	public static final ThreadGroup threadGroup = new ThreadGroup("Commons RDF parsers");
 	private static final ExecutorService threadpool = Executors.newCachedThreadPool(r -> new Thread(threadGroup, r));
@@ -212,79 +195,85 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 	private Optional<Dataset> targetDataset;
 	private Optional<Graph> targetGraph;
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public AbstractRDFParserBuilder clone() {
+	public T clone() {
 		try {
-			return (AbstractRDFParserBuilder) super.clone();
+			return (T) super.clone();
 		} catch (CloneNotSupportedException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	protected T asT() { 
+		return (T) this;
+	}
+	
 	@Override
-	public RDFParserBuilder rdfTermFactory(RDFTermFactory rdfTermFactory) {
-		AbstractRDFParserBuilder c = clone();
+	public T rdfTermFactory(RDFTermFactory rdfTermFactory) {
+		AbstractRDFParserBuilder<T> c = clone();
 		c.rdfTermFactory = Optional.ofNullable(rdfTermFactory);
-		return c;
+		return c.asT();
 	}
 
 	@Override
-	public RDFParserBuilder contentType(RDFSyntax rdfSyntax) throws IllegalArgumentException {
-		AbstractRDFParserBuilder c = clone();
+	public T contentType(RDFSyntax rdfSyntax) throws IllegalArgumentException {
+		AbstractRDFParserBuilder<T> c = clone();
 		c.contentTypeSyntax = Optional.ofNullable(rdfSyntax);
 		c.contentType = c.contentTypeSyntax.map(syntax -> syntax.mediaType);
-		return c;
+		return c.asT();
 	}
 
 	@Override
-	public RDFParserBuilder contentType(String contentType) throws IllegalArgumentException {
-		AbstractRDFParserBuilder c = clone();
+	public T contentType(String contentType) throws IllegalArgumentException {
+		AbstractRDFParserBuilder<T> c = clone();
 		c.contentType = Optional.ofNullable(contentType);
 		c.contentTypeSyntax = c.contentType.flatMap(RDFSyntax::byMediaType);
-		return c;
+		return c.asT();
 	}
 
 	@Override
-	public RDFParserBuilder base(IRI base) {
-		AbstractRDFParserBuilder c = clone();
+	public T base(IRI base) {
+		AbstractRDFParserBuilder<T> c = clone();
 		c.base = Optional.ofNullable(base);
 		c.base.ifPresent(i -> checkIsAbsolute(i));
-		return c;
+		return c.asT();
 	}
 
 	@Override
-	public RDFParserBuilder base(String base) throws IllegalArgumentException {
+	public T base(String base) throws IllegalArgumentException {
 		return base(internalRdfTermFactory.createIRI(base));
 	}
 
 	@Override
-	public RDFParserBuilder source(InputStream inputStream) {
-		AbstractRDFParserBuilder c = clone();
+	public T source(InputStream inputStream) {
+		AbstractRDFParserBuilder<T> c = clone();
 		c.resetSource();
 		c.sourceInputStream = Optional.ofNullable(inputStream);
-		return c;
+		return c.asT();
 	}
 
 	@Override
-	public RDFParserBuilder source(Path file) {
-		AbstractRDFParserBuilder c = clone();
+	public T source(Path file) {
+		AbstractRDFParserBuilder<T> c = clone();
 		c.resetSource();
 		c.sourceFile = Optional.ofNullable(file);
-		return c;
+		return c.asT();
 	}
 
 	@Override
-	public RDFParserBuilder source(IRI iri) {
-		AbstractRDFParserBuilder c = clone();
+	public T source(IRI iri) {
+		AbstractRDFParserBuilder<T> c = clone();
 		c.resetSource();
 		c.sourceIri = Optional.ofNullable(iri);
 		c.sourceIri.ifPresent(i -> checkIsAbsolute(i));
-		return c;
+		return c.asT();
 	}
 
 	@Override
-	public RDFParserBuilder source(String iri) throws IllegalArgumentException {
-		AbstractRDFParserBuilder c = clone();
+	public T source(String iri) throws IllegalArgumentException {
+		AbstractRDFParserBuilder<T> c = clone();
 		c.resetSource();
 		c.sourceIri = Optional.ofNullable(iri).map(internalRdfTermFactory::createIRI);
 		c.sourceIri.ifPresent(i -> checkIsAbsolute(i));
@@ -407,7 +396,7 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 	 * @throws IOException If the source was not accessible (e.g. a file was not found)
 	 * @throws IllegalStateException If the parser was not in a compatible setting (e.g. contentType was an invalid string) 
 	 */
-	protected AbstractRDFParserBuilder prepareForParsing() throws IOException, IllegalStateException {
+	protected T prepareForParsing() throws IOException, IllegalStateException {
 		checkSource();
 		checkBaseRequired();		
 		checkContentType();
@@ -415,7 +404,7 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 
 		// We'll make a clone of our current state which will be passed to
 		// parseSynchronously()
-		AbstractRDFParserBuilder c = clone();
+		AbstractRDFParserBuilder<T> c = clone();
 
 		// Use a fresh SimpleRDFTermFactory for each parse
 		if (!c.rdfTermFactory.isPresent()) {
@@ -428,7 +417,7 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 			c.base = Optional.of(internalRdfTermFactory.createIRI(baseUri.toString()));
 		}
 
-		return c;
+		return c.asT();
 	}
 	
 	/**
@@ -519,7 +508,7 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 
 	@Override
 	public Future<ParseResult> parse() throws IOException, IllegalStateException {
-		final AbstractRDFParserBuilder c = prepareForParsing();
+		final AbstractRDFParserBuilder<T> c = prepareForParsing();
 		return threadpool.submit(() -> {
 			c.parseSynchronusly();
 			return null;
@@ -527,27 +516,29 @@ public abstract class AbstractRDFParserBuilder implements RDFParserBuilder, Clon
 	}
 
 	@Override
-	public RDFParserBuilder target(Consumer<Quad> consumer) {
-		AbstractRDFParserBuilder c = clone();
+	public T target(Consumer<Quad> consumer) {
+		AbstractRDFParserBuilder<T> c = clone();
 		c.resetTarget();
 		c.target = consumer;
-		return c;
+		return c.asT();
 	}
 	
 	@Override
-	public RDFParserBuilder target(Dataset dataset) {
-		AbstractRDFParserBuilder c = (AbstractRDFParserBuilder) RDFParserBuilder.super.target(dataset);
+	public T target(Dataset dataset) {
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		AbstractRDFParserBuilder<T> c = (AbstractRDFParserBuilder) RDFParserBuilder.super.target(dataset);
 		c.resetTarget();
 		c.targetDataset = Optional.of(dataset);
-		return c;
+		return c.asT();
 	}
 	
 	@Override
-	public RDFParserBuilder target(Graph graph) {
-		AbstractRDFParserBuilder c = (AbstractRDFParserBuilder) RDFParserBuilder.super.target(graph);
+	public T target(Graph graph) {
+		@SuppressWarnings({ "rawtypes", "unchecked" }) // super calls our .clone()
+		AbstractRDFParserBuilder<T> c = (AbstractRDFParserBuilder) RDFParserBuilder.super.target(graph);
 		c.resetTarget();
 		c.targetGraph = Optional.of(graph);
-		return c;
+		return c.asT();
 	}
 	
 
