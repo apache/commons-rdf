@@ -21,9 +21,11 @@ import java.util.UUID;
 
 import org.apache.commons.rdf.api.BlankNode;
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
+import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Literal;
+import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.RDFTermFactory;
 import org.apache.commons.rdf.api.Triple;
@@ -71,6 +73,11 @@ public class SimpleRDFTermFactory implements RDFTermFactory {
     }
 
     @Override
+    public Dataset createDataset() throws UnsupportedOperationException {
+    	return new DatasetImpl(this);
+    }
+    
+    @Override
     public IRI createIRI(String iri) {
         IRI result = new IRIImpl(iri);
         // Reuse any IRI objects already created in Types
@@ -96,5 +103,11 @@ public class SimpleRDFTermFactory implements RDFTermFactory {
     public Triple createTriple(BlankNodeOrIRI subject, IRI predicate,
                                RDFTerm object) {
         return new TripleImpl(subject, predicate, object);
+    }
+    
+    @Override
+    public Quad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
+    		throws IllegalArgumentException, UnsupportedOperationException {
+    	return new QuadImpl(graphName, subject, predicate, object);
     }
 }
