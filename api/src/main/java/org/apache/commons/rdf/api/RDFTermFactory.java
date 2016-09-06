@@ -36,6 +36,7 @@ import java.util.Locale;
  *
  * @see RDFTerm
  * @see Graph
+ * @see Quad
  */
 public interface RDFTermFactory {
 

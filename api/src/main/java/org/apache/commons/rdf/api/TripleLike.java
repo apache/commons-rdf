@@ -23,8 +23,10 @@ package org.apache.commons.rdf.api;
  * <p>
  * A TripleLike statement has at least a {@link #getSubject()},
  * {@link #getPredicate()} and {@link #getObject()}, but unlike a {@link Triple}
- * does not have a formalised {@link Triple#equals(Object)} semantics, and can
- * allow generalised triples (e.g. a {@link BlankNode} as predicate).
+ * does not have a formalised 
+ * {@link Triple#equals(Object)} or 
+ * {@link Triple#hashCode()} semantics. This interfaced can also be 
+ * used for <em>generalised triples</em> (e.g. a {@link BlankNode} as predicate).
  * <p>
  * Implementations should specialise which specific {@link RDFTerm} types they
  * return for {@link #getSubject()}, {@link #getPredicate()} and
