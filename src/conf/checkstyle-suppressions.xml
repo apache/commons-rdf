@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
+<?xml version="1.0"?>
 <!--
 Licensed to the Apache Software Foundation (ASF) under one or more
 contributor license agreements.  See the NOTICE file distributed with
@@ -18,10 +17,16 @@ limitations under the License.
 -->
 
 <!DOCTYPE suppressions PUBLIC
-    "-//Puppy Crawl//DTD Suppressions 1.0//EN"
-    "http://www.puppycrawl.com/dtds/suppressions_1_0.dtd">
-
+    "-//Puppy Crawl//DTD Suppressions 1.1//EN"
+    "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
+<!-- SEE: http://checkstyle.sourceforge.net/config.html#Examples -->
 <suppressions>
-    <suppress checks="Header" files="LICENSE.txt"/>
-    <suppress checks="Header" files="NOTICE.txt"/>
+    <suppress checks="LineLength"  files="InstructionFinder.java"/> <!-- TODO later -->
+
+    <suppress checks="MagicNumber" files="VerifierAppFrame.java"/> <!-- Swing files use lots of numbers -->
+    <suppress checks="MagicNumber" files="VerifyDialog.java"/> <!-- Swing files use lots of numbers -->
+    <suppress checks="MagicNumber" files="src[/\\]test[/\\]"/> <!-- test files need numbers -->
+
+     <!-- Maven generated code -->
+    <suppress checks=".*"          files="[/\\]target[/\\]"/>
 </suppressions>
