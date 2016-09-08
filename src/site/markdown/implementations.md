@@ -44,7 +44,7 @@ usage (e.g. prototyping).
 <dependency>
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-rdf-simple</artifactId>
-    <version>0.1.0-incubating-SNAPSHOT</version>
+    <version>0.2.0-incubating-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -57,10 +57,22 @@ RDFTermFactory rdfTermFactory = new SimpleRDFTermFactory();
 Graph graph = rdfTermFactory.createGraph();
 ```
 
+### OWL API
+
+[OWL API](http://owlapi.sourceforge.net/) 5 extends Commons RDF
+directly for its family of
+[RDFNode](https://github.com/owlcs/owlapi/blob/version5/api/src/main/java/org/semanticweb/owlapi/io/RDFNode.java#L25)
+implementations.
+
+For details, see [pull request #446](https://github.com/owlcs/owlapi/pull/446),
+and [pull request #452](https://github.com/owlcs/owlapi/pull/452)).
+
+
+
 ## Planned implementations
 
 The information in this section should not be considered updated or
-authoritative as it relies on external project planning.
+authoritative as it describes ongoing development.
 
 Feel free to [suggest changes](http://commonsrdf.incubator.apache.org/contributing.html) to the
 [source code for this page](https://github.com/apache/incubator-commonsrdf/blob/master/src/site/markdown/implementations.md).
@@ -69,15 +81,42 @@ Feel free to [suggest changes](http://commonsrdf.incubator.apache.org/contributi
 
 ### Apache Jena
 
-[Apache Jena](http://jena.apache.org/) is considering a compatibility interface
-that provides and consumes Commons RDF objects
-([JENA-1015](https://issues.apache.org/jira/browse/JENA-1015)).
+An implementation that maps [Apache Jena](http://jena.apache.org/) types
+to Commons RDF is being developed on
+the [`jena`](https://github.com/apache/incubator-commonsrdf/tree/jena)
+branch of Commons RDF.
+
+For details, see [COMMONSRDF-33](https://issues.apache.org/jira/browse/COMMONSRDF-33),
+[JENA-1015](https://issues.apache.org/jira/browse/JENA-1015) or contact
+[dev@commonsrdf](mail-lists.html).
 
 
-### RDF4j Sesame
+### Eclipse RDF4j (formerly Sesame)
 
-[Sesame](http://rdf4j.org/) is planning to support Commons RDF
-([SES-2091](https://openrdf.atlassian.net/browse/SES-2091)).
+An implementation that maps [RDF4J 2.0](http://rdf4j.org/)
+to Commons RDF is being developed on
+the [`rdf4j`](https://github.com/apache/incubator-commonsrdf/tree/rdf4j)
+branch of Commons RDF.
+
+
+For details, see [COMMONSRDF-35](https://issues.apache.org/jira/browse/COMMONSRDF-35),
+[SES-2091](https://openrdf.atlassian.net/browse/SES-2091) or contact
+[dev@commonsrdf](mail-lists.html).
+
+
+### Eclipse RDF4j (formerly Sesame)
+
+An implementation that maps [JSON-LD-Java](https://github.com/jsonld-java/jsonld-java)
+to Commons RDF is being developed on
+the [`jsonld-java`](https://github.com/apache/incubator-commonsrdf/tree/jsonld-java/jsonld-java)
+branch of Commons RDF.
+
+This aims to support [JSON-LD](http://json-ld.org/) parsing and writing by adding
+new interfaces like
+[RDFParserBuilder](https://github.com/apache/incubator-commonsrdf/pull/21).
+
+For details, see [COMMONSRDF-36](https://issues.apache.org/jira/browse/COMMONSRDF-36) or contact
+[dev@commonsrdf](mail-lists.html).
 
 
 ### Apache Clerezza
@@ -85,11 +124,3 @@ that provides and consumes Commons RDF objects
 [Apache Clerezza](https://clerezza.apache.org/) is
 aligning its [RDF core](https://github.com/apache/clerezza-rdf-core) module
 with Commons RDF.
-
-
-### OWL API
-
-[OWL API](http://owlapi.sourceforge.net/) is considering the integration with
-Commons RDF in OWLAPI 5
-(<strike>[pull request #446](https://github.com/owlcs/owlapi/pull/446)</strike>,
-[pull request #452](https://github.com/owlcs/owlapi/pull/452)).
