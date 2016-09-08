@@ -24,7 +24,7 @@
     <parent>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-rdf-parent</artifactId>
-        <version>0.2.0-incubating-SNAPSHOT</version>
+        <version>0.3.0-incubating-SNAPSHOT</version>
     </parent>
 
     <artifactId>commons-rdf-jsonld-java</artifactId>
@@ -50,7 +50,7 @@
             <groupId>${project.parent.groupId}</groupId>
             <artifactId>commons-rdf-simple</artifactId>
             <version>${project.version}</version>
-        </dependency>        
+        </dependency>
         <dependency>
 		    <groupId>com.github.jsonld-java</groupId>
 		    <artifactId>jsonld-java</artifactId>
