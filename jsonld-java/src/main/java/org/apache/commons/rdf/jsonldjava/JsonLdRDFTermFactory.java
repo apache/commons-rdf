@@ -27,6 +27,7 @@ import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.api.QuadLike;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.RDFTermFactory;
+import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.api.TripleLike;
 import org.apache.commons.rdf.simple.Types;
 
@@ -74,6 +75,10 @@ final class JsonLdRDFTermFactory implements RDFTermFactory {
 		return new JsonLdTriple.JsonLdTripleImpl(asJsonLdQuad(subject, predicate, object), bnodePrefix);
 	}
 	
+	public Triple asTriple(final RDFDataset.Quad quad) {
+		return new JsonLdTriple.JsonLdTripleImpl(quad, bnodePrefix);
+	}
+
 	@Override
 	public JsonLdQuad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
 			throws IllegalArgumentException, UnsupportedOperationException {
@@ -93,7 +98,7 @@ final class JsonLdRDFTermFactory implements RDFTermFactory {
 	}
 
 
-	private Node asJsonLdNode(RDFTerm term) {
+	public Node asJsonLdNode(RDFTerm term) {
 		if (term instanceof JsonLdTerm) {
 			// Return original Node
 			return ((JsonLdTerm)term).asNode();

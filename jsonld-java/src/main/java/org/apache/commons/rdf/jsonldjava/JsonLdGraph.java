@@ -49,21 +49,22 @@ public class JsonLdGraph implements Graph {
 	 */
 	private RDFDataset rdfDataSet;
 
-	public RDFDataset getRdfDataSet() {
-		return rdfDataSet;
-	}
-
-	private JsonLdRDFTermFactory rdfTermFactory;
-
 	/**
 	 * If true, include all Quad statements as Triples. If false, 
 	 * only Quads in the default graph (<code>null</code>) are
 	 * included.
 	 */
-	private boolean unionGraph = false;
+	private final boolean unionGraph;
 
+	/**
+	 * Prefix to use in blank node identifiers
+	 */
+	private final String bnodePrefix;
+
+	private JsonLdRDFTermFactory factory;
+	
 	public JsonLdGraph() {
-		this(new RDFDataset(), false);
+		this(new RDFDataset(), false);		
 	}
 	
 	public JsonLdGraph(RDFDataset rdfDataset) {
@@ -73,7 +74,15 @@ public class JsonLdGraph implements Graph {
 	public JsonLdGraph(RDFDataset rdfDataset, boolean unionGraph) {
 		this.rdfDataSet = rdfDataset;	
 		this.unionGraph = unionGraph;
+		this.bnodePrefix = "urn:uuid:" + SALT + "#" +  "g"+ System.identityHashCode(rdfDataSet);
+		this.factory = new JsonLdRDFTermFactory(bnodePrefix);
 	}
+
+	
+	public RDFDataset getRdfDataSet() {
+		return rdfDataSet;
+	}
+
 
 	@Override
 	public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
@@ -121,7 +130,7 @@ public class JsonLdGraph implements Graph {
 	@Override
 	public void close() {
 		// Drop the memory reference, but don't clear it
-		rdfDataSet = null;		
+		rdfDataSet = null;			
 	}
 	
 	@Override
@@ -134,22 +143,12 @@ public class JsonLdGraph implements Graph {
 		return stream().anyMatch(Predicate.isEqual(triple));
 	}
 
-	public RDFTermFactory getContext() {
-		// Note: This does not need to be synchronized, it's OK 
-		// if you get a few accidental copies as the
-		// same bnodePrefix() is passed to each
-		if (rdfTermFactory == null) {
-			rdfTermFactory = new JsonLdRDFTermFactory(bnodePrefix());
-		}
-		return rdfTermFactory;
-	}
-
 	@Override
 	public Stream<? extends Triple> stream() {
 		if (! unionGraph) {
-			return rdfDataSet.getQuads("@default").parallelStream().map(this::asTriple);
+			return rdfDataSet.getQuads("@default").parallelStream().map(factory::asTriple);
 		}
-		return rdfDataSet.graphNames().parallelStream().map(rdfDataSet::getQuads).flatMap(List<Quad>::parallelStream).map(this::asTriple);
+		return rdfDataSet.graphNames().parallelStream().map(rdfDataSet::getQuads).flatMap(List<Quad>::parallelStream).map(factory::asTriple);
 	}
 
 	@Override
@@ -193,41 +192,11 @@ public class JsonLdGraph implements Graph {
 			return rdfDataSet.graphNames().parallelStream().map(rdfDataSet::getQuads).collect(Collectors.summingLong(List::size));
 		}
 	}
-
-	private Node asJsonLdNode(RDFTerm term) {
-		if (term instanceof IRI) {
-			return new RDFDataset.IRI( ((IRI)term).getIRIString() );
-		}
-		if (term instanceof BlankNode) {
-			
-			String uniqueReference = ((BlankNode)term).uniqueReference();
-			if (uniqueReference.startsWith(bnodePrefix())) {
-				// one of our own
-				// TODO: Retrieve the original BlankNode
-				return new RDFDataset.BlankNode(term.ntriplesString());
-			} 
-			return new RDFDataset.BlankNode( "_:" + uniqueReference );
-		}
-		if (term instanceof Literal) {
-			Literal literal = (Literal) term;
-			return new RDFDataset.Literal(literal.getLexicalForm(), literal.getDatatype().getIRIString(), 
-					literal.getLanguageTag().orElse(null));
-		}
-		throw new IllegalArgumentException("RDFTerm not instanceof IRI, BlankNode or Literal: " + term);
-	}
-
-	private Triple asTriple(final RDFDataset.Quad quad) {
-		return new JsonLdTriple(quad, bnodePrefix());
-	}
-
-	public String bnodePrefix() {
-		return "urn:uuid:" + SALT + "#" +  "g"+ System.identityHashCode(rdfDataSet);
-	}
-
+	
 	private Predicate<? super Quad> quadFilter(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		Optional<Node> subjectNode = Optional.ofNullable(subject).map(this::asJsonLdNode);
-		Optional<Node> predicateNode = Optional.ofNullable(predicate).map(this::asJsonLdNode);
-		Optional<Node> objectNode = Optional.ofNullable(object).map(this::asJsonLdNode);
+		Optional<Node> subjectNode = Optional.ofNullable(subject).map(factory::asJsonLdNode);
+		Optional<Node> predicateNode = Optional.ofNullable(predicate).map(factory::asJsonLdNode);
+		Optional<Node> objectNode = Optional.ofNullable(object).map(factory::asJsonLdNode);
 		
 		return q -> {
 		    if (subjectNode.isPresent() && subjectNode.get().compareTo(q.getSubject()) != 0) {
