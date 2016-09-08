@@ -31,7 +31,7 @@
 	<artifactId>commons-rdf-rdf4j</artifactId>
 	<packaging>jar</packaging>
 	<properties>
-		<rdf4j.version>2.0M2</rdf4j.version>
+		<rdf4j.version>2.0</rdf4j.version>
 	</properties>
 
 	<name>Commons RDF: Integration: RDF4j</name>
