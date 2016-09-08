@@ -126,12 +126,12 @@ public class JsonLdGraph implements Graph {
 	
 	@Override
 	public boolean contains(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		return getTriples(subject, predicate, object).findAny().isPresent();
+		return stream(subject, predicate, object).findAny().isPresent();
 	}
 
 	@Override
 	public boolean contains(Triple triple) {
-		return getTriples().anyMatch(Predicate.isEqual(triple));
+		return stream().anyMatch(Predicate.isEqual(triple));
 	}
 
 	public RDFTermFactory getContext() {
@@ -145,7 +145,7 @@ public class JsonLdGraph implements Graph {
 	}
 
 	@Override
-	public Stream<? extends Triple> getTriples() {
+	public Stream<? extends Triple> stream() {
 		if (! unionGraph) {
 			return rdfDataSet.getQuads("@default").parallelStream().map(this::asTriple);
 		}
@@ -153,9 +153,9 @@ public class JsonLdGraph implements Graph {
 	}
 
 	@Override
-	public Stream<? extends Triple> getTriples(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+	public Stream<? extends Triple> stream(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
 		// RDFDataSet has no optimizations to help us, so we'll dispatch to filter()
-        return getTriples().filter(t -> {
+        return stream().filter(t -> {
             if (subject != null && !t.getSubject().equals(subject)) {
                 return false;
             }
