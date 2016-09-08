@@ -26,11 +26,27 @@ import java.util.stream.Stream;
  * Extended by {@link Graph} (for {@link Triple}) and {@link Dataset} (for
  * {@link Quad}).
  * <p>
- * Unlike {@link Graph} and {@link Dataset}, this interface can support with
- * generalised {@link TripleLike} or {@link QuadLike} statements, and does not
- * include semantics like {@link #size()} or the requirement of mapping
+ * Unlike {@link Graph} and {@link Dataset}, this interface can support
+ * generalised {@link TripleLike} or {@link QuadLike} statements, but does not
+ * imply semantics like {@link #size()} or the requirement of mapping
  * {@link RDFTerm} instances from different implementations.
+ * <p>
+ * As {@link TripleLike} do not have a specific {@link Object#equals(Object)}
+ * semantics, the behaviour of methods like {@link #contains(TripleLike)} and
+ * {@link #remove(TripleLike)} is undefined for arguments that are not object
+ * identical to previously added or returned {@link TripleLike} statements.
  * 
+ * @param <T>
+ *            A {@link TripleLike} type used by the graph methods, typically
+ *            {@link Triple} or {@link Quad}
+ * @param <S>
+ *            The type of subjects in the statements, typically
+ *            {@link BlankNodeOrIRI}
+ * @param <P>
+ *            The type of predicates in the statements, typically {@link IRI}
+ * @param <O>
+ *            The type of objects in the statements, typically {@link RDFTerm}
+ *            
  * @since 0.3.0-incubating
  * @see Graph
  * @see Dataset
@@ -50,7 +66,7 @@ public interface GraphLike<T extends TripleLike<S, P, O>, S extends RDFTerm, P e
 	 * Check if statement is contained.
 	 * 
 	 * @param statement
-	 *            The {@link TripleLike} statement to chec
+	 *            The {@link TripleLike} statement to check
 	 * @return True if the statement is contained
 	 */
 	boolean contains(T statement);
@@ -71,7 +87,7 @@ public interface GraphLike<T extends TripleLike<S, P, O>, S extends RDFTerm, P e
 	/**
 	 * Number of statements.
 	 * 
-	 * @return
+	 * @return Number of statements
 	 */
 	long size();
 
@@ -86,7 +102,6 @@ public interface GraphLike<T extends TripleLike<S, P, O>, S extends RDFTerm, P e
 	 * Iterate over contained statements.
 	 * 
 	 * @return An {@link Iterable} of {@link TripleLike} statements.
-	 * 
 	 * @throws IllegalStateException
 	 *             if the {@link Iterable} has been reused
 	 * @throws ConcurrentModificationException

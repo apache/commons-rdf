@@ -36,6 +36,7 @@ import java.util.Locale;
  *
  * @see RDFTerm
  * @see Graph
+ * @see Quad
  */
 public interface RDFTermFactory {
 
@@ -271,7 +272,7 @@ public interface RDFTermFactory {
                                 RDFTerm object) throws IllegalArgumentException,
             UnsupportedOperationException {
         throw new UnsupportedOperationException(
-                "createTriple(BlankNodeOrIRI,IRI,RDFTerm) not supported");
+                "createQuad(BlankNodeOrIRI,BlankNodeOrIRI,IRI,RDFTerm) not supported");
     }
 
 }

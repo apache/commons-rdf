@@ -29,6 +29,8 @@ import java.util.Optional;
  * February 2014.
  * 
  * @since 0.3.0-incubating
+ * @see Dataset
+ * @see RDFTermFactory#createQuad(BlankNodeOrIRI,BlankNodeOrIRI,IRI,RDFTerm)
  * @see <a href="http://www.w3.org/TR/2014/NOTE-rdf11-datasets-20140225/">RDF
  *      1.1: On Semantics of RDF Datasets</a>
  * @see <a href="http://www.w3.org/TR/rdf11-concepts/#section-dataset"> </a>
@@ -67,31 +69,31 @@ public interface Quad extends QuadLike<BlankNodeOrIRI,IRI,RDFTerm,BlankNodeOrIRI
 	BlankNodeOrIRI getSubject();
 
 	/**
-	 * The predicate {@link IRI} of this triple.
+	 * The predicate {@link IRI} of this quad.
 	 *
-	 * @return The predicate {@link IRI} of this triple.
+	 * @return The predicate {@link IRI} of this quad.
 	 * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-predicate">RDF-1.1
 	 *      Triple predicate</a>
 	 */
 	IRI getPredicate();
 
 	/**
-	 * The object of this triple, which may be either a {@link BlankNode}, an
+	 * The object of this quad, which may be either a {@link BlankNode}, an
 	 * {@link IRI}, or a {@link Literal}, which are represented in Commons RDF
 	 * by the interface {@link RDFTerm}.
 	 *
-	 * @return The object {@link RDFTerm} of this triple.
+	 * @return The object {@link RDFTerm} of this quad.
 	 * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-object">RDF-1.1
 	 *      Triple object</a>
 	 */
 	RDFTerm getObject();
 
 	/**
-	 * Convert this Quad to a Triple.
+	 * Adapt this Quad to a Triple.
 	 * <p>
 	 * The returned {@link Triple} will have equivalent values returned from the
-	 * methods {@link TripleOrQuad#getSubject()},
-	 * {@link TripleOrQuad#getPredicate()} and {@link TripleOrQuad#getObject()}.
+	 * methods {@link TripleLike#getSubject()},
+	 * {@link TripleLike#getPredicate()} and {@link TripleLike#getObject()}.
 	 * <p>
 	 * The returned {@link Triple} MUST NOT be {@link #equals(Object)} to this
 	 * {@link Quad}, even if this quad has a default graph
@@ -113,12 +115,12 @@ public interface Quad extends QuadLike<BlankNodeOrIRI,IRI,RDFTerm,BlankNodeOrIRI
 	 * 
 	 * The <code>default</code> implementation of this method return a proxy
 	 * {@link Triple} instance that keeps a reference to this {@link Quad} to
-	 * calls the underlying {@link TripleOrQuad} methods, but supplies a
+	 * call the underlying {@link TripleLike} methods, but supplies a
 	 * {@link Triple} compatible implementation of {@link Triple#equals(Object)}
 	 * and {@link Triple#hashCode()}. Implementations may override this method,
 	 * e.g. for a more efficient solution.
 	 * 
-	 * @return A {@link Triple} that contains the same {@link TripleOrQuad}
+	 * @return A {@link Triple} that contains the same {@link TripleLike}
 	 *         properties as this Quad.
 	 */
 	default Triple asTriple() {
@@ -140,6 +142,9 @@ public interface Quad extends QuadLike<BlankNodeOrIRI,IRI,RDFTerm,BlankNodeOrIRI
 
 			@Override
 			public boolean equals(Object obj) {
+				if (obj == this)  { 
+					return true;
+				}
 				if (!(obj instanceof Triple)) {
 					return false;
 				}
@@ -159,7 +164,7 @@ public interface Quad extends QuadLike<BlankNodeOrIRI,IRI,RDFTerm,BlankNodeOrIRI
 	/**
 	 * Check it this Quad is equal to another Quad.
 	 * <p>
-	 * Two Triples are equal if and only if their {@link #getGraphName()}, 
+	 * Two Quads are equal if and only if their {@link #getGraphName()}, 
 	 * {@link #getSubject()}, {@link #getPredicate()} and 
 	 * {@link #getObject()} are equal.
 	 * </p>
