@@ -30,6 +30,8 @@ import org.apache.commons.rdf.jena.JenaGraph;
 import org.apache.commons.rdf.jena.JenaRDFTermFactory;
 import org.apache.jena.atlas.iterator.Iter;
 import org.apache.jena.graph.Node;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 
@@ -37,9 +39,16 @@ public class GraphImpl implements JenaGraph {
 
 	private org.apache.jena.graph.Graph graph;
 	private UUID salt;
+	private Model model;
 
-	/* package */ GraphImpl(org.apache.jena.graph.Graph graph, UUID salt) {
+	GraphImpl(org.apache.jena.graph.Graph graph, UUID salt) {
 		this.graph = graph;
+		this.salt = salt;
+	}
+
+	GraphImpl(Model model, UUID salt) {
+		this.model = model;
+		this.graph = model.getGraph();
 		this.salt = salt;
 	}
 
@@ -126,6 +135,20 @@ public class GraphImpl implements JenaGraph {
 		StringWriter sw = new StringWriter();
 		RDFDataMgr.write(sw, graph, Lang.NT);
 		return sw.toString();
+	}
+
+	@Override
+	public Model asJenaModel() {
+		if (model == null) {
+			synchronized(this) {
+				// As Model can be used for locks, we should make sure we don't make
+				// more than one model
+				if (model == null) {
+					model = ModelFactory.createModelForGraph(graph);
+				}
+			}
+		}
+		return model;
 	}
 
 }

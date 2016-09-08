@@ -78,7 +78,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	}
 	
 	@Override
-	public Dataset createDataset() throws UnsupportedOperationException {
+	public Dataset createDataset() {
 		return JenaFactory.createDataset(salt);
 	}
 
@@ -467,6 +467,22 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 		return JenaFactory.fromJena(graph, salt);
 	}
 
+	/**
+	 * Adapt an existing Jena {@link org.apache.jena.rdf.model.Model} to CommonsRDF {@link Graph}. 
+	 * <p>
+	 * This does not ake a copy, changes to the CommonsRDF Graph are reflected in the jena
+	 * graph, which is accessible from {@link JenaGraph#asJenaGraph()}.
+	 * <p>
+	 * If the graph contains any {@link Node#isBlank()}, then any corresponding
+	 * {@link BlankNode} will use a {@link UUID} salt from this 
+	 * {@link JenaRDFTermFactory} instance
+	 * in combination with {@link Node#getBlankNodeId()} 
+	 * for the purpose of its {@link BlankNode#uniqueReference()}.
+
+	 */
+	public JenaGraph fromJena(org.apache.jena.rdf.model.Model model) {
+		return JenaFactory.fromJena(model, salt);
+	}	
 
 	/**
 	 * Adapt an existing Jena {@link org.apache.jena.graph.Graph} to CommonsRDF {@link Graph}. 

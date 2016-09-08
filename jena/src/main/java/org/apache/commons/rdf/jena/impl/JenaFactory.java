@@ -42,6 +42,7 @@ import org.apache.commons.rdf.jena.JenaTripleLike;
 import org.apache.commons.rdf.jena.JenaVariable;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.NodeFactory;
+import org.apache.jena.rdf.model.Model;
 import org.apache.jena.sparql.core.DatasetGraph;
 import org.apache.jena.sparql.core.DatasetGraphFactory;
 import org.apache.jena.sparql.graph.GraphFactory;
@@ -142,13 +143,17 @@ public class JenaFactory {
 		}
 		throw new IllegalArgumentException("Unrecognized node type: " + node);
 	}
-	
+
 	public static JenaGraph fromJena(org.apache.jena.graph.Graph graph) {
 		return new GraphImpl(graph, UUID.randomUUID());
 	}
 
 	public static JenaGraph fromJena(org.apache.jena.graph.Graph graph, UUID salt) {
 		return new GraphImpl(graph, salt);
+	}
+
+	public static JenaGraph fromJena(Model model, UUID salt) {
+		return new GraphImpl(model, salt);
 	}
 
 	public static JenaDataset fromJena(DatasetGraph datasetGraph) {

@@ -19,8 +19,27 @@
 package org.apache.commons.rdf.jena;
 
 import org.apache.jena.graph.Graph;
+import org.apache.jena.rdf.model.Model;
 
 /** Access the Jena graph backing this object */
 public interface JenaGraph extends org.apache.commons.rdf.api.Graph {
+	
+	/**
+	 * Return the underlying Jena {@link Graph}.
+	 * <p>
+	 * Changes to the Jena graph are reflected in the Commons RDF graph and vice versa.
+	 * 
+	 * @return A Jena {@link Graph}
+	 */
 	public Graph asJenaGraph();
+
+	/**
+	 * Return the underlying Jena {@link Model}.
+	 * <p>
+	 * Changes to the Jena model are reflected in the Commons RDF graph and vice
+	 * versa.
+	 * 
+	 * @return A Jena {@link Model}
+	 */	
+	public Model asJenaModel();
 }
