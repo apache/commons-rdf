@@ -21,34 +21,45 @@ import java.util.Objects;
 
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.IRI;
-import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFTerm;
+// Note: To avoid confusion - don't import either Quad
+import org.apache.commons.rdf.jsonldjava.JsonLdQuadLike.JsonLdQuadLikeImpl;
 
-final class JsonLdQuad	extends JsonLdQuadLike<BlankNodeOrIRI,IRI,RDFTerm,BlankNodeOrIRI> 
-	implements org.apache.commons.rdf.api.Quad {
+public interface JsonLdQuad extends org.apache.commons.rdf.api.Quad {
+
+	/**
+	 * Return the underlying JsonLD {@link com.github.jsonldjava.core.RDFDataset.Quad}
+	 * 
+	 * @return The JsonLD {@link com.github.jsonldjava.core.RDFDataset.Quad}
+	 */
+	public com.github.jsonldjava.core.RDFDataset.Quad asJsonLdQuad();
 	
-	JsonLdQuad(com.github.jsonldjava.core.RDFDataset.Quad quad, String blankNodePrefix) {
-		super(quad, blankNodePrefix);			
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == this) {
-			return true;
+	final class JsonLdQuadImpl extends JsonLdQuadLikeImpl<BlankNodeOrIRI,IRI,RDFTerm,BlankNodeOrIRI> 
+		implements JsonLdQuad {
+		
+		JsonLdQuadImpl(com.github.jsonldjava.core.RDFDataset.Quad quad, String blankNodePrefix) {
+			super(quad, blankNodePrefix);			
 		}
-		if (! (obj instanceof Quad)) {
-			return false;
+	
+		@Override
+		public boolean equals(Object obj) {
+			if (obj == this) {
+				return true;
+			}
+			if (! (obj instanceof org.apache.commons.rdf.api.Quad)) {
+				return false;
+			}
+			org.apache.commons.rdf.api.Quad other = (org.apache.commons.rdf.api.Quad) obj;
+			return getGraphName().equals(other.getGraphName()) &&
+					getSubject().equals(other.getSubject()) && 
+					getPredicate().equals(other.getPredicate()) && 
+					getObject().equals(other.getObject());
 		}
-		Quad other = (Quad) obj;
-		return getGraphName().equals(other.getGraphName()) &&
-				getSubject().equals(other.getSubject()) && 
-				getPredicate().equals(other.getPredicate()) && 
-				getObject().equals(other.getObject());
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(getGraphName(), getSubject(), getPredicate(), getObject());
-	}
-
+	
+		@Override
+		public int hashCode() {
+			return Objects.hash(getGraphName(), getSubject(), getPredicate(), getObject());
+		}	
+	}	
+		
 }

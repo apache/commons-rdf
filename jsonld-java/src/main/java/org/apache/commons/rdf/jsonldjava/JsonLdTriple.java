@@ -23,29 +23,40 @@ import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.Triple;
+import org.apache.commons.rdf.jsonldjava.JsonLdQuadLike.JsonLdQuadLikeImpl;
 
 import com.github.jsonldjava.core.RDFDataset.Quad;
 
-final class JsonLdTriple extends JsonLdQuadLike<BlankNodeOrIRI, IRI, RDFTerm, RDFTerm>
-	implements Triple {
-	
-	JsonLdTriple(Quad quad, String blankNodePrefix) {
-		super(quad, blankNodePrefix);
-	}
+public interface JsonLdTriple extends Triple {
 
-	@Override
-	public boolean equals(Object obj) {
-		if (! (obj instanceof Triple)) {
-			return false;
+	/**
+	 * Return the underlying JsonLD {@link com.github.jsonldjava.core.RDFDataset.Quad}
+	 * 
+	 * @return The JsonLD {@link com.github.jsonldjava.core.RDFDataset.Quad}
+	 */
+	public com.github.jsonldjava.core.RDFDataset.Quad asJsonLdQuad();
+
+	final class JsonLdTripleImpl extends JsonLdQuadLikeImpl<BlankNodeOrIRI, IRI, RDFTerm, RDFTerm>
+		implements JsonLdTriple {
+		
+		JsonLdTripleImpl(Quad quad, String blankNodePrefix) {
+			super(quad, blankNodePrefix);
 		}
-		Triple other = (Triple) obj;
-		return getSubject().equals(other.getSubject()) && 
-				getPredicate().equals(other.getPredicate()) && 
-				getObject().equals(other.getObject());
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(getSubject(), getPredicate(), getObject());
+	
+		@Override
+		public boolean equals(Object obj) {
+			if (! (obj instanceof Triple)) {
+				return false;
+			}
+			Triple other = (Triple) obj;
+			return getSubject().equals(other.getSubject()) && 
+					getPredicate().equals(other.getPredicate()) && 
+					getObject().equals(other.getObject());
+		}
+	
+		@Override
+		public int hashCode() {
+			return Objects.hash(getSubject(), getPredicate(), getObject());
+		}
 	}
 }

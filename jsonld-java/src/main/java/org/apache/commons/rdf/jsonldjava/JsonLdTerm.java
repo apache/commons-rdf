@@ -17,15 +17,27 @@
  */
 package org.apache.commons.rdf.jsonldjava;
 
+import org.apache.commons.rdf.api.RDFTerm;
+
 import com.github.jsonldjava.core.RDFDataset.Node;
 
-public abstract class JsonLdTerm {
-	final Node node;
-	JsonLdTerm(Node node) {
-		this.node = node;
-	}
-	public Node asNode() {
-		return node;
+public interface JsonLdTerm extends RDFTerm {
+	
+	/**
+	 * Return the underlying JsonLd {@link Node}.
+	 *  
+	 * @return JsonLd {@link Node}
+	 */
+	Node asNode();
+	
+	abstract class JsonLdTermImpl implements JsonLdTerm {
+		final Node node;
+		JsonLdTermImpl(Node node) {
+			this.node = node;
+		}
+		public Node asNode() {
+			return node;
+		}
 	}
 	
 }

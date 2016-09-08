@@ -24,11 +24,9 @@ import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Literal;
-import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.QuadLike;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.RDFTermFactory;
-import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.api.TripleLike;
 import org.apache.commons.rdf.simple.Types;
 
@@ -54,44 +52,44 @@ final class JsonLdRDFTermFactory implements RDFTermFactory {
 	}
 	
 	@Override
-	public IRI createIRI(String iri) {
-		return new JsonLdIRI(iri);
+	public JsonLdIRI createIRI(String iri) {
+		return new JsonLdIRI.JsonLdIRIImpl(iri);
 	}
 	
 	@Override
-	public BlankNode createBlankNode() {
+	public JsonLdBlankNode createBlankNode() {
 		String id = "_:" + UUID.randomUUID().toString();
-		return new JsonLdBlankNode(new RDFDataset.BlankNode(id), bnodePrefix);
+		return new JsonLdBlankNode.JsonLdBlankNodeImpl(new RDFDataset.BlankNode(id), bnodePrefix);
 	}
 	
 	@Override
-	public BlankNode createBlankNode(String name) {
+	public JsonLdBlankNode createBlankNode(String name) {
 		String id = "_:" + name;
 		// TODO: Check if name is valid JSON-LD BlankNode identifier
-		return new JsonLdBlankNode(new RDFDataset.BlankNode(id), bnodePrefix);
+		return new JsonLdBlankNode.JsonLdBlankNodeImpl(new RDFDataset.BlankNode(id), bnodePrefix);
 	}
 	
 	@Override
-	public Triple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		return new JsonLdTriple(asJsonLdQuad(subject, predicate, object), bnodePrefix);
+	public JsonLdTriple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+		return new JsonLdTriple.JsonLdTripleImpl(asJsonLdQuad(subject, predicate, object), bnodePrefix);
 	}
 	
 	@Override
-	public Quad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
+	public JsonLdQuad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
 			throws IllegalArgumentException, UnsupportedOperationException {
-		return new JsonLdQuad(asJsonLdQuad(graphName, subject, predicate, object), bnodePrefix);
+		return new JsonLdQuad.JsonLdQuadImpl(asJsonLdQuad(graphName, subject, predicate, object), bnodePrefix);
 	}
 	
 	@Override
-	public Literal createLiteral(String literal) {		
-		return new JsonLdLiteral(new RDFDataset.Literal(literal, null, null));
+	public JsonLdLiteral createLiteral(String literal) {		
+		return new JsonLdLiteral.JsonLdLiteralImpl(new RDFDataset.Literal(literal, null, null));
 	}
 	@Override
-	public Literal createLiteral(String literal, IRI dataType) {
-		return new JsonLdLiteral(new RDFDataset.Literal(literal, dataType.getIRIString(), null));	}
+	public JsonLdLiteral createLiteral(String literal, IRI dataType) {
+		return new JsonLdLiteral.JsonLdLiteralImpl(new RDFDataset.Literal(literal, dataType.getIRIString(), null));	}
 	@Override
-	public Literal createLiteral(String literal, String language) {
-		return new JsonLdLiteral(new RDFDataset.Literal(literal, Types.RDF_LANGSTRING.getIRIString(), language));		
+	public JsonLdLiteral createLiteral(String literal, String language) {
+		return new JsonLdLiteral.JsonLdLiteralImpl(new RDFDataset.Literal(literal, Types.RDF_LANGSTRING.getIRIString(), language));		
 	}
 
 
@@ -131,7 +129,7 @@ final class JsonLdRDFTermFactory implements RDFTermFactory {
 		return new RDFDataset.Quad(asJsonLdNode(subject), asJsonLdNode(predicate), asJsonLdNode(object), graph);
 	}
 	
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public RDFDataset.Quad asJsonLdQuad(TripleLike tripleOrQuad) {
 		RDFTerm g = null;	
 		if (tripleOrQuad instanceof QuadLike) {
@@ -141,14 +139,14 @@ final class JsonLdRDFTermFactory implements RDFTermFactory {
 		return asJsonLdQuad(g, tripleOrQuad.getSubject(), tripleOrQuad.getPredicate(), tripleOrQuad.getObject());
 	}
 	
-	RDFTerm asTerm(final Node node, String blankNodePrefix) {	
+	JsonLdTerm asTerm(final Node node, String blankNodePrefix) {	
 		if (node == null) {
 			return null; // e.g. default graph
 		}
 		if (node.isIRI()) {
-			return new JsonLdIRI(node);
+			return new JsonLdIRI.JsonLdIRIImpl(node);
 		} else if (node.isBlankNode()) {
-			return new JsonLdBlankNode(node, blankNodePrefix);
+			return new JsonLdBlankNode.JsonLdBlankNodeImpl(node, blankNodePrefix);
 		} else if (node.isLiteral()) {
 			// TODO: Our own JsonLdLiteral
 			if (node.getLanguage() != null) {
