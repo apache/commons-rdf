@@ -26,12 +26,14 @@ import org.apache.commons.rdf.jena.impl.JenaFactory;
 
 public class TestBlankNodeJena extends AbstractBlankNodeTest {
 
-	
+	/** 
+	 * Fixed salt for the purpose of this test.
+	 */
     private static final UUID SALT = UUID.fromString("ccfde817-55b8-4a5f-bc2d-6bfd8eaa41ce");
 
 	@Override
     protected BlankNode getBlankNode() {
-        return JenaFactory.createBlankNode() ;
+        return JenaFactory.createBlankNode(SALT) ;
     }
     
     @Override
