@@ -24,9 +24,12 @@ import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Literal;
+import org.apache.commons.rdf.api.Quad;
+import org.apache.commons.rdf.api.QuadLike;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.RDFTermFactory;
 import org.apache.commons.rdf.api.Triple;
+import org.apache.commons.rdf.api.TripleLike;
 import org.apache.commons.rdf.simple.Types;
 
 import com.github.jsonldjava.core.RDFDataset;
@@ -74,6 +77,12 @@ final class JsonLdRDFTermFactory implements RDFTermFactory {
 	}
 	
 	@Override
+	public Quad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
+			throws IllegalArgumentException, UnsupportedOperationException {
+		return new JsonLdQuad(asJsonLdQuad(graphName, subject, predicate, object), bnodePrefix);
+	}
+	
+	@Override
 	public Literal createLiteral(String literal) {		
 		return new JsonLdLiteral(new RDFDataset.Literal(literal, null, null));
 	}
@@ -113,22 +122,29 @@ final class JsonLdRDFTermFactory implements RDFTermFactory {
 	}
 	
 
-	public RDFDataset.Quad asJsonLdQuad(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+	public RDFDataset.Quad asJsonLdQuad(RDFTerm subject, RDFTerm predicate, RDFTerm object) {
+		return asJsonLdQuad(null, subject, predicate, object);
+	}
+
+	public RDFDataset.Quad asJsonLdQuad(RDFTerm graphName, RDFTerm subject, RDFTerm predicate, RDFTerm object) {
 		String graph = null;
-		// TODO: Add Quad to commons-rdf
-//		if (triple instanceof Quad) {
-//			String graph = triple.getGraph().getIRIString();
-//		}
 		return new RDFDataset.Quad(asJsonLdNode(subject), asJsonLdNode(predicate), asJsonLdNode(object), graph);
 	}
-
-
 	
-	public RDFDataset.Quad asJsonLdQuad(Triple triple) {
-		return asJsonLdQuad(triple.getSubject(), triple.getPredicate(), triple.getObject());
+	@SuppressWarnings("rawtypes")
+	public RDFDataset.Quad asJsonLdQuad(TripleLike tripleOrQuad) {
+		RDFTerm g = null;	
+		if (tripleOrQuad instanceof QuadLike) {
+			QuadLike quadLike = (QuadLike) tripleOrQuad;
+			g = (RDFTerm) quadLike.getGraphName().orElse(null);
+		}		
+		return asJsonLdQuad(g, tripleOrQuad.getSubject(), tripleOrQuad.getPredicate(), tripleOrQuad.getObject());
 	}
-
-	RDFTerm asTerm(final Node node, String blankNodePrefix) {		
+	
+	RDFTerm asTerm(final Node node, String blankNodePrefix) {	
+		if (node == null) {
+			return null; // e.g. default graph
+		}
 		if (node.isIRI()) {
 			return new JsonLdIRI(node);
 		} else if (node.isBlankNode()) {
