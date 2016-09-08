@@ -18,46 +18,19 @@
 package org.apache.commons.rdf.jsonldjava;
 
 import java.util.Objects;
-import java.util.Optional;
 
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFTerm;
 
-final class JsonLdQuad implements org.apache.commons.rdf.api.Quad {
-	private final com.github.jsonldjava.core.RDFDataset.Quad quad;
-	private String blankNodePrefix;
-
-	private static JsonLdRDFTermFactory rdfTermFactory = new JsonLdRDFTermFactory();
+final class JsonLdQuad	extends JsonLdQuadLike<BlankNodeOrIRI,IRI,RDFTerm,BlankNodeOrIRI> 
+	implements org.apache.commons.rdf.api.Quad {
 	
 	JsonLdQuad(com.github.jsonldjava.core.RDFDataset.Quad quad, String blankNodePrefix) {
-		this.quad = quad;
-		this.blankNodePrefix = blankNodePrefix;			
+		super(quad, blankNodePrefix);			
 	}
 
-	@Override
-	public BlankNodeOrIRI getSubject() {
-		return (BlankNodeOrIRI) rdfTermFactory.asTerm(quad.getSubject(), blankNodePrefix);
-	}
-
-	@Override
-	public IRI getPredicate() {
-		return (IRI) rdfTermFactory.asTerm(quad.getPredicate(), blankNodePrefix);
-	}
-
-	@Override
-	public RDFTerm getObject() {
-		return rdfTermFactory.asTerm(quad.getObject(), blankNodePrefix);
-	}
-
-	@Override
-	public Optional<BlankNodeOrIRI> getGraphName() {
-		BlankNodeOrIRI g = (BlankNodeOrIRI) rdfTermFactory.asTerm(quad.getGraph(), 
-				blankNodePrefix);
-		return Optional.ofNullable(g);
-	}
-	
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) {

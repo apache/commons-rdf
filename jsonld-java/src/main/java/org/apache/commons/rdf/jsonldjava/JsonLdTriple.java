@@ -26,30 +26,11 @@ import org.apache.commons.rdf.api.Triple;
 
 import com.github.jsonldjava.core.RDFDataset.Quad;
 
-final class JsonLdTriple implements Triple {
-	private final Quad quad;
-	private String blankNodePrefix;
-
-	private static JsonLdRDFTermFactory rdfTermFactory = new JsonLdRDFTermFactory();
+final class JsonLdTriple extends JsonLdQuadLike<BlankNodeOrIRI, IRI, RDFTerm, RDFTerm>
+	implements Triple {
 	
 	JsonLdTriple(Quad quad, String blankNodePrefix) {
-		this.quad = quad;
-		this.blankNodePrefix = blankNodePrefix;			
-	}
-
-	@Override
-	public BlankNodeOrIRI getSubject() {
-		return (BlankNodeOrIRI) rdfTermFactory.asTerm(quad.getSubject(), blankNodePrefix);
-	}
-
-	@Override
-	public IRI getPredicate() {
-		return (IRI) rdfTermFactory.asTerm(quad.getPredicate(), blankNodePrefix);
-	}
-
-	@Override
-	public RDFTerm getObject() {
-		return rdfTermFactory.asTerm(quad.getObject(), blankNodePrefix);
+		super(quad, blankNodePrefix);
 	}
 
 	@Override
