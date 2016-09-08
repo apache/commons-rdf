@@ -24,28 +24,20 @@
     <parent>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-parent</artifactId>
-        <version>39</version>
+        <version>41</version>
     </parent>
 
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-rdf-parent</artifactId>
-    <version>0.2.0-incubating-SNAPSHOT</version>
+    <version>0.3.0-incubating-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Commons RDF</name>
     <description>Commons Java API for RDF 1.1</description>
 
-    <url>http://commonsrdf.incubator.apache.org</url>
+    <url>http://commonsrdf.incubator.apache.org/</url>
 
     <inceptionYear>2015</inceptionYear>
-
-    <licenses>
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -53,13 +45,15 @@
         <project.build.encoding>UTF-8</project.build.encoding>
         <commons.encoding>UTF-8</commons.encoding>
         <commons.componentid>rdf</commons.componentid>
-        <commons.release.version>0.1.0</commons.release.version>
+        <commons.release.version>0.2.0</commons.release.version>
         <commons.jira.id>COMMONSRDF</commons.jira.id>
         <commons.jira.pid>12316620</commons.jira.pid>
         <commons.site.path>rdf</commons.site.path>
         <commons.scmPubUrl>https://svn.apache.org/repos/infra/websites/production/commonsrdf/content/</commons.scmPubUrl>
         <commons.scmPubCheckoutDirectory>${project.build.directory}/site-content</commons.scmPubCheckoutDirectory>
-        <commons.javadoc.java.link>http://docs.oracle.com/javase/8/docs/api/</commons.javadoc.java.link>
+        <commons.javadoc.java.link>https://docs.oracle.com/javase/8/docs/api/</commons.javadoc.java.link>
+        <!-- upgrade from 0.8.0 -->
+         <commons.japicmp.version>0.9.0</commons.japicmp.version>
     </properties>
 
     <scm>
@@ -73,6 +67,10 @@
         <system>Jira</system>
         <url>https://issues.apache.org/jira/browse/COMMONSRDF</url>
     </issueManagement>
+    <ciManagement>
+      <system>jenkins</system>
+      <url>https://builds.apache.org/</url>
+    </ciManagement>
 
     <mailingLists>
         <mailingList>
@@ -80,7 +78,7 @@
             <post>dev@commonsrdf.incubator.apache.org</post>
             <subscribe>dev-subscribe@commonsrdf.incubator.apache.org</subscribe>
             <unsubscribe>dev-unsubscribe@commonsrdf.incubator.apache.org</unsubscribe>
-            <archive>http://mail-archives.apache.org/mod_mbox/commonsrdf-dev/</archive>
+            <archive>https://lists.apache.org/list.html?dev@commonsrdf.apache.org</archive>
             <otherArchives>
                 <otherArchive>http://markmail.org/search/?q=list%3Aorg.apache.commonsrdf.dev</otherArchive>
             </otherArchives>
@@ -90,7 +88,7 @@
             <post>commits@commonsrdf.incubator.apache.org</post>
             <subscribe>commits-subscribe@commonsrdf.incubator.apache.org</subscribe>
             <unsubscribe>commits-unsubscribe@commonsrdf.incubator.apache.org</unsubscribe>
-            <archive>http://mail-archives.apache.org/mod_mbox/commonsrdf-commits/</archive>
+            <archive>https://lists.apache.org/list.html?commits@commonsrdf.apache.org</archive>
             <otherArchives>
                 <otherArchive>http://markmail.org/search/?q=list%3Aorg.apache.commonsrdf.commits</otherArchive>
             </otherArchives>
@@ -104,21 +102,10 @@
             <email>lewismc[at]apache[dot]org</email>
             <roles>
                 <role>Committer</role>
-                <role>PMC Member</role>
+                <role>PPMC Member</role>
                 <role>Champion</role>
             </roles>
             <timezone>+1</timezone>
-        </developer>
-        <developer>
-            <id>rvesse</id>
-            <name>Rob Vesse</name>
-            <email>rvesse[at]apache[dot]org</email>
-            <roles>
-                <role>Committer</role>
-                <role>PMC Member</role>
-                <role>Mentor</role>
-            </roles>
-            <timezone>+0</timezone>
         </developer>
         <developer>
             <id>johndament</id>
@@ -126,7 +113,7 @@
             <email>johndament[at]apache[dot]org</email>
             <roles>
                 <role>Committer</role>
-                <role>PMC Member</role>
+                <role>PPMC Member</role>
                 <role>Mentor</role>
             </roles>
             <timezone>+1</timezone>
@@ -137,7 +124,7 @@
             <email>ggregory[at]apache[dot]org</email>
             <roles>
                 <role>Committer</role>
-                <role>PMC Member</role>
+                <role>PPMC Member</role>
                 <role>Mentor</role>
             </roles>
             <timezone>+1</timezone>
@@ -149,39 +136,20 @@
             <url>http://www.wikier.org</url>
             <roles>
                 <role>Committer</role>
-                <role>PMC Member</role>
+                <role>PPMC Member</role>
             </roles>
             <timezone>+1</timezone>
-        </developer>
-        <developer>
-            <id>andy</id>
-            <name>Andy Seaborne</name>
-            <email>andy[at]apache[dot]org</email>
-            <roles>
-                <role>Committer</role>
-                <role>PMC Member</role>
-            </roles>
-            <timezone>+0</timezone>
         </developer>
         <developer>
             <id>stain</id>
             <name>Stian Soiland-Reyes</name>
             <email>stain[at]apache[dot]org</email>
+            <url>http://orcid.org/0000-0001-9842-9718</url>
             <roles>
                 <role>Committer</role>
-                <role>PMC Member</role>
+                <role>PPMC Member</role>
             </roles>
             <timezone>+0</timezone>
-        </developer>
-        <developer>
-            <id>reto</id>
-            <name>Reto Gmür</name>
-            <email>reto[at]apache[dot]org</email>
-            <roles>
-                <role>Committer</role>
-                <role>PMC Member</role>
-            </roles>
-            <timezone>+1</timezone>
         </developer>
         <developer>
             <id>enridaga</id>
@@ -189,7 +157,7 @@
             <email>enridaga[at]apache[dot]org</email>
             <roles>
                 <role>Committer</role>
-                <role>PMC Member</role>
+                <role>PPMC Member</role>
             </roles>
             <timezone>+0</timezone>
         </developer>
@@ -199,7 +167,7 @@
             <email>britter[at]apache[dot]org</email>
             <roles>
                 <role>Committer</role>
-                <role>PMC Member</role>
+                <role>PPMC Member</role>
                 <role>Apache Commons Representative</role>
             </roles>
             <timezone>+1</timezone>
@@ -210,7 +178,37 @@
         <contributor>
             <name>Peter Ansell</name>
             <email>ansell[at]apache[dot]org</email>
-            <url>http://github.com/ansell</url>
+            <url>https://github.com/ansell</url>
+            <roles>
+                <role>Emeritus Committer</role>
+                <role>Emeritus PPMC Member</role>
+            </roles>
+        </contributor>
+        <contributor>
+            <name>Reto Gmür</name>
+            <email>reto[at]apache[dot]org</email>
+            <roles>
+                <role>Emeritus Committer</role>
+                <role>Emeritus PPMC Member</role>
+            </roles>
+            <timezone>+1</timezone>
+        </contributor>
+        <contributor>
+            <name>Andy Seaborne</name>
+            <email>andy[at]apache[dot]org</email>
+            <roles>
+                <role>Emeritus Committer</role>
+                <role>Emeritus PPPMC Member</role>
+            </roles>
+            <timezone>+0</timezone>
+        </contributor>
+        <contributor>
+            <name>Rob Vesse</name>
+            <email>rvesse[at]apache[dot]org</email>
+            <roles>
+                <role>Emeritus Mentor</role>
+            </roles>
+            <timezone>+0</timezone>
         </contributor>
     </contributors>
 
@@ -232,7 +230,7 @@
     </dependencyManagement>
 
     <build>
-        <finalName>apache-commons-rdf</finalName>
+        <finalName>apache-commonsrdf-${project.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -265,7 +263,7 @@
                 <executions>
                     <execution>
                         <configuration>
-                            <descriptor>src/main/assembly/src.xml</descriptor>
+                            <descriptor>src/assembly/src.xml</descriptor>
                             <finalName>apache-commons-rdf-${project.version}</finalName>
                             <tarLongFileMode>gnu</tarLongFileMode>
                         </configuration>
@@ -281,26 +279,30 @@
                         <goals>
                             <goal>jar</goal>
                         </goals>
-                        <configuration>                        	
-                            <additionalparam>-Xdoclint:none</additionalparam>
-                        </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <additionalparam>-Xdoclint:none</additionalparam>
+                </configuration>
             </plugin>
+            <!--
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>                
+                <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
                     <encoding>${project.build.encoding}</encoding>
                 </configuration>
             </plugin>
+-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
                 <configuration>
-                    <useReleaseProfile>false</useReleaseProfile>
+                    <useReleaseProfile>true</useReleaseProfile>
+                    <!-- TODO: Use apache-parent's apache-release rather than common-parent's release? -->
+                    <releaseProfiles>release</releaseProfiles>
                     <goals>deploy</goals>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <localCheckout>true</localCheckout>
@@ -310,25 +312,41 @@
                     <connectionUrl>scm:git:file://`pwd`/.git</connectionUrl>
                 </configuration>
             </plugin>
-            <!-- Create code coverage reports and submit them to coveralls.io. -->
+            <!-- Create code coverage reports and submit them to coveralls.io.
+            https://coveralls.io/github/apache/incubator-commonsrdf
+            -->
             <plugin>
                 <groupId>org.eluder.coveralls</groupId>
                 <artifactId>coveralls-maven-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>4.2.0</version>
             </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.7.2.201409121644</version>
-                <executions>
-                    <execution>
-                        <id>prepare-agent</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jdepend-maven-plugin</artifactId>
+        <version>${commons.jdepend.version}</version>
+        <dependencies>
+            <!-- Forked jdepend https://github.com/nidi3/jdepend supports Java 8 -->
+            <dependency>
+              <groupId>guru.nidi</groupId>
+              <artifactId>jdepend</artifactId>
+              <version>2.9.5</version>
+            </dependency>
+        </dependencies>
+      </plugin>
+
+      <plugin>
+        <!-- Check if we broke compatibibility against previous release -->
+        <groupId>com.github.siom79.japicmp</groupId>
+        <artifactId>japicmp-maven-plugin</artifactId>
+        <version>${commons.japicmp.version}</version>
+        <configuration>
+          <parameter>
+            <!-- Tell japicmp about the -incubator suffix  -->
+            <oldVersionPattern>\d+\.\d+\.\d+\-incubating</oldVersionPattern>
+          </parameter>
+        </configuration>
+      </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
@@ -339,41 +357,20 @@
                         <version>1.6</version>
                     </dependency>
                 </dependencies>
+                <!--
                 <configuration>
-                    <siteDirectory>${basedir}/src/site</siteDirectory>
+                    <siteDirectory>${project.basedir}/src/site</siteDirectory>
                     <outputDirectory>${project.build.directory}/site</outputDirectory>
-                    <inputEncoding>${project.build.encoding}</inputEncoding>
-                    <outputEncoding>${project.build.encoding}</outputEncoding>
                     <showAvatarImages>false</showAvatarImages>
-                    <reportPlugins>
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-javadoc-plugin</artifactId>
-                            <configuration>
-                                <additionalparam>-Xdoclint:none</additionalparam>
-                            </configuration>
-                        </plugin>
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-project-info-reports-plugin</artifactId>
-                            <version>2.7</version> 
-                            <configuration>
-                                <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
-                            </configuration>
-                            <reports> 
-                                <report>project-team</report>
-                                <report>mailing-list</report>
-                                <report>scm</report>
-                            </reports>
-                        </plugin>
-                    </reportPlugins>
                 </configuration>
+              -->
             </plugin>
         </plugins>
         <pluginManagement>
             <plugins>
-                <!--This plugin's configuration is used to store Eclipse m2e settings 
+                <!--This plugin's configuration is used to store Eclipse m2e settings
                     only. It has no influence on the Maven build itself. -->
+
                 <plugin>
                     <groupId>org.eclipse.m2e</groupId>
                     <artifactId>lifecycle-mapping</artifactId>
@@ -381,11 +378,12 @@
                     <configuration>
                         <lifecycleMappingMetadata>
                             <pluginExecutions>
+                              <!-- No longer needed?
                                 <pluginExecution>
                                     <pluginExecutionFilter>
                                         <groupId>org.jacoco</groupId>
                                         <artifactId>jacoco-maven-plugin</artifactId>
-                                        <versionRange>[0.7.2.201409121644,)</versionRange>
+                                        <versionRange>[${commons.jacoco.version},)</versionRange>
                                         <goals>
                                             <goal>prepare-agent</goal>
                                         </goals>
@@ -394,6 +392,7 @@
                                         <ignore />
                                     </action>
                                 </pluginExecution>
+                              -->
                                 <pluginExecution>
                                     <pluginExecutionFilter>
                                         <groupId>org.apache.maven.plugins</groupId>
@@ -424,6 +423,8 @@
                         </lifecycleMappingMetadata>
                     </configuration>
                 </plugin>
+
+                <!--
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>animal-sniffer-maven-plugin</artifactId>
@@ -431,7 +432,7 @@
                     <configuration>
                         <skip>true</skip>
                     </configuration>
-                </plugin>
+                </plugin>-->
                 <plugin>
                     <groupId>org.apache.rat</groupId>
                     <artifactId>apache-rat-plugin</artifactId>
@@ -443,12 +444,104 @@
                             <exclude>examples/.settings/**</exclude>
                             <exclude>examples/.project</exclude>
                             <exclude>examples/.classpath</exclude>
+                            <!-- ServiceLoader file -->
+                            <exclude>**/META-INF/services/*</exclude>
+                            <!-- Duplicates of NOTICE and LICENSE -->
+                            <exclude>**/src/main/resources/NOTICE</exclude>
+                            <exclude>**/src/main/resources/LICENSE</exclude>
                         </excludes>
                     </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
     </build>
+    <reporting>
+
+      <plugins>
+        <plugin>
+             <groupId>org.apache.maven.plugins</groupId>
+             <artifactId>maven-javadoc-plugin</artifactId>
+             <configuration>
+                 <additionalparam>-Xdoclint:none</additionalparam>
+             </configuration>
+             <reportSets>
+               <reportSet><!-- by default, id = "default" -->
+                 <reports><!-- select non-aggregate reports -->
+                   <report>javadoc</report>
+                   <report>test-javadoc</report>
+                 </reports>
+               </reportSet>
+               <reportSet><!-- aggregate reportSet, to define in poms having modules -->
+                 <id>aggregate</id>
+                 <inherited>false</inherited><!-- don't run aggregate in child modules -->
+                 <reports>
+                   <report>aggregate</report>
+                 </reports>
+               </reportSet>
+             </reportSets>
+         </plugin>
+  <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-checkstyle-plugin</artifactId>
+    <version>${checkstyle.plugin.version}</version>
+        <configuration>
+          <configLocation>${project.basedir}/src/conf/checkstyle.xml</configLocation>
+          <!-- Needed to define config_loc -->
+          <propertyExpansion>config_loc=${project.basedir}</propertyExpansion>
+          <enableRulesSummary>false</enableRulesSummary>
+        </configuration>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>checkstyle-aggregate</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+  </plugin>
+
+<plugin>
+  <artifactId>maven-pmd-plugin</artifactId>
+          <version>3.6</version>
+          <configuration>
+            <targetJdk>${maven.compiler.target}</targetJdk>
+            <linkXref>true</linkXref>
+          </configuration>
+          <reportSets>
+            <reportSet>
+              <id>pmd-report</id>
+              <reports>
+                <report>pmd</report>
+              </reports>
+            </reportSet>
+            <reportSet>
+              <id>pmd-aggregate</id>
+              <inherited>false</inherited>
+              <reports>
+                <report>pmd</report>
+              </reports>
+              <configuration>
+                <aggregate>true</aggregate>
+              </configuration>
+            </reportSet>
+          </reportSets>
+        </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>findbugs-maven-plugin</artifactId>
+        <version>${commons.findbugs.version}</version>
+        <configuration>
+          <threshold>Normal</threshold>
+          <effort>Default</effort>
+          <excludeFilterFile>src/conf/findbugs-exclude-filter.xml</excludeFilterFile>
+          <fork>true</fork>
+          <jvmArgs>-Duser.language=en</jvmArgs>
+        </configuration>
+      </plugin>
+
+</plugins>
+
+    </reporting>
 
     <profiles>
         <profile>
@@ -456,65 +549,60 @@
             <!-- extends the release profile from commons -->
             <build>
                 <plugins>
+                  <!-- Generate convenience *.md5 *.sha1 files for dist puropses -->
+                  <plugin>
+                      <groupId>org.apache.maven.plugins</groupId>
+                      <artifactId>maven-antrun-plugin</artifactId>
+                      <executions>
+                          <execution>
+                              <id>default-cli</id>
+                              <goals>
+                                  <goal>run</goal>
+                              </goals>
+                              <phase>package</phase>
+                              <configuration>
+                                  <tasks>
+                                      <checksum algorithm="MD5" fileext=".md5">
+                                          <fileset dir="${project.build.directory}">
+                                              <include name="*.zip" />
+                                              <include name="*.tar.gz" />
+                                          </fileset>
+                                      </checksum>
+                                      <checksum algorithm="SHA1" fileext=".sha1">
+                                          <fileset dir="${project.build.directory}">
+                                              <include name="*.zip" />
+                                              <include name="*.tar.gz" />
+                                          </fileset>
+                                      </checksum>
+                                  </tasks>
+                              </configuration>
+                          </execution>
+                      </executions>
+                      <dependencies>
+                          <dependency>
+                              <groupId>org.apache.ant</groupId>
+                              <artifactId>ant-nodeps</artifactId>
+                              <version>1.8.1</version>
+                          </dependency>
+                      </dependencies>
+                  </plugin>
+
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                                <configuration>
-                                    <excludes>
-                                        <exclude>**/*.asc</exclude>
-                                        <exclude>**/*.md5</exclude>
-                                        <exclude>**/*.sha1</exclude>
-                                    </excludes>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-antrun-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>default-cli</id>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                                <phase>package</phase>
-                                <configuration>
-                                    <tasks>
-                                        <checksum algorithm="MD5" fileext=".md5">
-                                            <fileset dir="${project.build.directory}">
-                                                <include name="*.zip" />
-                                                <include name="*.tar.gz" />
-                                            </fileset>
-                                        </checksum>
-                                        <checksum algorithm="SHA1" fileext=".sha1">
-                                            <fileset dir="${project.build.directory}">
-                                                <include name="*.zip" />
-                                                <include name="*.tar.gz" />
-                                            </fileset>
-                                        </checksum>
-                                    </tasks>
-                                </configuration>
-                            </execution>
-                        </executions>
-                        <dependencies>
-                            <dependency>
-                                <groupId>org.apache.ant</groupId>
-                                <artifactId>ant-nodeps</artifactId>
-                                <version>1.8.1</version>
-                            </dependency>
-                        </dependencies>
+                        <configuration>
+                            <excludes>
+                                <exclude>**/*.asc</exclude>
+                                <exclude>**/*.md5</exclude>
+                                <exclude>**/*.sha1</exclude>
+                            </excludes>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
         </profile>
     </profiles>
+
+
 
 </project>

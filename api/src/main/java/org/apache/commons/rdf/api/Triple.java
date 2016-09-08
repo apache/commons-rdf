@@ -25,10 +25,12 @@ import java.util.Objects;
  * >RDF-1.1 Concepts and Abstract Syntax</a>, a W3C Recommendation published on
  * 25 February 2014.<br>
  *
+ * @see Quad 
+ * @see RDFTermFactory#createTriple(BlankNodeOrIRI,IRI,RDFTerm)
  * @see <a href= "http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-triple" >RDF-1.1
  * Triple</a>
  */
-public interface Triple {
+public interface Triple extends TripleLike<BlankNodeOrIRI, IRI, RDFTerm> {
 
     /**
      * The subject of this triple, which may be either a {@link BlankNode} or an

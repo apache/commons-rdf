@@ -24,7 +24,7 @@
     <parent>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-rdf-parent</artifactId>
-        <version>0.2.0-incubating-SNAPSHOT</version>
+        <version>0.3.0-incubating-SNAPSHOT</version>
     </parent>
 
     <artifactId>commons-rdf-api</artifactId>
@@ -47,10 +47,9 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <executions>
                   <execution>
-                      <id>jar-and-test-jar</id>
-                      <!-- Expose abstract test classes -->
+                      <id>test-jar</id>
+                      <!-- Also expose abstract test classes -->
                       <goals>
-                          <goal>jar</goal>
                           <goal>test-jar</goal>
                         </goals>
                     </execution>
