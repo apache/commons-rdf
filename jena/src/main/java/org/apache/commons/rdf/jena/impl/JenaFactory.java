@@ -37,19 +37,29 @@ import org.apache.commons.rdf.jena.JenaLiteral;
 import org.apache.commons.rdf.jena.JenaQuad;
 import org.apache.commons.rdf.jena.JenaQuadLike;
 import org.apache.commons.rdf.jena.JenaRDFTerm;
+import org.apache.commons.rdf.jena.JenaRDFTermFactory;
 import org.apache.commons.rdf.jena.JenaTriple;
 import org.apache.commons.rdf.jena.JenaTripleLike;
 import org.apache.commons.rdf.jena.JenaVariable;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.NodeFactory;
+import org.apache.jena.rdf.model.Model;
 import org.apache.jena.sparql.core.DatasetGraph;
 import org.apache.jena.sparql.core.DatasetGraphFactory;
 import org.apache.jena.sparql.graph.GraphFactory;
 
+/**
+ * Construct Jena implementations of Commons RDF.
+ * <p>
+ * This class is primarily an internal helper class, users should instead use
+ * {@link JenaRDFTermFactory}.
+ * <p>
+ * For the purpose of blank node identity, some of 
+ * these methods require a {@link UUID} to use as a salt.
+ * See {@link BlankNode#uniqueReference()} for details.
+ * 
+ */
 public class JenaFactory {
-	public static BlankNode createBlankNode() {
-		return new BlankNodeImpl(NodeFactory.createBlankNode(), UUID.randomUUID());
-	}
 
 	public static JenaBlankNode createBlankNode(String id, UUID salt) {
 		return new BlankNodeImpl(NodeFactory.createBlankNode(id), salt);
@@ -58,19 +68,10 @@ public class JenaFactory {
 	public static JenaBlankNode createBlankNode(UUID salt) {
 		return new BlankNodeImpl(NodeFactory.createBlankNode(), salt);
 	}
-
-	public static Dataset createDataset() {
-		return createDataset(UUID.randomUUID());
-	}
-	
 	public static Dataset createDataset(UUID salt) {
 		DatasetGraph dg = DatasetGraphFactory.createGeneral();
 		// Or which createMethod() -- a bit confusing with lots of choice..
 		return new DatasetImpl(dg, salt);
-	}
-
-	public static JenaGraph createGraph() {
-		return createGraph(UUID.randomUUID());
 	}
 
 	public static JenaGraph createGraph(UUID salt) {
@@ -142,17 +143,13 @@ public class JenaFactory {
 		}
 		throw new IllegalArgumentException("Unrecognized node type: " + node);
 	}
-	
-	public static JenaGraph fromJena(org.apache.jena.graph.Graph graph) {
-		return new GraphImpl(graph, UUID.randomUUID());
-	}
 
 	public static JenaGraph fromJena(org.apache.jena.graph.Graph graph, UUID salt) {
 		return new GraphImpl(graph, salt);
 	}
 
-	public static JenaDataset fromJena(DatasetGraph datasetGraph) {
-		return new DatasetImpl(datasetGraph, UUID.randomUUID());
+	public static JenaGraph fromJena(Model model, UUID salt) {
+		return new GraphImpl(model, salt);
 	}
 
 	public static JenaDataset fromJena(DatasetGraph datasetGraph, UUID salt) {

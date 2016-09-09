@@ -52,39 +52,56 @@ import org.apache.jena.sparql.graph.GraphFactory;
  * <p>
  * This factory can also convert existing objects from/to Jena with methods like
  * {@link #fromJena(org.apache.jena.graph.Graph)} and {@link #toJena(Graph)}.
+ * <p>
+ * For the purpose of {@link BlankNode} identity, this factory will use an internal
+ * {@link UUID} as a salt. See {@link BlankNode#uniqueReference()} for details.
  * 
  * @see RDFTermFactory
  */
 public final class JenaRDFTermFactory implements RDFTermFactory {
 
-	private UUID salt;
+	private final UUID salt;
 
+	/**
+	 * Create a JenaRDFTermFactory.
+	 * <p>
+	 * This constructor will use a randomly generated {@link UUID} as a salt 
+	 * for the purposes of {@link BlankNode} identity, see {@link #getSalt()}.
+	 */
 	public JenaRDFTermFactory() {
 		this.salt = UUID.randomUUID();
 	}
 
+	/**
+	 * Create a JenaRDFTermFactory.
+	 * <p>
+	 * This constructor will use the specified {@link UUID} as a salt 
+	 * for the purposes of {@link BlankNode} identity.
+	 * 
+	 * @param salt {@link UUID} to use as salt
+	 */	
 	public JenaRDFTermFactory(UUID salt) {
 		this.salt = salt;
 	}
 
 	@Override
 	public JenaBlankNode createBlankNode() {
-		return JenaFactory.createBlankNode(salt);
+		return JenaFactory.createBlankNode(getSalt());
 	}
 
 	@Override
 	public JenaBlankNode createBlankNode(String name) {
-		return JenaFactory.createBlankNode(name, salt);
+		return JenaFactory.createBlankNode(name, getSalt());
 	}
 	
 	@Override
-	public Dataset createDataset() throws UnsupportedOperationException {
-		return JenaFactory.createDataset(salt);
+	public Dataset createDataset() {
+		return JenaFactory.createDataset(getSalt());
 	}
 
 	@Override
 	public JenaGraph createGraph() {
-		return JenaFactory.createGraph(salt);
+		return JenaFactory.createGraph(getSalt());
 	}
 
 	@Override
@@ -168,7 +185,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 *             if the node is not concrete.
 	 */
 	public JenaRDFTerm fromJena(Node node) throws ConversionException {
-		return JenaFactory.fromJena(node, salt);
+		return JenaFactory.fromJena(node, getSalt());
 	}
 
 	/**
@@ -259,7 +276,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 *             is a generalized triple
 	 */
 	public JenaTriple fromJena(org.apache.jena.graph.Triple triple) throws ConversionException {
-		return JenaFactory.fromJena(triple, salt);
+		return JenaFactory.fromJena(triple, getSalt());
 	}
 
 
@@ -318,7 +335,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 *             if any of the triple's nodes are not concrete
 	 */
 	public JenaTripleLike<RDFTerm, RDFTerm, RDFTerm> fromJenaGeneralized(org.apache.jena.graph.Triple triple) throws ConversionException {
-		return JenaFactory.fromJenaGeneralized(triple, salt);
+		return JenaFactory.fromJenaGeneralized(triple, getSalt());
 	}
 
 	/**
@@ -350,7 +367,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 *             if any of the quad nodes are not concrete
 	 */
 	public JenaQuadLike<RDFTerm, RDFTerm, RDFTerm, RDFTerm> fromJenaGeneralized(org.apache.jena.sparql.core.Quad quad) throws ConversionException {
-		return JenaFactory.fromJenaGeneralized(quad, salt);
+		return JenaFactory.fromJenaGeneralized(quad, getSalt());
 	}
 	
 	
@@ -428,7 +445,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * @return Adapted quad
 	 */	
 	public Quad fromJena(org.apache.jena.sparql.core.Quad quad) {
-		return JenaFactory.fromJena(quad, salt);
+		return JenaFactory.fromJena(quad, getSalt());
 	}
 	
 	/**
@@ -464,9 +481,25 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 
 	 */
 	public JenaGraph fromJena(org.apache.jena.graph.Graph graph) {
-		return JenaFactory.fromJena(graph, salt);
+		return JenaFactory.fromJena(graph, getSalt());
 	}
 
+	/**
+	 * Adapt an existing Jena {@link org.apache.jena.rdf.model.Model} to CommonsRDF {@link Graph}. 
+	 * <p>
+	 * This does not ake a copy, changes to the CommonsRDF Graph are reflected in the jena
+	 * graph, which is accessible from {@link JenaGraph#asJenaGraph()}.
+	 * <p>
+	 * If the graph contains any {@link Node#isBlank()}, then any corresponding
+	 * {@link BlankNode} will use a {@link UUID} salt from this 
+	 * {@link JenaRDFTermFactory} instance
+	 * in combination with {@link Node#getBlankNodeId()} 
+	 * for the purpose of its {@link BlankNode#uniqueReference()}.
+
+	 */
+	public JenaGraph fromJena(org.apache.jena.rdf.model.Model model) {
+		return JenaFactory.fromJena(model, getSalt());
+	}	
 
 	/**
 	 * Adapt an existing Jena {@link org.apache.jena.graph.Graph} to CommonsRDF {@link Graph}. 
@@ -505,7 +538,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * @return Adapted dataset 
 	 */
 	public JenaDataset fromJena(DatasetGraph datasetGraph) {
-		return JenaFactory.fromJena(datasetGraph, salt);
+		return JenaFactory.fromJena(datasetGraph, getSalt());
 	}	
 	
 	/**
@@ -525,7 +558,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * @return Adapted dataset 
 	 */
 	public JenaDataset fromJena(org.apache.jena.query.Dataset datasetGraph) {
-		return JenaFactory.fromJena(datasetGraph.asDatasetGraph(), salt);
+		return JenaFactory.fromJena(datasetGraph.asDatasetGraph(), getSalt());
 	}		
 	
 	/**
@@ -565,7 +598,6 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 		});
 		return g;
 	}
-
 
 	public static Quad fromJena(RDFTermFactory factory, org.apache.jena.sparql.core.Quad quad) {
 		if (factory instanceof JenaRDFTermFactory) {
@@ -719,6 +751,18 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	private static void validateLang(String languageTag) {
 		if (languageTag.contains(" "))
 			throw new IllegalArgumentException("Invalid language tag: " + languageTag);
+	}
+
+	/**
+	 * Return the {@link UUID} salt.
+	 * <p>
+	 * The salt is used for the purposes of {@link BlankNode} identity, see
+	 * {@link BlankNode#uniqueReference()} for details.
+	 * 
+	 * @return The {@link UUID} used as salt
+	 */
+	public UUID getSalt() {
+		return salt;
 	}
 
 }

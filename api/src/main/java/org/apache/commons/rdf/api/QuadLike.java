@@ -25,13 +25,25 @@ import java.util.Optional;
  * A QuadLike statement has at least a {@link #getSubject()},
  * {@link #getPredicate()}, {@link #getObject()} and {@link #getGraphName()},
  * but unlike a {@link Quad} does not have a formalised
- * {@link Quad#equals(Object)} semantics, and can allow generalised quads (e.g.
- * a {@link BlankNode} as predicate).
+ * {@link Quad#equals(Object)} 
+ * or {@link Quad#hashCode()} 
+ * semantics. This interface can also be used for <em>generalised quads</em>
+ * (e.g. a {@link BlankNode} as predicate).
  * <p>
- * Implementations should specialise which {@link RDFTerm} subclasses they
- * return for subject {@link S}, predicate {@link P}, object {@link O} and graph
- * name {@link G}.
- * <p>
+ * Implementations should specialise which specific {@link RDFTerm} types they
+ * return for {@link #getSubject()}, {@link #getPredicate()},
+ * {@link #getObject()} and {@link #getGraphName()}.
+ *
+ * @param <S>
+ *            The type of subjects in the statements, typically
+ *            {@link BlankNodeOrIRI}
+ * @param <P>
+ *            The type of predicates in the statements, typically {@link IRI}
+ * @param <O>
+ *            The type of objects in the statements, typically {@link RDFTerm}
+ * @param <G>
+ *            The type of graph names in the statements, typically
+ *            {@link BlankNodeOrIRI}
  * 
  * @since 0.3.0-incubating
  * @see Quad

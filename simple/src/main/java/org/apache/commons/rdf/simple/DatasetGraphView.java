@@ -41,7 +41,7 @@ import org.apache.commons.rdf.api.Triple;
  * triples will add them to the <em>default graph</em>, while removing triples
  * will remove from all graphs.</dd>
 * 
- * <dt>{@link #DatasetGraphView(Dataset, IRI)}</dt>
+ * <dt>{@link #DatasetGraphView(Dataset, BlankNodeOrIRI)}</dt>
  * <dd>Expose a particular graph of the Dataset, either named by an {@link IRI}, a
  * {@link BlankNode}, or  <code>null</code> for the <em>default graph</em>.</dd>
  * </dl>
