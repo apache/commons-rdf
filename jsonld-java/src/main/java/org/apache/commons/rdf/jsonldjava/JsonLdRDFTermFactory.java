@@ -17,29 +17,31 @@
  */
 package org.apache.commons.rdf.jsonldjava;
 
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 import org.apache.commons.rdf.api.BlankNode;
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
+import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.api.QuadLike;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.RDFTermFactory;
-import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.api.TripleLike;
-import org.apache.commons.rdf.simple.Types;
 import org.apache.commons.rdf.jsonldjava.JsonLdBlankNode.JsonLdBlankNodeImpl;
-import org.apache.commons.rdf.jsonldjava.JsonLdTriple.JsonLdTripleImpl;
-import org.apache.commons.rdf.jsonldjava.JsonLdQuad.JsonLdQuadImpl;
 import org.apache.commons.rdf.jsonldjava.JsonLdLiteral.JsonLdLiteralImpl;
+import org.apache.commons.rdf.jsonldjava.JsonLdQuad.JsonLdQuadImpl;
+import org.apache.commons.rdf.jsonldjava.JsonLdTriple.JsonLdTripleImpl;
+import org.apache.commons.rdf.simple.Types;
 
 import com.github.jsonldjava.core.RDFDataset;
 import com.github.jsonldjava.core.RDFDataset.Node;
 
-
 public final class JsonLdRDFTermFactory implements RDFTermFactory {
+	
+	private final String bnodePrefix;
 	
 	public JsonLdRDFTermFactory() {
 		// An "outside Graph" bnodePrefix
@@ -50,11 +52,14 @@ public final class JsonLdRDFTermFactory implements RDFTermFactory {
 		this.bnodePrefix = bnodePrefix;
 	}
 	
-	String bnodePrefix;
-	
 	@Override
 	public Graph createGraph() throws UnsupportedOperationException {
-		return new JsonLdGraph();
+		return new JsonLdGraph(bnodePrefix);
+	}
+	
+	@Override
+	public Dataset createDataset() throws UnsupportedOperationException {
+		return new JsonLdDataset(bnodePrefix);
 	}
 	
 	@Override
@@ -71,7 +76,7 @@ public final class JsonLdRDFTermFactory implements RDFTermFactory {
 	@Override
 	public JsonLdBlankNode createBlankNode(String name) {
 		String id = "_:" + name;
-		// TODO: Check if name is valid JSON-LD BlankNode identifier
+		// TODO: Check if name is valid JSON-LD BlankNode identifier		
 		return new JsonLdBlankNodeImpl(new RDFDataset.BlankNode(id), bnodePrefix);
 	}
 	
@@ -80,10 +85,14 @@ public final class JsonLdRDFTermFactory implements RDFTermFactory {
 		return new JsonLdTripleImpl(asJsonLdQuad(subject, predicate, object), bnodePrefix);
 	}
 	
-	public Triple asTriple(final RDFDataset.Quad quad) {
+	public JsonLdTriple createTriple(final RDFDataset.Quad quad) {
 		return new JsonLdTripleImpl(quad, bnodePrefix);
 	}
 
+	public JsonLdQuad createQuad(final RDFDataset.Quad quad) {
+		return new JsonLdQuadImpl(quad, bnodePrefix);
+	}
+	
 	@Override
 	public JsonLdQuad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
 			throws IllegalArgumentException, UnsupportedOperationException {
@@ -91,17 +100,19 @@ public final class JsonLdRDFTermFactory implements RDFTermFactory {
 	}
 	
 	@Override
-	public JsonLdLiteral createLiteral(String literal) {		
+	public JsonLdLiteral createLiteral(String literal) {
 		return new JsonLdLiteralImpl(new RDFDataset.Literal(literal, null, null));
 	}
+
 	@Override
 	public JsonLdLiteral createLiteral(String literal, IRI dataType) {
-		return new JsonLdLiteralImpl(new RDFDataset.Literal(literal, dataType.getIRIString(), null));	}
-	@Override
-	public JsonLdLiteral createLiteral(String literal, String language) {
-		return new JsonLdLiteralImpl(new RDFDataset.Literal(literal, Types.RDF_LANGSTRING.getIRIString(), language));		
+		return new JsonLdLiteralImpl(new RDFDataset.Literal(literal, dataType.getIRIString(), null));
 	}
 
+	@Override
+	public JsonLdLiteral createLiteral(String literal, String language) {
+		return new JsonLdLiteralImpl(new RDFDataset.Literal(literal, Types.RDF_LANGSTRING.getIRIString(), language));
+	}
 
 	public Node asJsonLdNode(RDFTerm term) {
 		if (term instanceof JsonLdTerm) {
@@ -113,13 +124,16 @@ public final class JsonLdRDFTermFactory implements RDFTermFactory {
 		}
 		if (term instanceof BlankNode) {
 			
-			String uniqueReference = ((BlankNode)term).uniqueReference();
-			if (uniqueReference.startsWith(bnodePrefix)) {
-				// one of our own
-				// TODO: Retrieve the original BlankNode
-				return new RDFDataset.BlankNode(term.ntriplesString());
+			String ref = ((BlankNode)term).uniqueReference();
+			if (ref.startsWith(bnodePrefix)) {
+				// one of our own (but no longer a JsonLdBlankNode),
+				// we can recover the label after our unique prefix
+				return new RDFDataset.BlankNode(ref.replace(bnodePrefix, ""));
 			} 
-			return new RDFDataset.BlankNode( "_:" + uniqueReference );
+			// The "foreign" unique reference might not be a valid bnode string, 
+			// we'll convert to a UUID
+			UUID uuid = UUID.nameUUIDFromBytes(ref.getBytes(StandardCharsets.UTF_8));
+			return new RDFDataset.BlankNode( "_:" + uuid );
 		}
 		if (term instanceof Literal) {
 			Literal literal = (Literal) term;

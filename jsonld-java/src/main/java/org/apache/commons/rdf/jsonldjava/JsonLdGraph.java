@@ -19,195 +19,69 @@ package org.apache.commons.rdf.jsonldjava;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.commons.rdf.api.BlankNode;
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
-import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.api.RDFTerm;
-import org.apache.commons.rdf.api.Triple;
 
 import com.github.jsonldjava.core.RDFDataset;
-import com.github.jsonldjava.core.RDFDataset.Node;
-import com.github.jsonldjava.core.RDFDataset.Quad;
 
-public class JsonLdGraph implements Graph {
-	
-	/** 
-	 * Used by {@link #bnodePrefix()} to get a unique UUID per JVM run
-	 */
-	private static UUID SALT = UUID.randomUUID();
-	
-	/**
-	 * The underlying JSON-LD {@link RDFDataset}.
-	 */
-	private RDFDataset rdfDataSet;
+public class JsonLdGraph extends JsonLdGraphLike<org.apache.commons.rdf.api.Triple> implements Graph {
 
-	/**
-	 * If true, include all Quad statements as Triples. If false, 
-	 * only Quads in the default graph (<code>null</code>) are
-	 * included.
-	 */
-	private final boolean unionGraph;
+	private final Optional<BlankNodeOrIRI> graphName;
 
-	/**
-	 * Prefix to use in blank node identifiers
-	 */
-	private final String bnodePrefix;
-
-	private JsonLdRDFTermFactory factory;
-	
-	public JsonLdGraph() {
-		this(new RDFDataset(), false);		
+	JsonLdGraph(String bnodePrefix) {
+		super(bnodePrefix);
+		this.graphName = Optional.empty();
 	}
 	
-	public JsonLdGraph(RDFDataset rdfDataset) {
-		this(rdfDataset, false);
+	public JsonLdGraph(RDFDataset rdfDataSet) {
+		super(rdfDataSet);
+		this.graphName = Optional.empty();
 	}
-
-	public JsonLdGraph(RDFDataset rdfDataset, boolean unionGraph) {
-		this.rdfDataSet = rdfDataset;	
-		this.unionGraph = unionGraph;
-		this.bnodePrefix = "urn:uuid:" + SALT + "#" +  "g"+ System.identityHashCode(rdfDataSet);
-		this.factory = new JsonLdRDFTermFactory(bnodePrefix);
-	}
-
 	
-	public RDFDataset getRdfDataSet() {
-		return rdfDataSet;
+	JsonLdGraph(RDFDataset rdfDataSet, Optional<BlankNodeOrIRI> graphName, String bnodePrefix) {
+		super(rdfDataSet, bnodePrefix);
+		this.graphName = graphName;
 	}
 
 
 	@Override
 	public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		String subjectStr;
-		if (subject instanceof BlankNode) { 
-			subjectStr = subject.ntriplesString();
-		} else if (subject instanceof IRI){
-			subjectStr = ((IRI)subject).getIRIString();
-		} else { 
-			throw new IllegalStateException("Subject was neither IRI or BlankNode: " + subject);
-		}
-		
-		String predicateStr = predicate.getIRIString();
-		
-		if (object instanceof Literal) {
-			Literal literal = (Literal) object;
-			rdfDataSet.addTriple(subjectStr, predicateStr, literal.getLexicalForm(), literal.getDatatype().getIRIString(), literal.getLanguageTag().orElse(null));			
-		} else if (object instanceof BlankNode) {
-			rdfDataSet.addTriple(subjectStr, predicateStr, object.ntriplesString());
-		} else if (object instanceof IRI) { 
-			rdfDataSet.addTriple(subjectStr, predicateStr, ((IRI)object).getIRIString());
-		} else { 
-			throw new IllegalStateException("Object was neither IRI, BlankNode nor Literal: " + object);
-		}				
+		super.add(graphName.orElse(null), subject, predicate, object);
 	}
 
-	@Override
-	public void add(Triple triple) {
-		// Quad q = asJsonLdQuad(triple);
-		// rdfDataSet.addQuad(q);
-		
-		add(triple.getSubject(), triple.getPredicate(), triple.getObject());
-	}
-
-	@Override
-	public void clear() {
-		if (unionGraph) {
-			// Delete all quads
-			rdfDataSet.clear();
-		} else {
-			// Only the @default quads removed
-			rdfDataSet.getQuads("@default").clear();
-		}
-	}
-	@Override
-	public void close() {
-		// Drop the memory reference, but don't clear it
-		rdfDataSet = null;			
-	}
-	
 	@Override
 	public boolean contains(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		return stream(subject, predicate, object).findAny().isPresent();
-	}
-
-	@Override
-	public boolean contains(Triple triple) {
-		return stream().anyMatch(Predicate.isEqual(triple));
-	}
-
-	@Override
-	public Stream<? extends Triple> stream() {
-		if (! unionGraph) {
-			return rdfDataSet.getQuads("@default").parallelStream().map(factory::asTriple);
-		}
-		return rdfDataSet.graphNames().parallelStream().map(rdfDataSet::getQuads).flatMap(List<Quad>::parallelStream).map(factory::asTriple);
-	}
-
-	@Override
-	public Stream<? extends Triple> stream(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		// RDFDataSet has no optimizations to help us, so we'll dispatch to filter()
-        return stream().filter(t -> {
-            if (subject != null && !t.getSubject().equals(subject)) {
-                return false;
-            }
-            if (predicate != null && !t.getPredicate().equals(predicate)) {
-                return false;
-            }
-            if (object != null && !t.getObject().equals(object)) {
-                return false;
-            }
-            return true;
-        });
-	}
-
-	@Override
-	public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {		
-		Predicate<? super Quad> filter = quadFilter(subject, predicate, object);
-		if (! unionGraph) {
-			rdfDataSet.getQuads("@default").removeIf(filter);
-		} else {
-			rdfDataSet.graphNames().parallelStream().map(rdfDataSet::getQuads).map(t -> t.removeIf(filter));
-		}
-	}
-
-	@Override
-	public void remove(Triple triple) {
-		remove(triple.getSubject(), triple.getPredicate(), triple.getObject());
-	}
-
-	@Override
-	public long size() {
-		if (! unionGraph) {
-			return rdfDataSet.getQuads("@default").size();
-		} else {
-			// Summarize graph.size() for all graphs
-			return rdfDataSet.graphNames().parallelStream().map(rdfDataSet::getQuads).collect(Collectors.summingLong(List::size));
-		}
+		return super.contains(graphName, subject, predicate, object);
 	}
 	
-	private Predicate<? super Quad> quadFilter(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		Optional<Node> subjectNode = Optional.ofNullable(subject).map(factory::asJsonLdNode);
-		Optional<Node> predicateNode = Optional.ofNullable(predicate).map(factory::asJsonLdNode);
-		Optional<Node> objectNode = Optional.ofNullable(object).map(factory::asJsonLdNode);
-		
-		return q -> {
-		    if (subjectNode.isPresent() && subjectNode.get().compareTo(q.getSubject()) != 0) {
-		        return false;
-		    }
-		    if (predicateNode.isPresent() && predicateNode.get().compareTo(q.getPredicate()) != 0) {	          
-		        return false;
-		    }
-		    if (objectNode.isPresent() && objectNode.get().compareTo(q.getObject()) != 0) {
-		        return false;
-		    }
-		    return true;			
-		};
+	@Override
+	public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+		super.remove(graphName, subject, predicate, object);
+	}
+
+	@Override
+	public Stream<JsonLdTriple> stream(BlankNodeOrIRI subject, IRI predicate,
+			RDFTerm object) {		
+		return filteredGraphs(graphName)
+				.flatMap(List::stream)
+				.filter(quadFilter(subject, predicate, object))
+				.map(factory::createTriple);
+	}
+
+	@Override
+	JsonLdTriple asTripleOrQuad(com.github.jsonldjava.core.RDFDataset.Quad jsonldQuad) {
+		return factory.createTriple(jsonldQuad);
+	}
+	
+	@Override
+	public long size() {
+		String g = graphName.map(this::asJsonLdString).orElse("@default");
+		return Optional.ofNullable(rdfDataSet.getQuads(g))
+				.map(List::size).orElse(0);
 	}
 }
+
