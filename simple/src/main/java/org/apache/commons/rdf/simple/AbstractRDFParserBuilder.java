@@ -33,7 +33,6 @@ import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFParserBuilder;
-import org.apache.commons.rdf.api.RDFParserBuilder.ParseResult;
 import org.apache.commons.rdf.api.RDFSyntax;
 import org.apache.commons.rdf.api.RDFTermFactory;
 
@@ -57,7 +56,7 @@ import org.apache.commons.rdf.api.RDFTermFactory;
  * asynchronous remote execution).
  */
 public abstract class AbstractRDFParserBuilder<T extends AbstractRDFParserBuilder<T>> 
-	implements RDFParserBuilder, Cloneable {
+	implements RDFParserBuilder, Cloneable {	
 	
 	public static final ThreadGroup threadGroup = new ThreadGroup("Commons RDF parsers");
 	private static final ExecutorService threadpool = Executors.newCachedThreadPool(r -> new Thread(threadGroup, r));
