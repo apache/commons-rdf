@@ -27,42 +27,49 @@
 		<version>0.3.0-incubating-SNAPSHOT</version>
 	</parent>
 	<artifactId>commons-rdf-integration-tests</artifactId>
-	<dependencies>
-	<dependency>
-		<groupId>${project.groupId}</groupId>
-		<artifactId>commons-rdf-api</artifactId>
-		<version>${project.version}</version>
-	</dependency>
-
-	<dependency>
-		<groupId>${project.groupId}</groupId>
-		<artifactId>commons-rdf-simple</artifactId>
-		<version>${project.version}</version>
-	</dependency>
-	<dependency>
-		<groupId>${project.groupId}</groupId>
-		<artifactId>commons-rdf-rdf4j</artifactId>
-		<version>${project.version}</version>
-	</dependency>
-	<dependency>
-		<groupId>${project.groupId}</groupId>
-		<artifactId>commons-rdf-jena</artifactId>
-		<version>${project.version}</version>
-	</dependency>
-	<dependency>
-		<groupId>${project.groupId}</groupId>
-		<artifactId>commons-rdf-api</artifactId>
-		<version>${project.version}</version>
-		<type>test-jar</type>
-		<scope>test</scope>
-	</dependency>	
-	<dependency>
-		<groupId>junit</groupId>
-		<artifactId>junit</artifactId>
-		<scope>test</scope>
-	</dependency>
-		
-</dependencies>
-	
 	<name>Commons RDF: Integration tests</name>
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>commons-rdf-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>commons-rdf-simple</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>commons-rdf-rdf4j</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>commons-rdf-jena</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<!-- NOTE: This might be quite version-sensitive (including transitives) 
+			as both rdf4j and jena depend on jsonld -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>commons-rdf-jsonld</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>commons-rdf-api</artifactId>
+			<version>${project.version}</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+
 </project>
