@@ -41,7 +41,7 @@ import com.github.jsonldjava.core.RDFDataset.Node;
 
 public final class JsonLdRDFTermFactory implements RDFTermFactory {
 
-	private final String bnodePrefix;
+	final String bnodePrefix;
 
 	public JsonLdRDFTermFactory() {
 		// An "outside Graph" bnodePrefix
