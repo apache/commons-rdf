@@ -61,25 +61,58 @@ which may be included in Commons RDF, specifically:
 * [Graph](apidocs/index.html?org/apache/commons/rdf/api/Graph.html): a graph,
   a set of RDF triples.
 * [Triple](apidocs/index.html?org/apache/commons/rdf/api/Triple.html): a
-  `(subject, predicate, object)` RDF triple.
-* [RDFTerm](apidocs/index.html?org/apache/commons/rdf/api/RDFTerm.html): a RDF 1.1
-  Term, where IRIs, literals and blank nodes are collectively known as RDF terms.
+  RDF triple with `getSubject()`, `getPredicate()`, `getObject()`.
+* [Dataset](apidocs/index.html?org/apache/commons/rdf/api/Dataset.html): a dataset,
+  of RDF quads (or if you like, a set of named graphs).
+* [Quad](apidocs/index.html?org/apache/commons/rdf/api/Quad.html): a
+  RDF quad with with `getGraphName()`, `getSubject()`, `getPredicate()`, `getObject()`.
+* [RDFTerm](apidocs/index.html?org/apache/commons/rdf/api/RDFTerm.html): any RDF 1.1
+  Term which can be part of a Triple or Quad.
+  IRIs, literals and blank nodes are collectively known as RDF terms.
 * [IRI](apidocs/index.html?org/apache/commons/rdf/api/IRI.html): an
-  Internationalized Resource Identifier.
+  Internationalized Resource Identifier (e.g. representing  `<http://example.com/>`)
 * [BlankNode](apidocs/index.html?org/apache/commons/rdf/api/BlankNode.html): a
-   RDF-1.1 Blank Node, where they are disjoint from IRIs and literals.
+   RDF-1.1 Blank Node, e.g. representing `_:b1`. Disjoint from IRIs and literals.
 * [BlankNodeOrIRI](apidocs/index.html?org/apache/commons/rdf/api/BlankNodeOrIRI.html):
   this interface represents the RDF Terms that may be used in the subject position
   of an RDF 1.1 `Triple`, including `BlankNode` and `IRI`.
-* [Literal](apidocs/index.html?org/apache/commons/rdf/api/Literal.html): a RDF-1.1 literal.
-* [RDFTermFactory](apidocs/index.html?org/apache/commons/rdf/api/RDFTermFactory.html):
-  factory for creating `RDFTerm` and `Graph` instances.
+* [Literal](apidocs/index.html?org/apache/commons/rdf/api/Literal.html): a RDF-1.1 literal, e.g.
+  representing `"Hello there"@en`.
 
 The design of the [API](apidocs/index.html?org/apache/commons/rdf/api/package-summary.html)
 follows the terminology as defined by [RDF 1.1 Concepts and Abstract Syntax](http://www.w3.org/TR/rdf11-concepts/),
 a W3C Recommendation published on 25 February 2014. The idea is that Commons RDF
-will provide a common library for RDF 1.1 that could be implemented by systems
-on the Java Virtual Machine, allowing the portability across different implementations.
+provide a common library for RDF 1.1 with multiple implementions for
+the Java Virtual Machine, allowing the portability across different
+Commons RDF implementations.
+
+
+Commons RDF is designed for compatibility between different
+[implementations](implementations.html), e.g. by defining
+strong equality and hash code semantics (e.g. for
+[triple](apidocs/org/apache/commons/rdf/api/Triple.html#equals-java.lang.Object-)
+and [literals](fapidocs/org/apache/commons/rdf/api/Literal.html#equals-java.lang.Object-) );
+this allows users of Commons RDF to "mix and match", for instance querying a `FooGraphImpl`
+and directly adding its `FooTripleImpl`s to a `BarGraphImpl` without any
+explicit convertion.
+
+To create such instances without hard-coding an implementation, one can use:
+
+* [RDFTermFactory](apidocs/index.html?org/apache/commons/rdf/api/RDFTermFactory.html):
+  factory interface for creating instances of the above types
+  (e.g. `LiteralImpl` and `GraphImpl`).
+
+
+The API also includes a couple of "upper" interfaces  which do not have
+the above equality semantics and bridge the graph/quad duality:
+
+* [TripleLike](apidocs/index.html?org/apache/commons/rdf/api/TripleLike.html):
+  common super-interface of `Triple` and `Quad` (also a generalised triple).
+* [QuadLike](apidocs/index.html?org/apache/commons/rdf/api/QuadLike.html):
+  a `TripleLike` that also has `getGraphName()` (a generalized quad)
+* [GraphLike](apidocs/index.html?org/apache/commons/rdf/api/GraphLike.html):
+  common super-interface of `Graph` and `Dataset`.
+
 
 See the the [user guide](userguide.html) for examples of how to interact with these interfaces.
 
@@ -98,9 +131,8 @@ where version `x.y.z` of `Simple` implements version `x.y` of
 the `API`; i.e., the version `z` are backwards-compatible patches of the
 implementation.
 
-External [implementations of the Commons RDF API](implementations.html) are
-being developed as part of their retrospective projects.
-[Contributions welcome!](contributing.html)
+[Implementations of the Commons RDF API](implementations.html) are
+being developed as additional modules. [Contributions welcome!](contributing.html)
 
 
 ## Contributing

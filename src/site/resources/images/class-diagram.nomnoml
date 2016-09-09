@@ -17,12 +17,43 @@
 // To render, see http://www.nomnoml.com
 
 #fill: #bbccdd; #aabbcc
-[<abstract>RDFTermFactory]--[<abstract>Graph]
-[RDFTermFactory]--[<abstract>Triple]
-[RDFTermFactory]--[<abstract>RDFTerm]
-[Graph]->[Triple]
-[Triple]->[RDFTerm]
-[RDFTerm]<:-[<abstract>Literal] 
-[RDFTerm]<:-[<abstract>BlankNodeOrIRI] 
-[BlankNodeOrIRI]<:-[<abstract>BlankNode]
-[BlankNodeOrIRI]<:-[<abstract>IRI]
+#title: class-diagram
+
+#.like: fill=#fff italics
+
+
+[<like>GraphLike]
+[<like>TripleLike]
+[<like>QuadLike]
+
+[<like>RDFTerm]
+[<like>BlankNodeOrIRI]
+
+[<abstract>Graph]
+[<abstract>Dataset]
+[<abstract>Triple]
+[<abstract>Quad]
+[<abstract>Graph]
+
+
+[<abstract>Literal]
+[<abstract>IRI]
+[<abstract>BlankNode]
+
+[GraphLike] -> 0..* [TripleLike]
+[GraphLike]<:-[Graph]
+[GraphLike]<:-[Dataset]
+[Graph] -> 0..* [Triple]
+[Dataset] -> 0..* [Quad]
+[Triple] -> 3 [RDFTerm]
+[Quad]->4 [RDFTerm]
+[<abstract>TripleLike]<:-[Triple]
+[<abstract>QuadLike]<:-[Quad]
+[TripleLike]<:-[QuadLike]
+[RDFTerm]<:-[Literal]
+[RDFTerm]<:-[BlankNodeOrIRI]
+[BlankNodeOrIRI]<:-[BlankNode]
+[BlankNodeOrIRI]<:-[IRI]
+
+#.factory: fill=#ccbbdd italics
+[<factory>RDFTermFactory||createGraph()|createDataset()|createTriple(..)|createQuad(..)|..]
