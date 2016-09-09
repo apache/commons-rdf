@@ -23,6 +23,7 @@ import java.util.Optional;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.simple.Types;
+import org.apache.commons.rdf.jsonldjava.JsonLdIRI.JsonLdIRIImpl;
 
 import com.github.jsonldjava.core.RDFDataset.Node;
 
@@ -65,7 +66,7 @@ public interface JsonLdLiteral extends JsonLdTerm, Literal {
 	
 		@Override
 		public IRI getDatatype() {
-			return new JsonLdIRI.JsonLdIRIImpl(node.getDatatype());
+			return new JsonLdIRIImpl(node.getDatatype());
 		}
 	
 		@Override

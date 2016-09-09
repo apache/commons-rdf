@@ -30,11 +30,16 @@ import org.apache.commons.rdf.api.RDFTermFactory;
 import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.api.TripleLike;
 import org.apache.commons.rdf.simple.Types;
+import org.apache.commons.rdf.jsonldjava.JsonLdBlankNode.JsonLdBlankNodeImpl;
+import org.apache.commons.rdf.jsonldjava.JsonLdTriple.JsonLdTripleImpl;
+import org.apache.commons.rdf.jsonldjava.JsonLdQuad.JsonLdQuadImpl;
+import org.apache.commons.rdf.jsonldjava.JsonLdLiteral.JsonLdLiteralImpl;
 
 import com.github.jsonldjava.core.RDFDataset;
 import com.github.jsonldjava.core.RDFDataset.Node;
 
-final class JsonLdRDFTermFactory implements RDFTermFactory {
+
+public final class JsonLdRDFTermFactory implements RDFTermFactory {
 	
 	public JsonLdRDFTermFactory() {
 		// An "outside Graph" bnodePrefix
@@ -60,41 +65,41 @@ final class JsonLdRDFTermFactory implements RDFTermFactory {
 	@Override
 	public JsonLdBlankNode createBlankNode() {
 		String id = "_:" + UUID.randomUUID().toString();
-		return new JsonLdBlankNode.JsonLdBlankNodeImpl(new RDFDataset.BlankNode(id), bnodePrefix);
+		return new JsonLdBlankNodeImpl(new RDFDataset.BlankNode(id), bnodePrefix);
 	}
 	
 	@Override
 	public JsonLdBlankNode createBlankNode(String name) {
 		String id = "_:" + name;
 		// TODO: Check if name is valid JSON-LD BlankNode identifier
-		return new JsonLdBlankNode.JsonLdBlankNodeImpl(new RDFDataset.BlankNode(id), bnodePrefix);
+		return new JsonLdBlankNodeImpl(new RDFDataset.BlankNode(id), bnodePrefix);
 	}
 	
 	@Override
 	public JsonLdTriple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		return new JsonLdTriple.JsonLdTripleImpl(asJsonLdQuad(subject, predicate, object), bnodePrefix);
+		return new JsonLdTripleImpl(asJsonLdQuad(subject, predicate, object), bnodePrefix);
 	}
 	
 	public Triple asTriple(final RDFDataset.Quad quad) {
-		return new JsonLdTriple.JsonLdTripleImpl(quad, bnodePrefix);
+		return new JsonLdTripleImpl(quad, bnodePrefix);
 	}
 
 	@Override
 	public JsonLdQuad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
 			throws IllegalArgumentException, UnsupportedOperationException {
-		return new JsonLdQuad.JsonLdQuadImpl(asJsonLdQuad(graphName, subject, predicate, object), bnodePrefix);
+		return new JsonLdQuadImpl(asJsonLdQuad(graphName, subject, predicate, object), bnodePrefix);
 	}
 	
 	@Override
 	public JsonLdLiteral createLiteral(String literal) {		
-		return new JsonLdLiteral.JsonLdLiteralImpl(new RDFDataset.Literal(literal, null, null));
+		return new JsonLdLiteralImpl(new RDFDataset.Literal(literal, null, null));
 	}
 	@Override
 	public JsonLdLiteral createLiteral(String literal, IRI dataType) {
-		return new JsonLdLiteral.JsonLdLiteralImpl(new RDFDataset.Literal(literal, dataType.getIRIString(), null));	}
+		return new JsonLdLiteralImpl(new RDFDataset.Literal(literal, dataType.getIRIString(), null));	}
 	@Override
 	public JsonLdLiteral createLiteral(String literal, String language) {
-		return new JsonLdLiteral.JsonLdLiteralImpl(new RDFDataset.Literal(literal, Types.RDF_LANGSTRING.getIRIString(), language));		
+		return new JsonLdLiteralImpl(new RDFDataset.Literal(literal, Types.RDF_LANGSTRING.getIRIString(), language));		
 	}
 
 
@@ -151,7 +156,7 @@ final class JsonLdRDFTermFactory implements RDFTermFactory {
 		if (node.isIRI()) {
 			return new JsonLdIRI.JsonLdIRIImpl(node);
 		} else if (node.isBlankNode()) {
-			return new JsonLdBlankNode.JsonLdBlankNodeImpl(node, blankNodePrefix);
+			return new JsonLdBlankNodeImpl(node, blankNodePrefix);
 		} else if (node.isLiteral()) {
 			// TODO: Our own JsonLdLiteral
 			if (node.getLanguage() != null) {
