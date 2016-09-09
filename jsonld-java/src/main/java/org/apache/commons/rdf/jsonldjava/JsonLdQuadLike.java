@@ -30,6 +30,8 @@ public interface JsonLdQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
 	
 	class JsonLdQuadLikeImpl<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm, G extends RDFTerm> implements JsonLdQuadLike<S,P,O,G> {
 		
+		// Note: We always pass the blankNodePrefix and don't rely on the internal
+		// blankNodePrefix in this static factory
 		private static JsonLdRDFTermFactory rdfTermFactory = new JsonLdRDFTermFactory();
 		
 		private final Quad quad;
@@ -43,26 +45,26 @@ public interface JsonLdQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
 		@SuppressWarnings("unchecked")	
 		@Override
 		public Optional<G> getGraphName() {
-			G g = (G) rdfTermFactory.asTerm(quad.getGraph(), blankNodePrefix);
+			G g = (G) rdfTermFactory.asRDFTerm(quad.getGraph(), blankNodePrefix);
 			return Optional.ofNullable(g);
 		}
 		
 		@SuppressWarnings("unchecked")
 		@Override
 		public S getSubject() {
-			return (S) rdfTermFactory.asTerm(quad.getSubject(), blankNodePrefix);
+			return (S) rdfTermFactory.asRDFTerm(quad.getSubject(), blankNodePrefix);
 		}
 	
 		@SuppressWarnings("unchecked")
 		@Override
 		public P getPredicate() {
-			return (P) rdfTermFactory.asTerm(quad.getPredicate(), blankNodePrefix);
+			return (P) rdfTermFactory.asRDFTerm(quad.getPredicate(), blankNodePrefix);
 		}
 	
 		@SuppressWarnings("unchecked")
 		@Override
 		public O getObject() {
-			return (O) rdfTermFactory.asTerm(quad.getObject(), blankNodePrefix);
+			return (O) rdfTermFactory.asRDFTerm(quad.getObject(), blankNodePrefix);
 		}
 	
 		public Quad asJsonLdQuad() {

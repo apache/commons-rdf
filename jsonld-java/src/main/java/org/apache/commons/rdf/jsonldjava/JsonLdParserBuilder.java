@@ -92,8 +92,7 @@ public class JsonLdParserBuilder extends AbstractRDFParserBuilder {
 			rdfDataset = (RDFDataset) JsonLdProcessor.toRDF(json, options);
 		} catch (JsonLdError e) {
 			throw new RDFParseException(e);
-		}
-
+		}		
 		Graph intoGraph = getIntoGraph().get();
 		if (intoGraph instanceof JsonLdGraph && ! intoGraph.contains(null, null, null)) {
 			// Empty graph, we can just move over the map content directly:
@@ -103,7 +102,7 @@ public class JsonLdParserBuilder extends AbstractRDFParserBuilder {
 			// TODO: Modify JsonLdProcessor to have an actual triple callback
 			try (JsonLdGraph parsedGraph = new JsonLdGraph(rdfDataset)) {
 				// sequential() as we don't know if intoGraph is thread safe :-/
-				parsedGraph.getTriples().sequential().forEach(intoGraph::add);
+				parsedGraph.stream().sequential().forEach(intoGraph::add);
 			}
 		}
 	}

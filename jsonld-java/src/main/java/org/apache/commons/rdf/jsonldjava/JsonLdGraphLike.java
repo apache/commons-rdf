@@ -175,8 +175,8 @@ abstract class JsonLdGraphLike<T extends TripleLike<BlankNodeOrIRI, IRI, RDFTerm
 	 * Convert JsonLd Quad to a Commons RDF {@link Triple} or {@link org.apache.commons.rdf.api.Quad}
 	 * 
 	 * 
-	 * @see JsonLdRDFTermFactory#createTriple(Quad)
-	 * @see JsonLdRDFTermFactory#createQuad(Quad)
+	 * @see JsonLdRDFTermFactory#asTriple(Quad)
+	 * @see JsonLdRDFTermFactory#asQuad(Quad)
 	 * @param jsonldQuad jsonld quad to convert
 	 * @return converted {@link TripleLike}
 	 */

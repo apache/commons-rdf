@@ -32,9 +32,9 @@ import org.apache.commons.rdf.api.RDFTerm;
 
 import com.github.jsonldjava.core.RDFDataset;
 
-public class JsonLdDataset extends JsonLdGraphLike<org.apache.commons.rdf.api.Quad> implements Dataset {
+class JsonLdDataset extends JsonLdGraphLike<org.apache.commons.rdf.api.Quad> implements Dataset {
 
-	public JsonLdDataset(RDFDataset rdfDataSet) {
+	JsonLdDataset(RDFDataset rdfDataSet) {
 		super(rdfDataSet);
 	}
 
@@ -75,7 +75,7 @@ public class JsonLdDataset extends JsonLdGraphLike<org.apache.commons.rdf.api.Qu
 	public Stream<BlankNodeOrIRI> getGraphNames() {
 		return rdfDataSet.graphNames().parallelStream().filter(Predicate.isEqual("@default").negate())
 				.map(s -> s.startsWith("_:") ? new RDFDataset.BlankNode(s) : new RDFDataset.IRI(s))
-				.map(n -> (BlankNodeOrIRI) factory.asTerm(n, bnodePrefix));		
+				.map(n -> (BlankNodeOrIRI) factory.asRDFTerm(n));
 	}
 
 	@Override
@@ -95,7 +95,7 @@ public class JsonLdDataset extends JsonLdGraphLike<org.apache.commons.rdf.api.Qu
 		return filteredGraphs(graphName)
 				.flatMap(List::stream)
 				.filter(quadFilter(subject, predicate, object))
-				.map(factory::createQuad);
+				.map(factory::asQuad);
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public class JsonLdDataset extends JsonLdGraphLike<org.apache.commons.rdf.api.Qu
 
 	@Override
 	Quad asTripleOrQuad(com.github.jsonldjava.core.RDFDataset.Quad jsonldQuad) {
-		return factory.createQuad(jsonldQuad);
+		return factory.asQuad(jsonldQuad);
 	}
 
 

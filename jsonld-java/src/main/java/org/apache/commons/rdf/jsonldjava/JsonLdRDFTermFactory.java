@@ -48,7 +48,7 @@ public final class JsonLdRDFTermFactory implements RDFTermFactory {
 		// An "outside Graph" bnodePrefix
 		this("urn:uuid:" + UUID.randomUUID() + "#b");
 	}
-	
+		
 	JsonLdRDFTermFactory(String bnodePrefix) {
 		this.bnodePrefix = Objects.requireNonNull(bnodePrefix);
 	}
@@ -61,8 +61,7 @@ public final class JsonLdRDFTermFactory implements RDFTermFactory {
 		if (term instanceof IRI) {
 			return new RDFDataset.IRI( ((IRI)term).getIRIString() );
 		}
-		if (term instanceof BlankNode) {
-			
+		if (term instanceof BlankNode) {			
 			String ref = ((BlankNode)term).uniqueReference();
 			if (ref.startsWith(bnodePrefix)) {
 				// one of our own (but no longer a JsonLdBlankNode),
@@ -113,14 +112,26 @@ public final class JsonLdRDFTermFactory implements RDFTermFactory {
 		// TODO: Check if name is valid JSON-LD BlankNode identifier		
 		return new JsonLdBlankNodeImpl(new RDFDataset.BlankNode(id), bnodePrefix);
 	}
-	
-	@Override
-	public Dataset createDataset() throws UnsupportedOperationException {
-		return new JsonLdDataset(bnodePrefix);
-	}
 
 	@Override
-	public Graph createGraph() throws UnsupportedOperationException {
+	public Dataset createDataset() {
+		return new JsonLdDataset(bnodePrefix);
+	}
+	
+	public Dataset asDataset(RDFDataset rdfDataSet) {
+		return new JsonLdDataset(rdfDataSet);
+	}
+
+	public Graph asGraph(RDFDataset rdfDataSet) {
+		return new JsonLdGraph(rdfDataSet);
+	}
+
+	public Graph asUnionGraph(RDFDataset rdfDataSet) {
+		return new JsonLdUnionGraph(rdfDataSet);
+	}
+	
+	@Override
+	public Graph createGraph() {
 		return new JsonLdGraph(bnodePrefix);
 	}
 	
@@ -151,7 +162,7 @@ public final class JsonLdRDFTermFactory implements RDFTermFactory {
 	}
 	
 
-	public JsonLdQuad createQuad(final RDFDataset.Quad quad) {
+	public JsonLdQuad asQuad(final RDFDataset.Quad quad) {
 		return new JsonLdQuadImpl(quad, bnodePrefix);
 	}
 
@@ -160,11 +171,15 @@ public final class JsonLdRDFTermFactory implements RDFTermFactory {
 		return new JsonLdTripleImpl(asJsonLdQuad(subject, predicate, object), bnodePrefix);
 	}
 	
-	public JsonLdTriple createTriple(final RDFDataset.Quad quad) {
+	public JsonLdTriple asTriple(final RDFDataset.Quad quad) {
 		return new JsonLdTripleImpl(quad, bnodePrefix);
 	}
 	
-	JsonLdTerm asTerm(final Node node, String blankNodePrefix) {	
+	public JsonLdTerm asRDFTerm(final Node node) {
+		return asRDFTerm(node, bnodePrefix);
+	}
+	
+	JsonLdTerm asRDFTerm(final Node node, String blankNodePrefix) {	
 		if (node == null) {
 			return null; // e.g. default graph
 		}

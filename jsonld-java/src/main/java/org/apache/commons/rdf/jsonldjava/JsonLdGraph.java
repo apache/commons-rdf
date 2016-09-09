@@ -30,11 +30,15 @@ import org.apache.commons.rdf.api.Triple;
 
 import com.github.jsonldjava.core.RDFDataset;
 
-public class JsonLdGraph extends JsonLdGraphLike<org.apache.commons.rdf.api.Triple> implements Graph {
+/**
+ * A {@link Graph} view of a JsonLd {@link RDFDataset}.
+ * 
+ */
+class JsonLdGraph extends JsonLdGraphLike<org.apache.commons.rdf.api.Triple> implements Graph {
 
 	private final Optional<BlankNodeOrIRI> graphName;
 
-	public JsonLdGraph(RDFDataset rdfDataSet) {
+	JsonLdGraph(RDFDataset rdfDataSet) {
 		super(rdfDataSet);
 		this.graphName = Optional.empty();
 	}
@@ -99,12 +103,12 @@ public class JsonLdGraph extends JsonLdGraphLike<org.apache.commons.rdf.api.Trip
 		return filteredGraphs(graphName)
 				.flatMap(List::stream)
 				.filter(quadFilter(subject, predicate, object))
-				.map(factory::createTriple);
+				.map(factory::asTriple);
 	}
 	
 	@Override
 	JsonLdTriple asTripleOrQuad(com.github.jsonldjava.core.RDFDataset.Quad jsonldQuad) {
-		return factory.createTriple(jsonldQuad);
+		return factory.asTriple(jsonldQuad);
 	}
 }
 

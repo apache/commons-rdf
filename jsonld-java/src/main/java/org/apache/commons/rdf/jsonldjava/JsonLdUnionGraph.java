@@ -46,13 +46,13 @@ import com.github.jsonldjava.core.RDFDataset;
  * inefficient as they skip any duplicate triples from multiple
  * graphs.
  */
-public class JsonLdUnionGraph extends JsonLdGraphLike<org.apache.commons.rdf.api.Triple> implements Graph {
+class JsonLdUnionGraph extends JsonLdGraphLike<org.apache.commons.rdf.api.Triple> implements Graph {
 
 	JsonLdUnionGraph(String bnodePrefix) {
 		super(bnodePrefix);
 	}
 	
-	public JsonLdUnionGraph(RDFDataset rdfDataSet) {
+	JsonLdUnionGraph(RDFDataset rdfDataSet) {
 		super(rdfDataSet);
 	}
 	
@@ -88,7 +88,7 @@ public class JsonLdUnionGraph extends JsonLdGraphLike<org.apache.commons.rdf.api
 		return filteredGraphs(null)
 				.flatMap(List::stream)
 				.filter(quadFilter(subject, predicate, object))
-				.map(factory::createTriple)
+				.map(factory::asTriple)
 				// Make sure we don't have duplicate triples
 				// NOTE: This can be quite inefficient
 				.distinct();
@@ -103,7 +103,7 @@ public class JsonLdUnionGraph extends JsonLdGraphLike<org.apache.commons.rdf.api
 
 	@Override
 	JsonLdTriple asTripleOrQuad(com.github.jsonldjava.core.RDFDataset.Quad jsonldQuad) {
-		return factory.createTriple(jsonldQuad);
+		return factory.asTriple(jsonldQuad);
 	}
 	
 	@Override
