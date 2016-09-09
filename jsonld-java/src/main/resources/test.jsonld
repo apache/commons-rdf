@@ -1,0 +1,26 @@
+{ "http://purl.org/dc/elements/1.1/rights": "Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements. See the NOTICE file distributed with this work for additional information regarding copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the 'License'); you may not use this file except in compliance with the License.  You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0    Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License. ",
+  "@context": {    
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "pred1": "http://example.com/pred1",
+    "pred2": { "@id": "http://example.com/pred2",
+               "@type": "@id" },
+    "pred3": { "@id": "http://example.com/pred3",
+               "@type": "xsd:integer" },
+    "pred4": { "@id": "http://example.com/pred4",
+               "@type": "@id" },               
+    "Type": "http://example.com/Type"    
+  } , 
+  "@id": "http://example.com/test",
+  "@type": "Type",
+  "pred1": "Hello",
+  "pred2": "http://example.com/other",
+  "pred3": 1337,
+  "pred4": { "@id": "http://example.com/graph",
+             "@graph": [
+             	{ "@id": "http://example.com/test",
+             	  "pred1": "Other value",
+             	  "pred2": "http://example.com/graph"
+             	}               
+             ]
+           }
+}
