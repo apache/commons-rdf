@@ -53,7 +53,7 @@
 			as both rdf4j and jena depend on jsonld -->
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>commons-rdf-jsonld</artifactId>
+			<artifactId>commons-rdf-jsonld-java</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
