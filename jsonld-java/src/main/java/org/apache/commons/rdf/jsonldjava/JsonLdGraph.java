@@ -92,7 +92,7 @@ class JsonLdGraph extends JsonLdGraphLike<org.apache.commons.rdf.api.Triple> imp
 
 	@Override
 	public long size() {
-		String g = graphName.map(this::asJsonLdString).orElse("@default");
+		String g = graphName.map(factory::asJsonLdString).orElse("@default");
 		return Optional.ofNullable(rdfDataSet.getQuads(g))
 				.map(List::size).orElse(0);
 	}

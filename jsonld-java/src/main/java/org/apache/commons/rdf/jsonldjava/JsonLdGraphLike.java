@@ -17,7 +17,6 @@
  */
 package org.apache.commons.rdf.jsonldjava;
 
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -25,7 +24,6 @@ import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-import org.apache.commons.rdf.api.BlankNode;
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.GraphLike;
 import org.apache.commons.rdf.api.IRI;
@@ -37,7 +35,6 @@ import org.apache.commons.rdf.api.TripleLike;
 
 import com.github.jsonldjava.core.RDFDataset;
 import com.github.jsonldjava.core.RDFDataset.Node;
-import com.github.jsonldjava.core.RDFDataset.Quad;
 
 /**
  * Common abstract {@link GraphLike}.
@@ -84,22 +81,31 @@ abstract class JsonLdGraphLike<T extends TripleLike<BlankNodeOrIRI, IRI, RDFTerm
 	}
 	
 	@Override
-	public void add(T tripleOrQuad) {
-		String g = graphNameAsJsonLdString(tripleOrQuad);
-		String s = asJsonLdString(tripleOrQuad.getSubject());
-		String p = asJsonLdString(tripleOrQuad.getPredicate());
-		
-		if (tripleOrQuad.getObject() instanceof BlankNodeOrIRI) {
-			String o = asJsonLdString((BlankNodeOrIRI)tripleOrQuad.getObject());
+	public void add(T t) {
+		// add triples to default graph by default
+		BlankNodeOrIRI graphName = null;
+		if (t instanceof org.apache.commons.rdf.api.Quad) {
+			org.apache.commons.rdf.api.Quad q = (org.apache.commons.rdf.api.Quad)t;
+			graphName = q.getGraphName().orElse(null);
+		}
+		add(graphName, t.getSubject(), t.getPredicate(), t.getObject());
+	}	
+
+	void add(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+		String g = factory.asJsonLdString(graphName);
+		String s = factory.asJsonLdString(subject);
+		String p = factory.asJsonLdString(predicate);		
+		if (object instanceof BlankNodeOrIRI) {
+			String o = factory.asJsonLdString((BlankNodeOrIRI)object);
 			rdfDataSet.addQuad(s,p,o,g);
-		} else if(tripleOrQuad.getObject() instanceof Literal) { 
-			Literal literal = (Literal) tripleOrQuad.getObject();
+		} else if(object instanceof Literal) { 
+			Literal literal = (Literal) object;
 			String language = literal.getLanguageTag().orElse(null);
 			String datatype = literal.getDatatype().getIRIString();
 			rdfDataSet.addQuad(s,p,literal.getLexicalForm(), datatype, language, g);
-		}
+		}		
 	}
-	
+		
 	public void close() {
 		// Drop the memory reference, but don't clear it
 		rdfDataSet = null;			
@@ -133,44 +139,6 @@ abstract class JsonLdGraphLike<T extends TripleLike<BlankNodeOrIRI, IRI, RDFTerm
 				.map(this::asTripleOrQuad);
 	}
 	
-	void add(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		String g = asJsonLdString(graphName);
-		String s = asJsonLdString(subject);
-		String p = asJsonLdString(predicate);		
-		if (object instanceof BlankNodeOrIRI) {
-			String o = asJsonLdString((BlankNodeOrIRI)object);
-			rdfDataSet.addQuad(s,p,o,g);
-		} else if(object instanceof Literal) { 
-			Literal literal = (Literal) object;
-			String language = literal.getLanguageTag().orElse(null);
-			String datatype = literal.getDatatype().getIRIString();
-			rdfDataSet.addQuad(s,p,literal.getLexicalForm(), datatype, language, g);
-		}		
-	}
-
-	String asJsonLdString(BlankNodeOrIRI blankNodeOrIRI) {
-		if (blankNodeOrIRI == null) {
-			return null;
-		}
-		if (blankNodeOrIRI instanceof IRI) {
-			return ((IRI)blankNodeOrIRI).getIRIString();
-		} else if (blankNodeOrIRI instanceof BlankNode) {
-			BlankNode blankNode = (BlankNode) blankNodeOrIRI;
-			String ref = blankNode.uniqueReference();
-			if (ref.startsWith(bnodePrefix)) { 
-				// One of ours (but possibly not a JsonLdBlankNode) -  
-				// we can use the suffix directly
-				return ref.replace(bnodePrefix, "_:");
-			} else {
-				// Map to unique bnode identifier, e.g. _:0dbd92ee-ab1a-45e7-bba2-7ade54f87ec5
-				UUID uuid = UUID.nameUUIDFromBytes(ref.getBytes(StandardCharsets.UTF_8));
-				return "_:"+ uuid;
-			}
-		} else {
-			throw new IllegalArgumentException("Expected a BlankNode or IRI, not: " + blankNodeOrIRI);
-		}
-	}
-	
 	/**
 	 * Convert JsonLd Quad to a Commons RDF {@link Triple} or {@link org.apache.commons.rdf.api.Quad}
 	 * 
@@ -188,13 +156,13 @@ abstract class JsonLdGraphLike<T extends TripleLike<BlankNodeOrIRI, IRI, RDFTerm
 		return filteredGraphs(graphName).flatMap(List::stream).anyMatch(quadFilter(s,p,o));
 	}
 
-	Stream<List<Quad>> filteredGraphs(Optional<BlankNodeOrIRI> graphName) {
+	Stream<List<RDFDataset.Quad>> filteredGraphs(Optional<BlankNodeOrIRI> graphName) {
 		return rdfDataSet.graphNames().parallelStream()
 				// if graphName == null (wildcard), select all graphs, 
 	 			// otherwise check its jsonld string
 			    // (including @default for default graph)
 				.filter(g -> graphName == null ||
-						g.equals(graphName.map(this::asJsonLdString).orElse("@default")))
+						g.equals(graphName.map(factory::asJsonLdString).orElse("@default")))
 				// remove the quads which match our filter (which could have nulls as wildcards) 
 				.map(rdfDataSet::getQuads);
 	}
@@ -202,7 +170,7 @@ abstract class JsonLdGraphLike<T extends TripleLike<BlankNodeOrIRI, IRI, RDFTerm
 	String graphNameAsJsonLdString(T tripleOrQuad) {		
 		if (tripleOrQuad instanceof org.apache.commons.rdf.api.Quad) {
 			org.apache.commons.rdf.api.Quad quad = (org.apache.commons.rdf.api.Quad)tripleOrQuad;
-			return quad.getGraphName().map(this::asJsonLdString).orElse("@default");			
+			return quad.getGraphName().map(factory::asJsonLdString).orElse("@default");			
 		}		
 		return "@default";
 	}
