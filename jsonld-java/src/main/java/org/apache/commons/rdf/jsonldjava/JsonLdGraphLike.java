@@ -39,6 +39,13 @@ import com.github.jsonldjava.core.RDFDataset;
 import com.github.jsonldjava.core.RDFDataset.Node;
 import com.github.jsonldjava.core.RDFDataset.Quad;
 
+/**
+ * Common abstract {@link GraphLike}.
+ * <p>
+ * Specialised by {@link JsonLdGraph}, {@link JsonLdUnionGraph} and {@link JsonLdDataset}. 
+ *
+ * @param <T> specialisation of {@link TripleLike}, e.g. {@link Triple} or {@link Quad}
+ */
 abstract class JsonLdGraphLike<T extends TripleLike<BlankNodeOrIRI, IRI, RDFTerm>>
 	implements GraphLike<T, BlankNodeOrIRI, IRI, RDFTerm> {
 	
@@ -48,35 +55,34 @@ abstract class JsonLdGraphLike<T extends TripleLike<BlankNodeOrIRI, IRI, RDFTerm
 	private static UUID SALT = UUID.randomUUID();
 	
 	/**
-	 * The underlying JSON-LD {@link RDFDataset}.
-	 */
-	RDFDataset rdfDataSet;
-
-	/**
 	 * Prefix to use in blank node identifiers
 	 */
 	final String bnodePrefix;
 
-	protected JsonLdRDFTermFactory factory;
-	
-	JsonLdGraphLike(String bnodePrefix) {
-		this(new RDFDataset(), bnodePrefix);
-	}
+	final JsonLdRDFTermFactory factory;
 
+	/**
+	 * The underlying JSON-LD {@link RDFDataset}.
+	 * <p>
+	 * Note: This is NOT final as it is reset to <code>null</code> by {@link #close()}
+	 * (to free memory).
+	 */
+	RDFDataset rdfDataSet;
+	
 	JsonLdGraphLike(RDFDataset rdfDataSet) {
 		this(rdfDataSet, "urn:uuid:" + SALT + "#" +  "g"+ System.identityHashCode(rdfDataSet));
 	}
-	
+
 	JsonLdGraphLike(RDFDataset rdfDataset, String bnodePrefix) {
 		rdfDataSet = rdfDataset;
 		this.bnodePrefix = bnodePrefix;
 		this.factory = new JsonLdRDFTermFactory(bnodePrefix);
 	}
 	
-	public RDFDataset getRdfDataSet() {
-		return rdfDataSet;
+	JsonLdGraphLike(String bnodePrefix) {
+		this(new RDFDataset(), bnodePrefix);
 	}
-
+	
 	@Override
 	public void add(T tripleOrQuad) {
 		String g = graphNameAsJsonLdString(tripleOrQuad);
@@ -94,6 +100,48 @@ abstract class JsonLdGraphLike<T extends TripleLike<BlankNodeOrIRI, IRI, RDFTerm
 			rdfDataSet.addQuad(s,p,literal.getLexicalForm(), datatype, language, g);
 		}
 	}
+
+	@Override
+	public void clear() {
+		rdfDataSet.clear();
+	}
+	
+	public void close() {
+		// Drop the memory reference, but don't clear it
+		rdfDataSet = null;			
+	}	
+
+	@Override
+	public boolean contains(T tripleOrQuad) {		
+		return stream().anyMatch(Predicate.isEqual(tripleOrQuad));
+	}
+
+	public RDFDataset getRdfDataSet() {
+		return rdfDataSet;
+	}
+	
+	@Override
+	public void remove(T t) {
+		if (t instanceof org.apache.commons.rdf.api.Quad) {
+			org.apache.commons.rdf.api.Quad q = (org.apache.commons.rdf.api.Quad) t;
+			remove(q.getGraphName(), q.getSubject(), q.getPredicate(), q.getObject());
+		} else {
+			remove(Optional.empty(), t.getSubject(), t.getPredicate(), t.getObject());
+		}
+	}
+	
+	@Override
+	public long size() {		
+		return rdfDataSet.graphNames().parallelStream().map(rdfDataSet::getQuads).collect(Collectors.summingLong(List::size));
+	}
+	
+	@Override
+	public Stream<? extends T> stream() {
+		return rdfDataSet.graphNames().parallelStream()
+				.map(rdfDataSet::getQuads)
+				.flatMap(List<RDFDataset.Quad>::parallelStream)
+				.map(this::asTripleOrQuad);
+	}
 	
 	void add(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
 		String g = asJsonLdString(graphName);
@@ -109,17 +157,8 @@ abstract class JsonLdGraphLike<T extends TripleLike<BlankNodeOrIRI, IRI, RDFTerm
 			rdfDataSet.addQuad(s,p,literal.getLexicalForm(), datatype, language, g);
 		}		
 	}
-	
 
-	private String graphNameAsJsonLdString(T tripleOrQuad) {
-		if (tripleOrQuad instanceof org.apache.commons.rdf.api.Quad) {
-			org.apache.commons.rdf.api.Quad quad = (org.apache.commons.rdf.api.Quad)tripleOrQuad;
-			return quad.getGraphName().map(this::asJsonLdString).orElse("@default");			
-		}
-		return "@default";
-	}
-
-	protected String asJsonLdString(BlankNodeOrIRI blankNodeOrIRI) {
+	String asJsonLdString(BlankNodeOrIRI blankNodeOrIRI) {
 		if (blankNodeOrIRI == null) {
 			return null;
 		}
@@ -142,28 +181,6 @@ abstract class JsonLdGraphLike<T extends TripleLike<BlankNodeOrIRI, IRI, RDFTerm
 		}
 	}
 	
-	@Override
-	public void clear() {
-		rdfDataSet.clear();
-	}
-	
-	public void close() {
-		// Drop the memory reference, but don't clear it
-		rdfDataSet = null;			
-	}
-	
-	@Override
-	public boolean contains(T tripleOrQuad) {		
-		return stream().anyMatch(Predicate.isEqual(tripleOrQuad));
-	}
-
-
-	// This will be made public in JsonLdDataset
-	// and is used by the other  methods.
-	boolean contains(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI s, IRI p, RDFTerm o) {
-		return filteredGraphs(graphName).flatMap(List::stream).anyMatch(quadFilter(s,p,o));
-	}
-	
 	/**
 	 * Convert JsonLd Quad to a Commons RDF {@link Triple} or {@link org.apache.commons.rdf.api.Quad}
 	 * 
@@ -174,30 +191,11 @@ abstract class JsonLdGraphLike<T extends TripleLike<BlankNodeOrIRI, IRI, RDFTerm
 	 * @return converted {@link TripleLike}
 	 */
 	abstract T asTripleOrQuad(RDFDataset.Quad jsonldQuad);
-	
-	@Override
-	public Stream<? extends T> stream() {
-		return rdfDataSet.graphNames().parallelStream()
-				.map(rdfDataSet::getQuads)
-				.flatMap(List<RDFDataset.Quad>::parallelStream)
-				.map(this::asTripleOrQuad);
-	}
-
-	@Override
-	public void remove(T t) {
-		if (t instanceof org.apache.commons.rdf.api.Quad) {
-			org.apache.commons.rdf.api.Quad q = (org.apache.commons.rdf.api.Quad) t;
-			remove(q.getGraphName(), q.getSubject(), q.getPredicate(), q.getObject());
-		} else {
-			remove(Optional.empty(), t.getSubject(), t.getPredicate(), t.getObject());
-		}
-	}
 
 	// This will be made public in JsonLdDataset
-	// and is used by the other remove methods.
-	void remove(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		// remove the quads which match our filter (which could have nulls as wildcards) 
-		filteredGraphs(graphName).forEach(t -> t.removeIf(quadFilter(subject, predicate, object)));
+	// and is used by the other  methods.
+	boolean contains(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI s, IRI p, RDFTerm o) {
+		return filteredGraphs(graphName).flatMap(List::stream).anyMatch(quadFilter(s,p,o));
 	}
 
 	Stream<List<Quad>> filteredGraphs(Optional<BlankNodeOrIRI> graphName) {
@@ -209,6 +207,14 @@ abstract class JsonLdGraphLike<T extends TripleLike<BlankNodeOrIRI, IRI, RDFTerm
 						g.equals(graphName.map(this::asJsonLdString).orElse("@default")))
 				// remove the quads which match our filter (which could have nulls as wildcards) 
 				.map(rdfDataSet::getQuads);
+	}
+
+	String graphNameAsJsonLdString(T tripleOrQuad) {
+		if (tripleOrQuad instanceof org.apache.commons.rdf.api.Quad) {
+			org.apache.commons.rdf.api.Quad quad = (org.apache.commons.rdf.api.Quad)tripleOrQuad;
+			return quad.getGraphName().map(this::asJsonLdString).orElse("@default");			
+		}
+		return "@default";
 	}
 	
 	
@@ -231,9 +237,10 @@ abstract class JsonLdGraphLike<T extends TripleLike<BlankNodeOrIRI, IRI, RDFTerm
 		};
 	}
 	
-	@Override
-	public long size() {		
-		return rdfDataSet.graphNames().parallelStream().map(rdfDataSet::getQuads).collect(Collectors.summingLong(List::size));
+	// NOTE: This is made public in JsonLdDataset and is used by the other remove methods.
+	void remove(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+		// remove the quads which match our filter (which could have nulls as wildcards) 
+		filteredGraphs(graphName).forEach(t -> t.removeIf(quadFilter(subject, predicate, object)));
 	}
 	
 }

@@ -33,16 +33,16 @@ import com.github.jsonldjava.core.RDFDataset;
 
 public class JsonLdDataset extends JsonLdGraphLike<org.apache.commons.rdf.api.Quad> implements Dataset {
 
-	JsonLdDataset(String bnodePrefix) {
-		super(bnodePrefix);
+	public JsonLdDataset(RDFDataset rdfDataSet) {
+		super(rdfDataSet);
 	}
 
 	JsonLdDataset(RDFDataset rdfDataset, String bnodePrefix) {
 		super(rdfDataset, bnodePrefix);
 	}
 
-	public JsonLdDataset(RDFDataset rdfDataSet) {
-		super(rdfDataSet);
+	JsonLdDataset(String bnodePrefix) {
+		super(bnodePrefix);
 	}
 
 	@Override
@@ -56,14 +56,9 @@ public class JsonLdDataset extends JsonLdGraphLike<org.apache.commons.rdf.api.Qu
 	}
 	
 	@Override
-	public void remove(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		super.remove(graphName, subject, predicate, object);
-	}	
-
-	@Override
 	public Graph getGraph() {
 		return new JsonLdGraph(rdfDataSet, Optional.empty(), bnodePrefix);
-	}
+	}	
 
 	@Override
 	public Optional<Graph> getGraph(BlankNodeOrIRI graphName) {
@@ -80,6 +75,11 @@ public class JsonLdDataset extends JsonLdGraphLike<org.apache.commons.rdf.api.Qu
 		return rdfDataSet.graphNames().parallelStream().filter(Predicate.isEqual("@default").negate())
 				.map(s -> s.startsWith("_:") ? new RDFDataset.BlankNode(s) : new RDFDataset.IRI(s))
 				.map(n -> (BlankNodeOrIRI) factory.asTerm(n, bnodePrefix));		
+	}
+
+	@Override
+	public void remove(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+		super.remove(graphName, subject, predicate, object);
 	}
 
 	@Override

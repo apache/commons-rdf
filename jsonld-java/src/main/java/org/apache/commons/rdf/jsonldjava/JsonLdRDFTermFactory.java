@@ -52,68 +52,6 @@ public final class JsonLdRDFTermFactory implements RDFTermFactory {
 		this.bnodePrefix = bnodePrefix;
 	}
 	
-	@Override
-	public Graph createGraph() throws UnsupportedOperationException {
-		return new JsonLdGraph(bnodePrefix);
-	}
-	
-	@Override
-	public Dataset createDataset() throws UnsupportedOperationException {
-		return new JsonLdDataset(bnodePrefix);
-	}
-	
-	@Override
-	public JsonLdIRI createIRI(String iri) {
-		return new JsonLdIRI.JsonLdIRIImpl(iri);
-	}
-	
-	@Override
-	public JsonLdBlankNode createBlankNode() {
-		String id = "_:" + UUID.randomUUID().toString();
-		return new JsonLdBlankNodeImpl(new RDFDataset.BlankNode(id), bnodePrefix);
-	}
-	
-	@Override
-	public JsonLdBlankNode createBlankNode(String name) {
-		String id = "_:" + name;
-		// TODO: Check if name is valid JSON-LD BlankNode identifier		
-		return new JsonLdBlankNodeImpl(new RDFDataset.BlankNode(id), bnodePrefix);
-	}
-	
-	@Override
-	public JsonLdTriple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		return new JsonLdTripleImpl(asJsonLdQuad(subject, predicate, object), bnodePrefix);
-	}
-	
-	public JsonLdTriple createTriple(final RDFDataset.Quad quad) {
-		return new JsonLdTripleImpl(quad, bnodePrefix);
-	}
-
-	public JsonLdQuad createQuad(final RDFDataset.Quad quad) {
-		return new JsonLdQuadImpl(quad, bnodePrefix);
-	}
-	
-	@Override
-	public JsonLdQuad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
-			throws IllegalArgumentException, UnsupportedOperationException {
-		return new JsonLdQuadImpl(asJsonLdQuad(graphName, subject, predicate, object), bnodePrefix);
-	}
-	
-	@Override
-	public JsonLdLiteral createLiteral(String literal) {
-		return new JsonLdLiteralImpl(new RDFDataset.Literal(literal, null, null));
-	}
-
-	@Override
-	public JsonLdLiteral createLiteral(String literal, IRI dataType) {
-		return new JsonLdLiteralImpl(new RDFDataset.Literal(literal, dataType.getIRIString(), null));
-	}
-
-	@Override
-	public JsonLdLiteral createLiteral(String literal, String language) {
-		return new JsonLdLiteralImpl(new RDFDataset.Literal(literal, Types.RDF_LANGSTRING.getIRIString(), language));
-	}
-
 	public Node asJsonLdNode(RDFTerm term) {
 		if (term instanceof JsonLdTerm) {
 			// Return original Node
@@ -143,11 +81,10 @@ public final class JsonLdRDFTermFactory implements RDFTermFactory {
 		throw new IllegalArgumentException("RDFTerm not instanceof IRI, BlankNode or Literal: " + term);
 	}
 	
-
 	public RDFDataset.Quad asJsonLdQuad(RDFTerm subject, RDFTerm predicate, RDFTerm object) {
 		return asJsonLdQuad(null, subject, predicate, object);
 	}
-
+	
 	public RDFDataset.Quad asJsonLdQuad(RDFTerm graphName, RDFTerm subject, RDFTerm predicate, RDFTerm object) {
 		String graph = null;
 		return new RDFDataset.Quad(asJsonLdNode(subject), asJsonLdNode(predicate), asJsonLdNode(object), graph);
@@ -161,6 +98,69 @@ public final class JsonLdRDFTermFactory implements RDFTermFactory {
 			g = (RDFTerm) quadLike.getGraphName().orElse(null);
 		}		
 		return asJsonLdQuad(g, tripleOrQuad.getSubject(), tripleOrQuad.getPredicate(), tripleOrQuad.getObject());
+	}
+	
+	@Override
+	public JsonLdBlankNode createBlankNode() {
+		String id = "_:" + UUID.randomUUID().toString();
+		return new JsonLdBlankNodeImpl(new RDFDataset.BlankNode(id), bnodePrefix);
+	}
+	
+	@Override
+	public JsonLdBlankNode createBlankNode(String name) {
+		String id = "_:" + name;
+		// TODO: Check if name is valid JSON-LD BlankNode identifier		
+		return new JsonLdBlankNodeImpl(new RDFDataset.BlankNode(id), bnodePrefix);
+	}
+	
+	@Override
+	public Dataset createDataset() throws UnsupportedOperationException {
+		return new JsonLdDataset(bnodePrefix);
+	}
+
+	@Override
+	public Graph createGraph() throws UnsupportedOperationException {
+		return new JsonLdGraph(bnodePrefix);
+	}
+	
+	@Override
+	public JsonLdIRI createIRI(String iri) {
+		return new JsonLdIRI.JsonLdIRIImpl(iri);
+	}
+	
+	@Override
+	public JsonLdLiteral createLiteral(String literal) {
+		return new JsonLdLiteralImpl(new RDFDataset.Literal(literal, null, null));
+	}
+
+	@Override
+	public JsonLdLiteral createLiteral(String literal, IRI dataType) {
+		return new JsonLdLiteralImpl(new RDFDataset.Literal(literal, dataType.getIRIString(), null));
+	}
+
+	@Override
+	public JsonLdLiteral createLiteral(String literal, String language) {
+		return new JsonLdLiteralImpl(new RDFDataset.Literal(literal, Types.RDF_LANGSTRING.getIRIString(), language));
+	}
+
+	@Override
+	public JsonLdQuad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
+			throws IllegalArgumentException, UnsupportedOperationException {
+		return new JsonLdQuadImpl(asJsonLdQuad(graphName, subject, predicate, object), bnodePrefix);
+	}
+	
+
+	public JsonLdQuad createQuad(final RDFDataset.Quad quad) {
+		return new JsonLdQuadImpl(quad, bnodePrefix);
+	}
+
+	@Override
+	public JsonLdTriple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+		return new JsonLdTripleImpl(asJsonLdQuad(subject, predicate, object), bnodePrefix);
+	}
+	
+	public JsonLdTriple createTriple(final RDFDataset.Quad quad) {
+		return new JsonLdTripleImpl(quad, bnodePrefix);
 	}
 	
 	JsonLdTerm asTerm(final Node node, String blankNodePrefix) {	

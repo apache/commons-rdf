@@ -32,11 +32,6 @@ public class JsonLdGraph extends JsonLdGraphLike<org.apache.commons.rdf.api.Trip
 
 	private final Optional<BlankNodeOrIRI> graphName;
 
-	JsonLdGraph(String bnodePrefix) {
-		super(bnodePrefix);
-		this.graphName = Optional.empty();
-	}
-	
 	public JsonLdGraph(RDFDataset rdfDataSet) {
 		super(rdfDataSet);
 		this.graphName = Optional.empty();
@@ -45,6 +40,11 @@ public class JsonLdGraph extends JsonLdGraphLike<org.apache.commons.rdf.api.Trip
 	JsonLdGraph(RDFDataset rdfDataSet, Optional<BlankNodeOrIRI> graphName, String bnodePrefix) {
 		super(rdfDataSet, bnodePrefix);
 		this.graphName = graphName;
+	}
+	
+	JsonLdGraph(String bnodePrefix) {
+		super(bnodePrefix);
+		this.graphName = Optional.empty();
 	}
 
 
@@ -64,6 +64,13 @@ public class JsonLdGraph extends JsonLdGraphLike<org.apache.commons.rdf.api.Trip
 	}
 
 	@Override
+	public long size() {
+		String g = graphName.map(this::asJsonLdString).orElse("@default");
+		return Optional.ofNullable(rdfDataSet.getQuads(g))
+				.map(List::size).orElse(0);
+	}
+
+	@Override
 	public Stream<JsonLdTriple> stream(BlankNodeOrIRI subject, IRI predicate,
 			RDFTerm object) {		
 		return filteredGraphs(graphName)
@@ -71,17 +78,10 @@ public class JsonLdGraph extends JsonLdGraphLike<org.apache.commons.rdf.api.Trip
 				.filter(quadFilter(subject, predicate, object))
 				.map(factory::createTriple);
 	}
-
+	
 	@Override
 	JsonLdTriple asTripleOrQuad(com.github.jsonldjava.core.RDFDataset.Quad jsonldQuad) {
 		return factory.createTriple(jsonldQuad);
-	}
-	
-	@Override
-	public long size() {
-		String g = graphName.map(this::asJsonLdString).orElse("@default");
-		return Optional.ofNullable(rdfDataSet.getQuads(g))
-				.map(List::size).orElse(0);
 	}
 }
 
