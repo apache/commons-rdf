@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.apache.commons.rdf.api.AbstractBlankNodeTest;
 import org.apache.commons.rdf.api.BlankNode;
+import org.apache.commons.rdf.jsonldjava.JsonLdBlankNode.JsonLdBlankNodeImpl;
 
 import com.github.jsonldjava.core.RDFDataset;
 
@@ -18,7 +19,7 @@ public class JsonLdBlankNodeTest extends AbstractBlankNodeTest {
 
 	@Override
 	protected BlankNode getBlankNode(String identifier) {
-		return new JsonLdBlankNode(new RDFDataset.BlankNode("_:" + identifier), fixedPrefix);
+		return new JsonLdBlankNodeImpl(new RDFDataset.BlankNode("_:" + identifier), fixedPrefix);
 	}
 
 }
