@@ -26,11 +26,10 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.util.function.Predicate;
 
+import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
-import org.apache.commons.rdf.api.RDFParserBuilder;
 import org.apache.commons.rdf.api.RDFSyntax;
-import org.apache.commons.rdf.api.RDFTermFactory;
 import org.apache.commons.rdf.simple.AbstractRDFParserBuilder;
 
 import com.github.jsonldjava.core.JsonLdError;
@@ -39,15 +38,15 @@ import com.github.jsonldjava.core.JsonLdProcessor;
 import com.github.jsonldjava.core.RDFDataset;
 import com.github.jsonldjava.utils.JsonUtils;
 
-public class JsonLdParserBuilder extends AbstractRDFParserBuilder {
+public class JsonLdParserBuilder extends AbstractRDFParserBuilder<JsonLdParserBuilder> {
 
 	@Override
-	protected RDFTermFactory createRDFTermFactory() {
+	protected JsonLdRDFTermFactory createRDFTermFactory() {
 		return new JsonLdRDFTermFactory();
 	}
 
 	@Override
-	public RDFParserBuilder contentType(RDFSyntax rdfSyntax) throws IllegalArgumentException {
+	public JsonLdParserBuilder contentType(RDFSyntax rdfSyntax) throws IllegalArgumentException {
 		if (rdfSyntax != null && rdfSyntax != RDFSyntax.JSONLD) { 
 			throw new IllegalArgumentException("Unsupported contentType: " + rdfSyntax);
 		}
@@ -55,7 +54,7 @@ public class JsonLdParserBuilder extends AbstractRDFParserBuilder {
 	}
 	
 	@Override
-	public RDFParserBuilder contentType(String contentType) throws IllegalArgumentException {
+	public JsonLdParserBuilder contentType(String contentType) throws IllegalArgumentException {
 		JsonLdParserBuilder c = (JsonLdParserBuilder) super.contentType(contentType);
 		if (c.getContentType().filter(Predicate.isEqual(RDFSyntax.JSONLD).negate()).isPresent()) {
 			throw new IllegalArgumentException("Unsupported contentType: " + contentType);
@@ -79,7 +78,7 @@ public class JsonLdParserBuilder extends AbstractRDFParserBuilder {
 	}
 	
 	@Override
-	protected void parseSynchronusly() throws IOException, RDFParseException {		
+	protected void parseSynchronusly() throws IOException {		
 		Object json = readSource();
 		JsonLdOptions options = new JsonLdOptions();
 		getBase().map(IRI::getIRIString).ifPresent(options::setBase);
@@ -91,23 +90,50 @@ public class JsonLdParserBuilder extends AbstractRDFParserBuilder {
 		try {
 			rdfDataset = (RDFDataset) JsonLdProcessor.toRDF(json, options);
 		} catch (JsonLdError e) {
-			throw new RDFParseException(e);
-		}		
-		Graph intoGraph = getIntoGraph().get();
-		if (intoGraph instanceof JsonLdGraph && ! intoGraph.contains(null, null, null)) {
-			// Empty graph, we can just move over the map content directly:
-			JsonLdGraph jsonLdGraph = (JsonLdGraph) intoGraph;
-			jsonLdGraph.getRdfDataSet().putAll(rdfDataset);				
-		} else {
+			throw new IOException("Could not parse Json-LD", e);
+		}
+		if (getTargetGraph().isPresent()) {		
+			Graph intoGraph = getTargetGraph().get();
+			if (intoGraph instanceof JsonLdGraph && ! intoGraph.contains(null, null, null)) {
+				// Empty graph, we can just move over the map content directly:
+				JsonLdGraph jsonLdGraph = (JsonLdGraph) intoGraph;
+				jsonLdGraph.getRdfDataSet().putAll(rdfDataset);
+				return;
+				// otherwise we have to merge as normal
+			} 			
 			// TODO: Modify JsonLdProcessor to have an actual triple callback
-			try (JsonLdGraph parsedGraph = new JsonLdGraph(rdfDataset)) {
-				// sequential() as we don't know if intoGraph is thread safe :-/
-				parsedGraph.stream().sequential().forEach(intoGraph::add);
-			}
+			Graph parsedGraph = getJsonLdRDFTermFactory().asGraph(rdfDataset);			
+			// sequential() as we don't know if destination is thread safe :-/
+			parsedGraph.stream().sequential().forEach(intoGraph::add);
+		} else if (getTargetDataset().isPresent()) {
+			Dataset intoDataset = getTargetDataset().get();
+			if (intoDataset instanceof JsonLdDataset && 
+					! intoDataset.contains(null, null, null, null)) {				
+				JsonLdDataset jsonLdDataset = (JsonLdDataset) intoDataset;
+				// Empty - we can just do a brave replace!
+				jsonLdDataset.getRdfDataSet().putAll(rdfDataset);
+				return;				
+				// otherwise we have to merge.. but also avoid duplicate triples, 
+				// map blank nodes etc, so we'll fall back to normal Dataset appending.
+			}	
+			Dataset fromDataset = getJsonLdRDFTermFactory().asDataset(rdfDataset);
+			// .sequential() as we don't know if destination is thread-safe :-/			
+			fromDataset.stream().sequential().forEach(intoDataset::add);
+		} else {	
+			Dataset fromDataset = getJsonLdRDFTermFactory().asDataset(rdfDataset);
+			// No need for .sequential() here
+			fromDataset.stream().forEach(getTarget());
 		}
 	}
 	
-	private Object readSource() throws IOException, RDFParseException {
+	private JsonLdRDFTermFactory getJsonLdRDFTermFactory() {
+		if (getRdfTermFactory().isPresent() && getRdfTermFactory().get() instanceof JsonLdRDFTermFactory) {
+			return (JsonLdRDFTermFactory) getRdfTermFactory().get();
+		}
+		return createRDFTermFactory();		
+	}
+
+	private Object readSource() throws IOException {
 		// Due to checked IOException we can't easily 
 		// do this with .map and .orElseGet()
 		
