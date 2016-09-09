@@ -28,14 +28,14 @@ public interface JsonLdTerm extends RDFTerm {
 	 *  
 	 * @return JsonLd {@link Node}
 	 */
-	Node asNode();
+	Node asJsonLdNode();
 	
 	abstract class JsonLdTermImpl implements JsonLdTerm {
 		final Node node;
 		JsonLdTermImpl(Node node) {
 			this.node = node;
 		}
-		public Node asNode() {
+		public Node asJsonLdNode() {
 			return node;
 		}
 	}

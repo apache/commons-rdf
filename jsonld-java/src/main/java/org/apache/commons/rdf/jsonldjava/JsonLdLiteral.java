@@ -85,7 +85,7 @@ public interface JsonLdLiteral extends JsonLdTerm, Literal {
 		public boolean equals(Object obj) {
 			if (obj instanceof JsonLdLiteral) {
 				JsonLdLiteral other = (JsonLdLiteral) obj;
-				return asNode().compareTo(other.asNode()) == 0;
+				return asJsonLdNode().compareTo(other.asJsonLdNode()) == 0;
 			}
 			if (obj instanceof Literal) {
 				Literal other = (Literal) obj;
