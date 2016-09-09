@@ -32,7 +32,6 @@ import org.apache.commons.rdf.api.RDFParserBuilder;
 import org.apache.commons.rdf.api.RDFSyntax;
 import org.apache.commons.rdf.api.RDFTermFactory;
 import org.apache.commons.rdf.simple.AbstractRDFParserBuilder;
-import org.apache.commons.rdf.simple.AbstractRDFParserBuilder.RDFParseException;
 
 import com.github.jsonldjava.core.JsonLdError;
 import com.github.jsonldjava.core.JsonLdOptions;
