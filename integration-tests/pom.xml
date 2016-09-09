@@ -64,4 +64,5 @@
 		
 </dependencies>
 	
+	<name>Commons RDF: Integration tests</name>
 </project>
