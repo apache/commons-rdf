@@ -18,6 +18,7 @@
 package org.apache.commons.rdf.jsonldjava;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -25,6 +26,7 @@ import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDFTerm;
+import org.apache.commons.rdf.api.Triple;
 
 import com.github.jsonldjava.core.RDFDataset;
 
@@ -39,7 +41,7 @@ public class JsonLdGraph extends JsonLdGraphLike<org.apache.commons.rdf.api.Trip
 	
 	JsonLdGraph(RDFDataset rdfDataSet, Optional<BlankNodeOrIRI> graphName, String bnodePrefix) {
 		super(rdfDataSet, bnodePrefix);
-		this.graphName = graphName;
+		this.graphName = Objects.requireNonNull(graphName);
 	}
 	
 	JsonLdGraph(String bnodePrefix) {
@@ -47,7 +49,17 @@ public class JsonLdGraph extends JsonLdGraphLike<org.apache.commons.rdf.api.Trip
 		this.graphName = Optional.empty();
 	}
 
+	@Override
+	public void clear() {
+		filteredGraphs(graphName).forEach(l -> l.clear());
+	}
 
+	@Override
+	public void add(Triple t) {
+		// Ensure it's added in the correct graph
+		super.add(graphName.orElse(null), t.getSubject(), t.getPredicate(), t.getObject());
+	}
+	
 	@Override
 	public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
 		super.add(graphName.orElse(null), subject, predicate, object);
@@ -59,8 +71,19 @@ public class JsonLdGraph extends JsonLdGraphLike<org.apache.commons.rdf.api.Trip
 	}
 	
 	@Override
+	public boolean contains(Triple t) {
+		return contains(graphName, t.getSubject(), t.getPredicate(), t.getObject());
+	}
+	
+	@Override
 	public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
 		super.remove(graphName, subject, predicate, object);
+	}
+	
+	@Override
+	public void remove(Triple t) {
+		// Only remove from the particular graph
+		remove(graphName, t.getSubject(), t.getPredicate(), t.getObject());		
 	}
 
 	@Override

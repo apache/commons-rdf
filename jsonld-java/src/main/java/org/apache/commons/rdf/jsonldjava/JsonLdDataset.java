@@ -20,6 +20,7 @@ package org.apache.commons.rdf.jsonldjava;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
@@ -82,6 +83,12 @@ public class JsonLdDataset extends JsonLdGraphLike<org.apache.commons.rdf.api.Qu
 		super.remove(graphName, subject, predicate, object);
 	}
 
+
+	@Override
+	public void remove(Quad q) {
+		remove(q.getGraphName(), q.getSubject(), q.getPredicate(), q.getObject());
+	}
+	
 	@Override
 	public Stream<? extends Quad> stream(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate,
 			RDFTerm object) {		
@@ -92,8 +99,14 @@ public class JsonLdDataset extends JsonLdGraphLike<org.apache.commons.rdf.api.Qu
 	}
 
 	@Override
+	public long size() {		
+		return rdfDataSet.graphNames().parallelStream().map(rdfDataSet::getQuads).collect(Collectors.summingLong(List::size));
+	}
+
+	@Override
 	Quad asTripleOrQuad(com.github.jsonldjava.core.RDFDataset.Quad jsonldQuad) {
 		return factory.createQuad(jsonldQuad);
 	}
+
 
 }

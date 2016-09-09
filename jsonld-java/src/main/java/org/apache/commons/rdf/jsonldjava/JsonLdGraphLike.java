@@ -19,10 +19,10 @@ package org.apache.commons.rdf.jsonldjava;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.rdf.api.BlankNode;
@@ -73,9 +73,9 @@ abstract class JsonLdGraphLike<T extends TripleLike<BlankNodeOrIRI, IRI, RDFTerm
 		this(rdfDataSet, "urn:uuid:" + SALT + "#" +  "g"+ System.identityHashCode(rdfDataSet));
 	}
 
-	JsonLdGraphLike(RDFDataset rdfDataset, String bnodePrefix) {
-		rdfDataSet = rdfDataset;
-		this.bnodePrefix = bnodePrefix;
+	JsonLdGraphLike(RDFDataset rdfDataSet, String bnodePrefix) {
+		this.rdfDataSet = Objects.requireNonNull(rdfDataSet);
+		this.bnodePrefix = Objects.requireNonNull(bnodePrefix);
 		this.factory = new JsonLdRDFTermFactory(bnodePrefix);
 	}
 	
@@ -86,7 +86,6 @@ abstract class JsonLdGraphLike<T extends TripleLike<BlankNodeOrIRI, IRI, RDFTerm
 	@Override
 	public void add(T tripleOrQuad) {
 		String g = graphNameAsJsonLdString(tripleOrQuad);
-
 		String s = asJsonLdString(tripleOrQuad.getSubject());
 		String p = asJsonLdString(tripleOrQuad.getPredicate());
 		
@@ -100,16 +99,21 @@ abstract class JsonLdGraphLike<T extends TripleLike<BlankNodeOrIRI, IRI, RDFTerm
 			rdfDataSet.addQuad(s,p,literal.getLexicalForm(), datatype, language, g);
 		}
 	}
-
-	@Override
-	public void clear() {
-		rdfDataSet.clear();
-	}
 	
 	public void close() {
 		// Drop the memory reference, but don't clear it
 		rdfDataSet = null;			
 	}	
+
+	@Override
+	public void clear() {		
+		filteredGraphs(null).forEach(s -> s.clear());
+		//   In theory we could use
+		//rdfDataSet.clear();
+		//   but then we would need to also do
+		//rdfDataSet.put("@default",  new ArrayList());
+		//   .. both of which seems to be touching too much on JsonLd-Java's internal structure
+	}
 
 	@Override
 	public boolean contains(T tripleOrQuad) {		
@@ -119,21 +123,7 @@ abstract class JsonLdGraphLike<T extends TripleLike<BlankNodeOrIRI, IRI, RDFTerm
 	public RDFDataset getRdfDataSet() {
 		return rdfDataSet;
 	}
-	
-	@Override
-	public void remove(T t) {
-		if (t instanceof org.apache.commons.rdf.api.Quad) {
-			org.apache.commons.rdf.api.Quad q = (org.apache.commons.rdf.api.Quad) t;
-			remove(q.getGraphName(), q.getSubject(), q.getPredicate(), q.getObject());
-		} else {
-			remove(Optional.empty(), t.getSubject(), t.getPredicate(), t.getObject());
-		}
-	}
-	
-	@Override
-	public long size() {		
-		return rdfDataSet.graphNames().parallelStream().map(rdfDataSet::getQuads).collect(Collectors.summingLong(List::size));
-	}
+
 	
 	@Override
 	public Stream<? extends T> stream() {
@@ -209,11 +199,11 @@ abstract class JsonLdGraphLike<T extends TripleLike<BlankNodeOrIRI, IRI, RDFTerm
 				.map(rdfDataSet::getQuads);
 	}
 
-	String graphNameAsJsonLdString(T tripleOrQuad) {
+	String graphNameAsJsonLdString(T tripleOrQuad) {		
 		if (tripleOrQuad instanceof org.apache.commons.rdf.api.Quad) {
 			org.apache.commons.rdf.api.Quad quad = (org.apache.commons.rdf.api.Quad)tripleOrQuad;
 			return quad.getGraphName().map(this::asJsonLdString).orElse("@default");			
-		}
+		}		
 		return "@default";
 	}
 	

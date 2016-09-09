@@ -18,6 +18,7 @@
 package org.apache.commons.rdf.jsonldjava;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 import java.util.UUID;
 
 import org.apache.commons.rdf.api.BlankNode;
@@ -49,7 +50,7 @@ public final class JsonLdRDFTermFactory implements RDFTermFactory {
 	}
 	
 	JsonLdRDFTermFactory(String bnodePrefix) {
-		this.bnodePrefix = bnodePrefix;
+		this.bnodePrefix = Objects.requireNonNull(bnodePrefix);
 	}
 	
 	public Node asJsonLdNode(RDFTerm term) {
