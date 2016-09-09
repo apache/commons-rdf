@@ -9,37 +9,58 @@ import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.api.RDFTermFactory;
 import org.apache.commons.rdf.api.Triple;
-import org.apache.commons.rdf.jena.RDFTermFactoryJena;
+import org.apache.commons.rdf.jena.JenaRDFTermFactory;
+import org.apache.commons.rdf.jsonldjava.JsonLdRDFTermFactory;
 import org.apache.commons.rdf.rdf4j.RDF4JTermFactory;
 import org.apache.commons.rdf.simple.SimpleRDFTermFactory;
 import org.junit.Test;
 
-public class JenaRDF4JTest {
+public class AllToAllTest {
 
 	private RDFTermFactory simpleFactory = new SimpleRDFTermFactory();
-	private RDFTermFactory jenaFactory = new RDFTermFactoryJena();
+	private RDFTermFactory jenaFactory = new JenaRDFTermFactory();
 	private RDFTermFactory rdf4jFactory = new RDF4JTermFactory();
+	private RDFTermFactory jsonldFactory = new JsonLdRDFTermFactory();
 
 	@Test
 	public void jenaToRdf4j() throws Exception {
 		nodesIntoOther(jenaFactory, rdf4jFactory);
 	}
-
+	@Test
+	public void jenaToJsonLd() throws Exception {
+		nodesIntoOther(jenaFactory, jsonldFactory);
+	}
+	@Test
+	public void jenaToSimple() throws Exception {
+		nodesIntoOther(jenaFactory, simpleFactory);
+	}
+	
 	@Test
 	public void rdf4jToJena() throws Exception {
 		nodesIntoOther(rdf4jFactory, jenaFactory);
 	}
-
+	@Test
+	public void rdf4jToJsonLd() throws Exception {
+		nodesIntoOther(rdf4jFactory, jsonldFactory);
+	}	
+	@Test
+	public void rdf4jToSimple() throws Exception {
+		nodesIntoOther(rdf4jFactory, simpleFactory);
+	}
+	
 	@Test
 	public void simpletoJena() throws Exception {
 		nodesIntoOther(simpleFactory, jenaFactory);
 	}
-
+	@Test
+	public void simpleToJsonLd() throws Exception {
+		nodesIntoOther(simpleFactory, jsonldFactory);
+	}
 	@Test
 	public void simpleToRdf4j() throws Exception {
 		nodesIntoOther(simpleFactory, rdf4jFactory);
 	}
-
+	
 	public void nodesIntoOther(RDFTermFactory fromFactory, RDFTermFactory toFactory) throws Exception {
 		Graph g = fromFactory.createGraph();
 		BlankNode s = toFactory.createBlankNode();
