@@ -52,100 +52,6 @@ public final class JsonLdRDFTermFactory implements RDFTermFactory {
 		this.bnodePrefix = Objects.requireNonNull(bnodePrefix);
 	}
 
-	public Node asJsonLdNode(RDFTerm term) {
-		if (term instanceof JsonLdTerm) {
-			// Return original Node
-			return ((JsonLdTerm) term).asJsonLdNode();
-		}
-		if (term instanceof IRI) {
-			return new RDFDataset.IRI(((IRI) term).getIRIString());
-		}
-		if (term instanceof BlankNode) {
-			String ref = ((BlankNode) term).uniqueReference();
-			if (ref.startsWith(bnodePrefix)) {
-				// one of our own (but no longer a JsonLdBlankNode),
-				// we can recover the label after our unique prefix
-				return new RDFDataset.BlankNode(ref.replace(bnodePrefix, ""));
-			}
-			// The "foreign" unique reference might not be a valid bnode string,
-			// we'll convert to a UUID
-			UUID uuid = UUID.nameUUIDFromBytes(ref.getBytes(StandardCharsets.UTF_8));
-			return new RDFDataset.BlankNode("_:" + uuid);
-		}
-		if (term instanceof Literal) {
-			Literal literal = (Literal) term;
-			return new RDFDataset.Literal(literal.getLexicalForm(), literal.getDatatype().getIRIString(),
-					literal.getLanguageTag().orElse(null));
-		}
-		throw new IllegalArgumentException("RDFTerm not instanceof IRI, BlankNode or Literal: " + term);
-	}
-
-	RDFDataset.Quad createJsonLdQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		return new RDFDataset.Quad(asJsonLdNode(subject), asJsonLdNode(predicate), asJsonLdNode(object), asJsonLdString(graphName));
-	}
-
-	String asJsonLdString(BlankNodeOrIRI blankNodeOrIRI) {
-		if (blankNodeOrIRI == null) {
-			return null;
-		}
-		if (blankNodeOrIRI instanceof IRI) {
-			return ((IRI)blankNodeOrIRI).getIRIString();
-		} else if (blankNodeOrIRI instanceof BlankNode) {
-			BlankNode blankNode = (BlankNode) blankNodeOrIRI;
-			String ref = blankNode.uniqueReference();
-			if (ref.startsWith(bnodePrefix)) { 
-				// One of ours (but possibly not a JsonLdBlankNode) -  
-				// we can use the suffix directly
-				return ref.replace(bnodePrefix, "_:");
-			} else {
-				// Map to unique bnode identifier, e.g. _:0dbd92ee-ab1a-45e7-bba2-7ade54f87ec5
-				UUID uuid = UUID.nameUUIDFromBytes(ref.getBytes(StandardCharsets.UTF_8));
-				return "_:"+ uuid;
-			}
-		} else {
-			throw new IllegalArgumentException("Expected a BlankNode or IRI, not: " + blankNodeOrIRI);
-		}
-	}	
-
-	/**
-	 * Adapt a Commons RDF {@link Triple} as a JsonLd {@link RDFDataset.Quad}.
-	 * 
-	 * @param triple Commons RDF {@link Triple} to adapt
-	 * @return Adapted JsonLd {@link RDFDataset.Quad}
-	 */
-	public RDFDataset.Quad asJsonLdQuad(Triple triple) {
-		return createJsonLdQuad(null, triple.getSubject(), triple.getPredicate(), triple.getObject());
-	}
-	
-	/**
-	 * Adapt a Commons RDF {@link org.apache.commons.rdf.api.Quad} as a JsonLd {@link RDFDataset.Quad}.
-	 * 
-	 * @param quad Commons RDF {@link org.apache.commons.rdf.api.Quad}  to adapt
-	 * @return Adapted JsonLd {@link RDFDataset.Quad}
-	 */
-	public RDFDataset.Quad asJsonLdQuad(org.apache.commons.rdf.api.Quad quad) {
-		BlankNodeOrIRI g = quad.getGraphName().orElse(null);		
-		return createJsonLdQuad(g, quad.getSubject(), quad.getPredicate(), quad.getObject());
-	}
-
-	@Override
-	public JsonLdBlankNode createBlankNode() {
-		String id = "_:" + UUID.randomUUID().toString();
-		return new JsonLdBlankNodeImpl(new RDFDataset.BlankNode(id), bnodePrefix);
-	}
-
-	@Override
-	public JsonLdBlankNode createBlankNode(String name) {
-		String id = "_:" + name;
-		// TODO: Check if name is valid JSON-LD BlankNode identifier
-		return new JsonLdBlankNodeImpl(new RDFDataset.BlankNode(id), bnodePrefix);
-	}
-
-	@Override
-	public Dataset createDataset() {
-		return new JsonLdDataset(bnodePrefix);
-	}
-
 	/**
 	 * Adapt a JsonLd {@link RDFDataset} as a Commons RDF {@link Dataset}.
 	 * <p>
@@ -179,6 +85,99 @@ public final class JsonLdRDFTermFactory implements RDFTermFactory {
 		return new JsonLdGraph(rdfDataSet);
 	}
 
+	public Node asJsonLdNode(RDFTerm term) {
+		if (term instanceof JsonLdTerm) {
+			// Return original Node
+			return ((JsonLdTerm) term).asJsonLdNode();
+		}
+		if (term instanceof IRI) {
+			return new RDFDataset.IRI(((IRI) term).getIRIString());
+		}
+		if (term instanceof BlankNode) {
+			String ref = ((BlankNode) term).uniqueReference();
+			if (ref.startsWith(bnodePrefix)) {
+				// one of our own (but no longer a JsonLdBlankNode),
+				// we can recover the label after our unique prefix
+				return new RDFDataset.BlankNode(ref.replace(bnodePrefix, ""));
+			}
+			// The "foreign" unique reference might not be a valid bnode string,
+			// we'll convert to a UUID
+			UUID uuid = UUID.nameUUIDFromBytes(ref.getBytes(StandardCharsets.UTF_8));
+			return new RDFDataset.BlankNode("_:" + uuid);
+		}
+		if (term instanceof Literal) {
+			Literal literal = (Literal) term;
+			return new RDFDataset.Literal(literal.getLexicalForm(), literal.getDatatype().getIRIString(),
+					literal.getLanguageTag().orElse(null));
+		}
+		throw new IllegalArgumentException("RDFTerm not instanceof IRI, BlankNode or Literal: " + term);
+	}	
+
+	/**
+	 * Adapt a Commons RDF {@link org.apache.commons.rdf.api.Quad} as a JsonLd {@link RDFDataset.Quad}.
+	 * 
+	 * @param quad Commons RDF {@link org.apache.commons.rdf.api.Quad}  to adapt
+	 * @return Adapted JsonLd {@link RDFDataset.Quad}
+	 */
+	public RDFDataset.Quad asJsonLdQuad(org.apache.commons.rdf.api.Quad quad) {
+		BlankNodeOrIRI g = quad.getGraphName().orElse(null);		
+		return createJsonLdQuad(g, quad.getSubject(), quad.getPredicate(), quad.getObject());
+	}
+	
+	/**
+	 * Adapt a Commons RDF {@link Triple} as a JsonLd {@link RDFDataset.Quad}.
+	 * 
+	 * @param triple Commons RDF {@link Triple} to adapt
+	 * @return Adapted JsonLd {@link RDFDataset.Quad}
+	 */
+	public RDFDataset.Quad asJsonLdQuad(Triple triple) {
+		return createJsonLdQuad(null, triple.getSubject(), triple.getPredicate(), triple.getObject());
+	}
+
+	/**
+	 * Adapt a JsonLd {@link RDFDataset.Quad} as a Commons RDF
+	 * {@link org.apache.commons.rdf.api.Quad}.
+	 * <p>
+	 * The underlying JsonLd quad can be retrieved with
+	 * {@link JsonLdQuad#asJsonLdQuad()}.
+	 * 
+	 * @param quad
+	 *            A JsonLd {@link RDFDataset.Quad} to adapt
+	 * @return Adapted {@link JsonLdQuad}
+	 */
+	public JsonLdQuad asQuad(final RDFDataset.Quad quad) {
+		return new JsonLdQuadImpl(quad, bnodePrefix);
+	}
+
+	/**
+	 * Adapt a JsonLd {@link RDFDataset.Node} as a Commons RDF {@link RDFTerm}.
+	 * <p>
+	 * The underlying node can be retrieved with
+	 * {@link JsonLdTerm#asJsonLdNode()}.
+	 * 
+	 * @param node
+	 *            A JsonLd {@link Node} to adapt
+	 * @return Adapted {@link JsonLdTerm}
+	 */
+	public JsonLdTerm asRDFTerm(final Node node) {
+		return asRDFTerm(node, bnodePrefix);
+	}
+
+	/**
+	 * Adapt a JsonLd {@link RDFDataset.Quad} as a Commons RDF
+	 * {@link org.apache.commons.rdf.api.Triple}.
+	 * <p>
+	 * The underlying JsonLd quad can be retrieved with
+	 * {@link JsonLdTriple#asJsonLdQuad()}.
+	 * 
+	 * @param quad
+	 *            A JsonLd {@link RDFDataset.Quad} to adapt
+	 * @return Adapted {@link JsonLdTriple}
+	 */
+	public JsonLdTriple asTriple(final RDFDataset.Quad quad) {
+		return new JsonLdTripleImpl(quad, bnodePrefix);
+	}
+
 	/**
 	 * Adapt a JsonLd {@link RDFDataset} as a Commons RDF {@link Graph}.
 	 * <p>
@@ -199,6 +198,24 @@ public final class JsonLdRDFTermFactory implements RDFTermFactory {
 	 */	
 	public Graph asUnionGraph(RDFDataset rdfDataSet) {
 		return new JsonLdUnionGraph(rdfDataSet);
+	}
+
+	@Override
+	public JsonLdBlankNode createBlankNode() {
+		String id = "_:" + UUID.randomUUID().toString();
+		return new JsonLdBlankNodeImpl(new RDFDataset.BlankNode(id), bnodePrefix);
+	}
+
+	@Override
+	public JsonLdBlankNode createBlankNode(String name) {
+		String id = "_:" + name;
+		// TODO: Check if name is valid JSON-LD BlankNode identifier
+		return new JsonLdBlankNodeImpl(new RDFDataset.BlankNode(id), bnodePrefix);
+	}
+
+	@Override
+	public Dataset createDataset() {
+		return new JsonLdDataset(bnodePrefix);
 	}
 
 	@Override
@@ -232,53 +249,32 @@ public final class JsonLdRDFTermFactory implements RDFTermFactory {
 		return new JsonLdQuadImpl(createJsonLdQuad(graphName, subject, predicate, object), bnodePrefix);
 	}
 
-	/**
-	 * Adapt a JsonLd {@link RDFDataset.Quad} as a Commons RDF
-	 * {@link org.apache.commons.rdf.api.Quad}.
-	 * <p>
-	 * The underlying JsonLd quad can be retrieved with
-	 * {@link JsonLdQuad#asJsonLdQuad()}.
-	 * 
-	 * @param quad
-	 *            A JsonLd {@link RDFDataset.Quad} to adapt
-	 * @return Adapted {@link JsonLdQuad}
-	 */
-	public JsonLdQuad asQuad(final RDFDataset.Quad quad) {
-		return new JsonLdQuadImpl(quad, bnodePrefix);
-	}
-
 	@Override
 	public JsonLdTriple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
 		return new JsonLdTripleImpl(createJsonLdQuad(null, subject, predicate, object), bnodePrefix);
 	}
 
-	/**
-	 * Adapt a JsonLd {@link RDFDataset.Quad} as a Commons RDF
-	 * {@link org.apache.commons.rdf.api.Triple}.
-	 * <p>
-	 * The underlying JsonLd quad can be retrieved with
-	 * {@link JsonLdTriple#asJsonLdQuad()}.
-	 * 
-	 * @param quad
-	 *            A JsonLd {@link RDFDataset.Quad} to adapt
-	 * @return Adapted {@link JsonLdTriple}
-	 */
-	public JsonLdTriple asTriple(final RDFDataset.Quad quad) {
-		return new JsonLdTripleImpl(quad, bnodePrefix);
-	}
-
-	/**
-	 * Adapt a JsonLd {@link RDFDataset.Node} as a Commons RDF {@link RDFTerm}.
-	 * <p>
-	 * The underlying node can be retrieved with
-	 * {@link JsonLdTerm#asJsonLdNode()}.
-	 * 
-	 * @param node
-	 *            A JsonLd {@link Node} to adapt
-	 * @return Adapted {@link JsonLdTerm}
-	 */
-	public JsonLdTerm asRDFTerm(final Node node) {
-		return asRDFTerm(node, bnodePrefix);
+	String asJsonLdString(BlankNodeOrIRI blankNodeOrIRI) {
+		if (blankNodeOrIRI == null) {
+			return null;
+		}
+		if (blankNodeOrIRI instanceof IRI) {
+			return ((IRI)blankNodeOrIRI).getIRIString();
+		} else if (blankNodeOrIRI instanceof BlankNode) {
+			BlankNode blankNode = (BlankNode) blankNodeOrIRI;
+			String ref = blankNode.uniqueReference();
+			if (ref.startsWith(bnodePrefix)) { 
+				// One of ours (but possibly not a JsonLdBlankNode) -  
+				// we can use the suffix directly
+				return ref.replace(bnodePrefix, "_:");
+			} else {
+				// Map to unique bnode identifier, e.g. _:0dbd92ee-ab1a-45e7-bba2-7ade54f87ec5
+				UUID uuid = UUID.nameUUIDFromBytes(ref.getBytes(StandardCharsets.UTF_8));
+				return "_:"+ uuid;
+			}
+		} else {
+			throw new IllegalArgumentException("Expected a BlankNode or IRI, not: " + blankNodeOrIRI);
+		}
 	}
 
 	JsonLdTerm asRDFTerm(final Node node, String blankNodePrefix) {
@@ -299,6 +295,10 @@ public final class JsonLdRDFTermFactory implements RDFTermFactory {
 		} else {
 			throw new IllegalArgumentException("Node is neither IRI, BlankNode nor Literal: " + node);
 		}
+	}
+
+	RDFDataset.Quad createJsonLdQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+		return new RDFDataset.Quad(asJsonLdNode(subject), asJsonLdNode(predicate), asJsonLdNode(object), asJsonLdString(graphName));
 	}
 
 }
