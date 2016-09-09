@@ -7,6 +7,7 @@ import org.apache.commons.rdf.api.BlankNode;
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Literal;
+import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.RDFTermFactory;
 import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.jena.JenaRDFTermFactory;
@@ -24,48 +25,57 @@ public class AllToAllTest {
 
 	@Test
 	public void jenaToRdf4j() throws Exception {
-		nodesIntoOther(jenaFactory, rdf4jFactory);
+		addTermsFromOtherFactory(jenaFactory, rdf4jFactory);
 	}
 	@Test
 	public void jenaToJsonLd() throws Exception {
-		nodesIntoOther(jenaFactory, jsonldFactory);
+		addTermsFromOtherFactory(jenaFactory, jsonldFactory);
 	}
 	@Test
 	public void jenaToSimple() throws Exception {
-		nodesIntoOther(jenaFactory, simpleFactory);
+		addTermsFromOtherFactory(jenaFactory, simpleFactory);
 	}
 	
 	@Test
 	public void rdf4jToJena() throws Exception {
-		nodesIntoOther(rdf4jFactory, jenaFactory);
+		addTermsFromOtherFactory(rdf4jFactory, jenaFactory);
 	}
 	@Test
 	public void rdf4jToJsonLd() throws Exception {
-		nodesIntoOther(rdf4jFactory, jsonldFactory);
+		addTermsFromOtherFactory(rdf4jFactory, jsonldFactory);
 	}	
 	@Test
 	public void rdf4jToSimple() throws Exception {
-		nodesIntoOther(rdf4jFactory, simpleFactory);
+		addTermsFromOtherFactory(rdf4jFactory, simpleFactory);
 	}
 	
 	@Test
 	public void simpletoJena() throws Exception {
-		nodesIntoOther(simpleFactory, jenaFactory);
+		addTermsFromOtherFactory(simpleFactory, jenaFactory);
 	}
 	@Test
 	public void simpleToJsonLd() throws Exception {
-		nodesIntoOther(simpleFactory, jsonldFactory);
+		addTermsFromOtherFactory(simpleFactory, jsonldFactory);
 	}
 	@Test
 	public void simpleToRdf4j() throws Exception {
-		nodesIntoOther(simpleFactory, rdf4jFactory);
+		addTermsFromOtherFactory(simpleFactory, rdf4jFactory);
 	}
 	
-	public void nodesIntoOther(RDFTermFactory fromFactory, RDFTermFactory toFactory) throws Exception {
-		Graph g = fromFactory.createGraph();
-		BlankNode s = toFactory.createBlankNode();
-		IRI p = toFactory.createIRI("http://example.com/p");
-		Literal o = toFactory.createLiteral("Hello");
+	/**
+	 * This test creates a {@link Graph} with the first
+	 * {@link RDFTermFactory}, then inserts/queries with
+	 * triples using {@link RDFTerm}s created with the second factory.
+	 * 
+	 * @param graphFactory Factory to create {@link Graph}
+	 * @param nodeFactory
+	 * @throws Exception
+	 */
+	public void addTermsFromOtherFactory(RDFTermFactory nodeFactory, RDFTermFactory graphFactory) throws Exception {
+		Graph g = graphFactory.createGraph();
+		BlankNode s = nodeFactory.createBlankNode();
+		IRI p = nodeFactory.createIRI("http://example.com/p");
+		Literal o = nodeFactory.createLiteral("Hello");
 
 		g.add(s, p, o);
 
@@ -73,12 +83,14 @@ public class AllToAllTest {
 		assertTrue(g.contains(s, p, o));
 		Triple t1 = g.stream().findAny().get();
 
-		// Can't make assumptions about mappegetPredicated BlankNode equality
+		// Can't make assumptions about BlankNode equality - it might
+		// have been mapped to a different BlankNode.uniqueReference()
 		// assertEquals(s, t.getSubject());
+		
 		assertEquals(p, t1.getPredicate());
 		assertEquals(o, t1.getObject());
 
-		IRI s2 = toFactory.createIRI("http://example.com/s2");
+		IRI s2 = nodeFactory.createIRI("http://example.com/s2");
 		g.add(s2, p, s);
 		assertTrue(g.contains(s2, p, s));
 
@@ -94,6 +106,6 @@ public class AllToAllTest {
 		assertEquals(bnode, t1.getSubject());
 		// And can be used as a key:
 		Triple t3 = g.stream(bnode, p, null).findAny().get();
-		assertEquals(t1, t3);
+		assertEquals(t1, t3);		
 	}
 }
