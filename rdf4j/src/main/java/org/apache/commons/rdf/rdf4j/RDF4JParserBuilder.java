@@ -51,7 +51,7 @@ import org.eclipse.rdf4j.rio.helpers.AbstractRDFHandler;
  * <em>rdf4j-rio-*</em> module on the classpath.
  *
  */
-public class RDF4JParserBuilder extends AbstractRDFParserBuilder implements RDFParserBuilder {
+public class RDF4JParserBuilder extends AbstractRDFParserBuilder<RDF4JParserBuilder> implements RDFParserBuilder {
 
 	private final class AddToQuadConsumer extends AbstractRDFHandler {
 		private final Consumer<Quad> quadTarget;
@@ -103,8 +103,8 @@ public class RDF4JParserBuilder extends AbstractRDFParserBuilder implements RDFP
 	}
 
 	@Override
-	protected AbstractRDFParserBuilder prepareForParsing() throws IOException, IllegalStateException {
-		RDF4JParserBuilder c = (RDF4JParserBuilder) prepareForParsing();
+	protected RDF4JParserBuilder prepareForParsing() throws IOException, IllegalStateException {
+		RDF4JParserBuilder c = prepareForParsing();
 		// Ensure we have an RDF4JTermFactory for conversion.
 		// We'll make a new one if user has provided a non-RDF4J factory
 		c.rdf4jTermFactory = (RDF4JTermFactory) getRdfTermFactory().filter(RDF4JTermFactory.class::isInstance)
@@ -113,10 +113,10 @@ public class RDF4JParserBuilder extends AbstractRDFParserBuilder implements RDFP
 	}
 
 	@Override
-	protected void parseSynchronusly() throws IOException, RDFParseException {
+	protected void parseSynchronusly() throws IOException {		
 		Optional<RDFFormat> formatByMimeType = getContentType().flatMap(Rio::getParserFormatForMIMEType);
 		String base = getBase().map(IRI::getIRIString).orElse(null);
-		
+				
 		ParserConfig parserConfig = new ParserConfig();
 		// TODO: Should we need to set anything?
 		RDFLoader loader = new RDFLoader(parserConfig, rdf4jTermFactory.getValueFactory());
