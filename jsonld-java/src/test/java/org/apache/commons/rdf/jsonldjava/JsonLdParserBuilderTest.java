@@ -35,9 +35,9 @@ import org.apache.commons.rdf.api.RDFSyntax;
 import org.apache.commons.rdf.simple.Types;
 import org.junit.Test;
 
-public class JsonLdParserBuilderTest {
-	
+public class JsonLdParserBuilderTest {	
 	private static final String TEST_JSONLD = "/test.jsonld";
+	
 	static JsonLdRDFTermFactory factory = new JsonLdRDFTermFactory();
 	IRI test = factory.createIRI("http://example.com/test");
 	IRI Type = factory.createIRI("http://example.com/Type");
@@ -55,9 +55,13 @@ public class JsonLdParserBuilderTest {
 	public void parseByUrl() throws Exception {
 		URL url = getClass().getResource(TEST_JSONLD);
 		assertNotNull("Test resource not found: " + TEST_JSONLD, url);
-		IRI iri = factory.createIRI(url.toString());		
-		Graph g = new JsonLdParserBuilder()
-				.contentType(RDFSyntax.JSONLD).source(iri).parse()
+		IRI iri = factory.createIRI(url.toString());
+		Graph g = factory.createGraph();
+		new JsonLdParserBuilder()
+				.contentType(RDFSyntax.JSONLD)
+				.source(iri)				
+				.target(g)
+				.parse()
 				.get(10, TimeUnit.SECONDS);
 		checkGraph(g);
 	}
@@ -70,20 +74,26 @@ public class JsonLdParserBuilderTest {
 			assertNotNull("Test resource not found: " + TEST_JSONLD, is);
 			Files.copy(is, path, StandardCopyOption.REPLACE_EXISTING);
 		}
-		Graph g = new JsonLdParserBuilder()
-				.contentType(RDFSyntax.JSONLD).source(path).parse()
+		Graph g = factory.createGraph();
+		new JsonLdParserBuilder()
+				.contentType(RDFSyntax.JSONLD)
+				.source(path)
+				.target(g)
+				.parse()
 				.get(10, TimeUnit.SECONDS);
 		checkGraph(g);
 	}
 	
 	@Test
 	public void parseByStream() throws Exception {	
-		Graph g;
+		Graph g = factory.createGraph();
 		try (InputStream is = getClass().getResourceAsStream(TEST_JSONLD)) {
 			assertNotNull("Test resource not found: " + TEST_JSONLD, is);	
-			g = new JsonLdParserBuilder()
+			new JsonLdParserBuilder()
 					.base("http://example.com/base/")
-					.contentType(RDFSyntax.JSONLD).source(is).parse()
+					.contentType(RDFSyntax.JSONLD).source(is)
+					.target(g)
+					.parse()
 					.get(10, TimeUnit.SECONDS);
 		}
 		checkGraph(g);
@@ -94,19 +104,19 @@ public class JsonLdParserBuilderTest {
 		assertTrue(g.contains(test, type, Type));
 		// Should not include statements from the named graph
 		
-		assertEquals(1,  g.getTriples(test, pred1, null).count());
-		assertEquals(1,  g.getTriples(test, pred2, null).count());
+		assertEquals(1,  g.stream(test, pred1, null).count());
+		assertEquals(1,  g.stream(test, pred2, null).count());
 		
 		assertEquals("Hello", 
-				((Literal) g.getTriples(test, pred1, null)
+				((Literal) g.stream(test, pred1, null)
 						.findFirst().get().getObject() ).getLexicalForm());			
 		assertTrue(g.contains(test, pred2, other));
 		
 		assertEquals("1337", 
-				((Literal) g.getTriples(test, pred3, null)
+				((Literal) g.stream(test, pred3, null)
 						.findFirst().get().getObject() ).getLexicalForm());
 		assertEquals(Types.XSD_INTEGER, 
-				((Literal) g.getTriples(test, pred3, null)
+				((Literal) g.stream(test, pred3, null)
 						.findFirst().get().getObject() ).getDatatype());
 		
 		// While the named graph 'graph' is not included, the relationship
