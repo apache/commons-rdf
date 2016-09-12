@@ -41,7 +41,7 @@ import org.apache.jena.sparql.core.Quad;
  * @see TripleImpl
  * @see QuadImpl
  * @see JenaFactory#createGeneralizedTriple(RDFTerm, RDFTerm, RDFTerm)
- * @see JenaFactory#createGeneralizedQuad(RDFTerm, RDFTerm, RDFTerm, Optional)
+ * @see JenaFactory#createGeneralizedQuad(RDFTerm, RDFTerm, RDFTerm, RDFTerm)
  *
  */
 public class GeneralizedQuadImpl<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm, G extends RDFTerm> implements JenaQuadLike<S,P,O,G> {
