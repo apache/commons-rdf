@@ -169,7 +169,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * Adapt an existing Jena Node to CommonsRDF {@link RDFTerm}.
 	 * <p>
 	 * If {@link Node#isLiteral()}, then the returned value is a {@link Literal}.
-	 * If {@link Node#isURI(), the returned value is a IRI. If Node#isBlank(),
+	 * If {@link Node#isURI()}, the returned value is a IRI. If {$@link Node#isBlank()},
 	 * the returned value is a {@link BlankNode}, which will use a {@link UUID}
 	 * salt from this {@link JenaRDFTermFactory} instance in combination with
 	 * {@link Node#getBlankNodeId()} for the purpose of its
@@ -191,8 +191,8 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	/**
 	 * Adapt an existing Jena Node to CommonsRDF {@link RDFTerm}.
 	 * <p>
-	 * If {@link Node#isLiteral()}, then the returned value is a {@link Literal}
-	 * . If {@link Node#isURI(), the returned value is a IRI. If Node#isBlank(),
+	 * If {@link Node#isLiteral()}, then the returned value is a {@link Literal}.
+	 * If {@link Node#isURI()}, the returned value is a IRI. If {@link Node#isBlank()},
 	 * the returned value is a {@link BlankNode}, which will use the provided
 	 * {@link UUID} salt in combination with {@link Node#getBlankNodeId()} for
 	 * the purpose of its {@link BlankNode#uniqueReference()}.
@@ -355,8 +355,8 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * {@link Node#getBlankNodeId()} for the purpose of its
 	 * {@link BlankNode#uniqueReference()}.
 	 *
-	 * @see #fromJena(org.apache.jena.graph.Quad, UUID)
-	 * @see #fromJena(RDFTermFactory, org.apache.jena.graph.Quad)
+	 * @see #fromJena(org.apache.jena.sparql.core.Quad)
+	 * @see #fromJenaGeneralized(org.apache.jena.graph.Triple)
 	 * 
 	 * @param quad
 	 *            Jena quad
