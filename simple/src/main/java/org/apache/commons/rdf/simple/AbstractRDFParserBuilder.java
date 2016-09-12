@@ -369,10 +369,6 @@ public abstract class AbstractRDFParserBuilder<T extends AbstractRDFParserBuilde
 	 * One of the source fields MUST be present, as checked by {@link #checkSource()}.
 	 * <p>
 	 * {@link #checkBaseRequired()} is called to verify if {@link #getBase()} is required.
-	 * <p>
-	 * When this method is called, {@link #intoGraph} MUST always be present, as
-	 * that is where the parsed triples MUST be inserted into.
-	 * <p>
 	 * 
 	 * @throws IOException If the source could not be read 
 	 * @throws RDFParseException If the source could not be parsed (e.g. a .ttl file was not valid Turtle)
@@ -384,7 +380,7 @@ public abstract class AbstractRDFParserBuilder<T extends AbstractRDFParserBuilde
 	 * completed.
 	 * <p>
 	 * The returned clone will always have
-	 * {@link #getIntoGraph()} and {@link #getRdfTermFactory()} present.
+	 * {@link #getTarget()} and {@link #getRdfTermFactory()} present.
 	 * <p>
 	 * If the {@link #getSourceFile()} is present, but the 
 	 * {@link #getBase()} is not present, the base will be set to the
