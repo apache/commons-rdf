@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Consumer;
 
@@ -43,7 +44,7 @@ import java.util.function.Consumer;
  * parsing.
  * <p>
  * Setting a method that has already been set will override any existing value
- * in the returned builder - irregardless of the parameter type (e.g.
+ * in the returned builder - regardless of the parameter type (e.g.
  * {@link #source(IRI)} will override a previous {@link #source(Path)}. Settings
  * can be unset by passing <code>null</code> - note that this may 
  * require casting, e.g. <code>contentType( (RDFSyntax) null )</code> 
@@ -220,6 +221,13 @@ public interface RDFParserBuilder {
 	/**
 	 * Specify a consumer for parsed quads.
 	 * <p>
+	 * The quads will include triples in all named graphs of the parsed 
+	 * source, including any triples in the default graph. 
+	 * When parsing a source format which do not support datasets, all quads 
+	 * delivered to the consumer will be in the default graph 
+	 * (e.g. their {@link Quad#getGraphName()} will be
+	 * as {@link Optional#empty()}), while for a source   
+	 * <p>
 	 * It is undefined if any quads are consumed if {@link #parse()} throws any
 	 * exceptions. On the other hand, if {@link #parse()} does not indicate an
 	 * exception, the implementation SHOULD have produced all parsed quads to
@@ -243,7 +251,6 @@ public interface RDFParserBuilder {
 	 *            A {@link Consumer} of {@link Quad}s
 	 * @return An {@link RDFParserBuilder} that will call the consumer for into
 	 *         the specified dataset.
-	 * @return
 	 */
 	RDFParserBuilder target(Consumer<Quad> consumer);
 	
@@ -355,7 +362,7 @@ public interface RDFParserBuilder {
 	 * <p>
 	 * The source set will not be read before the call to {@link #parse()}.
 	 * <p>
-	 * If this builder does not support the given IRI (e.g.
+	 * If this builder does not support the given IRI protocol (e.g.
 	 * <code>urn:uuid:ce667463-c5ab-4c23-9b64-701d055c4890</code>), this method
 	 * should succeed, while the {@link #parse()} should throw an
 	 * {@link IOException}.
@@ -425,9 +432,9 @@ public interface RDFParserBuilder {
 	 * method) MUST have been called before calling this method, otherwise an
 	 * {@link IllegalStateException} will be thrown.
 	 * <p>
-	 * A target method (e.g. {@link #target(Consumer)}, {@link #target(Dataset)}
-	 * , {@link #target(Graph)} or an equivalent subclass method) MUST have been
-	 * called before calling this method, otherwise an
+	 * A target method (e.g. {@link #target(Consumer)}, {@link #target(Dataset)},
+	 * {@link #target(Graph)} or an equivalent subclass method) MUST have been
+	 * called before calling parse(), otherwise an
 	 * {@link IllegalStateException} will be thrown.
 	 * <p>
 	 * It is undefined if this method is thread-safe, however the
@@ -449,7 +456,7 @@ public interface RDFParserBuilder {
 	 * parsing succeeded.
 	 * <p>
 	 * If an exception occurs during parsing, (e.g. {@link IOException} or
-	 * {@link org.apache.commons.rdf.simple.AbstractRDFParserBuilder.RDFParseException}), 
+	 * {@link org.apache.commons.rdf.simple.RDFParseException}), 
 	 * it should be indicated as the
 	 * {@link java.util.concurrent.ExecutionException#getCause()} in the
 	 * {@link java.util.concurrent.ExecutionException} thrown on
