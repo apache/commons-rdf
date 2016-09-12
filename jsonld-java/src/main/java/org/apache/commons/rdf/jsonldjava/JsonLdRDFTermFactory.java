@@ -114,10 +114,10 @@ public final class JsonLdRDFTermFactory implements RDFTermFactory {
 	}	
 
 	/**
-	 * Adapt a Commons RDF {@link org.apache.commons.rdf.api.Quad} as a JsonLd {@link RDFDataset.Quad}.
+	 * Adapt a Commons RDF {@link org.apache.commons.rdf.api.Quad} as a JsonLd {@link com.github.jsonldjava.core.RDFDataset.Quad}.
 	 * 
 	 * @param quad Commons RDF {@link org.apache.commons.rdf.api.Quad}  to adapt
-	 * @return Adapted JsonLd {@link RDFDataset.Quad}
+	 * @return Adapted JsonLd {@link com.github.jsonldjava.core.RDFDataset.Quad}
 	 */
 	public RDFDataset.Quad asJsonLdQuad(org.apache.commons.rdf.api.Quad quad) {
 		BlankNodeOrIRI g = quad.getGraphName().orElse(null);		
@@ -125,24 +125,24 @@ public final class JsonLdRDFTermFactory implements RDFTermFactory {
 	}
 	
 	/**
-	 * Adapt a Commons RDF {@link Triple} as a JsonLd {@link RDFDataset.Quad}.
+	 * Adapt a Commons RDF {@link Triple} as a JsonLd {@link com.github.jsonldjava.core.RDFDataset.Quad}.
 	 * 
 	 * @param triple Commons RDF {@link Triple} to adapt
-	 * @return Adapted JsonLd {@link RDFDataset.Quad}
+	 * @return Adapted JsonLd {@link com.github.jsonldjava.core.RDFDataset.Quad}
 	 */
 	public RDFDataset.Quad asJsonLdQuad(Triple triple) {
 		return createJsonLdQuad(null, triple.getSubject(), triple.getPredicate(), triple.getObject());
 	}
 
 	/**
-	 * Adapt a JsonLd {@link RDFDataset.Quad} as a Commons RDF
+	 * Adapt a JsonLd {@link com.github.jsonldjava.core.RDFDataset.Quad} as a Commons RDF
 	 * {@link org.apache.commons.rdf.api.Quad}.
 	 * <p>
 	 * The underlying JsonLd quad can be retrieved with
 	 * {@link JsonLdQuad#asJsonLdQuad()}.
 	 * 
 	 * @param quad
-	 *            A JsonLd {@link RDFDataset.Quad} to adapt
+	 *            A JsonLd {@link com.github.jsonldjava.core.RDFDataset.Quad} to adapt
 	 * @return Adapted {@link JsonLdQuad}
 	 */
 	public JsonLdQuad asQuad(final RDFDataset.Quad quad) {
@@ -150,7 +150,7 @@ public final class JsonLdRDFTermFactory implements RDFTermFactory {
 	}
 
 	/**
-	 * Adapt a JsonLd {@link RDFDataset.Node} as a Commons RDF {@link RDFTerm}.
+	 * Adapt a JsonLd {@link Node} as a Commons RDF {@link RDFTerm}.
 	 * <p>
 	 * The underlying node can be retrieved with
 	 * {@link JsonLdTerm#asJsonLdNode()}.
@@ -164,14 +164,14 @@ public final class JsonLdRDFTermFactory implements RDFTermFactory {
 	}
 
 	/**
-	 * Adapt a JsonLd {@link RDFDataset.Quad} as a Commons RDF
+	 * Adapt a JsonLd {@link com.github.jsonldjava.core.RDFDataset.Quad} as a Commons RDF
 	 * {@link org.apache.commons.rdf.api.Triple}.
 	 * <p>
 	 * The underlying JsonLd quad can be retrieved with
 	 * {@link JsonLdTriple#asJsonLdQuad()}.
 	 * 
 	 * @param quad
-	 *            A JsonLd {@link RDFDataset.Quad} to adapt
+	 *            A JsonLd {@link com.github.jsonldjava.core.RDFDataset.Quad} to adapt
 	 * @return Adapted {@link JsonLdTriple}
 	 */
 	public JsonLdTriple asTriple(final RDFDataset.Quad quad) {
