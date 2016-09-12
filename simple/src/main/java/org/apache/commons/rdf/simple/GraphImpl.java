@@ -55,21 +55,7 @@ final class GraphImpl implements Graph {
 
     @Override
     public void add(Triple triple) {
-        BlankNodeOrIRI newSubject = (BlankNodeOrIRI) internallyMap(triple
-                .getSubject());
-        IRI newPredicate = (IRI) internallyMap(triple.getPredicate());
-        RDFTerm newObject = internallyMap(triple.getObject());
-        // Check if any of the object references changed during the mapping, to
-        // avoid creating a new Triple object if possible
-        if (newSubject == triple.getSubject()
-                && newPredicate == triple.getPredicate()
-                && newObject == triple.getObject()) {
-            triples.add(triple);
-        } else {
-            Triple result = factory.createTriple(newSubject, newPredicate,
-                    newObject);
-            triples.add(result);
-        }
+    	triples.add(internallyMap(triple));
     }
 
     private <T extends RDFTerm> RDFTerm internallyMap(T object) {
@@ -103,6 +89,23 @@ final class GraphImpl implements Graph {
         }
     }
 
+    private Triple internallyMap(Triple triple) {
+        BlankNodeOrIRI newSubject = (BlankNodeOrIRI) internallyMap(triple
+                .getSubject());
+        IRI newPredicate = (IRI) internallyMap(triple.getPredicate());
+        RDFTerm newObject = internallyMap(triple.getObject());
+        // Check if any of the object references changed during the mapping, to
+        // avoid creating a new Triple object if possible
+        if (newSubject == triple.getSubject()
+                && newPredicate == triple.getPredicate()
+                && newObject == triple.getObject()) {
+            return triple;
+        } else {
+            return factory.createTriple(newSubject, newPredicate,
+                    newObject);
+        }
+    }
+
     @Override
     public void clear() {
         triples.clear();
@@ -116,10 +119,10 @@ final class GraphImpl implements Graph {
 
     @Override
     public boolean contains(Triple triple) {
-        return triples.contains(Objects.requireNonNull(triple));
+    	return triples.contains(internallyMap(triple));
     }
-
-    @Override
+    
+	@Override
     public Stream<Triple> stream() {
         return triples.parallelStream().unordered();
     }
