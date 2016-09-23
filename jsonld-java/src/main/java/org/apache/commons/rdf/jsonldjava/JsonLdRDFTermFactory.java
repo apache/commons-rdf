@@ -86,8 +86,14 @@ public final class JsonLdRDFTermFactory implements RDFTermFactory {
 	}
 
 	public Node asJsonLdNode(RDFTerm term) {
-		if (term instanceof JsonLdTerm) {
-			// Return original Node
+		if (term instanceof JsonLdBlankNode) {
+			JsonLdBlankNode jsonLdBlankNode = (JsonLdBlankNode) term;
+			if (jsonLdBlankNode.uniqueReference().startsWith(bnodePrefix)) {
+				// Only return blank nodes 'as is' if they have the same prefix
+				return jsonLdBlankNode.asJsonLdNode();
+			}
+		} else if (term instanceof JsonLdTerm) {
+			// non-Bnodes can always be return as-is
 			return ((JsonLdTerm) term).asJsonLdNode();
 		}
 		if (term instanceof IRI) {
