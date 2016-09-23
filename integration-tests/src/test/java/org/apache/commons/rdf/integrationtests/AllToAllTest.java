@@ -48,6 +48,8 @@ public class AllToAllTest {
 		Collection<Object[]>  allToAll = new ArrayList<>();
 		for (Class from : factories) {
 			for (Class to : factories) {
+				// NOTE: we deliberately include self-to-self here
+				// to test two instances of the same implementation
 				allToAll.add(new Object[]{from, to});
 			}
 		}
