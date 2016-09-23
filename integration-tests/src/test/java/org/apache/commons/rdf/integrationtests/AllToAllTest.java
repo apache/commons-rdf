@@ -38,6 +38,7 @@ public class AllToAllTest {
 		this.graphFactory = to.newInstance();		
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@Parameters(name = "{index}: {0}->{1}")
 	public static Collection<Object[]> data() { 
 		List<Class> factories = Arrays.asList(
