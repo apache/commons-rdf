@@ -3,6 +3,11 @@ package org.apache.commons.rdf.integrationtests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
 import org.apache.commons.rdf.api.BlankNode;
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
@@ -15,63 +20,41 @@ import org.apache.commons.rdf.jsonldjava.JsonLdRDFTermFactory;
 import org.apache.commons.rdf.rdf4j.RDF4JTermFactory;
 import org.apache.commons.rdf.simple.SimpleRDFTermFactory;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
+@RunWith(Parameterized.class)
 public class AllToAllTest {
 
-	private RDFTermFactory simpleFactory = new SimpleRDFTermFactory();
-	private RDFTermFactory jenaFactory = new JenaRDFTermFactory();
-	private RDFTermFactory rdf4jFactory = new RDF4JTermFactory();
-	private RDFTermFactory jsonldFactory = new JsonLdRDFTermFactory();
+	private RDFTermFactory nodeFactory;
+	private RDFTermFactory graphFactory;
 
-	@Test
-	public void jenaToRdf4j() throws Exception {
-		addTermsFromOtherFactory(jenaFactory, rdf4jFactory);
-		addTriplesFromOtherFactory(jenaFactory, rdf4jFactory);
-	}
-	@Test
-	public void jenaToJsonLd() throws Exception {
-		addTermsFromOtherFactory(jenaFactory, jsonldFactory);
-		addTriplesFromOtherFactory( jenaFactory, jsonldFactory );
-	}
-	@Test
-	public void jenaToSimple() throws Exception {
-		addTermsFromOtherFactory(jenaFactory, simpleFactory);
-		addTriplesFromOtherFactory( jenaFactory, simpleFactory );
+
+	public AllToAllTest(
+			Class<? extends RDFTermFactory> from, 
+			Class<? extends RDFTermFactory> to) throws InstantiationException, IllegalAccessException {
+		this.nodeFactory = from.newInstance();
+		this.graphFactory = to.newInstance();		
 	}
 	
-	@Test
-	public void rdf4jToJena() throws Exception {
-		addTermsFromOtherFactory(rdf4jFactory, jenaFactory);
-		addTriplesFromOtherFactory( rdf4jFactory, jenaFactory );
-	}
-	@Test
-	public void rdf4jToJsonLd() throws Exception {
-		addTermsFromOtherFactory(rdf4jFactory, jsonldFactory);
-		addTriplesFromOtherFactory( rdf4jFactory, jenaFactory );
-	}	
-	@Test
-	public void rdf4jToSimple() throws Exception {
-		addTermsFromOtherFactory(rdf4jFactory, simpleFactory);
-		addTriplesFromOtherFactory(rdf4jFactory, simpleFactory  );
-	}
-	
-	@Test
-	public void simpletoJena() throws Exception {
-		addTermsFromOtherFactory(simpleFactory, jenaFactory);
-		addTriplesFromOtherFactory( simpleFactory, jenaFactory);
-	}
-	@Test
-	public void simpleToJsonLd() throws Exception {
-		addTermsFromOtherFactory(simpleFactory, jsonldFactory);
-		addTriplesFromOtherFactory( simpleFactory, jsonldFactory );
-	}
-	@Test
-	public void simpleToRdf4j() throws Exception {
-		addTermsFromOtherFactory(simpleFactory, rdf4jFactory);
-		addTriplesFromOtherFactory( simpleFactory, rdf4jFactory );
+	@Parameters(name = "{index}: {0}->{1}")
+	public static Collection<Object[]> data() { 
+		List<Class> factories = Arrays.asList(
+						SimpleRDFTermFactory.class, 
+						JenaRDFTermFactory.class, 
+						RDF4JTermFactory.class,
+						JsonLdRDFTermFactory.class);
+		Collection<Object[]>  allToAll = new ArrayList<>();
+		for (Class from : factories) {
+			for (Class to : factories) {
+				allToAll.add(new Object[]{from, to});
+			}
+		}
+		return allToAll;
 	}
 	
-	/**
+		/**
 	 * This test creates a {@link Graph} with the first
 	 * {@link RDFTermFactory}, then inserts/queries with
 	 * triples using {@link RDFTerm}s created with the second factory.
@@ -80,7 +63,8 @@ public class AllToAllTest {
 	 * @param graphFactory Factory to create {@link Graph}
 	 * @throws Exception
 	 */
-	public void addTermsFromOtherFactory(RDFTermFactory nodeFactory, RDFTermFactory graphFactory) throws Exception {
+	@Test
+	public void addTermsFromOtherFactory() throws Exception {
 		Graph g = graphFactory.createGraph();
 		BlankNode s = nodeFactory.createBlankNode();
 		IRI p = nodeFactory.createIRI("http://example.com/p");
@@ -127,7 +111,8 @@ public class AllToAllTest {
 	 * @param graphFactory Factory to create {@link Graph}
 	 * @throws Exception
 	 */
-	public void addTriplesFromOtherFactory(RDFTermFactory nodeFactory, RDFTermFactory graphFactory) throws Exception {
+	@Test
+	public void addTriplesFromOtherFactory() throws Exception {
 		Graph g = graphFactory.createGraph();
 		BlankNode s = nodeFactory.createBlankNode();
 		IRI p = nodeFactory.createIRI("http://example.com/p");
