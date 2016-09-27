@@ -30,7 +30,7 @@ import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDFSyntax;
-import org.apache.commons.rdf.simple.AbstractRDFParserBuilder;
+import org.apache.commons.rdf.simple.AbstractRDFParser;
 
 import com.github.jsonldjava.core.JsonLdError;
 import com.github.jsonldjava.core.JsonLdOptions;
@@ -38,7 +38,7 @@ import com.github.jsonldjava.core.JsonLdProcessor;
 import com.github.jsonldjava.core.RDFDataset;
 import com.github.jsonldjava.utils.JsonUtils;
 
-public class JsonLdParserBuilder extends AbstractRDFParserBuilder<JsonLdParserBuilder> {
+public class JsonLdParserBuilder extends AbstractRDFParser<JsonLdParserBuilder> {
 
 	@Override
 	protected JsonLdRDFTermFactory createRDFTermFactory() {

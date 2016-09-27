@@ -28,9 +28,9 @@ import java.util.function.Consumer;
 
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Quad;
-import org.apache.commons.rdf.api.RDFParserBuilder;
+import org.apache.commons.rdf.api.RDFParser;
 import org.apache.commons.rdf.api.RDFSyntax;
-import org.apache.commons.rdf.simple.AbstractRDFParserBuilder;
+import org.apache.commons.rdf.simple.AbstractRDFParser;
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.repository.util.RDFInserter;
 import org.eclipse.rdf4j.repository.util.RDFLoader;
@@ -51,7 +51,7 @@ import org.eclipse.rdf4j.rio.helpers.AbstractRDFHandler;
  * <em>rdf4j-rio-*</em> module on the classpath.
  *
  */
-public class RDF4JParserBuilder extends AbstractRDFParserBuilder<RDF4JParserBuilder> implements RDFParserBuilder {
+public class RDF4JParser extends AbstractRDFParser<RDF4JParser> implements RDFParser {
 
 	private final class AddToQuadConsumer extends AbstractRDFHandler {
 		private final Consumer<Quad> quadTarget;
@@ -103,8 +103,8 @@ public class RDF4JParserBuilder extends AbstractRDFParserBuilder<RDF4JParserBuil
 	}
 
 	@Override
-	protected RDF4JParserBuilder prepareForParsing() throws IOException, IllegalStateException {
-		RDF4JParserBuilder c = prepareForParsing();
+	protected RDF4JParser prepareForParsing() throws IOException, IllegalStateException {
+		RDF4JParser c = prepareForParsing();
 		// Ensure we have an RDF4JTermFactory for conversion.
 		// We'll make a new one if user has provided a non-RDF4J factory
 		c.rdf4jTermFactory = (RDF4JTermFactory) getRdfTermFactory().filter(RDF4JTermFactory.class::isInstance)

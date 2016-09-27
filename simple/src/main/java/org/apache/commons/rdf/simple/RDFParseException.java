@@ -18,33 +18,33 @@
 
 package org.apache.commons.rdf.simple;
 
-import org.apache.commons.rdf.api.RDFParserBuilder;
+import org.apache.commons.rdf.api.RDFParser;
 
 public class RDFParseException extends Exception {
 	private static final long serialVersionUID = 5427752643780702976L;
-	private RDFParserBuilder builder;
+	private RDFParser builder;
 
-	public RDFParseException(RDFParserBuilder builder) {
+	public RDFParseException(RDFParser builder) {
 		super();
 		this.builder = builder;
 	}
 
-	public RDFParseException(RDFParserBuilder builder, String message, Throwable cause) {
+	public RDFParseException(RDFParser builder, String message, Throwable cause) {
 		super(message, cause);
 		this.builder = builder;
 	}
 
-	public RDFParseException(RDFParserBuilder builder, String message) {
+	public RDFParseException(RDFParser builder, String message) {
 		super(message);
 		this.builder = builder;
 	}
 
-	public RDFParseException(RDFParserBuilder builder, Throwable cause) {
+	public RDFParseException(RDFParser builder, Throwable cause) {
 		super(cause);
 		this.builder = builder;
 	}
 
-	public RDFParserBuilder getRDFParserBuilder() {
+	public RDFParser getRDFParserBuilder() {
 		return builder;
 	}
 }

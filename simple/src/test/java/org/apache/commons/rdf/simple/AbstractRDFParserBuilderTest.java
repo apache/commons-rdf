@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Literal;
-import org.apache.commons.rdf.api.RDFParserBuilder;
+import org.apache.commons.rdf.api.RDFParser;
 import org.apache.commons.rdf.api.RDFSyntax;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.RDFTermFactory;
@@ -71,9 +71,9 @@ public class AbstractRDFParserBuilderTest {
 
 	@Test
 	public void guessRDFSyntax() throws Exception {
-		assertEquals(RDFSyntax.NTRIPLES, AbstractRDFParserBuilder.guessRDFSyntax(testNt).get());
-		assertEquals(RDFSyntax.TURTLE, AbstractRDFParserBuilder.guessRDFSyntax(testTtl).get());
-		assertFalse(AbstractRDFParserBuilder.guessRDFSyntax(testXml).isPresent());
+		assertEquals(RDFSyntax.NTRIPLES, AbstractRDFParser.guessRDFSyntax(testNt).get());
+		assertEquals(RDFSyntax.TURTLE, AbstractRDFParser.guessRDFSyntax(testTtl).get());
+		assertFalse(AbstractRDFParser.guessRDFSyntax(testXml).isPresent());
 	}
 
 	private void checkGraph(Graph g) throws Exception {				
@@ -107,7 +107,7 @@ public class AbstractRDFParserBuilderTest {
 	@Test
 	public void parseFile() throws Exception {	
 		Graph g = factory.createGraph();
-		RDFParserBuilder parser = dummyParser.source(testNt).target(g);
+		RDFParser parser = dummyParser.source(testNt).target(g);
 		parser.parse().get(5, TimeUnit.SECONDS);
 		checkGraph(g);
 		// FIXME: this could potentially break if the equivalent of /tmp includes
@@ -132,7 +132,7 @@ public class AbstractRDFParserBuilderTest {
 	public void parseBaseAndContentTypeNoSource() throws Exception {
 		// Can set the other options, even without source()
 		IRI base = dummyParser.createRDFTermFactory().createIRI("http://www.example.org/test.rdf");
-		RDFParserBuilder parser = dummyParser.base(base).contentType(RDFSyntax.RDFXML);
+		RDFParser parser = dummyParser.base(base).contentType(RDFSyntax.RDFXML);
 		thrown.expect(IllegalStateException.class);
 		thrown.expectMessage("No source has been set");
 		// but .parse() should fail
@@ -143,7 +143,7 @@ public class AbstractRDFParserBuilderTest {
 	public void parseFileMissing() throws Exception {
 		Files.delete(testNt);
 		// This should not fail yet
-		RDFParserBuilder parser = dummyParser.source(testNt);
+		RDFParser parser = dummyParser.source(testNt);
 		// but here:
 		thrown.expect(IOException.class);
 		parser.parse();		
@@ -153,7 +153,7 @@ public class AbstractRDFParserBuilderTest {
 	@Test
 	public void parseFileContentType() throws Exception {
 		Graph g = factory.createGraph();
-		RDFParserBuilder parser = dummyParser
+		RDFParser parser = dummyParser
 				.source(testNt)
 				.contentType(RDFSyntax.NTRIPLES)
 				.target(g);
@@ -180,7 +180,7 @@ public class AbstractRDFParserBuilderTest {
 	public void parseInputStreamFailsIfBaseMissing() throws Exception {
 		InputStream inputStream = new ByteArrayInputStream(new byte[0]);
 		// Should not fail at this point
-		RDFParserBuilder parser = dummyParser.source(inputStream);
+		RDFParser parser = dummyParser.source(inputStream);
 		// but here:
 		thrown.expect(IllegalStateException.class);
 		thrown.expectMessage("base iri required for inputstream source");
@@ -192,7 +192,7 @@ public class AbstractRDFParserBuilderTest {
 		InputStream inputStream = new ByteArrayInputStream(new byte[0]);
 		IRI base = dummyParser.createRDFTermFactory().createIRI("http://www.example.org/test.rdf");
 		Graph g = factory.createGraph();
-		RDFParserBuilder parser = dummyParser.source(inputStream).base(base).target(g);		
+		RDFParser parser = dummyParser.source(inputStream).base(base).target(g);		
 		parser.parse().get(5, TimeUnit.SECONDS);
 		checkGraph(g);
 		assertEquals("<http://www.example.org/test.rdf>", firstPredicate(g, "base"));
@@ -207,7 +207,7 @@ public class AbstractRDFParserBuilderTest {
 	public void parseInputStreamWithNQuads() throws Exception {
 		InputStream inputStream = new ByteArrayInputStream(new byte[0]);
 		Graph g = factory.createGraph();
-		RDFParserBuilder parser = dummyParser.source(inputStream).contentType(RDFSyntax.NQUADS).target(g);		
+		RDFParser parser = dummyParser.source(inputStream).contentType(RDFSyntax.NQUADS).target(g);		
 		parser.parse().get(5, TimeUnit.SECONDS);
 		checkGraph(g);
 		assertNull(firstPredicate(g, "base"));
@@ -222,7 +222,7 @@ public class AbstractRDFParserBuilderTest {
 	public void parseIRI() throws Exception {
 		IRI iri = dummyParser.createRDFTermFactory().createIRI("http://www.example.net/test.ttl");
 		Graph g = factory.createGraph();
-		RDFParserBuilder parser = dummyParser.source(iri).target(g);		
+		RDFParser parser = dummyParser.source(iri).target(g);		
 		parser.parse().get(5, TimeUnit.SECONDS);
 		checkGraph(g);
 		assertEquals("<http://www.example.net/test.ttl>", firstPredicate(g, "source"));
@@ -240,7 +240,7 @@ public class AbstractRDFParserBuilderTest {
 	public void parseIRIBaseContentType() throws Exception {
 		IRI iri = dummyParser.createRDFTermFactory().createIRI("http://www.example.net/test.ttl");
 		Graph g = factory.createGraph();
-		RDFParserBuilder parser = dummyParser.source(iri).base(iri).contentType(RDFSyntax.TURTLE).target(g);
+		RDFParser parser = dummyParser.source(iri).base(iri).contentType(RDFSyntax.TURTLE).target(g);
 		parser.parse().get(5, TimeUnit.SECONDS);
 		checkGraph(g);
 		assertEquals("<http://www.example.net/test.ttl>", firstPredicate(g, "source"));

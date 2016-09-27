@@ -25,18 +25,18 @@ import java.util.function.Consumer;
 
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.QuadLike;
-import org.apache.commons.rdf.api.RDFParserBuilder;
+import org.apache.commons.rdf.api.RDFParser;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.RDFTermFactory;
 import org.apache.commons.rdf.api.TripleLike;
-import org.apache.commons.rdf.simple.AbstractRDFParserBuilder;
+import org.apache.commons.rdf.simple.AbstractRDFParser;
 import org.apache.jena.graph.Graph;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.system.StreamRDF;
 import org.apache.jena.riot.system.StreamRDFLib;
 
-public class JenaRDFParserBuilder extends AbstractRDFParserBuilder<JenaRDFParserBuilder> implements RDFParserBuilder {
+public class JenaRDFParser extends AbstractRDFParser<JenaRDFParser> implements RDFParser {
 
 	private Consumer<TripleLike<RDFTerm, RDFTerm, RDFTerm>> generalizedConsumerTriple;
 	private Consumer<QuadLike<RDFTerm, RDFTerm, RDFTerm, RDFTerm>> generalizedConsumerQuad;
@@ -45,15 +45,15 @@ public class JenaRDFParserBuilder extends AbstractRDFParserBuilder<JenaRDFParser
 		return new JenaRDFTermFactory();
 	}
 
-	public JenaRDFParserBuilder targetGeneralizedTriple(Consumer<TripleLike<RDFTerm,RDFTerm,RDFTerm>> consumer) {
-		JenaRDFParserBuilder c = this.clone();
+	public JenaRDFParser targetGeneralizedTriple(Consumer<TripleLike<RDFTerm,RDFTerm,RDFTerm>> consumer) {
+		JenaRDFParser c = this.clone();
 		c.resetTarget();		
 		c.generalizedConsumerTriple = consumer;
 		return c;
 	}
 
-	public JenaRDFParserBuilder targetGeneralizedQuad(Consumer<QuadLike<RDFTerm,RDFTerm,RDFTerm,RDFTerm>> consumer) {
-		JenaRDFParserBuilder c = this.clone();
+	public JenaRDFParser targetGeneralizedQuad(Consumer<QuadLike<RDFTerm,RDFTerm,RDFTerm,RDFTerm>> consumer) {
+		JenaRDFParser c = this.clone();
 		c.resetTarget();		
 		c.generalizedConsumerQuad = consumer;
 		return c;
