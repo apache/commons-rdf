@@ -34,7 +34,7 @@ import com.github.jsonldjava.core.RDFDataset;
  * A {@link Graph} view of a JsonLd {@link RDFDataset}.
  * 
  */
-class JsonLdGraph extends JsonLdGraphLike<org.apache.commons.rdf.api.Triple> implements Graph {
+public class JsonLdGraph extends JsonLdGraphLike<org.apache.commons.rdf.api.Triple> implements Graph {
 
 	private final Optional<BlankNodeOrIRI> graphName;
 
