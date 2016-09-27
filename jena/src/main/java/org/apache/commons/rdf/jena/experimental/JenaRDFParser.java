@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.apache.commons.rdf.jena;
+package org.apache.commons.rdf.jena.experimental;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,11 +25,13 @@ import java.util.function.Consumer;
 
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.QuadLike;
-import org.apache.commons.rdf.api.RDFParser;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.RDFTermFactory;
 import org.apache.commons.rdf.api.TripleLike;
-import org.apache.commons.rdf.simple.AbstractRDFParser;
+import org.apache.commons.rdf.experimental.RDFParser;
+import org.apache.commons.rdf.jena.JenaGraph;
+import org.apache.commons.rdf.jena.JenaRDFTermFactory;
+import org.apache.commons.rdf.simple.experimental.AbstractRDFParser;
 import org.apache.jena.graph.Graph;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;

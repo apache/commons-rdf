@@ -23,8 +23,9 @@ import java.util.function.Consumer;
 
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Quad;
-import org.apache.commons.rdf.api.RDFParser;
 import org.apache.commons.rdf.api.RDFTermFactory;
+import org.apache.commons.rdf.experimental.RDFParser;
+import org.apache.commons.rdf.simple.experimental.AbstractRDFParser;
 
 /** 
  * For test purposes - a {@link RDFParser} that inserts information

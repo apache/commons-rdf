@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.commons.rdf.simple;
+package org.apache.commons.rdf.simple.experimental;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,9 +32,11 @@ import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Quad;
-import org.apache.commons.rdf.api.RDFParser;
 import org.apache.commons.rdf.api.RDFSyntax;
 import org.apache.commons.rdf.api.RDFTermFactory;
+import org.apache.commons.rdf.experimental.RDFParser;
+import org.apache.commons.rdf.simple.RDFParseException;
+import org.apache.commons.rdf.simple.SimpleRDFTermFactory;
 
 /**
  * Abstract RDFParser

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.commons.rdf.jsonldjava;
+package org.apache.commons.rdf.jsonldjava.experimental;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,7 +30,10 @@ import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDFSyntax;
-import org.apache.commons.rdf.simple.AbstractRDFParser;
+import org.apache.commons.rdf.jsonldjava.JsonLdDataset;
+import org.apache.commons.rdf.jsonldjava.JsonLdGraph;
+import org.apache.commons.rdf.jsonldjava.JsonLdRDFTermFactory;
+import org.apache.commons.rdf.simple.experimental.AbstractRDFParser;
 
 import com.github.jsonldjava.core.JsonLdError;
 import com.github.jsonldjava.core.JsonLdOptions;
@@ -38,7 +41,7 @@ import com.github.jsonldjava.core.JsonLdProcessor;
 import com.github.jsonldjava.core.RDFDataset;
 import com.github.jsonldjava.utils.JsonUtils;
 
-public class JsonLdParserBuilder extends AbstractRDFParser<JsonLdParserBuilder> {
+public class JsonLdParser extends AbstractRDFParser<JsonLdParser> {
 
 	@Override
 	protected JsonLdRDFTermFactory createRDFTermFactory() {
@@ -46,7 +49,7 @@ public class JsonLdParserBuilder extends AbstractRDFParser<JsonLdParserBuilder> 
 	}
 
 	@Override
-	public JsonLdParserBuilder contentType(RDFSyntax rdfSyntax) throws IllegalArgumentException {
+	public JsonLdParser contentType(RDFSyntax rdfSyntax) throws IllegalArgumentException {
 		if (rdfSyntax != null && rdfSyntax != RDFSyntax.JSONLD) { 
 			throw new IllegalArgumentException("Unsupported contentType: " + rdfSyntax);
 		}
@@ -54,8 +57,8 @@ public class JsonLdParserBuilder extends AbstractRDFParser<JsonLdParserBuilder> 
 	}
 	
 	@Override
-	public JsonLdParserBuilder contentType(String contentType) throws IllegalArgumentException {
-		JsonLdParserBuilder c = (JsonLdParserBuilder) super.contentType(contentType);
+	public JsonLdParser contentType(String contentType) throws IllegalArgumentException {
+		JsonLdParser c = (JsonLdParser) super.contentType(contentType);
 		if (c.getContentType().filter(Predicate.isEqual(RDFSyntax.JSONLD).negate()).isPresent()) {
 			throw new IllegalArgumentException("Unsupported contentType: " + contentType);
 		}
@@ -74,7 +77,7 @@ public class JsonLdParserBuilder extends AbstractRDFParser<JsonLdParserBuilder> 
 	protected void checkSource() throws IOException {
 		super.checkSource();
 		// Might throw IllegalStateException if invalid
-		getSourceIri().map(JsonLdParserBuilder::asURL);
+		getSourceIri().map(JsonLdParser::asURL);
 	}
 	
 	@Override

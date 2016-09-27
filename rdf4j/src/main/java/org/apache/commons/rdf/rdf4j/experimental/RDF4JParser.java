@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.commons.rdf.rdf4j;
+package org.apache.commons.rdf.rdf4j.experimental;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,9 +28,12 @@ import java.util.function.Consumer;
 
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Quad;
-import org.apache.commons.rdf.api.RDFParser;
 import org.apache.commons.rdf.api.RDFSyntax;
-import org.apache.commons.rdf.simple.AbstractRDFParser;
+import org.apache.commons.rdf.experimental.RDFParser;
+import org.apache.commons.rdf.rdf4j.RDF4JDataset;
+import org.apache.commons.rdf.rdf4j.RDF4JGraph;
+import org.apache.commons.rdf.rdf4j.RDF4JTermFactory;
+import org.apache.commons.rdf.simple.experimental.AbstractRDFParser;
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.repository.util.RDFInserter;
 import org.eclipse.rdf4j.repository.util.RDFLoader;

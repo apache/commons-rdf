@@ -28,8 +28,9 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.rdf.api.Graph;
-import org.apache.commons.rdf.api.RDFParser.ParseResult;
 import org.apache.commons.rdf.api.RDFSyntax;
+import org.apache.commons.rdf.experimental.RDFParser.ParseResult;
+import org.apache.commons.rdf.jena.experimental.JenaRDFParser;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
