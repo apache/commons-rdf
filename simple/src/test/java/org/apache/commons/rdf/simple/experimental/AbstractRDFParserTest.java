@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.commons.rdf.simple;
+package org.apache.commons.rdf.simple.experimental;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -37,14 +37,16 @@ import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.RDFTermFactory;
 import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.experimental.RDFParser;
-import org.apache.commons.rdf.simple.experimental.AbstractRDFParser;
+import org.apache.commons.rdf.simple.DummyRDFParserBuilder;
+import org.apache.commons.rdf.simple.SimpleRDFTermFactory;
+import org.apache.commons.rdf.simple.Types;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-public class AbstractRDFParserBuilderTest {
+public class AbstractRDFParserTest {
 
 	private RDFTermFactory factory = new SimpleRDFTermFactory();
 	
