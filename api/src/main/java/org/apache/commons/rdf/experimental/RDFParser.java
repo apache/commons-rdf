@@ -37,6 +37,12 @@ import org.apache.commons.rdf.api.Triple;
 
 /**
  * Parse an RDF source into a target (e.g. a Graph/Dataset).
+ * <h2>Experimental</h2>
+ * This interface (and its implementations) should be considered <strong>at
+ * risk</strong>; they might change or be removed in the next minor update of
+ * Commons RDF. It may move to the the  {@link org.apache.commons.rdf.api}
+ * package when it has stabilized.
+ * <h2>Description</h2>
  * <p>
  * This interface follows the
  * <a href="https://en.wikipedia.org/wiki/Builder_pattern">Builder pattern</a>,
