@@ -23,11 +23,11 @@ import java.util.Optional;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.simple.Types;
-import org.apache.commons.rdf.jsonldjava.JsonLdIRI.JsonLdIRIImpl;
 
 import com.github.jsonldjava.core.RDFDataset.Node;
 
 public interface JsonLdLiteral extends JsonLdTerm, Literal {
+}	
 	
 	class JsonLdLiteralImpl extends JsonLdTermImpl implements JsonLdLiteral {
 	
@@ -97,4 +97,3 @@ public interface JsonLdLiteral extends JsonLdTerm, Literal {
 			
 		}	
 	}
-}

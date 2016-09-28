@@ -23,7 +23,6 @@ import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.Triple;
-import org.apache.commons.rdf.jsonldjava.JsonLdQuadLike.JsonLdQuadLikeImpl;
 
 import com.github.jsonldjava.core.RDFDataset.Quad;
 
@@ -35,7 +34,8 @@ public interface JsonLdTriple extends Triple {
 	 * @return The JsonLD {@link com.github.jsonldjava.core.RDFDataset.Quad}
 	 */
 	public com.github.jsonldjava.core.RDFDataset.Quad asJsonLdQuad();
-
+}
+	
 	final class JsonLdTripleImpl extends JsonLdQuadLikeImpl<BlankNodeOrIRI, IRI, RDFTerm, RDFTerm>
 		implements JsonLdTriple {
 		
@@ -59,4 +59,3 @@ public interface JsonLdTriple extends Triple {
 			return Objects.hash(getSubject(), getPredicate(), getObject());
 		}
 	}
-}

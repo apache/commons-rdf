@@ -29,6 +29,7 @@ public interface JsonLdTerm extends RDFTerm {
 	 * @return JsonLd {@link Node}
 	 */
 	Node asJsonLdNode();
+}
 	
 	abstract class JsonLdTermImpl implements JsonLdTerm {
 		final Node node;
@@ -40,4 +41,4 @@ public interface JsonLdTerm extends RDFTerm {
 		}
 	}
 	
-}
+

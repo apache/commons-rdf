@@ -27,6 +27,7 @@ import com.github.jsonldjava.core.RDFDataset.Quad;
 public interface JsonLdQuadLike<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm, G extends RDFTerm> extends QuadLike<S,P,O,G> {
 	
 	public Quad asJsonLdQuad();
+}
 	
 	class JsonLdQuadLikeImpl<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm, G extends RDFTerm> implements JsonLdQuadLike<S,P,O,G> {
 		
@@ -72,4 +73,3 @@ public interface JsonLdQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
 		}
 	}
 
-}

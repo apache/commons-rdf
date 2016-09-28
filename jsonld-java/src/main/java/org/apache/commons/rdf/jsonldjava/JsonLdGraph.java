@@ -34,21 +34,25 @@ import com.github.jsonldjava.core.RDFDataset;
  * A {@link Graph} view of a JsonLd {@link RDFDataset}.
  * 
  */
-public class JsonLdGraph extends JsonLdGraphLike<org.apache.commons.rdf.api.Triple> implements Graph {
+public interface JsonLdGraph extends JsonLdGraphLike<org.apache.commons.rdf.api.Triple>, Graph {
+}
+
+class JsonLdGraphImpl extends AbstractJsonLdGraphLike<org.apache.commons.rdf.api.Triple> 
+	implements JsonLdGraph {
 
 	private final Optional<BlankNodeOrIRI> graphName;
 
-	JsonLdGraph(RDFDataset rdfDataSet) {
+	JsonLdGraphImpl(RDFDataset rdfDataSet) {
 		super(rdfDataSet);
 		this.graphName = Optional.empty();
 	}
 	
-	JsonLdGraph(RDFDataset rdfDataSet, Optional<BlankNodeOrIRI> graphName, String bnodePrefix) {
+	JsonLdGraphImpl(RDFDataset rdfDataSet, Optional<BlankNodeOrIRI> graphName, String bnodePrefix) {
 		super(rdfDataSet, bnodePrefix);
 		this.graphName = Objects.requireNonNull(graphName);
 	}
 	
-	JsonLdGraph(String bnodePrefix) {
+	JsonLdGraphImpl(String bnodePrefix) {
 		super(bnodePrefix);
 		this.graphName = Optional.empty();
 	}

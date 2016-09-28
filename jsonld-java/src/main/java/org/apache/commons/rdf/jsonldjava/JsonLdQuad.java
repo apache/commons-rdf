@@ -23,17 +23,19 @@ import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDFTerm;
 // Note: To avoid confusion - don't import either Quad
-import org.apache.commons.rdf.jsonldjava.JsonLdQuadLike.JsonLdQuadLikeImpl;
 
 public interface JsonLdQuad extends org.apache.commons.rdf.api.Quad {
 
+	
 	/**
 	 * Return the underlying JsonLD {@link com.github.jsonldjava.core.RDFDataset.Quad}
 	 * 
 	 * @return The JsonLD {@link com.github.jsonldjava.core.RDFDataset.Quad}
 	 */
 	public com.github.jsonldjava.core.RDFDataset.Quad asJsonLdQuad();
-	
+
+}
+
 	final class JsonLdQuadImpl extends JsonLdQuadLikeImpl<BlankNodeOrIRI,IRI,RDFTerm,BlankNodeOrIRI> 
 		implements JsonLdQuad {
 		
@@ -62,4 +64,3 @@ public interface JsonLdQuad extends org.apache.commons.rdf.api.Quad {
 		}	
 	}	
 		
-}
