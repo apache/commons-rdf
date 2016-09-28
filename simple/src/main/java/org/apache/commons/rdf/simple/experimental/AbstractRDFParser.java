@@ -67,6 +67,9 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>>
 
 	/**
 	 * Get the set {@link RDFTermFactory}, if any.
+	 * 
+	 * @return The {@link RDFTermFactory} to use, or {@link Optional#empty()} if
+	 *         it has not been set
 	 */
 	public Optional<RDFTermFactory> getRdfTermFactory() {
 		return rdfTermFactory;
@@ -75,9 +78,11 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>>
 	/**
 	 * Get the set content-type {@link RDFSyntax}, if any.
 	 * <p>
-	 * If this is {@link Optional#isPresent()}, then 
-	 * {@link #getContentType()} contains the 
-	 * value of {@link RDFSyntax#mediaType}. 
+	 * If this is {@link Optional#isPresent()}, then {@link #getContentType()}
+	 * contains the value of {@link RDFSyntax#mediaType}.
+	 * 
+	 * @return The {@link RDFSyntax} of the content type, or
+	 *         {@link Optional#empty()} if it has not been set
 	 */
 	public Optional<RDFSyntax> getContentTypeSyntax() {
 		return contentTypeSyntax;
@@ -86,11 +91,13 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>>
 	/**
 	 * Get the set content-type String, if any.
 	 * <p>
-	 * If this is {@link Optional#isPresent()} and 
-	 * is recognized by {@link RDFSyntax#byMediaType(String)}, then
-	 * the corresponding {@link RDFSyntax} is set on 
-	 * {@link #getContentType()}, otherwise that is
-	 * {@link Optional#empty()}. 
+	 * If this is {@link Optional#isPresent()} and is recognized by
+	 * {@link RDFSyntax#byMediaType(String)}, then the corresponding
+	 * {@link RDFSyntax} is set on {@link #getContentType()}, otherwise that is
+	 * {@link Optional#empty()}.
+	 * 
+	 * @return The Content-Type IANA media type, e.g. <code>text/turtle</code>,
+	 *         or {@link Optional#empty()} if it has not been set
 	 */
 	public final Optional<String> getContentType() {
 		return contentType;
@@ -99,8 +106,11 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>>
 	/**
 	 * Get the target to consume parsed Quads.
 	 * <p>
-	 * From the call to {@link #parseSynchronusly()}, this
-	 * method is always {@link Optional#isPresent()}.
+	 * From the call to {@link #parseSynchronusly()}, this will be a
+	 * non-<code>null</code> value (as a target is a required setting).
+	 * 
+	 * @return The target consumer of {@link Quad}s, or <code>null</code> if it
+	 *         has not yet been set.
 	 * 
 	 */	
 	public Consumer<Quad> getTarget() {
@@ -143,8 +153,8 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>>
 	
 	/**
 	 * Get the set base {@link IRI}, if present.
-	 * <p>
 	 * 
+	 * @return The base {@link IRI}, or {@link Optional#empty()} if it has not been set
 	 */	
 	public Optional<IRI> getBase() {
 		return base;
@@ -156,6 +166,8 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>>
 	 * If this is {@link Optional#isPresent()}, then 
 	 * {@link #getSourceFile()} and {@link #getSourceIri()}
 	 * are {@link Optional#empty()}.
+	 * 
+	 * @return The source {@link InputStream}, or {@link Optional#empty()} if it has not been set
 	 */
 	public Optional<InputStream> getSourceInputStream() {
 		return sourceInputStream;
@@ -167,6 +179,8 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>>
 	 * If this is {@link Optional#isPresent()}, then 
 	 * {@link #getSourceInputStream()} and {@link #getSourceIri()}
 	 * are {@link Optional#empty()}.
+	 *
+	 * @return The source {@link Path}, or {@link Optional#empty()} if it has not been set
 	 */	
 	public Optional<Path> getSourceFile() {
 		return sourceFile;
@@ -176,8 +190,10 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>>
 	 * Get the set source {@link Path}.
 	 * <p>
 	 * If this is {@link Optional#isPresent()}, then 
-	 * {@link #getSourceInputStream()} and {@link #getSourceInputStream()()}
+	 * {@link #getSourceInputStream()} and {@link #getSourceInputStream()}
 	 * are {@link Optional#empty()}.
+	 * 
+ 	 * @return The source {@link IRI}, or {@link Optional#empty()} if it has not been set
 	 */		
 	public Optional<IRI> getSourceIri() {
 		return sourceIri;
@@ -283,11 +299,12 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>>
 	/**
 	 * Check if an iri is absolute.
 	 * <p>
-	 * Used by {@link #source(String)} and {@link #base(String)}
+	 * Used by {@link #source(String)} and {@link #base(String)}.
 	 * 
-	 * @param iri
+	 * @param iri IRI to check
+	 * @throws IllegalArgumentException If the IRI is not absolute
 	 */
-	protected void checkIsAbsolute(IRI iri) {
+	protected void checkIsAbsolute(IRI iri) throws IllegalArgumentException {
 		if (!URI.create(iri.getIRIString()).isAbsolute()) {
 			throw new IllegalArgumentException("IRI is not absolute: " + iri);
 		}
@@ -327,7 +344,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>>
 	 * 
 	 * @throws IllegalStateException if base is required, but not set.
 	 */
-	protected void checkBaseRequired() {
+	protected void checkBaseRequired() throws IllegalStateException {
 		if (!base.isPresent() && sourceInputStream.isPresent()
 				&& !contentTypeSyntax.filter(t -> t == RDFSyntax.NQUADS || t == RDFSyntax.NTRIPLES).isPresent()) {
 			throw new IllegalStateException("base iri required for inputstream source");
@@ -347,12 +364,11 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>>
 		sourceFile = Optional.empty();
 	}
 
-
 	/**
-	 * Reset all optional target* fields to Optional.empty()</code>
+	 * Reset all optional target* fields to {@link Optional#empty()}.
 	 * <p>
 	 * Note that the consumer set for {@link #getTarget()} is
-	 * NOT reset.
+	 * <strong>note</strong> reset.
 	 * <p>
 	 * Subclasses should override this and call <code>super.resetTarget()</code>
 	 * if they need to reset any additional target* fields.

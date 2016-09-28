@@ -24,7 +24,6 @@
  * <p>
  * When class/interface has stabilized, it will move to the
  * {@link org.apache.commons.rdf.api} package.
- * <p>
  * <ul>
  * <li>{@link RDFParser} - a builder-like interface for parsing RDF to a
  * {@link org.apache.commons.rdf.api.Graph} or
