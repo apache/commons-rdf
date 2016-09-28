@@ -72,7 +72,7 @@ import org.apache.commons.rdf.api.Triple;
  * or a cloned builder with the modified settings applied. 
  * Implementations are however encouraged to be immutable,
  * thread-safe and document this. As an example starting point, see
- * {@link org.apache.commons.rdf.simple.AbstractRDFParserBuilder}.
+ * {@link org.apache.commons.rdf.simple.AbstractRDFParser}.
  * <p>
  * Example usage:
  * </p>
