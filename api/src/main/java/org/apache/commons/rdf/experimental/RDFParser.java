@@ -15,17 +15,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.commons.rdf.api;
+package org.apache.commons.rdf.experimental;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Consumer;
 
+import org.apache.commons.rdf.api.BlankNode;
+import org.apache.commons.rdf.api.Dataset;
+import org.apache.commons.rdf.api.Graph;
+import org.apache.commons.rdf.api.IRI;
+import org.apache.commons.rdf.api.Quad;
+import org.apache.commons.rdf.api.RDFSyntax;
+import org.apache.commons.rdf.api.RDFTerm;
+import org.apache.commons.rdf.api.RDFTermFactory;
+import org.apache.commons.rdf.api.Triple;
+
 /**
- * Builder for parsing an RDF source into a target (e.g. a Graph/Dataset).
+ * Parse an RDF source into a target (e.g. a Graph/Dataset).
+ * <h2>Experimental</h2>
+ * This interface (and its implementations) should be considered <strong>at
+ * risk</strong>; they might change or be removed in the next minor update of
+ * Commons RDF. It may move to the the  {@link org.apache.commons.rdf.api}
+ * package when it has stabilized.
+ * <h2>Description</h2>
  * <p>
  * This interface follows the
  * <a href="https://en.wikipedia.org/wiki/Builder_pattern">Builder pattern</a>,
@@ -35,7 +52,7 @@ import java.util.function.Consumer;
  * {@link #source(InputStream)}), and MUST call one of the <code>target</code>
  * methods (e.g. {@link #target(Consumer)}, {@link #target(Dataset)},
  * {@link #target(Graph)}) before calling {@link #parse()} on the returned
- * RDFParserBuilder - however methods can be called in any order.
+ * RDFParser - however methods can be called in any order.
  * <p>
  * The call to {@link #parse()} returns a {@link Future}, allowing asynchronous
  * parse operations. Callers are recommended to check {@link Future#get()} to
@@ -43,14 +60,14 @@ import java.util.function.Consumer;
  * parsing.
  * <p>
  * Setting a method that has already been set will override any existing value
- * in the returned builder - irregardless of the parameter type (e.g.
+ * in the returned builder - regardless of the parameter type (e.g.
  * {@link #source(IRI)} will override a previous {@link #source(Path)}. Settings
  * can be unset by passing <code>null</code> - note that this may 
  * require casting, e.g. <code>contentType( (RDFSyntax) null )</code> 
  * to undo a previous call to {@link #contentType(RDFSyntax)}.
  * <p>
- * It is undefined if a RDFParserBuilder is mutable or thread-safe, so callers
- * should always use the returned modified RDFParserBuilder from the builder
+ * It is undefined if a RDFParser is mutable or thread-safe, so callers
+ * should always use the returned modified RDFParser from the builder
  * methods. The builder may return itself after modification, 
  * or a cloned builder with the modified settings applied. 
  * Implementations are however encouraged to be immutable,
@@ -70,10 +87,10 @@ import java.util.function.Consumer;
  * </pre>
  *
  */
-public interface RDFParserBuilder {
+public interface RDFParser {
 
 	/** 
-	 * The result of {@link RDFParserBuilder#parse()} indicating
+	 * The result of {@link RDFParser#parse()} indicating
 	 * parsing completed.
 	 * <p>
 	 * This is a marker interface that may be subclassed to include
@@ -98,10 +115,10 @@ public interface RDFParserBuilder {
 	 * @see #target(Graph)
 	 * @param rdfTermFactory
 	 *            {@link RDFTermFactory} to use for generating RDFTerms.
-	 * @return An {@link RDFParserBuilder} that will use the specified
+	 * @return An {@link RDFParser} that will use the specified
 	 *         rdfTermFactory
 	 */
-	RDFParserBuilder rdfTermFactory(RDFTermFactory rdfTermFactory);
+	RDFParser rdfTermFactory(RDFTermFactory rdfTermFactory);
 
 	/**
 	 * Specify the content type of the RDF syntax to parse.
@@ -122,12 +139,12 @@ public interface RDFParserBuilder {
 	 *            An {@link RDFSyntax} to parse the source according to, e.g.
 	 *            {@link RDFSyntax#TURTLE}.
 	 * @throws IllegalArgumentException
-	 *             If this RDFParserBuilder does not support the specified
+	 *             If this RDFParser does not support the specified
 	 *             RDFSyntax.
-	 * @return An {@link RDFParserBuilder} that will use the specified content
+	 * @return An {@link RDFParser} that will use the specified content
 	 *         type.
 	 */
-	RDFParserBuilder contentType(RDFSyntax rdfSyntax) throws IllegalArgumentException;
+	RDFParser contentType(RDFSyntax rdfSyntax) throws IllegalArgumentException;
 
 	/**
 	 * Specify the content type of the RDF syntax to parse.
@@ -148,13 +165,13 @@ public interface RDFParserBuilder {
 	 *            or <code>text/turtle;charset="UTF-8"</code> as specified by
 	 *            <a href="https://tools.ietf.org/html/rfc7231#section-3.1.1.1">
 	 *            RFC7231</a>.
-	 * @return An {@link RDFParserBuilder} that will use the specified content
+	 * @return An {@link RDFParser} that will use the specified content
 	 *         type.
 	 * @throws IllegalArgumentException
 	 *             If the contentType has an invalid syntax, or this
-	 *             RDFParserBuilder does not support the specified contentType.
+	 *             RDFParser does not support the specified contentType.
 	 */
-	RDFParserBuilder contentType(String contentType) throws IllegalArgumentException;
+	RDFParser contentType(String contentType) throws IllegalArgumentException;
 
 	/**
 	 * Specify a {@link Graph} to add parsed triples to.
@@ -180,10 +197,10 @@ public interface RDFParserBuilder {
 	 * 
 	 * @param graph
 	 *            The {@link Graph} to add triples to.
-	 * @return An {@link RDFParserBuilder} that will insert triples into the
+	 * @return An {@link RDFParser} that will insert triples into the
 	 *         specified graph.
 	 */
-	default RDFParserBuilder target(Graph graph) {		
+	default RDFParser target(Graph graph) {		
 		return target(q -> { 
 			if (! q.getGraphName().isPresent()) { 
 				graph.add(q.asTriple());
@@ -210,15 +227,22 @@ public interface RDFParserBuilder {
 	 * 
 	 * @param dataset
 	 *            The {@link Dataset} to add quads to.
-	 * @return An {@link RDFParserBuilder} that will insert triples into the
+	 * @return An {@link RDFParser} that will insert triples into the
 	 *         specified dataset.
 	 */
-	default RDFParserBuilder target(Dataset dataset) {
+	default RDFParser target(Dataset dataset) {
 		return target(dataset::add);
 	}
 
 	/**
 	 * Specify a consumer for parsed quads.
+	 * <p>
+	 * The quads will include triples in all named graphs of the parsed 
+	 * source, including any triples in the default graph. 
+	 * When parsing a source format which do not support datasets, all quads 
+	 * delivered to the consumer will be in the default graph 
+	 * (e.g. their {@link Quad#getGraphName()} will be
+	 * as {@link Optional#empty()}), while for a source   
 	 * <p>
 	 * It is undefined if any quads are consumed if {@link #parse()} throws any
 	 * exceptions. On the other hand, if {@link #parse()} does not indicate an
@@ -231,7 +255,7 @@ public interface RDFParserBuilder {
 	 * <p>
 	 * The consumer is not assumed to be thread safe - only one
 	 * {@link Consumer#accept(Object)} is delivered at a time for a given
-	 * {@link RDFParserBuilder#parse()} call.
+	 * {@link RDFParser#parse()} call.
 	 * <p>
 	 * This method is typically called with a functional consumer, for example:
 	 * <pre>
@@ -241,11 +265,10 @@ public interface RDFParserBuilder {
 	 * 
 	 * @param consumer
 	 *            A {@link Consumer} of {@link Quad}s
-	 * @return An {@link RDFParserBuilder} that will call the consumer for into
+	 * @return An {@link RDFParser} that will call the consumer for into
 	 *         the specified dataset.
-	 * @return
 	 */
-	RDFParserBuilder target(Consumer<Quad> consumer);
+	RDFParser target(Consumer<Quad> consumer);
 	
 	/**
 	 * Specify a base IRI to use for parsing any relative IRI references.
@@ -264,9 +287,9 @@ public interface RDFParserBuilder {
 	 * @see #base(String)
 	 * @param base
 	 *            An absolute IRI to use as a base.
-	 * @return An {@link RDFParserBuilder} that will use the specified base IRI.
+	 * @return An {@link RDFParser} that will use the specified base IRI.
 	 */
-	RDFParserBuilder base(IRI base);
+	RDFParser base(IRI base);
 
 	/**
 	 * Specify a base IRI to use for parsing any relative IRI references.
@@ -285,11 +308,11 @@ public interface RDFParserBuilder {
 	 * @see #base(IRI)
 	 * @param base
 	 *            An absolute IRI to use as a base.
-	 * @return An {@link RDFParserBuilder} that will use the specified base IRI.
+	 * @return An {@link RDFParser} that will use the specified base IRI.
 	 * @throws IllegalArgumentException
 	 *             If the base is not a valid absolute IRI string
 	 */
-	RDFParserBuilder base(String base) throws IllegalArgumentException;
+	RDFParser base(String base) throws IllegalArgumentException;
 
 	/**
 	 * Specify a source {@link InputStream} to parse.
@@ -320,9 +343,9 @@ public interface RDFParserBuilder {
 	 * 
 	 * @param inputStream
 	 *            An InputStream to consume
-	 * @return An {@link RDFParserBuilder} that will use the specified source.
+	 * @return An {@link RDFParser} that will use the specified source.
 	 */
-	RDFParserBuilder source(InputStream inputStream);
+	RDFParser source(InputStream inputStream);
 
 	/**
 	 * Specify a source file {@link Path} to parse.
@@ -346,16 +369,16 @@ public interface RDFParserBuilder {
 	 * 
 	 * @param file
 	 *            A Path for a file to parse
-	 * @return An {@link RDFParserBuilder} that will use the specified source.
+	 * @return An {@link RDFParser} that will use the specified source.
 	 */
-	RDFParserBuilder source(Path file);
+	RDFParser source(Path file);
 
 	/**
 	 * Specify an absolute source {@link IRI} to retrieve and parse.
 	 * <p>
 	 * The source set will not be read before the call to {@link #parse()}.
 	 * <p>
-	 * If this builder does not support the given IRI (e.g.
+	 * If this builder does not support the given IRI protocol (e.g.
 	 * <code>urn:uuid:ce667463-c5ab-4c23-9b64-701d055c4890</code>), this method
 	 * should succeed, while the {@link #parse()} should throw an
 	 * {@link IOException}.
@@ -378,9 +401,9 @@ public interface RDFParserBuilder {
 	 * 
 	 * @param iri
 	 *            An IRI to retrieve and parse
-	 * @return An {@link RDFParserBuilder} that will use the specified source.
+	 * @return An {@link RDFParser} that will use the specified source.
 	 */
-	RDFParserBuilder source(IRI iri);
+	RDFParser source(IRI iri);
 
 	/**
 	 * Specify an absolute source IRI to retrieve and parse.
@@ -410,12 +433,12 @@ public interface RDFParserBuilder {
 	 * 
 	 * @param iri
 	 *            An IRI to retrieve and parse
-	 * @return An {@link RDFParserBuilder} that will use the specified source.
+	 * @return An {@link RDFParser} that will use the specified source.
 	 * @throws IllegalArgumentException
 	 *             If the base is not a valid absolute IRI string
 	 * 
 	 */
-	RDFParserBuilder source(String iri) throws IllegalArgumentException;
+	RDFParser source(String iri) throws IllegalArgumentException;
 
 	/**
 	 * Parse the specified source.
@@ -425,16 +448,16 @@ public interface RDFParserBuilder {
 	 * method) MUST have been called before calling this method, otherwise an
 	 * {@link IllegalStateException} will be thrown.
 	 * <p>
-	 * A target method (e.g. {@link #target(Consumer)}, {@link #target(Dataset)}
-	 * , {@link #target(Graph)} or an equivalent subclass method) MUST have been
-	 * called before calling this method, otherwise an
+	 * A target method (e.g. {@link #target(Consumer)}, {@link #target(Dataset)},
+	 * {@link #target(Graph)} or an equivalent subclass method) MUST have been
+	 * called before calling parse(), otherwise an
 	 * {@link IllegalStateException} will be thrown.
 	 * <p>
 	 * It is undefined if this method is thread-safe, however the
-	 * {@link RDFParserBuilder} may be reused (e.g. setting a different source)
+	 * {@link RDFParser} may be reused (e.g. setting a different source)
 	 * as soon as the {@link Future} has been returned from this method.
 	 * <p>
-	 * The RDFParserBuilder SHOULD perform the parsing as an asynchronous
+	 * The RDFParser SHOULD perform the parsing as an asynchronous
 	 * operation, and return the {@link Future} as soon as preliminary checks
 	 * (such as validity of the {@link #source(IRI)} and
 	 * {@link #contentType(RDFSyntax)} settings) have finished. The future
@@ -449,7 +472,7 @@ public interface RDFParserBuilder {
 	 * parsing succeeded.
 	 * <p>
 	 * If an exception occurs during parsing, (e.g. {@link IOException} or
-	 * {@link org.apache.commons.rdf.simple.AbstractRDFParserBuilder.RDFParseException}), 
+	 * {@link org.apache.commons.rdf.simple.RDFParseException}), 
 	 * it should be indicated as the
 	 * {@link java.util.concurrent.ExecutionException#getCause()} in the
 	 * {@link java.util.concurrent.ExecutionException} thrown on

@@ -23,18 +23,20 @@ import java.util.function.Consumer;
 
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Quad;
-import org.apache.commons.rdf.api.RDFParserBuilder;
 import org.apache.commons.rdf.api.RDFTermFactory;
+import org.apache.commons.rdf.experimental.RDFParser;
+import org.apache.commons.rdf.simple.experimental.AbstractRDFParser;
+import org.apache.commons.rdf.simple.experimental.RDFParseException;
 
 /** 
- * For test purposes - a {@link RDFParserBuilder} that inserts information
+ * For test purposes - a {@link RDFParser} that inserts information
  * about what it has been asked to parse instead of actually parsing anything.
  * <p>
  * This always insert at least the triple equivalent to:
  * <pre>
  *    <urn:uuid:b7ac3fcc-4d86-4d28-8358-a1cd094974a6> <http://example.com/greeting> "Hello world" .
  * </pre>
- * Additional triples match the corresponding getter in AbstractRDFParserBuilder,
+ * Additional triples match the corresponding getter in AbstractRDFParser,
  * e.g.:
  * <pre>
  *   <urn:uuid:b7ac3fcc-4d86-4d28-8358-a1cd094974a6> <http://example.com/base> <http://www.example.org/> .
@@ -43,7 +45,7 @@ import org.apache.commons.rdf.api.RDFTermFactory;
  * 
  *
  */
-public class DummyRDFParserBuilder extends AbstractRDFParserBuilder<DummyRDFParserBuilder> {
+public class DummyRDFParserBuilder extends AbstractRDFParser<DummyRDFParserBuilder> {
 	
 	@Override
 	protected void parseSynchronusly() throws IOException, IllegalStateException, RDFParseException {		
@@ -57,7 +59,7 @@ public class DummyRDFParserBuilder extends AbstractRDFParserBuilder<DummyRDFPars
 		t.accept(factory.createQuad(null, parsing, factory.createIRI("http://example.com/greeting"), 
 				factory.createLiteral("Hello world")));
 		
-		// Now we'll expose the finalized AbstractRDFParserBuilder settings
+		// Now we'll expose the finalized AbstractRDFParser settings
 		// so they can be inspected by the junit test
 
 		if (getSourceIri().isPresent()) {

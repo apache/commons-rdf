@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.commons.rdf.simple;
+package org.apache.commons.rdf.simple.experimental;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,14 +32,15 @@ import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Quad;
-import org.apache.commons.rdf.api.RDFParserBuilder;
 import org.apache.commons.rdf.api.RDFSyntax;
 import org.apache.commons.rdf.api.RDFTermFactory;
+import org.apache.commons.rdf.experimental.RDFParser;
+import org.apache.commons.rdf.simple.SimpleRDFTermFactory;
 
 /**
- * Abstract RDFParserBuilder
+ * Abstract RDFParser
  * <p>
- * This abstract class keeps the builder properties in protected fields like
+ * This abstract class keeps the properties in protected fields like
  * {@link #sourceFile} using {@link Optional}. Some basic checking like
  * {@link #checkIsAbsolute(IRI)} is performed.
  * <p>
@@ -55,8 +56,8 @@ import org.apache.commons.rdf.api.RDFTermFactory;
  * {@link #parse()} (e.g. because it has its own threading model or use
  * asynchronous remote execution).
  */
-public abstract class AbstractRDFParserBuilder<T extends AbstractRDFParserBuilder<T>> 
-	implements RDFParserBuilder, Cloneable {	
+public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> 
+	implements RDFParser, Cloneable {	
 	
 	public static final ThreadGroup threadGroup = new ThreadGroup("Commons RDF parsers");
 	private static final ExecutorService threadpool = Executors.newCachedThreadPool(r -> new Thread(threadGroup, r));
@@ -211,14 +212,14 @@ public abstract class AbstractRDFParserBuilder<T extends AbstractRDFParserBuilde
 	
 	@Override
 	public T rdfTermFactory(RDFTermFactory rdfTermFactory) {
-		AbstractRDFParserBuilder<T> c = clone();
+		AbstractRDFParser<T> c = clone();
 		c.rdfTermFactory = Optional.ofNullable(rdfTermFactory);
 		return c.asT();
 	}
 
 	@Override
 	public T contentType(RDFSyntax rdfSyntax) throws IllegalArgumentException {
-		AbstractRDFParserBuilder<T> c = clone();
+		AbstractRDFParser<T> c = clone();
 		c.contentTypeSyntax = Optional.ofNullable(rdfSyntax);
 		c.contentType = c.contentTypeSyntax.map(syntax -> syntax.mediaType);
 		return c.asT();
@@ -226,7 +227,7 @@ public abstract class AbstractRDFParserBuilder<T extends AbstractRDFParserBuilde
 
 	@Override
 	public T contentType(String contentType) throws IllegalArgumentException {
-		AbstractRDFParserBuilder<T> c = clone();
+		AbstractRDFParser<T> c = clone();
 		c.contentType = Optional.ofNullable(contentType);
 		c.contentTypeSyntax = c.contentType.flatMap(RDFSyntax::byMediaType);
 		return c.asT();
@@ -234,7 +235,7 @@ public abstract class AbstractRDFParserBuilder<T extends AbstractRDFParserBuilde
 
 	@Override
 	public T base(IRI base) {
-		AbstractRDFParserBuilder<T> c = clone();
+		AbstractRDFParser<T> c = clone();
 		c.base = Optional.ofNullable(base);
 		c.base.ifPresent(i -> checkIsAbsolute(i));
 		return c.asT();
@@ -247,7 +248,7 @@ public abstract class AbstractRDFParserBuilder<T extends AbstractRDFParserBuilde
 
 	@Override
 	public T source(InputStream inputStream) {
-		AbstractRDFParserBuilder<T> c = clone();
+		AbstractRDFParser<T> c = clone();
 		c.resetSource();
 		c.sourceInputStream = Optional.ofNullable(inputStream);
 		return c.asT();
@@ -255,7 +256,7 @@ public abstract class AbstractRDFParserBuilder<T extends AbstractRDFParserBuilde
 
 	@Override
 	public T source(Path file) {
-		AbstractRDFParserBuilder<T> c = clone();
+		AbstractRDFParser<T> c = clone();
 		c.resetSource();
 		c.sourceFile = Optional.ofNullable(file);
 		return c.asT();
@@ -263,7 +264,7 @@ public abstract class AbstractRDFParserBuilder<T extends AbstractRDFParserBuilde
 
 	@Override
 	public T source(IRI iri) {
-		AbstractRDFParserBuilder<T> c = clone();
+		AbstractRDFParser<T> c = clone();
 		c.resetSource();
 		c.sourceIri = Optional.ofNullable(iri);
 		c.sourceIri.ifPresent(i -> checkIsAbsolute(i));
@@ -272,7 +273,7 @@ public abstract class AbstractRDFParserBuilder<T extends AbstractRDFParserBuilde
 
 	@Override
 	public T source(String iri) throws IllegalArgumentException {
-		AbstractRDFParserBuilder<T> c = clone();
+		AbstractRDFParser<T> c = clone();
 		c.resetSource();
 		c.sourceIri = Optional.ofNullable(iri).map(internalRdfTermFactory::createIRI);
 		c.sourceIri.ifPresent(i -> checkIsAbsolute(i));
@@ -369,10 +370,6 @@ public abstract class AbstractRDFParserBuilder<T extends AbstractRDFParserBuilde
 	 * One of the source fields MUST be present, as checked by {@link #checkSource()}.
 	 * <p>
 	 * {@link #checkBaseRequired()} is called to verify if {@link #getBase()} is required.
-	 * <p>
-	 * When this method is called, {@link #intoGraph} MUST always be present, as
-	 * that is where the parsed triples MUST be inserted into.
-	 * <p>
 	 * 
 	 * @throws IOException If the source could not be read 
 	 * @throws RDFParseException If the source could not be parsed (e.g. a .ttl file was not valid Turtle)
@@ -380,18 +377,18 @@ public abstract class AbstractRDFParserBuilder<T extends AbstractRDFParserBuilde
 	protected abstract void parseSynchronusly() throws IOException, RDFParseException;
 
 	/**
-	 * Prepare a clone of this RDFParserBuilder which have been checked and
+	 * Prepare a clone of this RDFParser which have been checked and
 	 * completed.
 	 * <p>
 	 * The returned clone will always have
-	 * {@link #getIntoGraph()} and {@link #getRdfTermFactory()} present.
+	 * {@link #getTarget()} and {@link #getRdfTermFactory()} present.
 	 * <p>
 	 * If the {@link #getSourceFile()} is present, but the 
 	 * {@link #getBase()} is not present, the base will be set to the
 	 * <code>file:///</code> IRI for the Path's real path (e.g. resolving any 
 	 * symbolic links).  
 	 *  
-	 * @return A completed and checked clone of this RDFParserBuilder
+	 * @return A completed and checked clone of this RDFParser
 	 * @throws IOException If the source was not accessible (e.g. a file was not found)
 	 * @throws IllegalStateException If the parser was not in a compatible setting (e.g. contentType was an invalid string) 
 	 */
@@ -403,7 +400,7 @@ public abstract class AbstractRDFParserBuilder<T extends AbstractRDFParserBuilde
 
 		// We'll make a clone of our current state which will be passed to
 		// parseSynchronously()
-		AbstractRDFParserBuilder<T> c = clone();
+		AbstractRDFParser<T> c = clone();
 
 		// Use a fresh SimpleRDFTermFactory for each parse
 		if (!c.rdfTermFactory.isPresent()) {
@@ -507,7 +504,7 @@ public abstract class AbstractRDFParserBuilder<T extends AbstractRDFParserBuilde
 
 	@Override
 	public Future<ParseResult> parse() throws IOException, IllegalStateException {
-		final AbstractRDFParserBuilder<T> c = prepareForParsing();
+		final AbstractRDFParser<T> c = prepareForParsing();
 		return threadpool.submit(() -> {
 			c.parseSynchronusly();
 			return null;
@@ -516,7 +513,7 @@ public abstract class AbstractRDFParserBuilder<T extends AbstractRDFParserBuilde
 
 	@Override
 	public T target(Consumer<Quad> consumer) {
-		AbstractRDFParserBuilder<T> c = clone();
+		AbstractRDFParser<T> c = clone();
 		c.resetTarget();
 		c.target = consumer;
 		return c.asT();
@@ -525,7 +522,7 @@ public abstract class AbstractRDFParserBuilder<T extends AbstractRDFParserBuilde
 	@Override
 	public T target(Dataset dataset) {
 		@SuppressWarnings({ "rawtypes", "unchecked" })
-		AbstractRDFParserBuilder<T> c = (AbstractRDFParserBuilder) RDFParserBuilder.super.target(dataset);
+		AbstractRDFParser<T> c = (AbstractRDFParser) RDFParser.super.target(dataset);
 		c.resetTarget();
 		c.targetDataset = Optional.of(dataset);
 		return c.asT();
@@ -534,7 +531,7 @@ public abstract class AbstractRDFParserBuilder<T extends AbstractRDFParserBuilde
 	@Override
 	public T target(Graph graph) {
 		@SuppressWarnings({ "rawtypes", "unchecked" }) // super calls our .clone()
-		AbstractRDFParserBuilder<T> c = (AbstractRDFParserBuilder) RDFParserBuilder.super.target(graph);
+		AbstractRDFParser<T> c = (AbstractRDFParser) RDFParser.super.target(graph);
 		c.resetTarget();
 		c.targetGraph = Optional.of(graph);
 		return c.asT();
