@@ -41,11 +41,11 @@
  * {@link org.apache.commons.rdf.rdf4j.RDF4JDataset} provide access to the
  * underlying RDF4J implementations.
  * <p>
- * The {@link org.apache.commons.rdf.rdf4j.RDF4JParserBuilder} can be used to
+ * The {@link org.apache.commons.rdf.rdf4j.experimental.RDF4JParser} can be used to
  * parse RDF files using RDF4j. It should be most efficient if used with
- * {@link org.apache.commons.rdf.rdf4j.RDF4JParserBuilder#target(org.apache.commons.rdf.api.Dataset)}
+ * {@link org.apache.commons.rdf.rdf4j.experimental.RDF4JParser#target(org.apache.commons.rdf.api.Dataset)}
  * and an adapted {@link org.apache.commons.rdf.rdf4j.RDF4JDataset}, or
- * {@link org.apache.commons.rdf.rdf4j.RDF4JParserBuilder#target(org.apache.commons.rdf.api.Graph)}
+ * {@link org.apache.commons.rdf.rdf4j.experimental.RDF4JParser#target(org.apache.commons.rdf.api.Graph)}
  * and a an adapted {@link org.apache.commons.rdf.rdf4j.RDF4JGraph}
  * 
  *
