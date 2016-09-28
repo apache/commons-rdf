@@ -106,8 +106,6 @@
 		<dependency>
 			<groupId>org.eclipse.rdf4j</groupId>
 			<artifactId>rdf4j-rio-jsonld</artifactId>
-			<!-- FIXME: version should be in rdf4j-bom https://github.com/eclipse/rdf4j/issues/189 -->
-			<version>${rdf4j.version}</version>
 		</dependency>
 		<!-- Languages notably missing, and why: 
 		
