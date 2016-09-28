@@ -72,7 +72,7 @@ import org.apache.commons.rdf.api.Triple;
  * or a cloned builder with the modified settings applied. 
  * Implementations are however encouraged to be immutable,
  * thread-safe and document this. As an example starting point, see
- * {@link org.apache.commons.rdf.simple.AbstractRDFParser}.
+ * <code>org.apache.commons.rdf.simple.AbstractRDFParser</code>.
  * <p>
  * Example usage:
  * </p>
@@ -128,7 +128,7 @@ public interface RDFParser {
 	 * <p>
 	 * The character set of the RDFSyntax is assumed to be
 	 * {@link StandardCharsets#UTF_8} unless overridden within the document
-	 * (e.g. <?xml version="1.0" encoding="iso-8859-1"?></code> in
+	 * (e.g. {@code <?xml version="1.0" encoding="iso-8859-1"?>} in
 	 * {@link RDFSyntax#RDFXML}).
 	 * <p>
 	 * This method will override any contentType set with
@@ -259,8 +259,10 @@ public interface RDFParser {
 	 * <p>
 	 * This method is typically called with a functional consumer, for example:
 	 * <pre>
+	 * {@code
 	 * List<Quad> quads = new ArrayList<Quad>;
 	 * parserBuilder.target(quads::add).parse();
+	 * }
 	 * </pre>
 	 * 
 	 * @param consumer
@@ -472,7 +474,7 @@ public interface RDFParser {
 	 * parsing succeeded.
 	 * <p>
 	 * If an exception occurs during parsing, (e.g. {@link IOException} or
-	 * {@link org.apache.commons.rdf.simple.RDFParseException}), 
+	 * <code>org.apache.commons.rdf.simple.experimental.RDFParseException</code>), 
 	 * it should be indicated as the
 	 * {@link java.util.concurrent.ExecutionException#getCause()} in the
 	 * {@link java.util.concurrent.ExecutionException} thrown on
