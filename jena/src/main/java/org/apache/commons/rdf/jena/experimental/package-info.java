@@ -24,11 +24,10 @@
  * <p>
  * When a class has stabilized, it will move to the
  * {@link org.apache.commons.rdf.jena} package.
- * <p>
  * <ul>
  * <li>{@link JenaRDFParser} - a Jena-backed
  * implementations of 
- * {@link org.apache.commons.rdf.api.experimental.RDFParser}.</li>
+ * {@link org.apache.commons.rdf.experimental.RDFParser}.</li>
  * </ul>
  */
 package org.apache.commons.rdf.jena.experimental;
