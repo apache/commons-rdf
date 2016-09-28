@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -15,36 +15,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.apache.commons.rdf.simple;
-
-import org.apache.commons.rdf.api.RDFParserBuilder;
-
-public class RDFParseException extends Exception {
-	private static final long serialVersionUID = 5427752643780702976L;
-	private RDFParserBuilder builder;
-
-	public RDFParseException(RDFParserBuilder builder) {
-		super();
-		this.builder = builder;
-	}
-
-	public RDFParseException(RDFParserBuilder builder, String message, Throwable cause) {
-		super(message, cause);
-		this.builder = builder;
-	}
-
-	public RDFParseException(RDFParserBuilder builder, String message) {
-		super(message);
-		this.builder = builder;
-	}
-
-	public RDFParseException(RDFParserBuilder builder, Throwable cause) {
-		super(cause);
-		this.builder = builder;
-	}
-
-	public RDFParserBuilder getRDFParserBuilder() {
-		return builder;
-	}
-}
+/**
+ * Experimental Commons RDF Simple implementations.
+ * <p>
+ * Classes in this package should be considered <strong>at
+ * risk</strong>; they might change or be removed in the next minor update of
+ * Commons RDF.
+ * <p>
+ * When a class has stabilized, it will move to the
+ * {@link org.apache.commons.rdf.simple} package.
+ * <p>
+ * <ul>
+ * <li>{@link AbstractRDFParser} - an abstract helper class
+ * for implementations of 
+ * {@link org.apache.commons.rdf.api.experimental.RDFParser}.</li>
+ * </ul>
+ */
+package org.apache.commons.rdf.simple.experimental;
