@@ -32,7 +32,7 @@ import org.apache.commons.rdf.api.RDFTerm;
 
 import com.github.jsonldjava.core.RDFDataset;
 
-class JsonLdDataset extends JsonLdGraphLike<org.apache.commons.rdf.api.Quad> implements Dataset {
+public class JsonLdDataset extends JsonLdGraphLike<org.apache.commons.rdf.api.Quad> implements Dataset {
 
 	JsonLdDataset(RDFDataset rdfDataSet) {
 		super(rdfDataSet);
