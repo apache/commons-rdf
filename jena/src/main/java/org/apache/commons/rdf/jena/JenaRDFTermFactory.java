@@ -681,7 +681,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 			return null;
 		}
 		if (term instanceof JenaRDFTerm)
-			// TODO: What if it's a BlankNodeImpl with
+			// TODO: What if it's a JenaBlankNodeImpl with
 			// a different salt? Do we need to rewrite the
 			// jena blanknode identifier?
 			return ((JenaRDFTerm) term).asJenaNode();

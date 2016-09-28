@@ -38,13 +38,13 @@ import org.apache.jena.sparql.core.Quad;
  * {@link #hashCode()} but can otherwise be used as a base class for both
  * a {@link JenaTriple} and a {@link JenaQuad}.
  * 
- * @see TripleImpl
- * @see QuadImpl
+ * @see JenaTripleImpl
+ * @see JenaQuadImpl
  * @see JenaFactory#createGeneralizedTriple(RDFTerm, RDFTerm, RDFTerm)
  * @see JenaFactory#createGeneralizedQuad(RDFTerm, RDFTerm, RDFTerm, RDFTerm)
  *
  */
-public class GeneralizedQuadImpl<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm, G extends RDFTerm> implements JenaQuadLike<S,P,O,G> {
+public class JenaGeneralizedQuad<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm, G extends RDFTerm> implements JenaQuadLike<S,P,O,G> {
 
 	final Optional<G> graphName;
 	final S subject;
@@ -53,19 +53,19 @@ public class GeneralizedQuadImpl<S extends RDFTerm, P extends RDFTerm, O extends
 	org.apache.jena.sparql.core.Quad quad = null;
 	org.apache.jena.graph.Triple triple = null;
 	
-	GeneralizedQuadImpl(S subject, P predicate, O object, Optional<G> graphName) {		
+	JenaGeneralizedQuad(S subject, P predicate, O object, Optional<G> graphName) {		
 		this.subject = Objects.requireNonNull(subject);
 		this.predicate = Objects.requireNonNull(predicate);
 		this.object = Objects.requireNonNull(object);
 		this.graphName = Objects.requireNonNull(graphName);
 	}
 
-	GeneralizedQuadImpl(S subject, P predicate, O object) {
+	JenaGeneralizedQuad(S subject, P predicate, O object) {
 		this(subject, predicate, object, Optional.empty());
 	}
 	 
 	@SuppressWarnings("unchecked")
-	GeneralizedQuadImpl(org.apache.jena.sparql.core.Quad quad, UUID salt) {
+	JenaGeneralizedQuad(org.apache.jena.sparql.core.Quad quad, UUID salt) {
 		this.quad = Objects.requireNonNull(quad);
 		this.subject = (S) JenaFactory.fromJena(quad.getSubject(), salt);
 		this.predicate = (P) JenaFactory.fromJena(quad.getPredicate(), salt);
@@ -74,7 +74,7 @@ public class GeneralizedQuadImpl<S extends RDFTerm, P extends RDFTerm, O extends
 	}
 
 	@SuppressWarnings("unchecked")
-	GeneralizedQuadImpl(org.apache.jena.graph.Triple triple, UUID salt) {
+	JenaGeneralizedQuad(org.apache.jena.graph.Triple triple, UUID salt) {
 		this.triple = Objects.requireNonNull(triple);		
 		this.subject = (S) JenaFactory.fromJena(triple.getSubject(), salt);
 		this.predicate = (P) JenaFactory.fromJena(triple.getPredicate(), salt);

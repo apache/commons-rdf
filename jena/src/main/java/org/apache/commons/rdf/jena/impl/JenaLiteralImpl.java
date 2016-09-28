@@ -18,23 +18,21 @@
 
 package org.apache.commons.rdf.jena.impl;
 
+import java.util.Objects;
+import java.util.Optional;
+
 import org.apache.commons.rdf.api.IRI;
-import org.apache.commons.rdf.jena.JenaIRI;
+import org.apache.commons.rdf.api.Literal;
+import org.apache.commons.rdf.jena.JenaLiteral;
 import org.apache.jena.graph.Node;
-import org.apache.jena.graph.NodeFactory;
 
-public class IRIImpl extends AbstractRDFTerm implements JenaIRI {
+public class JenaLiteralImpl extends AbstractJenaRDFTerm implements JenaLiteral {
 
-	/* package */ IRIImpl(Node node) {
+	/* package */ JenaLiteralImpl(Node node) {
 		super(node);
-		if (! node.isURI()) {
-			throw new IllegalArgumentException("Node is not a blank node: " + node);
-		}				
-		
-	}
-
-	/* package */ IRIImpl(String iriStr) {
-		super(NodeFactory.createURI(iriStr));
+		if (! node.isLiteral()) {
+			throw new IllegalArgumentException("Node is not a literal: " + node);
+		}		
 	}
 
 	@Override
@@ -43,19 +41,33 @@ public class IRIImpl extends AbstractRDFTerm implements JenaIRI {
 			return true;
 		if (other == null)
 			return false;
-		if (!(other instanceof IRI))
+		if (!(other instanceof Literal))
 			return false;
-		IRI iri = (IRI) other;
-		return getIRIString().equals(iri.getIRIString());
+		Literal literal = (Literal) other;
+		return getLexicalForm().equals(literal.getLexicalForm()) && getLanguageTag().equals(literal.getLanguageTag())
+				&& getDatatype().equals(literal.getDatatype());
 	}
 
 	@Override
-	public String getIRIString() {
-		return asJenaNode().getURI();
+	public IRI getDatatype() {
+		return JenaFactory.createIRI(asJenaNode().getLiteralDatatype().getURI());
+	}
+
+	@Override
+	public Optional<String> getLanguageTag() {
+		String x = asJenaNode().getLiteralLanguage();
+		if (x == null || x.isEmpty())
+			return Optional.empty();
+		return Optional.of(x);
+	}
+
+	@Override
+	public String getLexicalForm() {
+		return asJenaNode().getLiteralLexicalForm();
 	}
 
 	@Override
 	public int hashCode() {
-		return getIRIString().hashCode();
+		return Objects.hash(getLexicalForm(), getDatatype(), getLanguageTag());
 	}
 }
