@@ -32,6 +32,7 @@ import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.api.RDFSyntax;
+import org.apache.commons.rdf.jsonldjava.experimental.JsonLdParser;
 import org.apache.commons.rdf.simple.Types;
 import org.junit.Test;
 
@@ -57,7 +58,7 @@ public class JsonLdParserBuilderTest {
 		assertNotNull("Test resource not found: " + TEST_JSONLD, url);
 		IRI iri = factory.createIRI(url.toString());
 		Graph g = factory.createGraph();
-		new JsonLdParserBuilder()
+		new JsonLdParser()
 				.contentType(RDFSyntax.JSONLD)
 				.source(iri)				
 				.target(g)
@@ -75,7 +76,7 @@ public class JsonLdParserBuilderTest {
 			Files.copy(is, path, StandardCopyOption.REPLACE_EXISTING);
 		}
 		Graph g = factory.createGraph();
-		new JsonLdParserBuilder()
+		new JsonLdParser()
 				.contentType(RDFSyntax.JSONLD)
 				.source(path)
 				.target(g)
@@ -89,7 +90,7 @@ public class JsonLdParserBuilderTest {
 		Graph g = factory.createGraph();
 		try (InputStream is = getClass().getResourceAsStream(TEST_JSONLD)) {
 			assertNotNull("Test resource not found: " + TEST_JSONLD, is);	
-			new JsonLdParserBuilder()
+			new JsonLdParser()
 					.base("http://example.com/base/")
 					.contentType(RDFSyntax.JSONLD).source(is)
 					.target(g)
