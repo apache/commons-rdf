@@ -43,8 +43,20 @@ import com.github.jsonldjava.core.RDFDataset.Node;
  *
  * @param <T> specialisation of {@link TripleLike}, e.g. {@link Triple} or {@link Quad}
  */
-abstract class JsonLdGraphLike<T extends TripleLike<BlankNodeOrIRI, IRI, RDFTerm>>
-	implements GraphLike<T, BlankNodeOrIRI, IRI, RDFTerm> {
+public interface JsonLdGraphLike <T extends TripleLike<BlankNodeOrIRI, IRI, RDFTerm>>
+	extends GraphLike<T, BlankNodeOrIRI, IRI, RDFTerm> {
+	/**
+	 * Return the underlying JSONLD-Java {@link RDFDataset}.
+	 * <p>
+	 * Changes in the JSONLD-Java dataset is reflected in this class and vice
+	 * versa.
+	 * 
+	 */
+	public RDFDataset getRdfDataSet();
+}
+
+abstract class AbstractJsonLdGraphLike<T extends TripleLike<BlankNodeOrIRI, IRI, RDFTerm>>
+	implements JsonLdGraphLike<T> {
 	
 	/** 
 	 * Used by {@link #bnodePrefix()} to get a unique UUID per JVM run
@@ -66,17 +78,17 @@ abstract class JsonLdGraphLike<T extends TripleLike<BlankNodeOrIRI, IRI, RDFTerm
 	 */
 	RDFDataset rdfDataSet;
 	
-	JsonLdGraphLike(RDFDataset rdfDataSet) {
+	AbstractJsonLdGraphLike(RDFDataset rdfDataSet) {
 		this(rdfDataSet, "urn:uuid:" + SALT + "#" +  "g"+ System.identityHashCode(rdfDataSet));
 	}
 
-	JsonLdGraphLike(RDFDataset rdfDataSet, String bnodePrefix) {
+	AbstractJsonLdGraphLike(RDFDataset rdfDataSet, String bnodePrefix) {
 		this.rdfDataSet = Objects.requireNonNull(rdfDataSet);
 		this.bnodePrefix = Objects.requireNonNull(bnodePrefix);
 		this.factory = new JsonLdRDFTermFactory(bnodePrefix);
 	}
 	
-	JsonLdGraphLike(String bnodePrefix) {
+	AbstractJsonLdGraphLike(String bnodePrefix) {
 		this(new RDFDataset(), bnodePrefix);
 	}
 	

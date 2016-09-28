@@ -22,6 +22,7 @@ import org.apache.commons.rdf.api.BlankNode;
 import com.github.jsonldjava.core.RDFDataset.Node;
 
 public interface JsonLdBlankNode extends JsonLdTerm, BlankNode {
+}	
 	
 	final class JsonLdBlankNodeImpl extends JsonLdTermImpl implements JsonLdBlankNode {
 		private String blankNodePrefix;
@@ -59,4 +60,3 @@ public interface JsonLdBlankNode extends JsonLdTerm, BlankNode {
 		}
 	}
 
-}

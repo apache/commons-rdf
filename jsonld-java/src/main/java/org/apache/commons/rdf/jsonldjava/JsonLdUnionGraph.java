@@ -46,17 +46,20 @@ import com.github.jsonldjava.core.RDFDataset;
  * inefficient as they skip any duplicate triples from multiple
  * graphs.
  */
-class JsonLdUnionGraph extends JsonLdGraphLike<org.apache.commons.rdf.api.Triple> implements Graph {
+public interface JsonLdUnionGraph extends JsonLdGraphLike<org.apache.commons.rdf.api.Triple>, Graph {
+}
 
-	JsonLdUnionGraph(String bnodePrefix) {
+class JsonLdUnionGraphImpl extends AbstractJsonLdGraphLike<org.apache.commons.rdf.api.Triple> implements JsonLdUnionGraph {
+
+	JsonLdUnionGraphImpl(String bnodePrefix) {
 		super(bnodePrefix);
 	}
 	
-	JsonLdUnionGraph(RDFDataset rdfDataSet) {
+	JsonLdUnionGraphImpl(RDFDataset rdfDataSet) {
 		super(rdfDataSet);
 	}
 	
-	JsonLdUnionGraph(RDFDataset rdfDataSet, String bnodePrefix) {
+	JsonLdUnionGraphImpl(RDFDataset rdfDataSet, String bnodePrefix) {
 		super(rdfDataSet, bnodePrefix);
 	}
 
@@ -111,6 +114,5 @@ class JsonLdUnionGraph extends JsonLdGraphLike<org.apache.commons.rdf.api.Triple
 		// Note: Our specialized stream() already removes duplicates using .distinct()
 		return stream().count();
 	}
-
 }
 

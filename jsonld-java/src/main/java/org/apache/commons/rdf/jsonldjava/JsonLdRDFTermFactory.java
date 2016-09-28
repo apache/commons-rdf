@@ -30,10 +30,6 @@ import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.RDFTermFactory;
 import org.apache.commons.rdf.api.Triple;
-import org.apache.commons.rdf.jsonldjava.JsonLdBlankNode.JsonLdBlankNodeImpl;
-import org.apache.commons.rdf.jsonldjava.JsonLdLiteral.JsonLdLiteralImpl;
-import org.apache.commons.rdf.jsonldjava.JsonLdQuad.JsonLdQuadImpl;
-import org.apache.commons.rdf.jsonldjava.JsonLdTriple.JsonLdTripleImpl;
 import org.apache.commons.rdf.simple.Types;
 
 import com.github.jsonldjava.core.RDFDataset;
@@ -62,8 +58,8 @@ public final class JsonLdRDFTermFactory implements RDFTermFactory {
 	 * @param rdfDataSet JsonLd {@link RDFDataset} to adapt
 	 * @return Adapted {@link Dataset}
 	 */
-	public Dataset asDataset(RDFDataset rdfDataSet) {
-		return new JsonLdDataset(rdfDataSet);
+	public JsonLdDataset asDataset(RDFDataset rdfDataSet) {
+		return new JsonLdDatasetImpl(rdfDataSet);
 	}
 
 	/**
@@ -81,8 +77,8 @@ public final class JsonLdRDFTermFactory implements RDFTermFactory {
 	 * @param rdfDataSet JsonLd {@link RDFDataset} to adapt
 	 * @return Adapted {@link Graph} covering the <em>default graph</em>
 	 */	
-	public Graph asGraph(RDFDataset rdfDataSet) {
-		return new JsonLdGraph(rdfDataSet);
+	public JsonLdGraph asGraph(RDFDataset rdfDataSet) {
+		return new JsonLdGraphImpl(rdfDataSet);
 	}
 
 	public Node asJsonLdNode(RDFTerm term) {
@@ -202,8 +198,8 @@ public final class JsonLdRDFTermFactory implements RDFTermFactory {
 	 * @param rdfDataSet JsonLd {@link RDFDataset} to adapt
 	 * @return Adapted {@link Dataset}
 	 */	
-	public Graph asUnionGraph(RDFDataset rdfDataSet) {
-		return new JsonLdUnionGraph(rdfDataSet);
+	public JsonLdUnionGraph asUnionGraph(RDFDataset rdfDataSet) {
+		return new JsonLdUnionGraphImpl(rdfDataSet);
 	}
 
 	@Override
@@ -220,18 +216,18 @@ public final class JsonLdRDFTermFactory implements RDFTermFactory {
 	}
 
 	@Override
-	public Dataset createDataset() {
-		return new JsonLdDataset(bnodePrefix);
+	public JsonLdDataset createDataset() {
+		return new JsonLdDatasetImpl(bnodePrefix);
 	}
 
 	@Override
-	public Graph createGraph() {
-		return new JsonLdGraph(bnodePrefix);
+	public JsonLdGraph createGraph() {
+		return new JsonLdGraphImpl(bnodePrefix);
 	}
 
 	@Override
 	public JsonLdIRI createIRI(String iri) {
-		return new JsonLdIRI.JsonLdIRIImpl(iri);
+		return new JsonLdIRIImpl(iri);
 	}
 
 	@Override
@@ -288,7 +284,7 @@ public final class JsonLdRDFTermFactory implements RDFTermFactory {
 			return null; // e.g. default graph
 		}
 		if (node.isIRI()) {
-			return new JsonLdIRI.JsonLdIRIImpl(node);
+			return new JsonLdIRIImpl(node);
 		} else if (node.isBlankNode()) {
 			return new JsonLdBlankNodeImpl(node, blankNodePrefix);
 		} else if (node.isLiteral()) {

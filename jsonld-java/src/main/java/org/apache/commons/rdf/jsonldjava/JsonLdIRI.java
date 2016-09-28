@@ -23,6 +23,7 @@ import com.github.jsonldjava.core.RDFDataset;
 import com.github.jsonldjava.core.RDFDataset.Node;
 
 public interface JsonLdIRI extends JsonLdTerm, IRI {
+}
 
 	final class JsonLdIRIImpl extends JsonLdTermImpl implements JsonLdIRI {
 	
@@ -61,5 +62,3 @@ public interface JsonLdIRI extends JsonLdTerm, IRI {
 			return node.getValue().equals(other.getIRIString());
 		}
 	}
-
-}

@@ -32,17 +32,20 @@ import org.apache.commons.rdf.api.RDFTerm;
 
 import com.github.jsonldjava.core.RDFDataset;
 
-public class JsonLdDataset extends JsonLdGraphLike<org.apache.commons.rdf.api.Quad> implements Dataset {
+public interface JsonLdDataset extends JsonLdGraphLike<org.apache.commons.rdf.api.Quad>, Dataset {
+}
 
-	JsonLdDataset(RDFDataset rdfDataSet) {
+class JsonLdDatasetImpl extends AbstractJsonLdGraphLike<org.apache.commons.rdf.api.Quad> implements JsonLdDataset {
+
+	JsonLdDatasetImpl(RDFDataset rdfDataSet) {
 		super(rdfDataSet);
 	}
 
-	JsonLdDataset(RDFDataset rdfDataset, String bnodePrefix) {
+	JsonLdDatasetImpl(RDFDataset rdfDataset, String bnodePrefix) {
 		super(rdfDataset, bnodePrefix);
 	}
 
-	JsonLdDataset(String bnodePrefix) {
+	JsonLdDatasetImpl(String bnodePrefix) {
 		super(bnodePrefix);
 	}
 
@@ -58,7 +61,7 @@ public class JsonLdDataset extends JsonLdGraphLike<org.apache.commons.rdf.api.Qu
 	
 	@Override
 	public Graph getGraph() {
-		return new JsonLdGraph(rdfDataSet, Optional.empty(), bnodePrefix);
+		return new JsonLdGraphImpl(rdfDataSet, Optional.empty(), bnodePrefix);
 	}	
 
 	@Override
@@ -67,7 +70,7 @@ public class JsonLdDataset extends JsonLdGraphLike<org.apache.commons.rdf.api.Qu
 			return Optional.of(getGraph());
 		}
 		return getGraphNames()
-				.map(g -> (Graph)new JsonLdGraph(rdfDataSet, Optional.of(g), bnodePrefix))
+				.map(g -> (Graph)new JsonLdGraphImpl(rdfDataSet, Optional.of(g), bnodePrefix))
 				.findAny();
 	}
 
