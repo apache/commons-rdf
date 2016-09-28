@@ -43,10 +43,10 @@ public interface Quad extends QuadLike<BlankNodeOrIRI,IRI,RDFTerm,BlankNodeOrIRI
 	 * If {@link Optional#isPresent()}, then the {@link Optional#get()} is
 	 * either a {@link BlankNode} or an {@link IRI}, indicating the
 	 * <a href="https://www.w3.org/TR/rdf11-concepts/#dfn-named-graph">graph
-	 * name of this Quad. If the graph name is not present, e.g. the value is
+	 * name</a> of this Quad. If the graph name is not present, e.g. the value is
 	 * {@link Optional#empty()}, it indicates that this Quad is in the
 	 * <a href="https://www.w3.org/TR/rdf11-concepts/#dfn-default-graph">default
-	 * graph.
+	 * graph</a>.
 	 *
 	 * @return If {@link Optional#isPresent()}, the graph name
 	 *         {@link BlankNodeOrIRI} of this quad, otherwise
