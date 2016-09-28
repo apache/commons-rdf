@@ -26,6 +26,7 @@ import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFTermFactory;
 import org.apache.commons.rdf.experimental.RDFParser;
 import org.apache.commons.rdf.simple.experimental.AbstractRDFParser;
+import org.apache.commons.rdf.simple.experimental.RDFParseException;
 
 /** 
  * For test purposes - a {@link RDFParser} that inserts information

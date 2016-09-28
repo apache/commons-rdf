@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.apache.commons.rdf.simple;
+package org.apache.commons.rdf.simple.experimental;
 
 import org.apache.commons.rdf.experimental.RDFParser;
 
