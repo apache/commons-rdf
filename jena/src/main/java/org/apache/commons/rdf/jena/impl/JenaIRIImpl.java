@@ -18,21 +18,23 @@
 
 package org.apache.commons.rdf.jena.impl;
 
-import java.util.Objects;
-import java.util.Optional;
-
 import org.apache.commons.rdf.api.IRI;
-import org.apache.commons.rdf.api.Literal;
-import org.apache.commons.rdf.jena.JenaLiteral;
+import org.apache.commons.rdf.jena.JenaIRI;
 import org.apache.jena.graph.Node;
+import org.apache.jena.graph.NodeFactory;
 
-public class LiteralImpl extends AbstractRDFTerm implements JenaLiteral {
+public class JenaIRIImpl extends AbstractJenaRDFTerm implements JenaIRI {
 
-	/* package */ LiteralImpl(Node node) {
+	/* package */ JenaIRIImpl(Node node) {
 		super(node);
-		if (! node.isLiteral()) {
-			throw new IllegalArgumentException("Node is not a literal: " + node);
-		}		
+		if (! node.isURI()) {
+			throw new IllegalArgumentException("Node is not a blank node: " + node);
+		}				
+		
+	}
+
+	/* package */ JenaIRIImpl(String iriStr) {
+		super(NodeFactory.createURI(iriStr));
 	}
 
 	@Override
@@ -41,33 +43,19 @@ public class LiteralImpl extends AbstractRDFTerm implements JenaLiteral {
 			return true;
 		if (other == null)
 			return false;
-		if (!(other instanceof Literal))
+		if (!(other instanceof IRI))
 			return false;
-		Literal literal = (Literal) other;
-		return getLexicalForm().equals(literal.getLexicalForm()) && getLanguageTag().equals(literal.getLanguageTag())
-				&& getDatatype().equals(literal.getDatatype());
+		IRI iri = (IRI) other;
+		return getIRIString().equals(iri.getIRIString());
 	}
 
 	@Override
-	public IRI getDatatype() {
-		return JenaFactory.createIRI(asJenaNode().getLiteralDatatype().getURI());
-	}
-
-	@Override
-	public Optional<String> getLanguageTag() {
-		String x = asJenaNode().getLiteralLanguage();
-		if (x == null || x.isEmpty())
-			return Optional.empty();
-		return Optional.of(x);
-	}
-
-	@Override
-	public String getLexicalForm() {
-		return asJenaNode().getLiteralLexicalForm();
+	public String getIRIString() {
+		return asJenaNode().getURI();
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(getLexicalForm(), getDatatype(), getLanguageTag());
+		return getIRIString().hashCode();
 	}
 }

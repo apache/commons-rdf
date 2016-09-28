@@ -18,37 +18,30 @@
 
 package org.apache.commons.rdf.jena.impl;
 
-import org.apache.commons.rdf.jena.JenaAny;
+import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.jena.JenaRDFTerm;
 import org.apache.jena.graph.Node;
+import org.apache.jena.riot.out.NodeFmtLib;
 
-public class AnyImpl implements JenaRDFTerm, JenaAny {
+class AbstractJenaRDFTerm implements JenaRDFTerm, RDFTerm {
+	private Node node;
+	// static private PrefixMapping empty = new PrefixMappingImpl() ;
 
-	static class Singleton {
-		static AnyImpl instance = new AnyImpl();
-	}
-	
-	/**
-	 * Private constructor
-	 * 
-	 * @see {@link Singleton#instance}
-	 */
-	private AnyImpl() {
-	}
-	
-	@Override
-	public String ntriplesString() {
-		return "[]";
+	protected AbstractJenaRDFTerm(Node node) {
+		this.node = node;
 	}
 
 	@Override
 	public Node asJenaNode() {
-		return Node.ANY;
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		return obj == this || obj instanceof JenaAny;
+		return node;
 	}
 
+	public String ntriplesString() {
+		return NodeFmtLib.str(node);
+	}
+
+	@Override
+	public String toString() {
+		return ntriplesString();
+	}
 }

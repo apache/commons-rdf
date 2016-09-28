@@ -35,18 +35,18 @@ import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 
-public class GraphImpl implements JenaGraph {
+public class JenaGraphImpl implements JenaGraph {
 
 	private org.apache.jena.graph.Graph graph;
 	private UUID salt;
 	private Model model;
 
-	GraphImpl(org.apache.jena.graph.Graph graph, UUID salt) {
+	JenaGraphImpl(org.apache.jena.graph.Graph graph, UUID salt) {
 		this.graph = graph;
 		this.salt = salt;
 	}
 
-	GraphImpl(Model model, UUID salt) {
+	JenaGraphImpl(Model model, UUID salt) {
 		this.model = model;
 		this.graph = model.getGraph();
 		this.salt = salt;

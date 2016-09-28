@@ -18,30 +18,44 @@
 
 package org.apache.commons.rdf.jena.impl;
 
-import org.apache.commons.rdf.api.RDFTerm;
-import org.apache.commons.rdf.jena.JenaRDFTerm;
+import java.util.UUID;
+
+import org.apache.commons.rdf.api.BlankNode;
+import org.apache.commons.rdf.jena.JenaBlankNode;
 import org.apache.jena.graph.Node;
-import org.apache.jena.riot.out.NodeFmtLib;
 
-class AbstractRDFTerm implements JenaRDFTerm, RDFTerm {
-	private Node node;
-	// static private PrefixMapping empty = new PrefixMappingImpl() ;
+public class JenaBlankNodeImpl extends AbstractJenaRDFTerm implements JenaBlankNode {
 
-	protected AbstractRDFTerm(Node node) {
-		this.node = node;
+	private UUID salt;
+
+	/* package */ JenaBlankNodeImpl(Node node, UUID salt) {
+		super(node);
+		if (! node.isBlank()) {
+			throw new IllegalArgumentException("Node is not a blank node: " + node);
+		}				
+		this.salt = salt;
 	}
 
 	@Override
-	public Node asJenaNode() {
-		return node;
-	}
-
-	public String ntriplesString() {
-		return NodeFmtLib.str(node);
+	public boolean equals(Object other) {
+		if (other == this)
+			return true;
+		if (other == null)
+			return false;
+		if (!(other instanceof BlankNode))
+			return false;
+		BlankNode bNode = (BlankNode) other;
+		return uniqueReference().equals(bNode.uniqueReference());
 	}
 
 	@Override
-	public String toString() {
-		return ntriplesString();
+	public int hashCode() {
+		return uniqueReference().hashCode();
 	}
+
+	@Override
+	public String uniqueReference() {
+		return salt + asJenaNode().getBlankNodeLabel();
+	}
+
 }

@@ -18,44 +18,37 @@
 
 package org.apache.commons.rdf.jena.impl;
 
-import java.util.UUID;
-
-import org.apache.commons.rdf.api.BlankNode;
-import org.apache.commons.rdf.jena.JenaBlankNode;
+import org.apache.commons.rdf.jena.JenaAny;
+import org.apache.commons.rdf.jena.JenaRDFTerm;
 import org.apache.jena.graph.Node;
 
-public class BlankNodeImpl extends AbstractRDFTerm implements JenaBlankNode {
+public class JenaAnyImpl implements JenaRDFTerm, JenaAny {
 
-	private UUID salt;
-
-	/* package */ BlankNodeImpl(Node node, UUID salt) {
-		super(node);
-		if (! node.isBlank()) {
-			throw new IllegalArgumentException("Node is not a blank node: " + node);
-		}				
-		this.salt = salt;
+	static class Singleton {
+		static JenaAnyImpl instance = new JenaAnyImpl();
+	}
+	
+	/**
+	 * Private constructor
+	 * 
+	 * @see {@link Singleton#instance}
+	 */
+	private JenaAnyImpl() {
+	}
+	
+	@Override
+	public String ntriplesString() {
+		return "[]";
 	}
 
 	@Override
-	public boolean equals(Object other) {
-		if (other == this)
-			return true;
-		if (other == null)
-			return false;
-		if (!(other instanceof BlankNode))
-			return false;
-		BlankNode bNode = (BlankNode) other;
-		return uniqueReference().equals(bNode.uniqueReference());
+	public Node asJenaNode() {
+		return Node.ANY;
 	}
-
+	
 	@Override
-	public int hashCode() {
-		return uniqueReference().hashCode();
-	}
-
-	@Override
-	public String uniqueReference() {
-		return salt + asJenaNode().getBlankNodeLabel();
+	public boolean equals(Object obj) {
+		return obj == this || obj instanceof JenaAny;
 	}
 
 }

@@ -39,12 +39,12 @@ import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.sparql.core.DatasetGraph;
 import org.apache.jena.sparql.core.GraphView;
 
-public class DatasetImpl implements JenaDataset {
+public class JenaDatasetImpl implements JenaDataset {
 
 	private DatasetGraph graph;
 	private UUID salt;
 
-	/* package */ DatasetImpl(DatasetGraph graph, UUID salt) {
+	/* package */ JenaDatasetImpl(DatasetGraph graph, UUID salt) {
 		this.graph = graph;
 		this.salt = salt;
 	}
@@ -155,19 +155,19 @@ public class DatasetImpl implements JenaDataset {
 	@Override
 	public Graph getGraph() {
 		GraphView gv = GraphView.createDefaultGraph(graph);
-		return new GraphImpl(gv, salt);
+		return new JenaGraphImpl(gv, salt);
 	}
 
 	@Override
 	public Graph getUnionGraph() {
 		GraphView gv = GraphView.createUnionGraph(graph);
-		return new GraphImpl(gv, salt);
+		return new JenaGraphImpl(gv, salt);
 	}
 	
 	@Override
 	public Optional<Graph> getGraph(BlankNodeOrIRI graphName) {
 		GraphView gv = GraphView.createNamedGraph(graph, JenaRDFTermFactory.toJena(graphName));
-		return Optional.of(new GraphImpl(gv, salt));
+		return Optional.of(new JenaGraphImpl(gv, salt));
 	}	
 
 	@Override

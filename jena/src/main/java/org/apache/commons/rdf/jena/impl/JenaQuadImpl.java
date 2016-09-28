@@ -19,29 +19,31 @@
 package org.apache.commons.rdf.jena.impl;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.IRI;
+import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFTerm;
-import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.jena.ConversionException;
-import org.apache.commons.rdf.jena.JenaTriple;
+import org.apache.commons.rdf.jena.JenaQuad;
 
-public class TripleImpl extends GeneralizedQuadImpl<BlankNodeOrIRI, IRI, RDFTerm, RDFTerm>
-		implements JenaTriple {
+public class JenaQuadImpl	extends JenaGeneralizedQuad<BlankNodeOrIRI,IRI,RDFTerm,BlankNodeOrIRI>
+	implements JenaQuad {
 
-	TripleImpl(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		super(subject, predicate, object);
+	JenaQuadImpl(BlankNodeOrIRI subject, IRI predicate, RDFTerm object, Optional<BlankNodeOrIRI> graphName) {
+		super(subject, predicate, object, graphName);
 	}
 
-	TripleImpl(org.apache.jena.graph.Triple triple, UUID salt) throws ConversionException {
-		super(triple, salt);
+	JenaQuadImpl(org.apache.jena.sparql.core.Quad quad, UUID salt) {
+		super(quad, salt);
 		// Check the conversion
-		if (! (subject instanceof BlankNodeOrIRI) ||
+		if ((graphName.isPresent() && ! (graphName.get() instanceof BlankNodeOrIRI)) ||
+			! (subject instanceof BlankNodeOrIRI) ||
 			! (predicate instanceof IRI) ||
 			! (object instanceof RDFTerm)) {
-			throw new ConversionException("Can't adapt generalized triple: " + quad);	
+			throw new ConversionException("Can't adapt generalized quad: " + quad);	
 		}
 	}
 
@@ -49,19 +51,16 @@ public class TripleImpl extends GeneralizedQuadImpl<BlankNodeOrIRI, IRI, RDFTerm
 	public boolean equals(Object other) {
 		if (other == this)
 			return true;
-		if (other == null)
+		if (!(other instanceof Quad))
 			return false;
-		if (!(other instanceof Triple))
-			return false;
-		Triple triple = (Triple) other;
-		return getSubject().equals(triple.getSubject()) && getPredicate().equals(triple.getPredicate())
-				&& getObject().equals(triple.getObject());
+		Quad quad = (Quad) other;
+		return getGraphName().equals(quad.getGraphName()) && getSubject().equals(quad.getSubject())
+				&& getPredicate().equals(quad.getPredicate()) && getObject().equals(quad.getObject());
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(getSubject(), getPredicate(), getObject());
+		return Objects.hash(getSubject(), getPredicate(), getObject(), getGraphName());
 	}
-
 	
 }
