@@ -158,6 +158,7 @@ public interface Graph extends AutoCloseable,GraphLike<Triple, BlankNodeOrIRI, I
      * This method is deprecated, use the equivalent method 
      * {@link #stream()} instead. 
      * 
+     * @return A {@link Stream} over all triples.
      */
     @Deprecated
     default Stream<? extends Triple> getTriples() {
@@ -168,6 +169,10 @@ public interface Graph extends AutoCloseable,GraphLike<Triple, BlankNodeOrIRI, I
      * This method is deprecated, use the equivalent method 
      * {@link #stream(BlankNodeOrIRI, IRI, RDFTerm)} instead.
      * 
+     * @param subject   The triple subject (null is a wildcard)
+     * @param predicate The triple predicate (null is a wildcard)
+     * @param object    The triple object (null is a wildcard)
+     * @return A {@link Stream} over the matched triples.
      */
     @Deprecated    
     default Stream<? extends Triple> getTriples(BlankNodeOrIRI subject, IRI predicate,
