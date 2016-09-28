@@ -39,9 +39,12 @@ import com.github.jsonldjava.core.RDFDataset.Node;
 /**
  * Common abstract {@link GraphLike}.
  * <p>
- * Specialised by {@link JsonLdGraph}, {@link JsonLdUnionGraph} and {@link JsonLdDataset}. 
+ * Specialised by {@link JsonLdGraph}, {@link JsonLdUnionGraph} and
+ * {@link JsonLdDataset}.
  *
- * @param <T> specialisation of {@link TripleLike}, e.g. {@link Triple} or {@link Quad}
+ * @param <T>
+ *            specialisation of {@link TripleLike}, e.g. {@link Triple} or
+ *            {@link org.apache.commons.rdf.api.Quad}
  */
 public interface JsonLdGraphLike <T extends TripleLike<BlankNodeOrIRI, IRI, RDFTerm>>
 	extends GraphLike<T, BlankNodeOrIRI, IRI, RDFTerm> {
@@ -51,6 +54,7 @@ public interface JsonLdGraphLike <T extends TripleLike<BlankNodeOrIRI, IRI, RDFT
 	 * Changes in the JSONLD-Java dataset is reflected in this class and vice
 	 * versa.
 	 * 
+	 * @return The underlying JSONLD-JAva RDFDataset
 	 */
 	public RDFDataset getRdfDataSet();
 }

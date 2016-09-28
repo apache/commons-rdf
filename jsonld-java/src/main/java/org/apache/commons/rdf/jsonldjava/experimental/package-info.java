@@ -16,19 +16,19 @@
  * limitations under the License.
  */
 /**
- * Experimental Commons RDF RDF4J implementations.
+ * Experimental Commons RDF JSONLD-Java implementations.
  * <p>
  * Classes in this package should be considered <strong>at
  * risk</strong>; they might change or be removed in the next minor update of
  * Commons RDF.
  * <p>
  * When a class has stabilized, it will move to the
- * {@link org.apache.commons.rdf.rdf4j} package.
- * <p>
+ * {@link org.apache.commons.rdf.jsonldjava} package.
  * <ul>
- * <li>{@link RDF4JParser} - an RDF4J-backed
- * implementations of 
- * {@link org.apache.commons.rdf.api.experimental.RDFParser}.</li>
+ *   <li>{@link JsonLdParser} - an JSONLD-Java-backed
+ *       implementations of 
+ *       {@link org.apache.commons.rdf.experimental.RDFParser}.
+ *   </li>
  * </ul>
  */
 package org.apache.commons.rdf.jsonldjava.experimental;
