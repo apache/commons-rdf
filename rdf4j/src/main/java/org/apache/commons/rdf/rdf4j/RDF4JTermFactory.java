@@ -101,9 +101,7 @@ import org.eclipse.rdf4j.repository.Repository;
 public class RDF4JTermFactory implements RDFTermFactory {
 
 	/**
-	 * 
 	 * Adapt a RDF4J {@link Value} as a Commons RDF {@link RDFTerm}.
-	 * <p>
 	 * <p>
 	 * The value will be of the same kind as the term, e.g. a
 	 * {@link org.eclipse.rdf4j.model.BNode} is converted to a
@@ -113,15 +111,19 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	 * {@link org.eclipse.rdf4j.model.Literal}. is converted to a
 	 * {@link org.apache.commons.rdf.api.Literal}
 	 * 
-	 * @param value The RDF4J {@link Value} to convert.
+	 * @param value
+	 *            The RDF4J {@link Value} to convert.
 	 * @param salt
 	 *            A {@link UUID} salt to use for uniquely mapping any
 	 *            {@link BNode}s. The salt should typically be the same for
 	 *            multiple statements in the same {@link Repository} or
 	 *            {@link Model} to ensure {@link BlankNode#equals(Object)} and
 	 *            {@link BlankNode#uniqueReference()} works as intended.
+	 * @param <T>
+	 *            The subclass of {@link Value}, e.g. {@link BNode}
 	 * @return A {@link RDFTerm} that corresponds to the RDF4J value
-	 * @throws IllegalArgumentException if the value is not a BNode, Literal or IRI 
+	 * @throws IllegalArgumentException
+	 *             if the value is not a BNode, Literal or IRI
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T extends Value> RDF4JTerm<T> asRDFTerm(final T value, UUID salt) {
@@ -213,7 +215,6 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	 * 
 	 * Adapt a RDF4J {@link Value} as a Commons RDF {@link RDFTerm}.
 	 * <p>
-	 * <p>
 	 * The value will be of the same kind as the term, e.g. a
 	 * {@link org.eclipse.rdf4j.model.BNode} is converted to a
 	 * {@link org.apache.commons.rdf.api.BlankNode}, a
@@ -235,6 +236,8 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	 * instance is used per RDF4J repository/model.  
 	 * 
 	 * @param value The RDF4J {@link Value} to convert.
+	 * @param <T>
+	 *            The subclass of {@link Value}, e.g. {@link BNode}
 	 * @return A {@link RDFTerm} that corresponds to the RDF4J value
 	 * @throws IllegalArgumentException if the value is not a BNode, Literal or IRI 
 	 */
@@ -358,19 +361,19 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	/**
 	 * Adapt a RDF4J {@link Statement} as a Commons RDF {@link Triple}.
 	 * <p>
-	 * For the purpose of {@link BlankNode} equivalence, this 
-	 * method will use an internal salt UUID that is unique per instance of 
-	 * {@link RDF4JTermFactory}. 
+	 * For the purpose of {@link BlankNode} equivalence, this method will use an
+	 * internal salt UUID that is unique per instance of
+	 * {@link RDF4JTermFactory}.
 	 * <p>
-	 * <strong>NOTE:</strong> If combining RDF4J statements from
-	 * multiple repositories or models, then their {@link BNode}s 
-	 * may have the same {@link BNode#getID()}, which with this method 
-	 * would become equivalent according to {@link BlankNode#equals(Object)} and
-	 * {@link BlankNode#uniqueReference()}, 
-	 * unless a separate {@link RDF4JTermFactory}
-	 * instance is used per RDF4J repository/model.
+	 * <strong>NOTE:</strong> If combining RDF4J statements from multiple
+	 * repositories or models, then their {@link BNode}s may have the same
+	 * {@link BNode#getID()}, which with this method would become equivalent
+	 * according to {@link BlankNode#equals(Object)} and
+	 * {@link BlankNode#uniqueReference()}, unless a separate
+	 * {@link RDF4JTermFactory} instance is used per RDF4J repository/model.
 	 * 
 	 * @param statement
+	 *            The RDF4J {@link Statement} to adapt.
 	 * @return A {@link RDF4JTriple} that is equivalent to the statement
 	 */
 	public RDF4JTriple asTriple(final Statement statement) {
