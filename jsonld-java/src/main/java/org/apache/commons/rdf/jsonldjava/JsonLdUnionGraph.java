@@ -29,7 +29,7 @@ import org.apache.commons.rdf.api.Triple;
 import com.github.jsonldjava.core.RDFDataset;
 
 /**
- * A <strong>union graph</em> representation of a JsonLd {@link RDFDataset}.
+ * A <strong>union graph</strong> representation of a JsonLd {@link RDFDataset}.
  * <p>
  * A union graph contains all the triples of the dataset, irregardless of their
  * graph names.
