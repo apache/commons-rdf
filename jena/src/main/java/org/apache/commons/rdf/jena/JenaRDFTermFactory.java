@@ -96,7 +96,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	}
 	
 	@Override
-	public Dataset createDataset() {
+	public JenaDataset createDataset() {
 		return JenaFactory.createDataset(getSalt());
 	}
 
@@ -133,7 +133,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	}
 	
 	@Override
-	public Quad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
+	public JenaQuad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
 			throws IllegalArgumentException, UnsupportedOperationException {
 		return JenaFactory.createQuad(subject, predicate, object, graphName);
 	}
@@ -451,7 +451,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 *            Jena quad
 	 * @return Adapted quad
 	 */	
-	public Quad fromJena(org.apache.jena.sparql.core.Quad quad) {
+	public JenaQuad fromJena(org.apache.jena.sparql.core.Quad quad) {
 		return JenaFactory.fromJena(quad, getSalt());
 	}
 	
@@ -469,7 +469,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 *            A {@link UUID} salt for adapting any {@link BlankNode}s
 	 * @return Adapted quad
 	 */		
-	public static Quad fromJena(org.apache.jena.sparql.core.Quad quad, UUID salt) {
+	public static JenaQuad fromJena(org.apache.jena.sparql.core.Quad quad, UUID salt) {
 		return JenaFactory.fromJena(quad, salt);
 	}
 
@@ -652,10 +652,22 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 		return factory.createQuad(graphName, subject, predicate, object);
 	}
 
+	/**
+	 * Return {@link RDFSyntax} corresponding to a Jena {@link Lang}.
+	 * 
+	 * @param lang {@link Lang} to convert
+	 * @return Matched {@link RDFSyntax}, otherwise {@link Optional#empty()}
+	 */
 	public static Optional<RDFSyntax> langToRdfSyntax(Lang lang) {
 		return RDFSyntax.byMediaType(lang.getContentType().getContentType());
 	}
 
+	/**
+	 * Return Jena {@link Lang} corresponding to a {@link RDFSyntax.
+	 * 
+	 * @param lang {@link RDFSyntax} to convert
+	 * @return Matched {@link Lang}, otherwise {@link Optional#empty()}
+	 */
 	public static Optional<Lang> rdfSyntaxToLang(RDFSyntax rdfSyntax) {
 		return Optional.ofNullable(RDFLanguages.contentTypeToLang(rdfSyntax.mediaType));
 	}

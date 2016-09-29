@@ -23,7 +23,6 @@ import java.util.UUID;
 
 import org.apache.commons.rdf.api.BlankNode;
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
-import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFTerm;
@@ -68,7 +67,7 @@ public class JenaFactory {
 	public static JenaBlankNode createBlankNode(UUID salt) {
 		return new JenaBlankNodeImpl(NodeFactory.createBlankNode(), salt);
 	}
-	public static Dataset createDataset(UUID salt) {
+	public static JenaDataset createDataset(UUID salt) {
 		DatasetGraph dg = DatasetGraphFactory.createGeneral();
 		// Or which createMethod() -- a bit confusing with lots of choice..
 		return new JenaDatasetImpl(dg, salt);
@@ -168,7 +167,7 @@ public class JenaFactory {
 		return new JenaGeneralizedQuad<RDFTerm,RDFTerm,RDFTerm,RDFTerm>(quad, salt);
 	}
 	
-	public static Quad fromJena(org.apache.jena.sparql.core.Quad quad, UUID salt) {
+	public static JenaQuad fromJena(org.apache.jena.sparql.core.Quad quad, UUID salt) {
 		return new JenaQuadImpl(quad, salt);
 	}
 

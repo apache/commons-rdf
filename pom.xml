@@ -289,6 +289,12 @@
                 </executions>
                 <configuration>
                     <additionalparam>-Xdoclint:all</additionalparam>
+					<links>
+					<link>${commons.javadoc.java.link}</link>
+					<link>https://jena.apache.org/documentation/javadoc/jena/</link>
+					<link>https://jena.apache.org/documentation/javadoc/arq/</link>
+					<link>http://rdf4j.org/javadoc/2.0/</link>
+					</links>                    
                 </configuration>
             </plugin>
             <!--
