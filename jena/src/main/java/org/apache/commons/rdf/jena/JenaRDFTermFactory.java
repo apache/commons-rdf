@@ -460,8 +460,8 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 			// No need to convert, just wrap
 			return ((JenaRDFTermFactory) factory).fromJena(triple);
 		}
-		BlankNodeOrIRI subject;
-		IRI predicate;
+		final BlankNodeOrIRI subject;
+		final IRI predicate;
 		try {
 			subject = (BlankNodeOrIRI) fromJena(factory, triple.getSubject());
 			predicate = (IRI) fromJena(factory, triple.getPredicate());
