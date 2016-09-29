@@ -34,12 +34,16 @@ public interface JenaGraph extends org.apache.commons.rdf.api.Graph {
 	public Graph asJenaGraph();
 
 	/**
-	 * Return the underlying Jena {@link Model}.
+	 * Return the graph as a Jena {@link Model}.
 	 * <p>
 	 * Changes to the Jena model are reflected in the Commons RDF graph and vice
 	 * versa.
+	 * <p>
+	 * Note that in some cases there is no underlying Jena {@link Model}, in
+	 * which case this method will create one. Subsequent calls should return
+	 * the same model.
 	 * 
 	 * @return A Jena {@link Model}
-	 */	
+	 */
 	public Model asJenaModel();
 }
