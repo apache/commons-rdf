@@ -663,9 +663,9 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	}
 
 	/**
-	 * Return Jena {@link Lang} corresponding to a {@link RDFSyntax.
+	 * Return Jena {@link Lang} corresponding to a {@link RDFSyntax}.
 	 * 
-	 * @param lang {@link RDFSyntax} to convert
+	 * @param rdfSyntax {@link RDFSyntax} to convert
 	 * @return Matched {@link Lang}, otherwise {@link Optional#empty()}
 	 */
 	public static Optional<Lang> rdfSyntaxToLang(RDFSyntax rdfSyntax) {
