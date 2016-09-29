@@ -13,8 +13,9 @@ Jena](http://jena.apache.org/) as well as for other libraries such as
 
 The main motivation behind this simple library is to revise an historical
 incompatibility issue between these toolkits. This library does not pretend to
-be a generic API wrapping those libraries, but is a set of common Java
-interfaces for the RDF 1.1 concepts, e.g. `IRI`, `BlankNode`, `Graph`,
+be a generic API wrapping those libraries, but is a 
+[set of common Java interfaces](http://commonsrdf.incubator.apache.org/apidocs/index.html?org/apache/commons/rdf/api/package-summary.html)
+for the RDF 1.1 concepts, e.g. `IRI`, `BlankNode`, `Graph`,
 accompanied with unit test cases for their expected behaviour, and a `simple`
 implementation, which main purpose is to clarify the tests and interfaces.
 
