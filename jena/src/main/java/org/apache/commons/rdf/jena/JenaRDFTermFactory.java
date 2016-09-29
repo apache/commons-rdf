@@ -137,38 +137,72 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 			throws IllegalArgumentException, UnsupportedOperationException {
 		return JenaFactory.createQuad(subject, predicate, object, graphName);
 	}
+
+	public JenaAny createAnyVariable() {
+		return JenaFactory.createAnyVariable();
+	}
+	
+	public JenaVariable createVariable(String variableName) {
+		return JenaFactory.createVariable(variableName);
+	}
 	
 	/**
-	 * Adapt a generalized Jena Triple to a CommonsRDF {@link TripleLike} statement.
+	 * Create a generalized Jena triple.
 	 * <p>
-	 * The generalized triple supports any {@link RDFTerm} as its {@link TripleLike#getSubject()}
-	 * {@link TripleLike#getPredicate()} or {@link TripleLike#getObject()}. 
-	 * <p>
-	 * If the Jena triple contains any {@link Node#isBlank()}, then any corresponding
-	 * {@link BlankNode} will use a {@link UUID} salt from this
-	 * {@link JenaRDFTermFactory} instance in combination with
-	 * {@link Node#getBlankNodeId()} for the purpose of its
-	 * {@link BlankNode#uniqueReference()}.
+	 * The <em>generalized triple</em> supports any {@link RDFTerm} as its
+	 * {@link TripleLike#getSubject()} {@link TripleLike#getPredicate()} or
+	 * {@link TripleLike#getObject()}, including {@link JenaAny} or
+	 * {@link JenaVariable}.
 	 *
-	 * @see #fromJena(org.apache.jena.graph.Triple, UUID)
-	 * @see #fromJena(RDFTermFactory, org.apache.jena.graph.Triple)
+	 * @see #createTriple(BlankNodeOrIRI, IRI, RDFTerm)
+	 * @see #createGeneralizedQuad(RDFTerm, RDFTerm, RDFTerm, RDFTerm)
+	 * @see #createAnyVariable()
+	 * @see #createVariable(String)
 	 * 
-	 * @param subject The subject of the statement
-	 * @param predicate The predicate of the statement
-	 * @param object The object of the statement
-
-	 *            
-	 * @return Adapted {@link TripleLike}. Note that the generalized triple does
-	 *         <strong>not</strong> implement {@link Triple#equals(Object)} or
-	 *         {@link Triple#hashCode()}.
-	 * @throws ConversionException
-	 *             if any of the triple's nodes are not concrete
+	 * @param subject
+	 *            The subject of the statement
+	 * @param predicate
+	 *            The predicate of the statement
+	 * @param object
+	 *            The object of the statement
+	 * @return Generalized {@link TripleLike}. Note that the generalized triple
+	 *         does <strong>not</strong> implement {@link Triple#equals(Object)}
+	 *         or {@link Triple#hashCode()}.
 	 */
 	public JenaTripleLike<RDFTerm, RDFTerm, RDFTerm> createGeneralizedTriple(
 			RDFTerm subject, RDFTerm predicate, RDFTerm object) {
 		return JenaFactory.createGeneralizedTriple(subject, predicate, object);
 	}
 
+	/**
+	 * Create a generalized Jena quad.
+	 * <p>
+	 * The <em>generalized quad</em> supports any {@link RDFTerm} as its
+	 * {@link QuadLike#getSubject()} {@link QuadLike#getPredicate()},
+	 * {@link QuadLike#getObject()} or {@link QuadLike#getObject()} including
+	 * {@link JenaAny} or {@link JenaVariable}.
+	 * 
+	 * @see #createQuad(BlankNodeOrIRI, BlankNodeOrIRI, IRI, RDFTerm)
+	 * @see #createGeneralizedTriple(RDFTerm, RDFTerm, RDFTerm)
+	 * @see #createAnyVariable()
+	 * @see #createVariable(String)
+	 * 
+	 * @param subject
+	 *            The subject of the statement
+	 * @param predicate
+	 *            The predicate of the statement
+	 * @param object
+	 *            The object of the statement
+	 * @param graphName
+	 *            The graph name of the statement
+	 * @return Generalized {@link QuadLike}. Note that the generalized quad does
+	 *         <strong>not</strong> implement {@link Quad#equals(Object)} or
+	 *         {@link Quad#hashCode()}.
+	 */
+	public JenaQuadLike<RDFTerm, RDFTerm, RDFTerm, RDFTerm> createGeneralizedQuad(
+			RDFTerm subject, RDFTerm predicate, RDFTerm object, RDFTerm graphName) {
+		return JenaFactory.createGeneralizedQuad(subject, predicate, object, graphName);
+	}	
 	/**
 	 * Adapt an existing Jena Node to CommonsRDF {@link RDFTerm}.
 	 * <p>
