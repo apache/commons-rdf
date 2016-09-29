@@ -5,22 +5,23 @@
 [![Coverage Status](https://coveralls.io/repos/apache/incubator-commonsrdf/badge.svg?branch=master&service=github)](https://coveralls.io/github/apache/incubator-commonsrdf?branch=master)
 
 [Commons RDF](http://commonsrdf.incubator.apache.org/) aims to provide a common
-library for [RDF 1.1](http://www.w3.org/TR/rdf11-concepts/) that could be
-implemented by [Jena](http://jena.apache.org/) as well as for other libraries
-such as [OWLAPI](http://owlapi.sourceforge.net/), 
+library for [RDF 1.1](http://www.w3.org/TR/rdf11-concepts/) with implementations
+for common Java RDF frameworks like [RDF4J](http://rdf4j.org/), [Apache
+Jena](http://jena.apache.org/) as well as for other libraries such as
+[OWLAPI](http://owlapi.sourceforge.net/),
 [Clerezza](http://clerezza.apache.org/) and other JVM languages.
 
-The main motivation behind this simple library is to revise an historical incompatibility 
-issue between these toolkits. This library does not pretend to be a generic API wrapping those libraries, 
-but is a set of common Java interfaces for the RDF 1.1 concepts, e.g. `IRI`, `BlankNode`, 
-`Graph`, accompanied with unit test cases for their expected behaviour, and a `simple` 
+The main motivation behind this simple library is to revise an historical
+incompatibility issue between these toolkits. This library does not pretend to
+be a generic API wrapping those libraries, but is a set of common Java
+interfaces for the RDF 1.1 concepts, e.g. `IRI`, `BlankNode`, `Graph`,
+accompanied with unit test cases for their expected behaviour, and a `simple`
 implementation, which main purpose is to clarify the tests and interfaces.
 
-In particular, Commons RDF aims to provide a type-safe, 
-non-general API that covers RDF 1.1. In a future phase we may define interfaces 
-for Datasets and Quads.
+In particular, Commons RDF aims to provide a type-safe, non-general API that
+covers RDF 1.1. 
 
-A draft diagram of the interfaces which may be included in Commons RDF are:
+A diagram of the interfaces included in Commons RDF:
 
 <a href="src/site/resources/images/class-diagram.png"><img height="400" src="src/site/resources/images/class-diagram.png" alt="Class diagram" /></a>
 
@@ -53,8 +54,10 @@ limitations under the License.
 ## Contributing
 
 Feel free to subscribe to the 
-[dev@commonsrdf](http://mail-archives.apache.org/mod_mbox/incubator-commonsrdf-dev/) 
-mailing list to follow the ongoing development of Commons RDF, ask questions 
+[dev@commons](https://lists.apache.org/list.html?dev@commons.apache.org)
+mailing list, use the 
+[Subject tag `[RDF]`](https://lists.apache.org/list.html?dev@commons.apache.org:lte=1M:%5BRDF%5D)
+to follow the ongoing development of Commons RDF, ask questions 
 about its usage, or help shape Commons RDF by 
 [contributing](http://commonsrdf.incubator.apache.org/contributing.html)
 your ideas, code and use cases. 
@@ -116,7 +119,8 @@ To then use this build from your project, add to Maven (update `<version>` to ma
         <version>0.2.0-incubating-SNAPSHOT</version>
     </dependency>
 
-See the [downloads](http://commonsrdf.incubator.apache.org/download.html) to 
+The `<version>` above might not be up to date, 
+see the [downloads](http://commonsrdf.incubator.apache.org/download.html) to
 use the latest stable release published in Maven Central.
     
 
