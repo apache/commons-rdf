@@ -156,7 +156,7 @@ public class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> imp
 		return rdf4jTermFactory.asTriple(statement);
 	}
 
-	public Optional<Resource[]> getContextFilter() {
+	public Optional<Resource[]> getContextMask() {
 		// Make sure we clone
 		return Optional.ofNullable(contextFilter).map(f -> f.clone());		
 	}

@@ -180,10 +180,10 @@ public class RDF4JParser extends AbstractRDFParser<RDF4JParser> implements RDFPa
 
 			if (graph.asRepository().isPresent()) {
 				RDFInserter inserter = new RDFInserter(graph.asRepository().get().getConnection());
-				graph.getContextFilter().ifPresent(inserter::enforceContext);
+				graph.getContextMask().ifPresent(inserter::enforceContext);
 				return inserter;
 			}
-			if (graph.asModel().isPresent() && graph.getContextFilter().isPresent()) {
+			if (graph.asModel().isPresent() && graph.getContextMask().isPresent()) {
 				Model model = graph.asModel().get();
 				return new AddToModel(model);
 			}

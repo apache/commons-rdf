@@ -125,7 +125,7 @@ public final class ModelGraphImpl implements RDF4JGraph {
 	}
 	
 	@Override
-	public Optional<Resource[]> getContextFilter() {
+	public Optional<Resource[]> getContextMask() {
 		// ModelGraph always do the unionGraph
 		return Optional.empty();
 		// TODO: Should we support contextFilter like in RepositoryGraphImpl?
