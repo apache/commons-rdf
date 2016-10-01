@@ -19,6 +19,7 @@ package org.apache.commons.rdf.rdf4j;
 
 import java.util.Optional;
 
+import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.rdf4j.impl.ModelGraphImpl;
@@ -64,6 +65,6 @@ public interface RDF4JGraph extends Graph, RDF4JGraphLike<Triple> {
 	 *         {@link Optional#empty()} indicating the union graph (any
 	 *         context).
 	 */
-	public Optional<Resource[]> getContextMask();
+	public Optional<BlankNodeOrIRI[]> getContextMask();
 	
 }
