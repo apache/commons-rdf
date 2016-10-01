@@ -39,8 +39,8 @@ public class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> imp
 
 	private final Resource[] contextFilter;
 
-	public RepositoryGraphImpl(Repository repository, boolean includeInferred, boolean unionGraph) {
-		super(repository, includeInferred);
+	public RepositoryGraphImpl(Repository repository, boolean handleInitAndShutdown, boolean includeInferred, boolean unionGraph) {
+		super(repository, handleInitAndShutdown, includeInferred);
 		if (unionGraph) {
 			// no context filter aka any context
 			this.contextFilter = new Resource[] { };
@@ -50,8 +50,8 @@ public class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> imp
 		}
 	}
 
-	public RepositoryGraphImpl(Repository repository, boolean includeInferred, Resource... contextFilter) {
-		super(repository, includeInferred);
+	public RepositoryGraphImpl(Repository repository, boolean handleInitAndShutdown, boolean includeInferred, Resource... contextFilter) {
+		super(repository, handleInitAndShutdown, includeInferred);
 		this.contextFilter = contextFilter;
 	}
 

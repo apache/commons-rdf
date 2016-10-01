@@ -121,20 +121,19 @@
 
 
 		<!-- There are multiple RDF4J sail/repository implementations, we use the 
-			below for testing. -->
+			below from RDF4JTermFactory. -->
 		<dependency>
 			<groupId>org.eclipse.rdf4j</groupId>
 			<artifactId>rdf4j-sail-memory</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.rdf4j</groupId>
-			<artifactId>rdf4j-sail-nativerdf</artifactId>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.rdf4j</groupId>
 			<artifactId>rdf4j-repository-sail</artifactId>
+		</dependency>
+		<!--  and nativerdf for testing -->
+		<dependency>
+			<groupId>org.eclipse.rdf4j</groupId>
+			<artifactId>rdf4j-sail-nativerdf</artifactId>
 			<scope>test</scope>
 		</dependency>
 

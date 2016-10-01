@@ -35,26 +35,26 @@ public abstract class AbstractRepositoryGraphLike<T extends TripleLike<BlankNode
 
 	protected Repository repository;
 	protected boolean includeInferred;
-	protected boolean shouldWeShutdown = false;
+	protected boolean handleInitAndShutdown = false;
 	protected RDF4JTermFactory rdf4jTermFactory;
 
 	public AbstractRepositoryGraphLike(Repository repository) {
-		this(repository, false);
+		this(repository, true, false);
 	}
 
-	public AbstractRepositoryGraphLike(Repository repository, boolean includeInferred) {
+	public AbstractRepositoryGraphLike(Repository repository, boolean handleInitAndShutdown, boolean includeInferred) {
 		this.repository = repository;
 		this.includeInferred = includeInferred;
 		if (!repository.isInitialized()) {
 			repository.initialize();
-			shouldWeShutdown = true;
+			handleInitAndShutdown = true;
 		}
 		rdf4jTermFactory = new RDF4JTermFactory(repository.getValueFactory());
 	}
 
 	@Override
 	public void close() throws Exception {
-		if (shouldWeShutdown) {
+		if (handleInitAndShutdown) {
 			repository.shutDown();
 		}
 		// else: repository was initialized outside, so we should not shut it

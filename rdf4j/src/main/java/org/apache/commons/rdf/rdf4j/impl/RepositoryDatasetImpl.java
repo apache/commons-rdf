@@ -38,12 +38,12 @@ import org.eclipse.rdf4j.repository.RepositoryResult;
 
 public class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> implements RDF4JDataset, Dataset {
 
-	public RepositoryDatasetImpl(Repository repository, boolean includeInferred) {
-		super(repository, includeInferred);
+	public RepositoryDatasetImpl(Repository repository, boolean handleInitAndShutdown, boolean includeInferred) {
+		super(repository, handleInitAndShutdown, includeInferred);
 	}
 
 	public RepositoryDatasetImpl(Repository repository) {
-		super(repository);
+		this(repository, false, false);
 	}
 
 
@@ -84,17 +84,16 @@ public class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> imp
 
 	@Override
 	public long size() {
-		if (includeInferred) { 
+		if (includeInferred) {
 			// We'll need to count them all
 			return stream().count();
-		} 
+		}
 		// else: Ask directly
 		try (RepositoryConnection conn = getRepositoryConnection()) {
 			return conn.size();
 		}
 	}
 
-	
 	@Override
 	public void add(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
 		Resource context = (Resource) rdf4jTermFactory.asValue(graphName);
@@ -113,7 +112,6 @@ public class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> imp
 		org.eclipse.rdf4j.model.IRI pred = (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate);
 		Value obj = rdf4jTermFactory.asValue(object);
 		Resource[] contexts = asContexts(graphName);
-		
 		try (RepositoryConnection conn = getRepositoryConnection()) {
 			return conn.hasStatement(subj, pred, obj, includeInferred, contexts);
 		}
@@ -124,7 +122,7 @@ public class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> imp
 		if (graphName == null) {
 			// no contexts == any contexts
 			 contexts = new Resource[0];
-		} else {	
+		} else {
 			BlankNodeOrIRI g = graphName.orElse(null);
 			Resource context = (Resource) rdf4jTermFactory.asValue(g);
 			contexts = new Resource[] { context };
@@ -149,14 +147,14 @@ public class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> imp
 	public Stream<RDF4JQuad> stream() {
 		return stream(null, null, null, null);
 	}
-	
+
 	@Override
 	public Stream<RDF4JQuad> stream(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
 		Resource subj = (Resource) rdf4jTermFactory.asValue(subject);
 		org.eclipse.rdf4j.model.IRI pred = (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate);
 		Value obj = rdf4jTermFactory.asValue(object);
 		Resource[] contexts = asContexts(graphName);
-		
+
 		RepositoryConnection conn = getRepositoryConnection();
 		// NOTE: connection will be closed outside by the Iterations.stream()
 		RepositoryResult<Statement> statements = conn.getStatements(subj, pred, obj, includeInferred, contexts);
@@ -171,14 +169,14 @@ public class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> imp
 	@Override
 	public Graph getGraph() {
 		// default context only
-		return new RepositoryGraphImpl(repository, includeInferred, (Resource)null);		
+		return new RepositoryGraphImpl(repository, false, includeInferred, (Resource)null);
 	}
 
 	@Override
 	public Optional<Graph> getGraph(BlankNodeOrIRI graphName) {
 		// NOTE: May be null to indicate default context
-		Resource context = (Resource) rdf4jTermFactory.asValue(graphName);		
-		return Optional.of(new RepositoryGraphImpl(repository, includeInferred, context));		
+		Resource context = (Resource) rdf4jTermFactory.asValue(graphName);
+		return Optional.of(new RepositoryGraphImpl(repository, false, includeInferred, context));
 	}
 
 	@Override
@@ -188,5 +186,5 @@ public class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> imp
 		// NOTE: connection will be closed outside by the Iterations.stream()
 		return Iterations.stream(contexts).map(g -> (BlankNodeOrIRI) rdf4jTermFactory.asRDFTerm(g));
 	}
-	
+
 }
