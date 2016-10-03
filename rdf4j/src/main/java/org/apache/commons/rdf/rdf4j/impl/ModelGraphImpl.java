@@ -17,12 +17,15 @@
  */
 package org.apache.commons.rdf.rdf4j.impl;
 
+import java.util.Collections;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.Triple;
+import org.apache.commons.rdf.rdf4j.RDF4JBlankNodeOrIRI;
 import org.apache.commons.rdf.rdf4j.RDF4JGraph;
 import org.apache.commons.rdf.rdf4j.RDF4JTermFactory;
 import org.apache.commons.rdf.rdf4j.RDF4JTriple;
@@ -125,10 +128,10 @@ public final class ModelGraphImpl implements RDF4JGraph {
 	}
 	
 	@Override
-	public Optional<Resource[]> getContextMask() {
+	public Set<RDF4JBlankNodeOrIRI<Resource>> getContextMask() {
 		// ModelGraph always do the unionGraph
-		return Optional.empty();
-		// TODO: Should we support contextFilter like in RepositoryGraphImpl?
+		return Collections.emptySet();
+		// TODO: Should we support contextMask like in RepositoryGraphImpl?
 	}
 	
 }

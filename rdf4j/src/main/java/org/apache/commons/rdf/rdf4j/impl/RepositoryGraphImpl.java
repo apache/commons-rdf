@@ -17,7 +17,10 @@
  */
 package org.apache.commons.rdf.rdf4j.impl;
 
-import java.util.Optional;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
@@ -25,6 +28,7 @@ import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.Triple;
+import org.apache.commons.rdf.rdf4j.RDF4JBlankNodeOrIRI;
 import org.apache.commons.rdf.rdf4j.RDF4JGraph;
 import org.apache.commons.rdf.rdf4j.RDF4JTriple;
 import org.eclipse.rdf4j.common.iteration.Iterations;
@@ -37,22 +41,22 @@ import org.eclipse.rdf4j.repository.RepositoryResult;
 
 public class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> implements Graph, RDF4JGraph {
 
-	private final Resource[] contextFilter;
+	private final Resource[] contextMask;
 
 	public RepositoryGraphImpl(Repository repository, boolean handleInitAndShutdown, boolean includeInferred, boolean unionGraph) {
 		super(repository, handleInitAndShutdown, includeInferred);
 		if (unionGraph) {
-			// no context filter aka any context
-			this.contextFilter = new Resource[] { };
+			// no context mask, aka any context
+			this.contextMask = new Resource[] { };
 		} else {
 			// default context: null
-			this.contextFilter = new Resource[] { null };
+			this.contextMask = new Resource[] { null };
 		}
 	}
 
-	public RepositoryGraphImpl(Repository repository, boolean handleInitAndShutdown, boolean includeInferred, Resource... contextFilter) {
+	public RepositoryGraphImpl(Repository repository, boolean handleInitAndShutdown, boolean includeInferred, Resource... contextMask) {
 		super(repository, handleInitAndShutdown, includeInferred);
-		this.contextFilter = contextFilter;
+		this.contextMask = Objects.requireNonNull(contextMask);
 	}
 
 
@@ -60,7 +64,7 @@ public class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> imp
 	public void add(Triple tripleLike) {
 		Statement statement = rdf4jTermFactory.asStatement(tripleLike);
 		try (RepositoryConnection conn = getRepositoryConnection()) {
-			conn.add(statement, contextFilter);
+			conn.add(statement, contextMask);
 			conn.commit();
 		}
 	}
@@ -70,7 +74,7 @@ public class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> imp
 	public boolean contains(Triple tripleLike) {
 		Statement statement = rdf4jTermFactory.asStatement(tripleLike);
 		try (RepositoryConnection conn = getRepositoryConnection()) {
-			return conn.hasStatement(statement, includeInferred, contextFilter);
+			return conn.hasStatement(statement, includeInferred, contextMask);
 		}
 	}
 
@@ -78,7 +82,7 @@ public class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> imp
 	public void remove(Triple tripleLike) {
 		Statement statement = rdf4jTermFactory.asStatement(tripleLike);
 		try (RepositoryConnection conn = getRepositoryConnection()) {
-			conn.remove(statement, contextFilter);
+			conn.remove(statement, contextMask);
 			conn.commit();
 		}
 	}
@@ -86,7 +90,7 @@ public class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> imp
 	@Override
 	public void clear() {
 		try (RepositoryConnection conn = getRepositoryConnection()) {
-			conn.clear(contextFilter);
+			conn.clear(contextMask);
 			conn.commit();
 		}
 	}
@@ -94,7 +98,7 @@ public class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> imp
 	@Override
 	public long size() {
 		try (RepositoryConnection conn = getRepositoryConnection()) {
-			if (! includeInferred && contextFilter.length == 0) { 
+			if (! includeInferred && contextMask.length == 0) { 
 				return conn.size();
 			} else {
 				return stream().count();
@@ -109,7 +113,7 @@ public class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> imp
 		org.eclipse.rdf4j.model.IRI pred = (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate);
 		Value obj = rdf4jTermFactory.asValue(object);
 		try (RepositoryConnection conn = getRepositoryConnection()) {
-			conn.add(subj, pred, obj, contextFilter);
+			conn.add(subj, pred, obj, contextMask);
 			conn.commit();
 		}
 	}
@@ -120,7 +124,7 @@ public class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> imp
 		org.eclipse.rdf4j.model.IRI pred = (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate);
 		Value obj = rdf4jTermFactory.asValue(object);
 		try (RepositoryConnection conn = getRepositoryConnection()) {
-			return conn.hasStatement(subj, pred, obj, includeInferred, contextFilter);
+			return conn.hasStatement(subj, pred, obj, includeInferred, contextMask);
 		}
 	}
 
@@ -130,7 +134,7 @@ public class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> imp
 		org.eclipse.rdf4j.model.IRI pred = (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate);
 		Value obj = rdf4jTermFactory.asValue(object);
 		try (RepositoryConnection conn = getRepositoryConnection()) {
-			conn.remove(subj, pred, obj, contextFilter);
+			conn.remove(subj, pred, obj, contextMask);
 			conn.commit();
 		}
 	}
@@ -147,7 +151,7 @@ public class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> imp
 		Value obj = rdf4jTermFactory.asValue(object);
 		RepositoryConnection conn = getRepositoryConnection();
 		// FIXME: Is it OK that we don't close the connection?
-		RepositoryResult<Statement> statements = conn.getStatements(subj, pred, obj, includeInferred, contextFilter);
+		RepositoryResult<Statement> statements = conn.getStatements(subj, pred, obj, includeInferred, contextMask);
 		return Iterations.stream(statements).map(this::asTripleLike);
 	}
 	
@@ -156,9 +160,13 @@ public class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> imp
 		return rdf4jTermFactory.asTriple(statement);
 	}
 
-	public Optional<Resource[]> getContextMask() {
-		// Make sure we clone
-		return Optional.ofNullable(contextFilter).map(f -> f.clone());		
+	@Override
+	public Set<RDF4JBlankNodeOrIRI<Resource>> getContextMask() {		
+		Set<RDF4JBlankNodeOrIRI<Resource>> mask = new HashSet<>();
+		for (Resource s : contextMask) {
+			mask.add((RDF4JBlankNodeOrIRI<Resource>) rdf4jTermFactory.asRDFTerm(s));
+		}
+		return Collections.unmodifiableSet(mask);
 	}
 	
 }

@@ -25,16 +25,19 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFSyntax;
 import org.apache.commons.rdf.experimental.RDFParser;
+import org.apache.commons.rdf.rdf4j.RDF4JBlankNodeOrIRI;
 import org.apache.commons.rdf.rdf4j.RDF4JDataset;
 import org.apache.commons.rdf.rdf4j.RDF4JGraph;
 import org.apache.commons.rdf.rdf4j.RDF4JTermFactory;
 import org.apache.commons.rdf.simple.experimental.AbstractRDFParser;
 import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.Resource;
 import org.eclipse.rdf4j.repository.util.RDFInserter;
 import org.eclipse.rdf4j.repository.util.RDFLoader;
 import org.eclipse.rdf4j.rio.ParserConfig;
@@ -180,10 +183,16 @@ public class RDF4JParser extends AbstractRDFParser<RDF4JParser> implements RDFPa
 
 			if (graph.asRepository().isPresent()) {
 				RDFInserter inserter = new RDFInserter(graph.asRepository().get().getConnection());
-				graph.getContextMask().ifPresent(inserter::enforceContext);
+				if (! graph.getContextMask().isEmpty()) {
+					Stream<RDF4JBlankNodeOrIRI<Resource>> b = graph.getContextMask().stream();
+					Stream<Resource> c = b.map(RDF4JBlankNodeOrIRI::asValue);
+					Resource[] contexts = c.toArray(Resource[]::new);
+					inserter.enforceContext(contexts);
+				}
 				return inserter;
 			}
-			if (graph.asModel().isPresent() && graph.getContextMask().isPresent()) {
+			if (graph.asModel().isPresent() && graph.getContextMask().isEmpty()) {
+				// the model accepts any quad
 				Model model = graph.asModel().get();
 				return new AddToModel(model);
 			}

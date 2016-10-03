@@ -17,7 +17,9 @@
  */
 package org.apache.commons.rdf.rdf4j;
 
+import java.util.Arrays;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 // To avoid confusion, avoid importing
 // classes that are in both
@@ -42,6 +44,7 @@ import org.apache.commons.rdf.rdf4j.impl.RepositoryGraphImpl;
 import org.apache.commons.rdf.rdf4j.impl.TripleImpl;
 import org.eclipse.rdf4j.model.BNode;
 import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.Resource;
 import org.eclipse.rdf4j.model.Statement;
 import org.eclipse.rdf4j.model.Value;
 import org.eclipse.rdf4j.model.ValueFactory;
@@ -142,35 +145,23 @@ public class RDF4JTermFactory implements RDFTermFactory {
 		throw new IllegalArgumentException("Value is not a BNode, Literal or IRI: " + value.getClass());
 	}
 
-	/**
-	 * Adapt a RDF4J {@link Statement} as a Commons RDF {@link Triple}.
-	 *
-	 * @param statement
-	 *            The statement to convert
-	 * @param salt
-	 *            A {@link UUID} salt to use for uniquely mapping any
-	 *            {@link BNode}s. The salt should typically be the same for
-	 *            multiple statements in the same {@link Repository} or
-	 *            {@link Model} to ensure {@link BlankNode#equals(Object)} and
-	 *            {@link BlankNode#uniqueReference()} works as intended.
-	 * @return A {@link Triple} that corresponds to the RDF4J statement
-	 */
-	public static RDF4JTriple asTriple(final Statement statement, UUID salt) {
-		return new TripleImpl(statement, salt);
-	}
-
-	private UUID salt = UUID.randomUUID();
+	private final UUID salt;
 
 	private final ValueFactory valueFactory;
 
 	public RDF4JTermFactory() {
-		this.valueFactory = SimpleValueFactory.getInstance();
+		this(SimpleValueFactory.getInstance(), UUID.randomUUID());
 	}
 
 	public RDF4JTermFactory(ValueFactory valueFactory) {
-		this.valueFactory = valueFactory;
+		this(valueFactory, UUID.randomUUID());
 	}
 
+	public RDF4JTermFactory(ValueFactory valueFactory, UUID salt) {
+		this.valueFactory = valueFactory;
+		this.salt = salt;
+	}
+	
 	/**
 	 * Adapt a RDF4J {@link Statement} as a Commons RDF {@link Quad}.
 	 * <p>
@@ -292,7 +283,8 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	/**
 	 * Adapt an RDF4J {@link Repository} as a Commons RDF {@link Graph}.
 	 * <p>
-	 * The graph will include triples in any contexts (e.g. the union graph).
+	 * The graph will only include triples in the default graph 
+	 * (equivalent to context <code>new Resource[0]{null})</code> in RDF4J).
 	 * <p>
 	 * Changes to the graph are reflected in the repository, and vice versa.
 	 *
@@ -301,9 +293,52 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	 * @return A {@link Graph} backed by the RDF4J repository.
 	 */
 	public RDF4JGraph asRDFTermGraph(Repository repository) {
-		return new RepositoryGraphImpl(repository, false, true);
+		return new RepositoryGraphImpl(repository, false, false);
 	}
 
+	/**
+	 * Adapt an RDF4J {@link Repository} as a Commons RDF {@link Graph}.
+	 * <p>
+	 * The graph will include triples in any contexts (e.g. the union graph).
+	 * <p>
+	 * Changes to the graph are reflected in the repository, and vice versa.
+	 * Triples added to the graph are added to the default context, 
+	 * e.g. an RDF4J context of new <code>Resource[1]{null})</code>.
+	 *
+	 * @param repository
+	 *            RDF4J {@link Repository} to connect to.
+	 * @return A union {@link Graph} backed by the RDF4J repository.
+	 */
+	public RDF4JGraph asRDFTermGraphUnion(Repository repository) {
+		return new RepositoryGraphImpl(repository, false, true);
+	}
+	
+	/**
+	 * Adapt an RDF4J {@link Repository} as a Commons RDF {@link Graph}.
+	 * <p>
+	 * The graph will include triples in the specified contexts.
+	 * <p>
+	 * Changes to the graph are reflected in the repository, and vice versa.
+	 * Triples added/removed to the graph are reflected in all the specified
+	 * contexts.
+	 *
+	 * @param repository
+	 *            RDF4J {@link Repository} to connect to.
+	 * @param contexts
+	 * 
+	 * @return A {@link Graph} backed by the RDF4J repository.
+	 */
+	public RDF4JGraph asRDFTermGraph(Repository repository, BlankNodeOrIRI... contexts) {
+		if (contexts.length == 0) {
+			throw new IllegalArgumentException("At least one context must be specified. Use asRDFTermGraphUnion for union graph.");
+		}
+		Resource[] resources = new Resource[contexts.length];
+		for (int i=0; i<contexts.length; i++) {
+			resources[i] = (Resource) asValue(contexts[i]);
+		}
+		return new RepositoryGraphImpl(repository, false, true, resources);
+	}	
+	
 	/**
 	 * Adapt an RDF4J {@link Repository} as a Commons RDF {@link Graph}.
 	 * <p>
