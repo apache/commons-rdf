@@ -17,16 +17,20 @@
  */
 package org.apache.commons.rdf.rdf4j;
 
-import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
+import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.Graph;
+import org.apache.commons.rdf.api.IRI;
+import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.rdf4j.impl.ModelGraphImpl;
 import org.apache.commons.rdf.rdf4j.impl.RepositoryGraphImpl;
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.Resource;
 import org.eclipse.rdf4j.repository.Repository;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
 
 
 /**
@@ -48,24 +52,56 @@ public interface RDF4JGraph extends Graph, RDF4JGraphLike<Triple> {
 	 * contexts, while retrieval (e.g. {@link #contains(Triple)}) will succeed
 	 * if the triple is in at least one of the specified contexts.
 	 * <p>
-	 * The context mask array may contain the {@link RDF4JBlankNodeOrIRI}
-	 * <code>null</code>, indicating the default context (the <em>default
-	 * graph</em> in RDF datasets).
+	 * The context mask array may contain <code>null</code>, indicating the
+	 * default context (the <em>default graph</em> in RDF datasets).
 	 * <p>
 	 * If the context mask is {@link Set#isEmpty()}, then this is a <em>union
 	 * graph</em> which triples reflect statements in any contexts. Triples
-	 * added to the graph will be added in the default context, e.g.
-	 * equivalent to <code>new Resource[1]{null}</code>) in RDF4J.
+	 * added to the graph will be added in the default context, e.g. equivalent
+	 * to <code>new Resource[1]{null}</code>) in RDF4J.
 	 * <p>
 	 * Note that the context mask itself cannot be <code>null</code>.
 	 * <p>
-	 * The returned set is an immutable copy, to specify a different mask, use 
+	 * The returned set is an immutable copy; to specify a different mask, use
 	 * {@link RDF4JTermFactory#asRDFTermGraph(Repository, Set)}.
 	 * 
-	 * @return The context mask as an array of {@link Resource}s, or
-	 *         {@link Optional#empty()} indicating the union graph (any
-	 *         context).
+	 * @return The context mask as an set of {@link BlankNodeOrIRI}s, which may
+	 *         contain the value <code>null</code>.
 	 */
 	public Set<RDF4JBlankNodeOrIRI<Resource>> getContextMask();
+	
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Note that the stream must be closed with {@link Stream#close()} to ensure
+	 * the underlying {@link RepositoryConnection} is closed.
+	 * <p>
+	 * This can generally achieved using a try-with-resources block, e.g.:
+	 * <pre>
+	 * int subjects;
+	 * try (Stream&lt;RDF4JTriple&gt; s : graph.stream()) {
+	 *   subjects = s.map(RDF4JTriple::getSubject).distinct().count()
+	 * }
+	 * </pre>
+	 */
+	@Override
+	Stream<RDF4JTriple> stream();
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Note that the stream must be closed with {@link Stream#close()} to ensure
+	 * the underlying {@link RepositoryConnection} is closed.
+	 * <p>
+	 * This can generally achieved using a try-with-resources block, e.g.:
+	 * <pre>
+	 * int subjects;
+	 * try (Stream&lt;RDF4JTriple&gt; s : graph.stream()) {
+	 *   subjects = s.map(RDF4JTriple::getSubject).distinct().count()
+	 * }
+	 * </pre>
+	 */	
+	@Override
+	Stream<RDF4JTriple> stream(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
 	
 }

@@ -17,8 +17,15 @@
  */
 package org.apache.commons.rdf.rdf4j;
 
+import java.util.Optional;
+import java.util.stream.Stream;
+
+import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.Dataset;
+import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Quad;
+import org.apache.commons.rdf.api.RDFTerm;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
 
 
 /**
@@ -26,5 +33,57 @@ import org.apache.commons.rdf.api.Quad;
  * 
  */
 public interface RDF4JDataset extends Dataset, RDF4JGraphLike<Quad> {
+	
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Note that the stream must be closed with {@link Stream#close()} to ensure
+	 * the underlying {@link RepositoryConnection} is closed.
+	 * <p>
+	 * This can generally achieved using a try-with-resources block, e.g.:
+	 * <pre>
+	 * int subjects;
+	 * try (Stream&lt;RDF4JQuad&gt; s : graph.stream()) {
+	 *   subjects = s.map(RDF4JQuad::getSubject).distinct().count()
+	 * }
+	 * </pre>
+	 */
+	@Override
+	Stream<RDF4JQuad> stream();
+	
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Note that the stream must be closed with {@link Stream#close()} to ensure
+	 * the underlying {@link RepositoryConnection} is closed.
+	 * <p>
+	 * This can generally achieved using a try-with-resources block, e.g.:
+	 * <pre>
+	 * int subjects;
+	 * try (Stream&lt;RDF4JQuad&gt; s : graph.stream()) {
+	 *   subjects = s.map(RDF4JQuad::getSubject).distinct().count()
+	 * }
+	 * </pre>
+	 */	
+	@Override
+	Stream<RDF4JQuad> stream(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate,
+			RDFTerm object);
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Note that the stream must be closed with {@link Stream#close()} to ensure
+	 * the underlying {@link RepositoryConnection} is closed.
+	 * <p>
+	 * This can generally achieved using a try-with-resources block, e.g.:
+	 * <pre>
+	 * int graphs;
+	 * try (Stream&lt;BlankNodeOrIRI&gt; s : graph.stream()) {
+	 *   graphs = s.count()
+	 * }
+	 * </pre>
+	 */
+	@Override
+	Stream<BlankNodeOrIRI> getGraphNames();
 	
 }
