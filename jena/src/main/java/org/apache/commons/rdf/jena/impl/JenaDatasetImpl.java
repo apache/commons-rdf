@@ -31,6 +31,7 @@ import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.jena.JenaDataset;
+import org.apache.commons.rdf.jena.JenaGraph;
 import org.apache.commons.rdf.jena.JenaRDFTermFactory;
 import org.apache.jena.atlas.iterator.Iter;
 import org.apache.jena.graph.Node;
@@ -159,7 +160,7 @@ public class JenaDatasetImpl implements JenaDataset {
 	}
 
 	@Override
-	public Graph getUnionGraph() {
+	public JenaGraph getUnionGraph() {
 		GraphView gv = GraphView.createUnionGraph(graph);
 		return new JenaGraphImpl(gv, salt);
 	}
