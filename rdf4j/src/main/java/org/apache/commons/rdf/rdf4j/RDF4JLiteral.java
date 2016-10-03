@@ -18,12 +18,13 @@
 package org.apache.commons.rdf.rdf4j;
 
 /**
- * Marker interface for RDF4J implementations of 
- * Commons RDF {@link org.apache.commons.rdf.api.Literal}.
+ * Marker interface for RDF4J implementations of Commons RDF
+ * {@link org.apache.commons.rdf.api.Literal}.
  * <p>
- * The underlying RDF4J {@link org.eclipse.rdf4j.model.Literal} 
- * instance can be retrieved with {@link #asValue()}.
+ * The underlying RDF4J {@link org.eclipse.rdf4j.model.Literal} instance can be
+ * retrieved with {@link #asValue()}.
+ * 
+ * @see RDF4JTermFactory#createLiteral(String)
  */
-public interface RDF4JLiteral 
-	extends RDF4JTerm<org.eclipse.rdf4j.model.Literal>, org.apache.commons.rdf.api.Literal {
+public interface RDF4JLiteral extends RDF4JTerm<org.eclipse.rdf4j.model.Literal>, org.apache.commons.rdf.api.Literal {
 }

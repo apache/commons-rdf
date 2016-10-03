@@ -31,6 +31,8 @@ import org.eclipse.rdf4j.repository.RepositoryConnection;
 /**
  * Marker interface for RDF4J implementations of Dataset.
  * 
+ * @see RDF4JTermFactory#createDataset()
+ * @see RDF4JTermFactory#asRDFTermDataset(org.eclipse.rdf4j.repository.Repository)
  */
 public interface RDF4JDataset extends Dataset, RDF4JGraphLike<Quad> {
 	
@@ -54,8 +56,8 @@ public interface RDF4JDataset extends Dataset, RDF4JGraphLike<Quad> {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * Note that the stream must be closed with {@link Stream#close()} to ensure
-	 * the underlying {@link RepositoryConnection} is closed.
+	 * Note that the stream <strong>must be closed</strong> with
+	 * {@link Stream#close()}.
 	 * <p>
 	 * This can generally achieved using a try-with-resources block, e.g.:
 	 * <pre>

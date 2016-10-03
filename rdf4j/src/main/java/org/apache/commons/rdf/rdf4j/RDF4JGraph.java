@@ -30,12 +30,17 @@ import org.apache.commons.rdf.rdf4j.impl.RepositoryGraphImpl;
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.Resource;
 import org.eclipse.rdf4j.repository.Repository;
-import org.eclipse.rdf4j.repository.RepositoryConnection;
 
 
 /**
  * Marker interface for RDF4J implementations of Graph.
  * 
+ * @see RDF4JTermFactory#createGraph()
+ * @see RDF4JTermFactory#asRDFTermGraph(Model)
+ * @see RDF4JTermFactory#asRDFTermGraph(Repository)
+ * @see RDF4JTermFactory#asRDFTermGraphUnion(Repository)
+ * @see RDF4JDataset#getGraph()
+ * @see RDF4JDataset#getGraph(BlankNodeOrIRI)
  * @see ModelGraphImpl
  * @see RepositoryGraphImpl
  */
@@ -73,8 +78,8 @@ public interface RDF4JGraph extends Graph, RDF4JGraphLike<Triple> {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * Note that the stream must be closed with {@link Stream#close()} to ensure
-	 * the underlying {@link RepositoryConnection} is closed.
+	 * Note that the stream <strong>must be closed</strong> with
+	 * {@link Stream#close()}.
 	 * <p>
 	 * This can generally achieved using a try-with-resources block, e.g.:
 	 * <pre>
@@ -90,8 +95,8 @@ public interface RDF4JGraph extends Graph, RDF4JGraphLike<Triple> {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * Note that the stream must be closed with {@link Stream#close()} to ensure
-	 * the underlying {@link RepositoryConnection} is closed.
+	 * Note that the stream <strong>must be closed</strong> with
+	 * {@link Stream#close()}.
 	 * <p>
 	 * This can generally achieved using a try-with-resources block, e.g.:
 	 * <pre>

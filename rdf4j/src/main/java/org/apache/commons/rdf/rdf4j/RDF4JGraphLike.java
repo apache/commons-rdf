@@ -29,9 +29,16 @@ import org.eclipse.rdf4j.repository.Repository;
 
 /**
  * Marker interface for RDF4J implementations of GraphLike.
+ * <p>
+ * This is a common interface for {@link RDF4JGraph} and {@link RDF4JDataset}
+ * which provides access to the underlying RDF4J {@link Model} and/or
+ * {@link Repository}.
+ * <p>
+ * At least one of {@link #asModel()} or {@link #asRepository()} will always be
+ * {@link Optional#isPresent()}.
  * 
+ * @see RDF4JDataset
  * @see RDF4JGraph
- * 
  */
 public interface RDF4JGraphLike<T extends TripleLike<BlankNodeOrIRI, IRI, RDFTerm>>
 		extends GraphLike<T, BlankNodeOrIRI, IRI, RDFTerm>, AutoCloseable {

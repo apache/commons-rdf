@@ -24,6 +24,7 @@ package org.apache.commons.rdf.rdf4j;
  * The underlying RDF4J {@link org.eclipse.rdf4j.model.IRI} 
  * instance can be retrieved with {@link #asValue()}.
  * 
+ * @see RDF4JTermFactory#createIRI(String)
  */
 public interface RDF4JIRI 
 	extends RDF4JBlankNodeOrIRI<org.eclipse.rdf4j.model.IRI>, org.apache.commons.rdf.api.IRI {

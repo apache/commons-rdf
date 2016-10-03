@@ -18,14 +18,16 @@
 package org.apache.commons.rdf.rdf4j;
 
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
+import org.apache.commons.rdf.api.Triple;
 import org.eclipse.rdf4j.model.Resource;
 
 /**
- * Marker interface for RDF4J implementations of 
- * Commons RDF {@link BlankNodeOrIRI}
+ * Marker interface for RDF4J implementations of Commons RDF
+ * {@link BlankNodeOrIRI} (e.g. the subject of a {@link Triple}).
  * <p>
- * The underlying RDF4J {@link org.eclipse.rdf4j.model.Resource} 
- * instance can be retrieved with {@link #asValue()}.
+ * The underlying RDF4J {@link org.eclipse.rdf4j.model.Resource} instance can be
+ * retrieved with {@link #asValue()}.
+ * 
  */
 public interface RDF4JBlankNodeOrIRI<T extends Resource> 
 	extends RDF4JTerm<T>, BlankNodeOrIRI {
