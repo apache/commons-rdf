@@ -36,6 +36,7 @@ public class MemoryGraphTest extends AbstractGraphTest {
 		public RDF4JGraph createGraph() throws UnsupportedOperationException {
 			Sail sail = new MemoryStore();
 			Repository repository = new SailRepository(sail);
+			repository.initialize();
 			return asRDFTermGraph(repository);
 		}
 	}
