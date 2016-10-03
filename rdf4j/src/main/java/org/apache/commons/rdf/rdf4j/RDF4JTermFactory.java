@@ -98,10 +98,7 @@ import org.eclipse.rdf4j.sail.memory.MemoryStore;
  * cause accidental {@link BlankNode} equivalence. Note that the {@link Graph}
  * and {@link Dataset} adapter methods like
  * {@link #asRDFTermDataset(Repository)} and {@link #asRDFTermGraph(Model)}
- * therefore uses a unique {@link RDF4JTermFactory} internally. An alternative
- * is to use the static methods {@link #asRDFTerm(Value, UUID)},
- * {@link #asQuad(Statement, UUID)} or {@link #asTriple(Statement, UUID)} with
- * a provided {@link UUID} salt.
+ * therefore uses a unique {@link RDF4JTermFactory} internally.
  *
  */
 public class RDF4JTermFactory implements RDFTermFactory {
