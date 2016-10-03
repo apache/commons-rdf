@@ -17,9 +17,9 @@
  */
 package org.apache.commons.rdf.rdf4j;
 
-import java.util.Arrays;
+import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 // To avoid confusion, avoid importing
 // classes that are in both
@@ -325,19 +325,20 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	 * @param repository
 	 *            RDF4J {@link Repository} to connect to.
 	 * @param contexts
+	 *            A {@link Set} of {@link BlankNodeOrIRI} specifying the
+	 *            graph names to use as a context. The set may include the value
+	 *            <code>null</code> to indicate the default graph. The empty set
+	 *            indicates any context, e.g. the <em>union graph</em>.
 	 * 
 	 * @return A {@link Graph} backed by the RDF4J repository.
 	 */
-	public RDF4JGraph asRDFTermGraph(Repository repository, BlankNodeOrIRI... contexts) {
-		if (contexts.length == 0) {
-			throw new IllegalArgumentException("At least one context must be specified. Use asRDFTermGraphUnion for union graph.");
-		}
-		Resource[] resources = new Resource[contexts.length];
-		for (int i=0; i<contexts.length; i++) {
-			resources[i] = (Resource) asValue(contexts[i]);
-		}
-		return new RepositoryGraphImpl(repository, false, true, resources);
-	}	
+	public RDF4JGraph asRDFTermGraph(Repository repository, Set<? extends BlankNodeOrIRI> contexts) {	
+		/** NOTE: asValue() deliberately CAN handle <code>null</code> */
+		Resource[] resources = contexts.stream()
+				.map(g -> (Resource) asValue(g)).toArray(Resource[]::new);
+		return new RepositoryGraphImpl(Objects.requireNonNull(repository), 
+				false, true, resources);		
+	}
 	
 	/**
 	 * Adapt an RDF4J {@link Repository} as a Commons RDF {@link Graph}.
