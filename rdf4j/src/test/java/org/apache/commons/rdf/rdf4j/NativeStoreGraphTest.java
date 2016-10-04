@@ -18,13 +18,7 @@
 package org.apache.commons.rdf.rdf4j;
 
 import java.io.IOException;
-import java.nio.file.FileVisitResult;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.util.Collections;
-import java.util.Set;
+import java.io.UncheckedIOException;
 
 import org.apache.commons.rdf.api.AbstractGraphTest;
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
@@ -37,8 +31,9 @@ import org.eclipse.rdf4j.repository.RepositoryResult;
 import org.eclipse.rdf4j.repository.sail.SailRepository;
 import org.eclipse.rdf4j.sail.Sail;
 import org.eclipse.rdf4j.sail.nativerdf.NativeStore;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Rule;
+import org.junit.rules.TemporaryFolder;
 
 
 /**
@@ -57,13 +52,11 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
 
 	public final class NativeStoreFactory implements RDFTermFactory {
 
-		RDF4JTermFactory rdf4jFactory = new RDF4JTermFactory(repository.getValueFactory());
+		RDF4JTermFactory rdf4jFactory = new RDF4JTermFactory(getRepository().getValueFactory());
 
 		@Override
 		public RDF4JGraph createGraph() {
-			// We re-use the repository connection, but use a different context every time
-			Set<RDF4JBlankNode> context = Collections.singleton(rdf4jFactory.createBlankNode());
-			return rdf4jFactory.asRDFTermGraph(repository, context);
+			return rdf4jFactory.asRDFTermGraph(getRepository());
 		}
 
 		// Delegate methods 
@@ -90,49 +83,55 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
 		}
 	}
 
-	private static SailRepository repository;
-	private static Path tempDir;
+
+	@Rule
+	public TemporaryFolder tempDir = new TemporaryFolder();
+
+	private SailRepository repository;
 	
-	@BeforeClass
-	public static void createRepository() {
-		try {
-			tempDir = Files.createTempDirectory("test-commonsrdf-rdf4j");
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-		Sail sail = new NativeStore(tempDir.toFile());
+	public void createRepository() throws IOException {
+		System.out.println("Oh");
+		Sail sail = new NativeStore(tempDir.newFolder());
 		repository = new SailRepository(sail);
 		repository.initialize();
 	}
 
-	@AfterClass
-	public static void shutdownAndDelete() throws IOException {
+	public synchronized SailRepository getRepository() {
+		if (repository == null) {
+			try {
+				createRepository();
+			} catch (IOException e) {
+				throw new UncheckedIOException(e);
+			}
+		}
+		return repository;
+	}
+	
+	@After
+	public void shutdownAndDelete() throws IOException {
 		// must shutdown before we delete
 		if (repository != null) {
 			System.out.println("Shutting down rdf4j repository " + repository);
 			repository.shutDown();
 			System.out.println("rdf4j repository shut down.");
 		}
-		if (tempDir != null) {
-			deleteAll(tempDir);
-		}
 	}
 	
-	private static void deleteAll(Path dir) throws IOException {
-		Files.walkFileTree(dir, new SimpleFileVisitor<Path>(){
-			@Override
-			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-				Files.delete(file);
-				return FileVisitResult.CONTINUE;
-			}
-			@Override
-			public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-				FileVisitResult r = super.postVisitDirectory(dir, exc);
-				Files.delete(dir);
-				return r;
-			}
-		});
-	}
+//	private static void deleteAll(Path dir) throws IOException {
+//		Files.walkFileTree(dir, new SimpleFileVisitor<Path>(){
+//			@Override
+//			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+//				Files.delete(file);
+//				return FileVisitResult.CONTINUE;
+//			}
+//			@Override
+//			public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+//				FileVisitResult r = super.postVisitDirectory(dir, exc);
+//				Files.delete(dir);
+//				return r;
+//			}
+//		});
+//	}
 
 	@Override
 	public RDFTermFactory createFactory() {

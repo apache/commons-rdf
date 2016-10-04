@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Stream;
 
 import org.junit.Assume;
 import org.junit.Before;
@@ -184,11 +185,13 @@ public abstract class AbstractGraphTest {
 
         assertTrue(graph.contains(alice, knows, bob));
 
-        Optional<? extends Triple> first = graph.stream().skip(4)
-                .findFirst();
-        Assume.assumeTrue(first.isPresent());
-        Triple existingTriple = first.get();
-        assertTrue(graph.contains(existingTriple));
+        try (Stream<? extends Triple> stream = graph.stream()) {
+			Optional<? extends Triple> first = stream.skip(4)
+	                .findFirst();			
+	        Assume.assumeTrue(first.isPresent());
+	        Triple existingTriple = first.get();
+	        assertTrue(graph.contains(existingTriple));
+        }
 
         Triple nonExistingTriple = factory.createTriple(bob, knows, alice);
         assertFalse(graph.contains(nonExistingTriple));
@@ -225,10 +228,13 @@ public abstract class AbstractGraphTest {
         graph.remove(alice, knows, bob);
         assertEquals(shrunkSize, graph.size());
 
-        Optional<? extends Triple> anyTriple = graph.stream().findAny();
-        Assume.assumeTrue(anyTriple.isPresent());
+        Triple otherTriple;
+        try (Stream<? extends Triple> stream = graph.stream()) {
+        	Optional<? extends Triple> anyTriple = stream.findAny();
+        	Assume.assumeTrue(anyTriple.isPresent());
+			otherTriple = anyTriple.get();
+        }
 
-        Triple otherTriple = anyTriple.get();
         graph.remove(otherTriple);
         assertEquals(shrunkSize - 1, graph.size());
         graph.remove(otherTriple);
@@ -252,9 +258,16 @@ public abstract class AbstractGraphTest {
 
     @Test
     public void getTriples() throws Exception {
-        long tripleCount = graph.stream().count();
+    	long tripleCount;
+        try (Stream<? extends Triple> stream = graph.stream()) {
+			tripleCount = stream.count();
+        }
         assertTrue(tripleCount > 0);
-        assertTrue(graph.stream().allMatch(t -> graph.contains(t)));
+
+        try (Stream<? extends Triple> stream = graph.stream()) {
+        	assertTrue(stream.allMatch(t -> graph.contains(t)));
+        }
+        
         // Check exact count
         Assume.assumeNotNull(bnode1, bnode2, aliceName, bobName, secretClubName,
                 companyName, bobNameTriple);
@@ -365,7 +378,10 @@ public abstract class AbstractGraphTest {
 
         // unordered() as we don't need to preserve triple order
         // sequential() as we don't (currently) require target Graph to be thread-safe
-        source.stream().unordered().sequential().forEach(t -> target.add(t));
+        
+    	try (Stream<? extends Triple> stream = source.stream()) {
+    		stream.unordered().sequential().forEach(t -> target.add(t));
+    	}
     }
 
     /**
