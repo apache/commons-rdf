@@ -24,7 +24,10 @@ import org.apache.commons.rdf.api.TripleLike;
 import org.eclipse.rdf4j.model.Statement;
 
 /**
- * Marker interface for RDF4J implementations of TripleLike statements.
+ * Marker interface for RDF4J implementations of {@link TripleLike} statements.
+ * <p>
+ * This interface is in common with the more specific {@link RDF4JTriple} or 
+ * {@link RDF4JQuad}.
  * <p>
  * This is backed by a {@link Statement} retrievable with {@link #asStatement()}.
  * 

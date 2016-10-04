@@ -48,7 +48,7 @@ import org.eclipse.rdf4j.sail.Sail;
 import org.eclipse.rdf4j.sail.memory.MemoryStore;
 
 /**
- * RDF4J implementation of RDFTermFactory
+ * RDF4J implementation of RDFTermFactory.
  * <p>
  * The {@link #RDF4JTermFactory()} constructor uses a {@link SimpleValueFactory}
  * to create corresponding RDF4J {@link Value} instances. Alternatively, this
@@ -142,7 +142,7 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 	private final UUID salt;
 
 	private final ValueFactory valueFactory;
-
+	
 	public RDF4JTermFactory() {
 		this(SimpleValueFactory.getInstance(), UUID.randomUUID());
 	}
