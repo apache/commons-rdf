@@ -102,6 +102,7 @@ public class RDF4JParser extends AbstractRDFParser<RDF4JParser> implements RDFPa
 	}
 
 	private RDF4JTermFactory rdf4jTermFactory;
+	private ParserConfig parserConfig = new ParserConfig();
 
 	@Override
 	protected RDF4JTermFactory createRDFTermFactory() {
@@ -123,7 +124,7 @@ public class RDF4JParser extends AbstractRDFParser<RDF4JParser> implements RDFPa
 		Optional<RDFFormat> formatByMimeType = getContentType().flatMap(Rio::getParserFormatForMIMEType);
 		String base = getBase().map(IRI::getIRIString).orElse(null);
 				
-		ParserConfig parserConfig = new ParserConfig();
+		ParserConfig parserConfig = getParserConfig();
 		// TODO: Should we need to set anything?
 		RDFLoader loader = new RDFLoader(parserConfig, rdf4jTermFactory.getValueFactory());
 		RDFHandler rdfHandler = makeRDFHandler();		
@@ -157,6 +158,31 @@ public class RDF4JParser extends AbstractRDFParser<RDF4JParser> implements RDFPa
 		}
 		// must be getSourceInputStream then, this is guaranteed by super.checkSource(); 		
 		loader.load(getSourceInputStream().get(), base, formatByMimeType.orElse(null), rdfHandler);
+	}
+
+	/**
+	 * Get the RDF4J {@link ParserConfig} to use.
+	 * <p>
+	 * If no parser config is set, the default configuration is provided.
+	 * <p>
+	 * <strong>Note:</strong> The parser config is mutable - changes in the 
+	 * returned config is reflected in this instance of the parser.
+	 * To avoid mutation, create a new {@link ParserConfig} and set
+	 * {@link #setParserConfig(ParserConfig)}.
+	 * 
+	 * @return The RDF4J {@link ParserConfig}
+	 */
+	public ParserConfig getParserConfig() {
+		return parserConfig;
+	}
+
+	/**
+	 * Set an RDF4J {@link ParserConfig} to use
+	 * 
+	 * @param parserConfig Parser configuration
+	 */
+	public void setParserConfig(ParserConfig parserConfig) {
+		this.parserConfig = parserConfig;
 	}
 
 	protected RDFHandler makeRDFHandler() {
