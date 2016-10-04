@@ -19,7 +19,6 @@ package org.apache.commons.rdf.rdf4j;
 
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
-import java.nio.file.FileVisitor;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
@@ -33,6 +32,8 @@ import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.RDFTermFactory;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryResult;
 import org.eclipse.rdf4j.repository.sail.SailRepository;
 import org.eclipse.rdf4j.sail.Sail;
 import org.eclipse.rdf4j.sail.nativerdf.NativeStore;
@@ -40,6 +41,18 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
 
+/**
+ * Test a graph within a file-based RDF4J {@link SailRepository}.
+ * <p>
+ * Note that for efficiency reasons this test uses a shared repository for all
+ * tests, but uses a different BlankNode context for each 
+ * {@link NativeStoreFactory#createGraph()}.
+ * <p>
+ * TIP: If the {@link #shutdownAndDelete()} take about 20 seconds
+ * this is a hint that a {@link RepositoryConnection} or 
+ * {@link RepositoryResult} was not closed correctly.
+ * 
+ */
 public class NativeStoreGraphTest extends AbstractGraphTest {
 
 	public final class NativeStoreFactory implements RDFTermFactory {

@@ -92,9 +92,7 @@ class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> implements
 			}
 		} else {
 			try (Stream<RDF4JTriple> stream = stream()) {
-				long s = stream.count();
-				stream.close();
-				return s;
+				return stream.count();
 			}
 		}
 	}
@@ -141,10 +139,24 @@ class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> implements
 		Resource subj = (Resource) rdf4jTermFactory.asValue(subject);
 		org.eclipse.rdf4j.model.IRI pred = (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate);
 		Value obj = rdf4jTermFactory.asValue(object);
+		
+		// NOTE: We can't do the usual try..with closing of the
+		// RepositoryConnection here as it will have to be closed outside
+		// by the user of the returned stream
 		RepositoryConnection conn = getRepositoryConnection();
+		Stream<RDF4JTriple> stream = null;
+		try {
 			RepositoryResult<Statement> statements = conn.getStatements(subj, pred, obj, includeInferred, contextMask);
 			// NOTE: Iterations.stream should close RepositoryResult as long as our caller closes the stream
-			return Iterations.stream(statements).map(this::asTripleLike);
+			stream = Iterations.stream(statements).map(this::asTripleLike);
+		} finally {
+			if (stream == null) {
+				// Some exception before we made the stream, close connection here
+				conn.close();
+			}
+		}
+		// Make sure the RepositoryConnection is closed
+		return stream.onClose(conn::close);
 	}
 	
 	@Override

@@ -150,11 +150,24 @@ class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> implements
 		Value obj = rdf4jTermFactory.asValue(object);
 		Resource[] contexts = asContexts(graphName);
 
-		try (RepositoryConnection conn = getRepositoryConnection()) {
+		// NOTE: We can't do the usual try..with closing of the
+		// RepositoryConnection here as it will have to be closed outside
+		// by the user of the returned stream
+		RepositoryConnection conn = getRepositoryConnection();
+		Stream<RDF4JQuad> stream = null;
+		try {
 			RepositoryResult<Statement> statements = conn.getStatements(subj, pred, obj, includeInferred, contexts);
-			// NOTE: RepositoryResult will be closed outside by the Iterations.stream()
-			return Iterations.stream(statements).map(this::asTripleLike);
+			// NOTE: Iterations.stream should close RepositoryResult as long as our caller closes the stream
+			stream = Iterations.stream(statements).map(rdf4jTermFactory::asQuad);
+		} finally {
+			if (stream == null) {
+				// Some exception before we made the stream, close connection here
+				conn.close();
+			}
 		}
+		// Make sure the RepositoryConnection is closed
+		return stream.onClose(conn::close);
+
 	}
 
 	@Override
