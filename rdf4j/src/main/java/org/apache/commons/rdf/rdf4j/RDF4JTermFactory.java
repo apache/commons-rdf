@@ -94,11 +94,12 @@ import org.eclipse.rdf4j.sail.memory.MemoryStore;
  *
  */
 public final class RDF4JTermFactory implements RDFTermFactory {
-	
+
 	/**
 	 * InternalRDF4JFactory is deliberately abstract
 	 */
-	private static InternalRDF4JFactory rdf4j = new InternalRDF4JFactory(){};
+	private static InternalRDF4JFactory rdf4j = new InternalRDF4JFactory() {
+	};
 
 	/**
 	 * Adapt a RDF4J {@link Value} as a Commons RDF {@link RDFTerm}.
@@ -142,39 +143,74 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 	private final UUID salt;
 
 	private final ValueFactory valueFactory;
-	
+
+	/**
+	 * Construct an {@link RDF4JTermFactory}.
+	 * 
+	 */
 	public RDF4JTermFactory() {
 		this(SimpleValueFactory.getInstance(), UUID.randomUUID());
 	}
 
+	/**
+	 * Construct an {@link RDF4JTermFactory}.
+	 * <p>
+	 * This constructor is intended for use with the value factory from
+	 * {@link Repository#getValueFactory()} when using 
+	 * Repository-based graphs and datasets.
+	 * 
+	 * @param valueFactory
+	 *            The RDF4J {@link ValueFactory} to use
+	 */
 	public RDF4JTermFactory(ValueFactory valueFactory) {
 		this(valueFactory, UUID.randomUUID());
 	}
-	
+
+	/**
+	 * Construct an {@link RDF4JTermFactory}.
+	 * <p>
+	 * This constructor may be used if reproducible
+	 * {@link BlankNode#uniqueReference()} in {@link BlankNode} is desirable.
+	 * 
+	 * @param salt
+	 *            An {@link UUID} salt to be used by any created
+	 *            {@link BlankNode}s for the purpose of
+	 *            {@link BlankNode#uniqueReference()}
+	 */	
 	public RDF4JTermFactory(UUID salt) {
 		this(SimpleValueFactory.getInstance(), salt);
 	}
-
+	/**
+	 * Construct an {@link RDF4JTermFactory}.
+	 * <p>
+	 * This constructor may be used if reproducible
+	 * {@link BlankNode#uniqueReference()} in {@link BlankNode} is desirable.
+	 * 
+	 * @param valueFactory
+	 *            The RDF4J {@link ValueFactory} to use
+	 * @param salt
+	 *            An {@link UUID} salt to be used by any created
+	 *            {@link BlankNode}s for the purpose of
+	 *            {@link BlankNode#uniqueReference()}
+	 */	
 	public RDF4JTermFactory(ValueFactory valueFactory, UUID salt) {
 		this.valueFactory = valueFactory;
 		this.salt = salt;
 	}
-	
 
 	/**
 	 * Adapt a RDF4J {@link Statement} as a Commons RDF {@link Quad}.
 	 * <p>
-	 * For the purpose of {@link BlankNode} equivalence, this
-	 * method will use an internal salt UUID that is unique per instance of
+	 * For the purpose of {@link BlankNode} equivalence, this method will use an
+	 * internal salt UUID that is unique per instance of
 	 * {@link RDF4JTermFactory}.
 	 * <p>
-	 * <strong>NOTE:</strong> If combining RDF4J {@link Statement}s
-	 * multiple repositories or models, then their {@link BNode}s
-	 * may have the same {@link BNode#getID()}, which with this method
-	 * would become equivalent according to {@link BlankNode#equals(Object)} and
-	 * {@link BlankNode#uniqueReference()},
-	 * unless a separate {@link RDF4JTermFactory}
-	 * instance is used per RDF4J repository/model.
+	 * <strong>NOTE:</strong> If combining RDF4J {@link Statement}s multiple
+	 * repositories or models, then their {@link BNode}s may have the same
+	 * {@link BNode#getID()}, which with this method would become equivalent
+	 * according to {@link BlankNode#equals(Object)} and
+	 * {@link BlankNode#uniqueReference()}, unless a separate
+	 * {@link RDF4JTermFactory} instance is used per RDF4J repository/model.
 	 *
 	 * @param statement
 	 *            The statement to convert
@@ -196,23 +232,24 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 	 * {@link org.eclipse.rdf4j.model.Literal}. is converted to a
 	 * {@link org.apache.commons.rdf.api.Literal}
 	 * <p>
-	 * For the purpose of {@link BlankNode} equivalence, this
-	 * method will use an internal salt UUID that is unique per instance of
+	 * For the purpose of {@link BlankNode} equivalence, this method will use an
+	 * internal salt UUID that is unique per instance of
 	 * {@link RDF4JTermFactory}.
 	 * <p>
-	 * <strong>NOTE:</strong> If combining RDF4J values from
-	 * multiple repositories or models, then their {@link BNode}s
-	 * may have the same {@link BNode#getID()}, which with this method
-	 * would become equivalent according to {@link BlankNode#equals(Object)} and
-	 * {@link BlankNode#uniqueReference()},
-	 * unless a separate {@link RDF4JTermFactory}
-	 * instance is used per RDF4J repository/model.
+	 * <strong>NOTE:</strong> If combining RDF4J values from multiple
+	 * repositories or models, then their {@link BNode}s may have the same
+	 * {@link BNode#getID()}, which with this method would become equivalent
+	 * according to {@link BlankNode#equals(Object)} and
+	 * {@link BlankNode#uniqueReference()}, unless a separate
+	 * {@link RDF4JTermFactory} instance is used per RDF4J repository/model.
 	 *
-	 * @param value The RDF4J {@link Value} to convert.
+	 * @param value
+	 *            The RDF4J {@link Value} to convert.
 	 * @param <T>
 	 *            The subclass of {@link Value}, e.g. {@link BNode}
 	 * @return A {@link RDFTerm} that corresponds to the RDF4J value
-	 * @throws IllegalArgumentException if the value is not a BNode, Literal or IRI
+	 * @throws IllegalArgumentException
+	 *             if the value is not a BNode, Literal or IRI
 	 */
 	public <T extends Value> RDF4JTerm<T> asRDFTerm(T value) {
 		return asRDFTerm(value, salt);
@@ -262,8 +299,8 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 	/**
 	 * Adapt an RDF4J {@link Repository} as a Commons RDF {@link Graph}.
 	 * <p>
-	 * The graph will only include triples in the default graph 
-	 * (equivalent to context <code>new Resource[0]{null})</code> in RDF4J).
+	 * The graph will only include triples in the default graph (equivalent to
+	 * context <code>new Resource[0]{null})</code> in RDF4J).
 	 * <p>
 	 * Changes to the graph are reflected in the repository, and vice versa.
 	 *
@@ -281,8 +318,8 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 	 * The graph will include triples in any contexts (e.g. the union graph).
 	 * <p>
 	 * Changes to the graph are reflected in the repository, and vice versa.
-	 * Triples added to the graph are added to the default context, 
-	 * e.g. an RDF4J context of new <code>Resource[1]{null})</code>.
+	 * Triples added to the graph are added to the default context, e.g. an
+	 * RDF4J context of new <code>Resource[1]{null})</code>.
 	 *
 	 * @param repository
 	 *            RDF4J {@link Repository} to connect to.
@@ -291,7 +328,7 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 	public RDF4JGraph asRDFTermGraphUnion(Repository repository) {
 		return rdf4j.createRepositoryGraphImpl(repository, false, true);
 	}
-	
+
 	/**
 	 * Adapt an RDF4J {@link Repository} as a Commons RDF {@link Graph}.
 	 * <p>
@@ -304,21 +341,19 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 	 * @param repository
 	 *            RDF4J {@link Repository} to connect to.
 	 * @param contexts
-	 *            A {@link Set} of {@link BlankNodeOrIRI} specifying the
-	 *            graph names to use as a context. The set may include the value
+	 *            A {@link Set} of {@link BlankNodeOrIRI} specifying the graph
+	 *            names to use as a context. The set may include the value
 	 *            <code>null</code> to indicate the default graph. The empty set
 	 *            indicates any context, e.g. the <em>union graph</em>.
 	 * 
 	 * @return A {@link Graph} backed by the RDF4J repository.
 	 */
-	public RDF4JGraph asRDFTermGraph(Repository repository, Set<? extends BlankNodeOrIRI> contexts) {	
+	public RDF4JGraph asRDFTermGraph(Repository repository, Set<? extends BlankNodeOrIRI> contexts) {
 		/** NOTE: asValue() deliberately CAN handle <code>null</code> */
-		Resource[] resources = contexts.stream()
-				.map(g -> (Resource) asValue(g)).toArray(Resource[]::new);
-		return rdf4j.createRepositoryGraphImpl(Objects.requireNonNull(repository), 
-				false, true, resources);		
+		Resource[] resources = contexts.stream().map(g -> (Resource) asValue(g)).toArray(Resource[]::new);
+		return rdf4j.createRepositoryGraphImpl(Objects.requireNonNull(repository), false, true, resources);
 	}
-	
+
 	/**
 	 * Adapt an RDF4J {@link Repository} as a Commons RDF {@link Graph}.
 	 * <p>
@@ -340,12 +375,12 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 	 * Adapt a Commons RDF {@link Triple} or {@link Quad} as a RDF4J
 	 * {@link Statement}.
 	 * <p>
-	 * If the <code>tripleLike</code> argument is an {@link RDF4JTriple} or
-	 * a {@link RDF4JQuad}, then its {@link RDF4JTripleLike#asStatement()} is
+	 * If the <code>tripleLike</code> argument is an {@link RDF4JTriple} or a
+	 * {@link RDF4JQuad}, then its {@link RDF4JTripleLike#asStatement()} is
 	 * returned as-is. Note that this means that a {@link RDF4JTriple} would
 	 * preserve its {@link Statement#getContext()}, and that any
-	 * {@link BlankNode}s would be deemed equivalent in RDF4J
-	 * if they have the same {@link BNode#getID()}.
+	 * {@link BlankNode}s would be deemed equivalent in RDF4J if they have the
+	 * same {@link BNode#getID()}.
 	 *
 	 * @param tripleLike
 	 *            A {@link Triple} or {@link Quad} to adapt
@@ -506,20 +541,17 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 	public RDF4JTriple createTriple(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object)
 			throws IllegalArgumentException, UnsupportedOperationException {
 		final Statement statement = getValueFactory().createStatement(
-				(org.eclipse.rdf4j.model.Resource) asValue(subject),
-				(org.eclipse.rdf4j.model.IRI) asValue(predicate),
+				(org.eclipse.rdf4j.model.Resource) asValue(subject), (org.eclipse.rdf4j.model.IRI) asValue(predicate),
 				asValue(object));
 		return asTriple(statement);
 	}
 
 	@Override
-	public Quad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object)
-			throws IllegalArgumentException, UnsupportedOperationException {
+	public Quad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate,
+			RDFTerm object) throws IllegalArgumentException, UnsupportedOperationException {
 		final Statement statement = getValueFactory().createStatement(
-				(org.eclipse.rdf4j.model.Resource) asValue(subject),
-				(org.eclipse.rdf4j.model.IRI) asValue(predicate),
-				asValue(object),
-				(org.eclipse.rdf4j.model.Resource)asValue(graphName));
+				(org.eclipse.rdf4j.model.Resource) asValue(subject), (org.eclipse.rdf4j.model.IRI) asValue(predicate),
+				asValue(object), (org.eclipse.rdf4j.model.Resource) asValue(graphName));
 		return asQuad(statement);
 	}
 
