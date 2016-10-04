@@ -39,22 +39,11 @@ import org.eclipse.rdf4j.repository.Repository;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryResult;
 
-public class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> implements Graph, RDF4JGraph {
+class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> implements Graph, RDF4JGraph {
 
 	private final Resource[] contextMask;
 
-	public RepositoryGraphImpl(Repository repository, boolean handleInitAndShutdown, boolean includeInferred, boolean unionGraph) {
-		super(repository, handleInitAndShutdown, includeInferred);
-		if (unionGraph) {
-			// no context mask, aka any context
-			this.contextMask = new Resource[] { };
-		} else {
-			// default context: null
-			this.contextMask = new Resource[] { null };
-		}
-	}
-
-	public RepositoryGraphImpl(Repository repository, boolean handleInitAndShutdown, boolean includeInferred, Resource... contextMask) {
+	RepositoryGraphImpl(Repository repository, boolean handleInitAndShutdown, boolean includeInferred, Resource... contextMask) {
 		super(repository, handleInitAndShutdown, includeInferred);
 		this.contextMask = Objects.requireNonNull(contextMask);
 	}
@@ -97,15 +86,18 @@ public class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> imp
 
 	@Override
 	public long size() {
-		try (RepositoryConnection conn = getRepositoryConnection()) {
-			if (! includeInferred && contextMask.length == 0) { 
+		if (!includeInferred && contextMask.length == 0) {
+			try (RepositoryConnection conn = getRepositoryConnection()) {
 				return conn.size();
-			} else {
-				return stream().count();
+			}
+		} else {
+			try (Stream<RDF4JTriple> stream = stream()) {
+				long s = stream.count();
+				stream.close();
+				return s;
 			}
 		}
 	}
-
 	
 	@Override
 	public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
@@ -150,9 +142,9 @@ public class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> imp
 		org.eclipse.rdf4j.model.IRI pred = (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate);
 		Value obj = rdf4jTermFactory.asValue(object);
 		RepositoryConnection conn = getRepositoryConnection();
-		// FIXME: Is it OK that we don't close the connection?
-		RepositoryResult<Statement> statements = conn.getStatements(subj, pred, obj, includeInferred, contextMask);
-		return Iterations.stream(statements).map(this::asTripleLike);
+			RepositoryResult<Statement> statements = conn.getStatements(subj, pred, obj, includeInferred, contextMask);
+			// NOTE: Iterations.stream should close RepositoryResult as long as our caller closes the stream
+			return Iterations.stream(statements).map(this::asTripleLike);
 	}
 	
 	@Override

@@ -19,10 +19,10 @@ package org.apache.commons.rdf.rdf4j.impl;
 
 import org.apache.commons.rdf.rdf4j.RDF4JIRI;
 
-public final class IRIImpl extends AbstractRDFTerm<org.eclipse.rdf4j.model.IRI> 
+final class IRIImpl extends AbstractRDFTerm<org.eclipse.rdf4j.model.IRI> 
 	implements RDF4JIRI {
 
-	public IRIImpl(org.eclipse.rdf4j.model.IRI iri) {
+	IRIImpl(org.eclipse.rdf4j.model.IRI iri) {
 		super(iri);			
 	}
 	@Override

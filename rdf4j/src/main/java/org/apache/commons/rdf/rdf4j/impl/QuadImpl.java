@@ -29,16 +29,17 @@ import org.apache.commons.rdf.rdf4j.RDF4JQuad;
 import org.apache.commons.rdf.rdf4j.RDF4JTermFactory;
 import org.eclipse.rdf4j.model.Statement;
 
-public final class QuadImpl implements Quad, RDF4JQuad {
+final class QuadImpl implements Quad, RDF4JQuad {
 		private transient int hashCode = 0;	
 		private UUID salt;
 		private final Statement statement;
 		
-		public QuadImpl(Statement statement, UUID salt) {
+		QuadImpl(Statement statement, UUID salt) {
 			this.statement = statement;
 			this.salt = salt;
 		}
 	
+		@Override
 		public Statement asStatement() { 
 			return statement;
 		}
@@ -63,7 +64,7 @@ public final class QuadImpl implements Quad, RDF4JQuad {
 		public Optional<BlankNodeOrIRI> getGraphName() {
 			if (statement.getContext() == null) { 
 				return Optional.empty();
-			}
+			}			
 			BlankNodeOrIRI g = (BlankNodeOrIRI) RDF4JTermFactory.asRDFTerm(statement.getContext(), salt);
 			return Optional.of(g);
 		}

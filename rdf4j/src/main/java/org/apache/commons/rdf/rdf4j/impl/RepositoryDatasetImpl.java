@@ -36,16 +36,11 @@ import org.eclipse.rdf4j.repository.Repository;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryResult;
 
-public class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> implements RDF4JDataset, Dataset {
+class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> implements RDF4JDataset, Dataset {
 
-	public RepositoryDatasetImpl(Repository repository, boolean handleInitAndShutdown, boolean includeInferred) {
+	RepositoryDatasetImpl(Repository repository, boolean handleInitAndShutdown, boolean includeInferred) {
 		super(repository, handleInitAndShutdown, includeInferred);
 	}
-
-	public RepositoryDatasetImpl(Repository repository) {
-		this(repository, false, false);
-	}
-
 
 	@Override
 	public void add(Quad tripleLike) {
@@ -155,10 +150,11 @@ public class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> imp
 		Value obj = rdf4jTermFactory.asValue(object);
 		Resource[] contexts = asContexts(graphName);
 
-		RepositoryConnection conn = getRepositoryConnection();
-		// NOTE: connection will be closed outside by the Iterations.stream()
-		RepositoryResult<Statement> statements = conn.getStatements(subj, pred, obj, includeInferred, contexts);
-		return Iterations.stream(statements).map(this::asTripleLike);
+		try (RepositoryConnection conn = getRepositoryConnection()) {
+			RepositoryResult<Statement> statements = conn.getStatements(subj, pred, obj, includeInferred, contexts);
+			// NOTE: RepositoryResult will be closed outside by the Iterations.stream()
+			return Iterations.stream(statements).map(this::asTripleLike);
+		}
 	}
 
 	@Override
@@ -181,10 +177,12 @@ public class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> imp
 
 	@Override
 	public Stream<BlankNodeOrIRI> getGraphNames() {
-		RepositoryConnection conn = getRepositoryConnection();
-		RepositoryResult<Resource> contexts = conn.getContextIDs();
-		// NOTE: connection will be closed outside by the Iterations.stream()
-		return Iterations.stream(contexts).map(g -> (BlankNodeOrIRI) rdf4jTermFactory.asRDFTerm(g));
+		// FIXME: Will the below close the connection before the stream has been consumed outside? 
+		try (RepositoryConnection conn = getRepositoryConnection()) {
+			RepositoryResult<Resource> contexts = conn.getContextIDs();
+			// NOTE: connection will be closed outside by the Iterations.stream()
+			return Iterations.stream(contexts).map(g -> (BlankNodeOrIRI) rdf4jTermFactory.asRDFTerm(g));
+		}
 	}
 
 }

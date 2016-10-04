@@ -25,14 +25,14 @@ import org.apache.commons.rdf.rdf4j.RDF4JBlankNode;
 import org.eclipse.rdf4j.model.BNode;
 import org.eclipse.rdf4j.rio.turtle.TurtleUtil;
 
-public final class BlankNodeImpl extends AbstractRDFTerm<BNode>
+final class BlankNodeImpl extends AbstractRDFTerm<BNode>
 	implements RDF4JBlankNode {
 	
 	private transient int hashCode = 0;
 	private long saltUUIDleast;
 	private long saltUUIDmost;
 	
-	public BlankNodeImpl(BNode bNode, UUID salt) {
+	BlankNodeImpl(BNode bNode, UUID salt) {
 		super(bNode);			
 		// Space-efficient storage of salt UUID
 		saltUUIDmost = salt.getMostSignificantBits();

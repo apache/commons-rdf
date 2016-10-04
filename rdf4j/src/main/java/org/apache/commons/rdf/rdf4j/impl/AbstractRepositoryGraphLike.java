@@ -30,7 +30,7 @@ import org.eclipse.rdf4j.model.Statement;
 import org.eclipse.rdf4j.repository.Repository;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 
-public abstract class AbstractRepositoryGraphLike<T extends TripleLike<BlankNodeOrIRI, IRI, RDFTerm>>
+abstract class AbstractRepositoryGraphLike<T extends TripleLike<BlankNodeOrIRI, IRI, RDFTerm>>
 		implements RDF4JGraphLike<T> {
 
 	protected final Repository repository;
@@ -38,11 +38,7 @@ public abstract class AbstractRepositoryGraphLike<T extends TripleLike<BlankNode
 	protected final boolean handleInitAndShutdown;
 	protected final RDF4JTermFactory rdf4jTermFactory;
 
-	public AbstractRepositoryGraphLike(Repository repository) {
-		this(repository, true, false);
-	}
-
-	public AbstractRepositoryGraphLike(Repository repository, boolean handleInitAndShutdown, boolean includeInferred) {
+	AbstractRepositoryGraphLike(Repository repository, boolean handleInitAndShutdown, boolean includeInferred) {
 		this.repository = repository;
 		this.includeInferred = includeInferred;
 		this.handleInitAndShutdown = handleInitAndShutdown;

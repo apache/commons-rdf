@@ -24,13 +24,13 @@ import org.apache.commons.rdf.rdf4j.RDF4JLiteral;
 import org.eclipse.rdf4j.model.vocabulary.XMLSchema;
 import org.eclipse.rdf4j.rio.turtle.TurtleUtil;
 
-public final class LiteralImpl 
+final class LiteralImpl 
 	extends AbstractRDFTerm<org.eclipse.rdf4j.model.Literal>
     implements RDF4JLiteral {		
 
 	private static final String QUOTE = "\"";
 	
-	public LiteralImpl(org.eclipse.rdf4j.model.Literal literal) {
+	LiteralImpl(org.eclipse.rdf4j.model.Literal literal) {
 		super(literal);			
 	}
 	@Override

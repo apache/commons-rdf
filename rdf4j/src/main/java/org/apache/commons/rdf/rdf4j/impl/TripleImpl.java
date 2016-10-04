@@ -27,15 +27,16 @@ import org.apache.commons.rdf.rdf4j.RDF4JTermFactory;
 import org.apache.commons.rdf.rdf4j.RDF4JTriple;
 import org.eclipse.rdf4j.model.Statement;
 
-public final class TripleImpl implements Triple, RDF4JTriple {
+final class TripleImpl implements Triple, RDF4JTriple {
 		private UUID salt;	
 		private final Statement statement;
 		
-		public TripleImpl(Statement statement, UUID salt) {
+		TripleImpl(Statement statement, UUID salt) {
 			this.statement = statement;
 			this.salt = salt;
 		}
 	
+		@Override
 		public Statement asStatement() { 
 			return statement;
 		}

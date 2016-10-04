@@ -33,17 +33,12 @@ import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.Resource;
 import org.eclipse.rdf4j.repository.Repository;
 
-public final class ModelGraphImpl implements RDF4JGraph {
+final class ModelGraphImpl implements RDF4JGraph {
 	
 	private Model model;
 	private RDF4JTermFactory rdf4jTermFactory;
 
-	public ModelGraphImpl(Model model) {
-		this.model = model;	
-		this.rdf4jTermFactory = new RDF4JTermFactory();
-	}
-
-	public ModelGraphImpl(Model model, RDF4JTermFactory rdf4jTermFactory) {
+	ModelGraphImpl(Model model, RDF4JTermFactory rdf4jTermFactory) {
 		this.model = model;	
 		this.rdf4jTermFactory = rdf4jTermFactory;
 	}

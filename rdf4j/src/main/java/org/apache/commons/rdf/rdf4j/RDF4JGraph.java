@@ -25,8 +25,6 @@ import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.Triple;
-import org.apache.commons.rdf.rdf4j.impl.ModelGraphImpl;
-import org.apache.commons.rdf.rdf4j.impl.RepositoryGraphImpl;
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.Resource;
 import org.eclipse.rdf4j.repository.Repository;
@@ -41,8 +39,6 @@ import org.eclipse.rdf4j.repository.Repository;
  * @see RDF4JTermFactory#asRDFTermGraphUnion(Repository)
  * @see RDF4JDataset#getGraph()
  * @see RDF4JDataset#getGraph(BlankNodeOrIRI)
- * @see ModelGraphImpl
- * @see RepositoryGraphImpl
  */
 public interface RDF4JGraph extends Graph, RDF4JGraphLike<Triple> {
 	

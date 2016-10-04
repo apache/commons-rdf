@@ -23,25 +23,17 @@ import java.util.UUID;
 
 // To avoid confusion, avoid importing
 // classes that are in both
-// commons.rdf and openrdf.model (e.g. IRI)
+// commons.rdf and openrdf.model (e.g. IRI, Literal)
 import org.apache.commons.rdf.api.BlankNode;
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.Graph;
-import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.RDFTermFactory;
 import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.api.TripleLike;
-import org.apache.commons.rdf.rdf4j.impl.BlankNodeImpl;
-import org.apache.commons.rdf.rdf4j.impl.IRIImpl;
-import org.apache.commons.rdf.rdf4j.impl.LiteralImpl;
-import org.apache.commons.rdf.rdf4j.impl.ModelGraphImpl;
-import org.apache.commons.rdf.rdf4j.impl.QuadImpl;
-import org.apache.commons.rdf.rdf4j.impl.RepositoryDatasetImpl;
-import org.apache.commons.rdf.rdf4j.impl.RepositoryGraphImpl;
-import org.apache.commons.rdf.rdf4j.impl.TripleImpl;
+import org.apache.commons.rdf.rdf4j.impl.InternalRDF4JFactory;
 import org.eclipse.rdf4j.model.BNode;
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.Resource;
@@ -101,7 +93,12 @@ import org.eclipse.rdf4j.sail.memory.MemoryStore;
  * therefore uses a unique {@link RDF4JTermFactory} internally.
  *
  */
-public class RDF4JTermFactory implements RDFTermFactory {
+public final class RDF4JTermFactory implements RDFTermFactory {
+	
+	/**
+	 * InternalRDF4JFactory is deliberately abstract
+	 */
+	private static InternalRDF4JFactory rdf4j = new InternalRDF4JFactory(){};
 
 	/**
 	 * Adapt a RDF4J {@link Value} as a Commons RDF {@link RDFTerm}.
@@ -131,13 +128,13 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	@SuppressWarnings("unchecked")
 	public static <T extends Value> RDF4JTerm<T> asRDFTerm(final T value, UUID salt) {
 		if (value instanceof BNode) {
-			return (RDF4JTerm<T>) new BlankNodeImpl((BNode) value, salt);
+			return (RDF4JTerm<T>) rdf4j.createBlankNodeImpl((BNode) value, salt);
 		}
 		if (value instanceof org.eclipse.rdf4j.model.Literal) {
-			return (RDF4JTerm<T>) new LiteralImpl((org.eclipse.rdf4j.model.Literal) value);
+			return (RDF4JTerm<T>) rdf4j.createLiteralImpl((org.eclipse.rdf4j.model.Literal) value);
 		}
 		if (value instanceof org.eclipse.rdf4j.model.IRI) {
-			return (RDF4JTerm<T>) new IRIImpl((org.eclipse.rdf4j.model.IRI) value);
+			return (RDF4JTerm<T>) rdf4j.createIRIImpl((org.eclipse.rdf4j.model.IRI) value);
 		}
 		throw new IllegalArgumentException("Value is not a BNode, Literal or IRI: " + value.getClass());
 	}
@@ -153,12 +150,17 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	public RDF4JTermFactory(ValueFactory valueFactory) {
 		this(valueFactory, UUID.randomUUID());
 	}
+	
+	public RDF4JTermFactory(UUID salt) {
+		this(SimpleValueFactory.getInstance(), salt);
+	}
 
 	public RDF4JTermFactory(ValueFactory valueFactory, UUID salt) {
 		this.valueFactory = valueFactory;
 		this.salt = salt;
 	}
 	
+
 	/**
 	 * Adapt a RDF4J {@link Statement} as a Commons RDF {@link Quad}.
 	 * <p>
@@ -180,27 +182,8 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	 * @return A {@link RDF4JQuad} that is equivalent to the statement
 	 */
 	public RDF4JQuad asQuad(final Statement statement) {
-		return new QuadImpl(statement, salt);
+		return rdf4j.createQuadImpl(statement, salt);
 	}
-
-	/**
-	 * Adapt a RDF4J {@link Statement} as a Commons RDF {@link Quad}.
-	 *
-	 * @see #asQuad(Statement)
-	 * @param statement
-	 *            The statement to convert
-	 * @param salt
-	 *            A {@link UUID} salt to use for uniquely mapping any
-	 *            {@link BNode}s. The salt should typically be the same for
-	 *            multiple statements in the same {@link Repository} or
-	 *            {@link Model} to ensure {@link BlankNode#equals(Object)} and
-	 *            {@link BlankNode#uniqueReference()} works as intended.
-	 * @return A {@link RDF4JQuad} that is equivalent to the statement
-	 */
-	public static RDF4JQuad asQuad(final Statement statement, UUID salt) {
-		return new QuadImpl(statement, salt);
-	}
-
 
 	/**
 	 *
@@ -246,7 +229,7 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	 * @return A {@link Dataset} backed by the RDF4J repository.
 	 */
 	public RDF4JDataset asRDFTermDataset(Repository repository) {
-		return new RepositoryDatasetImpl(repository, false, false);
+		return rdf4j.createRepositoryDatasetImpl(repository, false, false);
 	}
 
 	/**
@@ -261,7 +244,7 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	 * @return A {@link Dataset} backed by the RDF4J repository.
 	 */
 	public RDF4JDataset asRDFTermDataset(Repository repository, boolean includeInferred) {
-		return new RepositoryDatasetImpl(repository, false, includeInferred);
+		return rdf4j.createRepositoryDatasetImpl(repository, false, includeInferred);
 	}
 
 	/**
@@ -274,7 +257,7 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	 * @return Adapted {@link Graph}.
 	 */
 	public RDF4JGraph asRDFTermGraph(Model model) {
-		return new ModelGraphImpl(model);
+		return rdf4j.createModelGraphImpl(model, this);
 	}
 
 	/**
@@ -290,7 +273,7 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	 * @return A {@link Graph} backed by the RDF4J repository.
 	 */
 	public RDF4JGraph asRDFTermGraph(Repository repository) {
-		return new RepositoryGraphImpl(repository, false, false);
+		return rdf4j.createRepositoryGraphImpl(repository, false, false);
 	}
 
 	/**
@@ -307,7 +290,7 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	 * @return A union {@link Graph} backed by the RDF4J repository.
 	 */
 	public RDF4JGraph asRDFTermGraphUnion(Repository repository) {
-		return new RepositoryGraphImpl(repository, false, true);
+		return rdf4j.createRepositoryGraphImpl(repository, false, true);
 	}
 	
 	/**
@@ -333,7 +316,7 @@ public class RDF4JTermFactory implements RDFTermFactory {
 		/** NOTE: asValue() deliberately CAN handle <code>null</code> */
 		Resource[] resources = contexts.stream()
 				.map(g -> (Resource) asValue(g)).toArray(Resource[]::new);
-		return new RepositoryGraphImpl(Objects.requireNonNull(repository), 
+		return rdf4j.createRepositoryGraphImpl(Objects.requireNonNull(repository), 
 				false, true, resources);		
 	}
 	
@@ -348,14 +331,10 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	 *            RDF4J {@link Repository} to connect to.
 	 * @param includeInferred
 	 *            If true, any inferred triples are included in the graph
-	 * @param unionGraph
-	 *            If true, triples from any context is included in the graph,
-	 *            otherwise only triples in the default context
-	 *            <code>null</code>.
 	 * @return A {@link Graph} backed by the RDF4J repository.
 	 */
-	public RDF4JGraph asRDFTermGraph(Repository repository, boolean includeInferred, boolean unionGraph) {
-		return new RepositoryGraphImpl(repository, includeInferred, unionGraph);
+	public RDF4JGraph asRDFTermGraph(Repository repository, boolean includeInferred) {
+		return rdf4j.createRepositoryGraphImpl(repository, false, includeInferred);
 	}
 
 	/**
@@ -413,7 +392,7 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	 * @return A {@link RDF4JTriple} that is equivalent to the statement
 	 */
 	public RDF4JTriple asTriple(final Statement statement) {
-		return new TripleImpl(statement, salt);
+		return rdf4j.createTripleImpl(statement, salt);
 	}
 
 	/**
@@ -535,7 +514,7 @@ public class RDF4JTermFactory implements RDFTermFactory {
 	}
 
 	@Override
-	public Quad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
+	public Quad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object)
 			throws IllegalArgumentException, UnsupportedOperationException {
 		final Statement statement = getValueFactory().createStatement(
 				(org.eclipse.rdf4j.model.Resource) asValue(subject),
