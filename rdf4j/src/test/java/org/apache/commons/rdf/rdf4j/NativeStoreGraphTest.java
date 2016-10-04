@@ -18,49 +18,112 @@
 package org.apache.commons.rdf.rdf4j;
 
 import java.io.IOException;
+import java.nio.file.FileVisitResult;
+import java.nio.file.FileVisitor;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Collections;
+import java.util.Set;
 
 import org.apache.commons.rdf.api.AbstractGraphTest;
+import org.apache.commons.rdf.api.BlankNodeOrIRI;
+import org.apache.commons.rdf.api.IRI;
+import org.apache.commons.rdf.api.Literal;
+import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.RDFTermFactory;
-import org.eclipse.rdf4j.model.ValueFactory;
-import org.eclipse.rdf4j.repository.Repository;
 import org.eclipse.rdf4j.repository.sail.SailRepository;
 import org.eclipse.rdf4j.sail.Sail;
-import org.eclipse.rdf4j.sail.memory.model.MemValueFactory;
 import org.eclipse.rdf4j.sail.nativerdf.NativeStore;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 
 
 public class NativeStoreGraphTest extends AbstractGraphTest {
 
-	public static final class NativeStoreFactory extends RDF4JTermFactory {
-		NativeStoreFactory() {
-			super(new MemValueFactory());
-		}
+	public final class NativeStoreFactory implements RDFTermFactory {
+
+		RDF4JTermFactory rdf4jFactory = new RDF4JTermFactory(repository.getValueFactory());
+
 		@Override
 		public RDF4JGraph createGraph() {
-			return asRDFTermGraph(createRepository());
+			// We re-use the repository connection, but use a different context every time
+			Set<RDF4JBlankNode> context = Collections.singleton(rdf4jFactory.createBlankNode());
+			return rdf4jFactory.asRDFTermGraph(repository, context);
+		}
+
+		// Delegate methods 
+		public RDF4JBlankNode createBlankNode() {
+			return rdf4jFactory.createBlankNode();
+		}
+		public RDF4JBlankNode createBlankNode(String name) {
+			return rdf4jFactory.createBlankNode(name);
+		}
+		public RDF4JIRI createIRI(String iri) throws IllegalArgumentException, UnsupportedOperationException {
+			return rdf4jFactory.createIRI(iri);
+		}
+		public RDF4JLiteral createLiteral(String lexicalForm) {
+			return rdf4jFactory.createLiteral(lexicalForm);
+		}
+		public Literal createLiteral(String lexicalForm, IRI dataType) {
+			return rdf4jFactory.createLiteral(lexicalForm, dataType);
+		}
+		public Literal createLiteral(String lexicalForm, String languageTag) {
+			return rdf4jFactory.createLiteral(lexicalForm, languageTag);
+		}
+		public RDF4JTriple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+			return rdf4jFactory.createTriple(subject, predicate, object);
 		}
 	}
 
-	public static Repository createRepository() {
-		Path tempDir;
+	private static SailRepository repository;
+	private static Path tempDir;
+	
+	@BeforeClass
+	public static void createRepository() {
 		try {
 			tempDir = Files.createTempDirectory("test-commonsrdf-rdf4j");
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 		Sail sail = new NativeStore(tempDir.toFile());
-		SailRepository repository = new SailRepository(sail);
+		repository = new SailRepository(sail);
 		repository.initialize();
-		return repository;
+	}
+
+	@AfterClass
+	public static void shutdownAndDelete() throws IOException {
+		// must shutdown before we delete
+		if (repository != null) {
+			System.out.println("Shutting down rdf4j repository " + repository);
+			repository.shutDown();
+			System.out.println("rdf4j repository shut down.");
+		}
+		if (tempDir != null) {
+			deleteAll(tempDir);
+		}
 	}
 	
+	private static void deleteAll(Path dir) throws IOException {
+		Files.walkFileTree(dir, new SimpleFileVisitor<Path>(){
+			@Override
+			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+				Files.delete(file);
+				return FileVisitResult.CONTINUE;
+			}
+			@Override
+			public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+				FileVisitResult r = super.postVisitDirectory(dir, exc);
+				Files.delete(dir);
+				return r;
+			}
+		});
+	}
+
 	@Override
 	public RDFTermFactory createFactory() {
-		// FIXME: This valueFactory will be backed by the wrong temporary folder!
-		ValueFactory valueFactory = createRepository().getValueFactory();
-		return new RDF4JTermFactory(valueFactory);
+		return new NativeStoreFactory();
 	}
 
 }
