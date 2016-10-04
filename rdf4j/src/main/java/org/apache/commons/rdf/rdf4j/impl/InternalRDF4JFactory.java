@@ -84,7 +84,7 @@ public abstract class InternalRDF4JFactory {
 	/**
 	 * Construct a {@link RDF4JLiteral} from a RDF4J {@link Literal}.
 	 * 
-	 * @param bNode
+	 * @param literal
 	 *            RDF4J {@link Literal}
 	 * @return Adapted {@link RDF4JLiteral}
 	 */
@@ -112,7 +112,7 @@ public abstract class InternalRDF4JFactory {
 	 * 
 	 * @param statement
 	 *            RDF4J {@link Statement} to adapt
-	 * @param uuid
+	 * @param salt
 	 *            {@link UUID} for adapting any {@link BNode}s
 	 * @return Adapted {@link RDF4JQuad}
 	 */
@@ -155,6 +155,11 @@ public abstract class InternalRDF4JFactory {
 	 *            {@link RDF4JGraph#close()}.
 	 * @param includeInferred
 	 *            If true, any inferred quads are included in the dataset
+	 * @param contextMask
+	 *            Zero or more {@link Resource}s contexts. The array may contain
+	 *            the value <code>null</code> for the default graph - however
+	 *            care must be taken to not provide a null-array
+	 *            <code>(Resource[]) null</code>.
 	 * @return Adapted {@link RDF4JGraph}
 	 */
 	public RDF4JGraph createRepositoryGraphImpl(Repository repository, boolean handleInitAndShutdown,
@@ -167,7 +172,7 @@ public abstract class InternalRDF4JFactory {
 	 * 
 	 * @param statement
 	 *            RDF4J {@link Statement} to adapt
-	 * @param uuid
+	 * @param salt
 	 *            {@link UUID} for adapting any {@link BNode}s
 	 * @return Adapted {@link RDF4JTriple}
 	 */

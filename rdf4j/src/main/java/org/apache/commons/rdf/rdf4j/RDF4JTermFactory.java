@@ -176,7 +176,6 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 	 * unless a separate {@link RDF4JTermFactory}
 	 * instance is used per RDF4J repository/model.
 	 *
-	 * @see #asQuad(Statement, UUID)
 	 * @param statement
 	 *            The statement to convert
 	 * @return A {@link RDF4JQuad} that is equivalent to the statement
