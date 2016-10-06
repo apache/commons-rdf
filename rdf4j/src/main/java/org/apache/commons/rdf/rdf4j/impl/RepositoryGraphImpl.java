@@ -18,7 +18,9 @@
 package org.apache.commons.rdf.rdf4j.impl;
 
 import java.util.Collections;
+import java.util.ConcurrentModificationException;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -28,6 +30,7 @@ import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.Triple;
+import org.apache.commons.rdf.rdf4j.ClosableIterable;
 import org.apache.commons.rdf.rdf4j.RDF4JBlankNodeOrIRI;
 import org.apache.commons.rdf.rdf4j.RDF4JGraph;
 import org.apache.commons.rdf.rdf4j.RDF4JTriple;
@@ -40,6 +43,40 @@ import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryResult;
 
 class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> implements Graph, RDF4JGraph {
+
+	private final class TripleIteration implements ClosableIterable<Triple> {
+		private RepositoryConnection conn;
+		private RepositoryResult<Statement> results;
+		private TripleIteration(Resource subj, org.eclipse.rdf4j.model.IRI pred, Value obj) {
+			conn = getRepositoryConnection();
+			results = conn.getStatements(subj, pred, obj, contextMask);
+		}
+		
+		@Override
+		public Iterator<Triple> iterator() {
+			return new Iterator<Triple>(){
+				@Override
+				public boolean hasNext() {
+					boolean hasNext = results.hasNext();
+					if (! hasNext) {
+						close();
+					}
+					return hasNext;
+				}
+				@Override
+				public Triple next() {					
+					Statement statement = results.next();
+					return rdf4jTermFactory.asTriple(statement);
+				}
+			};
+		}
+
+		@Override
+		public void close() {
+			results.close();
+			conn.close();
+		}
+	}
 
 	private final Resource[] contextMask;
 
@@ -127,6 +164,20 @@ class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> implements
 			conn.remove(subj, pred, obj, contextMask);
 			conn.commit();
 		}
+	}
+	
+	@Override
+	public ClosableIterable<Triple> iterate() throws ConcurrentModificationException, IllegalStateException {
+		return iterate(null, null, null);
+	}
+	
+	@Override
+	public ClosableIterable<Triple> iterate(BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
+			throws ConcurrentModificationException, IllegalStateException {
+		Resource subj = (Resource) rdf4jTermFactory.asValue(subject);
+		org.eclipse.rdf4j.model.IRI pred = (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate);
+		Value obj = rdf4jTermFactory.asValue(object);
+		return new TripleIteration(subj, pred, obj);
 	}
 
 	@Override

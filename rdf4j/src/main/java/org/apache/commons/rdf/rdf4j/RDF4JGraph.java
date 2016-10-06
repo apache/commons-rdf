@@ -17,6 +17,7 @@
  */
 package org.apache.commons.rdf.rdf4j;
 
+import java.util.ConcurrentModificationException;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -97,7 +98,7 @@ public interface RDF4JGraph extends Graph, RDF4JGraphLike<Triple> {
 	 * This can generally achieved using a try-with-resources block, e.g.:
 	 * <pre>
 	 * int subjects;
-	 * try (Stream&lt;RDF4JTriple&gt; s : graph.stream()) {
+	 * try (Stream&lt;RDF4JTriple&gt; s : graph.stream(s,p,o)) {
 	 *   subjects = s.map(RDF4JTriple::getSubject).distinct().count()
 	 * }
 	 * </pre>
@@ -105,4 +106,50 @@ public interface RDF4JGraph extends Graph, RDF4JGraphLike<Triple> {
 	@Override
 	Stream<RDF4JTriple> stream(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
 	
+	
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Note that the iterable <strong>must be closed</strong> with
+	 * {@link ClosableIterable#close()}. 
+	 * call 
+	 * <p>
+	 * This can generally achieved using a try-with-resources block, e.g.:
+	 * <pre>
+	 * int subjects;
+	 * try (ClosableIterable&lt;Triple&gt; s : graph.iterate()) {
+     *   for (Triple t : triples) {
+     *       return t; // OK to terminate for-loop early
+     *   }
+	 * }
+	 * </pre>
+	 * If you don't use a try-with-resources block, the iterator will 
+	 * attempt to close the ClosableIterable 
+	 * when reaching the end of the iteration.
+	 */	
+	@Override
+	ClosableIterable<Triple> iterate() throws ConcurrentModificationException, IllegalStateException;
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Note that the iterable <strong>must be closed</strong> with
+	 * {@link ClosableIterable#close()}. 
+	 * call 
+	 * <p>
+	 * This can generally achieved using a try-with-resources block, e.g.:
+	 * <pre>
+	 * int subjects;
+	 * try (ClosableIterable&lt;Triple&gt; s : graph.iterate(s,p,o)) {
+     *   for (Triple t : triples) {
+     *       return t; // OK to terminate for-loop early
+     *   }
+	 * }
+	 * </pre>
+	 * If you don't use a try-with-resources block, the iterator will 
+	 * attempt to close the ClosableIterable 
+	 * when reaching the end of the iteration.
+	 */	
+	@Override
+	Iterable<Triple> iterate(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
 }

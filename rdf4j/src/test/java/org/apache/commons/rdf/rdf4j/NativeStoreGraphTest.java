@@ -19,6 +19,8 @@ package org.apache.commons.rdf.rdf4j;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.util.Collections;
+import java.util.Set;
 
 import org.apache.commons.rdf.api.AbstractGraphTest;
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
@@ -39,10 +41,6 @@ import org.junit.rules.TemporaryFolder;
 /**
  * Test a graph within a file-based RDF4J {@link SailRepository}.
  * <p>
- * Note that for efficiency reasons this test uses a shared repository for all
- * tests, but uses a different BlankNode context for each 
- * {@link NativeStoreFactory#createGraph()}.
- * <p>
  * TIP: If the {@link #shutdownAndDelete()} take about 20 seconds
  * this is a hint that a {@link RepositoryConnection} or 
  * {@link RepositoryResult} was not closed correctly.
@@ -56,7 +54,9 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
 
 		@Override
 		public RDF4JGraph createGraph() {
-			return rdf4jFactory.asRDFTermGraph(getRepository());
+			// We re-use the repository connection, but use a different context every time
+			Set<RDF4JBlankNode> context = Collections.singleton(rdf4jFactory.createBlankNode());
+			return rdf4jFactory.asRDFTermGraph(getRepository(), context);
 		}
 
 		// Delegate methods 

@@ -18,13 +18,17 @@
 package org.apache.commons.rdf.rdf4j.impl;
 
 import java.util.Collections;
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
+import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.Triple;
+import org.apache.commons.rdf.rdf4j.ClosableIterable;
 import org.apache.commons.rdf.rdf4j.RDF4JBlankNodeOrIRI;
 import org.apache.commons.rdf.rdf4j.RDF4JGraph;
 import org.apache.commons.rdf.rdf4j.RDF4JTermFactory;
@@ -127,6 +131,28 @@ final class ModelGraphImpl implements RDF4JGraph {
 		// ModelGraph always do the unionGraph
 		return Collections.emptySet();
 		// TODO: Should we support contextMask like in RepositoryGraphImpl?
+	}
+
+	@Override
+	public ClosableIterable<Triple> iterate(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+		return new ClosableIterable<Triple>() {		
+			@SuppressWarnings("unchecked")
+			@Override
+			public Iterator<Triple> iterator() {
+				// double-cast to fight Java generics..
+				Stream<? extends Triple> s = stream(subject, predicate, object);
+				return (Iterator<Triple>) s.iterator();
+			}
+			@Override
+			public void close() throws Exception {
+				// no-op as Model don't have transaction
+			}
+		};
+	}
+	
+	@Override
+	public ClosableIterable<Triple> iterate() throws ConcurrentModificationException, IllegalStateException {
+		return iterate(null, null, null);
 	}
 	
 }
