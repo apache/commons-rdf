@@ -15,7 +15,7 @@ package org.apache.commons.rdf.rdf4j;
  * The above will ensure that underlying resources are closed even if
  * the iteration does not exhaust all triples.
  *
- * @param <T>
+ * @param <T> type of elements returned by the iterator 
  */
 public interface ClosableIterable<T> extends Iterable<T>, AutoCloseable {
 

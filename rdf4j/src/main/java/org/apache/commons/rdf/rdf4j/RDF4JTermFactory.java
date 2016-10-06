@@ -43,6 +43,7 @@ import org.eclipse.rdf4j.model.ValueFactory;
 import org.eclipse.rdf4j.model.impl.LinkedHashModel;
 import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
 import org.eclipse.rdf4j.repository.Repository;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.sail.SailRepository;
 import org.eclipse.rdf4j.sail.Sail;
 import org.eclipse.rdf4j.sail.memory.MemoryStore;
@@ -259,7 +260,13 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 	 * Adapt an RDF4J {@link Repository} as a Commons RDF {@link Dataset}.
 	 * <p>
 	 * Changes to the dataset are reflected in the repository, and vice versa.
-	 *
+	 * <p>
+	 * <strong>Note:</strong> Some operations on the {@link RDF4JDataset}
+	 * requires the use of try-with-resources to close underlying
+	 * {@link RepositoryConnection}s, including
+	 * {@link RDF4JDataset#iterate()}, 
+	 * {@link RDF4JDataset#stream()} and {@link RDF4JDataset#getGraphNames()}.
+	 * 
 	 * @param repository
 	 *            RDF4J {@link Repository} to connect to.
 	 * @return A {@link Dataset} backed by the RDF4J repository.
@@ -272,6 +279,12 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 	 * Adapt an RDF4J {@link Repository} as a Commons RDF {@link Dataset}.
 	 * <p>
 	 * Changes to the dataset are reflected in the repository, and vice versa.
+	 * <p>
+	 * <strong>Note:</strong> Some operations on the {@link RDF4JDataset}
+	 * requires the use of try-with-resources to close underlying
+	 * {@link RepositoryConnection}s, including
+	 * {@link RDF4JDataset#iterate()}, 
+	 * {@link RDF4JDataset#stream()} and {@link RDF4JDataset#getGraphNames()}.
 	 *
 	 * @param repository
 	 *            RDF4J {@link Repository} to connect to.
@@ -303,6 +316,12 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 	 * context <code>new Resource[0]{null})</code> in RDF4J).
 	 * <p>
 	 * Changes to the graph are reflected in the repository, and vice versa.
+	 * <p>
+	 * <strong>Note:</strong> Some operations on the {@link RDF4JGraph}
+	 * requires the use of try-with-resources to close underlying
+	 * {@link RepositoryConnection}s, including
+	 * {@link RDF4JGraph#iterate()} and 
+	 * {@link RDF4JGraph#stream()}.
 	 *
 	 * @param repository
 	 *            RDF4J {@link Repository} to connect to.
@@ -337,6 +356,12 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 	 * Changes to the graph are reflected in the repository, and vice versa.
 	 * Triples added/removed to the graph are reflected in all the specified
 	 * contexts.
+	 * <p>
+	 * <strong>Note:</strong> Some operations on the {@link RDF4JGraph}
+	 * requires the use of try-with-resources to close underlying
+	 * {@link RepositoryConnection}s, including
+	 * {@link RDF4JGraph#iterate()} and 
+	 * {@link RDF4JGraph#stream()}.
 	 *
 	 * @param repository
 	 *            RDF4J {@link Repository} to connect to.
@@ -360,7 +385,13 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 	 * The graph will include triples in any contexts (e.g. the union graph).
 	 * <p>
 	 * Changes to the graph are reflected in the repository, and vice versa.
-	 *
+	 * <p>
+	 * <strong>Note:</strong> Some operations on the {@link RDF4JGraph}
+	 * requires the use of try-with-resources to close underlying
+	 * {@link RepositoryConnection}s, including
+	 * {@link RDF4JGraph#iterate()} and 
+	 * {@link RDF4JGraph#stream()}.
+	 * 
 	 * @param repository
 	 *            RDF4J {@link Repository} to connect to.
 	 * @param includeInferred
@@ -487,44 +518,54 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 	}
 
 	@Override
-	public RDF4JBlankNode createBlankNode() throws UnsupportedOperationException {
+	public RDF4JBlankNode createBlankNode() {
 		BNode bnode = getValueFactory().createBNode();
 		return (RDF4JBlankNode) asRDFTerm(bnode);
 	}
 
 	@Override
-	public RDF4JBlankNode createBlankNode(String name) throws UnsupportedOperationException {
+	public RDF4JBlankNode createBlankNode(String name) {
 		BNode bnode = getValueFactory().createBNode(name);
 		return (RDF4JBlankNode) asRDFTerm(bnode);
 	}
-
+	
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * <strong>Note:</strong> Some operations on the {@link RDF4JDataset}
+	 * requires the use of try-with-resources to close underlying
+	 * {@link RepositoryConnection}s, including
+	 * {@link RDF4JDataset#iterate()}, 
+	 * {@link RDF4JDataset#stream()} and {@link RDF4JDataset#getGraphNames()}.
+	 * 
+	 */
 	@Override
-	public Dataset createDataset() {
+	public RDF4JDataset createDataset() {
 		Sail sail = new MemoryStore();
 		Repository repository = new SailRepository(sail);
-		return asRDFTermDataset(repository);
+		return rdf4j.createRepositoryDatasetImpl(repository, true, false);
 	}
 
 	@Override
-	public RDF4JGraph createGraph() throws UnsupportedOperationException {
+	public RDF4JGraph createGraph() {
 		return asRDFTermGraph(new LinkedHashModel());
 	}
 
 	@Override
-	public RDF4JIRI createIRI(String iri) throws IllegalArgumentException, UnsupportedOperationException {
+	public RDF4JIRI createIRI(String iri) throws IllegalArgumentException {
 		return (RDF4JIRI) asRDFTerm(getValueFactory().createIRI(iri));
 	}
 
 	@Override
 	public RDF4JLiteral createLiteral(String lexicalForm)
-			throws IllegalArgumentException, UnsupportedOperationException {
+			throws IllegalArgumentException {
 		org.eclipse.rdf4j.model.Literal lit = getValueFactory().createLiteral(lexicalForm);
 		return (RDF4JLiteral) asRDFTerm(lit);
 	}
 
 	@Override
 	public org.apache.commons.rdf.api.Literal createLiteral(String lexicalForm, org.apache.commons.rdf.api.IRI dataType)
-			throws IllegalArgumentException, UnsupportedOperationException {
+			throws IllegalArgumentException {
 		org.eclipse.rdf4j.model.IRI iri = getValueFactory().createIRI(dataType.getIRIString());
 		org.eclipse.rdf4j.model.Literal lit = getValueFactory().createLiteral(lexicalForm, iri);
 		return (org.apache.commons.rdf.api.Literal) asRDFTerm(lit);
@@ -532,14 +573,14 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 
 	@Override
 	public org.apache.commons.rdf.api.Literal createLiteral(String lexicalForm, String languageTag)
-			throws IllegalArgumentException, UnsupportedOperationException {
+			throws IllegalArgumentException {
 		org.eclipse.rdf4j.model.Literal lit = getValueFactory().createLiteral(lexicalForm, languageTag);
 		return (org.apache.commons.rdf.api.Literal) asRDFTerm(lit);
 	}
 
 	@Override
 	public RDF4JTriple createTriple(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object)
-			throws IllegalArgumentException, UnsupportedOperationException {
+			throws IllegalArgumentException {
 		final Statement statement = getValueFactory().createStatement(
 				(org.eclipse.rdf4j.model.Resource) asValue(subject), (org.eclipse.rdf4j.model.IRI) asValue(predicate),
 				asValue(object));
@@ -548,7 +589,7 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 
 	@Override
 	public Quad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate,
-			RDFTerm object) throws IllegalArgumentException, UnsupportedOperationException {
+			RDFTerm object) throws IllegalArgumentException {
 		final Statement statement = getValueFactory().createStatement(
 				(org.eclipse.rdf4j.model.Resource) asValue(subject), (org.eclipse.rdf4j.model.IRI) asValue(predicate),
 				asValue(object), (org.eclipse.rdf4j.model.Resource) asValue(graphName));
