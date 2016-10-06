@@ -116,7 +116,6 @@ public interface RDF4JGraph extends Graph, RDF4JGraphLike<Triple> {
 	 * <p>
 	 * This can generally achieved using a try-with-resources block, e.g.:
 	 * <pre>
-	 * int subjects;
 	 * try (ClosableIterable&lt;Triple&gt; s : graph.iterate()) {
      *   for (Triple t : triples) {
      *       return t; // OK to terminate for-loop early
@@ -139,7 +138,6 @@ public interface RDF4JGraph extends Graph, RDF4JGraphLike<Triple> {
 	 * <p>
 	 * This can generally achieved using a try-with-resources block, e.g.:
 	 * <pre>
-	 * int subjects;
 	 * try (ClosableIterable&lt;Triple&gt; s : graph.iterate(s,p,o)) {
      *   for (Triple t : triples) {
      *       return t; // OK to terminate for-loop early
@@ -151,5 +149,5 @@ public interface RDF4JGraph extends Graph, RDF4JGraphLike<Triple> {
 	 * when reaching the end of the iteration.
 	 */	
 	@Override
-	Iterable<Triple> iterate(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
+	ClosableIterable<Triple> iterate(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
 }

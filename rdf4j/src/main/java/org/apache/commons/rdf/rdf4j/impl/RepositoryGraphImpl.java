@@ -20,9 +20,9 @@ package org.apache.commons.rdf.rdf4j.impl;
 import java.util.Collections;
 import java.util.ConcurrentModificationException;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
@@ -43,41 +43,7 @@ import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryResult;
 
 class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> implements Graph, RDF4JGraph {
-
-	private final class TripleIteration implements ClosableIterable<Triple> {
-		private RepositoryConnection conn;
-		private RepositoryResult<Statement> results;
-		private TripleIteration(Resource subj, org.eclipse.rdf4j.model.IRI pred, Value obj) {
-			conn = getRepositoryConnection();
-			results = conn.getStatements(subj, pred, obj, contextMask);
-		}
-		
-		@Override
-		public Iterator<Triple> iterator() {
-			return new Iterator<Triple>(){
-				@Override
-				public boolean hasNext() {
-					boolean hasNext = results.hasNext();
-					if (! hasNext) {
-						close();
-					}
-					return hasNext;
-				}
-				@Override
-				public Triple next() {					
-					Statement statement = results.next();
-					return rdf4jTermFactory.asTriple(statement);
-				}
-			};
-		}
-
-		@Override
-		public void close() {
-			results.close();
-			conn.close();
-		}
-	}
-
+	
 	private final Resource[] contextMask;
 
 	RepositoryGraphImpl(Repository repository, boolean handleInitAndShutdown, boolean includeInferred, Resource... contextMask) {
@@ -177,7 +143,8 @@ class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> implements
 		Resource subj = (Resource) rdf4jTermFactory.asValue(subject);
 		org.eclipse.rdf4j.model.IRI pred = (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate);
 		Value obj = rdf4jTermFactory.asValue(object);
-		return new TripleIteration(subj, pred, obj);
+		return new ConvertedStatements<Triple>(this::getRepositoryConnection, rdf4jTermFactory::asTriple, 
+				subj, pred, obj, contextMask);
 	}
 
 	@Override

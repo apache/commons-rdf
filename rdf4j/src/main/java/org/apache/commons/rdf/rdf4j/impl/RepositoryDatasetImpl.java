@@ -17,6 +17,7 @@
  */
 package org.apache.commons.rdf.rdf4j.impl;
 
+import java.util.ConcurrentModificationException;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -26,6 +27,7 @@ import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFTerm;
+import org.apache.commons.rdf.rdf4j.ClosableIterable;
 import org.apache.commons.rdf.rdf4j.RDF4JDataset;
 import org.apache.commons.rdf.rdf4j.RDF4JQuad;
 import org.eclipse.rdf4j.common.iteration.Iterations;
@@ -170,6 +172,23 @@ class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> implements
 
 	}
 
+
+	@Override
+	public ClosableIterable<Quad> iterate() throws ConcurrentModificationException, IllegalStateException {
+		return iterate(null, null, null, null);
+	}
+	
+	@Override
+	public ClosableIterable<Quad> iterate(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
+			throws ConcurrentModificationException, IllegalStateException {
+		Resource[] contexts = asContexts(graphName);
+		Resource subj = (Resource) rdf4jTermFactory.asValue(subject);
+		org.eclipse.rdf4j.model.IRI pred = (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate);
+		Value obj = rdf4jTermFactory.asValue(object);
+		return new ConvertedStatements<Quad>(this::getRepositoryConnection, 
+				rdf4jTermFactory::asQuad, subj, pred, obj, contexts);
+	}	
+	
 	@Override
 	protected RDF4JQuad asTripleLike(Statement s) {
 		return rdf4jTermFactory.asQuad(s);
