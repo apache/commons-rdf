@@ -43,7 +43,10 @@ import org.junit.Test;
  * in <code>Test</code> and provide {@link #createFactory()} which minimally
  * must support {@link RDFTermFactory#createGraph()} and
  * {@link RDFTermFactory#createIRI(String)}, but ideally support all operations.
- *
+ * <p>
+ * This test uses try-with-resources blocks for calls to {@link Graph#stream()}
+ * and {@link Graph#iterate()}.
+ * 
  * @see Graph
  * @see RDFTermFactory
  */
@@ -147,20 +150,32 @@ public abstract class AbstractGraphTest {
         }
 
         // aborted iteration
-        Iterator<Triple> it = graph.iterate().iterator();
-
+        Iterable<Triple> iterate = graph.iterate();
+		Iterator<Triple> it = iterate.iterator();
+        
         assertTrue(it.hasNext());
         it.next();
+        closeIterable(iterate);
+        
 
         // second iteration - should start from fresh and
         // get the same count
         long count = 0;
         Iterable<Triple> iterable = graph.iterate();
-        for (Triple t : iterable) {
+        for (@SuppressWarnings("unused") Triple t : iterable) {
             count++;
         }
         assertEquals(graph.size(), count);
     }
+
+    /**
+     * Special triple closing for RDF4J.
+     */
+	private void closeIterable(Iterable<Triple> iterate) throws Exception {
+        if (iterate instanceof AutoCloseable) {
+        	((AutoCloseable) iterate).close();
+        }
+	}
 
     @Test
     public void iterateFilter() throws Exception {
@@ -174,9 +189,11 @@ public abstract class AbstractGraphTest {
         assertEquals(bob, friends.get(0));
 
         // .. can we iterate over zero hits?
-        for (Triple unexpected : graph.iterate(bob, knows, alice)) {
+        Iterable<Triple> iterate = graph.iterate(bob, knows, alice);
+		for (Triple unexpected : iterate) {
         	fail("Unexpected triple " + unexpected);
         }
+        //closeIterable(iterate);
     }
 
     @Test
@@ -277,15 +294,21 @@ public abstract class AbstractGraphTest {
     @Test
     public void getTriplesQuery() throws Exception {
 
-        long aliceCount = graph.stream(alice, null, null).count();
-        assertTrue(aliceCount > 0);
-        Assume.assumeNotNull(aliceName);
-        assertEquals(3, aliceCount);
+        try (Stream<? extends Triple> stream = graph.stream(alice, null, null)) {
+			long aliceCount = stream.count();
+			assertTrue(aliceCount > 0);
+			Assume.assumeNotNull(aliceName);
+			assertEquals(3, aliceCount);
+        }
 
         Assume.assumeNotNull(bnode1, bnode2, bobName, companyName, secretClubName);
-        assertEquals(4, graph.stream(null, name, null).count());
+        try (Stream<? extends Triple> stream = graph.stream(null, name, null)) {
+        	assertEquals(4, stream.count());
+        }
         Assume.assumeNotNull(bnode1);
-        assertEquals(3, graph.stream(null, member, null).count());
+        try (Stream<? extends Triple> stream = graph.stream(null, member, null)) {
+        	assertEquals(3, stream.count());
+        }
     }
 
     @Test
@@ -313,8 +336,10 @@ public abstract class AbstractGraphTest {
             
             // look up BlankNodes by name
             IRI name = factory.createIRI("http://xmlns.com/foaf/0.1/name");
-            g3.stream(null, name, null).parallel().forEach( t ->
-                whoIsWho.put( t.getObject().ntriplesString(), t.getSubject()));
+            try (Stream<? extends Triple> stream = g3.stream(null, name, null)) {
+            	stream.parallel().forEach( t ->
+                	whoIsWho.put( t.getObject().ntriplesString(), t.getSubject()));
+			}
                         
             assertEquals(4, whoIsWho.size());
             // and contains 4 unique values
@@ -477,29 +502,31 @@ public abstract class AbstractGraphTest {
     public void whyJavaStreamsMightNotTakeOverFromSparql() throws Exception {
         Assume.assumeNotNull(bnode1, bnode2, secretClubName);
         // Find a secret organizations
-        assertEquals(
-                "\"The Secret Club\"",
-                graph.stream(null, knows, null)
-                        // Find One-way "knows"
-                        .filter(t -> !graph.contains(
-                                (BlankNodeOrIRI) t.getObject(), knows,
-                                t.getSubject()))
-                        .map(knowsTriple -> graph
-                                // and those they know, what are they member of?
-                                .stream(
-                                        (BlankNodeOrIRI) knowsTriple
-                                                .getObject(), member, null)
-                                        // keep those which first-guy is a member of
-                                .filter(memberTriple -> graph.contains(
-                                        knowsTriple.getSubject(), member,
-                                        // First hit is good enough
-                                        memberTriple.getObject())).findFirst()
-                                .get().getObject())
-                                // then look up the name of that org
-                        .map(org -> graph
-                                .stream((BlankNodeOrIRI) org, name, null)
-                                .findFirst().get().getObject().ntriplesString())
-                        .findFirst().get());
-
+		try (Stream<? extends Triple> stream = graph.stream(null, knows, null)) {
+			assertEquals("\"The Secret Club\"",
+					// Find One-way "knows"
+				stream.filter(t -> !graph.contains((BlankNodeOrIRI) t.getObject(), knows, t.getSubject()))
+					.map(knowsTriple -> {
+						try (Stream<? extends Triple> memberOf = graph
+								// and those they know, what are they
+								// member of?
+								.stream((BlankNodeOrIRI) knowsTriple.getObject(), member, null)) {
+							return memberOf
+									// keep those which first-guy is a
+									// member of
+									.filter(memberTriple -> graph.contains(knowsTriple.getSubject(), member,
+											// First hit is good enough
+											memberTriple.getObject()))
+									.findFirst().get().getObject();
+						}
+					})
+					// then look up the name of that org
+					.map(org -> {
+						try (Stream<? extends Triple> orgName = graph.stream((BlankNodeOrIRI) org, name,
+								null)) {
+							return orgName.findFirst().get().getObject().ntriplesString();
+						}
+					}).findFirst().get());
+		}
     }
 }
