@@ -36,8 +36,10 @@ public interface JenaDataset extends org.apache.commons.rdf.api.Dataset {
 	public DatasetGraph asJenaDatasetGraph();
 	
 	/**
-	 * Return a union graph view of this dataset. <p The <em>union graph</em>
-	 * contains triples in any graph (including the default graph).
+	 * Return a union graph view of this dataset.
+	 * <p>
+	 * The <em>union graph</em> contains triples in any graph (including the
+	 * default graph).
 	 * <p>
 	 * Changes in the union graph are reflected in the Commons RDF dataset and
 	 * vice versa. Triples added to the graph are added to the default graph.

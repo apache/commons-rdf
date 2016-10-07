@@ -76,10 +76,13 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	/**
 	 * Create a JenaRDFTermFactory.
 	 * <p>
-	 * This constructor will use the specified {@link UUID} as a salt 
-	 * for the purposes of {@link BlankNode} identity.
+	 * This constructor will use the specified {@link UUID} as a salt for
+	 * the purposes of {@link BlankNode} identity, and should only be used in
+	 * cases where predictable and consistent
+	 * {@link BlankNode#uniqueReference()} are important.
 	 * 
-	 * @param salt {@link UUID} to use as salt
+	 * @param salt
+	 *            {@link UUID} to use as salt for {@link BlankNode} equality
 	 */	
 	public JenaRDFTermFactory(UUID salt) {
 		this.salt = salt;
@@ -143,13 +146,10 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * <p>
 	 * The <em>generalized triple</em> supports any {@link RDFTerm} as its
 	 * {@link TripleLike#getSubject()} {@link TripleLike#getPredicate()} or
-	 * {@link TripleLike#getObject()}, including {@link JenaAny} or
-	 * {@link JenaVariable}.
+	 * {@link TripleLike#getObject()}.
 	 *
 	 * @see #createTriple(BlankNodeOrIRI, IRI, RDFTerm)
 	 * @see #createGeneralizedQuad(RDFTerm, RDFTerm, RDFTerm, RDFTerm)
-	 * @see #createAnyVariable()
-	 * @see #createVariable(String)
 	 * 
 	 * @param subject
 	 *            The subject of the statement
@@ -171,13 +171,10 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * <p>
 	 * The <em>generalized quad</em> supports any {@link RDFTerm} as its
 	 * {@link QuadLike#getSubject()} {@link QuadLike#getPredicate()},
-	 * {@link QuadLike#getObject()} or {@link QuadLike#getObject()} including
-	 * {@link JenaAny} or {@link JenaVariable}.
+	 * {@link QuadLike#getObject()} or {@link QuadLike#getObject()}.
 	 * 
 	 * @see #createQuad(BlankNodeOrIRI, BlankNodeOrIRI, IRI, RDFTerm)
 	 * @see #createGeneralizedTriple(RDFTerm, RDFTerm, RDFTerm)
-	 * @see #createAnyVariable()
-	 * @see #createVariable(String)
 	 * 
 	 * @param subject
 	 *            The subject of the statement
@@ -212,8 +209,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 *            <code>true</code>.
 	 * @return Adapted {@link JenaRDFTerm}
 	 * @throws ConversionException If the {@link Node} can't be represented as an {@link RDFTerm}, e.g.
-	 *             if the node is not {@link Node#isConcrete()},
-	 *             is {@link Node#isVariable()}, or is {@link Node.ANY}
+	 *             if the node is not concrete or represents a variable in Jena.
 	 */
 	public JenaRDFTerm fromJena(Node node) throws ConversionException {
 		return JenaFactory.fromJena(node, getSalt());
@@ -233,9 +229,9 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * @param node
 	 *            The Jena Node to adapt. It's {@link Node#isConcrete()} must be
 	 *            <code>true</code>.
-	 * @return Adapted {@link RDFTerm}            
-	 * @throws ConversionException
-	 *             if the node is not concrete.
+	 * @return Adapted {@link RDFTerm}
+	 * @throws ConversionException If the {@link Node} can't be represented as an {@link RDFTerm}, e.g.
+	 *             if the node is not concrete or represents a variable in Jena.
 	 */
 	public static RDFTerm fromJena(RDFTermFactory factory, Node node) {
 		if (node == null) {
@@ -288,8 +284,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * Adapt a generalized Jena {@link org.apache.jena.graph.Triple} to a CommonsRDF {@link TripleLike}.
 	 * <p>
 	 * The generalized triple supports any {@link RDFTerm} as its {@link TripleLike#getSubject()}
-	 * {@link TripleLike#getPredicate()} or {@link TripleLike#getObject()}, including 
-	 * the extensions {@link JenaAny} and {@link JenaVariable}.
+	 * {@link TripleLike#getPredicate()} or {@link TripleLike#getObject()}.
 	 * <p>
 	 * If the Jena triple contains any {@link Node#isBlank()}, then any corresponding
 	 * {@link BlankNode} will use a {@link UUID} salt from this
@@ -318,9 +313,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * {@link QuadLike#getGraphName()}, 
 	 * {@link QuadLike#getSubject()}
 	 * {@link QuadLike#getPredicate()} or 
-	 * {@link QuadLike#getObject()}, including 
-	 * the extensions 
-	 * {@link JenaAny} and {@link JenaVariable}. 
+	 * {@link QuadLike#getObject()}. 
 	 * <p>
 	 * If the Jena quad contains any {@link Node#isBlank()}, then any corresponding
 	 * {@link BlankNode} will use a {@link UUID} salt from this
@@ -721,10 +714,8 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * {@link BlankNode#uniqueReference()} for details.
 	 * <p>
 	 * This salt can be used with the constructor 
-	 * {@link JenaRDFTermFactory#JenaRDFTermFactory(UUID)} or
-	 * methods like {@link #fromJena(Node, UUID)} and 
-	 * {@link #fromJena(org.apache.jena.graph.Triple, UUID)}
-	 * to ensure consistent {@link BlankNode}s. 
+	 * {@link JenaRDFTermFactory#JenaRDFTermFactory(UUID)}
+	 * if consistent or reproducible {@link BlankNode}s are desirable. 
 	 * 
 	 * @return The {@link UUID} used as salt
 	 */
