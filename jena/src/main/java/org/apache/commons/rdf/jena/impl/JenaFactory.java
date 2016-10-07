@@ -110,10 +110,6 @@ public class JenaFactory {
 		if (! node.isConcrete()) {
 			throw new ConversionException("Node is not a concrete RDF Term: " + node); 
 		}
-		return fromJenaGeneralized(node, salt);		
-	}
-
-	public static JenaRDFTerm fromJenaGeneralized(Node node, UUID salt) {
 		if (node.isURI()) {
 			return new JenaIRIImpl(node);
 		}
