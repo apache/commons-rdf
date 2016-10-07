@@ -21,7 +21,15 @@ package org.apache.commons.rdf.jena;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.jena.graph.Node;
 
-/** Access the Jena node backing this object */
+/**
+ * A Jena-backed {@link RDFTerm}.
+ * <p>
+ * The underlying Jena {@link Node} can be retrieved with {@link #asJenaNode()}.
+ * 
+ * @see JenaIRI
+ * @see JenaLiteral
+ * @see JenaBlankNode
+ */
 public interface JenaRDFTerm extends RDFTerm {
 	public Node asJenaNode();
 }

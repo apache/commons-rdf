@@ -29,10 +29,11 @@ import org.apache.commons.rdf.api.Triple;
  * JSON-LD.
  * <p>
  * Note that unlike {@link Triple}, this type does not have fixed semantics for
- * {@link #equals(Object)} or {@link #hashCode()} beyond object identity.
+ * {@link Object#equals(Object)} or {@link Object#hashCode()} beyond object
+ * identity.
  * 
+ * @see JenaGeneralizedQuadLike
  */
 public interface JenaGeneralizedTripleLike
-		extends JenaTripleLike<RDFTerm, RDFTerm, RDFTerm> {
-	
+		extends JenaTripleLike<RDFTerm, RDFTerm, RDFTerm> {	
 }

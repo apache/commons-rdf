@@ -18,10 +18,16 @@
 
 package org.apache.commons.rdf.jena;
 
+import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.Graph;
 import org.apache.jena.sparql.core.DatasetGraph;
 
-/** Access the Jena graph backing this object */
+/**
+ * A Jena-backed {@link Dataset}.
+ * <p>
+ * The underlying Jena {@link DatasetGraph} can be accessed with
+ * {@link #asJenaDatasetGraph()}.
+ */
 public interface JenaDataset extends org.apache.commons.rdf.api.Dataset {
 	
 

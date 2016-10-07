@@ -22,6 +22,7 @@ import org.apache.jena.shared.JenaException;
 
 /**
  * Exception thrown when a problem arises across the Jena-CommonRDF boundary.
+ * <p>
  * This should not happen in well-formed RDF data but, for example, Jena triples
  * allow
  * <a href="http://www.w3.org/TR/rdf11-concepts/#section-generalized-rdf" >
@@ -29,6 +30,8 @@ import org.apache.jena.shared.JenaException;
  */
 
 public class ConversionException extends JenaException {
+	private static final long serialVersionUID = -898179977312382568L;
+
 	public ConversionException() {
 		super();
 	}

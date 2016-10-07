@@ -15,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.apache.commons.rdf.jena;
 
 import org.apache.commons.rdf.api.Literal;
@@ -23,6 +22,8 @@ import org.apache.jena.graph.Node;
 
 /**
  * A Jena-backed {@link Literal}
+ *
+ * The underlying Jena {@link Node} can be accessed from {@link #asJenaNode()}.
  * 
  * @see Node#isLiteral()
  */

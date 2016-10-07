@@ -19,9 +19,22 @@
 package org.apache.commons.rdf.jena;
 
 import org.apache.commons.rdf.api.RDFTerm;
+import org.apache.commons.rdf.api.TripleLike;
 import org.apache.jena.graph.Triple;
 
-/** Access the Jena triple backing this object */
+/**
+ * A {@link TripleLike} wrapper of a Jena {@link Triple}.
+ * <p>
+ * This is a marker interface common to its specializations {@link JenaTriple},
+ * {@link JenaGeneralizedTripleLike}, {@link JenaQuad} and
+ * {@link JenaGeneralizedQuadLike}.
+ * 
+ * @see JenaTriple
+ * @see JenaGeneralizedTripleLike
+ * @see JenaQuad
+ * @see JenaGeneralizedQuadLike
+ * 
+ */
 public interface JenaTripleLike<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm> 
 	extends org.apache.commons.rdf.api.TripleLike<S,P,O> {
 

@@ -15,14 +15,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.apache.commons.rdf.jena;
 
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDFTerm;
 
-/** Access the Jena quad backing this object */
+/** 
+ * A Jena-backed {@link org.apache.commons.rdf.api.Quad}.
+ * <p>
+ * The underlying Jena {@link org.apache.jena.sparql.core.Quad}
+ * can be accessed with {@link #asJenaQuad()}.
+ */
 public interface JenaQuad extends org.apache.commons.rdf.api.Quad, 
 	JenaQuadLike<BlankNodeOrIRI,IRI,RDFTerm,BlankNodeOrIRI> {	
 }

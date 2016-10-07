@@ -15,13 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.apache.commons.rdf.jena;
 
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDFTerm;
 
-/** Access the Jena triple backing this object */
+/** 
+ * A Jena-backed {@link org.apache.commons.rdf.api.Triple}.
+ * <p>
+ * The underlying Jena {@link org.apache.jena.graph.Triple}
+ * can be accessed with {@link #asJenaTriple()}.
+ */
 public interface JenaTriple extends org.apache.commons.rdf.api.Triple, JenaTripleLike<BlankNodeOrIRI, IRI, RDFTerm> {
 }

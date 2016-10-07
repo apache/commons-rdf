@@ -22,7 +22,16 @@ import org.apache.commons.rdf.api.QuadLike;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.jena.sparql.core.Quad;
 
-/** Access the Jena quad backing this object */
+/**
+ * A {@link QuadLike} wrapper of a Jena {@link Quad}.
+ * <p>
+ * This is a marker interface common to its specializations {@link JenaQuad} and
+ * {@link JenaGeneralizedQuadLike}.
+ * 
+ * @see JenaQuad
+ * @see JenaGeneralizedQuadLike
+ * 
+ */
 public interface JenaQuadLike<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm, G extends RDFTerm> 
 	extends JenaTripleLike<S,P,O>, QuadLike<S,P,O,G> {
 

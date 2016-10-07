@@ -29,9 +29,10 @@ import org.apache.commons.rdf.api.RDFTerm;
  * some serializations like JSON-LD.
  * <p>
  * Note that unlike {@link Quad}, this type does not have fixed semantics for
- * {@link #equals(Object)} or {@link #hashCode()} beyond object identity.
+ * {@link Object#equals(Object)} or {@link Object#hashCode()} beyond object
+ * identity.
  * 
+ * @see JenaGeneralizedTripleLike
  */
 public interface JenaGeneralizedQuadLike extends JenaQuadLike<RDFTerm, RDFTerm, RDFTerm, RDFTerm> {
-
 }
