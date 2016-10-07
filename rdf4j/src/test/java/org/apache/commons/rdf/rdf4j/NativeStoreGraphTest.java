@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Collections;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.rdf.api.AbstractGraphTest;
 import org.apache.commons.rdf.api.BlankNodeOrIRI;

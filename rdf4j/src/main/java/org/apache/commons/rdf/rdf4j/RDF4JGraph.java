@@ -65,9 +65,10 @@ public interface RDF4JGraph extends Graph, RDF4JGraphLike<Triple> {
 	 * Note that the context mask itself cannot be <code>null</code>.
 	 * <p>
 	 * The returned set is an immutable copy; to specify a different mask, use
-	 * {@link RDF4JTermFactory#asRDFTermGraph(Repository, Set, org.apache.commons.rdf.rdf4j.RDF4JTermFactory.Option...)
+	 * {@link RDF4JTermFactory#asRDFTermGraph(Repository, Set, org.apache.commons.rdf.rdf4j.RDF4JTermFactory.Option...)}
 	 *
-	 * @return The context mask as a set of {@link BlankNodeOrIRI}s, which may contain the value null
+	 * @return The context mask as a set of {@link BlankNodeOrIRI} graph names, which
+	 *         may contain the value <code>null</code>.
 	 */
 	public Set<RDF4JBlankNodeOrIRI<Resource>> getContextMask();
 	
