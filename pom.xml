@@ -218,6 +218,7 @@
     <modules>
         <module>api</module>
         <module>simple</module>
+        <module>rdf4j</module>
         <module>jena</module>
         <module>jsonld-java</module>
     </modules>
