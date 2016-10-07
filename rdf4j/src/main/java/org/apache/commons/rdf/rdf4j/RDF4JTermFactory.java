@@ -119,45 +119,6 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 		 */
 		handleInitAndShutdown
 	}
-	
-	/**
-	 * Adapt a RDF4J {@link Value} as a Commons RDF {@link RDFTerm}.
-	 * <p>
-	 * The value will be of the same kind as the term, e.g. a
-	 * {@link org.eclipse.rdf4j.model.BNode} is converted to a
-	 * {@link org.apache.commons.rdf.api.BlankNode}, a
-	 * {@link org.eclipse.rdf4j.model.IRI} is converted to a
-	 * {@link org.apache.commons.rdf.api.IRI} and a
-	 * {@link org.eclipse.rdf4j.model.Literal}. is converted to a
-	 * {@link org.apache.commons.rdf.api.Literal}
-	 *
-	 * @param value
-	 *            The RDF4J {@link Value} to convert.
-	 * @param salt
-	 *            A {@link UUID} salt to use for uniquely mapping any
-	 *            {@link BNode}s. The salt should typically be the same for
-	 *            multiple statements in the same {@link Repository} or
-	 *            {@link Model} to ensure {@link BlankNode#equals(Object)} and
-	 *            {@link BlankNode#uniqueReference()} works as intended.
-	 * @param <T>
-	 *            The subclass of {@link Value}, e.g. {@link BNode}
-	 * @return A {@link RDFTerm} that corresponds to the RDF4J value
-	 * @throws IllegalArgumentException
-	 *             if the value is not a BNode, Literal or IRI
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T extends Value> RDF4JTerm<T> asRDFTerm(final T value, UUID salt) {
-		if (value instanceof BNode) {
-			return (RDF4JTerm<T>) rdf4j.createBlankNodeImpl((BNode) value, salt);
-		}
-		if (value instanceof org.eclipse.rdf4j.model.Literal) {
-			return (RDF4JTerm<T>) rdf4j.createLiteralImpl((org.eclipse.rdf4j.model.Literal) value);
-		}
-		if (value instanceof org.eclipse.rdf4j.model.IRI) {
-			return (RDF4JTerm<T>) rdf4j.createIRIImpl((org.eclipse.rdf4j.model.IRI) value);
-		}
-		throw new IllegalArgumentException("Value is not a BNode, Literal or IRI: " + value.getClass());
-	}
 
 	private final UUID salt;
 
@@ -273,6 +234,45 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 	public <T extends Value> RDF4JTerm<T> asRDFTerm(T value) {
 		return asRDFTerm(value, salt);
 	}
+	
+	/**
+	 * Adapt a RDF4J {@link Value} as a Commons RDF {@link RDFTerm}.
+	 * <p>
+	 * The value will be of the same kind as the term, e.g. a
+	 * {@link org.eclipse.rdf4j.model.BNode} is converted to a
+	 * {@link org.apache.commons.rdf.api.BlankNode}, a
+	 * {@link org.eclipse.rdf4j.model.IRI} is converted to a
+	 * {@link org.apache.commons.rdf.api.IRI} and a
+	 * {@link org.eclipse.rdf4j.model.Literal}. is converted to a
+	 * {@link org.apache.commons.rdf.api.Literal}
+	 *
+	 * @param value
+	 *            The RDF4J {@link Value} to convert.
+	 * @param salt
+	 *            A {@link UUID} salt to use for uniquely mapping any
+	 *            {@link BNode}s. The salt should typically be the same for
+	 *            multiple statements in the same {@link Repository} or
+	 *            {@link Model} to ensure {@link BlankNode#equals(Object)} and
+	 *            {@link BlankNode#uniqueReference()} works as intended.
+	 * @param <T>
+	 *            The subclass of {@link Value}, e.g. {@link BNode}
+	 * @return A {@link RDFTerm} that corresponds to the RDF4J value
+	 * @throws IllegalArgumentException
+	 *             if the value is not a BNode, Literal or IRI
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T extends Value> RDF4JTerm<T> asRDFTerm(final T value, UUID salt) {
+		if (value instanceof BNode) {
+			return (RDF4JTerm<T>) rdf4j.createBlankNodeImpl((BNode) value, salt);
+		}
+		if (value instanceof org.eclipse.rdf4j.model.Literal) {
+			return (RDF4JTerm<T>) rdf4j.createLiteralImpl((org.eclipse.rdf4j.model.Literal) value);
+		}
+		if (value instanceof org.eclipse.rdf4j.model.IRI) {
+			return (RDF4JTerm<T>) rdf4j.createIRIImpl((org.eclipse.rdf4j.model.IRI) value);
+		}
+		throw new IllegalArgumentException("Value is not a BNode, Literal or IRI: " + value.getClass());
+	}	
 
 	/**
 	 * Adapt an RDF4J {@link Repository} as a Commons RDF {@link Dataset}.
@@ -601,5 +601,7 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 		opts.addAll(Arrays.asList(options));
 		return opts;
 	}
+	
+	
 	
 }
