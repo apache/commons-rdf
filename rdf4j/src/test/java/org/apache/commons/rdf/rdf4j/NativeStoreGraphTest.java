@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Collections;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.rdf.api.AbstractGraphTest;
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
@@ -36,6 +37,7 @@ import org.eclipse.rdf4j.sail.nativerdf.NativeStore;
 import org.junit.After;
 import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
+import org.junit.rules.Timeout;
 
 
 /**
@@ -90,7 +92,6 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
 	private SailRepository repository;
 	
 	public void createRepository() throws IOException {
-		System.out.println("Oh");
 		Sail sail = new NativeStore(tempDir.newFolder());
 		repository = new SailRepository(sail);
 		repository.initialize();
@@ -107,13 +108,24 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
 		return repository;
 	}
 	
+	@Rule
+	/**
+	 * A timeout of more than 15 seconds pr test indicates typically that
+	 * shutdownAndDelete failed.
+	 */
+	public Timeout globalTimeout = Timeout.seconds(15);
+	
 	@After
 	public void shutdownAndDelete() throws IOException {
 		// must shutdown before we delete
 		if (repository != null) {
-			System.out.println("Shutting down rdf4j repository " + repository);
+			System.out.print("Shutting down rdf4j repository " + repository + "...");
+			// NOTE: 
+			// If this takes about 20 seconds it means the code forgot to close a
+			// RepositoryConnection or RespositoryResult
+			// e.g. missing a try-with-resources block
 			repository.shutDown();
-			System.out.println("rdf4j repository shut down.");
+			System.out.println("OK");
 		}
 	}
 	
