@@ -53,7 +53,10 @@
         <commons.scmPubCheckoutDirectory>${project.build.directory}/site-content</commons.scmPubCheckoutDirectory>
         <commons.javadoc.java.link>https://docs.oracle.com/javase/8/docs/api/</commons.javadoc.java.link>
         <!-- upgrade from 0.8.0 -->
-         <commons.japicmp.version>0.9.0</commons.japicmp.version>
+         <commons.japicmp.version>0.9.1</commons.japicmp.version>
+        <ver.jena>3.1.0</ver.jena>
+        <dexx.collection.version>0.6</dexx.collection.version>
+        <servicemix.xerces.version>2.11.0_1</servicemix.xerces.version>
     </properties>
 
     <scm>
@@ -216,6 +219,7 @@
         <module>api</module>
         <module>simple</module>
         <module>rdf4j</module>
+        <module>jena</module>
         <module>jsonld-java</module>
     </modules>
 
@@ -284,6 +288,12 @@
                 </executions>
                 <configuration>
                     <additionalparam>-Xdoclint:all</additionalparam>
+					<links>
+					<link>${commons.javadoc.java.link}</link>
+					<link>https://jena.apache.org/documentation/javadoc/jena/</link>
+					<link>https://jena.apache.org/documentation/javadoc/arq/</link>
+					<link>http://rdf4j.org/javadoc/2.0/</link>
+					</links>                    
                 </configuration>
             </plugin>
             <!--
