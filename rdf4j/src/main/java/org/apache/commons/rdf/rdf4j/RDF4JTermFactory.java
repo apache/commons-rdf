@@ -17,6 +17,8 @@
  */
 package org.apache.commons.rdf.rdf4j;
 
+import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -102,6 +104,19 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 	private static InternalRDF4JFactory rdf4j = new InternalRDF4JFactory() {
 	};
 
+	public enum Option { 
+		/** 
+		 * The Graph/Dataset should include any inferred statements 
+		 */
+		includeInferred,
+		/**
+		 * The graph/dataset should handle {@link Repository#initialize()} (if
+		 * needed) and {@link Repository#shutDown()} on {@link Graph#close()} /
+		 * {@link Dataset#close()}.
+		 */
+		handleInitAndShutdown
+	}
+	
 	/**
 	 * Adapt a RDF4J {@link Value} as a Commons RDF {@link RDFTerm}.
 	 * <p>
@@ -266,34 +281,18 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 	 * {@link RepositoryConnection}s, including
 	 * {@link RDF4JDataset#iterate()}, 
 	 * {@link RDF4JDataset#stream()} and {@link RDF4JDataset#getGraphNames()}.
-	 * 
-	 * @param repository
-	 *            RDF4J {@link Repository} to connect to.
-	 * @return A {@link Dataset} backed by the RDF4J repository.
-	 */
-	public RDF4JDataset asRDFTermDataset(Repository repository) {
-		return rdf4j.createRepositoryDatasetImpl(repository, false, false);
-	}
-
-	/**
-	 * Adapt an RDF4J {@link Repository} as a Commons RDF {@link Dataset}.
-	 * <p>
-	 * Changes to the dataset are reflected in the repository, and vice versa.
-	 * <p>
-	 * <strong>Note:</strong> Some operations on the {@link RDF4JDataset}
-	 * requires the use of try-with-resources to close underlying
-	 * {@link RepositoryConnection}s, including
-	 * {@link RDF4JDataset#iterate()}, 
-	 * {@link RDF4JDataset#stream()} and {@link RDF4JDataset#getGraphNames()}.
 	 *
 	 * @param repository
 	 *            RDF4J {@link Repository} to connect to.
-	 * @param includeInferred
-	 *            If true, any inferred quads are included in the dataset
+	 * @param options
+	 *            Zero or more {@link Option}
 	 * @return A {@link Dataset} backed by the RDF4J repository.
 	 */
-	public RDF4JDataset asRDFTermDataset(Repository repository, boolean includeInferred) {
-		return rdf4j.createRepositoryDatasetImpl(repository, false, includeInferred);
+	public RDF4JDataset asRDFTermDataset(Repository repository, Option... options) {
+		EnumSet<Option> opts = optionSet(options);
+		return rdf4j.createRepositoryDatasetImpl(repository, 
+				opts.contains(Option.handleInitAndShutdown), 
+				opts.contains(Option.includeInferred));
 	}
 
 	/**
@@ -325,10 +324,16 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 	 *
 	 * @param repository
 	 *            RDF4J {@link Repository} to connect to.
+	 * @param options
+	 *            Zero or more {@link Option}
 	 * @return A {@link Graph} backed by the RDF4J repository.
 	 */
-	public RDF4JGraph asRDFTermGraph(Repository repository) {
-		return rdf4j.createRepositoryGraphImpl(repository, false, false);
+	public RDF4JGraph asRDFTermGraph(Repository repository, Option... options) {
+		EnumSet<Option> opts = optionSet(options);
+		return rdf4j.createRepositoryGraphImpl(repository, 
+				opts.contains(Option.handleInitAndShutdown), 
+				opts.contains(Option.includeInferred), 
+				new Resource[0]);
 	}
 
 	/**
@@ -368,36 +373,19 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 	 *            names to use as a context. The set may include the value
 	 *            <code>null</code> to indicate the default graph. The empty set
 	 *            indicates any context, e.g. the <em>union graph</em>.
-	 * 
+	 * @param option
+	 *            Zero or more {@link Option}s
 	 * @return A {@link Graph} backed by the RDF4J repository.
 	 */
-	public RDF4JGraph asRDFTermGraph(Repository repository, Set<? extends BlankNodeOrIRI> contexts) {
+	public RDF4JGraph asRDFTermGraph(Repository repository, Set<? extends BlankNodeOrIRI> contexts,
+			Option... option) {
+		EnumSet<Option> opts = optionSet(option);
 		/** NOTE: asValue() deliberately CAN handle <code>null</code> */
 		Resource[] resources = contexts.stream().map(g -> (Resource) asValue(g)).toArray(Resource[]::new);
-		return rdf4j.createRepositoryGraphImpl(Objects.requireNonNull(repository), false, true, resources);
-	}
-
-	/**
-	 * Adapt an RDF4J {@link Repository} as a Commons RDF {@link Graph}.
-	 * <p>
-	 * The graph will include triples in any contexts (e.g. the union graph).
-	 * <p>
-	 * Changes to the graph are reflected in the repository, and vice versa.
-	 * <p>
-	 * <strong>Note:</strong> Some operations on the {@link RDF4JGraph}
-	 * requires the use of try-with-resources to close underlying
-	 * {@link RepositoryConnection}s, including
-	 * {@link RDF4JGraph#iterate()} and 
-	 * {@link RDF4JGraph#stream()}.
-	 * 
-	 * @param repository
-	 *            RDF4J {@link Repository} to connect to.
-	 * @param includeInferred
-	 *            If true, any inferred triples are included in the graph
-	 * @return A {@link Graph} backed by the RDF4J repository.
-	 */
-	public RDF4JGraph asRDFTermGraph(Repository repository, boolean includeInferred) {
-		return rdf4j.createRepositoryGraphImpl(repository, false, includeInferred);
+		return rdf4j.createRepositoryGraphImpl(Objects.requireNonNull(repository), 
+				opts.contains(Option.handleInitAndShutdown),
+				opts.contains(Option.includeInferred),
+				resources);
 	}
 
 	/**
@@ -598,4 +586,10 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 		return valueFactory;
 	}
 
+	private EnumSet<Option> optionSet(Option... options) {
+		EnumSet<Option> opts = EnumSet.noneOf(Option.class);
+		opts.addAll(Arrays.asList(options));
+		return opts;
+	}
+	
 }
