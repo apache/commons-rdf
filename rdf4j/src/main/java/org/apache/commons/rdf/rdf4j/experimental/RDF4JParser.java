@@ -210,7 +210,7 @@ public class RDF4JParser extends AbstractRDFParser<RDF4JParser> implements RDFPa
 			if (graph.asRepository().isPresent()) {
 				RDFInserter inserter = new RDFInserter(graph.asRepository().get().getConnection());
 				if (! graph.getContextMask().isEmpty()) {
-					Stream<RDF4JBlankNodeOrIRI<Resource>> b = graph.getContextMask().stream();
+					Stream<RDF4JBlankNodeOrIRI> b = graph.getContextMask().stream();
 					Stream<Resource> c = b.map(RDF4JBlankNodeOrIRI::asValue);
 					Resource[] contexts = c.toArray(Resource[]::new);
 					inserter.enforceContext(contexts);

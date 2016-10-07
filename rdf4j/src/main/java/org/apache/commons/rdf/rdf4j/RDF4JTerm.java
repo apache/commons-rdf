@@ -27,12 +27,12 @@ import org.eclipse.rdf4j.model.Value;
  * Marker interface for RDF4J implementations of RDFTerm.
  *  
  */
-public interface RDF4JTerm<T extends Value> extends RDFTerm {
+public interface RDF4JTerm extends RDFTerm {
 	
 	/**
 	 * Return the RDF4J {@link Value} that this RDFTerm represents.
 	 * 
 	 * @return The wrapped {@link Value} (e.g. a {@link Literal}, {@link IRI} or {@link BNode}.
 	 */
-	public T asValue();
+	public Value asValue();
 }

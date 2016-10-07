@@ -29,5 +29,9 @@ import org.eclipse.rdf4j.model.BNode;
  * 
  * @see RDF4JTermFactory#createBlankNode() 
  */
-public interface RDF4JBlankNode extends RDF4JBlankNodeOrIRI<BNode>, BlankNode {
+public interface RDF4JBlankNode extends RDF4JBlankNodeOrIRI, BlankNode {
+	
+	@Override
+	public BNode asValue();
+	
 }

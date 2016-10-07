@@ -231,7 +231,7 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 	 * @throws IllegalArgumentException
 	 *             if the value is not a BNode, Literal or IRI
 	 */
-	public <T extends Value> RDF4JTerm<T> asRDFTerm(T value) {
+	public RDF4JTerm asRDFTerm(Value value) {
 		return asRDFTerm(value, salt);
 	}
 	
@@ -260,16 +260,15 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 	 * @throws IllegalArgumentException
 	 *             if the value is not a BNode, Literal or IRI
 	 */
-	@SuppressWarnings("unchecked")
-	public static <T extends Value> RDF4JTerm<T> asRDFTerm(final T value, UUID salt) {
+	public static RDF4JTerm asRDFTerm(final Value value, UUID salt) {
 		if (value instanceof BNode) {
-			return (RDF4JTerm<T>) rdf4j.createBlankNodeImpl((BNode) value, salt);
+			return rdf4j.createBlankNodeImpl((BNode) value, salt);
 		}
 		if (value instanceof org.eclipse.rdf4j.model.Literal) {
-			return (RDF4JTerm<T>) rdf4j.createLiteralImpl((org.eclipse.rdf4j.model.Literal) value);
+			return rdf4j.createLiteralImpl((org.eclipse.rdf4j.model.Literal) value);
 		}
 		if (value instanceof org.eclipse.rdf4j.model.IRI) {
-			return (RDF4JTerm<T>) rdf4j.createIRIImpl((org.eclipse.rdf4j.model.IRI) value);
+			return rdf4j.createIRIImpl((org.eclipse.rdf4j.model.IRI) value);
 		}
 		throw new IllegalArgumentException("Value is not a BNode, Literal or IRI: " + value.getClass());
 	}	
@@ -486,7 +485,7 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 		if (term instanceof RDF4JTerm) {
 			// One of our own - avoid converting again.
 			// (This is crucial to avoid double-escaping in BlankNode)
-			return ((RDF4JTerm<?>) term).asValue();
+			return ((RDF4JTerm) term).asValue();
 		}
 		if (term instanceof org.apache.commons.rdf.api.IRI) {
 			org.apache.commons.rdf.api.IRI iri = (org.apache.commons.rdf.api.IRI) term;

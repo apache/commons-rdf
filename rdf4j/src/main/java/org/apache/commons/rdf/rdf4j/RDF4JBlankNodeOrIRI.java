@@ -29,6 +29,9 @@ import org.eclipse.rdf4j.model.Resource;
  * retrieved with {@link #asValue()}.
  * 
  */
-public interface RDF4JBlankNodeOrIRI<T extends Resource> 
-	extends RDF4JTerm<T>, BlankNodeOrIRI {
+public interface RDF4JBlankNodeOrIRI extends RDF4JTerm, BlankNodeOrIRI {
+
+	@Override
+	public Resource asValue();
+	
 }

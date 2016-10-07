@@ -26,5 +26,5 @@ package org.apache.commons.rdf.rdf4j;
  * 
  * @see RDF4JTermFactory#createLiteral(String)
  */
-public interface RDF4JLiteral extends RDF4JTerm<org.eclipse.rdf4j.model.Literal>, org.apache.commons.rdf.api.Literal {
+public interface RDF4JLiteral extends RDF4JTerm, org.apache.commons.rdf.api.Literal {
 }

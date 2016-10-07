@@ -127,7 +127,7 @@ final class ModelGraphImpl implements RDF4JGraph {
 	}
 	
 	@Override
-	public Set<RDF4JBlankNodeOrIRI<Resource>> getContextMask() {
+	public Set<RDF4JBlankNodeOrIRI> getContextMask() {
 		// ModelGraph always do the unionGraph
 		return Collections.emptySet();
 		// TODO: Should we support contextMask like in RepositoryGraphImpl?
