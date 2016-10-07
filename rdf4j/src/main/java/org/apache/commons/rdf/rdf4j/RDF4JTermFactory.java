@@ -337,8 +337,6 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 	 * The graph will include triples in any contexts (e.g. the union graph).
 	 * <p>
 	 * Changes to the graph are reflected in the repository, and vice versa.
-	 * Triples added to the graph are added to the default context, e.g. an
-	 * RDF4J context of new <code>Resource[1]{null})</code>.
 	 *
 	 * @param repository
 	 *            RDF4J {@link Repository} to connect to.
