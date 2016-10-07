@@ -333,7 +333,7 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 		return rdf4j.createRepositoryGraphImpl(repository, 
 				opts.contains(Option.handleInitAndShutdown), 
 				opts.contains(Option.includeInferred), 
-				new Resource[0]);
+				new Resource[]{null}); // default graph
 	}
 
 	/**
@@ -345,10 +345,17 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 	 *
 	 * @param repository
 	 *            RDF4J {@link Repository} to connect to.
+	 * @param options
+	 *            Zero or more {@link Option}
 	 * @return A union {@link Graph} backed by the RDF4J repository.
 	 */
-	public RDF4JGraph asRDFTermGraphUnion(Repository repository) {
-		return rdf4j.createRepositoryGraphImpl(repository, false, true);
+	public RDF4JGraph asRDFTermGraphUnion(Repository repository, Option... options) {
+		EnumSet<Option> opts = optionSet(options);
+		return rdf4j.createRepositoryGraphImpl(repository, 
+				opts.contains(Option.handleInitAndShutdown), 
+				opts.contains(Option.includeInferred),
+				new Resource[]{}); // union graph 
+		
 	}
 
 	/**
