@@ -212,8 +212,9 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 *            The Jena Node to adapt. It's {@link Node#isConcrete()} must be
 	 *            <code>true</code>.
 	 * @return Adapted {@link JenaRDFTerm}
-	 * @throws ConversionException
-	 *             if the node is not concrete.
+	 * @throws ConversionException If the {@link Node} can't be represented as an {@link RDFTerm}, e.g.
+	 *             if the node is not {@link Node#isConcrete()},
+	 *             is {@link Node#isVariable()}, or is {@link Node.ANY}
 	 */
 	public JenaRDFTerm fromJena(Node node) throws ConversionException {
 		return JenaFactory.fromJena(node, getSalt());
@@ -238,8 +239,9 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 *            UUID salt for the purpose of
 	 *            {@link BlankNode#uniqueReference()}
 	 * @return Adapted {@link JenaRDFTerm}
-	 * @throws ConversionException
-	 *             if the node is not concrete.
+	 * @throws ConversionException If the {@link Node} can't be represented as an {@link RDFTerm}, e.g.
+	 *             if the node is not {@link Node#isConcrete()},
+	 *             is {@link Node#isVariable()}, or is {@link Node.ANY}
 	 */
 	public static JenaRDFTerm fromJena(Node node, UUID salt) {
 		return JenaFactory.fromJena(node, salt);
