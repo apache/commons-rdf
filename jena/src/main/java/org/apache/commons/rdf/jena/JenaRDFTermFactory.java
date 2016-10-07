@@ -15,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.apache.commons.rdf.jena;
 
 import java.util.Optional;
@@ -163,7 +162,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 *         does <strong>not</strong> implement {@link Triple#equals(Object)}
 	 *         or {@link Triple#hashCode()}.
 	 */
-	public JenaTripleLike<RDFTerm, RDFTerm, RDFTerm> createGeneralizedTriple(
+	public JenaGeneralizedTripleLike createGeneralizedTriple(
 			RDFTerm subject, RDFTerm predicate, RDFTerm object) {
 		return jenaFactory.createGeneralizedTriple(subject, predicate, object);
 	}
@@ -190,7 +189,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 *         <strong>not</strong> implement {@link Quad#equals(Object)} or
 	 *         {@link Quad#hashCode()}.
 	 */
-	public JenaQuadLike<RDFTerm, RDFTerm, RDFTerm, RDFTerm> createGeneralizedQuad(
+	public JenaGeneralizedQuadLike createGeneralizedQuad(
 			RDFTerm subject, RDFTerm predicate, RDFTerm object, RDFTerm graphName) {
 		return jenaFactory.createGeneralizedQuad(subject, predicate, object, graphName);
 	}	

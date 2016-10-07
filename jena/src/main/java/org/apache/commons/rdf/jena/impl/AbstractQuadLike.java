@@ -44,7 +44,7 @@ import org.apache.jena.sparql.core.Quad;
  * @see jenaFactory#createGeneralizedQuad(RDFTerm, RDFTerm, RDFTerm, RDFTerm)
  *
  */
-class JenaGeneralizedQuad<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm, G extends RDFTerm> implements JenaQuadLike<S,P,O,G> {
+abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm, G extends RDFTerm> implements JenaQuadLike<S,P,O,G> {
 
 	private static JenaFactory jenaFactory = new JenaFactory(){};
 	
@@ -55,19 +55,19 @@ class JenaGeneralizedQuad<S extends RDFTerm, P extends RDFTerm, O extends RDFTer
 	org.apache.jena.sparql.core.Quad quad = null;
 	org.apache.jena.graph.Triple triple = null;
 	
-	JenaGeneralizedQuad(S subject, P predicate, O object, Optional<G> graphName) {
+	AbstractQuadLike(S subject, P predicate, O object, Optional<G> graphName) {
 		this.subject = Objects.requireNonNull(subject);
 		this.predicate = Objects.requireNonNull(predicate);
 		this.object = Objects.requireNonNull(object);
 		this.graphName = Objects.requireNonNull(graphName);
 	}
 
-	JenaGeneralizedQuad(S subject, P predicate, O object) {
+	AbstractQuadLike(S subject, P predicate, O object) {
 		this(subject, predicate, object, Optional.empty());
 	}
 	 
 	@SuppressWarnings("unchecked")
-	JenaGeneralizedQuad(org.apache.jena.sparql.core.Quad quad, UUID salt) {
+	AbstractQuadLike(org.apache.jena.sparql.core.Quad quad, UUID salt) {
 		this.quad = Objects.requireNonNull(quad);
 		this.subject = (S) jenaFactory.fromJena(quad.getSubject(), salt);
 		this.predicate = (P) jenaFactory.fromJena(quad.getPredicate(), salt);
@@ -76,7 +76,7 @@ class JenaGeneralizedQuad<S extends RDFTerm, P extends RDFTerm, O extends RDFTer
 	}
 
 	@SuppressWarnings("unchecked")
-	JenaGeneralizedQuad(org.apache.jena.graph.Triple triple, UUID salt) {
+	AbstractQuadLike(org.apache.jena.graph.Triple triple, UUID salt) {
 		this.triple = Objects.requireNonNull(triple);		
 		this.subject = (S) jenaFactory.fromJena(triple.getSubject(), salt);
 		this.predicate = (P) jenaFactory.fromJena(triple.getPredicate(), salt);

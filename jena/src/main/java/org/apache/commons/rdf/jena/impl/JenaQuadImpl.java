@@ -29,7 +29,7 @@ import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.jena.ConversionException;
 import org.apache.commons.rdf.jena.JenaQuad;
 
-class JenaQuadImpl	extends JenaGeneralizedQuad<BlankNodeOrIRI,IRI,RDFTerm,BlankNodeOrIRI>
+class JenaQuadImpl	extends AbstractQuadLike<BlankNodeOrIRI,IRI,RDFTerm,BlankNodeOrIRI>
 	implements JenaQuad {
 
 	JenaQuadImpl(BlankNodeOrIRI subject, IRI predicate, RDFTerm object, Optional<BlankNodeOrIRI> graphName) {

@@ -28,6 +28,8 @@ import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.jena.ConversionException;
 import org.apache.commons.rdf.jena.JenaBlankNode;
 import org.apache.commons.rdf.jena.JenaDataset;
+import org.apache.commons.rdf.jena.JenaGeneralizedQuadLike;
+import org.apache.commons.rdf.jena.JenaGeneralizedTripleLike;
 import org.apache.commons.rdf.jena.JenaGraph;
 import org.apache.commons.rdf.jena.JenaIRI;
 import org.apache.commons.rdf.jena.JenaLiteral;
@@ -99,12 +101,12 @@ public abstract class JenaFactory {
 		return new JenaQuadImpl(subject, predicate, object, Optional.ofNullable(graphName));
 	}
 
-	public JenaTripleLike<RDFTerm,RDFTerm,RDFTerm> createGeneralizedTriple(RDFTerm subject, RDFTerm predicate, RDFTerm object) {
-		return new JenaGeneralizedQuad<RDFTerm,RDFTerm,RDFTerm,RDFTerm>(subject, predicate, object);
+	public JenaGeneralizedTripleLike createGeneralizedTriple(RDFTerm subject, RDFTerm predicate, RDFTerm object) {
+		return new JenaGeneralizedTripleLikeImpl(subject, predicate, object);
 	}
 
-	public JenaQuadLike<RDFTerm,RDFTerm,RDFTerm,RDFTerm> createGeneralizedQuad(RDFTerm subject, RDFTerm predicate, RDFTerm object, RDFTerm graphName) {
-		return new JenaGeneralizedQuad<RDFTerm,RDFTerm,RDFTerm,RDFTerm>(subject, predicate, object, Optional.ofNullable(graphName));
+	public JenaGeneralizedQuadLike createGeneralizedQuad(RDFTerm subject, RDFTerm predicate, RDFTerm object, RDFTerm graphName) {
+		return new JenaGeneralizedQuadLikeImpl(subject, predicate, object, Optional.ofNullable(graphName));
 	}
 	
 	public JenaRDFTerm fromJena(Node node, UUID salt) throws ConversionException {
@@ -147,12 +149,12 @@ public abstract class JenaFactory {
 		return new JenaTripleImpl(triple, salt);
 	}
 
-	public JenaTripleLike<RDFTerm, RDFTerm, RDFTerm> fromJenaGeneralized(org.apache.jena.graph.Triple triple, UUID salt) {
-		return new JenaGeneralizedQuad<RDFTerm,RDFTerm,RDFTerm,RDFTerm>(triple, salt);
+	public JenaGeneralizedTripleLike fromJenaGeneralized(org.apache.jena.graph.Triple triple, UUID salt) {
+		return new JenaGeneralizedTripleLikeImpl(triple, salt);
 	}
 
-	public JenaQuadLike<RDFTerm,RDFTerm,RDFTerm,RDFTerm> fromJenaGeneralized(org.apache.jena.sparql.core.Quad quad, UUID salt) {
-		return new JenaGeneralizedQuad<RDFTerm,RDFTerm,RDFTerm,RDFTerm>(quad, salt);
+	public JenaGeneralizedQuadLike fromJenaGeneralized(org.apache.jena.sparql.core.Quad quad, UUID salt) {
+		return new JenaGeneralizedQuadLikeImpl(quad, salt);
 	}
 	
 	public JenaQuad fromJena(org.apache.jena.sparql.core.Quad quad, UUID salt) {
