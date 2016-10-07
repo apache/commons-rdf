@@ -18,8 +18,6 @@
 
 package org.apache.commons.rdf.jena;
 
-import org.apache.jena.shared.JenaException;
-
 /**
  * Exception thrown when a problem arises across the Jena-CommonRDF boundary.
  * <p>
@@ -29,7 +27,7 @@ import org.apache.jena.shared.JenaException;
  * generalized RDF</a>.
  */
 
-public class ConversionException extends JenaException {
+public class ConversionException extends RuntimeException {
 	private static final long serialVersionUID = -898179977312382568L;
 
 	public ConversionException() {
