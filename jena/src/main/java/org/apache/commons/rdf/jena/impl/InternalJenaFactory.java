@@ -34,11 +34,9 @@ import org.apache.commons.rdf.jena.JenaGraph;
 import org.apache.commons.rdf.jena.JenaIRI;
 import org.apache.commons.rdf.jena.JenaLiteral;
 import org.apache.commons.rdf.jena.JenaQuad;
-import org.apache.commons.rdf.jena.JenaQuadLike;
 import org.apache.commons.rdf.jena.JenaRDFTerm;
 import org.apache.commons.rdf.jena.JenaRDFTermFactory;
 import org.apache.commons.rdf.jena.JenaTriple;
-import org.apache.commons.rdf.jena.JenaTripleLike;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.NodeFactory;
 import org.apache.jena.rdf.model.Model;
@@ -58,7 +56,7 @@ import org.apache.jena.sparql.graph.GraphFactory;
  * details.
  * 
  */
-public abstract class JenaFactory {
+public abstract class InternalJenaFactory {
 
 	public JenaBlankNode createBlankNode(String id, UUID salt) {
 		return new JenaBlankNodeImpl(NodeFactory.createBlankNode(id), salt);

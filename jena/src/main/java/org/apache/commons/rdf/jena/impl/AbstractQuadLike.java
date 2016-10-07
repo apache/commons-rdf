@@ -40,13 +40,13 @@ import org.apache.jena.sparql.core.Quad;
  * 
  * @see JenaTripleImpl
  * @see JenaQuadImpl
- * @see jenaFactory#createGeneralizedTriple(RDFTerm, RDFTerm, RDFTerm)
- * @see jenaFactory#createGeneralizedQuad(RDFTerm, RDFTerm, RDFTerm, RDFTerm)
+ * @see internalJenaFactory#createGeneralizedTriple(RDFTerm, RDFTerm, RDFTerm)
+ * @see internalJenaFactory#createGeneralizedQuad(RDFTerm, RDFTerm, RDFTerm, RDFTerm)
  *
  */
 abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm, G extends RDFTerm> implements JenaQuadLike<S,P,O,G> {
 
-	private static JenaFactory jenaFactory = new JenaFactory(){};
+	private static InternalJenaFactory internalJenaFactory = new InternalJenaFactory(){};
 	
 	final Optional<G> graphName;
 	final S subject;
@@ -69,18 +69,18 @@ abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
 	@SuppressWarnings("unchecked")
 	AbstractQuadLike(org.apache.jena.sparql.core.Quad quad, UUID salt) {
 		this.quad = Objects.requireNonNull(quad);
-		this.subject = (S) jenaFactory.fromJena(quad.getSubject(), salt);
-		this.predicate = (P) jenaFactory.fromJena(quad.getPredicate(), salt);
-		this.object = (O)jenaFactory.fromJena(quad.getObject(), salt);
-		this.graphName = Optional.of((G) jenaFactory.fromJena(quad.getGraph(), salt));		
+		this.subject = (S) internalJenaFactory.fromJena(quad.getSubject(), salt);
+		this.predicate = (P) internalJenaFactory.fromJena(quad.getPredicate(), salt);
+		this.object = (O)internalJenaFactory.fromJena(quad.getObject(), salt);
+		this.graphName = Optional.of((G) internalJenaFactory.fromJena(quad.getGraph(), salt));		
 	}
 
 	@SuppressWarnings("unchecked")
 	AbstractQuadLike(org.apache.jena.graph.Triple triple, UUID salt) {
 		this.triple = Objects.requireNonNull(triple);		
-		this.subject = (S) jenaFactory.fromJena(triple.getSubject(), salt);
-		this.predicate = (P) jenaFactory.fromJena(triple.getPredicate(), salt);
-		this.object = (O)jenaFactory.fromJena(triple.getObject(), salt);
+		this.subject = (S) internalJenaFactory.fromJena(triple.getSubject(), salt);
+		this.predicate = (P) internalJenaFactory.fromJena(triple.getPredicate(), salt);
+		this.object = (O)internalJenaFactory.fromJena(triple.getObject(), salt);
 		this.graphName = Optional.empty();
 	}
 

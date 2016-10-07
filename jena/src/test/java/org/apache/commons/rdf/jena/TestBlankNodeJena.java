@@ -22,11 +22,11 @@ import java.util.UUID;
 
 import org.apache.commons.rdf.api.AbstractBlankNodeTest ;
 import org.apache.commons.rdf.api.BlankNode ;
-import org.apache.commons.rdf.jena.impl.JenaFactory;
+import org.apache.commons.rdf.jena.impl.InternalJenaFactory;
 
 public class TestBlankNodeJena extends AbstractBlankNodeTest {
 
-	JenaFactory jenaFactory = new JenaFactory(){};
+	InternalJenaFactory internalJenaFactory = new InternalJenaFactory(){};
 	
 	/** 
 	 * Fixed salt for the purpose of this test.
@@ -35,12 +35,12 @@ public class TestBlankNodeJena extends AbstractBlankNodeTest {
 
 	@Override
     protected BlankNode getBlankNode() {
-        return jenaFactory.createBlankNode(SALT) ;
+        return internalJenaFactory.createBlankNode(SALT) ;
     }
     
     @Override
     protected BlankNode getBlankNode(String identifier) {
-        return jenaFactory.createBlankNode(identifier, SALT) ;
+        return internalJenaFactory.createBlankNode(identifier, SALT) ;
     }
 }
 

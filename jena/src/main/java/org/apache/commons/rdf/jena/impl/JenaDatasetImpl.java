@@ -94,7 +94,7 @@ class JenaDatasetImpl implements JenaDataset {
 
 	private Node toJenaPattern(Optional<? extends RDFTerm> graphName) {
 		// In theory we could have done:
-		//   factory.toJena(graphName.orElse(jenaFactory::createAnyVariable))
+		//   factory.toJena(graphName.orElse(internalJenaFactory::createAnyVariable))
 		// but because of generics casting rules that doesn't work :(						
 
 		if (graphName == null) {

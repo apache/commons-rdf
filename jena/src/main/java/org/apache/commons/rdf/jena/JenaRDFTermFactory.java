@@ -34,7 +34,7 @@ import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.RDFTermFactory;
 import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.api.TripleLike;
-import org.apache.commons.rdf.jena.impl.JenaFactory;
+import org.apache.commons.rdf.jena.impl.InternalJenaFactory;
 import org.apache.jena.datatypes.RDFDatatype;
 import org.apache.jena.datatypes.xsd.XSDDatatype;
 import org.apache.jena.graph.Node;
@@ -60,7 +60,7 @@ import org.apache.jena.sparql.graph.GraphFactory;
  */
 public final class JenaRDFTermFactory implements RDFTermFactory {
 
-	private static JenaFactory jenaFactory = new JenaFactory(){};
+	private static InternalJenaFactory internalJenaFactory = new InternalJenaFactory(){};
 	
 	private final UUID salt;
 
@@ -91,55 +91,55 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 
 	@Override
 	public JenaBlankNode createBlankNode() {
-		return jenaFactory.createBlankNode(getSalt());
+		return internalJenaFactory.createBlankNode(getSalt());
 	}
 
 	@Override
 	public JenaBlankNode createBlankNode(String name) {
-		return jenaFactory.createBlankNode(name, getSalt());
+		return internalJenaFactory.createBlankNode(name, getSalt());
 	}
 	
 	@Override
 	public JenaDataset createDataset() {
-		return jenaFactory.createDataset(getSalt());
+		return internalJenaFactory.createDataset(getSalt());
 	}
 
 	@Override
 	public JenaGraph createGraph() {
-		return jenaFactory.createGraph(getSalt());
+		return internalJenaFactory.createGraph(getSalt());
 	}
 
 	@Override
 	public JenaIRI createIRI(String iri) {
 		validateIRI(iri);
-		return jenaFactory.createIRI(iri);
+		return internalJenaFactory.createIRI(iri);
 	}
 
 	@Override
 	public JenaLiteral createLiteral(String lexicalForm) {
-		return jenaFactory.createLiteral(lexicalForm);
+		return internalJenaFactory.createLiteral(lexicalForm);
 	}
 
 	@Override
 	public JenaLiteral createLiteral(String lexicalForm, IRI dataType) {
-		return jenaFactory.createLiteralDT(lexicalForm, dataType.getIRIString());
+		return internalJenaFactory.createLiteralDT(lexicalForm, dataType.getIRIString());
 	}
 
 	@Override
 	public JenaLiteral createLiteral(String lexicalForm, String languageTag) {
 		validateLang(languageTag);
-		return jenaFactory.createLiteralLang(lexicalForm, languageTag);
+		return internalJenaFactory.createLiteralLang(lexicalForm, languageTag);
 	}
 
 	@Override
 	public JenaTriple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		return jenaFactory.createTriple(subject, predicate, object);
+		return internalJenaFactory.createTriple(subject, predicate, object);
 	}
 	
 	@Override
 	public JenaQuad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
 			throws IllegalArgumentException, UnsupportedOperationException {
-		return jenaFactory.createQuad(subject, predicate, object, graphName);
+		return internalJenaFactory.createQuad(subject, predicate, object, graphName);
 	}
 
 	/**
@@ -164,7 +164,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 */
 	public JenaGeneralizedTripleLike createGeneralizedTriple(
 			RDFTerm subject, RDFTerm predicate, RDFTerm object) {
-		return jenaFactory.createGeneralizedTriple(subject, predicate, object);
+		return internalJenaFactory.createGeneralizedTriple(subject, predicate, object);
 	}
 
 	/**
@@ -191,7 +191,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 */
 	public JenaGeneralizedQuadLike createGeneralizedQuad(
 			RDFTerm subject, RDFTerm predicate, RDFTerm object, RDFTerm graphName) {
-		return jenaFactory.createGeneralizedQuad(subject, predicate, object, graphName);
+		return internalJenaFactory.createGeneralizedQuad(subject, predicate, object, graphName);
 	}	
 	/**
 	 * Adapt an existing Jena Node to CommonsRDF {@link RDFTerm}.
@@ -213,7 +213,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 *             if the node is not concrete or represents a variable in Jena.
 	 */
 	public JenaRDFTerm fromJena(Node node) throws ConversionException {
-		return jenaFactory.fromJena(node, getSalt());
+		return internalJenaFactory.fromJena(node, getSalt());
 	}
 
 	/**
@@ -278,7 +278,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 *             is a generalized triple
 	 */
 	public JenaTriple fromJena(org.apache.jena.graph.Triple triple) throws ConversionException {
-		return jenaFactory.fromJena(triple, getSalt());
+		return internalJenaFactory.fromJena(triple, getSalt());
 	}
 
 	/**
@@ -304,7 +304,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 *             if any of the triple's nodes are not concrete
 	 */
 	public JenaTripleLike<RDFTerm, RDFTerm, RDFTerm> fromJenaGeneralized(org.apache.jena.graph.Triple triple) throws ConversionException {
-		return jenaFactory.fromJenaGeneralized(triple, getSalt());
+		return internalJenaFactory.fromJenaGeneralized(triple, getSalt());
 	}
 
 	/**
@@ -334,7 +334,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 *             if any of the quad nodes are not concrete
 	 */
 	public JenaQuadLike<RDFTerm, RDFTerm, RDFTerm, RDFTerm> fromJenaGeneralized(org.apache.jena.sparql.core.Quad quad) throws ConversionException {
-		return jenaFactory.fromJenaGeneralized(quad, getSalt());
+		return internalJenaFactory.fromJenaGeneralized(quad, getSalt());
 	}
 	
 	/**
@@ -389,7 +389,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * @return Adapted quad
 	 */	
 	public JenaQuad fromJena(org.apache.jena.sparql.core.Quad quad) {
-		return jenaFactory.fromJena(quad, getSalt());
+		return internalJenaFactory.fromJena(quad, getSalt());
 	}
 
 	/**
@@ -411,7 +411,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * @return Adapted {@link JenaGraph}
 	 */
 	public JenaGraph fromJena(org.apache.jena.graph.Graph graph) {
-		return jenaFactory.fromJena(graph, getSalt());
+		return internalJenaFactory.fromJena(graph, getSalt());
 	}
 
 	/**
@@ -430,7 +430,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * @return Adapted {@link JenaGraph}
 	 */
 	public JenaGraph fromJena(org.apache.jena.rdf.model.Model model) {
-		return jenaFactory.fromJena(model, getSalt());
+		return internalJenaFactory.fromJena(model, getSalt());
 	}	
 
 	/**
@@ -450,7 +450,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * @return Adapted {@link JenaDataset} 
 	 */
 	public JenaDataset fromJena(DatasetGraph datasetGraph) {
-		return jenaFactory.fromJena(datasetGraph, getSalt());
+		return internalJenaFactory.fromJena(datasetGraph, getSalt());
 	}	
 	
 	/**
@@ -470,7 +470,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * @return Adapted {@link JenaDataset} 
 	 */
 	public JenaDataset fromJena(org.apache.jena.query.Dataset datasetGraph) {
-		return jenaFactory.fromJena(datasetGraph.asDatasetGraph(), getSalt());
+		return internalJenaFactory.fromJena(datasetGraph.asDatasetGraph(), getSalt());
 	}		
 
 	/**
