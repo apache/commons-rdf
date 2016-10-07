@@ -45,7 +45,7 @@ import org.eclipse.rdf4j.repository.Repository;
  * {@link RDF4JTermFactory} methods like
  * {@link RDF4JTermFactory#createBlankNode()},
  * {@link RDF4JTermFactory#asRDFTerm(org.eclipse.rdf4j.model.Value)} and
- * {@link RDF4JTermFactory#asRDFTermGraph(Repository)}.
+ * {@link RDF4JTermFactory#asRDFTermGraph(Repository, org.apache.commons.rdf.rdf4j.RDF4JTermFactory.Option...)}
  * <p>
  * This class exists as a <code>public</code> bridge between the packages
  * {@link org.apache.commons.rdf.rdf4j} and
@@ -139,7 +139,7 @@ public abstract class InternalRDF4JFactory {
 	 */
 	public RDF4JDataset createRepositoryDatasetImpl(Repository repository, boolean handleInitAndShutdown,
 			boolean includeInferred) {
-		return new RepositoryDatasetImpl(repository, handleInitAndShutdown, includeInferred);
+		return new RepositoryDatasetImpl(repository, UUID.randomUUID(), handleInitAndShutdown, includeInferred);
 	}
 
 	/**
@@ -164,7 +164,7 @@ public abstract class InternalRDF4JFactory {
 	 */
 	public RDF4JGraph createRepositoryGraphImpl(Repository repository, boolean handleInitAndShutdown,
 			boolean includeInferred, Resource... contextMask) {
-		return new RepositoryGraphImpl(repository, handleInitAndShutdown, includeInferred, contextMask);
+		return new RepositoryGraphImpl(repository, UUID.randomUUID(), handleInitAndShutdown, includeInferred, contextMask);
 	}
 
 	/**

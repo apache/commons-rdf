@@ -22,6 +22,7 @@ import java.util.ConcurrentModificationException;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
@@ -45,8 +46,8 @@ class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> implements
 	
 	private final Resource[] contextMask;
 
-	RepositoryGraphImpl(Repository repository, boolean handleInitAndShutdown, boolean includeInferred, Resource... contextMask) {
-		super(repository, handleInitAndShutdown, includeInferred);
+	RepositoryGraphImpl(Repository repository, UUID salt, boolean handleInitAndShutdown, boolean includeInferred, Resource... contextMask) {
+		super(repository, salt, handleInitAndShutdown, includeInferred);
 		this.contextMask = Objects.requireNonNull(contextMask);
 	}
 

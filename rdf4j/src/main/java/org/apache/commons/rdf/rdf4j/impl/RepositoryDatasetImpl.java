@@ -19,6 +19,7 @@ package org.apache.commons.rdf.rdf4j.impl;
 
 import java.util.ConcurrentModificationException;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
@@ -40,8 +41,8 @@ import org.eclipse.rdf4j.repository.RepositoryResult;
 
 class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> implements RDF4JDataset, Dataset {
 
-	RepositoryDatasetImpl(Repository repository, boolean handleInitAndShutdown, boolean includeInferred) {
-		super(repository, handleInitAndShutdown, includeInferred);
+	RepositoryDatasetImpl(Repository repository, UUID salt, boolean handleInitAndShutdown, boolean includeInferred) {
+		super(repository, salt, handleInitAndShutdown, includeInferred);
 	}
 
 	@Override
@@ -197,14 +198,16 @@ class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> implements
 	@Override
 	public Graph getGraph() {
 		// default context only
-		return new RepositoryGraphImpl(repository, false, includeInferred, (Resource)null);
+		// NOTE: We carry over the 'salt' as the graph's BlankNode should be equal to our BlankNodes
+		return new RepositoryGraphImpl(repository, salt, false, includeInferred, (Resource)null);
 	}
 
 	@Override
 	public Optional<Graph> getGraph(BlankNodeOrIRI graphName) {
 		// NOTE: May be null to indicate default context
 		Resource context = (Resource) rdf4jTermFactory.asValue(graphName);
-		return Optional.of(new RepositoryGraphImpl(repository, false, includeInferred, context));
+		// NOTE: We carry over the 'salt' as the graph's BlankNode should be equal to our BlankNodes
+		return Optional.of(new RepositoryGraphImpl(repository, salt, false, includeInferred, context));
 	}
 
 	@Override

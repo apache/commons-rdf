@@ -18,6 +18,7 @@
 package org.apache.commons.rdf.rdf4j.impl;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.IRI;
@@ -37,17 +38,19 @@ abstract class AbstractRepositoryGraphLike<T extends TripleLike<BlankNodeOrIRI, 
 	protected final boolean includeInferred;
 	protected final boolean handleInitAndShutdown;
 	protected final RDF4JTermFactory rdf4jTermFactory;
+	protected final UUID salt;
 
-	AbstractRepositoryGraphLike(Repository repository, boolean handleInitAndShutdown, boolean includeInferred) {
+	AbstractRepositoryGraphLike(Repository repository, UUID salt, boolean handleInitAndShutdown, boolean includeInferred) {
 		this.repository = repository;
+		this.salt = salt;
 		this.includeInferred = includeInferred;
 		this.handleInitAndShutdown = handleInitAndShutdown;
 		if (handleInitAndShutdown && !repository.isInitialized()) {
 			repository.initialize();
 		}
-		rdf4jTermFactory = new RDF4JTermFactory(repository.getValueFactory());
-	}
-
+		rdf4jTermFactory = new RDF4JTermFactory(repository.getValueFactory(), salt);
+	}	
+	
 	@Override
 	public void close() throws Exception {
 		if (handleInitAndShutdown) {
