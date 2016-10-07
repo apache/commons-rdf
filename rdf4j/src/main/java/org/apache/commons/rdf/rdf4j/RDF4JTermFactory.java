@@ -225,8 +225,6 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 	 *
 	 * @param value
 	 *            The RDF4J {@link Value} to convert.
-	 * @param <T>
-	 *            The subclass of {@link Value}, e.g. {@link BNode}
 	 * @return A {@link RDFTerm} that corresponds to the RDF4J value
 	 * @throws IllegalArgumentException
 	 *             if the value is not a BNode, Literal or IRI
@@ -254,8 +252,6 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 	 *            multiple statements in the same {@link Repository} or
 	 *            {@link Model} to ensure {@link BlankNode#equals(Object)} and
 	 *            {@link BlankNode#uniqueReference()} works as intended.
-	 * @param <T>
-	 *            The subclass of {@link Value}, e.g. {@link BNode}
 	 * @return A {@link RDFTerm} that corresponds to the RDF4J value
 	 * @throws IllegalArgumentException
 	 *             if the value is not a BNode, Literal or IRI
