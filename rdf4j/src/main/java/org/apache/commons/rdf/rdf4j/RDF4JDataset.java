@@ -31,13 +31,12 @@ import org.apache.commons.rdf.api.RDFTerm;
  * Marker interface for RDF4J implementations of Dataset.
  * 
  * @see RDF4JTermFactory#createDataset()
- * @see RDF4JTermFactory#asRDFTermDataset(org.eclipse.rdf4j.repository.Repository)
+ * @see RDF4JTermFactory#asRDFTermDataset(org.eclipse.rdf4j.repository.Repository, org.apache.commons.rdf.rdf4j.RDF4JTermFactory.Option...)
  */
 public interface RDF4JDataset extends Dataset, RDF4JGraphLike<Quad> {
 	
 	/**
 	 * {@inheritDoc}
-	 * <p>
 	 * <p>
 	 * Note that for datasets backed by a repository ({@link #asRepository()} is
 	 * present), the stream <strong>must be closed</strong> with
@@ -75,7 +74,6 @@ public interface RDF4JDataset extends Dataset, RDF4JGraphLike<Quad> {
 
 	/**
 	 * {@inheritDoc}
-	 * <p>
 	 * <p>
 	 * Note that for datasets backed by a repository ({@link #asRepository()} is
 	 * present), the stream <strong>must be closed</strong> with

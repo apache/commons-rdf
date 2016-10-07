@@ -36,8 +36,8 @@ import org.eclipse.rdf4j.repository.Repository;
  * 
  * @see RDF4JTermFactory#createGraph()
  * @see RDF4JTermFactory#asRDFTermGraph(Model)
- * @see RDF4JTermFactory#asRDFTermGraph(Repository)
- * @see RDF4JTermFactory#asRDFTermGraphUnion(Repository)
+ * @see RDF4JTermFactory#asRDFTermGraph(Repository, org.apache.commons.rdf.rdf4j.RDF4JTermFactory.Option...)
+ * @see RDF4JTermFactory#asRDFTermGraphUnion(Repository, org.apache.commons.rdf.rdf4j.RDF4JTermFactory.Option...)
  * @see RDF4JDataset#getGraph()
  * @see RDF4JDataset#getGraph(BlankNodeOrIRI)
  */
@@ -65,7 +65,7 @@ public interface RDF4JGraph extends Graph, RDF4JGraphLike<Triple> {
 	 * Note that the context mask itself cannot be <code>null</code>.
 	 * <p>
 	 * The returned set is an immutable copy; to specify a different mask, use
-	 * {@link RDF4JTermFactory#asRDFTermGraph(Repository, Set)}.
+	 * {@link RDF4JTermFactory#asRDFTermGraph(Repository, Set, org.apache.commons.rdf.rdf4j.RDF4JTermFactory.Option...)
 	 * 
 	 * @return The context mask as an set of {@link BlankNodeOrIRI}s, which may
 	 *         contain the value <code>null</code>.

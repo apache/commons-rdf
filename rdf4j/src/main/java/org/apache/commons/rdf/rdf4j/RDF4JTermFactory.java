@@ -67,8 +67,9 @@ import org.eclipse.rdf4j.sail.memory.MemoryStore;
  * To use other models, see {@link #asRDFTermGraph(Model)}.
  * <p>
  * To adapt a RDF4J {@link Repository} as a {@link Dataset} or {@link Graph},
- * use {@link #asRDFTermDataset(Repository)} or
- * {@link #asRDFTermGraph(Repository)}.
+ * use {@link #asRDFTermDataset(Repository, Option...)} 
+ * or 
+ * {@link #asRDFTermGraph(Repository, Option...)}.
  * <p>
  * {@link #asTriple(Statement)} can be used to convert a RDF4J {@link Statement}
  * to a Commons RDF {@link Triple}, and equivalent {@link #asQuad(Statement)} to
@@ -92,7 +93,9 @@ import org.eclipse.rdf4j.sail.memory.MemoryStore;
  * the same {@link BNode#getID()}, converting them with the above methods might
  * cause accidental {@link BlankNode} equivalence. Note that the {@link Graph}
  * and {@link Dataset} adapter methods like
- * {@link #asRDFTermDataset(Repository)} and {@link #asRDFTermGraph(Model)}
+ * {@link #asRDFTermDataset(Repository, Option...)}
+ * and 
+ * {@link #asRDFTermGraph(Repository, Option...)}
  * therefore uses a unique {@link RDF4JTermFactory} internally.
  *
  */
