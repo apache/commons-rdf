@@ -180,8 +180,9 @@ public class JenaDatasetImpl implements JenaDataset {
 
 	@Override
 	public Iterable<Quad> iterate() {
+		final JenaRDFTermFactory factory = new JenaRDFTermFactory(salt);
 		return Iter.asStream(graph.find(), false)
-				.map(q -> (Quad) JenaRDFTermFactory.fromJena(q, salt))
+				.map(q -> (Quad) factory.fromJena(q))
 				::iterator;
 	}
 

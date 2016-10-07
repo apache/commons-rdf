@@ -71,18 +71,21 @@ public class JenaRDFParser extends AbstractRDFParser<JenaRDFParser> implements R
 	@Override
 	protected void parseSynchronusly() throws IOException {
 		StreamRDF dest;
+		JenaRDFTermFactory jenaFactory = getJenaFactory();
 		if (getTargetGraph().isPresent() && getTargetGraph().get() instanceof JenaGraph) {
 			Graph jenaGraph = ((JenaGraph) getTargetGraph().get()).asJenaGraph();
 			dest = StreamRDFLib.graph(jenaGraph);
-		} else if (generalizedConsumerQuad != null) {				
-			dest = getJenaFactory().streamJenaToGeneralizedQuad(generalizedConsumerQuad);			
-		} else if (generalizedConsumerTriple != null) {				
-			dest = getJenaFactory().streamJenaToGeneralizedTriple(generalizedConsumerTriple);			
 		} else {
-			dest = JenaRDFTermFactory.streamJenaToCommonsRDF(getRdfTermFactory().get(), getTarget());
+			if (generalizedConsumerQuad != null) {				
+				dest = jenaFactory.streamJenaToGeneralizedQuad(generalizedConsumerQuad);			
+			} else if (generalizedConsumerTriple != null) {				
+				dest = jenaFactory.streamJenaToGeneralizedTriple(generalizedConsumerTriple);			
+			} else {
+				dest = JenaRDFTermFactory.streamJenaToCommonsRDF(getRdfTermFactory().get(), getTarget());
+			}
 		}
 
-		Lang lang = getContentTypeSyntax().flatMap(JenaRDFTermFactory::rdfSyntaxToLang).orElse(null);
+		Lang lang = getContentTypeSyntax().flatMap(jenaFactory::rdfSyntaxToLang).orElse(null);
 		String baseStr = getBase().map(IRI::getIRIString).orElse(null);
 
 		if (getSourceIri().isPresent()) {
