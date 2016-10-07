@@ -34,7 +34,7 @@
  * {@link org.apache.commons.rdf.api.Dataset}, e.g. using
  * {@link org.apache.commons.rdf.rdf4j.RDF4JTermFactory#asRDFTermGraph(org.eclipse.rdf4j.model.Model)}
  * or
- * {@link org.apache.commons.rdf.rdf4j.RDF4JTermFactory#asRDFTermDataset(org.eclipse.rdf4j.repository.Repository)}.
+ * {@link org.apache.commons.rdf.rdf4j.RDF4JTermFactory#asRDFTermDataset(org.eclipse.rdf4j.repository.Repository, org.apache.commons.rdf.rdf4j.RDF4JTermFactory.Option...)}
  * The returned adapted graph/dataset is directly mapped, so changes are
  * propagated both ways. For convenience, the marker interface
  * {@link org.apache.commons.rdf.rdf4j.RDF4JGraph} and
