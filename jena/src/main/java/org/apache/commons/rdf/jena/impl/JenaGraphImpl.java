@@ -37,32 +37,35 @@ import org.apache.jena.riot.RDFDataMgr;
 
 public class JenaGraphImpl implements JenaGraph {
 
-	private org.apache.jena.graph.Graph graph;
-	private UUID salt;
+	private final org.apache.jena.graph.Graph graph;
+	private final UUID salt;
+	private final transient JenaRDFTermFactory factory;
 	private Model model;
 
 	JenaGraphImpl(org.apache.jena.graph.Graph graph, UUID salt) {
 		this.graph = graph;
 		this.salt = salt;
+		this.factory = new JenaRDFTermFactory(salt);
 	}
 
 	JenaGraphImpl(Model model, UUID salt) {
 		this.model = model;
 		this.graph = model.getGraph();
 		this.salt = salt;
+		this.factory = new JenaRDFTermFactory(salt);
 	}
 
 	@Override
 	public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
 		graph.add(org.apache.jena.graph.Triple.create(
-				JenaRDFTermFactory.toJena(subject),
-				JenaRDFTermFactory.toJena(predicate), 
-				JenaRDFTermFactory.toJena(object)));
+				factory.toJena(subject),
+				factory.toJena(predicate), 
+				factory.toJena(object)));
 	}
 
 	@Override
 	public void add(Triple triple) {
-		graph.add(JenaRDFTermFactory.toJena(triple));
+		graph.add(factory.toJena(triple));
 	}
 
 	@Override
@@ -83,27 +86,27 @@ public class JenaGraphImpl implements JenaGraph {
 	@Override
 	public boolean contains(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
 		return graph.contains(
-				JenaRDFTermFactory.toJena(subject), 
-				JenaRDFTermFactory.toJena(predicate),
-				JenaRDFTermFactory.toJena(object));
+				factory.toJena(subject), 
+				factory.toJena(predicate),
+				factory.toJena(object));
 	}
 
 	@Override
 	public boolean contains(Triple triple) {
-		return graph.contains(JenaRDFTermFactory.toJena(triple));
+		return graph.contains(factory.toJena(triple));
 	}
 
 	@Override
 	public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
 		graph.delete(org.apache.jena.graph.Triple.create(
-				JenaRDFTermFactory.toJena(subject),
-				JenaRDFTermFactory.toJena(predicate), 
-				JenaRDFTermFactory.toJena(object)));
+				factory.toJena(subject),
+				factory.toJena(predicate), 
+				factory.toJena(object)));
 	}
 
 	@Override
 	public void remove(Triple triple) {
-		graph.delete(JenaRDFTermFactory.toJena(triple));
+		graph.delete(factory.toJena(triple));
 	}
 
 	@Override
@@ -127,7 +130,7 @@ public class JenaGraphImpl implements JenaGraph {
 	private Node toJenaAny(RDFTerm term) {
 		if (term == null)
 			return Node.ANY;
-		return JenaRDFTermFactory.toJena(term);
+		return factory.toJena(term);
 	}
 
 	@Override

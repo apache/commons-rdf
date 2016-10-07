@@ -84,22 +84,25 @@ public class JenaGeneralizedQuad<S extends RDFTerm, P extends RDFTerm, O extends
 
 	@Override
 	public org.apache.jena.sparql.core.Quad asJenaQuad() {
+		JenaRDFTermFactory factory = new JenaRDFTermFactory();
 		if (quad == null) {
 			quad = org.apache.jena.sparql.core.Quad.create(
-					JenaRDFTermFactory.toJena(graphName.orElse(null)),
-					JenaRDFTermFactory.toJena(subject), 
-					JenaRDFTermFactory.toJena(predicate),
-					JenaRDFTermFactory.toJena(object));
+					factory.toJena(graphName.orElse(null)),
+					factory.toJena(subject), 
+					factory.toJena(predicate),
+					factory.toJena(object));
 		}
 		return quad;
 	}
 
 	@Override
 	public org.apache.jena.graph.Triple asJenaTriple() {
+		JenaRDFTermFactory factory = new JenaRDFTermFactory();
 		if (triple == null) {
-			triple = org.apache.jena.graph.Triple.create(JenaRDFTermFactory.toJena(subject), 
-				JenaRDFTermFactory.toJena(predicate),
-				JenaRDFTermFactory.toJena(object));
+			triple = org.apache.jena.graph.Triple.create(
+				factory.toJena(subject), 
+				factory.toJena(predicate),
+				factory.toJena(object));
 		}
 		return triple;
 	}	

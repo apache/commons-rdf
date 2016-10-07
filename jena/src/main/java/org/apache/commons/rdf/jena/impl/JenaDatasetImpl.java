@@ -44,25 +44,27 @@ public class JenaDatasetImpl implements JenaDataset {
 
 	private DatasetGraph graph;
 	private UUID salt;
+	private JenaRDFTermFactory factory;
 
-	/* package */ JenaDatasetImpl(DatasetGraph graph, UUID salt) {
+	JenaDatasetImpl(DatasetGraph graph, UUID salt) {
 		this.graph = graph;
 		this.salt = salt;
+		this.factory = new JenaRDFTermFactory(salt);
 	}
 
 	@Override
 	public void add(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
 		graph.add(				
 				org.apache.jena.sparql.core.Quad.create(
-				JenaRDFTermFactory.toJena(graphName),
-				JenaRDFTermFactory.toJena(subject),				
-				JenaRDFTermFactory.toJena(predicate), 
-				JenaRDFTermFactory.toJena(object)));
+				factory.toJena(graphName),
+				factory.toJena(subject),				
+				factory.toJena(predicate), 
+				factory.toJena(object)));
 	}
 
 	@Override
 	public void add(Quad quad) {
-		graph.add(JenaRDFTermFactory.toJena(quad));
+		graph.add(factory.toJena(quad));
 	}
 	
 	@Override
@@ -92,25 +94,25 @@ public class JenaDatasetImpl implements JenaDataset {
 
 	private Node toJenaPattern(Optional<? extends RDFTerm> graphName) {
 		// In theory we could have done:
-		//   JenaRDFTermFactory.toJena(graphName.orElse(JenaFactory::createAnyVariable))
+		//   factory.toJena(graphName.orElse(JenaFactory::createAnyVariable))
 		// but because of generics casting rules that doesn't work :(						
 
 		if (graphName == null) {
 			return ANY;
 		}
 		// null: default graph
-		return JenaRDFTermFactory.toJena(graphName.orElse(null));
+		return factory.toJena(graphName.orElse(null));
 	}
 
 	private Node toJenaPattern(RDFTerm term) {
 		if (term == null)
 			return ANY;
-		return JenaRDFTermFactory.toJena(term);
+		return factory.toJena(term);
 	}
 
 	@Override
 	public boolean contains(Quad quad) {
-		return graph.contains(JenaRDFTermFactory.toJena(quad));
+		return graph.contains(factory.toJena(quad));
 	}
 
 	@Override
@@ -124,7 +126,7 @@ public class JenaDatasetImpl implements JenaDataset {
 
 	@Override
 	public void remove(Quad quad) {
-		graph.delete(JenaRDFTermFactory.toJena(quad));
+		graph.delete(factory.toJena(quad));
 	}
 
 	@Override
@@ -167,7 +169,7 @@ public class JenaDatasetImpl implements JenaDataset {
 	
 	@Override
 	public Optional<Graph> getGraph(BlankNodeOrIRI graphName) {
-		GraphView gv = GraphView.createNamedGraph(graph, JenaRDFTermFactory.toJena(graphName));
+		GraphView gv = GraphView.createNamedGraph(graph, factory.toJena(graphName));
 		return Optional.of(new JenaGraphImpl(gv, salt));
 	}	
 

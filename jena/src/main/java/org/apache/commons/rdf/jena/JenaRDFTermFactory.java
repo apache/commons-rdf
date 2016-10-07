@@ -205,7 +205,6 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * {@link Node#getBlankNodeId()} for the purpose of its
 	 * {@link BlankNode#uniqueReference()}.
 	 * 
-	 * @see #fromJena(Node, UUID)
 	 * @see #fromJena(RDFTermFactory, Node)
 	 * 
 	 * @param node
@@ -229,7 +228,6 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * for multiple conversion sessions.
 	 * 
 	 * @see #fromJena(Node)
-	 * @see #fromJena(Node, UUID)
 	 * 
 	 * @param factory {@link RDFTermFactory} to use for creating {@link RDFTerm}.
 	 * @param node
@@ -273,7 +271,6 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * {@link Node#getBlankNodeId()} for the purpose of its
 	 * {@link BlankNode#uniqueReference()}.
 	 *
-	 * @see #fromJena(org.apache.jena.graph.Triple, UUID)
 	 * @see #fromJena(RDFTermFactory, org.apache.jena.graph.Triple)
 	 * 
 	 * @param triple
@@ -300,7 +297,6 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * {@link Node#getBlankNodeId()} for the purpose of its
 	 * {@link BlankNode#uniqueReference()}.
 	 *
-	 * @see #fromJena(org.apache.jena.graph.Triple, UUID)
 	 * @see #fromJena(RDFTermFactory, org.apache.jena.graph.Triple)
 	 * 
 	 * @param triple
@@ -357,7 +353,6 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * for multiple conversion sessions.
 	 * 
 	 * @see #fromJena(org.apache.jena.graph.Triple)
-	 * @see #fromJena(org.apache.jena.graph.Triple, UUID)
 	 *
 	 * @param factory {@link RDFTermFactory} to use for creating the {@link Triple} and its
 	 * {@link RDFTerm}s.
@@ -494,7 +489,6 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * instance for multiple conversion sessions.
 	 * 
 	 * @see #fromJena(org.apache.jena.sparql.core.Quad)
-	 * @see #fromJena(org.apache.jena.sparql.core.Quad, UUID)
 	 * @see #fromJenaGeneralized(org.apache.jena.sparql.core.Quad)
 	 *
 	 * @param factory
@@ -637,7 +631,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * @param term Commons RDF {@link RDFTerm} to convert
 	 * @return Converted Jena {@link Node}
 	 */
-	public static Node toJena(RDFTerm term) {
+	public Node toJena(RDFTerm term) {
 		if (term == null) {
 			return null;
 		}
@@ -674,7 +668,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * @param triple Commons RDF {@link Triple} to convert
 	 * @return Converted Jena {@link org.apache.jena.graph.Triple}
 	 */
-	public static org.apache.jena.graph.Triple toJena(Triple triple) {
+	public org.apache.jena.graph.Triple toJena(Triple triple) {
 		if (triple instanceof JenaTriple)
 			return ((JenaTriple) triple).asJenaTriple();
 		return org.apache.jena.graph.Triple.create(
@@ -694,7 +688,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * @param quad Commons RDF {@link Quad} to convert
 	 * @return Converted Jena {@link org.apache.jena.sparql.core.Quad}
 	 */
-	public static org.apache.jena.sparql.core.Quad toJena(Quad quad) {
+	public org.apache.jena.sparql.core.Quad toJena(Quad quad) {
 		if (quad instanceof JenaQuad) {
 			return ((JenaQuad) quad).asJenaQuad();
 		}
