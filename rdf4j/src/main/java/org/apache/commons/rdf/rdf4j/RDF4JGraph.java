@@ -75,10 +75,12 @@ public interface RDF4JGraph extends Graph, RDF4JGraphLike<Triple> {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * Note that the stream <strong>must be closed</strong> with
+	 * Note that for graphs backed by a repository ({@link #asRepository()} is
+	 * present), the stream <strong>must be closed</strong> with
 	 * {@link Stream#close()}.
 	 * <p>
 	 * This can generally achieved using a try-with-resources block, e.g.:
+	 * 
 	 * <pre>
 	 * int subjects;
 	 * try (Stream&lt;RDF4JTriple&gt; s : graph.stream()) {
@@ -92,7 +94,8 @@ public interface RDF4JGraph extends Graph, RDF4JGraphLike<Triple> {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * Note that the stream <strong>must be closed</strong> with
+	 * Note that for graphs backed by a repository ({@link #asRepository()} is
+	 * present), the stream <strong>must be closed</strong> with
 	 * {@link Stream#close()}.
 	 * <p>
 	 * This can generally achieved using a try-with-resources block, e.g.:
@@ -110,9 +113,9 @@ public interface RDF4JGraph extends Graph, RDF4JGraphLike<Triple> {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * Note that the iterable <strong>must be closed</strong> with
-	 * {@link ClosableIterable#close()}. 
-	 * call 
+	 * Note that for graphs backed by a repository ({@link #asRepository()} is
+	 * present), the iterable <strong>must be closed</strong> with
+	 * {@link ClosableIterable#close()}.
 	 * <p>
 	 * This can generally achieved using a try-with-resources block, e.g.:
 	 * <pre>
@@ -132,9 +135,9 @@ public interface RDF4JGraph extends Graph, RDF4JGraphLike<Triple> {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * Note that the iterable <strong>must be closed</strong> with
-	 * {@link ClosableIterable#close()}. 
-	 * call 
+	 * Note that for graphs backed by a repository ({@link #asRepository()} is
+	 * present), the iterable <strong>must be closed</strong> with
+	 * {@link ClosableIterable#close()}.
 	 * <p>
 	 * This can generally achieved using a try-with-resources block, e.g.:
 	 * <pre>

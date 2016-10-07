@@ -25,8 +25,6 @@ import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFTerm;
-import org.apache.commons.rdf.api.Triple;
-import org.eclipse.rdf4j.repository.RepositoryConnection;
 
 
 /**
@@ -40,8 +38,10 @@ public interface RDF4JDataset extends Dataset, RDF4JGraphLike<Quad> {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * Note that the stream must be closed with {@link Stream#close()} to ensure
-	 * the underlying {@link RepositoryConnection} is closed.
+	 * <p>
+	 * Note that for datasets backed by a repository ({@link #asRepository()} is
+	 * present), the stream <strong>must be closed</strong> with
+	 * {@link Stream#close()}.
 	 * <p>
 	 * This can generally achieved using a try-with-resources block, e.g.:
 	 * <pre>
@@ -57,7 +57,8 @@ public interface RDF4JDataset extends Dataset, RDF4JGraphLike<Quad> {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * Note that the stream <strong>must be closed</strong> with
+	 * Note that for datasets backed by a repository ({@link #asRepository()} is
+	 * present), the stream <strong>must be closed</strong> with
 	 * {@link Stream#close()}.
 	 * <p>
 	 * This can generally achieved using a try-with-resources block, e.g.:
@@ -75,8 +76,10 @@ public interface RDF4JDataset extends Dataset, RDF4JGraphLike<Quad> {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * Note that the stream must be closed with {@link Stream#close()} to ensure
-	 * the underlying {@link RepositoryConnection} is closed.
+	 * <p>
+	 * Note that for datasets backed by a repository ({@link #asRepository()} is
+	 * present), the stream <strong>must be closed</strong> with
+	 * {@link Stream#close()}.
 	 * <p>
 	 * This can generally achieved using a try-with-resources block, e.g.:
 	 * <pre>
@@ -93,9 +96,9 @@ public interface RDF4JDataset extends Dataset, RDF4JGraphLike<Quad> {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * Note that the iterable <strong>must be closed</strong> with
-	 * {@link ClosableIterable#close()}. 
-	 * call 
+	 * Note that for datasets backed by a repository ({@link #asRepository()} is
+	 * present), the iterable <strong>must be closed</strong> with
+	 * {@link ClosableIterable#close()}.
 	 * <p>
 	 * This can generally achieved using a try-with-resources block, e.g.:
 	 * <pre>
@@ -116,9 +119,9 @@ public interface RDF4JDataset extends Dataset, RDF4JGraphLike<Quad> {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * Note that the iterable <strong>must be closed</strong> with
-	 * {@link ClosableIterable#close()}. 
-	 * call 
+	 * Note that for datasets backed by a repository ({@link #asRepository()} is
+	 * present), the iterable <strong>must be closed</strong> with
+	 * {@link ClosableIterable#close()}.
 	 * <p>
 	 * This can generally achieved using a try-with-resources block, e.g.:
 	 * <pre>
