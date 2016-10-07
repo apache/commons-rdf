@@ -24,11 +24,11 @@ import org.apache.commons.rdf.api.BlankNode;
 import org.apache.commons.rdf.jena.JenaBlankNode;
 import org.apache.jena.graph.Node;
 
-public class JenaBlankNodeImpl extends AbstractJenaRDFTerm implements JenaBlankNode {
+class JenaBlankNodeImpl extends AbstractJenaRDFTerm implements JenaBlankNode {
 
 	private UUID salt;
 
-	/* package */ JenaBlankNodeImpl(Node node, UUID salt) {
+	JenaBlankNodeImpl(Node node, UUID salt) {
 		super(node);
 		if (! node.isBlank()) {
 			throw new IllegalArgumentException("Node is not a blank node: " + node);

@@ -26,9 +26,11 @@ import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.jena.JenaLiteral;
 import org.apache.jena.graph.Node;
 
-public class JenaLiteralImpl extends AbstractJenaRDFTerm implements JenaLiteral {
+class JenaLiteralImpl extends AbstractJenaRDFTerm implements JenaLiteral {
 
-	/* package */ JenaLiteralImpl(Node node) {
+	private static JenaFactory jenaFactory = new JenaFactory(){};
+	
+	JenaLiteralImpl(Node node) {
 		super(node);
 		if (! node.isLiteral()) {
 			throw new IllegalArgumentException("Node is not a literal: " + node);
@@ -50,7 +52,7 @@ public class JenaLiteralImpl extends AbstractJenaRDFTerm implements JenaLiteral 
 
 	@Override
 	public IRI getDatatype() {
-		return JenaFactory.createIRI(asJenaNode().getLiteralDatatype().getURI());
+		return jenaFactory.createIRI(asJenaNode().getLiteralDatatype().getURI());
 	}
 
 	@Override

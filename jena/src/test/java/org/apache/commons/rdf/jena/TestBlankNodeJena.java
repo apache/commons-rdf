@@ -26,6 +26,8 @@ import org.apache.commons.rdf.jena.impl.JenaFactory;
 
 public class TestBlankNodeJena extends AbstractBlankNodeTest {
 
+	JenaFactory jenaFactory = new JenaFactory(){};
+	
 	/** 
 	 * Fixed salt for the purpose of this test.
 	 */
@@ -33,12 +35,12 @@ public class TestBlankNodeJena extends AbstractBlankNodeTest {
 
 	@Override
     protected BlankNode getBlankNode() {
-        return JenaFactory.createBlankNode(SALT) ;
+        return jenaFactory.createBlankNode(SALT) ;
     }
     
     @Override
     protected BlankNode getBlankNode(String identifier) {
-        return JenaFactory.createBlankNode(identifier, SALT) ;
+        return jenaFactory.createBlankNode(identifier, SALT) ;
     }
 }
 

@@ -40,12 +40,14 @@ import org.apache.jena.sparql.core.Quad;
  * 
  * @see JenaTripleImpl
  * @see JenaQuadImpl
- * @see JenaFactory#createGeneralizedTriple(RDFTerm, RDFTerm, RDFTerm)
- * @see JenaFactory#createGeneralizedQuad(RDFTerm, RDFTerm, RDFTerm, RDFTerm)
+ * @see jenaFactory#createGeneralizedTriple(RDFTerm, RDFTerm, RDFTerm)
+ * @see jenaFactory#createGeneralizedQuad(RDFTerm, RDFTerm, RDFTerm, RDFTerm)
  *
  */
-public class JenaGeneralizedQuad<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm, G extends RDFTerm> implements JenaQuadLike<S,P,O,G> {
+class JenaGeneralizedQuad<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm, G extends RDFTerm> implements JenaQuadLike<S,P,O,G> {
 
+	private static JenaFactory jenaFactory = new JenaFactory(){};
+	
 	final Optional<G> graphName;
 	final S subject;
 	final P predicate;
@@ -53,7 +55,7 @@ public class JenaGeneralizedQuad<S extends RDFTerm, P extends RDFTerm, O extends
 	org.apache.jena.sparql.core.Quad quad = null;
 	org.apache.jena.graph.Triple triple = null;
 	
-	JenaGeneralizedQuad(S subject, P predicate, O object, Optional<G> graphName) {		
+	JenaGeneralizedQuad(S subject, P predicate, O object, Optional<G> graphName) {
 		this.subject = Objects.requireNonNull(subject);
 		this.predicate = Objects.requireNonNull(predicate);
 		this.object = Objects.requireNonNull(object);
@@ -67,18 +69,18 @@ public class JenaGeneralizedQuad<S extends RDFTerm, P extends RDFTerm, O extends
 	@SuppressWarnings("unchecked")
 	JenaGeneralizedQuad(org.apache.jena.sparql.core.Quad quad, UUID salt) {
 		this.quad = Objects.requireNonNull(quad);
-		this.subject = (S) JenaFactory.fromJena(quad.getSubject(), salt);
-		this.predicate = (P) JenaFactory.fromJena(quad.getPredicate(), salt);
-		this.object = (O)JenaFactory.fromJena(quad.getObject(), salt);
-		this.graphName = Optional.of((G) JenaFactory.fromJena(quad.getGraph(), salt));		
+		this.subject = (S) jenaFactory.fromJena(quad.getSubject(), salt);
+		this.predicate = (P) jenaFactory.fromJena(quad.getPredicate(), salt);
+		this.object = (O)jenaFactory.fromJena(quad.getObject(), salt);
+		this.graphName = Optional.of((G) jenaFactory.fromJena(quad.getGraph(), salt));		
 	}
 
 	@SuppressWarnings("unchecked")
 	JenaGeneralizedQuad(org.apache.jena.graph.Triple triple, UUID salt) {
 		this.triple = Objects.requireNonNull(triple);		
-		this.subject = (S) JenaFactory.fromJena(triple.getSubject(), salt);
-		this.predicate = (P) JenaFactory.fromJena(triple.getPredicate(), salt);
-		this.object = (O)JenaFactory.fromJena(triple.getObject(), salt);
+		this.subject = (S) jenaFactory.fromJena(triple.getSubject(), salt);
+		this.predicate = (P) jenaFactory.fromJena(triple.getPredicate(), salt);
+		this.object = (O)jenaFactory.fromJena(triple.getObject(), salt);
 		this.graphName = Optional.empty();
 	}
 

@@ -35,7 +35,7 @@ import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 
-public class JenaGraphImpl implements JenaGraph {
+class JenaGraphImpl implements JenaGraph {
 
 	private final org.apache.jena.graph.Graph graph;
 	private final UUID salt;

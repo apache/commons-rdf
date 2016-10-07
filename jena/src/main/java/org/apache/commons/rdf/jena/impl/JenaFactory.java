@@ -47,66 +47,67 @@ import org.apache.jena.sparql.graph.GraphFactory;
 /**
  * Construct Jena implementations of Commons RDF.
  * <p>
- * This class is primarily an internal helper class, users should instead use
- * {@link JenaRDFTermFactory}.
+ * This class is deliberately an abstract class, as it is an internal helper
+ * which <strong>may change</strong> in any minor version update; users should
+ * instead use {@link JenaRDFTermFactory}.
  * <p>
- * For the purpose of blank node identity, some of 
- * these methods require a {@link UUID} to use as a salt.
- * See {@link BlankNode#uniqueReference()} for details.
+ * For the purpose of blank node identity, some of these methods require a
+ * {@link UUID} to use as a salt. See {@link BlankNode#uniqueReference()} for
+ * details.
  * 
  */
-public class JenaFactory {
+public abstract class JenaFactory {
 
-	public static JenaBlankNode createBlankNode(String id, UUID salt) {
+	public JenaBlankNode createBlankNode(String id, UUID salt) {
 		return new JenaBlankNodeImpl(NodeFactory.createBlankNode(id), salt);
 	}
 
-	public static JenaBlankNode createBlankNode(UUID salt) {
+	public JenaBlankNode createBlankNode(UUID salt) {
 		return new JenaBlankNodeImpl(NodeFactory.createBlankNode(), salt);
 	}
-	public static JenaDataset createDataset(UUID salt) {
+	public JenaDataset createDataset(UUID salt) {
 		DatasetGraph dg = DatasetGraphFactory.createGeneral();
 		// Or which createMethod() -- a bit confusing with lots of choice..
 		return new JenaDatasetImpl(dg, salt);
 	}
 
-	public static JenaGraph createGraph(UUID salt) {
+	public JenaGraph createGraph(UUID salt) {
 		return new JenaGraphImpl(GraphFactory.createDefaultGraph(), salt);
 	}
 
-	public static JenaIRI createIRI(String iriStr) {
+	public JenaIRI createIRI(String iriStr) {
 		return new JenaIRIImpl(iriStr);
 	}
 
-	public static JenaLiteral createLiteral(String lexStr) {
+	public JenaLiteral createLiteral(String lexStr) {
 		return new JenaLiteralImpl(NodeFactory.createLiteral(lexStr));
 	}
 
-	public static JenaLiteral createLiteralDT(String lexStr, String datatypeIRI) {
+	public JenaLiteral createLiteralDT(String lexStr, String datatypeIRI) {
 		return new JenaLiteralImpl(NodeFactory.createLiteral(lexStr, NodeFactory.getType(datatypeIRI)));
 	}
 
-	public static JenaLiteral createLiteralLang(String lexStr, String langTag) {
+	public JenaLiteral createLiteralLang(String lexStr, String langTag) {
 		return new JenaLiteralImpl(NodeFactory.createLiteral(lexStr, langTag));
 	}
 
-	public static JenaTriple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+	public JenaTriple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
 		return new JenaTripleImpl(subject, predicate, object);
 	}
 
-	public static JenaQuad createQuad(BlankNodeOrIRI subject, IRI predicate, RDFTerm object, BlankNodeOrIRI graphName) {
+	public JenaQuad createQuad(BlankNodeOrIRI subject, IRI predicate, RDFTerm object, BlankNodeOrIRI graphName) {
 		return new JenaQuadImpl(subject, predicate, object, Optional.ofNullable(graphName));
 	}
 
-	public static JenaTripleLike<RDFTerm,RDFTerm,RDFTerm> createGeneralizedTriple(RDFTerm subject, RDFTerm predicate, RDFTerm object) {
+	public JenaTripleLike<RDFTerm,RDFTerm,RDFTerm> createGeneralizedTriple(RDFTerm subject, RDFTerm predicate, RDFTerm object) {
 		return new JenaGeneralizedQuad<RDFTerm,RDFTerm,RDFTerm,RDFTerm>(subject, predicate, object);
 	}
 
-	public static JenaQuadLike<RDFTerm,RDFTerm,RDFTerm,RDFTerm> createGeneralizedQuad(RDFTerm subject, RDFTerm predicate, RDFTerm object, RDFTerm graphName) {
+	public JenaQuadLike<RDFTerm,RDFTerm,RDFTerm,RDFTerm> createGeneralizedQuad(RDFTerm subject, RDFTerm predicate, RDFTerm object, RDFTerm graphName) {
 		return new JenaGeneralizedQuad<RDFTerm,RDFTerm,RDFTerm,RDFTerm>(subject, predicate, object, Optional.ofNullable(graphName));
 	}
 	
-	public static JenaRDFTerm fromJena(Node node, UUID salt) throws ConversionException {
+	public JenaRDFTerm fromJena(Node node, UUID salt) throws ConversionException {
 		if (! node.isConcrete()) {
 			throw new ConversionException("Node is not a concrete RDF Term: " + node); 
 		}
@@ -130,31 +131,31 @@ public class JenaFactory {
 		throw new ConversionException("Unrecognized node type: " + node);
 	}
 
-	public static JenaGraph fromJena(org.apache.jena.graph.Graph graph, UUID salt) {
+	public JenaGraph fromJena(org.apache.jena.graph.Graph graph, UUID salt) {
 		return new JenaGraphImpl(graph, salt);
 	}
 
-	public static JenaGraph fromJena(Model model, UUID salt) {
+	public JenaGraph fromJena(Model model, UUID salt) {
 		return new JenaGraphImpl(model, salt);
 	}
 
-	public static JenaDataset fromJena(DatasetGraph datasetGraph, UUID salt) {
+	public JenaDataset fromJena(DatasetGraph datasetGraph, UUID salt) {
 		return new JenaDatasetImpl(datasetGraph, salt);
 	}
 	
-	public static JenaTriple fromJena(org.apache.jena.graph.Triple triple, UUID salt) {
+	public JenaTriple fromJena(org.apache.jena.graph.Triple triple, UUID salt) {
 		return new JenaTripleImpl(triple, salt);
 	}
 
-	public static JenaTripleLike<RDFTerm, RDFTerm, RDFTerm> fromJenaGeneralized(org.apache.jena.graph.Triple triple, UUID salt) {
+	public JenaTripleLike<RDFTerm, RDFTerm, RDFTerm> fromJenaGeneralized(org.apache.jena.graph.Triple triple, UUID salt) {
 		return new JenaGeneralizedQuad<RDFTerm,RDFTerm,RDFTerm,RDFTerm>(triple, salt);
 	}
 
-	public static JenaQuadLike<RDFTerm,RDFTerm,RDFTerm,RDFTerm> fromJenaGeneralized(org.apache.jena.sparql.core.Quad quad, UUID salt) {
+	public JenaQuadLike<RDFTerm,RDFTerm,RDFTerm,RDFTerm> fromJenaGeneralized(org.apache.jena.sparql.core.Quad quad, UUID salt) {
 		return new JenaGeneralizedQuad<RDFTerm,RDFTerm,RDFTerm,RDFTerm>(quad, salt);
 	}
 	
-	public static JenaQuad fromJena(org.apache.jena.sparql.core.Quad quad, UUID salt) {
+	public JenaQuad fromJena(org.apache.jena.sparql.core.Quad quad, UUID salt) {
 		return new JenaQuadImpl(quad, salt);
 	}
 

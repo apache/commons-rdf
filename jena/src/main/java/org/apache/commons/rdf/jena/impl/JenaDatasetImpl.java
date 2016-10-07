@@ -40,7 +40,7 @@ import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.sparql.core.DatasetGraph;
 import org.apache.jena.sparql.core.GraphView;
 
-public class JenaDatasetImpl implements JenaDataset {
+class JenaDatasetImpl implements JenaDataset {
 
 	private DatasetGraph graph;
 	private UUID salt;
@@ -94,7 +94,7 @@ public class JenaDatasetImpl implements JenaDataset {
 
 	private Node toJenaPattern(Optional<? extends RDFTerm> graphName) {
 		// In theory we could have done:
-		//   factory.toJena(graphName.orElse(JenaFactory::createAnyVariable))
+		//   factory.toJena(graphName.orElse(jenaFactory::createAnyVariable))
 		// but because of generics casting rules that doesn't work :(						
 
 		if (graphName == null) {
