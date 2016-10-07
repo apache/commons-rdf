@@ -416,8 +416,7 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 		if (tripleLike instanceof RDF4JTripleLike) {
 			// Return original statement - this covers both RDF4JQuad and
 			// RDF4JTriple
-			RDF4JTripleLike rdf4jTriple = (RDF4JTripleLike) tripleLike;
-			return rdf4jTriple.asStatement();
+			return ((RDF4JTripleLike) tripleLike).asStatement();
 		}
 
 		org.eclipse.rdf4j.model.Resource subject = (org.eclipse.rdf4j.model.Resource) asValue(tripleLike.getSubject());
