@@ -26,7 +26,6 @@ import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.jena.ConversionException;
-import org.apache.commons.rdf.jena.JenaAny;
 import org.apache.commons.rdf.jena.JenaBlankNode;
 import org.apache.commons.rdf.jena.JenaDataset;
 import org.apache.commons.rdf.jena.JenaGraph;
@@ -38,7 +37,6 @@ import org.apache.commons.rdf.jena.JenaRDFTerm;
 import org.apache.commons.rdf.jena.JenaRDFTermFactory;
 import org.apache.commons.rdf.jena.JenaTriple;
 import org.apache.commons.rdf.jena.JenaTripleLike;
-import org.apache.commons.rdf.jena.JenaVariable;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.NodeFactory;
 import org.apache.jena.rdf.model.Model;
@@ -99,14 +97,6 @@ public class JenaFactory {
 	public static JenaQuad createQuad(BlankNodeOrIRI subject, IRI predicate, RDFTerm object, BlankNodeOrIRI graphName) {
 		return new JenaQuadImpl(subject, predicate, object, Optional.ofNullable(graphName));
 	}
-	
-	public static JenaVariable createVariable(String name) {
-		return new JenaVariableImpl(NodeFactory.createVariable(name));
-	}
-	
-	public static JenaAny createAnyVariable() {
-		return JenaAnyImpl.Singleton.instance;
-	}
 
 	public static JenaTripleLike<RDFTerm,RDFTerm,RDFTerm> createGeneralizedTriple(RDFTerm subject, RDFTerm predicate, RDFTerm object) {
 		return new JenaGeneralizedQuad<RDFTerm,RDFTerm,RDFTerm,RDFTerm>(subject, predicate, object);
@@ -134,12 +124,14 @@ public class JenaFactory {
 			return new JenaBlankNodeImpl(node, salt);
 		}
 		if (node.equals(Node.ANY)) {
-			return JenaAnyImpl.Singleton.instance;
+			// NOTE: JenaAny no longer supported by Commons RDF
+			//return JenaAnyImpl.Singleton.instance;
 		}
 		if (node.isVariable()) {
-			return new JenaVariableImpl(node);
+			// NOTE: JenaVariable no longer supported by Commons RDF
+			//return new JenaVariableImpl(node);
 		}
-		throw new IllegalArgumentException("Unrecognized node type: " + node);
+		throw new ConversionException("Unrecognized node type: " + node);
 	}
 
 	public static JenaGraph fromJena(org.apache.jena.graph.Graph graph, UUID salt) {

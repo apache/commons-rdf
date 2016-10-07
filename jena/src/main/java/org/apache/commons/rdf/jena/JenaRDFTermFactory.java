@@ -138,14 +138,6 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 		return JenaFactory.createQuad(subject, predicate, object, graphName);
 	}
 
-	public JenaAny createAnyVariable() {
-		return JenaFactory.createAnyVariable();
-	}
-	
-	public JenaVariable createVariable(String variableName) {
-		return JenaFactory.createVariable(variableName);
-	}
-	
 	/**
 	 * Create a generalized Jena triple.
 	 * <p>
