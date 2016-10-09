@@ -125,14 +125,21 @@ The project is composed by two modules:
 * [Simple](apidocs/index.html?org/apache/commons/rdf/simple/package-summary.html)
   provides a simple implementation, mainly for internal validation and very simple
   scenarios.
+* [jena](apidocs/index.html?org/apache/commons/rdf/jena/package-summary.html)
+    provides an Apache Jena-backed implementation
 
-Both modules follow the [semantic versioning](http://semver.org/) principles,
+* [rdf4j](apidocs/index.html?org/apache/commons/rdf/rdf4j/package-summary.html)
+    provides an Eclipse RDF4J-backed implementation
+* [jsonld-java](apidocs/index.html?org/apache/commons/rdf/jsonldjava/package-summary.html)
+    provides an JSONLD-Java-backed implementation    
+
+These modules follow the [semantic versioning](http://semver.org/) principles,
 where version `x.y.z` of `Simple` implements version `x.y` of
 the `API`; i.e., the version `z` are backwards-compatible patches of the
 implementation.
 
-[Implementations of the Commons RDF API](implementations.html) are
-being developed as additional modules. [Contributions welcome!](contributing.html)
+For more details, read about the
+[implementations of the Commons RDF API](implementations.html).
 
 
 ## Contributing
