@@ -22,9 +22,9 @@
 
 Some common tasks:
 
-* Build the site: `mvn clean site` and then access the generated site at `target/site/index.html`
+* Build the site: `mvn clean package site` and then access the generated site at `target/site/index.html`
 
-* Publish the site: `mvn clean site scm-publish:publish-scm`
+* Publish the site: `mvn clean package site scm-publish:publish-scm`
 
 You will need to have `svn` installed.
 
