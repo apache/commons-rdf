@@ -20,15 +20,26 @@
 
 # Implementations
 
-As a set of Java interfaces, Commons RDF must be used with one or more
+The Commons RDF API must be used with one or more
 implementations.
 
-## Current implementations
+The Apache Commons RDF distribution includes bindings for the implementations:
 
-### org.apache.commons.rdf.simple
+* [Commons RDF Simple](#Commons RDF Simple)
+* [Apache Jena](#Apache Jena)
+* [Eclipse RDF4J](#Apache Jena) (formerly Sesame)
+
+One goal of the Commons RDF API is to enable runtime cross-compatibility of such implementations, therefore it is perfectly valid to combine these and for instance do:
+
+* Copy triples from a Jena `Model` to an RDF4J `Repository`  (e.g. copying between two Common RDF `Graph`s)
+* Create an RDF4J-backed `Quad` that use a Jena-backed `BlankNode`
+* Read an RDF file with Jena's parsers into an RDF4J-backed `Dataset`
+
+
+### Commons RDF Simple
 
 [org.apache.commons.rdf.simple](apidocs/org/apache/commons/rdf/simple/package-summary.html)
-is maintained as part of Commons RDF, and its main purpose is to verify and
+is part of Commons RDF, and its main purpose is to verify and
 clarify the [test harness](testapidocs/org/apache/commons/rdf/api/package-summary.html).
 It is backed by simple (if not naive) in-memory POJO objects and have no external
 dependencies.
@@ -36,7 +47,7 @@ dependencies.
 Note that although this module fully implements the commons-rdf API, it should
 **not** be considered as a reference implementation. It is **not thread-safe** and
 probably **not scalable**, however it may be useful for testing and simple
-usage (e.g. prototyping).
+usage (e.g. prototyping and creating graph fragments).
 
 **Usage:**
 
@@ -44,7 +55,7 @@ usage (e.g. prototyping).
 <dependency>
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-rdf-simple</artifactId>
-    <version>0.2.0-incubating-SNAPSHOT</version>
+    <version>0.3.0-incubating-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -57,70 +68,143 @@ RDFTermFactory rdfTermFactory = new SimpleRDFTermFactory();
 Graph graph = rdfTermFactory.createGraph();
 ```
 
+### Apache Jena
+
+[org.apache.commons.rdf.jena](apidocs/org/apache/commons/rdf/jena/package-summary.html) is an implementation of the Commons RDF API backed by [Apache Jena](http://jena.apache.org/), including converters from/to Jena and Commons RDF.
+
+
+**Usage:**
+
+```xml
+<dependency>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-rdf-jena</artifactId>
+    <version>0.3.0-incubating-SNAPSHOT</version>
+</dependency>
+```
+
+```java
+import org.apache.commons.rdf.api.Graph;
+import org.apache.commons.rdf.api.RDFTermFactory;
+import org.apache.commons.rdf.jena.JenaRDFTermFactory;
+
+RDFTermFactory rdfTermFactory = new JenaRDFTermFactory();
+Graph graph = rdfTermFactory.createGraph();
+```
+
+Objects created with  [JenaRDFTermFactory](apidocs/org/apache/commons/rdf/jena/JenaRDFTermFactory.html) implement interfaces like [JenaQuad](apidocs/org/apache/commons/rdf/jena/JenaQuad.html) and [JenaLiteral](apidocs/org/apache/commons/rdf/jena/JenaLiteral.html) which give access to the underlying Jena objects through methods like [asJenaNode()](apidocs/org/apache/commons/rdf/jena/JenaRDFTerm.html#asJenaNode--) and [asJenaGraph()](apidocs/org/apache/commons/rdf/jena/JenaGraph.html#asJenaGraph--).
+
+`JenaRDFTermFactory` includes additional methods for converting from/to Apache Jena and Commons RDF, like [fromJena(Node)](apidocs/org/apache/commons/rdf/jena/JenaRDFTermFactory.html#fromJena-org.apache.jena.graph.Node-) and [toJena(RDFTerm)](apidocs/org/apache/commons/rdf/jena/JenaRDFTermFactory.html#toJena-org.apache.commons.rdf.api.RDFTerm-).
+
+#### Generalized RDF
+
+Apache Jena can support [generalized RDF](https://www.w3.org/TR/rdf11-concepts/#section-generalized-rdf), e.g.:
+
+> A generalized RDF triple is a triple having a subject, a predicate, and object, where each can be an IRI, a blank node or a literal.
+
+Within Commons RDF it is possible to create [generalized triples](apidocs/org/apache/commons/rdf/jena/JenaRDFTermFactory.html#createGeneralizedTriple-org.apache.commons.rdf.api.RDFTerm-org.apache.commons.rdf.api.RDFTerm-org.apache.commons.rdf.api.RDFTerm-) and [quads](apidocs/org/apache/commons/rdf/jena/JenaRDFTermFactory.html#createGeneralizedQuad-org.apache.commons.rdf.api.RDFTerm-org.apache.commons.rdf.api.RDFTerm-org.apache.commons.rdf.api.RDFTerm-org.apache.commons.rdf.api.RDFTerm-) using `JenaRDFTermFactory` - however note that the returned [JenaGeneralizedTripleLike](apidocs/org/apache/commons/rdf/jena/JenaGeneralizedTripleLike.html) and
+[JenaGeneralizedQuadLike](apidocs/org/apache/commons/rdf/jena/JenaGeneralizedQuadLike.html)
+ do not have the [equality semantics of Triple](apidocs/org/apache/commons/rdf/api/Triple.html#equals-java.lang.Object-) or [Quad](apidocs/org/apache/commons/rdf/api/Quad.html#equals-java.lang.Object-) and thus can't be used with the regular [Graph](apidocs/org/apache/commons/rdf/api/Graph.html) or [Dataset](apidocs/org/apache/commons/rdf/api/Dataset.html) methods.
+
+The generalized triples/quads can be accessed as [org.apache.jena.graph.Triple](https://jena.apache.org/documentation/javadoc/jena/org/apache/jena/graph/Triple.html) and [org.apache.jena.sparql.core.Quad](https://jena.apache.org/documentation/javadoc/arq/org/apache/jena/sparql/core/Quad.html) - but can't currently be used with an equivalent _generalized graph_ or _generalized dataset_ within Commons RDF (see [COMMONSRDF-42](https://issues.apache.org/jira/browse/COMMONSRDF-42)).
+
+### Eclipse RDF4j
+
+[org.apache.commons.rdf.rdf4j](apidocs/org/apache/commons/rdf/rdf4j/package-summary.html) is an implementation of the Commons RDF API backed by Eclispe [RDF4J 2.0](http://rdf4j.org/) (formerly Sesame), including converters from/to RDF4J and Commons RDF.
+
+**Usage:**
+
+```xml
+<dependency>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-rdf-rdf4j</artifactId>
+    <version>0.3.0-incubating-SNAPSHOT</version>
+</dependency>
+```
+
+```java
+import org.apache.commons.rdf.api.Graph;
+import org.apache.commons.rdf.api.RDFTermFactory;
+import org.apache.commons.rdf.rdf4j.RDF4JTermFactory;
+
+RDFTermFactory rdfTermFactory = new RDF4JTermFactory();
+Graph graph = rdfTermFactory.createGraph();
+```
+
+Objects created with  [RDF4JTermFactory](apidocs/org/apache/commons/rdf/rdf4j/RDF4JTermFactory.html) implement interfaces like [RDF4JTerm](apidocs/org/apache/commons/rdf/rdf4j/RDF4JTerm.html) and [RDF4JGraph](apidocs/org/apache/commons/rdf/rdf4j/RDF4JGraph.html) which give access to the underlying Jena objects through methods like [asValue()](apidocs/org/apache/commons/rdf/rdf4j/RDF4JTerm.html#asValue--) and [asRepository()](apidocs/org/apache/commons/rdf/rdf4j/RDF4JGraphLike.html#asRepository--).
+
+`RDF4JTermFactory` includes additional methods for converting from/to RDF4J and Commons RDF, like [asTriple(Statement)](apidocs/org/apache/commons/rdf/rdf4j/RDF4JTermFactory.html#asTriple-org.eclipse.rdf4j.model.Statement-) and
+[asRDFTerm(Value)](apidocs/org/apache/commons/rdf/rdf4j/RDF4JTermFactory.html#asRDFTerm-org.eclipse.rdf4j.model.Value-).
+
+#### Closing RDF4J resources
+
+When using `RDF4JTermFactory` with an RDF4J `Repository`, e.g. from [asRDFTermGraph(Repository)](apidocs/org/apache/commons/rdf/rdf4j/RDF4JTermFactory.html#asRDFTermGraph-org.eclipse.rdf4j.repository.Repository-org.apache.commons.rdf.rdf4j.RDF4JTermFactory.Option...-), care must be taken to close underlying resources when using the methods [stream()](apidocs/org/apache/commons/rdf/rdf4j/RDF4JGraph.html#stream--) and [iterate()](apidocs/org/apache/commons/rdf/rdf4j/RDF4JGraph.html#iterate--) for both `Graph`s and `Dataset`s.
+
+This can generally achieved using a [try-with-resources](https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html) block, e.g.:
+
+
+```java
+int subjects;
+try (Stream<RDF4JTriple> s : graph.stream(s,p,o)) {
+  subjects = s.map(RDF4JTriple::getSubject).distinct().count()
+}
+```
+
+This will ensure that the underlying RDF4J [RepositoryConnection](http://rdf4j.org/javadoc/latest/org/eclipse/rdf4j/repository/RepositoryConnection.html) and [RepositoryResult](http://rdf4j.org/javadoc/latest/org/eclipse/rdf4j/repository/RepositoryResult.html)
+
+Methods like [Graph.add()](apidocs/org/apache/commons/rdf/api/Graph.html#add-org.apache.commons.rdf.api.Triple-) will use and close separate transactions per method calls and therefore do not need any special handling; however this will come with a performance hit when calling graph/dataset methods repeatably. (See [COMMONSRDF-45](https://issues.apache.org/jira/browse/COMMONSRDF-45))
+
+[java.util.Iteratable](http://docs.oracle.com/javase/8/docs/api/java/lang/Iterable.html) and [java.util.Iterator](http://docs.oracle.com/javase/8/docs/api/java/util/Iterator.html) does not extend [`AutoClosable`](http://docs.oracle.com/javase/8/docs/api/java/lang/AutoCloseable.html), and as there are many ways that a for-each loop may not run to exhaustion, Commons RDF introduces [ClosableIterable](apidocs/org/apache/commons/rdf/rdf4j/ClosableIterable.html), which can be used with RDF4J as:
+
+```java
+RDF4JGraph graph; // ...
+try (ClosableIterable<Triple> s : graph.iterate()) {
+ for (Triple t : triples) {
+     return t; // OK to terminate for-loop early
+ }
+}
+```
+
+### JSONLD-Java
+
+[org.apache.commons.rdf.jsonld](apidocs/org/apache/commons/rdf/jsonld/package-summary.html) is an implementation of the Commons RDF API backed by [JSON-LD-Java](https://github.com/jsonld-java/jsonld-java).
+
+This is primarily intended to support [JSON-LD](http://json-ld.org/) parsing and writing.
+
+**Usage:**
+
+```xml
+<dependency>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-rdf-jsonld</artifactId>
+    <version>0.3.0-incubating-SNAPSHOT</version>
+</dependency>
+```
+
+```java
+import org.apache.commons.rdf.api.Graph;
+import org.apache.commons.rdf.api.RDFTermFactory;
+import org.apache.commons.rdf.jsonld.JsonLdRDFTermFactory;
+
+RDFTermFactory rdfTermFactory = new JsonLdRDFTermFactory();
+Graph graph = rdfTermFactory.createGraph();
+```
+
+## External implementations
+
+
 ### OWL API
 
 [OWL API](http://owlapi.sourceforge.net/) 5 extends Commons RDF
 directly for its family of
 [RDFNode](https://github.com/owlcs/owlapi/blob/version5/api/src/main/java/org/semanticweb/owlapi/io/RDFNode.java#L25)
-implementations.
-
-For details, see [pull request #446](https://github.com/owlcs/owlapi/pull/446),
-and [pull request #452](https://github.com/owlcs/owlapi/pull/452)).
+implementations. It is a partial compatibility implementation without its own `RDFTermFactory`, `Graph` or `Dataset`.
 
 
 
-## Planned implementations
-
-The information in this section should not be considered updated or
-authoritative as it describes ongoing development.
-
-Feel free to [suggest changes](http://commonsrdf.incubator.apache.org/contributing.html) to the
-[source code for this page](https://github.com/apache/incubator-commonsrdf/blob/master/src/site/markdown/implementations.md).
-
-
-
-### Apache Jena
-
-An implementation that maps [Apache Jena](http://jena.apache.org/) types
-to Commons RDF is being developed on
-the [`jena`](https://github.com/apache/incubator-commonsrdf/tree/jena)
-branch of Commons RDF.
-
-For details, see [COMMONSRDF-33](https://issues.apache.org/jira/browse/COMMONSRDF-33),
-[JENA-1015](https://issues.apache.org/jira/browse/JENA-1015) or contact
-[dev@commonsrdf](mail-lists.html).
-
-
-### Eclipse RDF4j (formerly Sesame)
-
-An implementation that maps [RDF4J 2.0](http://rdf4j.org/)
-to Commons RDF is being developed on
-the [`rdf4j`](https://github.com/apache/incubator-commonsrdf/tree/rdf4j)
-branch of Commons RDF.
-
-
-For details, see [COMMONSRDF-35](https://issues.apache.org/jira/browse/COMMONSRDF-35),
-[SES-2091](https://openrdf.atlassian.net/browse/SES-2091) or contact
-[dev@commonsrdf](mail-lists.html).
-
-
-### Eclipse RDF4j (formerly Sesame)
-
-An implementation that maps [JSON-LD-Java](https://github.com/jsonld-java/jsonld-java)
-to Commons RDF is being developed on
-the [`jsonld-java`](https://github.com/apache/incubator-commonsrdf/tree/jsonld-java/jsonld-java)
-branch of Commons RDF.
-
-This aims to support [JSON-LD](http://json-ld.org/) parsing and writing by adding
-new interfaces like
-[RDFParserBuilder](https://github.com/apache/incubator-commonsrdf/pull/21).
-
-For details, see [COMMONSRDF-36](https://issues.apache.org/jira/browse/COMMONSRDF-36) or contact
-[dev@commonsrdf](mail-lists.html).
-
+## Related implementations
 
 ### Apache Clerezza
 
 [Apache Clerezza](https://clerezza.apache.org/) is
-aligning its [RDF core](https://github.com/apache/clerezza-rdf-core) module
-with Commons RDF.
+aligning its [RDF core](https://github.com/apache/clerezza-rdf-core) module with Commons RDF.
