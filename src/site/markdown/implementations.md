@@ -25,11 +25,16 @@ implementations.
 
 The Apache Commons RDF distribution includes bindings for the implementations:
 
-* [Commons RDF Simple](#Commons RDF Simple)
-* [Apache Jena](#Apache Jena)
-* [Eclipse RDF4J](#Apache Jena) (formerly Sesame)
+* [Commons RDF Simple](#Commons-RDF-Simple)
+* [Apache Jena](#Apache-Jena)
+* [Eclipse RDF4J](#Eclipse-RDF4J) (formerly Sesame)
 
-One goal of the Commons RDF API is to enable runtime cross-compatibility of such implementations, therefore it is perfectly valid to combine these and for instance do:
+In addition there can be [External implementations](#External-implementations)
+which are released separately by their respective projects.
+
+One goal of the Commons RDF API is to enable runtime cross-compatibility
+of its implementations, therefore it is perfectly valid to combine them
+and for instance do:
 
 * Copy triples from a Jena `Model` to an RDF4J `Repository`  (e.g. copying between two Common RDF `Graph`s)
 * Create an RDF4J-backed `Quad` that use a Jena-backed `BlankNode`
@@ -151,10 +156,14 @@ try (Stream<RDF4JTriple> s : graph.stream(s,p,o)) {
 ```
 
 This will ensure that the underlying RDF4J [RepositoryConnection](http://rdf4j.org/javadoc/latest/org/eclipse/rdf4j/repository/RepositoryConnection.html) and [RepositoryResult](http://rdf4j.org/javadoc/latest/org/eclipse/rdf4j/repository/RepositoryResult.html)
+are closed after use.
 
-Methods like [Graph.add()](apidocs/org/apache/commons/rdf/api/Graph.html#add-org.apache.commons.rdf.api.Triple-) will use and close separate transactions per method calls and therefore do not need any special handling; however this will come with a performance hit when calling graph/dataset methods repeatably. (See [COMMONSRDF-45](https://issues.apache.org/jira/browse/COMMONSRDF-45))
+Methods that return directly, like
+[Graph.add()](apidocs/org/apache/commons/rdf/api/Graph.html#add-org.apache.commons.rdf.api.Triple-)
+and [Dataset.size()](apidocs/org/apache/commons/rdf/api/Dataset.html#size--)
+will use and close separate transactions per method calls and therefore do not need any special handling; however this will come with a performance hit when doing multiple graph/dataset modifications. (See [COMMONSRDF-45](https://issues.apache.org/jira/browse/COMMONSRDF-45))
 
-[java.util.Iteratable](http://docs.oracle.com/javase/8/docs/api/java/lang/Iterable.html) and [java.util.Iterator](http://docs.oracle.com/javase/8/docs/api/java/util/Iterator.html) does not extend [`AutoClosable`](http://docs.oracle.com/javase/8/docs/api/java/lang/AutoCloseable.html), and as there are many ways that a for-each loop may not run to exhaustion, Commons RDF introduces [ClosableIterable](apidocs/org/apache/commons/rdf/rdf4j/ClosableIterable.html), which can be used with RDF4J as:
+Java's [java.util.Iteratable](http://docs.oracle.com/javase/8/docs/api/java/lang/Iterable.html) and [java.util.Iterator](http://docs.oracle.com/javase/8/docs/api/java/util/Iterator.html) does not extend [`AutoClosable`](http://docs.oracle.com/javase/8/docs/api/java/lang/AutoCloseable.html), and as there are many ways that a for-each loop may not run to exhaustion, Commons RDF introduces [ClosableIterable](apidocs/org/apache/commons/rdf/rdf4j/ClosableIterable.html), which can be used with RDF4J as:
 
 ```java
 RDF4JGraph graph; // ...
