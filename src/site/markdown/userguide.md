@@ -21,7 +21,7 @@
 # User Guide
 
 This page shows some examples of a client using the Commons RDF API.
-It was last updated for version `0.2.0-incubating` of the
+It was last updated for version `0.3.0-incubating` of the
 Commons RDF [API](apidocs/).
 
 * [Introduction](#Introduction)
@@ -284,8 +284,10 @@ e.g. `http://example.com/alice` or `http://ns.example.org/vocab#term`.
 
 > IRIs in the RDF abstract syntax MUST be absolute, and MAY contain a fragment identifier.
 
-In RDF, an IRI identifies a resource that can be used as a _subject_,
-_predicate_ or _object_ of a [Triple](apidocs/org/apache/commons/rdf/api/Triple.html).
+An IRI identifies a resource that can be used as a _subject_,
+_predicate_ or _object_ of a [Triple](apidocs/org/apache/commons/rdf/api/Triple.html) or
+[Quad](apidocs/org/apache/commons/rdf/api/Quad.html),
+where it can also be used a _graph name_.
 
 To create an `IRI` instance from a `RDFTermFactory`, use [createIRI](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createIRI-java.lang.String-):
 
@@ -301,8 +303,8 @@ System.out.println(iri.getIRIString());
 
 > `http://example.com/alice`
 
-_Note: The IRI string might contain non-ASCII characters which must be
-%-encoded for applications that expect an URI. It is currently
+_Note: The **IRI** string might contain non-ASCII characters which must be
+%-encoded for applications that expect an **URI**. It is currently
 out of scope for Commons RDF to perform such a conversion,
 however implementations might provide separate methods for that purpose._
 
@@ -342,7 +344,9 @@ System.out.println(iri.equals(factory.createLiteral("http://example.com/alice"))
 A [blank node](http://www.w3.org/TR/rdf11-concepts/#section-blank-nodes) is a
 resource which, unlike an IRI, is not directly identified. Blank nodes can be
 used as _subject_ or _object_ of a
-[Triple](apidocs/org/apache/commons/rdf/api/Triple.html).
+[Triple](apidocs/org/apache/commons/rdf/api/Triple.html) or
+[Quad](apidocs/org/apache/commons/rdf/api/Quad.html),
+where it can also be used a _graph name_.
 
 To create a new
 [BlankNode](apidocs/org/apache/commons/rdf/api/BlankNode.html) instance from a
@@ -398,11 +402,16 @@ to the previous b1:
 
 ```java
 System.out.println(b1.equals(factory.createBlankNode("b1")));
+```
+> `true`
+
+That means that care should be taken to create a new `RDFTermFactory` if making
+"different" blank nodes (e.g. parsed from a different RDF file)
+which accidfentally might have the same name:
+
+```java
 System.out.println(b1.equals(new SimpleRDFTermFactory().createBlankNode("b1")));
 ```
-
-> `true`
->
 > `false`
 
 
