@@ -25,9 +25,9 @@ implementations.
 
 The Apache Commons RDF distribution includes bindings for the implementations:
 
-* [Commons RDF Simple](#Commons RDF Simple)
-* [Apache Jena](#Apache Jena)
-* [Eclipse RDF4J](#Apache Jena) (formerly Sesame)
+* [Commons RDF Simple](#Commons_RDF_Simple)
+* [Apache Jena](#Apache_Jena)
+* [Eclipse RDF4J](#Eclipse_RDF4J) (formerly Sesame)
 
 One goal of the Commons RDF API is to enable runtime cross-compatibility of such implementations, therefore it is perfectly valid to combine these and for instance do:
 
@@ -108,7 +108,7 @@ Within Commons RDF it is possible to create [generalized triples](apidocs/org/ap
 
 The generalized triples/quads can be accessed as [org.apache.jena.graph.Triple](https://jena.apache.org/documentation/javadoc/jena/org/apache/jena/graph/Triple.html) and [org.apache.jena.sparql.core.Quad](https://jena.apache.org/documentation/javadoc/arq/org/apache/jena/sparql/core/Quad.html) - but can't currently be used with an equivalent _generalized graph_ or _generalized dataset_ within Commons RDF (see [COMMONSRDF-42](https://issues.apache.org/jira/browse/COMMONSRDF-42)).
 
-### Eclipse RDF4j
+### Eclipse RDF4J
 
 [org.apache.commons.rdf.rdf4j](apidocs/org/apache/commons/rdf/rdf4j/package-summary.html) is an implementation of the Commons RDF API backed by Eclispe [RDF4J 2.0](http://rdf4j.org/) (formerly Sesame), including converters from/to RDF4J and Commons RDF.
 
