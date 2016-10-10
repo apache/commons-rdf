@@ -28,6 +28,9 @@ The Apache Commons RDF distribution includes bindings for the implementations:
 * [Commons RDF Simple](#Commons_RDF_Simple)
 * [Apache Jena](#Apache_Jena)
 * [Eclipse RDF4J](#Eclipse_RDF4J) (formerly Sesame)
+* [JSONLD-Java](#JSONLD-Java)
+
+In addition, [OWL API](#OWL_API) externally implements the API and [Apache Clerezza](#Apache_Clerezza) is aligning with it.
 
 One goal of the Commons RDF API is to enable runtime cross-compatibility of such implementations, therefore it is perfectly valid to combine these and for instance do:
 
