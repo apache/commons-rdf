@@ -109,7 +109,7 @@ public class UserGuideTest {
 
 		Literal literalDouble2 = factory.createLiteral("13.37", Types.XSD_DOUBLE);
 
-		System.out.println(literal.getDatatype().equals(Types.XSD_STRING));
+		System.out.println(Types.XSD_STRING.equals(literal.getDatatype()));
 
 		Literal inSpanish = factory.createLiteral("¡Hola, Mundo!", "es");
 		System.out.println(inSpanish.ntriplesString());
@@ -187,13 +187,17 @@ public class UserGuideTest {
 			System.out.println(t.getPredicate());
 		}
 
-		Stream<RDFTerm> subjects = graph.getTriples().map(t -> t.getObject());
-		String s = subjects.map(RDFTerm::ntriplesString).collect(Collectors.joining(" "));
-		System.out.println(s);
+		try (Stream<? extends Triple> triples = graph.stream()) {
+		  Stream<RDFTerm> subjects = triples.map(t -> t.getObject());
+		  String s = subjects.map(RDFTerm::ntriplesString).collect(Collectors.joining(" "));
+		  System.out.println(s);
+	  }
 
-		Stream<? extends Triple> namedB = graph.getTriples(null, nameIri,null).
-				filter(t -> t.getObject().ntriplesString().contains("B"));
-		System.out.println(namedB.map(t -> t.getSubject()).findAny().get());
+		try (Stream<? extends Triple> named = graph.stream(null, nameIri,null)) {
+		  Stream<? extends Triple> namedB = named.filter(
+			  t -> t.getObject().ntriplesString().contains("B"));
+		  System.out.println(namedB.map(t -> t.getSubject()).findAny().get());
+	  }
 
 		graph.remove(triple);
 		System.out.println(graph.contains(triple));
@@ -214,7 +218,7 @@ public class UserGuideTest {
     }
 
 	public static void writeGraph(Graph graph, Path graphFile) throws Exception {
-        Stream<CharSequence> stream = graph.getTriples().map(UserGuideTest::tripleAsString);
+        Stream<CharSequence> stream = graph.stream().map(UserGuideTest::tripleAsString);
         Files.write(graphFile, stream::iterator, StandardCharsets.UTF_8);
 	}
 }

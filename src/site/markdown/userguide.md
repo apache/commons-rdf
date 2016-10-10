@@ -262,7 +262,7 @@ public class NTriplesSerializer {
                t.getObject().ntriplesString() + " .";
     }
     public static void writeGraph(Graph graph, Path graphFile) throws Exception {
-        Stream<CharSequence> stream = graph.getTriples().map(NTriplesSerializer::tripleAsString);
+        Stream<CharSequence> stream = graph.stream().map(NTriplesSerializer::tripleAsString);
         Files.write(graphFile, stream::iterator, StandardCharsets.UTF_8);
     }
 }
@@ -448,7 +448,8 @@ be made about this string except that it is unique per blank node._
 
 A [literal](http://www.w3.org/TR/rdf11-concepts/#section-Graph-Literal) in RDF
 is a value such as a string, number or a date. A `Literal` can only be used as
-an _object_ of a [Triple](apidocs/org/apache/commons/rdf/api/Triple.html#getObject--).
+an _object_ of a [Triple](apidocs/org/apache/commons/rdf/api/Triple.html#getObject--)
+or [Quad](apidocs/org/apache/commons/rdf/api/Quad.html#getObject--)
 
 To create a [Literal](apidocs/org/apache/commons/rdf/api/Literal.html) instance
 from an `RDFTermFactory`, use
@@ -461,7 +462,7 @@ System.out.println(literal.ntriplesString());
 
 > `"Hello world!"`
 
-The lexical value (what is inside the quotes) can be retrieved
+The _lexical value_ (what is inside the quotes) can be retrieved
 using [getLexicalForm()](apidocs/org/apache/commons/rdf/api/Literal.html#getLexicalForm--):
 
 ```java
@@ -509,8 +510,8 @@ literal</a> data type.
 
 
 To create a literal with any other
-[datatype](http://www.w3.org/TR/rdf11-concepts/#dfn-datatype-iri), then
-first create the datatype `IRI` and pass it to the expanded
+[datatype](http://www.w3.org/TR/rdf11-concepts/#dfn-datatype-iri) (e.g. `xsd:double`),
+then create the datatype `IRI` and pass it to the expanded
 [createLiteral](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createLiteral-java.lang.String-org.apache.commons.rdf.api.IRI-):
 
 ```java
@@ -535,11 +536,11 @@ the above example can be simplified to:
 Literal literalDouble2 = factory.createLiteral("13.37", Types.XSD_DOUBLE);
 ```
 
-As the constants in `Types` are all instances of `IRI`, they can
+As the constants in `Types` are all instances of `IRI`, so they can
 also be used for comparisons:
 
 ```java
-System.out.println(literal.getDatatype().equals(Types.XSD_STRING));
+System.out.println(Types.XSD_STRING.equals(literal.getDatatype()));
 ```
 
 > `true`
@@ -582,7 +583,7 @@ if (tag.isPresent()) {
 
 The language tag is behind an
 [Optional](http://docs.oracle.com/javase/8/docs/api/java/util/Optional.html) as
-it cannot be present for any other datatypes than
+it won't be present for any other datatypes than
 `http://www.w3.org/1999/02/22-rdf-syntax-ns#langString`:
 
 ```java
@@ -676,6 +677,14 @@ System.out.println(triple.equals(factory.createTriple(subj, pred, obj)));
 
 > `true`
 
+This equality is true even across implementations, as Commons RDF has
+specified _equality semantics_ for
+[Triples](apidocs/org/apache/commons/rdf/api/Triple.html#equals-java.lang.Object-),
+[Quads](apidocs/org/apache/commons/rdf/api/Quad.html#equals-java.lang.Object-),
+[IRIs](apidocs/org/apache/commons/rdf/api/IRI.html#equals-java.lang.Object-),
+[Literals](apidocs/org/apache/commons/rdf/api/Literal.html#equals-java.lang.Object-)
+and even [BlankNodes](apidocs/org/apache/commons/rdf/api/BlankNode.html#equals-java.lang.Object-).
+
 
 ## Graph
 
@@ -694,9 +703,6 @@ Implementations will typically also have other ways of retrieving a `Graph`,
 e.g. by parsing a Turtle file or connecting to a storage backend.
 
 ### Adding triples
-
-_Note: Some `Graph` implementations are immutable, in which case the below
-may throw an `UnsupportedOperationException`_.
 
 Any [Triple](apidocs/org/apache/commons/rdf/api/Triple.html) can be added to the
 graph using the
@@ -734,7 +740,7 @@ System.out.println(graph.contains(triple));
 
 The expanded _subject/predicate/object_ call for [Graph.contains()](apidocs/org/apache/commons/rdf/api/Graph.html#contains-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-)
 can be used without needing to create a `Triple` first, and also
-allow `null` as a wildcard parameters:
+allow `null` as a wildcard parameter:
 
 ```java
 System.out.println(graph.contains(null, nameIri, bobName));
@@ -781,14 +787,21 @@ for (Triple t : graph.iterate(null, null, bobName)) {
 
 For processing of larger graphs, and to access more detailed
 filtering and processing, the
-[getTriples](apidocs/org/apache/commons/rdf/api/Graph.html#getTriples--) method
+[stream](apidocs/org/apache/commons/rdf/api/Graph.html#stream--) method
 return a Java 8
 [Stream](http://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html).
 
+Some of the implementations (e.g. [RDF4J](implementations.html#Closing_RDF4J_resources)) might
+require resources to be closed after the stream
+has been processed, so `.stream()` should be used within a
+[try-with-resources](https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html) block.
+
 ```java
-Stream<RDFTerm> subjects = graph.getTriples().map(t -> t.getObject());
-String s = subjects.map(RDFTerm::ntriplesString).collect(Collectors.joining(" "));
-System.out.println(s);
+try (Stream<? extends Triple> triples = graph.stream()) {
+  Stream<RDFTerm> subjects = triples.map(t -> t.getObject());
+  String s = subjects.map(RDFTerm::ntriplesString).collect(Collectors.joining(" "));
+  System.out.println(s);
+}
 ```
 > ``"Alice" "Bob"``
 
@@ -800,21 +813,22 @@ Note that by default the stream will be parallel, use
 if your stream operations need to interact with objects that are not thread-safe.
 
 Streams allow advanced [filter predicates](http://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html#filter-java.util.function.Predicate-), but you may find that simple _subject/predicate/object_ patterns
-are handled more efficiently by the expanded
-[getTriples](http://commonsrdf.incubator.apache.org/apidocs/org/apache/commons/rdf/api/Graph.html#getTriples-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-) method. These can of course be combined:
+are handled more efficiently by the implementation when using the expanded
+[stream](http://commonsrdf.incubator.apache.org/apidocs/org/apache/commons/rdf/api/Graph.html#stream-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-) method. These can of course be combined:
 
 ```java
-Stream<? extends Triple> namedB = graph.getTriples(null, nameIri, null).
-    filter(t -> t.getObject().ntriplesString().contains("B"));
-System.out.println(namedB.map(t -> t.getSubject()).findAny().get());
+try (Stream<? extends Triple> named = graph.stream(null, nameIri, null)) {
+   Stream<? extends Triple> namedB = named.filter(
+       t -> t.getObject().ntriplesString().contains("B"));
+   System.out.println(namedB.map(t -> t.getSubject()).findAny().get());
+ }
 ```
 > `<http://example.com/bob>`
 
 
-### Removing triples
 
-_Note: Some `Graph` implementations are immutable, in which case the below
-may throw an `UnsupportedOperationException`_.
+
+### Removing triples
 
 Triples can be [removed](apidocs/org/apache/commons/rdf/api/Graph.html#remove-org.apache.commons.rdf.api.Triple-) from a graph:
 
@@ -871,7 +885,7 @@ may throw a `UnsupportedOperationException`.
 
 Commons RDF does not specify if methods on a `Graph` are thread-safe. Iterator
 methods like [iterate](apidocs/org/apache/commons/rdf/api/Graph.html#iterate--)
-and [getTriples](apidocs/org/apache/commons/rdf/api/Graph.html#getTriples-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-)
+and [stream](apidocs/org/apache/commons/rdf/api/Graph.html#stream-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-)
 might throw a
 [ConcurrentModificationException](http://docs.oracle.com/javase/8/docs/api/java/util/ConcurrentModificationException.html)
 if it detects a thread concurrency modification, although this behaviour is not guaranteed.
@@ -894,6 +908,8 @@ synchronized(graph) {
 }
 ```
 
+
+
 ## Implementations
 
 The [Commons RDF API](apidocs/org/apache/commons/rdf/api/package-summary.html)
@@ -903,13 +919,17 @@ updated list of providers.
 
 Implementations are free to choose their level of integration with Commons RDF.
 Several methods defined in Commons RDF therefore explicitly note the
-possibility of throwing a `UnsupportedOperationException`.
+possibility of throwing a `UnsupportedOperationException` - however the
+implementations provided by Commons RDF
 
 Different RDF frameworks might have different mechanisms to retrieve a Commons
 RDF objects like `Graph` or `Triple` (e.g. returned from a query).
-Commons RDF provides a `RDFTermFactory` interface as a way to create new
-instances, but does not mandate how the factory itself should be instantiated
-(e.g. a factory might be returned for an open network connection).
+
+Commons RDF provides a `RDFTermFactory` interface as an interoperable
+way to create new instances, but does not mandate how the factory
+itself should be instantiated (e.g. a factory might be returned for an
+open network connection).
+
 
 ### Cross-compatibility
 
@@ -934,7 +954,7 @@ IRI iri1 = fooFactory.createIRI("http://example.com/property1");
 
 // Both Triple and RDFTerm instances can be used
 //
-for (Triple t1: g1.getTriples(null, iri1, null)) {
+for (Triple t1: g1.stream(null, iri1, null)) {
     if (g2.contains(t1.getSubject(), null, t1.getObject())) {
       g2.remove(t1);
     }
@@ -956,7 +976,7 @@ their instances can be compared across implementations.
 
 _Note: The `Graph` implementation is not required to keep the JVM object
 reference, e.g. after  `g2.add(subj1, pred, obj)` it is not required to later
-return the same `subj1` implementation in `g2.getTriples()`. Special care
+return the same `subj1` implementation in `g2.stream()`. Special care
 should be taken if returned values needs to be casted to implementation
 specific types._
 

@@ -50,13 +50,13 @@
     		<groupId>org.apache.commons</groupId>
     		<artifactId>commons-rdf-api</artifactId>
         <!-- update to latest version -->
-    		<version>0.2.0-incubating</version>
+    		<version>0.3.0-incubating-SNAPSHOT</version>
     	</dependency>
     	<dependency>
     		<groupId>org.apache.commons</groupId>
     		<artifactId>commons-rdf-simple</artifactId>
         <!-- update to latest version -->
-    		<version>0.2.0-incubating</version>
+    		<version>0.3.0-incubating-SNAPSHOT</version>
     	</dependency>
     	<dependency>
     		<groupId>junit</groupId>
