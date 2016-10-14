@@ -28,6 +28,7 @@ The Apache Commons RDF distribution includes bindings for the implementations:
 * [Commons RDF Simple](#Commons_RDF_Simple)
 * [Apache Jena](#Apache_Jena)
 * [Eclipse RDF4J](#Eclipse_RDF4J) (formerly Sesame)
+* [JSONLD-Java](#JSONLD-Java)
 
 In addition there can be [External implementations](#External-implementations)
 which are released separately by their respective projects.
