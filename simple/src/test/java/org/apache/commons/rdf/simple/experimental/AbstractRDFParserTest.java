@@ -83,8 +83,8 @@ public class AbstractRDFParserTest {
 		assertTrue(g.size() > 0);		
 		IRI greeting = factory.createIRI("http://example.com/greeting");	
 		// Should only have parsed once!
-		assertEquals(1, g.getTriples(null, greeting, null).count());
-		Triple triple = g.getTriples(null, greeting, null).findAny().get();
+		assertEquals(1, g.stream(null, greeting, null).count());
+		Triple triple = g.stream(null, greeting, null).findAny().get();
 		assertTrue(triple.getSubject() instanceof IRI);
 		IRI parsing = (IRI) triple.getSubject();
 		assertTrue(parsing.getIRIString().startsWith("urn:uuid:"));
@@ -99,12 +99,12 @@ public class AbstractRDFParserTest {
 		
 		// Check uniqueness of properties that are always present
 		assertEquals(1, 
-				g.getTriples(null, factory.createIRI("http://example.com/source"), null).count());
+				g.stream(null, factory.createIRI("http://example.com/source"), null).count());
 		
 		// Check optional properties that are unique
-		assertTrue(2 > g.getTriples(null, factory.createIRI("http://example.com/base"), null).count());
-		assertTrue(2 > g.getTriples(null, factory.createIRI("http://example.com/contentType"), null).count());
-		assertTrue(2 > g.getTriples(null, factory.createIRI("http://example.com/contentTypeSyntax"), null).count());
+		assertTrue(2 > g.stream(null, factory.createIRI("http://example.com/base"), null).count());
+		assertTrue(2 > g.stream(null, factory.createIRI("http://example.com/contentType"), null).count());
+		assertTrue(2 > g.stream(null, factory.createIRI("http://example.com/contentTypeSyntax"), null).count());
 	}
 	
 	@Test
@@ -171,7 +171,7 @@ public class AbstractRDFParserTest {
 	}
 
 	private String firstPredicate(Graph g, String pred) {
-		return g.getTriples(null, factory.createIRI("http://example.com/" + pred), null)
+		return g.stream(null, factory.createIRI("http://example.com/" + pred), null)
 				.map(Triple::getObject).map(RDFTerm::ntriplesString).findAny().orElse(null);
 	}
 
