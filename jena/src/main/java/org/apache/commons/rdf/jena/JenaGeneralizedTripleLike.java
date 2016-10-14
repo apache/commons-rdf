@@ -35,5 +35,5 @@ import org.apache.commons.rdf.api.Triple;
  * @see JenaGeneralizedQuadLike
  */
 public interface JenaGeneralizedTripleLike
-		extends JenaTripleLike<RDFTerm, RDFTerm, RDFTerm> {	
+		extends JenaTripleLike {	
 }

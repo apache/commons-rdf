@@ -29,37 +29,30 @@ package org.apache.commons.rdf.api;
  * used for <em>generalised triples</em> (e.g. a {@link BlankNode} as predicate).
  * <p>
  * Implementations should specialise which specific {@link RDFTerm} types they
- * return for {@link #getSubject()}, {@link #getPredicate()} and
+ * return by overriding {@link #getSubject()}, {@link #getPredicate()} and
  * {@link #getObject()}.
  * 
- * @param <S>
- *            The type of subjects in the statements, typically
- *            {@link BlankNodeOrIRI}
- * @param <P>
- *            The type of predicates in the statements, typically {@link IRI}
- * @param <O>
- *            The type of objects in the statements, typically {@link RDFTerm}
  * 
  * @since 0.3.0-incubating
  * @see Triple
  * @see Quad
  * @see QuadLike
  */
-public interface TripleLike<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm> {
+public interface TripleLike {
 
 	/**
 	 * The subject of this statement.
 	 *
 	 * @return The subject, typically an {@link IRI} or {@link BlankNode}.
 	 */
-	S getSubject();
+	RDFTerm getSubject();
 
 	/**
 	 * The predicate of this statement.
 	 *
 	 * @return The predicate, typically an {@link IRI}.
 	 */
-	P getPredicate();
+	RDFTerm getPredicate();
 
 	/**
 	 * The object of this statement.
@@ -67,5 +60,5 @@ public interface TripleLike<S extends RDFTerm, P extends RDFTerm, O extends RDFT
 	 * @return The object, typically an {@link IRI}, {@link BlankNode} or
 	 *         {@link Literal}.
 	 */
-	O getObject();
+	RDFTerm getObject();
 }

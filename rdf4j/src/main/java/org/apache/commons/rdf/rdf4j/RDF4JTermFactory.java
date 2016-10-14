@@ -408,7 +408,7 @@ public final class RDF4JTermFactory implements RDFTermFactory {
 	 *            A {@link Triple} or {@link Quad} to adapt
 	 * @return A corresponding {@link Statement}
 	 */
-	public Statement asStatement(TripleLike<BlankNodeOrIRI, org.apache.commons.rdf.api.IRI, RDFTerm> tripleLike) {
+	public Statement asStatement(TripleLike tripleLike) {
 		if (tripleLike instanceof RDF4JTripleLike) {
 			// Return original statement - this covers both RDF4JQuad and
 			// RDF4JTriple

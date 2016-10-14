@@ -303,7 +303,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * @throws ConversionException
 	 *             if any of the triple's nodes are not concrete
 	 */
-	public JenaTripleLike<RDFTerm, RDFTerm, RDFTerm> fromJenaGeneralized(org.apache.jena.graph.Triple triple) throws ConversionException {
+	public JenaTripleLike fromJenaGeneralized(org.apache.jena.graph.Triple triple) throws ConversionException {
 		return internalJenaFactory.fromJenaGeneralized(triple, getSalt());
 	}
 
@@ -333,7 +333,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * @throws ConversionException
 	 *             if any of the quad nodes are not concrete
 	 */
-	public JenaQuadLike<RDFTerm, RDFTerm, RDFTerm, RDFTerm> fromJenaGeneralized(org.apache.jena.sparql.core.Quad quad) throws ConversionException {
+	public JenaQuadLike<RDFTerm> fromJenaGeneralized(org.apache.jena.sparql.core.Quad quad) throws ConversionException {
 		return internalJenaFactory.fromJenaGeneralized(quad, getSalt());
 	}
 	
@@ -567,7 +567,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * @return A {@link StreamRDF} that will stream generalized triples to the
 	 *         consumer
 	 */
-	public StreamRDF streamJenaToGeneralizedTriple(Consumer<TripleLike<RDFTerm, RDFTerm, RDFTerm>> generalizedConsumer) {
+	public StreamRDF streamJenaToGeneralizedTriple(Consumer<TripleLike> generalizedConsumer) {
 		return new StreamRDFBase() {			
 			@Override
 			public void triple(org.apache.jena.graph.Triple triple) {
@@ -592,7 +592,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * @return A {@link StreamRDF} that will stream generalized quads to the
 	 *         consumer
 	 */
-	public StreamRDF streamJenaToGeneralizedQuad(Consumer<QuadLike<RDFTerm, RDFTerm, RDFTerm, RDFTerm>> generalizedConsumer) {
+	public StreamRDF streamJenaToGeneralizedQuad(Consumer<QuadLike<RDFTerm>> generalizedConsumer) {
 		return new StreamRDFBase() {
 			@Override
 			public void quad(org.apache.jena.sparql.core.Quad quad) {

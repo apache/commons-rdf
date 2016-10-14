@@ -34,5 +34,5 @@ import org.apache.commons.rdf.api.RDFTerm;
  * 
  * @see JenaGeneralizedTripleLike
  */
-public interface JenaGeneralizedQuadLike extends JenaQuadLike<RDFTerm, RDFTerm, RDFTerm, RDFTerm> {
+public interface JenaGeneralizedQuadLike extends JenaQuadLike<RDFTerm> {
 }

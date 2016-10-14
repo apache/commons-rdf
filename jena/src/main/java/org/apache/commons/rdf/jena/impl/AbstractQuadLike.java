@@ -44,7 +44,7 @@ import org.apache.jena.sparql.core.Quad;
  * @see internalJenaFactory#createGeneralizedQuad(RDFTerm, RDFTerm, RDFTerm, RDFTerm)
  *
  */
-abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm, G extends RDFTerm> implements JenaQuadLike<S,P,O,G> {
+abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm, G extends RDFTerm> implements JenaQuadLike<G> {
 
 	private static InternalJenaFactory internalJenaFactory = new InternalJenaFactory(){};
 	

@@ -35,8 +35,8 @@ import org.apache.jena.graph.Triple;
  * @see JenaGeneralizedQuadLike
  * 
  */
-public interface JenaTripleLike<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm> 
-	extends org.apache.commons.rdf.api.TripleLike<S,P,O> {
+public interface JenaTripleLike 
+	extends org.apache.commons.rdf.api.TripleLike {
 
 	/**
 	 * Return the adapted Jena triple

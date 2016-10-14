@@ -17,9 +17,6 @@
  */
 package org.apache.commons.rdf.rdf4j;
 
-import org.apache.commons.rdf.api.BlankNodeOrIRI;
-import org.apache.commons.rdf.api.IRI;
-import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.TripleLike;
 import org.eclipse.rdf4j.model.Statement;
 
@@ -34,7 +31,7 @@ import org.eclipse.rdf4j.model.Statement;
  * @see RDF4JTriple
  * @see RDF4JQuad
  */
-public interface RDF4JTripleLike extends TripleLike<BlankNodeOrIRI, IRI, RDFTerm> {
+public interface RDF4JTripleLike extends TripleLike {
 	
 	/**
 	 * Return the corresponding RDF4J {@link Statement}.

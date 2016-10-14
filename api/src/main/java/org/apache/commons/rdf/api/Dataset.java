@@ -28,7 +28,7 @@ import java.util.stream.Stream;
  * <a href="http://www.w3.org/TR/rdf11-concepts/" >RDF-1.1 Concepts and Abstract
  * Syntax</a>, a W3C Recommendation published on 25 February 2014.
  */
-public interface Dataset extends AutoCloseable, GraphLike<Quad, BlankNodeOrIRI, IRI, RDFTerm> {
+public interface Dataset extends AutoCloseable, GraphLike<Quad> {
 
 	/**
 	 * Add a quad to the dataset, possibly mapping any of the components of the

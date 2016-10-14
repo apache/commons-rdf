@@ -40,6 +40,7 @@ Commons RDF [API](apidocs/).
             * [Types](#Types)
         * [Language](#Language)
 * [Triple](#Triple)
+* [Quad](#Quad)
 * [Graph](#Graph)
     * [Adding triples](#Adding_triples)
     * [Finding triples](#Finding_triples)
@@ -685,6 +686,18 @@ specified _equality semantics_ for
 [Literals](apidocs/org/apache/commons/rdf/api/Literal.html#equals-java.lang.Object-)
 and even [BlankNodes](apidocs/org/apache/commons/rdf/api/BlankNode.html#equals-java.lang.Object-).
 
+## Quad
+A _quad_ is a triple with an associated _graph name_, and can be a statement in a
+[dataset](http://www.w3.org/TR/rdf11-concepts/#section-dataset).
+
+Commons RDF represents such statements using the class [Quad](apidocs/org/apache/commons/rdf/api/Quad.html), which consists of:
+
+* The [subject](apidocs/org/apache/commons/rdf/api/Quad.html#getSubject--), which is an [IRI](apidocs/org/apache/commons/rdf/api/IRI.html) or a [BlankNode](apidocs/org/apache/commons/rdf/api/BlankNode.html)
+* The [predicate](apidocs/org/apache/commons/rdf/api/Quad.html#getPredicate--), which is an [IRI](apidocs/org/apache/commons/rdf/api/IRI.html)
+* The [object](apidocs/org/apache/commons/rdf/api/Quad.html#getObject--), which is an [IRI](apidocs/org/apache/commons/rdf/api/IRI.html), a [BlankNode](apidocs/org/apache/commons/rdf/api/BlankNode.html) or a [Literal](apidocs/org/apache/commons/rdf/api/Literal.html)
+* The [graph name](apidocs/org/apache/commons/rdf/api/Quad.html#getGraphName--), which is an [IRI](apidocs/org/apache/commons/rdf/api/IRI.html) or a [BlankNode](apidocs/org/apache/commons/rdf/api/BlankNode.html); wrapped as an `java.util.Optional`
+
+The graph name is represented as an [Optional](https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true), where `Optional.empty()` indicates that the quad is in the [default graph](https://www.w3.org/TR/rdf11-concepts/#dfn-default-graph)
 
 ## Graph
 

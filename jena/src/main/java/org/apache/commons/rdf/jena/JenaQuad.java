@@ -18,8 +18,6 @@
 package org.apache.commons.rdf.jena;
 
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
-import org.apache.commons.rdf.api.IRI;
-import org.apache.commons.rdf.api.RDFTerm;
 
 /** 
  * A Jena-backed {@link org.apache.commons.rdf.api.Quad}.
@@ -28,5 +26,5 @@ import org.apache.commons.rdf.api.RDFTerm;
  * can be accessed with {@link #asJenaQuad()}.
  */
 public interface JenaQuad extends org.apache.commons.rdf.api.Quad, 
-	JenaQuadLike<BlankNodeOrIRI,IRI,RDFTerm,BlankNodeOrIRI> {	
+	JenaQuadLike<BlankNodeOrIRI> {	
 }

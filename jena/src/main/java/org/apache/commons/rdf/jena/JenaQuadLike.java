@@ -32,8 +32,8 @@ import org.apache.jena.sparql.core.Quad;
  * @see JenaGeneralizedQuadLike
  * 
  */
-public interface JenaQuadLike<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm, G extends RDFTerm> 
-	extends JenaTripleLike<S,P,O>, QuadLike<S,P,O,G> {
+public interface JenaQuadLike<G extends RDFTerm> 
+	extends JenaTripleLike, QuadLike<G> {
 
 	/**
 	 * Return the adapted Jena quad

@@ -46,8 +46,8 @@ import com.github.jsonldjava.core.RDFDataset.Node;
  *            specialisation of {@link TripleLike}, e.g. {@link Triple} or
  *            {@link org.apache.commons.rdf.api.Quad}
  */
-public interface JsonLdGraphLike <T extends TripleLike<BlankNodeOrIRI, IRI, RDFTerm>>
-	extends GraphLike<T, BlankNodeOrIRI, IRI, RDFTerm> {
+public interface JsonLdGraphLike <T extends TripleLike>
+	extends GraphLike<T> {
 	/**
 	 * Return the underlying JSONLD-Java {@link RDFDataset}.
 	 * <p>
@@ -59,7 +59,7 @@ public interface JsonLdGraphLike <T extends TripleLike<BlankNodeOrIRI, IRI, RDFT
 	public RDFDataset getRdfDataSet();
 }
 
-abstract class AbstractJsonLdGraphLike<T extends TripleLike<BlankNodeOrIRI, IRI, RDFTerm>>
+abstract class AbstractJsonLdGraphLike<T extends TripleLike>
 	implements JsonLdGraphLike<T> {
 	
 	/** 
@@ -104,7 +104,9 @@ abstract class AbstractJsonLdGraphLike<T extends TripleLike<BlankNodeOrIRI, IRI,
 			org.apache.commons.rdf.api.Quad q = (org.apache.commons.rdf.api.Quad)t;
 			graphName = q.getGraphName().orElse(null);
 		}
-		add(graphName, t.getSubject(), t.getPredicate(), t.getObject());
+		// FIXME: JSON-LD's rdfDataSet.addQuad method does not support 
+		// generalized RDF, so we have to do a naive cast here
+		add(graphName, (BlankNodeOrIRI)t.getSubject(), (IRI)t.getPredicate(), t.getObject());
 	}	
 
 	void add(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {

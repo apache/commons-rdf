@@ -39,20 +39,13 @@ import java.util.stream.Stream;
  * @param <T>
  *            A {@link TripleLike} type used by the graph methods, typically
  *            {@link Triple} or {@link Quad}
- * @param <S>
- *            The type of subjects in the statements, typically
- *            {@link BlankNodeOrIRI}
- * @param <P>
- *            The type of predicates in the statements, typically {@link IRI}
- * @param <O>
- *            The type of objects in the statements, typically {@link RDFTerm}
  *            
  * @since 0.3.0-incubating
  * @see Graph
  * @see Dataset
  * @see TripleLike
  */
-public interface GraphLike<T extends TripleLike<S, P, O>, S extends RDFTerm, P extends RDFTerm, O extends RDFTerm> {
+public interface GraphLike<T extends TripleLike> {
 
 	/**
 	 * Add a statement.

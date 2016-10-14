@@ -20,9 +20,6 @@ package org.apache.commons.rdf.rdf4j.impl;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.apache.commons.rdf.api.BlankNodeOrIRI;
-import org.apache.commons.rdf.api.IRI;
-import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.TripleLike;
 import org.apache.commons.rdf.rdf4j.RDF4JGraphLike;
 import org.apache.commons.rdf.rdf4j.RDF4JTermFactory;
@@ -31,7 +28,7 @@ import org.eclipse.rdf4j.model.Statement;
 import org.eclipse.rdf4j.repository.Repository;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 
-abstract class AbstractRepositoryGraphLike<T extends TripleLike<BlankNodeOrIRI, IRI, RDFTerm>>
+abstract class AbstractRepositoryGraphLike<T extends TripleLike>
 		implements RDF4JGraphLike<T> {
 
 	protected final Repository repository;

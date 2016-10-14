@@ -31,25 +31,13 @@ import java.util.Optional;
  * (e.g. a {@link BlankNode} as predicate).
  * <p>
  * Implementations should specialise which specific {@link RDFTerm} types they
- * return for {@link #getSubject()}, {@link #getPredicate()},
+ * return by overriding {@link #getSubject()}, {@link #getPredicate()},
  * {@link #getObject()} and {@link #getGraphName()}.
  *
- * @param <S>
- *            The type of subjects in the statements, typically
- *            {@link BlankNodeOrIRI}
- * @param <P>
- *            The type of predicates in the statements, typically {@link IRI}
- * @param <O>
- *            The type of objects in the statements, typically {@link RDFTerm}
- * @param <G>
- *            The type of graph names in the statements, typically
- *            {@link BlankNodeOrIRI}
- * 
  * @since 0.3.0-incubating
  * @see Quad
  */
-public interface QuadLike<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm, G extends RDFTerm>
-		extends TripleLike<S, P, O> {
+public interface QuadLike<G extends RDFTerm> extends TripleLike {
 
 	/**
 	 * The graph name (graph label) of this statement, if present.

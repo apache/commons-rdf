@@ -24,15 +24,7 @@ import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDFTerm;
 // Note: To avoid confusion - don't import either Quad
 
-public interface JsonLdQuad extends org.apache.commons.rdf.api.Quad {
-
-	
-	/**
-	 * Return the underlying JsonLD {@link com.github.jsonldjava.core.RDFDataset.Quad}
-	 * 
-	 * @return The JsonLD {@link com.github.jsonldjava.core.RDFDataset.Quad}
-	 */
-	public com.github.jsonldjava.core.RDFDataset.Quad asJsonLdQuad();
+public interface JsonLdQuad extends org.apache.commons.rdf.api.Quad, JsonLdTripleLike {
 
 }
 

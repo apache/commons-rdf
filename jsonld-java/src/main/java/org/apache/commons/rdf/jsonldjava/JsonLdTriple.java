@@ -26,14 +26,9 @@ import org.apache.commons.rdf.api.Triple;
 
 import com.github.jsonldjava.core.RDFDataset.Quad;
 
-public interface JsonLdTriple extends Triple {
+public interface JsonLdTriple extends Triple, JsonLdTripleLike {
 
-	/**
-	 * Return the underlying JsonLD {@link com.github.jsonldjava.core.RDFDataset.Quad}
-	 * 
-	 * @return The JsonLD {@link com.github.jsonldjava.core.RDFDataset.Quad}
-	 */
-	public com.github.jsonldjava.core.RDFDataset.Quad asJsonLdQuad();
+
 }
 	
 	final class JsonLdTripleImpl extends JsonLdQuadLikeImpl<BlankNodeOrIRI, IRI, RDFTerm, RDFTerm>

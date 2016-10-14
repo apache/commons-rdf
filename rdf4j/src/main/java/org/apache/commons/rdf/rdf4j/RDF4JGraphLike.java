@@ -19,10 +19,7 @@ package org.apache.commons.rdf.rdf4j;
 
 import java.util.Optional;
 
-import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.GraphLike;
-import org.apache.commons.rdf.api.IRI;
-import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.TripleLike;
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.repository.Repository;
@@ -40,8 +37,8 @@ import org.eclipse.rdf4j.repository.Repository;
  * @see RDF4JDataset
  * @see RDF4JGraph
  */
-public interface RDF4JGraphLike<T extends TripleLike<BlankNodeOrIRI, IRI, RDFTerm>>
-		extends GraphLike<T, BlankNodeOrIRI, IRI, RDFTerm>, AutoCloseable {
+public interface RDF4JGraphLike<T extends TripleLike>
+		extends GraphLike<T>, AutoCloseable {
 
 	/**
 	 * Return the corresponding RDF4J {@link Model}, if present.

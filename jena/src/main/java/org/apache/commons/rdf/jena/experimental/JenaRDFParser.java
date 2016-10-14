@@ -40,21 +40,21 @@ import org.apache.jena.riot.system.StreamRDFLib;
 
 public class JenaRDFParser extends AbstractRDFParser<JenaRDFParser> implements RDFParser {
 
-	private Consumer<TripleLike<RDFTerm, RDFTerm, RDFTerm>> generalizedConsumerTriple;
-	private Consumer<QuadLike<RDFTerm, RDFTerm, RDFTerm, RDFTerm>> generalizedConsumerQuad;
+	private Consumer<TripleLike> generalizedConsumerTriple;
+	private Consumer<QuadLike<RDFTerm>> generalizedConsumerQuad;
 
 	protected RDFTermFactory createRDFTermFactory() {
 		return new JenaRDFTermFactory();
 	}
 
-	public JenaRDFParser targetGeneralizedTriple(Consumer<TripleLike<RDFTerm,RDFTerm,RDFTerm>> consumer) {
+	public JenaRDFParser targetGeneralizedTriple(Consumer<TripleLike> consumer) {
 		JenaRDFParser c = this.clone();
 		c.resetTarget();		
 		c.generalizedConsumerTriple = consumer;
 		return c;
 	}
 
-	public JenaRDFParser targetGeneralizedQuad(Consumer<QuadLike<RDFTerm,RDFTerm,RDFTerm,RDFTerm>> consumer) {
+	public JenaRDFParser targetGeneralizedQuad(Consumer<QuadLike<RDFTerm>> consumer) {
 		JenaRDFParser c = this.clone();
 		c.resetTarget();		
 		c.generalizedConsumerQuad = consumer;
