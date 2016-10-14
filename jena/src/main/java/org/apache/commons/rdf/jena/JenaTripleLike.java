@@ -18,7 +18,6 @@
 
 package org.apache.commons.rdf.jena;
 
-import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.TripleLike;
 import org.apache.jena.graph.Triple;
 

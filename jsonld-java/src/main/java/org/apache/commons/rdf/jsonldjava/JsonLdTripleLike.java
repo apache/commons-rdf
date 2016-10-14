@@ -1,7 +1,5 @@
 package org.apache.commons.rdf.jsonldjava;
 
-import org.apache.commons.rdf.api.BlankNodeOrIRI;
-import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.TripleLike;
 
 public interface JsonLdTripleLike extends TripleLike {

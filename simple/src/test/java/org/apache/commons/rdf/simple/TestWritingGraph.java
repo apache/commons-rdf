@@ -19,7 +19,6 @@ package org.apache.commons.rdf.simple;
 
 import static org.junit.Assert.assertEquals;
 
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
