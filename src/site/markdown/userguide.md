@@ -1073,6 +1073,49 @@ if (dataset.contains(Optional.of(g1), null, null, foo)) {
 ```
 
 
+### Graphs in the dataset
+
+An [RDF Dataset](https://www.w3.org/TR/rdf11-concepts/#section-dataset)
+is defined as:
+
+> An RDF dataset is a collection of RDF graphs, and comprises:
+
+> * Exactly one default graph, being an RDF graph. The default graph does not have a name and may be empty.
+> * Zero or more named graphs. Each named graph is a pair consisting of an IRI or a blank node (the graph name), and an RDF graph. Graph names are unique within an RDF dataset.
+
+It is possible to retrieve these graphs from a `Dataset` using:
+
+* [getGraph()](apidocs/org/apache/commons/rdf/api/Dataset.html#getGraph--) for the _default graph_
+* [getGraph(blankNodeOrIRI)](apidocs/org/apache/commons/rdf/api/Dataset.html#getGraph-org.apache.commons.rdf.api.BlankNodeOrIRI-) for a named graph
+
+```
+Graph defaultGraph = dataset.getGraph();
+BlankNodeOrIRI graphName = factory.createIRI("http://example.com/graph");
+Optional<Graph> otherGraph = dataset.getGraph(graphName);
+```
+
+These `Graph`s provide a `Triple` **view** onto the `Quad`s in the `Dataset`:
+
+```
+System.out.println(defaultGraph.contains(otherQuad.asTriple()));
+System.out.println(defaultGraph.size());
+```
+
+> `true`
+> `1`
+
+It is unspecified if modifications to the returned Graph are
+reflected in the Dataset.
+
+Note that it is unspecified if requesting an unknown graph name will
+return `Optional.empty()` or create a new (empty) `Graph`.
+
+Some implementations may also support a _union graph_, a `Graph` that contains
+all triples regardless of their graph names. _simple_ provides
+[DatasetGraphView](apidocs/org/apache/commons/rdf/simple/DatasetGraphView.html)
+which can be used with any `Dataset` for this purpose.
+
+
 
 ## Mutability and thread safety
 
