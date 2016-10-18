@@ -48,6 +48,8 @@ Commons RDF [API](apidocs/).
     * [Iterating over triples](#Iterating_over_triples)
     * [Stream of triples](#Stream_of_triples)
     * [Removing triples](#Removing_triples)
+* [Dataset](#Dataset)
+    * [Dataset operations](#Dataset_operations)
 * [Mutability and thread safety](#Mutability_and_thread_safety)
 * [Implementations](#Implementations)
     * [Cross-compatibility](#Cross-compatibility)
@@ -711,9 +713,11 @@ Quad quad = factory.createQuad(graph, subject, predicate, object);
 The subject, predicate and object are accessible just like in a `Triple`:
 
 ```
-BlankNodeOrIRI subj = quad.getSubject();
-System.out.println(subj.ntriplesString());
+IRI pred = quad.getPredicate();
+System.out.println(pred.ntriplesString());
 ```
+
+> `<http://example.com/says>`
 
 ### Graph name
 
@@ -722,20 +726,48 @@ In addition the _graph name_ is accessible using
 
 ```
 Optional<BlankNodeOrIRI> g = quad.getGraphName();
+```
+
+The graph name is represented as an [Optional](https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html),
+where `Optional.empty()` indicates that the quad is in the [default graph](https://www.w3.org/TR/rdf11-concepts/#dfn-default-graph), while
+if the [Optional.isPresent()](https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html#isPresent--) then the
+graph name `BlankNodeOrIRI` is accessible with `g.get()`:
+
+```
 if (g.isPresent()) {
-  System.out.println(g.get().ntriplesString());
+  BlankNodeOrIRI graphName = g.get();
+  System.out.println(graphName.ntriplesString());
 }
 ```
 
-The graph name is represented as an [Optional](https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true), where `Optional.empty()` indicates that the quad is in the [default graph](https://www.w3.org/TR/rdf11-concepts/#dfn-default-graph), or
-`g.get()` retrieves the `BlankNodeOrIRI`.
+> `<http://example.com/graph>`
 
-To create a quad in the default graph, supply `null` as the graph name
+
+
+To create a quad in the _default graph_, supply `null` as the graph name
 to the factory method:
 
 ```
 Quad otherQuad = factory.createQuad(null, subject, predicate, object);
+System.out.println(otherQuad.getGraphName().isPresent());
 ```
+
+> `false`
+
+Note that a `Quad` will never return `null` on any of its getters, which is why
+the graph name is wrapped as an `Optional`. This also allows the use of
+Java 8 functional programming patterns like:
+
+```
+String str = quad.map(BlankNodeOrIRI::ntriplesString).orElse("");
+```
+
+
+Care should be taken with regards when accessing
+graph named with `BlankNode`s,
+as the graph name will be compared using
+[BlankNode's equality semantics](apidocs/org/apache/commons/rdf/api/BlankNode.html#equals-java.lang.Object-).
+
 
 ### Quad equality
 
