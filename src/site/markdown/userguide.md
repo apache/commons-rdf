@@ -671,7 +671,7 @@ In Commons RDF, `BlankNodeOrIRI` instances are always one of `BlankNode` or
 
 A `Triple` is considered
 [equal](apidocs/org/apache/commons/rdf/api/Triple.html#equals-java.lang.Object-)
-to another `Triple` if each of their subject, predicate and object are also
+to another `Triple` if each of their subject, predicate and object are
 equal:
 
 ```java
@@ -721,7 +721,7 @@ System.out.println(pred.ntriplesString());
 
 ### Graph name
 
-In addition the _graph name_ is accessible using
+The quad's _graph name_ is accessible using
 [getGraphName()](apidocs/org/apache/commons/rdf/api/Quad.html#getGraphName--):
 
 ```
@@ -743,7 +743,6 @@ if (g.isPresent()) {
 > `<http://example.com/graph>`
 
 
-
 To create a quad in the _default graph_, supply `null` as the graph name
 to the factory method:
 
@@ -762,6 +761,17 @@ Java 8 functional programming patterns like:
 String str = quad.map(BlankNodeOrIRI::ntriplesString).orElse("");
 ```
 
+As the `createQuad` method does not expect an `Optional`, you might
+use this `orElse` pattern to represent the default graph as `null`:
+
+```
+BlankNodeOrIRI g = quad.getGraphName().orElse(null);
+if (g == null) {
+  System.out.println("In default graph");
+}
+factory.createQuad(g,s,p,o);
+```
+
 
 Care should be taken with regards when accessing
 graph named with `BlankNode`s,
@@ -774,7 +784,7 @@ as the graph name will be compared using
 A `Quad` is considered
 [equal](apidocs/org/apache/commons/rdf/api/Quad.html#equals-java.lang.Object-)
 to another `Quad` if each of the graph name, subject, predicate and
-object are also equal:
+object are equal:
 
 ```
 System.out.println(quad.equals(otherQuad));
@@ -799,6 +809,16 @@ System.out.println(quadAsTriple.equals(otherQuad.asTriple());
 
 > `true`
 
+To create a triple from a quad, you will need to use
+[RDFTermFactory.createQuad](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createQuad-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-)
+providing the desired graph name:
+
+```
+Triple t; // ..
+BlankNodeOrIRI g; // ..
+Quad q = factory.createQuad(g, t.getSubject(), t.getPredicate(), t.getObject());
+```
+
 
 
 ### TripleLike
@@ -808,7 +828,7 @@ does **not** extend the class
 [Triple](apidocs/org/apache/commons/rdf/api/Triple.html),
 as they have different equality semantics.
 
-Both `Triple` and `Quad` do however extend the "duck-typing" interface
+Both `Triple` and `Quad` do however share a common "duck-typing" interface
 [TripleLike](apidocs/org/apache/commons/rdf/api/TripleLike.html):
 
 
@@ -817,16 +837,12 @@ TripleLike a = quad;
 TripleLike b = quad.asTriple();
 ```
 
-Unlike Triple and Quad, TripleLike does not mandate any specific
+Unlike `Triple` and `Quad`, `TripleLike` does not mandate any specific
 `.equals()`, it just provides common access to
 [getSubject()](apidocs/org/apache/commons/rdf/api/TripleLike.html#getSubject--)
 [getPredicate()](apidocs/org/apache/commons/rdf/api/TripleLike.html#getPredicate--) and
 [getObject()](apidocs/org/apache/commons/rdf/api/TripleLike.html#getObject--).
 
-
-TripleLike can also be used for
-[generalized RDF](https://www.w3.org/TR/rdf11-concepts/#section-generalized-rdf)
-therefore all of these are return as [RDFTerm](apidocs/org/apache/commons/rdf/api/RDFTerm.html).
 
 ```
 RDFTerm s = a.getSubject();
@@ -834,9 +850,13 @@ RDFTerm p = a.getPredicate();
 RDFTerm o = a.getObject();
 ```
 
-For generalized quads there is also the
-[QuadLike](apidocs/org/apache/commons/rdf/api/QuadLike.html) interface that
-adds
+TripleLike can also be used for
+[generalized RDF](https://www.w3.org/TR/rdf11-concepts/#section-generalized-rdf)
+therefore all of its parts are returned as [RDFTerm](apidocs/org/apache/commons/rdf/api/RDFTerm.html).
+
+For generalized quads the
+[QuadLike](apidocs/org/apache/commons/rdf/api/QuadLike.html) interface extends `TripleLike` to
+add
 [getGraphName()](apidocs/org/apache/commons/rdf/api/QuadLike.html#getGraphName--)
 as an `Optional<T extends RDFTerm>`.
 
@@ -1050,7 +1070,7 @@ graph name - matching `RDFTermFactory.createQuad(g,s,p,o)`.
 Note that the expanded pattern methods like [contains(g,s,p,o)](apidocs/org/apache/commons/rdf/api/Dataset.html#contains-java.util.Optional-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-) and
 [stream(g,s,p,o)](apidocs/org/apache/commons/rdf/api/Dataset.html#stream-java.util.Optional-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-) uses `null` as a wildcard pattern, and
 therefore an explicit _graph name_ parameter must be supplied as [Optional.empty()](https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html#empty--)  (default graph)
-or wrapped using [Optional.of(blankNodeOrIRI](https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html#of-T-):
+or wrapped using [Optional.of(g)](https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html#of-T-):
 
 ```
 Literal foo = factory.createLiteral("Foo");
@@ -1094,7 +1114,7 @@ BlankNodeOrIRI graphName = factory.createIRI("http://example.com/graph");
 Optional<Graph> otherGraph = dataset.getGraph(graphName);
 ```
 
-These `Graph`s provide a `Triple` **view** onto the `Quad`s in the `Dataset`:
+These provide a `Graph` **view** of the corresponding `Triple`s in the `Dataset`:
 
 ```
 System.out.println(defaultGraph.contains(otherQuad.asTriple()));
