@@ -697,7 +697,117 @@ Commons RDF represents such statements using the class [Quad](apidocs/org/apache
 * The [object](apidocs/org/apache/commons/rdf/api/Quad.html#getObject--), which is an [IRI](apidocs/org/apache/commons/rdf/api/IRI.html), a [BlankNode](apidocs/org/apache/commons/rdf/api/BlankNode.html) or a [Literal](apidocs/org/apache/commons/rdf/api/Literal.html)
 * The [graph name](apidocs/org/apache/commons/rdf/api/Quad.html#getGraphName--), which is an [IRI](apidocs/org/apache/commons/rdf/api/IRI.html) or a [BlankNode](apidocs/org/apache/commons/rdf/api/BlankNode.html); wrapped as an `java.util.Optional`
 
-The graph name is represented as an [Optional](https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true), where `Optional.empty()` indicates that the quad is in the [default graph](https://www.w3.org/TR/rdf11-concepts/#dfn-default-graph)
+
+To create a `Quad`, use [createQuad](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createQuad-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-):
+
+```
+BlankNodeOrIRI graph = factory.createIRI("http://example.com/graph");
+BlankNodeOrIRI subject = factory.createBlankNode();
+IRI predicate = factory.createIRI("http://example.com/says");
+RDFTerm object = factory.createLiteral("Hello");
+Quad quad = factory.createQuad(graph, subject, predicate, object);
+```
+
+The subject, predicate and object are accessible just like in a `Triple`:
+
+```
+BlankNodeOrIRI subj = quad.getSubject();
+System.out.println(subj.ntriplesString());
+```
+
+### Graph name
+
+In addition the _graph name_ is accessible using
+[getGraphName()](apidocs/org/apache/commons/rdf/api/Quad.html#getGraphName--):
+
+```
+Optional<BlankNodeOrIRI> g = quad.getGraphName();
+if (g.isPresent()) {
+  System.out.println(g.get().ntriplesString());
+}
+```
+
+The graph name is represented as an [Optional](https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true), where `Optional.empty()` indicates that the quad is in the [default graph](https://www.w3.org/TR/rdf11-concepts/#dfn-default-graph), or
+`g.get()` retrieves the `BlankNodeOrIRI`.
+
+To create a quad in the default graph, supply `null` as the graph name
+to the factory method:
+
+```
+Quad otherQuad = factory.createQuad(null, subject, predicate, object);
+```
+
+### Quad equality
+
+A `Quad` is considered
+[equal](apidocs/org/apache/commons/rdf/api/Quad.html#equals-java.lang.Object-)
+to another `Quad` if each of the graph name, subject, predicate and
+object are also equal:
+
+```
+System.out.println(quad.equals(otherQuad));
+```
+
+> `false`
+
+
+### Converting quads to triples
+
+All quads can be viewed as triples - in a way "stripping" the graph name:
+
+```
+Triple quadAsTriple = quad.asTriple();
+```
+
+This can be utilized to compare quads at triple-level (considering just s/p/o):
+
+```
+System.out.println(quadAsTriple.equals(otherQuad.asTriple());
+```
+
+> `true`
+
+
+
+### TripleLike
+
+Note that the class [Quad](apidocs/org/apache/commons/rdf/api/Quad.html)
+does **not** extend the class
+[Triple](apidocs/org/apache/commons/rdf/api/Triple.html),
+as they have different equality semantics.
+
+Both `Triple` and `Quad` do however extend the "duck-typing" interface
+[TripleLike](apidocs/org/apache/commons/rdf/api/TripleLike.html):
+
+
+```
+TripleLike a = quad;
+TripleLike b = quad.asTriple();
+```
+
+Unlike Triple and Quad, TripleLike does not mandate any specific
+`.equals()`, it just provides common access to
+[getSubject()](apidocs/org/apache/commons/rdf/api/TripleLike.html#getSubject--)
+[getPredicate()](apidocs/org/apache/commons/rdf/api/TripleLike.html#getPredicate--) and
+[getObject()](apidocs/org/apache/commons/rdf/api/TripleLike.html#getObject--).
+
+
+TripleLike can also be used for
+[generalized RDF](https://www.w3.org/TR/rdf11-concepts/#section-generalized-rdf)
+therefore all of these are return as [RDFTerm](apidocs/org/apache/commons/rdf/api/RDFTerm.html).
+
+```
+RDFTerm s = a.getSubject();
+RDFTerm p = a.getPredicate();
+RDFTerm o = a.getObject();
+```
+
+For generalized quads there is also the
+[QuadLike](apidocs/org/apache/commons/rdf/api/QuadLike.html) interface that
+adds
+[getGraphName()](apidocs/org/apache/commons/rdf/api/QuadLike.html#getGraphName--)
+as an `Optional<T extends RDFTerm>`.
+
 
 ## Graph
 

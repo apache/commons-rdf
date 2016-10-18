@@ -29,9 +29,12 @@ import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Literal;
+import org.apache.commons.rdf.api.Quad;
+import org.apache.commons.rdf.api.QuadLike;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.RDFTermFactory;
 import org.apache.commons.rdf.api.Triple;
+import org.apache.commons.rdf.api.TripleLike;
 import org.apache.commons.rdf.simple.SimpleRDFTermFactory;
 import org.apache.commons.rdf.simple.Types;
 import org.junit.Before;
@@ -150,7 +153,47 @@ public class UserGuideTest {
 		    System.out.println(type);
 		}
 
+		// Equal triples must have same s,p,o
 		System.out.println(triple.equals(factory.createTriple(subj, pred, obj)));
+	}
+
+	@Test
+	public void quad() throws Exception {
+		BlankNodeOrIRI graph = factory.createIRI("http://example.com/graph");
+		BlankNodeOrIRI subject = factory.createBlankNode();
+		IRI predicate = factory.createIRI("http://example.com/says");
+		RDFTerm object = factory.createLiteral("Hello");
+		Quad quad = factory.createQuad(graph, subject, predicate, object);
+
+		Optional<BlankNodeOrIRI> g = quad.getGraphName();
+		if (g.isPresent()) {
+			System.out.println(g.get().ntriplesString());
+		}
+		
+		BlankNodeOrIRI subj = quad.getSubject();
+		System.out.println(subj.ntriplesString());
+		
+		// null means default graph
+		Quad otherQuad = factory.createQuad(null, subject, predicate, object);
+		// Equal quads must have same g,s,p,o
+		System.out.println(quad.equals(otherQuad));
+		
+		// all quads can be viewed as triples - "stripping" the graph
+		Triple asTriple = quad.asTriple();
+		Triple otherAsTriple = quad.asTriple();
+		System.out.println(asTriple.equals(otherAsTriple));
+		
+		// NOTE: Quad does NOT extend Triple, however both Triple and Quad 
+		// extend TripleLike
+		
+		TripleLike a = quad;
+		TripleLike b = quad.asTriple();
+		// Unlike Triple and Quad, TripleLike does not mandate any .equals(), 
+		// it just provides common access to getSubject(), getPredicate(), getObject()
+		
+		
+		// TripleLike supports generalized RDF - therefore all s/p/o are of type RDFTerm
+		RDFTerm s = a.getSubject();
 	}
 
 
