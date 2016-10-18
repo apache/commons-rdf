@@ -979,6 +979,69 @@ System.out.println(graph.contains(null, null, null));
 ```
 > `false`
 
+## Dataset
+
+A [dataset](https://www.w3.org/TR/rdf11-concepts/#section-dataset)
+is a collection of quads, or if you like, a collection of `Graph`s.
+
+To create a [Dataset](apidocs/org/apache/commons/rdf/api/Dataset.html) instance
+from a `RDFTermFactory`, use
+[createDataset()](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createDataset--):
+
+```java
+Dataset dataset = factory.createDataset();
+```
+
+Implementations will typically also have other ways of retrieving a `Dataset`,
+e.g. by parsing a JSON-LD file or connecting to a storage backend.
+
+### Dataset operations
+
+`Dataset` operations match their equivalent operations on `Graph`, except that
+methods like [add(q)](apidocs/org/apache/commons/rdf/api/Dataset.html#add-org.apache.commons.rdf.api.Quad-)
+and [remove(q)](apidocs/org/apache/commons/rdf/api/Dataset.html#remove-org.apache.commons.rdf.api.Quad-)
+use
+[Quad](apidocs/org/apache/commons/rdf/api/Quad.html) instead of `Triple`.
+
+```
+dataset.add(quad);
+System.out.println(dataset.contains(quad));
+dataset.remove(quad);
+```
+
+> `true`
+
+
+The convenience method [add(g,s,p,o)](apidocs/org/apache/commons/rdf/api/Dataset.html#add-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-) take an additional `BlankNodeOrIRI` parameter for the
+graph name - matching `RDFTermFactory.createQuad(g,s,p,o)`.
+
+Note that the expanded pattern methods like [contains(g,s,p,o)](apidocs/org/apache/commons/rdf/api/Dataset.html#contains-java.util.Optional-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-) and
+[stream(g,s,p,o)](apidocs/org/apache/commons/rdf/api/Dataset.html#stream-java.util.Optional-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-) uses `null` as a wildcard pattern, and
+therefore an explicit _graph name_ parameter must be supplied as [Optional.empty()](https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html#empty--)  (default graph)
+or wrapped using [Optional.of(blankNodeOrIRI](https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html#of-T-):
+
+```
+Literal foo = factory.createLiteral("Foo");
+// Match Foo in any graph, any subject, any predicate
+if (dataset.contains(null, null, null, foo)) {
+  System.out.println("Foo literal found");
+}
+
+// Match Foo in default graph, any subject, any predicate
+if (dataset.contains(Optional.empty(), null, null, foo)) {
+  System.out.println("Foo literal found in default graph");
+}
+
+
+BlankNodeOrIRI g1 = factory.createIRI("http://example.com/graph1");
+// Match Foo in named graph, any subject, any predicate
+if (dataset.contains(Optional.of(g1), null, null, foo)) {
+  System.out.println("Foo literal found in default graph");
+}
+```
+
+
+
 ## Mutability and thread safety
 
 _Note: This section is subject to change - see discussion on [COMMONSRDF-7](https://issues.apache.org/jira/browse/COMMONSRDF-7)_
