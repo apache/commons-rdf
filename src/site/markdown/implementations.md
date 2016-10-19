@@ -194,9 +194,9 @@ This is primarily intended to support [JSON-LD](http://json-ld.org/) parsing and
 ```java
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.RDFTermFactory;
-import org.apache.commons.rdf.jsonld.JsonLdRDFTermFactory;
+import org.apache.commons.rdf.jsonld.JsonLdFactory;
 
-RDFTermFactory rdfTermFactory = new JsonLdRDFTermFactory();
+RDFTermFactory rdfTermFactory = new JsonLdFactory();
 Graph graph = rdfTermFactory.createGraph();
 ```
 

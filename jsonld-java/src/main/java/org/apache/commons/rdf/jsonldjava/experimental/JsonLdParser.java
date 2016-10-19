@@ -32,7 +32,7 @@ import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDFSyntax;
 import org.apache.commons.rdf.jsonldjava.JsonLdDataset;
 import org.apache.commons.rdf.jsonldjava.JsonLdGraph;
-import org.apache.commons.rdf.jsonldjava.JsonLdRDFTermFactory;
+import org.apache.commons.rdf.jsonldjava.JsonLdFactory;
 import org.apache.commons.rdf.simple.experimental.AbstractRDFParser;
 
 import com.github.jsonldjava.core.JsonLdError;
@@ -44,8 +44,8 @@ import com.github.jsonldjava.utils.JsonUtils;
 public class JsonLdParser extends AbstractRDFParser<JsonLdParser> {
 
 	@Override
-	protected JsonLdRDFTermFactory createRDFTermFactory() {
-		return new JsonLdRDFTermFactory();
+	protected JsonLdFactory createRDFTermFactory() {
+		return new JsonLdFactory();
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public class JsonLdParser extends AbstractRDFParser<JsonLdParser> {
 				// otherwise we have to merge as normal
 			} 			
 			// TODO: Modify JsonLdProcessor to have an actual triple callback
-			Graph parsedGraph = getJsonLdRDFTermFactory().asGraph(rdfDataset);			
+			Graph parsedGraph = getJsonLdFactory().asGraph(rdfDataset);			
 			// sequential() as we don't know if destination is thread safe :-/
 			parsedGraph.stream().sequential().forEach(intoGraph::add);
 		} else if (getTargetDataset().isPresent()) {
@@ -119,19 +119,19 @@ public class JsonLdParser extends AbstractRDFParser<JsonLdParser> {
 				// otherwise we have to merge.. but also avoid duplicate triples, 
 				// map blank nodes etc, so we'll fall back to normal Dataset appending.
 			}	
-			Dataset fromDataset = getJsonLdRDFTermFactory().asDataset(rdfDataset);
+			Dataset fromDataset = getJsonLdFactory().asDataset(rdfDataset);
 			// .sequential() as we don't know if destination is thread-safe :-/			
 			fromDataset.stream().sequential().forEach(intoDataset::add);
 		} else {	
-			Dataset fromDataset = getJsonLdRDFTermFactory().asDataset(rdfDataset);
+			Dataset fromDataset = getJsonLdFactory().asDataset(rdfDataset);
 			// No need for .sequential() here
 			fromDataset.stream().forEach(getTarget());
 		}
 	}
 	
-	private JsonLdRDFTermFactory getJsonLdRDFTermFactory() {
-		if (getRdfTermFactory().isPresent() && getRdfTermFactory().get() instanceof JsonLdRDFTermFactory) {
-			return (JsonLdRDFTermFactory) getRdfTermFactory().get();
+	private JsonLdFactory getJsonLdFactory() {
+		if (getRdfTermFactory().isPresent() && getRdfTermFactory().get() instanceof JsonLdFactory) {
+			return (JsonLdFactory) getRdfTermFactory().get();
 		}
 		return createRDFTermFactory();		
 	}

@@ -35,16 +35,16 @@ import org.apache.commons.rdf.simple.Types;
 import com.github.jsonldjava.core.RDFDataset;
 import com.github.jsonldjava.core.RDFDataset.Node;
 
-public final class JsonLdRDFTermFactory implements RDFTermFactory {
+public final class JsonLdFactory implements RDFTermFactory {
 
 	final String bnodePrefix;
 
-	public JsonLdRDFTermFactory() {
+	public JsonLdFactory() {
 		// An "outside Graph" bnodePrefix
 		this("urn:uuid:" + UUID.randomUUID() + "#b");
 	}
 
-	JsonLdRDFTermFactory(String bnodePrefix) {
+	JsonLdFactory(String bnodePrefix) {
 		this.bnodePrefix = Objects.requireNonNull(bnodePrefix);
 	}
 

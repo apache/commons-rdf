@@ -22,11 +22,11 @@ import org.apache.commons.rdf.api.RDFTermFactory;
 import org.junit.Ignore;
 import org.junit.Test;
 
-public class JsonLdRDFTermFactoryTest extends AbstractRDFTermFactoryTest {
+public class JsonLdFactoryTest extends AbstractRDFTermFactoryTest {
 
 	@Override
 	public RDFTermFactory createFactory() {
-		return new JsonLdRDFTermFactory();
+		return new JsonLdFactory();
 	}
 	
 	// TODO: Add support for checking for invalid lang/iri/blanknode IDs

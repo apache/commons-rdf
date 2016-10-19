@@ -32,7 +32,7 @@ public interface JsonLdQuadLike<G extends RDFTerm> extends QuadLike<G>, JsonLdTr
 		
 		// Note: We always pass the blankNodePrefix and don't rely on the internal
 		// blankNodePrefix in this static factory
-		private static JsonLdRDFTermFactory rdfTermFactory = new JsonLdRDFTermFactory();
+		private static JsonLdFactory rdfTermFactory = new JsonLdFactory();
 		
 		private final Quad quad;
 		private String blankNodePrefix;
