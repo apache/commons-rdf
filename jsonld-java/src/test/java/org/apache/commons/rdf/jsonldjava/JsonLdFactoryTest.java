@@ -18,14 +18,14 @@
 package org.apache.commons.rdf.jsonldjava;
 
 import org.apache.commons.rdf.api.AbstractRDFTermFactoryTest;
-import org.apache.commons.rdf.api.RDFTermFactory;
+import org.apache.commons.rdf.api.RDFFactory;
 import org.junit.Ignore;
 import org.junit.Test;
 
 public class JsonLdFactoryTest extends AbstractRDFTermFactoryTest {
 
 	@Override
-	public RDFTermFactory createFactory() {
+	public RDFFactory createFactory() {
 		return new JsonLdFactory();
 	}
 	

@@ -24,7 +24,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
 import org.apache.commons.rdf.api.Graph ;
-import org.apache.commons.rdf.api.RDFTermFactory ;
+import org.apache.commons.rdf.api.RDFFactory ;
 import org.apache.jena.riot.Lang ;
 import org.apache.jena.riot.RDFDataMgr ;
 import org.apache.jena.sparql.graph.GraphFactory ;
@@ -59,7 +59,7 @@ public class TestJenaGraphToCommonsRDFGraph {
         Graph graph = new JenaFactory().fromJena(jGraph) ;
         
         // Add to CommonsRDF Graph
-        RDFTermFactory rft = new JenaFactory() ;
+        RDFFactory rft = new JenaFactory() ;
         graph.add(rft.createIRI("http://example/s2"),
                   rft.createIRI("http://example/p2"),
                   rft.createLiteral("foo")) ;

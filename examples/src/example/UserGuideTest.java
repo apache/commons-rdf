@@ -32,7 +32,7 @@ import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.QuadLike;
 import org.apache.commons.rdf.api.RDFTerm;
-import org.apache.commons.rdf.api.RDFTermFactory;
+import org.apache.commons.rdf.api.RDFFactory;
 import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.api.TripleLike;
 import org.apache.commons.rdf.simple.SimpleRDFTermFactory;
@@ -42,7 +42,7 @@ import org.junit.Test;
 
 public class UserGuideTest {
 
-	private RDFTermFactory factory;
+	private RDFFactory factory;
 
 	@Before
 	public void factory() {

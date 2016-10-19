@@ -28,14 +28,14 @@ import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.api.RDFTerm;
-import org.apache.commons.rdf.api.RDFTermFactory;
+import org.apache.commons.rdf.api.RDFFactory;
 import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.simple.Types;
 
 import com.github.jsonldjava.core.RDFDataset;
 import com.github.jsonldjava.core.RDFDataset.Node;
 
-public final class JsonLdFactory implements RDFTermFactory {
+public final class JsonLdFactory implements RDFFactory {
 
 	final String bnodePrefix;
 

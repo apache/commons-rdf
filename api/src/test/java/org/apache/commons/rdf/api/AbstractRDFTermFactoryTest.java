@@ -29,26 +29,26 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Test RDFTermFactory implementation (and thus its RDFTerm implementations)
+ * Test RDFFactory implementation (and thus its RDFTerm implementations)
  * <p>
  * To add to your implementation's tests, create a subclass with a name ending
  * in <code>Test</code> and provide {@link #createFactory()} which minimally
  * supports one of the operations, but ideally supports all operations.
  *
- * @see RDFTermFactory
+ * @see RDFFactory
  */
 public abstract class AbstractRDFTermFactoryTest {
 
-    private RDFTermFactory factory;
+    private RDFFactory factory;
 
     /**
-     * testCreate a new, distinct {@link RDFTermFactory} object using the
+     * testCreate a new, distinct {@link RDFFactory} object using the
      * implementation being tested here.
      *
-     * @return a new, distinct {@link RDFTermFactory} object using the
+     * @return a new, distinct {@link RDFFactory} object using the
      * implementation being tested here
      */
-    public abstract RDFTermFactory createFactory();
+    public abstract RDFFactory createFactory();
 
     @Before
     public void setUp() {
@@ -126,7 +126,7 @@ public abstract class AbstractRDFTermFactoryTest {
             // only says:
             // 
             // * BlankNodes created using this method with the same parameter, for
-            // * different instances of RDFTermFactory, SHOULD NOT be equivalent.
+            // * different instances of RDFFactory, SHOULD NOT be equivalent.
             //
             // https://github.com/apache/incubator-commonsrdf/pull/7#issuecomment-92312779
         } catch (UnsupportedOperationException ex) {

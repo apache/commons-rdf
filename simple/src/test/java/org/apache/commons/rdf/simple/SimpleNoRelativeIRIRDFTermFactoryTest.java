@@ -19,7 +19,7 @@ package org.apache.commons.rdf.simple;
 
 import org.apache.commons.rdf.api.AbstractRDFTermFactoryTest;
 import org.apache.commons.rdf.api.IRI;
-import org.apache.commons.rdf.api.RDFTermFactory;
+import org.apache.commons.rdf.api.RDFFactory;
 
 import java.net.URI;
 
@@ -32,7 +32,7 @@ import java.net.URI;
 public class SimpleNoRelativeIRIRDFTermFactoryTest extends
         AbstractRDFTermFactoryTest {
     @Override
-    public RDFTermFactory createFactory() {
+    public RDFFactory createFactory() {
         return new SimpleRDFTermFactory() {
             @Override
             public IRI createIRI(String iri) {

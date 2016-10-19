@@ -41,18 +41,18 @@ import org.junit.Test;
  * <p>
  * To add to your implementation's tests, create a subclass with a name ending
  * in <code>Test</code> and provide {@link #createFactory()} which minimally
- * must support {@link RDFTermFactory#createGraph()} and
- * {@link RDFTermFactory#createIRI(String)}, but ideally support all operations.
+ * must support {@link RDFFactory#createGraph()} and
+ * {@link RDFFactory#createIRI(String)}, but ideally support all operations.
  * <p>
  * This test uses try-with-resources blocks for calls to {@link Graph#stream()}
  * and {@link Graph#iterate()}.
  * 
  * @see Graph
- * @see RDFTermFactory
+ * @see RDFFactory
  */
 public abstract class AbstractGraphTest {
 
-    protected RDFTermFactory factory;
+    protected RDFFactory factory;
     protected Graph graph;
     protected IRI alice;
     protected IRI bob;
@@ -67,7 +67,7 @@ public abstract class AbstractGraphTest {
     protected Literal companyName;
     protected Triple bobNameTriple;
 
-    public abstract RDFTermFactory createFactory();
+    public abstract RDFFactory createFactory();
 
     @Before
     public void createGraphAndAdd() {
@@ -413,7 +413,7 @@ public abstract class AbstractGraphTest {
      * Make a new graph with two BlankNodes - each with a different uniqueReference
      */
     private Graph createGraph1() {
-        RDFTermFactory factory1 = createFactory();
+        RDFFactory factory1 = createFactory();
 
         IRI name = factory1.createIRI("http://xmlns.com/foaf/0.1/name");
         Graph g1 = factory1.createGraph();
@@ -465,7 +465,7 @@ public abstract class AbstractGraphTest {
 	}
 
     private Graph createGraph2() {
-        RDFTermFactory factory2 = createFactory();
+        RDFFactory factory2 = createFactory();
         IRI name = factory2.createIRI("http://xmlns.com/foaf/0.1/name");
 
         Graph g2 = factory2.createGraph();

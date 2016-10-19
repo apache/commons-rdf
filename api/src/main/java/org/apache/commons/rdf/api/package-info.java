@@ -30,7 +30,7 @@
  * {@link org.apache.commons.rdf.api.BlankNode}.
  * <p>
  * Implementations of this API should provide an
- * {@link org.apache.commons.rdf.api.RDFTermFactory} to facilitate
+ * {@link org.apache.commons.rdf.api.RDFFactory} to facilitate
  * creation of these objects.
  * <p>
  * All the {@link org.apache.commons.rdf.api.RDFTerm} objects are immutable,

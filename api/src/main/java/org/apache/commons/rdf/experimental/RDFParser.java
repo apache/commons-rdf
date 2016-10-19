@@ -32,7 +32,7 @@ import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFSyntax;
 import org.apache.commons.rdf.api.RDFTerm;
-import org.apache.commons.rdf.api.RDFTermFactory;
+import org.apache.commons.rdf.api.RDFFactory;
 import org.apache.commons.rdf.api.Triple;
 
 /**
@@ -100,25 +100,25 @@ public interface RDFParser {
 	}
 
 	/**
-	 * Specify which {@link RDFTermFactory} to use for generating
+	 * Specify which {@link RDFFactory} to use for generating
 	 * {@link RDFTerm}s.
 	 * <p>
 	 * This option may be used together with {@link #target(Graph)} to
 	 * override the implementation's default factory and graph.
 	 * <p>
-	 * <strong>Warning:</strong> Using the same {@link RDFTermFactory} for 
+	 * <strong>Warning:</strong> Using the same {@link RDFFactory} for 
 	 * multiple {@link #parse()} calls  may accidentally merge 
 	 * {@link BlankNode}s having the same label, as the parser may 
-	 * use the {@link RDFTermFactory#createBlankNode(String)} method
+	 * use the {@link RDFFactory#createBlankNode(String)} method
 	 * from the parsed blank node labels.
 	 * 
 	 * @see #target(Graph)
 	 * @param rdfTermFactory
-	 *            {@link RDFTermFactory} to use for generating RDFTerms.
+	 *            {@link RDFFactory} to use for generating RDFTerms.
 	 * @return An {@link RDFParser} that will use the specified
 	 *         rdfTermFactory
 	 */
-	RDFParser rdfTermFactory(RDFTermFactory rdfTermFactory);
+	RDFParser rdfTermFactory(RDFFactory rdfTermFactory);
 
 	/**
 	 * Specify the content type of the RDF syntax to parse.

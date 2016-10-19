@@ -23,7 +23,7 @@ import java.util.function.Consumer;
 
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Quad;
-import org.apache.commons.rdf.api.RDFTermFactory;
+import org.apache.commons.rdf.api.RDFFactory;
 import org.apache.commons.rdf.experimental.RDFParser;
 import org.apache.commons.rdf.simple.experimental.AbstractRDFParser;
 import org.apache.commons.rdf.simple.experimental.RDFParseException;
@@ -50,7 +50,7 @@ public class DummyRDFParserBuilder extends AbstractRDFParser<DummyRDFParserBuild
 	@Override
 	protected void parseSynchronusly() throws IOException, IllegalStateException, RDFParseException {		
 		// From parseSynchronusly both of these are always present
-		RDFTermFactory factory = getRdfTermFactory().get();
+		RDFFactory factory = getRdfTermFactory().get();
 		Consumer<Quad> t = getTarget();
 				
 		// well - each parsing is unique. This should hopefully

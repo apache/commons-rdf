@@ -26,7 +26,7 @@ import java.util.function.Consumer;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.QuadLike;
 import org.apache.commons.rdf.api.RDFTerm;
-import org.apache.commons.rdf.api.RDFTermFactory;
+import org.apache.commons.rdf.api.RDFFactory;
 import org.apache.commons.rdf.api.TripleLike;
 import org.apache.commons.rdf.experimental.RDFParser;
 import org.apache.commons.rdf.jena.JenaGraph;
@@ -43,7 +43,7 @@ public class JenaRDFParser extends AbstractRDFParser<JenaRDFParser> implements R
 	private Consumer<TripleLike> generalizedConsumerTriple;
 	private Consumer<QuadLike<RDFTerm>> generalizedConsumerQuad;
 
-	protected RDFTermFactory createRDFTermFactory() {
+	protected RDFFactory createRDFTermFactory() {
 		return new JenaFactory();
 	}
 

@@ -33,7 +33,7 @@ import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFSyntax;
-import org.apache.commons.rdf.api.RDFTermFactory;
+import org.apache.commons.rdf.api.RDFFactory;
 import org.apache.commons.rdf.experimental.RDFParser;
 import org.apache.commons.rdf.simple.SimpleRDFTermFactory;
 
@@ -63,15 +63,15 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>>
 	private static final ExecutorService threadpool = Executors.newCachedThreadPool(r -> new Thread(threadGroup, r));
 
 	// Basically only used for creating IRIs
-	private static RDFTermFactory internalRdfTermFactory = new SimpleRDFTermFactory();
+	private static RDFFactory internalRdfTermFactory = new SimpleRDFTermFactory();
 
 	/**
-	 * Get the set {@link RDFTermFactory}, if any.
+	 * Get the set {@link RDFFactory}, if any.
 	 * 
-	 * @return The {@link RDFTermFactory} to use, or {@link Optional#empty()} if
+	 * @return The {@link RDFFactory} to use, or {@link Optional#empty()} if
 	 *         it has not been set
 	 */
-	public Optional<RDFTermFactory> getRdfTermFactory() {
+	public Optional<RDFFactory> getRdfTermFactory() {
 		return rdfTermFactory;
 	}
 
@@ -200,7 +200,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>>
 	}
 
 
-	private Optional<RDFTermFactory> rdfTermFactory = Optional.empty();
+	private Optional<RDFFactory> rdfTermFactory = Optional.empty();
 	private Optional<RDFSyntax> contentTypeSyntax = Optional.empty();
 	private Optional<String> contentType = Optional.empty();
 	private Optional<IRI> base = Optional.empty();
@@ -227,7 +227,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>>
 	}
 	
 	@Override
-	public T rdfTermFactory(RDFTermFactory rdfTermFactory) {
+	public T rdfTermFactory(RDFFactory rdfTermFactory) {
 		AbstractRDFParser<T> c = clone();
 		c.rdfTermFactory = Optional.ofNullable(rdfTermFactory);
 		return c.asT();
@@ -501,20 +501,20 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>>
 	
 
 	/**
-	 * Create a new {@link RDFTermFactory} for a parse session.
+	 * Create a new {@link RDFFactory} for a parse session.
 	 * <p>
 	 * This is called by {@link #parse()} to set 
-	 * {@link #rdfTermFactory(RDFTermFactory)} if it is
+	 * {@link #rdfTermFactory(RDFFactory)} if it is
 	 * {@link Optional#empty()}.
 	 * <p>
 	 * As parsed blank nodes might be made with 
-	 * {@link RDFTermFactory#createBlankNode(String)}, 
+	 * {@link RDFFactory#createBlankNode(String)}, 
 	 * each call to this method SHOULD return 
-	 * a new RDFTermFactory instance.
+	 * a new RDFFactory instance.
 	 * 
-	 * @return A new {@link RDFTermFactory}
+	 * @return A new {@link RDFFactory}
 	 */
-	protected RDFTermFactory createRDFTermFactory() {
+	protected RDFFactory createRDFTermFactory() {
 		return new SimpleRDFTermFactory();
 	}
 

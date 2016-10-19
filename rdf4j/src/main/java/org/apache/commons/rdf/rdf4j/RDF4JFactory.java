@@ -32,7 +32,7 @@ import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFTerm;
-import org.apache.commons.rdf.api.RDFTermFactory;
+import org.apache.commons.rdf.api.RDFFactory;
 import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.api.TripleLike;
 import org.apache.commons.rdf.rdf4j.impl.InternalRDF4JFactory;
@@ -51,7 +51,7 @@ import org.eclipse.rdf4j.sail.Sail;
 import org.eclipse.rdf4j.sail.memory.MemoryStore;
 
 /**
- * RDF4J implementation of RDFTermFactory.
+ * RDF4J implementation of RDFFactory.
  * <p>
  * The {@link #RDF4JFactory()} constructor uses a {@link SimpleValueFactory}
  * to create corresponding RDF4J {@link Value} instances. Alternatively, this
@@ -99,7 +99,7 @@ import org.eclipse.rdf4j.sail.memory.MemoryStore;
  * therefore uses a unique {@link RDF4JFactory} internally.
  *
  */
-public final class RDF4JFactory implements RDFTermFactory {
+public final class RDF4JFactory implements RDFFactory {
 
 	/**
 	 * InternalRDF4JFactory is deliberately abstract

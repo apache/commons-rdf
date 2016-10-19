@@ -24,7 +24,7 @@ import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFTerm;
-import org.apache.commons.rdf.api.RDFTermFactory;
+import org.apache.commons.rdf.api.RDFFactory;
 import org.eclipse.rdf4j.repository.Repository;
 import org.eclipse.rdf4j.repository.sail.SailRepository;
 import org.eclipse.rdf4j.sail.Sail;
@@ -33,7 +33,7 @@ import org.eclipse.rdf4j.sail.memory.model.MemValueFactory;
 
 public class MemoryGraphTest extends AbstractGraphTest {
 
-	public static final class MemoryStoreFactory implements RDFTermFactory {
+	public static final class MemoryStoreFactory implements RDFFactory {
 
 		RDF4JFactory rdf4jFactory = new RDF4JFactory(new MemValueFactory());
 
@@ -82,7 +82,7 @@ public class MemoryGraphTest extends AbstractGraphTest {
 	}
 
 	@Override
-	public RDFTermFactory createFactory() {
+	public RDFFactory createFactory() {
 		return new MemoryStoreFactory();
 	}
 

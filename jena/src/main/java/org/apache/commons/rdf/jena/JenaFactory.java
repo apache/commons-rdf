@@ -31,7 +31,7 @@ import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.QuadLike;
 import org.apache.commons.rdf.api.RDFSyntax;
 import org.apache.commons.rdf.api.RDFTerm;
-import org.apache.commons.rdf.api.RDFTermFactory;
+import org.apache.commons.rdf.api.RDFFactory;
 import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.api.TripleLike;
 import org.apache.commons.rdf.jena.impl.InternalJenaFactory;
@@ -48,7 +48,7 @@ import org.apache.jena.sparql.core.DatasetGraph;
 import org.apache.jena.sparql.graph.GraphFactory;
 
 /**
- * RDFTermFactory with Jena-backed objects.
+ * RDFFactory with Jena-backed objects.
  * <p>
  * This factory can also convert existing objects from/to Jena with methods like
  * {@link #fromJena(org.apache.jena.graph.Graph)} and {@link #toJena(Graph)}.
@@ -56,9 +56,9 @@ import org.apache.jena.sparql.graph.GraphFactory;
  * For the purpose of {@link BlankNode} identity, this factory will use an internal
  * {@link UUID} as a salt. See {@link BlankNode#uniqueReference()} for details.
  * 
- * @see RDFTermFactory
+ * @see RDFFactory
  */
-public final class JenaFactory implements RDFTermFactory {
+public final class JenaFactory implements RDFFactory {
 
 	private static InternalJenaFactory internalJenaFactory = new InternalJenaFactory(){};
 	
@@ -203,7 +203,7 @@ public final class JenaFactory implements RDFTermFactory {
 	 * {@link Node#getBlankNodeId()} for the purpose of its
 	 * {@link BlankNode#uniqueReference()}.
 	 * 
-	 * @see #fromJena(RDFTermFactory, Node)
+	 * @see #fromJena(RDFFactory, Node)
 	 * 
 	 * @param node
 	 *            The Jena Node to adapt. It's {@link Node#isConcrete()} must be
@@ -220,13 +220,13 @@ public final class JenaFactory implements RDFTermFactory {
 	 * Convert from Jena {@link Node} to any Commons RDF implementation.
 	 * <p>
 	 * Note that if the {@link Node#isBlank()}, then the factory's 
-	 * {@link RDFTermFactory#createBlankNode(String)} will be used, meaning
-	 * that care should be taken if reusing an {@link RDFTermFactory} instance
+	 * {@link RDFFactory#createBlankNode(String)} will be used, meaning
+	 * that care should be taken if reusing an {@link RDFFactory} instance
 	 * for multiple conversion sessions.
 	 * 
 	 * @see #fromJena(Node)
 	 * 
-	 * @param factory {@link RDFTermFactory} to use for creating {@link RDFTerm}.
+	 * @param factory {@link RDFFactory} to use for creating {@link RDFTerm}.
 	 * @param node
 	 *            The Jena Node to adapt. It's {@link Node#isConcrete()} must be
 	 *            <code>true</code>.
@@ -234,7 +234,7 @@ public final class JenaFactory implements RDFTermFactory {
 	 * @throws ConversionException If the {@link Node} can't be represented as an {@link RDFTerm}, e.g.
 	 *             if the node is not concrete or represents a variable in Jena.
 	 */
-	public static RDFTerm fromJena(RDFTermFactory factory, Node node) {
+	public static RDFTerm fromJena(RDFFactory factory, Node node) {
 		if (node == null) {
 			return null;
 		}
@@ -268,7 +268,7 @@ public final class JenaFactory implements RDFTermFactory {
 	 * {@link Node#getBlankNodeId()} for the purpose of its
 	 * {@link BlankNode#uniqueReference()}.
 	 *
-	 * @see #fromJena(RDFTermFactory, org.apache.jena.graph.Triple)
+	 * @see #fromJena(RDFFactory, org.apache.jena.graph.Triple)
 	 * 
 	 * @param triple
 	 *            Jena {@link org.apache.jena.graph.Triple} to adapt
@@ -293,7 +293,7 @@ public final class JenaFactory implements RDFTermFactory {
 	 * {@link Node#getBlankNodeId()} for the purpose of its
 	 * {@link BlankNode#uniqueReference()}.
 	 *
-	 * @see #fromJena(RDFTermFactory, org.apache.jena.graph.Triple)
+	 * @see #fromJena(RDFFactory, org.apache.jena.graph.Triple)
 	 * 
 	 * @param triple
 	 *            Jena triple
@@ -342,13 +342,13 @@ public final class JenaFactory implements RDFTermFactory {
 	 * {@link Triple}.
 	 * <p>
 	 * Note that if any of the triple's nodes {@link Node#isBlank()}, then the factory's 
-	 * {@link RDFTermFactory#createBlankNode(String)} will be used, meaning
-	 * that care should be taken if reusing an {@link RDFTermFactory} instance
+	 * {@link RDFFactory#createBlankNode(String)} will be used, meaning
+	 * that care should be taken if reusing an {@link RDFFactory} instance
 	 * for multiple conversion sessions.
 	 * 
 	 * @see #fromJena(org.apache.jena.graph.Triple)
 	 *
-	 * @param factory {@link RDFTermFactory} to use for creating the {@link Triple} and its
+	 * @param factory {@link RDFFactory} to use for creating the {@link Triple} and its
 	 * {@link RDFTerm}s.
 	 * @param triple
 	 *            Jena triple
@@ -357,7 +357,7 @@ public final class JenaFactory implements RDFTermFactory {
 	 *             if any of the triple's nodes are not concrete or the triple
 	 *             is a generalized triple
 	 */
-	public static Triple fromJena(RDFTermFactory factory, org.apache.jena.graph.Triple triple) 
+	public static Triple fromJena(RDFFactory factory, org.apache.jena.graph.Triple triple) 
 			throws ConversionException{
 		if (factory instanceof JenaFactory) {
 			// No need to convert, just wrap
@@ -478,15 +478,15 @@ public final class JenaFactory implements RDFTermFactory {
 	 * RDF {@link Quad}.
 	 * <p>
 	 * Note that if any of the quad's nodes {@link Node#isBlank()}, then the
-	 * factory's {@link RDFTermFactory#createBlankNode(String)} will be used,
-	 * meaning that care should be taken if reusing an {@link RDFTermFactory}
+	 * factory's {@link RDFFactory#createBlankNode(String)} will be used,
+	 * meaning that care should be taken if reusing an {@link RDFFactory}
 	 * instance for multiple conversion sessions.
 	 * 
 	 * @see #fromJena(org.apache.jena.sparql.core.Quad)
 	 * @see #fromJenaGeneralized(org.apache.jena.sparql.core.Quad)
 	 *
 	 * @param factory
-	 *            {@link RDFTermFactory} to use for creating the {@link Triple}
+	 *            {@link RDFFactory} to use for creating the {@link Triple}
 	 *            and its {@link RDFTerm}s.
 	 * @param quad
 	 *            Jena {@link org.apache.jena.sparql.core.Quad} to adapt
@@ -495,7 +495,7 @@ public final class JenaFactory implements RDFTermFactory {
 	 *             if any of the quad's nodes are not concrete or the quad
 	 *             is a generalized quad
 	 */
-	public static Quad fromJena(RDFTermFactory factory, org.apache.jena.sparql.core.Quad quad) {
+	public static Quad fromJena(RDFFactory factory, org.apache.jena.sparql.core.Quad quad) {
 		if (factory instanceof JenaFactory) {
 			// No need to convert, just wrap
 			return ((JenaFactory) factory).fromJena(quad);
@@ -535,14 +535,14 @@ public final class JenaFactory implements RDFTermFactory {
 	 * {@link RDFDataMgr#parse(StreamRDF, String)}.
 	 * 
 	 * @param factory
-	 *            {@link RDFTermFactory} to use for creating {@link RDFTerm}s
+	 *            {@link RDFFactory} to use for creating {@link RDFTerm}s
 	 *            and {@link Quad}s.
 	 * @param consumer
 	 *            A {@link Consumer} of {@link Quad}s
 	 * @return A {@link StreamRDF} that will stream converted quads to the
 	 *         consumer
 	 */
-	public static StreamRDF streamJenaToCommonsRDF(RDFTermFactory factory, Consumer<Quad> consumer) {
+	public static StreamRDF streamJenaToCommonsRDF(RDFFactory factory, Consumer<Quad> consumer) {
 		return new StreamRDFBase() {
 			@Override
 			public void quad(org.apache.jena.sparql.core.Quad quad) {

@@ -23,7 +23,7 @@ import java.util.Locale;
 /**
  * Factory for creating RDFTerm and Graph instances.
  * <p>
- * It is not specified how an implementation should provide a RDFTermFactory.
+ * It is not specified how an implementation should provide a RDFFactory.
  * <p>
  * If an implementation does not support a particular method (e.g. it requires
  * additional parameters or can't create graphs), then it MAY throw
@@ -38,7 +38,7 @@ import java.util.Locale;
  * @see Graph
  * @see Quad
  */
-public interface RDFTermFactory {
+public interface RDFFactory {
 
     /**
      * Create a new blank node.
@@ -59,7 +59,7 @@ public interface RDFTermFactory {
      * Create a blank node based on the given name.
      * <p>
      * All {@link BlankNode}s created with the given <code>name</code>
-     * <em>on a particular instance</em> of <code>RDFTermFactory</code> MUST be
+     * <em>on a particular instance</em> of <code>RDFFactory</code> MUST be
      * equivalent according to {@link BlankNode#equals(Object)},
      * <p>
      * The returned BlankNode MUST NOT be equal to <code>BlankNode</code>
@@ -67,15 +67,15 @@ public interface RDFTermFactory {
      * {@link #createBlankNode()}.
      * <p>
      * The returned BlankNode SHOULD NOT be equivalent to any BlankNodes created
-     * on a <em>different</em> <code>RDFTermFactory</code> instance, e.g.
-     * different instances of <code>RDFTermFactory</code> should produce
+     * on a <em>different</em> <code>RDFFactory</code> instance, e.g.
+     * different instances of <code>RDFFactory</code> should produce
      * different blank nodes for the same <code>name</code> unless they
      * purposely are intending to create equivalent {@link BlankNode}
      * instances (e.g. a reinstated {@link Serializable} factory).
      *
      * @param name
      *            A non-empty, non-null, String that is unique to this blank
-     *            node in the context of this {@link RDFTermFactory}.
+     *            node in the context of this {@link RDFFactory}.
      * @return A BlankNode for the given name
      * @throws UnsupportedOperationException
      *             If the operation is not supported.

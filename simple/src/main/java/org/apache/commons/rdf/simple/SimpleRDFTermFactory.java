@@ -27,17 +27,17 @@ import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFTerm;
-import org.apache.commons.rdf.api.RDFTermFactory;
+import org.apache.commons.rdf.api.RDFFactory;
 import org.apache.commons.rdf.api.Triple;
 
 /**
- * A simple implementation of RDFTermFactory.
+ * A simple implementation of RDFFactory.
  * <p>
  * The {@link RDFTerm} and {@link Graph} instances created by this factory are
  * simple in-memory Implementations that are not thread-safe or efficient, but
  * which may be useful for testing and prototyping purposes.
  */
-public class SimpleRDFTermFactory implements RDFTermFactory {
+public class SimpleRDFTermFactory implements RDFFactory {
 
 	/**
 	 * Marker interface to say that this RDFTerm is part of the 
