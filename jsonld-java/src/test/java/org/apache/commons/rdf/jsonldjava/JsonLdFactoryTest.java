@@ -19,6 +19,7 @@ package org.apache.commons.rdf.jsonldjava;
 
 import org.apache.commons.rdf.api.AbstractRDFTermFactoryTest;
 import org.apache.commons.rdf.api.RDFFactory;
+import org.junit.Assume;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -31,17 +32,17 @@ public class JsonLdFactoryTest extends AbstractRDFTermFactoryTest {
 	
 	// TODO: Add support for checking for invalid lang/iri/blanknode IDs
 	
-	@Ignore
 	@Test
 	@Override
 	public void testInvalidLiteralLang() throws Exception {
+		Assume.assumeFalse("JSONLD-Java does not validate lang strings", false);		
 		super.testInvalidLiteralLang();
 	}
 	
-	@Ignore
 	@Test
 	@Override
 	public void testInvalidIRI() throws Exception {
+		Assume.assumeFalse("JSONLD-Java does not validate IRIs", false);
 		super.testInvalidIRI();
 	}
 	
@@ -49,6 +50,7 @@ public class JsonLdFactoryTest extends AbstractRDFTermFactoryTest {
 	@Test
 	@Override
 	public void testPossiblyInvalidBlankNode() throws Exception {
+		// TODO: Fix blank node in ntriplesString()
 		super.testPossiblyInvalidBlankNode();
 	}
 }

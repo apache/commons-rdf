@@ -30,7 +30,7 @@ public class MemoryRDFTermFactoryTest extends AbstractRDFTermFactoryTest {
 	
 	@Override
 	public void testInvalidLiteralLang() throws Exception {
-		Assume.assumeTrue("Sesame doesn't check Lang strings",false);
+		Assume.assumeTrue("RDF4J doesn't check Lang strings",false);
 		super.testInvalidLiteralLang();
 	}
 	

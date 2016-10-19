@@ -37,6 +37,7 @@ public interface JsonLdBlankNode extends JsonLdTerm, BlankNode {
 	
 		@Override
 		public String ntriplesString() {
+			// TODO: Escape if this is not valid ntriples string (e.g. contains :)
 			return node.getValue();
 		}
 	
