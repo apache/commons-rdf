@@ -34,6 +34,7 @@ import java.util.Locale;
  * because an IRI is considered invalid, then it SHOULD throw
  * {@link IllegalArgumentException}.
  *
+ * @since 0.3.0-incubating
  * @see RDFTerm
  * @see Graph
  * @see Quad
