@@ -25,13 +25,13 @@ import org.junit.Assume;
 import org.junit.Test;
 
 /**
- * Test SimpleRDFTermFactory with AbstractGraphTest
+ * Test SimpleRDFFactory with AbstractGraphTest
  */
 public class SimpleGraphTest extends AbstractGraphTest {
 
     @Override
     public RDFFactory createFactory() {
-        return new SimpleRDFTermFactory();
+        return new SimpleRDFFactory();
     }
 
     @Test

@@ -57,7 +57,7 @@ public class TestWritingGraph {
 
     @BeforeClass
     public static void createGraph() throws Exception {
-        factory = new SimpleRDFTermFactory();
+        factory = new SimpleRDFFactory();
         graph = factory.createGraph();
         IRI subject = factory.createIRI("subj");
         IRI predicate = factory.createIRI("pred");

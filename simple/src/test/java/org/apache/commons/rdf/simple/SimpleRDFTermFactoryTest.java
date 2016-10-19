@@ -27,7 +27,7 @@ public class SimpleRDFTermFactoryTest extends AbstractRDFTermFactoryTest {
 
     @Override
     public RDFFactory createFactory() {
-        return new SimpleRDFTermFactory();
+        return new SimpleRDFFactory();
     }
 
 }

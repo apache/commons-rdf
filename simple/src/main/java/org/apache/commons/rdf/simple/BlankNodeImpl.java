@@ -23,7 +23,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.commons.rdf.api.BlankNode;
-import org.apache.commons.rdf.simple.SimpleRDFTermFactory.SimpleRDFTerm;
+import org.apache.commons.rdf.simple.SimpleRDFFactory.SimpleRDFTerm;
 
 /**
  * A simple implementation of BlankNode.

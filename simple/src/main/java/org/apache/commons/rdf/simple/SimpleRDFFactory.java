@@ -33,11 +33,12 @@ import org.apache.commons.rdf.api.Triple;
 /**
  * A simple implementation of RDFFactory.
  * <p>
- * The {@link RDFTerm} and {@link Graph} instances created by this factory are
+ * The {@link RDFTerm}, {@link Triple}, {@link Quad}, {@link Graph}
+ * and {@link Dataset} instances created by this factory are
  * simple in-memory Implementations that are not thread-safe or efficient, but
  * which may be useful for testing and prototyping purposes.
  */
-public class SimpleRDFTermFactory implements RDFFactory {
+public class SimpleRDFFactory implements RDFFactory {
 
 	/**
 	 * Marker interface to say that this RDFTerm is part of the 
@@ -107,7 +108,7 @@ public class SimpleRDFTermFactory implements RDFFactory {
     
     @Override
     public Quad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
-    		throws IllegalArgumentException, UnsupportedOperationException {
+    		throws IllegalArgumentException {
     	return new QuadImpl(graphName, subject, predicate, object);
     }
 }

@@ -35,7 +35,7 @@ import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFSyntax;
 import org.apache.commons.rdf.api.RDFFactory;
 import org.apache.commons.rdf.experimental.RDFParser;
-import org.apache.commons.rdf.simple.SimpleRDFTermFactory;
+import org.apache.commons.rdf.simple.SimpleRDFFactory;
 
 /**
  * Abstract RDFParser
@@ -63,7 +63,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>>
 	private static final ExecutorService threadpool = Executors.newCachedThreadPool(r -> new Thread(threadGroup, r));
 
 	// Basically only used for creating IRIs
-	private static RDFFactory internalRdfTermFactory = new SimpleRDFTermFactory();
+	private static RDFFactory internalRdfTermFactory = new SimpleRDFFactory();
 
 	/**
 	 * Get the set {@link RDFFactory}, if any.
@@ -418,7 +418,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>>
 		// parseSynchronously()
 		AbstractRDFParser<T> c = clone();
 
-		// Use a fresh SimpleRDFTermFactory for each parse
+		// Use a fresh SimpleRDFFactory for each parse
 		if (!c.rdfTermFactory.isPresent()) {
 			c.rdfTermFactory = Optional.of(createRDFTermFactory());
 		}
@@ -515,7 +515,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>>
 	 * @return A new {@link RDFFactory}
 	 */
 	protected RDFFactory createRDFTermFactory() {
-		return new SimpleRDFTermFactory();
+		return new SimpleRDFFactory();
 	}
 
 	@Override

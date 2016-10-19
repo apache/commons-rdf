@@ -36,7 +36,7 @@ public class SimpleRDFTermFactoryLookupTest {
         Iterator<RDFFactory> iterator = loader.iterator();
         RDFFactory factory = iterator.next();
 
-        assertTrue(factory instanceof SimpleRDFTermFactory);
+        assertTrue(factory instanceof SimpleRDFFactory);
         assertFalse(iterator.hasNext());
     }
 }

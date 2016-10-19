@@ -28,10 +28,10 @@
  * testing and simple usage (e.g. prototyping).
  * <p>
  * To use this implementation, create an instance of
- * {@link org.apache.commons.rdf.simple.SimpleRDFTermFactory}
+ * {@link org.apache.commons.rdf.simple.SimpleRDFFactory}
  * and use methods like
- * {@link org.apache.commons.rdf.simple.SimpleRDFTermFactory#createGraph} and
- * {@link org.apache.commons.rdf.simple.SimpleRDFTermFactory#createIRI(String)}.
+ * {@link org.apache.commons.rdf.simple.SimpleRDFFactory#createGraph} and
+ * {@link org.apache.commons.rdf.simple.SimpleRDFFactory#createIRI(String)}.
  * <p>
  * The {@link org.apache.commons.rdf.simple.Types} class provide constant
  * {@link org.apache.commons.rdf.api.IRI}s of the common RDF XML datatypes.
