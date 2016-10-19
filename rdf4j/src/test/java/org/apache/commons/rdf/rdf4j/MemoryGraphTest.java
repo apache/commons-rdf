@@ -35,7 +35,7 @@ public class MemoryGraphTest extends AbstractGraphTest {
 
 	public static final class MemoryStoreFactory implements RDFTermFactory {
 
-		RDF4JTermFactory rdf4jFactory = new RDF4JTermFactory(new MemValueFactory());
+		RDF4JFactory rdf4jFactory = new RDF4JFactory(new MemValueFactory());
 
 		public RDF4JBlankNode createBlankNode() {
 			return rdf4jFactory.createBlankNode();

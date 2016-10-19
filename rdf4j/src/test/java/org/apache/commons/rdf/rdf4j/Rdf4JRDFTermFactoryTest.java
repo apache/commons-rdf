@@ -25,7 +25,7 @@ public class Rdf4JRDFTermFactoryTest extends AbstractRDFTermFactoryTest {
 
 	@Override
 	public RDFTermFactory createFactory() {
-		return new RDF4JTermFactory();
+		return new RDF4JFactory();
 	}
 	
 	@Override

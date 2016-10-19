@@ -27,7 +27,7 @@ import org.eclipse.rdf4j.model.BNode;
  * The underlying RDF4J {@link BNode} instance can 
  * be retrieved with {@link #asValue()}.
  * 
- * @see RDF4JTermFactory#createBlankNode() 
+ * @see RDF4JFactory#createBlankNode() 
  */
 public interface RDF4JBlankNode extends RDF4JBlankNodeOrIRI, BlankNode {
 	

@@ -27,7 +27,7 @@ import org.apache.commons.rdf.rdf4j.RDF4JIRI;
 import org.apache.commons.rdf.rdf4j.RDF4JLiteral;
 import org.apache.commons.rdf.rdf4j.RDF4JQuad;
 import org.apache.commons.rdf.rdf4j.RDF4JTerm;
-import org.apache.commons.rdf.rdf4j.RDF4JTermFactory;
+import org.apache.commons.rdf.rdf4j.RDF4JFactory;
 import org.apache.commons.rdf.rdf4j.RDF4JTriple;
 import org.eclipse.rdf4j.model.BNode;
 import org.eclipse.rdf4j.model.IRI;
@@ -42,17 +42,17 @@ import org.eclipse.rdf4j.repository.Repository;
  * <p>
  * <strong>Internal class:</strong> This "abstract" class is intended for
  * internal use by Commons RDF and may change in any minor update. Use instead
- * {@link RDF4JTermFactory} methods like
- * {@link RDF4JTermFactory#createBlankNode()},
- * {@link RDF4JTermFactory#asRDFTerm(org.eclipse.rdf4j.model.Value)} and
- * {@link RDF4JTermFactory#asRDFTermGraph(Repository, org.apache.commons.rdf.rdf4j.RDF4JTermFactory.Option...)}
+ * {@link RDF4JFactory} methods like
+ * {@link RDF4JFactory#createBlankNode()},
+ * {@link RDF4JFactory#asRDFTerm(org.eclipse.rdf4j.model.Value)} and
+ * {@link RDF4JFactory#asRDFTermGraph(Repository, org.apache.commons.rdf.rdf4j.RDF4JFactory.Option...)}
  * <p>
  * This class exists as a <code>public</code> bridge between the packages
  * {@link org.apache.commons.rdf.rdf4j} and
  * {@link org.apache.commons.rdf.rdf4j.impl} by exposing the package-public
  * constructors.
  * 
- * @see RDF4JTermFactory
+ * @see RDF4JFactory
  */
 public abstract class InternalRDF4JFactory {
 
@@ -103,7 +103,7 @@ public abstract class InternalRDF4JFactory {
 	 *            factory to use for adapting graph triples
 	 * @return Adapted {@link RDF4JGraph}
 	 */
-	public RDF4JGraph createModelGraphImpl(Model model, RDF4JTermFactory rdf4jTermFactory) {
+	public RDF4JGraph createModelGraphImpl(Model model, RDF4JFactory rdf4jTermFactory) {
 		return new ModelGraphImpl(model, rdf4jTermFactory);
 	}
 

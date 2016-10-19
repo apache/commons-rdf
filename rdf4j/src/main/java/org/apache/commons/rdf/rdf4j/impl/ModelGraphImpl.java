@@ -31,7 +31,7 @@ import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.rdf4j.ClosableIterable;
 import org.apache.commons.rdf.rdf4j.RDF4JBlankNodeOrIRI;
 import org.apache.commons.rdf.rdf4j.RDF4JGraph;
-import org.apache.commons.rdf.rdf4j.RDF4JTermFactory;
+import org.apache.commons.rdf.rdf4j.RDF4JFactory;
 import org.apache.commons.rdf.rdf4j.RDF4JTriple;
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.Resource;
@@ -40,9 +40,9 @@ import org.eclipse.rdf4j.repository.Repository;
 final class ModelGraphImpl implements RDF4JGraph {
 	
 	private Model model;
-	private RDF4JTermFactory rdf4jTermFactory;
+	private RDF4JFactory rdf4jTermFactory;
 
-	ModelGraphImpl(Model model, RDF4JTermFactory rdf4jTermFactory) {
+	ModelGraphImpl(Model model, RDF4JFactory rdf4jTermFactory) {
 		this.model = model;	
 		this.rdf4jTermFactory = rdf4jTermFactory;
 	}

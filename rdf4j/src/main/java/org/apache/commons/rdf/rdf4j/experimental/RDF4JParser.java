@@ -34,7 +34,7 @@ import org.apache.commons.rdf.experimental.RDFParser;
 import org.apache.commons.rdf.rdf4j.RDF4JBlankNodeOrIRI;
 import org.apache.commons.rdf.rdf4j.RDF4JDataset;
 import org.apache.commons.rdf.rdf4j.RDF4JGraph;
-import org.apache.commons.rdf.rdf4j.RDF4JTermFactory;
+import org.apache.commons.rdf.rdf4j.RDF4JFactory;
 import org.apache.commons.rdf.simple.experimental.AbstractRDFParser;
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.Resource;
@@ -101,20 +101,20 @@ public class RDF4JParser extends AbstractRDFParser<RDF4JParser> implements RDFPa
 		}
 	}
 
-	private RDF4JTermFactory rdf4jTermFactory;
+	private RDF4JFactory rdf4jTermFactory;
 	private ParserConfig parserConfig = new ParserConfig();
 
 	@Override
-	protected RDF4JTermFactory createRDFTermFactory() {
-		return new RDF4JTermFactory();
+	protected RDF4JFactory createRDFTermFactory() {
+		return new RDF4JFactory();
 	}
 
 	@Override
 	protected RDF4JParser prepareForParsing() throws IOException, IllegalStateException {
 		RDF4JParser c = prepareForParsing();
-		// Ensure we have an RDF4JTermFactory for conversion.
+		// Ensure we have an RDF4JFactory for conversion.
 		// We'll make a new one if user has provided a non-RDF4J factory
-		c.rdf4jTermFactory = (RDF4JTermFactory) getRdfTermFactory().filter(RDF4JTermFactory.class::isInstance)
+		c.rdf4jTermFactory = (RDF4JFactory) getRdfTermFactory().filter(RDF4JFactory.class::isInstance)
 				.orElseGet(c::createRDFTermFactory);
 		return c;
 	}

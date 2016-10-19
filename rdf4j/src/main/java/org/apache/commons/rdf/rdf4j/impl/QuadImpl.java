@@ -26,7 +26,7 @@ import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.rdf4j.RDF4JQuad;
-import org.apache.commons.rdf.rdf4j.RDF4JTermFactory;
+import org.apache.commons.rdf.rdf4j.RDF4JFactory;
 import org.eclipse.rdf4j.model.Statement;
 
 final class QuadImpl implements Quad, RDF4JQuad {
@@ -65,23 +65,23 @@ final class QuadImpl implements Quad, RDF4JQuad {
 			if (statement.getContext() == null) { 
 				return Optional.empty();
 			}			
-			BlankNodeOrIRI g = (BlankNodeOrIRI) RDF4JTermFactory.asRDFTerm(statement.getContext(), salt);
+			BlankNodeOrIRI g = (BlankNodeOrIRI) RDF4JFactory.asRDFTerm(statement.getContext(), salt);
 			return Optional.of(g);
 		}
 		
 		@Override
 		public RDFTerm getObject() {
-			return RDF4JTermFactory.asRDFTerm(statement.getObject(), salt);
+			return RDF4JFactory.asRDFTerm(statement.getObject(), salt);
 		}
 	
 		@Override
 		public org.apache.commons.rdf.api.IRI getPredicate() {
-			return (org.apache.commons.rdf.api.IRI) RDF4JTermFactory.asRDFTerm(statement.getPredicate(), null);
+			return (org.apache.commons.rdf.api.IRI) RDF4JFactory.asRDFTerm(statement.getPredicate(), null);
 		}
 		
 		@Override
 		public BlankNodeOrIRI getSubject() {
-			return (BlankNodeOrIRI) RDF4JTermFactory.asRDFTerm(statement.getSubject(), salt);
+			return (BlankNodeOrIRI) RDF4JFactory.asRDFTerm(statement.getSubject(), salt);
 		}
 
 		@Override

@@ -121,7 +121,7 @@
 
 
 		<!-- There are multiple RDF4J sail/repository implementations, we use the 
-			below from RDF4JTermFactory. -->
+			below from RDF4JFactory. -->
 		<dependency>
 			<groupId>org.eclipse.rdf4j</groupId>
 			<artifactId>rdf4j-sail-memory</artifactId>

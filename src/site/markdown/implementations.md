@@ -131,20 +131,20 @@ The generalized triples/quads can be accessed as [org.apache.jena.graph.Triple](
 ```java
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.RDFTermFactory;
-import org.apache.commons.rdf.rdf4j.RDF4JTermFactory;
+import org.apache.commons.rdf.rdf4j.RDF4JFactory;
 
-RDFTermFactory rdfTermFactory = new RDF4JTermFactory();
+RDFTermFactory rdfTermFactory = new RDF4JFactory();
 Graph graph = rdfTermFactory.createGraph();
 ```
 
-Objects created with  [RDF4JTermFactory](apidocs/org/apache/commons/rdf/rdf4j/RDF4JTermFactory.html) implement interfaces like [RDF4JTerm](apidocs/org/apache/commons/rdf/rdf4j/RDF4JTerm.html) and [RDF4JGraph](apidocs/org/apache/commons/rdf/rdf4j/RDF4JGraph.html) which give access to the underlying Jena objects through methods like [asValue()](apidocs/org/apache/commons/rdf/rdf4j/RDF4JTerm.html#asValue--) and [asRepository()](apidocs/org/apache/commons/rdf/rdf4j/RDF4JGraphLike.html#asRepository--).
+Objects created with  [RDF4JFactory](apidocs/org/apache/commons/rdf/rdf4j/RDF4JFactory.html) implement interfaces like [RDF4JTerm](apidocs/org/apache/commons/rdf/rdf4j/RDF4JTerm.html) and [RDF4JGraph](apidocs/org/apache/commons/rdf/rdf4j/RDF4JGraph.html) which give access to the underlying Jena objects through methods like [asValue()](apidocs/org/apache/commons/rdf/rdf4j/RDF4JTerm.html#asValue--) and [asRepository()](apidocs/org/apache/commons/rdf/rdf4j/RDF4JGraphLike.html#asRepository--).
 
-`RDF4JTermFactory` includes additional methods for converting from/to RDF4J and Commons RDF, like [asTriple(Statement)](apidocs/org/apache/commons/rdf/rdf4j/RDF4JTermFactory.html#asTriple-org.eclipse.rdf4j.model.Statement-) and
-[asRDFTerm(Value)](apidocs/org/apache/commons/rdf/rdf4j/RDF4JTermFactory.html#asRDFTerm-org.eclipse.rdf4j.model.Value-).
+`RDF4JFactory` includes additional methods for converting from/to RDF4J and Commons RDF, like [asTriple(Statement)](apidocs/org/apache/commons/rdf/rdf4j/RDF4JFactory.html#asTriple-org.eclipse.rdf4j.model.Statement-) and
+[asRDFTerm(Value)](apidocs/org/apache/commons/rdf/rdf4j/RDF4JFactory.html#asRDFTerm-org.eclipse.rdf4j.model.Value-).
 
 #### Closing RDF4J resources
 
-When using `RDF4JTermFactory` with an RDF4J `Repository`, e.g. from [asRDFTermGraph(Repository)](apidocs/org/apache/commons/rdf/rdf4j/RDF4JTermFactory.html#asRDFTermGraph-org.eclipse.rdf4j.repository.Repository-org.apache.commons.rdf.rdf4j.RDF4JTermFactory.Option...-), care must be taken to close underlying resources when using the methods [stream()](apidocs/org/apache/commons/rdf/rdf4j/RDF4JGraph.html#stream--) and [iterate()](apidocs/org/apache/commons/rdf/rdf4j/RDF4JGraph.html#iterate--) for both `Graph`s and `Dataset`s.
+When using `RDF4JFactory` with an RDF4J `Repository`, e.g. from [asRDFTermGraph(Repository)](apidocs/org/apache/commons/rdf/rdf4j/RDF4JFactory.html#asRDFTermGraph-org.eclipse.rdf4j.repository.Repository-org.apache.commons.rdf.rdf4j.RDF4JFactory.Option...-), care must be taken to close underlying resources when using the methods [stream()](apidocs/org/apache/commons/rdf/rdf4j/RDF4JGraph.html#stream--) and [iterate()](apidocs/org/apache/commons/rdf/rdf4j/RDF4JGraph.html#iterate--) for both `Graph`s and `Dataset`s.
 
 This can generally achieved using a [try-with-resources](https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html) block, e.g.:
 

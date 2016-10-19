@@ -18,9 +18,9 @@
 /**
  * Commons RDF integration with <a href="http://rdf4j.org/">RDF4J</a>.
  * <p>
- * Use the {@link org.apache.commons.rdf.rdf4j.RDF4JTermFactory} to convert
+ * Use the {@link org.apache.commons.rdf.rdf4j.RDF4JFactory} to convert
  * between Commons RDF and RDF4J types, for instance
- * {@link org.apache.commons.rdf.rdf4j.RDF4JTermFactory#asQuad(org.eclipse.rdf4j.model.Statement)}
+ * {@link org.apache.commons.rdf.rdf4j.RDF4JFactory#asQuad(org.eclipse.rdf4j.model.Statement)}
  * converts a RDF4J {@link org.eclipse.rdf4j.model.Statement} to a
  * {@link org.apache.commons.rdf.api.Quad}. Converted RDF terms implement the
  * {@link org.apache.commons.rdf.rdf4j.RDF4JTerm} interface, and converted
@@ -32,9 +32,9 @@
  * {@link org.eclipse.rdf4j.repository.Repository} instances can be adapted to
  * Commons RDF {@link org.apache.commons.rdf.api.Graph} and
  * {@link org.apache.commons.rdf.api.Dataset}, e.g. using
- * {@link org.apache.commons.rdf.rdf4j.RDF4JTermFactory#asRDFTermGraph(org.eclipse.rdf4j.model.Model)}
+ * {@link org.apache.commons.rdf.rdf4j.RDF4JFactory#asRDFTermGraph(org.eclipse.rdf4j.model.Model)}
  * or
- * {@link org.apache.commons.rdf.rdf4j.RDF4JTermFactory#asRDFTermDataset(org.eclipse.rdf4j.repository.Repository, org.apache.commons.rdf.rdf4j.RDF4JTermFactory.Option...)}
+ * {@link org.apache.commons.rdf.rdf4j.RDF4JFactory#asRDFTermDataset(org.eclipse.rdf4j.repository.Repository, org.apache.commons.rdf.rdf4j.RDF4JFactory.Option...)}
  * The returned adapted graph/dataset is directly mapped, so changes are
  * propagated both ways. For convenience, the marker interface
  * {@link org.apache.commons.rdf.rdf4j.RDF4JGraph} and

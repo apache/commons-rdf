@@ -51,7 +51,7 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
 
 	public final class NativeStoreFactory implements RDFTermFactory {
 
-		RDF4JTermFactory rdf4jFactory = new RDF4JTermFactory(getRepository().getValueFactory());
+		RDF4JFactory rdf4jFactory = new RDF4JFactory(getRepository().getValueFactory());
 
 		@Override
 		public RDF4JGraph createGraph() {
