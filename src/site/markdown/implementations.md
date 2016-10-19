@@ -92,15 +92,15 @@ Graph graph = rdfTermFactory.createGraph();
 ```java
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.RDFTermFactory;
-import org.apache.commons.rdf.jena.JenaRDFTermFactory;
+import org.apache.commons.rdf.jena.JenaFactory;
 
-RDFTermFactory rdfTermFactory = new JenaRDFTermFactory();
+RDFTermFactory rdfTermFactory = new JenaFactory();
 Graph graph = rdfTermFactory.createGraph();
 ```
 
-Objects created with  [JenaRDFTermFactory](apidocs/org/apache/commons/rdf/jena/JenaRDFTermFactory.html) implement interfaces like [JenaQuad](apidocs/org/apache/commons/rdf/jena/JenaQuad.html) and [JenaLiteral](apidocs/org/apache/commons/rdf/jena/JenaLiteral.html) which give access to the underlying Jena objects through methods like [asJenaNode()](apidocs/org/apache/commons/rdf/jena/JenaRDFTerm.html#asJenaNode--) and [asJenaGraph()](apidocs/org/apache/commons/rdf/jena/JenaGraph.html#asJenaGraph--).
+Objects created with  [JenaFactory](apidocs/org/apache/commons/rdf/jena/JenaFactory.html) implement interfaces like [JenaQuad](apidocs/org/apache/commons/rdf/jena/JenaQuad.html) and [JenaLiteral](apidocs/org/apache/commons/rdf/jena/JenaLiteral.html) which give access to the underlying Jena objects through methods like [asJenaNode()](apidocs/org/apache/commons/rdf/jena/JenaRDFTerm.html#asJenaNode--) and [asJenaGraph()](apidocs/org/apache/commons/rdf/jena/JenaGraph.html#asJenaGraph--).
 
-`JenaRDFTermFactory` includes additional methods for converting from/to Apache Jena and Commons RDF, like [fromJena(Node)](apidocs/org/apache/commons/rdf/jena/JenaRDFTermFactory.html#fromJena-org.apache.jena.graph.Node-) and [toJena(RDFTerm)](apidocs/org/apache/commons/rdf/jena/JenaRDFTermFactory.html#toJena-org.apache.commons.rdf.api.RDFTerm-).
+`JenaFactory` includes additional methods for converting from/to Apache Jena and Commons RDF, like [fromJena(Node)](apidocs/org/apache/commons/rdf/jena/JenaFactory.html#fromJena-org.apache.jena.graph.Node-) and [toJena(RDFTerm)](apidocs/org/apache/commons/rdf/jena/JenaFactory.html#toJena-org.apache.commons.rdf.api.RDFTerm-).
 
 #### Generalized RDF
 
@@ -108,7 +108,7 @@ Apache Jena can support [generalized RDF](https://www.w3.org/TR/rdf11-concepts/#
 
 > A generalized RDF triple is a triple having a subject, a predicate, and object, where each can be an IRI, a blank node or a literal.
 
-Within Commons RDF it is possible to create [generalized triples](apidocs/org/apache/commons/rdf/jena/JenaRDFTermFactory.html#createGeneralizedTriple-org.apache.commons.rdf.api.RDFTerm-org.apache.commons.rdf.api.RDFTerm-org.apache.commons.rdf.api.RDFTerm-) and [quads](apidocs/org/apache/commons/rdf/jena/JenaRDFTermFactory.html#createGeneralizedQuad-org.apache.commons.rdf.api.RDFTerm-org.apache.commons.rdf.api.RDFTerm-org.apache.commons.rdf.api.RDFTerm-org.apache.commons.rdf.api.RDFTerm-) using `JenaRDFTermFactory` - however note that the returned [JenaGeneralizedTripleLike](apidocs/org/apache/commons/rdf/jena/JenaGeneralizedTripleLike.html) and
+Within Commons RDF it is possible to create [generalized triples](apidocs/org/apache/commons/rdf/jena/JenaFactory.html#createGeneralizedTriple-org.apache.commons.rdf.api.RDFTerm-org.apache.commons.rdf.api.RDFTerm-org.apache.commons.rdf.api.RDFTerm-) and [quads](apidocs/org/apache/commons/rdf/jena/JenaFactory.html#createGeneralizedQuad-org.apache.commons.rdf.api.RDFTerm-org.apache.commons.rdf.api.RDFTerm-org.apache.commons.rdf.api.RDFTerm-org.apache.commons.rdf.api.RDFTerm-) using `JenaFactory` - however note that the returned [JenaGeneralizedTripleLike](apidocs/org/apache/commons/rdf/jena/JenaGeneralizedTripleLike.html) and
 [JenaGeneralizedQuadLike](apidocs/org/apache/commons/rdf/jena/JenaGeneralizedQuadLike.html)
  do not have the [equality semantics of Triple](apidocs/org/apache/commons/rdf/api/Triple.html#equals-java.lang.Object-) or [Quad](apidocs/org/apache/commons/rdf/api/Quad.html#equals-java.lang.Object-) and thus can't be used with the regular [Graph](apidocs/org/apache/commons/rdf/api/Graph.html) or [Dataset](apidocs/org/apache/commons/rdf/api/Dataset.html) methods.
 

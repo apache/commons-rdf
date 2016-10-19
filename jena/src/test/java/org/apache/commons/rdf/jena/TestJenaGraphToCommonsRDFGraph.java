@@ -56,10 +56,10 @@ public class TestJenaGraphToCommonsRDFGraph {
         RDFDataMgr.read(jGraph, turtleFile.toUri().toString()) ;
         
         // "graph" is a CommonsRDF graph 
-        Graph graph = new JenaRDFTermFactory().fromJena(jGraph) ;
+        Graph graph = new JenaFactory().fromJena(jGraph) ;
         
         // Add to CommonsRDF Graph
-        RDFTermFactory rft = new JenaRDFTermFactory() ;
+        RDFTermFactory rft = new JenaFactory() ;
         graph.add(rft.createIRI("http://example/s2"),
                   rft.createIRI("http://example/p2"),
                   rft.createLiteral("foo")) ;

@@ -26,7 +26,7 @@ import org.apache.commons.rdf.api.QuadLike;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.jena.JenaQuad;
 import org.apache.commons.rdf.jena.JenaQuadLike;
-import org.apache.commons.rdf.jena.JenaRDFTermFactory;
+import org.apache.commons.rdf.jena.JenaFactory;
 import org.apache.commons.rdf.jena.JenaTriple;
 import org.apache.jena.graph.Triple;
 import org.apache.jena.sparql.core.Quad;
@@ -86,7 +86,7 @@ abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
 
 	@Override
 	public org.apache.jena.sparql.core.Quad asJenaQuad() {
-		JenaRDFTermFactory factory = new JenaRDFTermFactory();
+		JenaFactory factory = new JenaFactory();
 		if (quad == null) {
 			quad = org.apache.jena.sparql.core.Quad.create(
 					factory.toJena(graphName.orElse(null)),
@@ -99,7 +99,7 @@ abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
 
 	@Override
 	public org.apache.jena.graph.Triple asJenaTriple() {
-		JenaRDFTermFactory factory = new JenaRDFTermFactory();
+		JenaFactory factory = new JenaFactory();
 		if (triple == null) {
 			triple = org.apache.jena.graph.Triple.create(
 				factory.toJena(subject), 

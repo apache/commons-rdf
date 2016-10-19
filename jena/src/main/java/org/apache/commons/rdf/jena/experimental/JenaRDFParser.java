@@ -30,7 +30,7 @@ import org.apache.commons.rdf.api.RDFTermFactory;
 import org.apache.commons.rdf.api.TripleLike;
 import org.apache.commons.rdf.experimental.RDFParser;
 import org.apache.commons.rdf.jena.JenaGraph;
-import org.apache.commons.rdf.jena.JenaRDFTermFactory;
+import org.apache.commons.rdf.jena.JenaFactory;
 import org.apache.commons.rdf.simple.experimental.AbstractRDFParser;
 import org.apache.jena.graph.Graph;
 import org.apache.jena.riot.Lang;
@@ -44,7 +44,7 @@ public class JenaRDFParser extends AbstractRDFParser<JenaRDFParser> implements R
 	private Consumer<QuadLike<RDFTerm>> generalizedConsumerQuad;
 
 	protected RDFTermFactory createRDFTermFactory() {
-		return new JenaRDFTermFactory();
+		return new JenaFactory();
 	}
 
 	public JenaRDFParser targetGeneralizedTriple(Consumer<TripleLike> consumer) {
@@ -71,7 +71,7 @@ public class JenaRDFParser extends AbstractRDFParser<JenaRDFParser> implements R
 	@Override
 	protected void parseSynchronusly() throws IOException {
 		StreamRDF dest;
-		JenaRDFTermFactory jenaFactory = getJenaFactory();
+		JenaFactory jenaFactory = getJenaFactory();
 		if (getTargetGraph().isPresent() && getTargetGraph().get() instanceof JenaGraph) {
 			Graph jenaGraph = ((JenaGraph) getTargetGraph().get()).asJenaGraph();
 			dest = StreamRDFLib.graph(jenaGraph);
@@ -81,7 +81,7 @@ public class JenaRDFParser extends AbstractRDFParser<JenaRDFParser> implements R
 			} else if (generalizedConsumerTriple != null) {				
 				dest = jenaFactory.streamJenaToGeneralizedTriple(generalizedConsumerTriple);			
 			} else {
-				dest = JenaRDFTermFactory.streamJenaToCommonsRDF(getRdfTermFactory().get(), getTarget());
+				dest = JenaFactory.streamJenaToCommonsRDF(getRdfTermFactory().get(), getTarget());
 			}
 		}
 
@@ -99,9 +99,9 @@ public class JenaRDFParser extends AbstractRDFParser<JenaRDFParser> implements R
 		}
 	}
 
-	private JenaRDFTermFactory getJenaFactory() {
-		return (JenaRDFTermFactory) getRdfTermFactory()
-				.filter(JenaRDFTermFactory.class::isInstance)
+	private JenaFactory getJenaFactory() {
+		return (JenaFactory) getRdfTermFactory()
+				.filter(JenaFactory.class::isInstance)
 				.orElseGet(this::createRDFTermFactory);		
 	}
 

@@ -58,24 +58,24 @@ import org.apache.jena.sparql.graph.GraphFactory;
  * 
  * @see RDFTermFactory
  */
-public final class JenaRDFTermFactory implements RDFTermFactory {
+public final class JenaFactory implements RDFTermFactory {
 
 	private static InternalJenaFactory internalJenaFactory = new InternalJenaFactory(){};
 	
 	private final UUID salt;
 
 	/**
-	 * Create a JenaRDFTermFactory.
+	 * Create a JenaFactory.
 	 * <p>
 	 * This constructor will use a randomly generated {@link UUID} as a salt 
 	 * for the purposes of {@link BlankNode} identity, see {@link #getSalt()}.
 	 */
-	public JenaRDFTermFactory() {
+	public JenaFactory() {
 		this.salt = UUID.randomUUID();
 	}
 
 	/**
-	 * Create a JenaRDFTermFactory.
+	 * Create a JenaFactory.
 	 * <p>
 	 * This constructor will use the specified {@link UUID} as a salt for
 	 * the purposes of {@link BlankNode} identity, and should only be used in
@@ -85,7 +85,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * @param salt
 	 *            {@link UUID} to use as salt for {@link BlankNode} equality
 	 */	
-	public JenaRDFTermFactory(UUID salt) {
+	public JenaFactory(UUID salt) {
 		this.salt = salt;
 	}
 
@@ -199,7 +199,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * If {@link Node#isLiteral()}, then the returned value is a {@link Literal}.
 	 * If {@link Node#isURI()}, the returned value is a IRI. If {$@link Node#isBlank()},
 	 * the returned value is a {@link BlankNode}, which will use a {@link UUID}
-	 * salt from this {@link JenaRDFTermFactory} instance in combination with
+	 * salt from this {@link JenaFactory} instance in combination with
 	 * {@link Node#getBlankNodeId()} for the purpose of its
 	 * {@link BlankNode#uniqueReference()}.
 	 * 
@@ -238,9 +238,9 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 		if (node == null) {
 			return null;
 		}
-		if (factory instanceof JenaRDFTermFactory) {
+		if (factory instanceof JenaFactory) {
 			// No need to convert, just wrap
-			return ((JenaRDFTermFactory) factory).fromJena(node);
+			return ((JenaFactory) factory).fromJena(node);
 		}
 		if (node.isURI())
 			return factory.createIRI(node.getURI());
@@ -264,7 +264,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * <p>
 	 * If the triple contains any {@link Node#isBlank()}, then any corresponding
 	 * {@link BlankNode} will use a {@link UUID} salt from this
-	 * {@link JenaRDFTermFactory} instance in combination with
+	 * {@link JenaFactory} instance in combination with
 	 * {@link Node#getBlankNodeId()} for the purpose of its
 	 * {@link BlankNode#uniqueReference()}.
 	 *
@@ -289,7 +289,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * <p>
 	 * If the Jena triple contains any {@link Node#isBlank()}, then any corresponding
 	 * {@link BlankNode} will use a {@link UUID} salt from this
-	 * {@link JenaRDFTermFactory} instance in combination with
+	 * {@link JenaFactory} instance in combination with
 	 * {@link Node#getBlankNodeId()} for the purpose of its
 	 * {@link BlankNode#uniqueReference()}.
 	 *
@@ -318,7 +318,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * <p>
 	 * If the Jena quad contains any {@link Node#isBlank()}, then any corresponding
 	 * {@link BlankNode} will use a {@link UUID} salt from this
-	 * {@link JenaRDFTermFactory} instance in combination with
+	 * {@link JenaFactory} instance in combination with
 	 * {@link Node#getBlankNodeId()} for the purpose of its
 	 * {@link BlankNode#uniqueReference()}.
 	 *
@@ -359,9 +359,9 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 */
 	public static Triple fromJena(RDFTermFactory factory, org.apache.jena.graph.Triple triple) 
 			throws ConversionException{
-		if (factory instanceof JenaRDFTermFactory) {
+		if (factory instanceof JenaFactory) {
 			// No need to convert, just wrap
-			return ((JenaRDFTermFactory) factory).fromJena(triple);
+			return ((JenaFactory) factory).fromJena(triple);
 		}
 		final BlankNodeOrIRI subject;
 		final IRI predicate;
@@ -380,7 +380,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * <p>
 	 * If the quad contains any {@link Node#isBlank()}, then any corresponding
 	 * {@link BlankNode} will use a {@link UUID} salt from this 
-	 * {@link JenaRDFTermFactory} instance
+	 * {@link JenaFactory} instance
 	 * in combination with {@link Node#getBlankNodeId()} 
 	 * for the purpose of its {@link BlankNode#uniqueReference()}.
 	 * 
@@ -402,7 +402,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * <p>
 	 * If the graph contains any {@link Node#isBlank()}, then any corresponding
 	 * {@link BlankNode} will use a {@link UUID} salt from this
-	 * {@link JenaRDFTermFactory} instance in combination with
+	 * {@link JenaFactory} instance in combination with
 	 * {@link Node#getBlankNodeId()} for the purpose of its
 	 * {@link BlankNode#uniqueReference()}.
 	 * 
@@ -422,7 +422,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * <p>
 	 * If the graph contains any {@link Node#isBlank()}, then any corresponding
 	 * {@link BlankNode} will use a {@link UUID} salt from this 
-	 * {@link JenaRDFTermFactory} instance
+	 * {@link JenaFactory} instance
 	 * in combination with {@link Node#getBlankNodeId()} 
 	 * for the purpose of its {@link BlankNode#uniqueReference()}.
 	 * @param model
@@ -442,7 +442,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * <p>
 	 * If the dataset contains any {@link Node#isBlank()}, then any corresponding
 	 * {@link BlankNode} will use a {@link UUID} salt from this 
-	 * {@link JenaRDFTermFactory} instance
+	 * {@link JenaFactory} instance
 	 * in combination with {@link Node#getBlankNodeId()} 
 	 * for the purpose of its {@link BlankNode#uniqueReference()}.
 	 * 
@@ -462,7 +462,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * <p>
 	 * If the dataset contains any {@link Node#isBlank()}, then any corresponding
 	 * {@link BlankNode} will use a {@link UUID} salt from this 
-	 * {@link JenaRDFTermFactory} instance
+	 * {@link JenaFactory} instance
 	 * in combination with {@link Node#getBlankNodeId()} 
 	 * for the purpose of its {@link BlankNode#uniqueReference()}.
 	 * 
@@ -496,9 +496,9 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 *             is a generalized quad
 	 */
 	public static Quad fromJena(RDFTermFactory factory, org.apache.jena.sparql.core.Quad quad) {
-		if (factory instanceof JenaRDFTermFactory) {
+		if (factory instanceof JenaFactory) {
 			// No need to convert, just wrap
-			return ((JenaRDFTermFactory) factory).fromJena(quad);
+			return ((JenaFactory) factory).fromJena(quad);
 		}
 		BlankNodeOrIRI graphName = (BlankNodeOrIRI) (fromJena(factory, quad.getGraph()));
 		BlankNodeOrIRI subject = (BlankNodeOrIRI) (fromJena(factory, quad.getSubject()));
@@ -715,7 +715,7 @@ public final class JenaRDFTermFactory implements RDFTermFactory {
 	 * {@link BlankNode#uniqueReference()} for details.
 	 * <p>
 	 * This salt can be used with the constructor 
-	 * {@link JenaRDFTermFactory#JenaRDFTermFactory(UUID)}
+	 * {@link JenaFactory#JenaFactory(UUID)}
 	 * if consistent or reproducible {@link BlankNode}s are desirable. 
 	 * 
 	 * @return The {@link UUID} used as salt

@@ -32,7 +32,7 @@ import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.jena.JenaDataset;
 import org.apache.commons.rdf.jena.JenaGraph;
-import org.apache.commons.rdf.jena.JenaRDFTermFactory;
+import org.apache.commons.rdf.jena.JenaFactory;
 import org.apache.jena.atlas.iterator.Iter;
 import org.apache.jena.graph.Node;
 import org.apache.jena.riot.Lang;
@@ -44,12 +44,12 @@ class JenaDatasetImpl implements JenaDataset {
 
 	private DatasetGraph graph;
 	private UUID salt;
-	private JenaRDFTermFactory factory;
+	private JenaFactory factory;
 
 	JenaDatasetImpl(DatasetGraph graph, UUID salt) {
 		this.graph = graph;
 		this.salt = salt;
-		this.factory = new JenaRDFTermFactory(salt);
+		this.factory = new JenaFactory(salt);
 	}
 
 	@Override
@@ -136,14 +136,14 @@ class JenaDatasetImpl implements JenaDataset {
 
 	@Override
 	public Stream<? extends Quad> stream() {
-		JenaRDFTermFactory factory = new JenaRDFTermFactory(salt);
+		JenaFactory factory = new JenaFactory(salt);
 		return Iter.asStream(graph.find(ANY, ANY, ANY, ANY), true)
 				.map(factory::fromJena);
 	}
 
 	@Override
 	public Stream<? extends Quad> stream(Optional<BlankNodeOrIRI> g, BlankNodeOrIRI s, IRI p, RDFTerm o) {
-		JenaRDFTermFactory factory = new JenaRDFTermFactory(salt);
+		JenaFactory factory = new JenaFactory(salt);
 		return Iter.asStream(graph.find(toJenaPattern(g), toJenaPattern(s), toJenaPattern(p), toJenaPattern(o)), true)
 				.map(factory::fromJena);
 	}
@@ -175,14 +175,14 @@ class JenaDatasetImpl implements JenaDataset {
 
 	@Override
 	public Stream<BlankNodeOrIRI> getGraphNames() {
-		JenaRDFTermFactory factory = new JenaRDFTermFactory(salt);
+		JenaFactory factory = new JenaFactory(salt);
 		return Iter.asStream(graph.listGraphNodes()).map(node -> 
 			(BlankNodeOrIRI) factory.fromJena(node));		
 	}
 
 	@Override
 	public Iterable<Quad> iterate() {
-		final JenaRDFTermFactory factory = new JenaRDFTermFactory(salt);
+		final JenaFactory factory = new JenaFactory(salt);
 		return Iter.asStream(graph.find(), false)
 				.map(q -> (Quad) factory.fromJena(q))
 				::iterator;

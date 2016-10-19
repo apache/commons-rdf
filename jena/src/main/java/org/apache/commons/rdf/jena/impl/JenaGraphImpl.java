@@ -27,7 +27,7 @@ import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.jena.JenaGraph;
-import org.apache.commons.rdf.jena.JenaRDFTermFactory;
+import org.apache.commons.rdf.jena.JenaFactory;
 import org.apache.jena.atlas.iterator.Iter;
 import org.apache.jena.graph.Node;
 import org.apache.jena.rdf.model.Model;
@@ -39,20 +39,20 @@ class JenaGraphImpl implements JenaGraph {
 
 	private final org.apache.jena.graph.Graph graph;
 	private final UUID salt;
-	private final transient JenaRDFTermFactory factory;
+	private final transient JenaFactory factory;
 	private Model model;
 
 	JenaGraphImpl(org.apache.jena.graph.Graph graph, UUID salt) {
 		this.graph = graph;
 		this.salt = salt;
-		this.factory = new JenaRDFTermFactory(salt);
+		this.factory = new JenaFactory(salt);
 	}
 
 	JenaGraphImpl(Model model, UUID salt) {
 		this.model = model;
 		this.graph = model.getGraph();
 		this.salt = salt;
-		this.factory = new JenaRDFTermFactory(salt);
+		this.factory = new JenaFactory(salt);
 	}
 
 	@Override
@@ -116,13 +116,13 @@ class JenaGraphImpl implements JenaGraph {
 
 	@Override
 	public Stream<? extends Triple> stream() {
-		JenaRDFTermFactory factory = new JenaRDFTermFactory(salt);
+		JenaFactory factory = new JenaFactory(salt);
 		return Iter.asStream(graph.find(null, null, null), true).map(factory::fromJena);
 	}
 
 	@Override
 	public Stream<? extends Triple> stream(BlankNodeOrIRI s, IRI p, RDFTerm o) {
-		JenaRDFTermFactory factory = new JenaRDFTermFactory(salt);
+		JenaFactory factory = new JenaFactory(salt);
 		return Iter.asStream(graph.find(toJenaAny(s), toJenaAny(p), toJenaAny(o)), true)
 				.map(factory::fromJena);
 	}
