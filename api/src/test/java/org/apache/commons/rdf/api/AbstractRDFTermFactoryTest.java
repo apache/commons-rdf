@@ -173,7 +173,7 @@ public abstract class AbstractRDFTermFactoryTest {
         try {
             factory.createIRI("../relative");
         } catch (IllegalArgumentException ex) {
-            Assume.assumeNoException(ex);
+            Assume.assumeNoException("Relative IRIs not supported - ignore this test", ex);
             return;
         }
         IRI relative = factory.createIRI("../relative");
