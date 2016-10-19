@@ -25,11 +25,6 @@ import java.util.Locale;
  * <p>
  * It is not specified how an implementation should provide a RDFFactory.
  * <p>
- * If an implementation does not support a particular method (e.g. it requires
- * additional parameters or can't create graphs), then it MAY throw
- * {@link UnsupportedOperationException}, as provided by the <code>default</code>
- * implementations in this interface.
- * <p>
  * If a factory method does not allow or support a provided parameter, e.g.
  * because an IRI is considered invalid, then it SHOULD throw
  * {@link IllegalArgumentException}.
@@ -47,13 +42,8 @@ public interface RDFFactory {
      * {@link BlankNode} instances according to {@link BlankNode#equals(Object)}.
      *
      * @return A new, unique {@link BlankNode}
-     * @throws UnsupportedOperationException
-     *             If the operation is not supported.
      */
-    default BlankNode createBlankNode() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException(
-                "createBlankNode() not supported");
-    }
+    BlankNode createBlankNode();
 
     /**
      * Create a blank node based on the given name.
@@ -77,14 +67,8 @@ public interface RDFFactory {
      *            A non-empty, non-null, String that is unique to this blank
      *            node in the context of this {@link RDFFactory}.
      * @return A BlankNode for the given name
-     * @throws UnsupportedOperationException
-     *             If the operation is not supported.
      */
-    default BlankNode createBlankNode(String name)
-            throws UnsupportedOperationException {
-        throw new UnsupportedOperationException(
-                "createBlankNode(String) not supported");
-    }
+    BlankNode createBlankNode(String name);
 
     /**
      * Create a new graph.
@@ -93,11 +77,8 @@ public interface RDFFactory {
      * mechanism.
      *
      * @return A new Graph
-     * @throws UnsupportedOperationException If the operation is not supported.
      */
-    default Graph createGraph() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("createGraph() not supported");
-    }
+    Graph createGraph();
 
     /**
      * Create a new dataset.
@@ -106,11 +87,8 @@ public interface RDFFactory {
      * mechanism.
      *
      * @return A new Dataset
-     * @throws UnsupportedOperationException If the operation is not supported.
      */
-    default Dataset createDataset() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("createDataset() not supported");
-    }
+    Dataset createDataset();
 
     /**
      * Create an IRI from a (possibly escaped) String.
@@ -123,13 +101,8 @@ public interface RDFFactory {
      * @return A new IRI
      * @throws IllegalArgumentException      If the provided string is not acceptable, e.g. does not
      *                                       conform to the RFC3987 syntax.
-     * @throws UnsupportedOperationException If the operation is not supported.
      */
-    default IRI createIRI(String iri) throws IllegalArgumentException,
-            UnsupportedOperationException {
-        throw new UnsupportedOperationException(
-                "createIRI(String) not supported");
-    }
+     IRI createIRI(String iri) throws IllegalArgumentException;
 
     /**
      * Create a simple literal.
@@ -146,14 +119,9 @@ public interface RDFFactory {
      * @param lexicalForm The literal value in plain text
      * @return The created Literal
      * @throws IllegalArgumentException      If the provided lexicalForm is not acceptable, e.g. because
-     *                                       it is too large for an underlying storage.
-     * @throws UnsupportedOperationException If the operation is not supported.
+     *                                        it is too large for an underlying storage.
      */
-    default Literal createLiteral(String lexicalForm)
-            throws IllegalArgumentException, UnsupportedOperationException {
-        throw new UnsupportedOperationException(
-                "createLiteral(String) not supported");
-    }
+    Literal createLiteral(String lexicalForm) throws IllegalArgumentException;
 
     /**
      * Create a literal with the specified data type.
@@ -180,14 +148,10 @@ public interface RDFFactory {
      *                    <code>http://www.w3.org/2001/XMLSchema#integer</code>
      * @return The created Literal
      * @throws IllegalArgumentException      If any of the provided arguments are not acceptable, e.g.
-     *                                       because the provided dataType is not permitted.
-     * @throws UnsupportedOperationException If the operation is not supported.
+     *                                        because the provided dataType is not permitted.
      */
-    default Literal createLiteral(String lexicalForm, IRI dataType)
-            throws IllegalArgumentException, UnsupportedOperationException {
-        throw new UnsupportedOperationException(
-                "createLiteral(String) not supported");
-    }
+    Literal createLiteral(String lexicalForm, IRI dataType)
+            throws IllegalArgumentException;
 
     /**
      * Create a language-tagged literal.
@@ -215,14 +179,10 @@ public interface RDFFactory {
      *                    href="http://tools.ietf.org/html/bcp47">BCP47</a>
      * @return The created Literal
      * @throws IllegalArgumentException      If the provided values are not acceptable, e.g. because the
-     *                                       languageTag was syntactically invalid.
-     * @throws UnsupportedOperationException If the operation is not supported.
+     *                                        languageTag was syntactically invalid.
      */
-    default Literal createLiteral(String lexicalForm, String languageTag)
-            throws IllegalArgumentException, UnsupportedOperationException {
-        throw new UnsupportedOperationException(
-                "createLiteral(String,String) not supported");
-    }
+    Literal createLiteral(String lexicalForm, String languageTag)
+            throws IllegalArgumentException;
 
     /**
      * Create a triple.
@@ -239,14 +199,9 @@ public interface RDFFactory {
      * @throws IllegalArgumentException      If any of the provided arguments are not acceptable, e.g.
      *                                       because a Literal has a lexicalForm that is too large for an
      *                                       underlying storage.
-     * @throws UnsupportedOperationException If the operation is not supported.
      */
-    default Triple createTriple(BlankNodeOrIRI subject, IRI predicate,
-                                RDFTerm object) throws IllegalArgumentException,
-            UnsupportedOperationException {
-        throw new UnsupportedOperationException(
-                "createTriple(BlankNodeOrIRI,IRI,RDFTerm) not supported");
-    }
+    Triple createTriple(BlankNodeOrIRI subject, IRI predicate,
+                                RDFTerm object) throws IllegalArgumentException;
 
     /**
      * Create a quad.
@@ -266,13 +221,8 @@ public interface RDFFactory {
      * @throws IllegalArgumentException      If any of the provided arguments are not acceptable, e.g.
      *                                       because a Literal has a lexicalForm that is too large for an
      *                                       underlying storage.
-     * @throws UnsupportedOperationException If the operation is not supported.
      */
-    default Quad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate,
-                                RDFTerm object) throws IllegalArgumentException,
-            UnsupportedOperationException {
-        throw new UnsupportedOperationException(
-                "createQuad(BlankNodeOrIRI,BlankNodeOrIRI,IRI,RDFTerm) not supported");
-    }
+    Quad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate,
+                                RDFTerm object) throws IllegalArgumentException;
 
 }
