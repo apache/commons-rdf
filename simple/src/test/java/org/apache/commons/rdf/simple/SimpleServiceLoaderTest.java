@@ -18,25 +18,23 @@
 
 package org.apache.commons.rdf.simple;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import java.util.Iterator;
 import java.util.ServiceLoader;
 
 import org.apache.commons.rdf.api.RDFFactory;
 import org.junit.Test;
 
-public class SimpleRDFTermFactoryLookupTest {
+public class SimpleServiceLoaderTest {
 
     @Test
     public void testServiceLoaderLookup() {
         ServiceLoader<RDFFactory> loader = ServiceLoader.load(RDFFactory.class);
-
-        Iterator<RDFFactory> iterator = loader.iterator();
-        RDFFactory factory = iterator.next();
-
-        assertTrue(factory instanceof SimpleRDFFactory);
-        assertFalse(iterator.hasNext());
+        for (RDFFactory impl : loader) {
+        	if (impl instanceof SimpleRDFFactory) {
+        		return; // yay
+        	}
+        }
+        fail("SimpleRDFFactory not found in ServiceLoader");        
     }
 }
