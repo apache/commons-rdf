@@ -97,6 +97,8 @@ import org.eclipse.rdf4j.sail.memory.MemoryStore;
  * and 
  * {@link #asRDFTermGraph(Repository, Option...)}
  * therefore uses a unique {@link RDF4J} internally.
+ * 
+ * @see RDF
  *
  */
 public final class RDF4J implements RDF {

@@ -35,6 +35,9 @@ import org.apache.commons.rdf.simple.Types;
 import com.github.jsonldjava.core.RDFDataset;
 import com.github.jsonldjava.core.RDFDataset.Node;
 
+/**
+ * JSON-LD Java RDF implementation.
+ */
 public final class JsonLdRDF implements RDF {
 
 	final String bnodePrefix;

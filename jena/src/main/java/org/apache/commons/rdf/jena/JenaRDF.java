@@ -48,13 +48,15 @@ import org.apache.jena.sparql.core.DatasetGraph;
 import org.apache.jena.sparql.graph.GraphFactory;
 
 /**
- * RDF with Jena-backed objects.
+ * Apache Jena RDF implementation.
  * <p>
- * This factory can also convert existing objects from/to Jena with methods like
+ * Instances of JenaRDF can also convert existing objects from/to
+ * <code>org.apache.jena</code> types with methods like
  * {@link #fromJena(org.apache.jena.graph.Graph)} and {@link #toJena(Graph)}.
  * <p>
- * For the purpose of {@link BlankNode} identity, this factory will use an internal
- * {@link UUID} as a salt. See {@link BlankNode#uniqueReference()} for details.
+ * For the purpose of {@link BlankNode} identity, JenaRDF instances use an
+ * internal {@link UUID} as a salt. See {@link BlankNode#uniqueReference()} for
+ * details.
  * 
  * @see RDF
  */
@@ -715,7 +717,7 @@ public final class JenaRDF implements RDF {
 	 * {@link BlankNode#uniqueReference()} for details.
 	 * <p>
 	 * This salt can be used with the constructor 
-	 * {@link JenaRDF#JenaFactory(UUID)}
+	 * {@link JenaRDF#JenaRDF(UUID)}
 	 * if consistent or reproducible {@link BlankNode}s are desirable. 
 	 * 
 	 * @return The {@link UUID} used as salt

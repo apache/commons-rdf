@@ -31,10 +31,10 @@ import org.apache.commons.rdf.api.RDF;
 import org.apache.commons.rdf.api.Triple;
 
 /**
- * A simple implementation of RDF.
+ * Simple RDF implementation.
  * <p>
  * The {@link RDFTerm}, {@link Triple}, {@link Quad}, {@link Graph}
- * and {@link Dataset} instances created by this factory are
+ * and {@link Dataset} instances created by SimpleRDF are
  * simple in-memory Implementations that are not thread-safe or efficient, but
  * which may be useful for testing and prototyping purposes.
  */
