@@ -20,7 +20,7 @@ package org.apache.commons.rdf.simple;
 import static org.junit.Assert.assertTrue;
 
 import org.apache.commons.rdf.api.AbstractGraphTest;
-import org.apache.commons.rdf.api.RDFFactory;
+import org.apache.commons.rdf.api.RDF;
 import org.junit.Assume;
 import org.junit.Test;
 
@@ -30,7 +30,7 @@ import org.junit.Test;
 public class SimpleGraphTest extends AbstractGraphTest {
 
     @Override
-    public RDFFactory createFactory() {
+    public RDF createFactory() {
         return new SimpleRDFFactory();
     }
 

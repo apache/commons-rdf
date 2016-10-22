@@ -27,9 +27,9 @@ import java.util.Optional;
  * Concepts and Abstract Syntax</a>, a W3C Recommendation published on 25
  * February 2014
  * 
- * @see RDFFactory#createLiteral(String)
- * @see RDFFactory#createLiteral(String, IRI)
- * @see RDFFactory#createLiteral(String, String)
+ * @see RDF#createLiteral(String)
+ * @see RDF#createLiteral(String, IRI)
+ * @see RDF#createLiteral(String, String)
  */
 public interface Literal extends RDFTerm {
 

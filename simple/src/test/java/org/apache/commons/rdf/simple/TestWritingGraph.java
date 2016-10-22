@@ -29,7 +29,7 @@ import java.util.stream.Stream;
 
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
-import org.apache.commons.rdf.api.RDFFactory;
+import org.apache.commons.rdf.api.RDF;
 import org.apache.commons.rdf.api.Triple;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -53,7 +53,7 @@ public class TestWritingGraph {
 
     private static Graph graph;
 
-    private static RDFFactory factory;
+    private static RDF factory;
 
     @BeforeClass
     public static void createGraph() throws Exception {

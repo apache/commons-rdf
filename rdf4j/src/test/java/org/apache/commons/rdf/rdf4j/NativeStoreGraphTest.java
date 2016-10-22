@@ -27,7 +27,7 @@ import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.api.RDFTerm;
-import org.apache.commons.rdf.api.RDFFactory;
+import org.apache.commons.rdf.api.RDF;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryResult;
 import org.eclipse.rdf4j.repository.sail.SailRepository;
@@ -49,7 +49,7 @@ import org.junit.rules.Timeout;
  */
 public class NativeStoreGraphTest extends AbstractGraphTest {
 
-	public final class NativeStoreFactory implements RDFFactory {
+	public final class NativeStoreFactory implements RDF {
 
 		RDF4JFactory rdf4jFactory = new RDF4JFactory(getRepository().getValueFactory());
 
@@ -145,7 +145,7 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
 //	}
 
 	@Override
-	public RDFFactory createFactory() {
+	public RDF createFactory() {
 		return new NativeStoreFactory();
 	}
 

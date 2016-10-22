@@ -18,13 +18,13 @@
 package org.apache.commons.rdf.rdf4j;
 
 import org.apache.commons.rdf.api.AbstractRDFTermFactoryTest;
-import org.apache.commons.rdf.api.RDFFactory;
+import org.apache.commons.rdf.api.RDF;
 import org.junit.Assume;
 
 public class Rdf4JRDFTermFactoryTest extends AbstractRDFTermFactoryTest {
 
 	@Override
-	public RDFFactory createFactory() {
+	public RDF createFactory() {
 		return new RDF4JFactory();
 	}
 	

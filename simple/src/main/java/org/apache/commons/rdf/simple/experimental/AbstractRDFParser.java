@@ -33,7 +33,7 @@ import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFSyntax;
-import org.apache.commons.rdf.api.RDFFactory;
+import org.apache.commons.rdf.api.RDF;
 import org.apache.commons.rdf.experimental.RDFParser;
 import org.apache.commons.rdf.simple.SimpleRDFFactory;
 
@@ -63,15 +63,15 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>>
 	private static final ExecutorService threadpool = Executors.newCachedThreadPool(r -> new Thread(threadGroup, r));
 
 	// Basically only used for creating IRIs
-	private static RDFFactory internalRdfTermFactory = new SimpleRDFFactory();
+	private static RDF internalRdfTermFactory = new SimpleRDFFactory();
 
 	/**
-	 * Get the set {@link RDFFactory}, if any.
+	 * Get the set {@link RDF}, if any.
 	 * 
-	 * @return The {@link RDFFactory} to use, or {@link Optional#empty()} if
+	 * @return The {@link RDF} to use, or {@link Optional#empty()} if
 	 *         it has not been set
 	 */
-	public Optional<RDFFactory> getRdfTermFactory() {
+	public Optional<RDF> getRdfTermFactory() {
 		return rdfTermFactory;
 	}
 
@@ -200,7 +200,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>>
 	}
 
 
-	private Optional<RDFFactory> rdfTermFactory = Optional.empty();
+	private Optional<RDF> rdfTermFactory = Optional.empty();
 	private Optional<RDFSyntax> contentTypeSyntax = Optional.empty();
 	private Optional<String> contentType = Optional.empty();
 	private Optional<IRI> base = Optional.empty();
@@ -227,7 +227,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>>
 	}
 	
 	@Override
-	public T rdfTermFactory(RDFFactory rdfTermFactory) {
+	public T rdfTermFactory(RDF rdfTermFactory) {
 		AbstractRDFParser<T> c = clone();
 		c.rdfTermFactory = Optional.ofNullable(rdfTermFactory);
 		return c.asT();
@@ -501,20 +501,20 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>>
 	
 
 	/**
-	 * Create a new {@link RDFFactory} for a parse session.
+	 * Create a new {@link RDF} for a parse session.
 	 * <p>
 	 * This is called by {@link #parse()} to set 
-	 * {@link #rdfTermFactory(RDFFactory)} if it is
+	 * {@link #rdfTermFactory(RDF)} if it is
 	 * {@link Optional#empty()}.
 	 * <p>
 	 * As parsed blank nodes might be made with 
-	 * {@link RDFFactory#createBlankNode(String)}, 
+	 * {@link RDF#createBlankNode(String)}, 
 	 * each call to this method SHOULD return 
-	 * a new RDFFactory instance.
+	 * a new RDF instance.
 	 * 
-	 * @return A new {@link RDFFactory}
+	 * @return A new {@link RDF}
 	 */
-	protected RDFFactory createRDFTermFactory() {
+	protected RDF createRDFTermFactory() {
 		return new SimpleRDFFactory();
 	}
 

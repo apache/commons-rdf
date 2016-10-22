@@ -27,18 +27,18 @@ import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFTerm;
-import org.apache.commons.rdf.api.RDFFactory;
+import org.apache.commons.rdf.api.RDF;
 import org.apache.commons.rdf.api.Triple;
 
 /**
- * A simple implementation of RDFFactory.
+ * A simple implementation of RDF.
  * <p>
  * The {@link RDFTerm}, {@link Triple}, {@link Quad}, {@link Graph}
  * and {@link Dataset} instances created by this factory are
  * simple in-memory Implementations that are not thread-safe or efficient, but
  * which may be useful for testing and prototyping purposes.
  */
-public class SimpleRDFFactory implements RDFFactory {
+public class SimpleRDFFactory implements RDF {
 
 	/**
 	 * Marker interface to say that this RDFTerm is part of the 

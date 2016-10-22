@@ -29,7 +29,7 @@ import java.util.stream.Stream;
  * Syntax</a>, a W3C Recommendation published on 25 February 2014.
  * 
  * @since 0.3.0-incubating
- * @see RDFFactory#createDataset()
+ * @see RDF#createDataset()
  */
 public interface Dataset extends AutoCloseable, GraphLike<Quad> {
 

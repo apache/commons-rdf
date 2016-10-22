@@ -18,12 +18,12 @@
 package org.apache.commons.rdf.jsonldjava;
 
 import org.apache.commons.rdf.api.AbstractGraphTest;
-import org.apache.commons.rdf.api.RDFFactory;
+import org.apache.commons.rdf.api.RDF;
 
 public class JsonLdGraphTest extends AbstractGraphTest {
 
 	@Override
-	public RDFFactory createFactory() {
+	public RDF createFactory() {
 		return new JsonLdFactory();
 	}
 	

@@ -20,20 +20,20 @@ package org.apache.commons.rdf.simple;
 import org.apache.commons.rdf.api.AbstractGraphTest;
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
-import org.apache.commons.rdf.api.RDFFactory;
+import org.apache.commons.rdf.api.RDF;
 
 /**
- * Ensure AbstractGraphTest does not crash if the RDFFactory throws
+ * Ensure AbstractGraphTest does not crash if the RDF throws
  * UnsupportedOperationException
  */
 
 public class DefaultGraphTest extends AbstractGraphTest {
 
     @Override
-    public RDFFactory createFactory() {
-        // The most minimal RDFFactory that would still
+    public RDF createFactory() {
+        // The most minimal RDF that would still
         // make sense with a Graph
-        return new RDFFactory() {
+        return new RDF() {
             @Override
             public Graph createGraph() throws UnsupportedOperationException {
                 return new GraphImpl(new SimpleRDFFactory());

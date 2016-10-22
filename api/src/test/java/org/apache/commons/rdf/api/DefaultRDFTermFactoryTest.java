@@ -18,15 +18,15 @@
 package org.apache.commons.rdf.api;
 
 /**
- * The default RDFFactory might be useless (every method throws
+ * The default RDF might be useless (every method throws
  * UnsupportedOperationException), but this test ensures that
  * AbstractRDFTermFactoryTest does not fall over on unsupported operations.
  */
 public class DefaultRDFTermFactoryTest extends AbstractRDFTermFactoryTest {
 
     @Override
-    public RDFFactory createFactory() {
-        return new RDFFactory() {
+    public RDF createFactory() {
+        return new RDF() {
         };
     }
 

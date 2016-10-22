@@ -22,15 +22,15 @@ import static org.junit.Assert.fail;
 
 import java.util.ServiceLoader;
 
-import org.apache.commons.rdf.api.RDFFactory;
+import org.apache.commons.rdf.api.RDF;
 import org.junit.Test;
 
 public class JsonLdServiceLoaderTest {
 
     @Test
     public void testServiceLoaderLookup() {
-        ServiceLoader<RDFFactory> loader = ServiceLoader.load(RDFFactory.class);
-        for (RDFFactory impl : loader) {
+        ServiceLoader<RDF> loader = ServiceLoader.load(RDF.class);
+        for (RDF impl : loader) {
         	if (impl instanceof JsonLdFactory) {
         		return; // yay
         	}

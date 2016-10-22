@@ -50,8 +50,8 @@ import java.util.UUID;
  * A BlankNode SHOULD contain a {@link UUID}-derived string as part of its
  * universally unique {@link #uniqueReference()}.
  *
- * @see RDFFactory#createBlankNode()
- * @see RDFFactory#createBlankNode(String)
+ * @see RDF#createBlankNode()
+ * @see RDF#createBlankNode(String)
  * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node">RDF-1.1
  * Blank Node</a>
  */
@@ -62,7 +62,7 @@ public interface BlankNode extends BlankNodeOrIRI {
      * <p>
      * The reference string MUST universally and uniquely identify this blank
      * node. That is, different blank nodes created separately in different JVMs
-     * or from different {@link RDFFactory} instances MUST NOT have the same
+     * or from different {@link RDF} instances MUST NOT have the same
      * reference string.
      * <p>
      * The {@link #uniqueReference()} of two <code>BlankNode</code> instances

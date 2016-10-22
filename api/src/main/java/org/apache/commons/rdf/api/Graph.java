@@ -27,7 +27,7 @@ import java.util.stream.Stream;
  * href="http://www.w3.org/TR/rdf11-concepts/" >RDF-1.1 Concepts and Abstract
  * Syntax</a>, a W3C Recommendation published on 25 February 2014.
  * 
- * @see RDFFactory#createGraph()
+ * @see RDF#createGraph()
  */
 public interface Graph extends AutoCloseable,GraphLike<Triple> {
 

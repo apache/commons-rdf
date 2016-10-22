@@ -23,7 +23,7 @@ package org.apache.commons.rdf.api;
  * Concepts and Abstract Syntax</a>, a W3C Recommendation published on 25
  * February 2014.
  * 
- * @see RDFFactory#createIRI(String)
+ * @see RDF#createIRI(String)
  */
 public interface IRI extends BlankNodeOrIRI {
 
