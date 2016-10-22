@@ -35,7 +35,7 @@ import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.RDF;
 import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.api.TripleLike;
-import org.apache.commons.rdf.simple.SimpleRDFFactory;
+import org.apache.commons.rdf.simple.SimpleRDF;
 import org.apache.commons.rdf.simple.Types;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,7 +46,7 @@ public class UserGuideTest {
 
 	@Before
 	public void factory() {
-		factory = new SimpleRDFFactory();
+		factory = new SimpleRDF();
 	}
 
 	@Test
@@ -89,7 +89,7 @@ public class UserGuideTest {
 		System.out.println(b1.ntriplesString());
 
 		System.out.println(b1.equals(factory.createBlankNode("b1")));
-		System.out.println(b1.equals(new SimpleRDFFactory().createBlankNode("b1")));
+		System.out.println(b1.equals(new SimpleRDF().createBlankNode("b1")));
 
 		System.out.println(bnode.uniqueReference());
 	}
