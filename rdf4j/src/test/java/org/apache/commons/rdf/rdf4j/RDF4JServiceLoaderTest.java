@@ -31,10 +31,10 @@ public class RDF4JServiceLoaderTest {
     public void testServiceLoaderLookup() {
         ServiceLoader<RDF> loader = ServiceLoader.load(RDF.class);
         for (RDF impl : loader) {
-        	if (impl instanceof RDF4JFactory) {
+        	if (impl instanceof RDF4J) {
         		return; // yay
         	}
         }
-        fail("RDF4JFactory not found in ServiceLoader");        
+        fail("RDF4J not found in ServiceLoader");        
     }
 }

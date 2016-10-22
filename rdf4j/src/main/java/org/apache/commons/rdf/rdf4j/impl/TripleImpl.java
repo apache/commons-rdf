@@ -23,7 +23,7 @@ import java.util.UUID;
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.Triple;
-import org.apache.commons.rdf.rdf4j.RDF4JFactory;
+import org.apache.commons.rdf.rdf4j.RDF4J;
 import org.apache.commons.rdf.rdf4j.RDF4JTriple;
 import org.eclipse.rdf4j.model.Statement;
 
@@ -54,17 +54,17 @@ final class TripleImpl implements Triple, RDF4JTriple {
 	
 		@Override
 		public RDFTerm getObject() {
-			return RDF4JFactory.asRDFTerm(statement.getObject(), salt);
+			return RDF4J.asRDFTerm(statement.getObject(), salt);
 		}
 	
 		@Override
 		public org.apache.commons.rdf.api.IRI getPredicate() {
-			return (org.apache.commons.rdf.api.IRI) RDF4JFactory.asRDFTerm(statement.getPredicate(), null);
+			return (org.apache.commons.rdf.api.IRI) RDF4J.asRDFTerm(statement.getPredicate(), null);
 		}
 		
 		@Override
 		public BlankNodeOrIRI getSubject() {
-			return (BlankNodeOrIRI) RDF4JFactory.asRDFTerm(statement.getSubject(), salt);
+			return (BlankNodeOrIRI) RDF4J.asRDFTerm(statement.getSubject(), salt);
 		}
 	
 		@Override

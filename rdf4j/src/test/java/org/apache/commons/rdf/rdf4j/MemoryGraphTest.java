@@ -33,9 +33,9 @@ import org.eclipse.rdf4j.sail.memory.model.MemValueFactory;
 
 public class MemoryGraphTest extends AbstractGraphTest {
 
-	public static final class MemoryStoreFactory implements RDF {
+	public static final class MemoryStoreRDF implements RDF {
 
-		RDF4JFactory rdf4jFactory = new RDF4JFactory(new MemValueFactory());
+		RDF4J rdf4jFactory = new RDF4J(new MemValueFactory());
 
 		public RDF4JBlankNode createBlankNode() {
 			return rdf4jFactory.createBlankNode();
@@ -83,7 +83,7 @@ public class MemoryGraphTest extends AbstractGraphTest {
 
 	@Override
 	public RDF createFactory() {
-		return new MemoryStoreFactory();
+		return new MemoryStoreRDF();
 	}
 
 }

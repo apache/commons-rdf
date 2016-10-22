@@ -24,7 +24,7 @@ public class GraphTest extends AbstractGraphTest{
 
 	@Override
 	public RDF createFactory() {
-		return new RDF4JFactory();
+		return new RDF4J();
 	}
 
 }

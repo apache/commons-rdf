@@ -22,7 +22,7 @@ import java.util.UUID;
 
 import org.apache.commons.rdf.api.TripleLike;
 import org.apache.commons.rdf.rdf4j.RDF4JGraphLike;
-import org.apache.commons.rdf.rdf4j.RDF4JFactory;
+import org.apache.commons.rdf.rdf4j.RDF4J;
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.Statement;
 import org.eclipse.rdf4j.repository.Repository;
@@ -34,7 +34,7 @@ abstract class AbstractRepositoryGraphLike<T extends TripleLike>
 	protected final Repository repository;
 	protected final boolean includeInferred;
 	protected final boolean handleInitAndShutdown;
-	protected final RDF4JFactory rdf4jTermFactory;
+	protected final RDF4J rdf4jTermFactory;
 	protected final UUID salt;
 
 	AbstractRepositoryGraphLike(Repository repository, UUID salt, boolean handleInitAndShutdown, boolean includeInferred) {
@@ -45,7 +45,7 @@ abstract class AbstractRepositoryGraphLike<T extends TripleLike>
 		if (handleInitAndShutdown && !repository.isInitialized()) {
 			repository.initialize();
 		}
-		rdf4jTermFactory = new RDF4JFactory(repository.getValueFactory(), salt);
+		rdf4jTermFactory = new RDF4J(repository.getValueFactory(), salt);
 	}	
 	
 	@Override

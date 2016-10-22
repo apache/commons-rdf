@@ -49,9 +49,9 @@ import org.junit.rules.Timeout;
  */
 public class NativeStoreGraphTest extends AbstractGraphTest {
 
-	public final class NativeStoreFactory implements RDF {
+	public final class NativeStoreRDF implements RDF {
 
-		RDF4JFactory rdf4jFactory = new RDF4JFactory(getRepository().getValueFactory());
+		RDF4J rdf4jFactory = new RDF4J(getRepository().getValueFactory());
 
 		@Override
 		public RDF4JGraph createGraph() {
@@ -146,7 +146,7 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
 
 	@Override
 	public RDF createFactory() {
-		return new NativeStoreFactory();
+		return new NativeStoreRDF();
 	}
 
 }

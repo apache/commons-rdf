@@ -25,7 +25,7 @@ public class MemoryRDFTermFactoryTest extends AbstractRDFTermFactoryTest {
 
 	@Override
 	public RDF createFactory() {
-		return new MemoryGraphTest.MemoryStoreFactory();
+		return new MemoryGraphTest.MemoryStoreRDF();
 	}
 	
 	@Override

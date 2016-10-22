@@ -53,14 +53,14 @@ import org.eclipse.rdf4j.sail.memory.MemoryStore;
 /**
  * RDF4J implementation of RDF.
  * <p>
- * The {@link #RDF4JFactory()} constructor uses a {@link SimpleValueFactory}
+ * The {@link #RDF4J()} constructor uses a {@link SimpleValueFactory}
  * to create corresponding RDF4J {@link Value} instances. Alternatively, this
  * factory can be constructed with a different {@link ValueFactory} using
- * {@link #RDF4JFactory(ValueFactory)}.
+ * {@link #RDF4J(ValueFactory)}.
  * <p>
  * {@link #asRDFTerm(Value)} can be used to convert any RDF4J {@link Value} to
  * an RDFTerm. Note that adapted {@link BNode}s are considered equal if they are
- * converted with the same {@link RDF4JFactory} instance and have the same
+ * converted with the same {@link RDF4J} instance and have the same
  * {@link BNode#getID()}.
  * <p>
  * {@link #createGraph()} creates a new Graph backed by {@link LinkedHashModel}.
@@ -96,10 +96,10 @@ import org.eclipse.rdf4j.sail.memory.MemoryStore;
  * {@link #asRDFTermDataset(Repository, Option...)}
  * and 
  * {@link #asRDFTermGraph(Repository, Option...)}
- * therefore uses a unique {@link RDF4JFactory} internally.
+ * therefore uses a unique {@link RDF4J} internally.
  *
  */
-public final class RDF4JFactory implements RDF {
+public final class RDF4J implements RDF {
 
 	/**
 	 * InternalRDF4JFactory is deliberately abstract
@@ -125,15 +125,15 @@ public final class RDF4JFactory implements RDF {
 	private final ValueFactory valueFactory;
 
 	/**
-	 * Construct an {@link RDF4JFactory}.
+	 * Construct an {@link RDF4J}.
 	 * 
 	 */
-	public RDF4JFactory() {
+	public RDF4J() {
 		this(SimpleValueFactory.getInstance(), UUID.randomUUID());
 	}
 
 	/**
-	 * Construct an {@link RDF4JFactory}.
+	 * Construct an {@link RDF4J}.
 	 * <p>
 	 * This constructor is intended for use with the value factory from
 	 * {@link Repository#getValueFactory()} when using 
@@ -142,12 +142,12 @@ public final class RDF4JFactory implements RDF {
 	 * @param valueFactory
 	 *            The RDF4J {@link ValueFactory} to use
 	 */
-	public RDF4JFactory(ValueFactory valueFactory) {
+	public RDF4J(ValueFactory valueFactory) {
 		this(valueFactory, UUID.randomUUID());
 	}
 
 	/**
-	 * Construct an {@link RDF4JFactory}.
+	 * Construct an {@link RDF4J}.
 	 * <p>
 	 * This constructor may be used if reproducible
 	 * {@link BlankNode#uniqueReference()} in {@link BlankNode} is desirable.
@@ -157,11 +157,11 @@ public final class RDF4JFactory implements RDF {
 	 *            {@link BlankNode}s for the purpose of
 	 *            {@link BlankNode#uniqueReference()}
 	 */	
-	public RDF4JFactory(UUID salt) {
+	public RDF4J(UUID salt) {
 		this(SimpleValueFactory.getInstance(), salt);
 	}
 	/**
-	 * Construct an {@link RDF4JFactory}.
+	 * Construct an {@link RDF4J}.
 	 * <p>
 	 * This constructor may be used if reproducible
 	 * {@link BlankNode#uniqueReference()} in {@link BlankNode} is desirable.
@@ -173,7 +173,7 @@ public final class RDF4JFactory implements RDF {
 	 *            {@link BlankNode}s for the purpose of
 	 *            {@link BlankNode#uniqueReference()}
 	 */	
-	public RDF4JFactory(ValueFactory valueFactory, UUID salt) {
+	public RDF4J(ValueFactory valueFactory, UUID salt) {
 		this.valueFactory = valueFactory;
 		this.salt = salt;
 	}
@@ -183,14 +183,14 @@ public final class RDF4JFactory implements RDF {
 	 * <p>
 	 * For the purpose of {@link BlankNode} equivalence, this method will use an
 	 * internal salt UUID that is unique per instance of
-	 * {@link RDF4JFactory}.
+	 * {@link RDF4J}.
 	 * <p>
 	 * <strong>NOTE:</strong> If combining RDF4J {@link Statement}s multiple
 	 * repositories or models, then their {@link BNode}s may have the same
 	 * {@link BNode#getID()}, which with this method would become equivalent
 	 * according to {@link BlankNode#equals(Object)} and
 	 * {@link BlankNode#uniqueReference()}, unless a separate
-	 * {@link RDF4JFactory} instance is used per RDF4J repository/model.
+	 * {@link RDF4J} instance is used per RDF4J repository/model.
 	 *
 	 * @param statement
 	 *            The statement to convert
@@ -214,14 +214,14 @@ public final class RDF4JFactory implements RDF {
 	 * <p>
 	 * For the purpose of {@link BlankNode} equivalence, this method will use an
 	 * internal salt UUID that is unique per instance of
-	 * {@link RDF4JFactory}.
+	 * {@link RDF4J}.
 	 * <p>
 	 * <strong>NOTE:</strong> If combining RDF4J values from multiple
 	 * repositories or models, then their {@link BNode}s may have the same
 	 * {@link BNode#getID()}, which with this method would become equivalent
 	 * according to {@link BlankNode#equals(Object)} and
 	 * {@link BlankNode#uniqueReference()}, unless a separate
-	 * {@link RDF4JFactory} instance is used per RDF4J repository/model.
+	 * {@link RDF4J} instance is used per RDF4J repository/model.
 	 *
 	 * @param value
 	 *            The RDF4J {@link Value} to convert.
@@ -433,14 +433,14 @@ public final class RDF4JFactory implements RDF {
 	 * <p>
 	 * For the purpose of {@link BlankNode} equivalence, this method will use an
 	 * internal salt UUID that is unique per instance of
-	 * {@link RDF4JFactory}.
+	 * {@link RDF4J}.
 	 * <p>
 	 * <strong>NOTE:</strong> If combining RDF4J statements from multiple
 	 * repositories or models, then their {@link BNode}s may have the same
 	 * {@link BNode#getID()}, which with this method would become equivalent
 	 * according to {@link BlankNode#equals(Object)} and
 	 * {@link BlankNode#uniqueReference()}, unless a separate
-	 * {@link RDF4JFactory} instance is used per RDF4J repository/model.
+	 * {@link RDF4J} instance is used per RDF4J repository/model.
 	 *
 	 * @param statement
 	 *            The RDF4J {@link Statement} to adapt.

@@ -33,10 +33,10 @@ import org.eclipse.rdf4j.repository.Repository;
 /**
  * Marker interface for RDF4J implementations of Graph.
  * 
- * @see RDF4JFactory#createGraph()
- * @see RDF4JFactory#asRDFTermGraph(Model)
- * @see RDF4JFactory#asRDFTermGraph(Repository, org.apache.commons.rdf.rdf4j.RDF4JFactory.Option...)
- * @see RDF4JFactory#asRDFTermGraphUnion(Repository, org.apache.commons.rdf.rdf4j.RDF4JFactory.Option...)
+ * @see RDF4J#createGraph()
+ * @see RDF4J#asRDFTermGraph(Model)
+ * @see RDF4J#asRDFTermGraph(Repository, org.apache.commons.rdf.rdf4j.RDF4J.Option...)
+ * @see RDF4J#asRDFTermGraphUnion(Repository, org.apache.commons.rdf.rdf4j.RDF4J.Option...)
  * @see RDF4JDataset#getGraph()
  * @see RDF4JDataset#getGraph(BlankNodeOrIRI)
  */
@@ -64,7 +64,7 @@ public interface RDF4JGraph extends Graph, RDF4JGraphLike<Triple> {
 	 * Note that the context mask itself cannot be <code>null</code>.
 	 * <p>
 	 * The returned set is an immutable copy; to specify a different mask, use
-	 * {@link RDF4JFactory#asRDFTermGraph(Repository, Set, org.apache.commons.rdf.rdf4j.RDF4JFactory.Option...)}
+	 * {@link RDF4J#asRDFTermGraph(Repository, Set, org.apache.commons.rdf.rdf4j.RDF4J.Option...)}
 	 *
 	 * @return The context mask as a set of {@link BlankNodeOrIRI} graph names, which
 	 *         may contain the value <code>null</code>.
