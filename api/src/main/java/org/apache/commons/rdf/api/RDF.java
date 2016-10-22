@@ -21,16 +21,27 @@ import java.io.Serializable;
 import java.util.Locale;
 
 /**
- * Factory for creating RDFTerm and Graph instances.
+ * A RDF implementation.
  * <p>
- * If an implementation does not support a particular method (e.g. it requires
- * additional parameters or can't create graphs), then it MAY throw
- * {@link UnsupportedOperationException}, as provided by the <code>default</code>
- * implementations in this interface.
+ * A <code>RDF</code> implementation can create instances of 
+ * the {@link RDFTerm} types
+ * {@link IRI}, {@link BlankNode} and {@link Literal}, as well as creating
+ * instances of the types {@link Triple}, {@link Quad}, {@link Graph} or
+ * {@link Dataset}.
  * <p>
- * If a factory method does not allow or support a provided parameter, e.g.
- * because an IRI is considered invalid, then it SHOULD throw
- * {@link IllegalArgumentException}.
+ * A <em>partial RDF implementation</em> 
+ * should be clearly documented as such, and may throw 
+ * {@link UnsupportedOperationException} where applicable, e.g. if it 
+ * does not support creating {@link Dataset}s or {@link Quad}s. 
+ * <p>
+ * Instances of <code>RDF</code> work like a factory for 
+ * creating Commons RDF instances.
+ * spezializations of this interface may also provide methods  
+ * for conversions from/to their underlying RDF framework.
+ * <p>
+ * If a factory method of a particular implementation does not allow or support
+ * a provided parameter, e.g. because an IRI is considered invalid, then it
+ * SHOULD throw {@link IllegalArgumentException}.
  *
  * @since 0.3.0-incubating
  * @see RDFTerm
