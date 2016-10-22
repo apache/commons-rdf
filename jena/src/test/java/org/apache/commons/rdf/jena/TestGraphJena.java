@@ -25,7 +25,7 @@ public class TestGraphJena extends AbstractGraphTest {
 
     @Override
     public RDF createFactory() {
-        return new JenaFactory() ;
+        return new JenaRDF() ;
     }
 
 }

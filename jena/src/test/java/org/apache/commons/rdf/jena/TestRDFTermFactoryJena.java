@@ -25,7 +25,7 @@ public class TestRDFTermFactoryJena extends AbstractRDFTermFactoryTest {
 	
     @Override
     public RDF createFactory() {
-        return new JenaFactory() ;
+        return new JenaRDF() ;
     }
 
 }
