@@ -31,10 +31,10 @@ public class JsonLdServiceLoaderTest {
     public void testServiceLoaderLookup() {
         ServiceLoader<RDF> loader = ServiceLoader.load(RDF.class);
         for (RDF impl : loader) {
-        	if (impl instanceof JsonLdFactory) {
+        	if (impl instanceof JsonLdRDF) {
         		return; // yay
         	}
         }
-        fail("JsonLdFactory not found in ServiceLoader");        
+        fail("JsonLdRDF not found in ServiceLoader");        
     }
  }

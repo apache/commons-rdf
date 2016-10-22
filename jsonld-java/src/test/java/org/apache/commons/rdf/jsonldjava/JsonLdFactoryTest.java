@@ -26,7 +26,7 @@ public class JsonLdFactoryTest extends AbstractRDFTermFactoryTest {
 
 	@Override
 	public RDF createFactory() {
-		return new JsonLdFactory();
+		return new JsonLdRDF();
 	}
 	
 	// TODO: Add support for checking for invalid lang/iri/blanknode IDs

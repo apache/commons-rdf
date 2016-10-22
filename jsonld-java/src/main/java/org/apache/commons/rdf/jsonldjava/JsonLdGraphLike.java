@@ -72,7 +72,7 @@ abstract class AbstractJsonLdGraphLike<T extends TripleLike>
 	 */
 	final String bnodePrefix;
 
-	final JsonLdFactory factory;
+	final JsonLdRDF factory;
 
 	/**
 	 * The underlying JSON-LD {@link RDFDataset}.
@@ -89,7 +89,7 @@ abstract class AbstractJsonLdGraphLike<T extends TripleLike>
 	AbstractJsonLdGraphLike(RDFDataset rdfDataSet, String bnodePrefix) {
 		this.rdfDataSet = Objects.requireNonNull(rdfDataSet);
 		this.bnodePrefix = Objects.requireNonNull(bnodePrefix);
-		this.factory = new JsonLdFactory(bnodePrefix);
+		this.factory = new JsonLdRDF(bnodePrefix);
 	}
 	
 	AbstractJsonLdGraphLike(String bnodePrefix) {
@@ -161,8 +161,8 @@ abstract class AbstractJsonLdGraphLike<T extends TripleLike>
 	 * Convert JsonLd Quad to a Commons RDF {@link Triple} or {@link org.apache.commons.rdf.api.Quad}
 	 * 
 	 * 
-	 * @see JsonLdFactory#asTriple(Quad)
-	 * @see JsonLdFactory#asQuad(Quad)
+	 * @see JsonLdRDF#asTriple(Quad)
+	 * @see JsonLdRDF#asQuad(Quad)
 	 * @param jsonldQuad jsonld quad to convert
 	 * @return converted {@link TripleLike}
 	 */

@@ -18,7 +18,7 @@
 /**
  * Integration with jsonld-java
  * 
- * @see org.apache.commons.rdf.jsonldjava.JsonLdFactory
+ * @see org.apache.commons.rdf.jsonldjava.JsonLdRDF
  * @see org.apache.commons.rdf.jsonldjava.JsonLdGraph
  * @see org.apache.commons.rdf.jsonldjava.JsonLdUnionGraph
  * @see org.apache.commons.rdf.jsonldjava.JsonLdDataset
