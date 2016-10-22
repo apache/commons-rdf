@@ -38,7 +38,7 @@ import org.apache.commons.rdf.api.RDF;
 import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.experimental.RDFParser;
 import org.apache.commons.rdf.simple.DummyRDFParserBuilder;
-import org.apache.commons.rdf.simple.SimpleRDFFactory;
+import org.apache.commons.rdf.simple.SimpleRDF;
 import org.apache.commons.rdf.simple.Types;
 import org.junit.After;
 import org.junit.Before;
@@ -48,7 +48,7 @@ import org.junit.rules.ExpectedException;
 
 public class AbstractRDFParserTest {
 
-	private RDF factory = new SimpleRDFFactory();
+	private RDF factory = new SimpleRDF();
 	
 	private DummyRDFParserBuilder dummyParser = new DummyRDFParserBuilder();
 	private Path testNt;

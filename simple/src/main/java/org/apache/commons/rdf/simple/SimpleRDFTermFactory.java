@@ -29,12 +29,12 @@ import org.apache.commons.rdf.api.Triple;
 /**
  * A Simple implementation of {@link RDFTermFactory}
  * <p>
- * This class is <strong>deprecated</strong>, use instead {@link SimpleRDFFactory}.
+ * This class is <strong>deprecated</strong>, use instead {@link SimpleRDF}.
  */
 @Deprecated
 public class SimpleRDFTermFactory implements RDFTermFactory {
 
-	private SimpleRDFFactory factory = new SimpleRDFFactory();
+	private SimpleRDF factory = new SimpleRDF();
 
 	public BlankNode createBlankNode() {
 		return factory.createBlankNode();

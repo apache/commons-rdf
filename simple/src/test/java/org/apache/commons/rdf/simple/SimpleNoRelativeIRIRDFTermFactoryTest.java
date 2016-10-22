@@ -33,7 +33,7 @@ public class SimpleNoRelativeIRIRDFTermFactoryTest extends
         AbstractRDFTermFactoryTest {
     @Override
     public RDF createFactory() {
-        return new SimpleRDFFactory() {
+        return new SimpleRDF() {
             @Override
             public IRI createIRI(String iri) {
                 if (!URI.create(iri).isAbsolute()) {

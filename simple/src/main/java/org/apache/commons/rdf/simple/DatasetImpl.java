@@ -33,7 +33,7 @@ import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFTerm;
-import org.apache.commons.rdf.simple.SimpleRDFFactory.SimpleRDFTerm;
+import org.apache.commons.rdf.simple.SimpleRDF.SimpleRDFTerm;
 
 /**
  * A simple, memory-based implementation of Dataset.
@@ -46,10 +46,10 @@ final class DatasetImpl implements Dataset {
 	
     private static final int TO_STRING_MAX = 10;
     private final Set<Quad> quads = new HashSet<Quad>();
-    private final SimpleRDFFactory factory;
+    private final SimpleRDF factory;
 
-    DatasetImpl(SimpleRDFFactory simpleRDFFactory) {
-        this.factory = simpleRDFFactory;
+    DatasetImpl(SimpleRDF simpleRDF) {
+        this.factory = simpleRDF;
     }
     
 	@Override

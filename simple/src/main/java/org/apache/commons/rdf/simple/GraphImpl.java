@@ -18,7 +18,7 @@
 package org.apache.commons.rdf.simple;
 
 import org.apache.commons.rdf.api.*;
-import org.apache.commons.rdf.simple.SimpleRDFFactory.SimpleRDFTerm;
+import org.apache.commons.rdf.simple.SimpleRDF.SimpleRDFTerm;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -38,10 +38,10 @@ final class GraphImpl implements Graph {
 
     private static final int TO_STRING_MAX = 10;
     private final Set<Triple> triples = new HashSet<Triple>();
-    private final SimpleRDFFactory factory;
+    private final SimpleRDF factory;
 
-    GraphImpl(SimpleRDFFactory simpleRDFFactory) {
-        this.factory = simpleRDFFactory;
+    GraphImpl(SimpleRDF simpleRDF) {
+        this.factory = simpleRDF;
     }
 
     @Override

@@ -40,7 +40,7 @@ final class QuadImpl implements Quad {
      * Construct Quad from its constituent parts.
      * <p>
      * The objects are not changed. All mapping of BNode objects is done in
-     * {@link SimpleRDFFactory#createQuad(BlankNodeOrIRI, BlankNodeOrIRI, IRI, RDFTerm)}.
+     * {@link SimpleRDF#createQuad(BlankNodeOrIRI, BlankNodeOrIRI, IRI, RDFTerm)}.
      *
      * @param graphName  graphName of triple
      * @param subject   subject of triple

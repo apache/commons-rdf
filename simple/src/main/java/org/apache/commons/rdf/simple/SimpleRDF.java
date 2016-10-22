@@ -38,7 +38,7 @@ import org.apache.commons.rdf.api.Triple;
  * simple in-memory Implementations that are not thread-safe or efficient, but
  * which may be useful for testing and prototyping purposes.
  */
-public class SimpleRDFFactory implements RDF {
+public class SimpleRDF implements RDF {
 
 	/**
 	 * Marker interface to say that this RDFTerm is part of the 
