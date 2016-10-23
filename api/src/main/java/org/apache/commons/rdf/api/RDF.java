@@ -60,10 +60,7 @@ public interface RDF {
      * @throws UnsupportedOperationException
      *             If the operation is not supported.
      */
-    default BlankNode createBlankNode() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException(
-                "createBlankNode() not supported");
-    }
+	 public BlankNode createBlankNode();
 
     /**
      * Create a blank node based on the given name.
@@ -87,14 +84,8 @@ public interface RDF {
      *            A non-empty, non-null, String that is unique to this blank
      *            node in the context of this {@link RDF}.
      * @return A BlankNode for the given name
-     * @throws UnsupportedOperationException
-     *             If the operation is not supported.
      */
-    default BlankNode createBlankNode(String name)
-            throws UnsupportedOperationException {
-        throw new UnsupportedOperationException(
-                "createBlankNode(String) not supported");
-    }
+	public BlankNode createBlankNode(String name);
 
     /**
      * Create a new graph.
@@ -103,11 +94,8 @@ public interface RDF {
      * mechanism.
      *
      * @return A new Graph
-     * @throws UnsupportedOperationException If the operation is not supported.
      */
-    default Graph createGraph() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("createGraph() not supported");
-    }
+	 public Graph createGraph();
 
     /**
      * Create a new dataset.
@@ -116,11 +104,8 @@ public interface RDF {
      * mechanism.
      *
      * @return A new Dataset
-     * @throws UnsupportedOperationException If the operation is not supported.
      */
-    default Dataset createDataset() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("createDataset() not supported");
-    }
+	public Dataset createDataset();
 
     /**
      * Create an IRI from a (possibly escaped) String.
@@ -133,13 +118,8 @@ public interface RDF {
      * @return A new IRI
      * @throws IllegalArgumentException      If the provided string is not acceptable, e.g. does not
      *                                       conform to the RFC3987 syntax.
-     * @throws UnsupportedOperationException If the operation is not supported.
      */
-    default IRI createIRI(String iri) throws IllegalArgumentException,
-            UnsupportedOperationException {
-        throw new UnsupportedOperationException(
-                "createIRI(String) not supported");
-    }
+	public IRI createIRI(String iri) throws IllegalArgumentException;
 
     /**
      * Create a simple literal.
@@ -157,13 +137,9 @@ public interface RDF {
      * @return The created Literal
      * @throws IllegalArgumentException      If the provided lexicalForm is not acceptable, e.g. because
      *                                       it is too large for an underlying storage.
-     * @throws UnsupportedOperationException If the operation is not supported.
      */
-    default Literal createLiteral(String lexicalForm)
-            throws IllegalArgumentException, UnsupportedOperationException {
-        throw new UnsupportedOperationException(
-                "createLiteral(String) not supported");
-    }
+    public Literal createLiteral(String lexicalForm)
+            throws IllegalArgumentException;
 
     /**
      * Create a literal with the specified data type.
@@ -191,13 +167,9 @@ public interface RDF {
      * @return The created Literal
      * @throws IllegalArgumentException      If any of the provided arguments are not acceptable, e.g.
      *                                       because the provided dataType is not permitted.
-     * @throws UnsupportedOperationException If the operation is not supported.
      */
-    default Literal createLiteral(String lexicalForm, IRI dataType)
-            throws IllegalArgumentException, UnsupportedOperationException {
-        throw new UnsupportedOperationException(
-                "createLiteral(String) not supported");
-    }
+    public Literal createLiteral(String lexicalForm, IRI dataType)
+            throws IllegalArgumentException;
 
     /**
      * Create a language-tagged literal.
@@ -226,13 +198,9 @@ public interface RDF {
      * @return The created Literal
      * @throws IllegalArgumentException      If the provided values are not acceptable, e.g. because the
      *                                       languageTag was syntactically invalid.
-     * @throws UnsupportedOperationException If the operation is not supported.
      */
-    default Literal createLiteral(String lexicalForm, String languageTag)
-            throws IllegalArgumentException, UnsupportedOperationException {
-        throw new UnsupportedOperationException(
-                "createLiteral(String,String) not supported");
-    }
+    public Literal createLiteral(String lexicalForm, String languageTag)
+            throws IllegalArgumentException;
 
     /**
      * Create a triple.
@@ -249,14 +217,9 @@ public interface RDF {
      * @throws IllegalArgumentException      If any of the provided arguments are not acceptable, e.g.
      *                                       because a Literal has a lexicalForm that is too large for an
      *                                       underlying storage.
-     * @throws UnsupportedOperationException If the operation is not supported.
      */
-    default Triple createTriple(BlankNodeOrIRI subject, IRI predicate,
-                                RDFTerm object) throws IllegalArgumentException,
-            UnsupportedOperationException {
-        throw new UnsupportedOperationException(
-                "createTriple(BlankNodeOrIRI,IRI,RDFTerm) not supported");
-    }
+    public Triple createTriple(BlankNodeOrIRI subject, IRI predicate,
+                                RDFTerm object) throws IllegalArgumentException;
 
     /**
      * Create a quad.
@@ -268,7 +231,7 @@ public interface RDF {
      * equal to the provided predicate, and a {@link Quad#getObject()} that is
      * equal to the provided object.
      *
-     * @param graphName The IRI or BlankNode that this quad belongs to, or <code>null</code> for the default graph
+     * @param graphName The IRI or BlankNode that this quad belongs to, or <code>null</code> for the public graph
      * @param subject   The IRI or BlankNode that is the subject of the quad
      * @param predicate The IRI that is the predicate of the quad
      * @param object    The IRI, BlankNode or Literal that is the object of the quad
@@ -276,13 +239,8 @@ public interface RDF {
      * @throws IllegalArgumentException      If any of the provided arguments are not acceptable, e.g.
      *                                       because a Literal has a lexicalForm that is too large for an
      *                                       underlying storage.
-     * @throws UnsupportedOperationException If the operation is not supported.
      */
-    default Quad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate,
-                                RDFTerm object) throws IllegalArgumentException,
-            UnsupportedOperationException {
-        throw new UnsupportedOperationException(
-                "createQuad(BlankNodeOrIRI,BlankNodeOrIRI,IRI,RDFTerm) not supported");
-    }
+    public Quad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate,
+                                RDFTerm object) throws IllegalArgumentException;
 
 }
