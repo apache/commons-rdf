@@ -235,7 +235,6 @@
     </dependencyManagement>
 
     <build>
-        <finalName>apache-commonsrdf-${project.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -562,6 +561,7 @@
             <id>release</id>
             <!-- extends the release profile from commons -->
             <build>
+        	<finalName>apache-commonsrdf-${project.version}</finalName>
                 <plugins>
                   <!-- Generate convenience *.md5 *.sha1 files for dist puropses -->
                   <plugin>
