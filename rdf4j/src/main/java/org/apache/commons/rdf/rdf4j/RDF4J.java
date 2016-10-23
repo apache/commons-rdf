@@ -64,12 +64,12 @@ import org.eclipse.rdf4j.sail.memory.MemoryStore;
  * {@link BNode#getID()}.
  * <p>
  * {@link #createGraph()} creates a new Graph backed by {@link LinkedHashModel}.
- * To use other models, see {@link #asRDFTermGraph(Model)}.
+ * To use other models, see {@link #asGraph(Model)}.
  * <p>
  * To adapt a RDF4J {@link Repository} as a {@link Dataset} or {@link Graph},
- * use {@link #asRDFTermDataset(Repository, Option...)} 
+ * use {@link #asDataset(Repository, Option...)} 
  * or 
- * {@link #asRDFTermGraph(Repository, Option...)}.
+ * {@link #asGraph(Repository, Option...)}.
  * <p>
  * {@link #asTriple(Statement)} can be used to convert a RDF4J {@link Statement}
  * to a Commons RDF {@link Triple}, and equivalent {@link #asQuad(Statement)} to
@@ -93,9 +93,9 @@ import org.eclipse.rdf4j.sail.memory.MemoryStore;
  * the same {@link BNode#getID()}, converting them with the above methods might
  * cause accidental {@link BlankNode} equivalence. Note that the {@link Graph}
  * and {@link Dataset} adapter methods like
- * {@link #asRDFTermDataset(Repository, Option...)}
+ * {@link #asDataset(Repository, Option...)}
  * and 
- * {@link #asRDFTermGraph(Repository, Option...)}
+ * {@link #asGraph(Repository, Option...)}
  * therefore uses a unique {@link RDF4J} internally.
  * 
  * @see RDF
@@ -288,7 +288,7 @@ public final class RDF4J implements RDF {
 	 *            Zero or more {@link Option}
 	 * @return A {@link Dataset} backed by the RDF4J repository.
 	 */
-	public RDF4JDataset asRDFTermDataset(Repository repository, Option... options) {
+	public RDF4JDataset asDataset(Repository repository, Option... options) {
 		EnumSet<Option> opts = optionSet(options);
 		return rdf4j.createRepositoryDatasetImpl(repository, 
 				opts.contains(Option.handleInitAndShutdown), 
@@ -304,7 +304,7 @@ public final class RDF4J implements RDF {
 	 *            RDF4J {@link Model} to adapt.
 	 * @return Adapted {@link Graph}.
 	 */
-	public RDF4JGraph asRDFTermGraph(Model model) {
+	public RDF4JGraph asGraph(Model model) {
 		return rdf4j.createModelGraphImpl(model, this);
 	}
 
@@ -328,7 +328,7 @@ public final class RDF4J implements RDF {
 	 *            Zero or more {@link Option}
 	 * @return A {@link Graph} backed by the RDF4J repository.
 	 */
-	public RDF4JGraph asRDFTermGraph(Repository repository, Option... options) {
+	public RDF4JGraph asGraph(Repository repository, Option... options) {
 		EnumSet<Option> opts = optionSet(options);
 		return rdf4j.createRepositoryGraphImpl(repository, 
 				opts.contains(Option.handleInitAndShutdown), 
@@ -349,7 +349,7 @@ public final class RDF4J implements RDF {
 	 *            Zero or more {@link Option}
 	 * @return A union {@link Graph} backed by the RDF4J repository.
 	 */
-	public RDF4JGraph asRDFTermGraphUnion(Repository repository, Option... options) {
+	public RDF4JGraph asGraphUnion(Repository repository, Option... options) {
 		EnumSet<Option> opts = optionSet(options);
 		return rdf4j.createRepositoryGraphImpl(repository, 
 				opts.contains(Option.handleInitAndShutdown), 
@@ -384,7 +384,7 @@ public final class RDF4J implements RDF {
 	 *            Zero or more {@link Option}s
 	 * @return A {@link Graph} backed by the RDF4J repository.
 	 */
-	public RDF4JGraph asRDFTermGraph(Repository repository, Set<? extends BlankNodeOrIRI> contexts,
+	public RDF4JGraph asGraph(Repository repository, Set<? extends BlankNodeOrIRI> contexts,
 			Option... option) {
 		EnumSet<Option> opts = optionSet(option);
 		/** NOTE: asValue() deliberately CAN handle <code>null</code> */
@@ -540,7 +540,7 @@ public final class RDF4J implements RDF {
 
 	@Override
 	public RDF4JGraph createGraph() {
-		return asRDFTermGraph(new LinkedHashModel());
+		return asGraph(new LinkedHashModel());
 	}
 
 	@Override

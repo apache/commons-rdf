@@ -32,9 +32,9 @@
  * {@link org.eclipse.rdf4j.repository.Repository} instances can be adapted to
  * Commons RDF {@link org.apache.commons.rdf.api.Graph} and
  * {@link org.apache.commons.rdf.api.Dataset}, e.g. using
- * {@link org.apache.commons.rdf.rdf4j.RDF4J#asRDFTermGraph(org.eclipse.rdf4j.model.Model)}
+ * {@link org.apache.commons.rdf.rdf4j.RDF4J#asGraph(org.eclipse.rdf4j.model.Model)}
  * or
- * {@link org.apache.commons.rdf.rdf4j.RDF4J#asRDFTermDataset(org.eclipse.rdf4j.repository.Repository, org.apache.commons.rdf.rdf4j.RDF4J.Option...)}
+ * {@link org.apache.commons.rdf.rdf4j.RDF4J#asDataset(org.eclipse.rdf4j.repository.Repository, org.apache.commons.rdf.rdf4j.RDF4JFactory.Option...)}
  * The returned adapted graph/dataset is directly mapped, so changes are
  * propagated both ways. For convenience, the marker interface
  * {@link org.apache.commons.rdf.rdf4j.RDF4JGraph} and
