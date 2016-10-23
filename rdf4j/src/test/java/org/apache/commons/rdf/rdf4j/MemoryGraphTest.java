@@ -77,7 +77,7 @@ public class MemoryGraphTest extends AbstractGraphTest {
 			Sail sail = new MemoryStore();
 			Repository repository = new SailRepository(sail);
 			repository.initialize();
-			return rdf4jFactory.asRDFTermGraph(repository);
+			return rdf4jFactory.asGraph(repository);
 		}
 	}
 

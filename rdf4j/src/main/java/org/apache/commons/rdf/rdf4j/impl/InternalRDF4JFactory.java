@@ -45,7 +45,7 @@ import org.eclipse.rdf4j.repository.Repository;
  * {@link RDF4JFactory} methods like
  * {@link RDF4JFactory#createBlankNode()},
  * {@link RDF4JFactory#asRDFTerm(org.eclipse.rdf4j.model.Value)} and
- * {@link RDF4JFactory#asRDFTermGraph(Repository, org.apache.commons.rdf.rdf4j.RDF4JFactory.Option...)}
+ * {@link RDF4JFactory#asGraph(Repository, org.apache.commons.rdf.rdf4j.RDF4JFactory.Option...)}
  * <p>
  * This class exists as a <code>public</code> bridge between the packages
  * {@link org.apache.commons.rdf.rdf4j} and

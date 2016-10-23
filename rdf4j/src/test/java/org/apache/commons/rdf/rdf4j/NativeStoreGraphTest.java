@@ -57,7 +57,7 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
 		public RDF4JGraph createGraph() {
 			// We re-use the repository connection, but use a different context every time
 			Set<RDF4JBlankNode> context = Collections.singleton(rdf4jFactory.createBlankNode());
-			return rdf4jFactory.asRDFTermGraph(getRepository(), context);
+			return rdf4jFactory.asGraph(getRepository(), context);
 		}
 
 		// Delegate methods 
