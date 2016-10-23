@@ -67,7 +67,6 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
 			// ...as the below would re-use the same repository:
 			//return rdf4jFactory.asRDFTermDataset(getRepository()); 
 		}
-
 		
 		// Delegate methods 
 		public RDF4JBlankNode createBlankNode() {
@@ -91,7 +90,6 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
 		public RDF4JTriple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
 			return rdf4jFactory.createTriple(subject, predicate, object);
 		}
-		@Override
 		public Quad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
 				throws IllegalArgumentException {
 			return rdf4jFactory.createQuad(graphName, subject, predicate, object);

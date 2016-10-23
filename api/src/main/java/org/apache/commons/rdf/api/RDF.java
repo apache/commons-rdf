@@ -57,8 +57,6 @@ public interface RDF {
      * {@link BlankNode} instances according to {@link BlankNode#equals(Object)}.
      *
      * @return A new, unique {@link BlankNode}
-     * @throws UnsupportedOperationException
-     *             If the operation is not supported.
      */
 	 public BlankNode createBlankNode();
 
