@@ -18,14 +18,22 @@
 
 package org.apache.commons.rdf.jena;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
+import org.apache.commons.rdf.api.BlankNode;
+import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.Graph ;
-import org.apache.commons.rdf.api.RDFTermFactory ;
-import org.apache.jena.riot.Lang ;
+import org.apache.commons.rdf.api.RDFTerm;
+import org.apache.commons.rdf.api.Triple;
+import org.apache.commons.rdf.simple.Types;
+import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr ;
 import org.apache.jena.sparql.graph.GraphFactory ;
 import org.junit.After;
@@ -34,7 +42,8 @@ import org.junit.Test;
 
 /** Adapt a Jena Graph after parsing data into it */
 public class TestJenaGraphToCommonsRDFGraph {
-    private Path turtleFile;
+    private static final boolean DEBUG = false;
+	private Path turtleFile;
 
     
     @Before
@@ -55,19 +64,77 @@ public class TestJenaGraphToCommonsRDFGraph {
         org.apache.jena.graph.Graph jGraph = GraphFactory.createGraphMem() ;        
         RDFDataMgr.read(jGraph, turtleFile.toUri().toString()) ;
         
-        // "graph" is a CommonsRDF graph 
-        Graph graph = new JenaFactory().fromJena(jGraph) ;
+        JenaFactory factory = new JenaFactory() ;
         
+        // "graph" is a CommonsRDF graph 
+        Graph graph = factory.fromJena(jGraph) ;
+        
+        
+        
+        // The below check expected statements from D.ttl
+        
+        JenaIRI p = factory.createIRI("http://example.com/p");
+		JenaIRI s = factory.createIRI("http://example.com/s");
+		JenaLiteral literal123 = factory.createLiteral("123", Types.XSD_INTEGER);
+		assertTrue(graph.contains(s, p, literal123));
+        
+        JenaIRI p1 = factory.createIRI("http://example.com/p1");
+        // Let's look up the BlankNode
+		BlankNodeOrIRI bnode1 = graph.stream(null, p1, null)
+        		.findFirst().map(Triple::getSubject).get();
+        assertTrue(bnode1 instanceof BlankNode);
+        
+        // Verify we can use BlankNode in query again
+        RDFTerm obj = graph.stream(bnode1, p1, null).findFirst().map(Triple::getObject).get();
+        
+        // Let's look up also that nested blank node
+        assertTrue(obj instanceof BlankNode);
+        BlankNode bnode2 = (BlankNode)obj;
+        
+        
+        
+        JenaIRI q = factory.createIRI("http://example.com/q");
+        JenaLiteral literalR = factory.createLiteral("r", "en");
+		assertTrue(graph.contains(bnode2, q, literalR));
+        
+
+		// Can we add the same triple again as s/p/o 
+		// without affecting graph size?
+		// Just to be evil we add a blanknode-iri-blanknode statement
+        assertEquals(3, graph.size());
+		graph.add(bnode1, p1, bnode2);
+		assertEquals(3, graph.size());
+        
+		// Add the same Triple again
+		graph.stream(bnode2,null,null).findFirst().ifPresent(graph::add);
+		assertEquals(3, graph.size());
+		
+		
         // Add to CommonsRDF Graph
-        RDFTermFactory rft = new JenaFactory() ;
-        graph.add(rft.createIRI("http://example/s2"),
-                  rft.createIRI("http://example/p2"),
-                  rft.createLiteral("foo")) ;
-//        System.out.println("==== Write CommonsRDF graph\n") ;
-//        graph.stream().forEach(System.out::println) ;        
-//        System.out.println("\n==== Write Jena graph directly\n") ;
-        // And its in the Jena graph
-        RDFDataMgr.write(System.out, jGraph, Lang.TTL) ;
+        JenaIRI s2 = factory.createIRI("http://example/s2");
+		JenaIRI p2 = factory.createIRI("http://example/p2");
+		JenaLiteral foo = factory.createLiteral("foo");
+		graph.add(s2,
+        		  p2,
+        		  foo) ;
+		assertEquals(4, graph.size());
+		assertTrue(graph.contains(s2,p2,foo));
+        
+        // Verify the corresponding Jena Nodes are in Jena graph
+        assertTrue(jGraph.contains(s2.asJenaNode(), p2.asJenaNode(), foo.asJenaNode()));
+        
+        if (DEBUG) {
+	        System.out.println("==== Write CommonsRDF graph\n") ;
+	        graph.stream().forEach(System.out::println) ;        
+	        // And its in the Jena graph
+	        System.out.println("\n==== Write Jena graph directly\n") ;
+	        RDFDataMgr.write(System.out, jGraph, Lang.TTL) ;
+        }
+        
+        // Can stream modify the jGraph? Let's try to remove..
+        assertFalse(jGraph.isEmpty());
+        graph.stream().forEach(graph::remove);
+        assertTrue(jGraph.isEmpty());
     }
 }
 
