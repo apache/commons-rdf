@@ -58,14 +58,14 @@ class JenaGraphImpl implements JenaGraph {
 	@Override
 	public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
 		graph.add(org.apache.jena.graph.Triple.create(
-				factory.toJena(subject),
-				factory.toJena(predicate), 
-				factory.toJena(object)));
+				factory.asJenaNode(subject),
+				factory.asJenaNode(predicate), 
+				factory.asJenaNode(object)));
 	}
 
 	@Override
 	public void add(Triple triple) {
-		graph.add(factory.toJena(triple));
+		graph.add(factory.asJenaTriple(triple));
 	}
 
 	@Override
@@ -86,27 +86,27 @@ class JenaGraphImpl implements JenaGraph {
 	@Override
 	public boolean contains(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
 		return graph.contains(
-				factory.toJena(subject), 
-				factory.toJena(predicate),
-				factory.toJena(object));
+				factory.asJenaNode(subject), 
+				factory.asJenaNode(predicate),
+				factory.asJenaNode(object));
 	}
 
 	@Override
 	public boolean contains(Triple triple) {
-		return graph.contains(factory.toJena(triple));
+		return graph.contains(factory.asJenaTriple(triple));
 	}
 
 	@Override
 	public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
 		graph.delete(org.apache.jena.graph.Triple.create(
-				factory.toJena(subject),
-				factory.toJena(predicate), 
-				factory.toJena(object)));
+				factory.asJenaNode(subject),
+				factory.asJenaNode(predicate), 
+				factory.asJenaNode(object)));
 	}
 
 	@Override
 	public void remove(Triple triple) {
-		graph.delete(factory.toJena(triple));
+		graph.delete(factory.asJenaTriple(triple));
 	}
 
 	@Override
@@ -117,20 +117,20 @@ class JenaGraphImpl implements JenaGraph {
 	@Override
 	public Stream<? extends Triple> stream() {
 		JenaRDF factory = new JenaRDF(salt);
-		return Iter.asStream(graph.find(null, null, null), true).map(factory::fromJena);
+		return Iter.asStream(graph.find(null, null, null), true).map(factory::asTriple);
 	}
 
 	@Override
 	public Stream<? extends Triple> stream(BlankNodeOrIRI s, IRI p, RDFTerm o) {
 		JenaRDF factory = new JenaRDF(salt);
 		return Iter.asStream(graph.find(toJenaAny(s), toJenaAny(p), toJenaAny(o)), true)
-				.map(factory::fromJena);
+				.map(factory::asTriple);
 	}
 
 	private Node toJenaAny(RDFTerm term) {
 		if (term == null)
 			return Node.ANY;
-		return factory.toJena(term);
+		return factory.asJenaNode(term);
 	}
 
 	@Override

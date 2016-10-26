@@ -52,11 +52,26 @@
         <commons.scmPubUrl>https://svn.apache.org/repos/infra/websites/production/commonsrdf/content/</commons.scmPubUrl>
         <commons.scmPubCheckoutDirectory>${project.build.directory}/site-content</commons.scmPubCheckoutDirectory>
         <commons.javadoc.java.link>https://docs.oracle.com/javase/8/docs/api/</commons.javadoc.java.link>
-        <!-- upgrade from 0.8.0 -->
-         <commons.japicmp.version>0.9.1</commons.japicmp.version>
-        <ver.jena>3.1.0</ver.jena>
+        
+        <!-- upgrade from 0.8.0 for Java 8 support -->
+        <commons.japicmp.version>0.9.1</commons.japicmp.version>
+        
+        
+        <!--  NOTE: jsonldjava is also used by rdf4j and jena, check  -->
+        <jsonldjava.version>0.8.2</jsonldjava.version>
+        <rdf4j.version>2.0</rdf4j.version>
+        <jena.version>3.1.0</jena.version>
+        <!--  NOTE: dexx and xerces versions should match 
+        the versions marked as <optional> in jena-osgi pom
+         -->
         <dexx.collection.version>0.6</dexx.collection.version>
         <servicemix.xerces.version>2.11.0_1</servicemix.xerces.version>
+
+
+        <!-- Test dependencies -->
+        <slf4j.version>1.7.20</slf4j.version>
+        <junit.version>4.12</junit.version>
+        
     </properties>
 
     <scm>
@@ -221,21 +236,31 @@
         <module>rdf4j</module>
         <module>jena</module>
         <module>jsonld-java</module>
+        <module>integration-tests</module>
     </modules>
 
-    <dependencyManagement>
+	<!--  
+	Common dependencies across modules. 
+	Keep this list small and only <scope>test</scope> !
+	-->
         <dependencies>
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>4.12</version>
+                <version>${junit.version}</version>
                 <scope>test</scope>
             </dependency>
+			<dependency>
+				<!-- System.err logging for Jena, JSONLD-Java, RDF4J 
+				-->
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-simple</artifactId>
+				<version>${slf4j.version}</version>
+				<scope>test</scope>
+			</dependency>
         </dependencies>
-    </dependencyManagement>
 
     <build>
-        <finalName>apache-commonsrdf-${project.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -562,6 +587,7 @@
             <id>release</id>
             <!-- extends the release profile from commons -->
             <build>
+        	<finalName>apache-commonsrdf-${project.version}</finalName>
                 <plugins>
                   <!-- Generate convenience *.md5 *.sha1 files for dist puropses -->
                   <plugin>

@@ -30,9 +30,6 @@
 
 	<artifactId>commons-rdf-rdf4j</artifactId>
 	<packaging>jar</packaging>
-	<properties>
-		<rdf4j.version>2.0</rdf4j.version>
-	</properties>
 
 	<name>Commons RDF: Integration: RDF4j</name>
 	<description>Eclipse RDF4j implementation of Commons RDF API</description>
@@ -81,7 +78,7 @@
 			<artifactId>rdf4j-repository-api</artifactId>
 		</dependency>
 
-		<!-- For RDF4JParserBuilder, these are the RIO dependencies for the standard 
+		<!-- For RDF4JParser, these are the RIO dependencies for the standard 
 			RDF 1.1 languages -->
 		<dependency>
 			<groupId>org.eclipse.rdf4j</groupId>
@@ -143,11 +140,6 @@
 			<artifactId>commons-rdf-api</artifactId>
 			<version>${project.version}</version>
 			<classifier>tests</classifier>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

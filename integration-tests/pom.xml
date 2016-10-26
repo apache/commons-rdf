@@ -21,70 +21,40 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
 	<parent>
 		<groupId>org.apache.commons</groupId>
 		<artifactId>commons-rdf-parent</artifactId>
 		<version>0.3.0-incubating-SNAPSHOT</version>
 	</parent>
-
-	<artifactId>commons-rdf-jena</artifactId>
-	<packaging>jar</packaging>
-
-	<name>Commons RDF: Integration: Apache Jena</name>
-	<description>Apache Jena implementation of Commons RDF API</description>
-
+	<artifactId>commons-rdf-integration-tests</artifactId>
+	<name>Commons RDF: Integration tests</name>
 	<dependencies>
 		<dependency>
-			<groupId>${project.parent.groupId}</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>commons-rdf-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>${project.parent.groupId}</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>commons-rdf-simple</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<!-- Uncomment below and disable jena-osgi to access the regular non-osgi 
-			 Jena dependencies (e.g. for debugging) -->
-		<!-- 
-	
 		<dependency>
-			<groupId>org.apache.jena</groupId>
-			<artifactId>apache-jena-libs</artifactId>
-			<version>${jena.version}</version>
-			<type>pom</type>
-			<scope>optional</scope>
-		</dependency>
-				--> 
-
-		<!-- As commons-rdf-jena is an OSGi bundle, we'll use the Jena OSGi bundle -->
-		<dependency>
-			<groupId>org.apache.jena</groupId>
-			<artifactId>jena-osgi</artifactId>
-			<version>${jena.version}</version>
-		</dependency>
-
-		<!-- Additional bundles needed by jena-osgi -->
-		<dependency>
-			<groupId>org.apache.servicemix.bundles</groupId>
-			<artifactId>org.apache.servicemix.bundles.xerces</artifactId>
-			<version>${servicemix.xerces.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.github.andrewoma.dexx</groupId>
-			<artifactId>collection</artifactId>
-			<version>${dexx.collection.version}</version>
-		</dependency>
-
-
-		<dependency>
-			<groupId>${project.parent.groupId}</groupId>
-			<artifactId>commons-rdf-api</artifactId>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>commons-rdf-rdf4j</artifactId>
 			<version>${project.version}</version>
-			<classifier>tests</classifier>
-			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>commons-rdf-jena</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<!-- NOTE: This might be quite version-sensitive (including transitives) 
+			as both rdf4j and jena depend on jsonld -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>commons-rdf-jsonld-java</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
-
 </project>
