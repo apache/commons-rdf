@@ -221,6 +221,7 @@
         <module>rdf4j</module>
         <module>jena</module>
         <module>jsonld-java</module>
+        <module>integration-tests</module>
     </modules>
 
     <dependencyManagement>
