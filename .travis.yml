@@ -26,5 +26,5 @@ notifications:
     - commits@commonsrdf.incubator.apache.org
 
 after_success:
-  - mvn clean test jacoco:report coveralls:report
+  - mvn clean test coveralls:report
  
