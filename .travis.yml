@@ -5,13 +5,14 @@ dist: trusty
 
 language: java
 
-# Workaround for travis-ci/travis-ci#4042
-addons:
-  apt:
-    packages:
-      - oracle-java8-installer    
-#jdk:
-#  - oraclejdk8
+# If newer Oracle JDK is needed, uncomment:
+#addons:
+#  apt:
+#    packages:
+#      - oracle-java8-installer    
+# .. and comment out:
+jdk:
+  - oraclejdk8
 
 
 cache:
@@ -25,5 +26,5 @@ notifications:
     - commits@commonsrdf.incubator.apache.org
 
 after_success:
-  - mvn clean test jacoco:report coveralls:report
+  - mvn clean test coveralls:report
  

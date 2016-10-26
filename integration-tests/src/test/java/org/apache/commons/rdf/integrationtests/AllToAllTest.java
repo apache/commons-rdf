@@ -74,14 +74,12 @@ public class AllToAllTest {
 		return allToAll;
 	}
 
-		/**
+	/**
 	 * This test creates a {@link Graph} with the first
 	 * {@link RDFTermFactory}, then inserts/queries with
 	 * triples using {@link RDFTerm}s created with the second factory.
 	 *
-	 * @param nodeFactory Factory to create {@link RDFTerm} instances
-	 * @param graphFactory Factory to create {@link Graph}
-	 * @throws Exception
+	 * @throws Exception Just in case..
 	 */
 	@Test
 	public void addTermsFromOtherFactory() throws Exception {
@@ -124,12 +122,12 @@ public class AllToAllTest {
 
 
 	/**
-	 * This is a variation of {@link #addTermsFromOtherFactory(RDFTermFactory, RDFTermFactory)},
-	 * but here {@link Triple} is created in the "foreign" nodeFactory before adding to the graph.
-	 *
-	 * @param nodeFactory Factory to create {@link RDFTerm} and {@link Triple}s
-	 * @param graphFactory Factory to create {@link Graph}
+	 * This is a variation of {@link #addTermsFromOtherFactory()}, but here
+	 * {@link Triple} is created in the "foreign" nodeFactory before adding to
+	 * the graph.
+	 * 
 	 * @throws Exception
+	 *             Just in case..
 	 */
 	@Test
 	public void addTriplesFromOtherFactory() throws Exception {
