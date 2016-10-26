@@ -1,7 +1,5 @@
-# Attempt to get a newer oraclejdk8..
-# See https://docs.travis-ci.com/user/ci-environment/
-sudo: required
-dist: trusty
+# Use docker-based build environment
+sudo: false
 
 language: java
 
