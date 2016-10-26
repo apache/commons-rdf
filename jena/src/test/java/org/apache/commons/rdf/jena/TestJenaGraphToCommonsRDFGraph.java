@@ -63,10 +63,9 @@ public class TestJenaGraphToCommonsRDFGraph {
         graph.add(rft.createIRI("http://example/s2"),
                   rft.createIRI("http://example/p2"),
                   rft.createLiteral("foo")) ;
-        System.out.println("==== Write CommonsRDF graph\n") ;
-        graph.stream().forEach(System.out::println) ;
-        
-        System.out.println("\n==== Write Jena graph directly\n") ;
+//        System.out.println("==== Write CommonsRDF graph\n") ;
+//        graph.stream().forEach(System.out::println) ;        
+//        System.out.println("\n==== Write Jena graph directly\n") ;
         // And its in the Jena graph
         RDFDataMgr.write(System.out, jGraph, Lang.TTL) ;
     }
