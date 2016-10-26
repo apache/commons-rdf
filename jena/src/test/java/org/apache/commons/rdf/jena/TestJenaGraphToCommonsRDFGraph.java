@@ -130,11 +130,6 @@ public class TestJenaGraphToCommonsRDFGraph {
 	        System.out.println("\n==== Write Jena graph directly\n") ;
 	        RDFDataMgr.write(System.out, jGraph, Lang.TTL) ;
         }
-        
-        // Can stream modify the jGraph? Let's try to remove..
-        assertFalse(jGraph.isEmpty());
-        graph.stream().forEach(graph::remove);
-        assertTrue(jGraph.isEmpty());
     }
 }
 
