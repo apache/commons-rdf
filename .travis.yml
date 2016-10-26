@@ -1,15 +1,18 @@
-# Use docker-based build environment
-sudo: false
+# Attempt to get a newer oraclejdk8..
+# See https://docs.travis-ci.com/user/ci-environment/
+sudo: required
+dist: trusty
 
 language: java
 
-# Workaround for travis-ci/travis-ci#4042
-addons:
-  apt:
-    packages:
-      - oracle-java8-installer    
-#jdk:
-#  - oraclejdk8
+# If newer Oracle JDK is needed, uncomment:
+#addons:
+#  apt:
+#    packages:
+#      - oracle-java8-installer    
+# .. and comment out:
+jdk:
+  - oraclejdk8
 
 
 cache:
