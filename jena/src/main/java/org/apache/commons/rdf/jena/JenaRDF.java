@@ -67,7 +67,7 @@ import org.apache.jena.sparql.graph.GraphFactory;
  * {@link BlankNode#uniqueReference()}), each instance of JenaRDF uses an
  * internal random state. If for some reason consistent/reproducible BlankNode
  * identity is desired, it is possible to retrieve the state as a UUID using
- * {@link #salt} for subsequent use with {@link JenaFactory#JenaFactory(UUID)} -
+ * {@link #salt()} for subsequent use with {@link JenaRDF#JenaRDF(UUID)} -
  * note that such consistency is only guaranteed within the same minor version
  * of Commons RDF.
  * 

@@ -28,6 +28,7 @@ import org.apache.commons.rdf.rdf4j.RDF4JLiteral;
 import org.apache.commons.rdf.rdf4j.RDF4JQuad;
 import org.apache.commons.rdf.rdf4j.RDF4JTerm;
 import org.apache.commons.rdf.rdf4j.RDF4J;
+import org.apache.commons.rdf.rdf4j.RDF4J.Option;
 import org.apache.commons.rdf.rdf4j.RDF4JTriple;
 import org.eclipse.rdf4j.model.BNode;
 import org.eclipse.rdf4j.model.IRI;
@@ -45,7 +46,7 @@ import org.eclipse.rdf4j.repository.Repository;
  * {@link RDF4J} methods like
  * {@link RDF4J#createBlankNode()},
  * {@link RDF4J#asRDFTerm(org.eclipse.rdf4j.model.Value)} and
- * {@link RDF4J#asGraph(Repository, org.apache.commons.rdf.rdf4j.RDF4JFactory.Option...)}
+ * {@link RDF4J#asGraph(Repository, Option...)}
  * <p>
  * This class exists as a <code>public</code> bridge between the packages
  * {@link org.apache.commons.rdf.rdf4j} and
