@@ -54,14 +54,9 @@
         <dependency>
 		    <groupId>com.github.jsonld-java</groupId>
 		    <artifactId>jsonld-java</artifactId>
-		    <version>0.8.2</version>
+		    <version>${jsonldjava.version}</version>
 		</dependency>
         
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
 </project>

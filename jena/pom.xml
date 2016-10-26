@@ -52,7 +52,7 @@
 		<dependency>
 			<groupId>org.apache.jena</groupId>
 			<artifactId>apache-jena-libs</artifactId>
-			<version>${ver.jena}</version>
+			<version>${jena.version}</version>
 			<type>pom</type>
 			<scope>optional</scope>
 		</dependency>
@@ -62,7 +62,7 @@
 		<dependency>
 			<groupId>org.apache.jena</groupId>
 			<artifactId>jena-osgi</artifactId>
-			<version>${ver.jena}</version>
+			<version>${jena.version}</version>
 		</dependency>
 
 		<!-- Additional bundles needed by jena-osgi -->
@@ -83,11 +83,6 @@
 			<artifactId>commons-rdf-api</artifactId>
 			<version>${project.version}</version>
 			<classifier>tests</classifier>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
