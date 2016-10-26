@@ -65,10 +65,38 @@ public abstract class InternalJenaFactory {
 	public JenaBlankNode createBlankNode(UUID salt) {
 		return new JenaBlankNodeImpl(NodeFactory.createBlankNode(), salt);
 	}
+	public JenaDataset createDataset(DatasetGraph datasetGraph, UUID salt) {
+		return new JenaDatasetImpl(datasetGraph, salt);
+	}
+
 	public JenaDataset createDataset(UUID salt) {
 		DatasetGraph dg = DatasetGraphFactory.createGeneral();
 		// Or which createMethod() -- a bit confusing with lots of choice..
 		return new JenaDatasetImpl(dg, salt);
+	}
+
+	public JenaGeneralizedQuadLike createGeneralizedQuad(org.apache.jena.sparql.core.Quad quad, UUID salt) {
+		return new JenaGeneralizedQuadLikeImpl(quad, salt);
+	}
+
+	public JenaGeneralizedQuadLike createGeneralizedQuad(RDFTerm subject, RDFTerm predicate, RDFTerm object, RDFTerm graphName) {
+		return new JenaGeneralizedQuadLikeImpl(subject, predicate, object, Optional.ofNullable(graphName));
+	}
+
+	public JenaGeneralizedTripleLike createGeneralizedTriple(org.apache.jena.graph.Triple triple, UUID salt) {
+		return new JenaGeneralizedTripleLikeImpl(triple, salt);
+	}
+
+	public JenaGeneralizedTripleLike createGeneralizedTriple(RDFTerm subject, RDFTerm predicate, RDFTerm object) {
+		return new JenaGeneralizedTripleLikeImpl(subject, predicate, object);
+	}
+
+	public JenaGraph createGraph(Model model, UUID salt) {
+		return new JenaGraphImpl(model, salt);
+	}
+
+	public JenaGraph createGraph(org.apache.jena.graph.Graph graph, UUID salt) {
+		return new JenaGraphImpl(graph, salt);
 	}
 
 	public JenaGraph createGraph(UUID salt) {
@@ -78,7 +106,7 @@ public abstract class InternalJenaFactory {
 	public JenaIRI createIRI(String iriStr) {
 		return new JenaIRIImpl(iriStr);
 	}
-
+	
 	public JenaLiteral createLiteral(String lexStr) {
 		return new JenaLiteralImpl(NodeFactory.createLiteral(lexStr));
 	}
@@ -91,23 +119,15 @@ public abstract class InternalJenaFactory {
 		return new JenaLiteralImpl(NodeFactory.createLiteral(lexStr, langTag));
 	}
 
-	public JenaTriple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		return new JenaTripleImpl(subject, predicate, object);
-	}
-
 	public JenaQuad createQuad(BlankNodeOrIRI subject, IRI predicate, RDFTerm object, BlankNodeOrIRI graphName) {
 		return new JenaQuadImpl(subject, predicate, object, Optional.ofNullable(graphName));
 	}
-
-	public JenaGeneralizedTripleLike createGeneralizedTriple(RDFTerm subject, RDFTerm predicate, RDFTerm object) {
-		return new JenaGeneralizedTripleLikeImpl(subject, predicate, object);
-	}
-
-	public JenaGeneralizedQuadLike createGeneralizedQuad(RDFTerm subject, RDFTerm predicate, RDFTerm object, RDFTerm graphName) {
-		return new JenaGeneralizedQuadLikeImpl(subject, predicate, object, Optional.ofNullable(graphName));
-	}
 	
-	public JenaRDFTerm fromJena(Node node, UUID salt) throws ConversionException {
+	public JenaQuad createQuad(org.apache.jena.sparql.core.Quad quad, UUID salt) {
+		return new JenaQuadImpl(quad, salt);
+	}
+
+	public JenaRDFTerm createRDFTerm(Node node, UUID salt) throws ConversionException {
 		if (! node.isConcrete()) {
 			throw new ConversionException("Node is not a concrete RDF Term: " + node); 
 		}
@@ -131,32 +151,12 @@ public abstract class InternalJenaFactory {
 		throw new ConversionException("Unrecognized node type: " + node);
 	}
 
-	public JenaGraph fromJena(org.apache.jena.graph.Graph graph, UUID salt) {
-		return new JenaGraphImpl(graph, salt);
-	}
-
-	public JenaGraph fromJena(Model model, UUID salt) {
-		return new JenaGraphImpl(model, salt);
-	}
-
-	public JenaDataset fromJena(DatasetGraph datasetGraph, UUID salt) {
-		return new JenaDatasetImpl(datasetGraph, salt);
+	public JenaTriple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+		return new JenaTripleImpl(subject, predicate, object);
 	}
 	
-	public JenaTriple fromJena(org.apache.jena.graph.Triple triple, UUID salt) {
+	public JenaTriple createTriple(org.apache.jena.graph.Triple triple, UUID salt) {
 		return new JenaTripleImpl(triple, salt);
-	}
-
-	public JenaGeneralizedTripleLike fromJenaGeneralized(org.apache.jena.graph.Triple triple, UUID salt) {
-		return new JenaGeneralizedTripleLikeImpl(triple, salt);
-	}
-
-	public JenaGeneralizedQuadLike fromJenaGeneralized(org.apache.jena.sparql.core.Quad quad, UUID salt) {
-		return new JenaGeneralizedQuadLikeImpl(quad, salt);
-	}
-	
-	public JenaQuad fromJena(org.apache.jena.sparql.core.Quad quad, UUID salt) {
-		return new JenaQuadImpl(quad, salt);
 	}
 
 }

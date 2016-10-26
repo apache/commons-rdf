@@ -56,15 +56,15 @@ class JenaDatasetImpl implements JenaDataset {
 	public void add(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
 		graph.add(				
 				org.apache.jena.sparql.core.Quad.create(
-				factory.toJena(graphName),
-				factory.toJena(subject),				
-				factory.toJena(predicate), 
-				factory.toJena(object)));
+				factory.asJenaNode(graphName),
+				factory.asJenaNode(subject),				
+				factory.asJenaNode(predicate), 
+				factory.asJenaNode(object)));
 	}
 
 	@Override
 	public void add(Quad quad) {
-		graph.add(factory.toJena(quad));
+		graph.add(factory.asJenaQuad(quad));
 	}
 	
 	@Override
@@ -101,18 +101,18 @@ class JenaDatasetImpl implements JenaDataset {
 			return ANY;
 		}
 		// null: default graph
-		return factory.toJena(graphName.orElse(null));
+		return factory.asJenaNode(graphName.orElse(null));
 	}
 
 	private Node toJenaPattern(RDFTerm term) {
 		if (term == null)
 			return ANY;
-		return factory.toJena(term);
+		return factory.asJenaNode(term);
 	}
 
 	@Override
 	public boolean contains(Quad quad) {
-		return graph.contains(factory.toJena(quad));
+		return graph.contains(factory.asJenaQuad(quad));
 	}
 
 	@Override
@@ -126,7 +126,7 @@ class JenaDatasetImpl implements JenaDataset {
 
 	@Override
 	public void remove(Quad quad) {
-		graph.delete(factory.toJena(quad));
+		graph.delete(factory.asJenaQuad(quad));
 	}
 
 	@Override
@@ -138,14 +138,14 @@ class JenaDatasetImpl implements JenaDataset {
 	public Stream<? extends Quad> stream() {
 		JenaFactory factory = new JenaFactory(salt);
 		return Iter.asStream(graph.find(ANY, ANY, ANY, ANY), true)
-				.map(factory::fromJena);
+				.map(factory::asQuad);
 	}
 
 	@Override
 	public Stream<? extends Quad> stream(Optional<BlankNodeOrIRI> g, BlankNodeOrIRI s, IRI p, RDFTerm o) {
 		JenaFactory factory = new JenaFactory(salt);
 		return Iter.asStream(graph.find(toJenaPattern(g), toJenaPattern(s), toJenaPattern(p), toJenaPattern(o)), true)
-				.map(factory::fromJena);
+				.map(factory::asQuad);
 	}
 
 	@Override
@@ -169,7 +169,7 @@ class JenaDatasetImpl implements JenaDataset {
 	
 	@Override
 	public Optional<Graph> getGraph(BlankNodeOrIRI graphName) {
-		GraphView gv = GraphView.createNamedGraph(graph, factory.toJena(graphName));
+		GraphView gv = GraphView.createNamedGraph(graph, factory.asJenaNode(graphName));
 		return Optional.of(new JenaGraphImpl(gv, salt));
 	}	
 
@@ -177,14 +177,14 @@ class JenaDatasetImpl implements JenaDataset {
 	public Stream<BlankNodeOrIRI> getGraphNames() {
 		JenaFactory factory = new JenaFactory(salt);
 		return Iter.asStream(graph.listGraphNodes()).map(node -> 
-			(BlankNodeOrIRI) factory.fromJena(node));		
+			(BlankNodeOrIRI) factory.asRDFTerm(node));		
 	}
 
 	@Override
 	public Iterable<Quad> iterate() {
 		final JenaFactory factory = new JenaFactory(salt);
 		return Iter.asStream(graph.find(), false)
-				.map(q -> (Quad) factory.fromJena(q))
+				.map(q -> (Quad) factory.asQuad(q))
 				::iterator;
 	}
 

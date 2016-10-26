@@ -81,11 +81,11 @@ public class JenaRDFParser extends AbstractRDFParser<JenaRDFParser> implements R
 			} else if (generalizedConsumerTriple != null) {				
 				dest = jenaFactory.streamJenaToGeneralizedTriple(generalizedConsumerTriple);			
 			} else {
-				dest = JenaFactory.streamJenaToCommonsRDF(getRdfTermFactory().get(), getTarget());
+				dest = JenaFactory.streamJenaToQuad(getRdfTermFactory().get(), getTarget());
 			}
 		}
 
-		Lang lang = getContentTypeSyntax().flatMap(jenaFactory::rdfSyntaxToLang).orElse(null);
+		Lang lang = getContentTypeSyntax().flatMap(jenaFactory::asJenaLang).orElse(null);
 		String baseStr = getBase().map(IRI::getIRIString).orElse(null);
 
 		if (getSourceIri().isPresent()) {

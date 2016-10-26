@@ -69,18 +69,18 @@ abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
 	@SuppressWarnings("unchecked")
 	AbstractQuadLike(org.apache.jena.sparql.core.Quad quad, UUID salt) {
 		this.quad = Objects.requireNonNull(quad);
-		this.subject = (S) internalJenaFactory.fromJena(quad.getSubject(), salt);
-		this.predicate = (P) internalJenaFactory.fromJena(quad.getPredicate(), salt);
-		this.object = (O)internalJenaFactory.fromJena(quad.getObject(), salt);
-		this.graphName = Optional.of((G) internalJenaFactory.fromJena(quad.getGraph(), salt));		
+		this.subject = (S) internalJenaFactory.createRDFTerm(quad.getSubject(), salt);
+		this.predicate = (P) internalJenaFactory.createRDFTerm(quad.getPredicate(), salt);
+		this.object = (O)internalJenaFactory.createRDFTerm(quad.getObject(), salt);
+		this.graphName = Optional.of((G) internalJenaFactory.createRDFTerm(quad.getGraph(), salt));		
 	}
 
 	@SuppressWarnings("unchecked")
 	AbstractQuadLike(org.apache.jena.graph.Triple triple, UUID salt) {
 		this.triple = Objects.requireNonNull(triple);		
-		this.subject = (S) internalJenaFactory.fromJena(triple.getSubject(), salt);
-		this.predicate = (P) internalJenaFactory.fromJena(triple.getPredicate(), salt);
-		this.object = (O)internalJenaFactory.fromJena(triple.getObject(), salt);
+		this.subject = (S) internalJenaFactory.createRDFTerm(triple.getSubject(), salt);
+		this.predicate = (P) internalJenaFactory.createRDFTerm(triple.getPredicate(), salt);
+		this.object = (O)internalJenaFactory.createRDFTerm(triple.getObject(), salt);
 		this.graphName = Optional.empty();
 	}
 
@@ -89,10 +89,10 @@ abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
 		JenaFactory factory = new JenaFactory();
 		if (quad == null) {
 			quad = org.apache.jena.sparql.core.Quad.create(
-					factory.toJena(graphName.orElse(null)),
-					factory.toJena(subject), 
-					factory.toJena(predicate),
-					factory.toJena(object));
+					factory.asJenaNode(graphName.orElse(null)),
+					factory.asJenaNode(subject), 
+					factory.asJenaNode(predicate),
+					factory.asJenaNode(object));
 		}
 		return quad;
 	}
@@ -102,9 +102,9 @@ abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
 		JenaFactory factory = new JenaFactory();
 		if (triple == null) {
 			triple = org.apache.jena.graph.Triple.create(
-				factory.toJena(subject), 
-				factory.toJena(predicate),
-				factory.toJena(object));
+				factory.asJenaNode(subject), 
+				factory.asJenaNode(predicate),
+				factory.asJenaNode(object));
 		}
 		return triple;
 	}	

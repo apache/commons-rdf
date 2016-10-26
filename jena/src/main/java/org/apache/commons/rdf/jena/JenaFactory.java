@@ -50,11 +50,25 @@ import org.apache.jena.sparql.graph.GraphFactory;
 /**
  * RDFTermFactory with Jena-backed objects.
  * <p>
- * This factory can also convert existing objects from/to Jena with methods like
- * {@link #fromJena(org.apache.jena.graph.Graph)} and {@link #toJena(Graph)}.
+ * This factory can also convert existing objects from Jena with methods like
+ * {@link #asRDFTerm(Node)} and {@link #asGraph(org.apache.jena.graph.Graph)},
+ * and vice versa from any Commons RDF object to Jena with the
+ * <code>asJena*</code> methods like {@link #asJenaNode(RDFTerm)} and
+ * {@link #asJenaGraph(Graph)}.
  * <p>
- * For the purpose of {@link BlankNode} identity, this factory will use an internal
- * {@link UUID} as a salt. See {@link BlankNode#uniqueReference()} for details.
+ * Note that Commons RDF objects created by this class implement the
+ * specializations interfaces like {@link JenaRDFTerm}, {@link JenaGraph} and
+ * {@link JenaTriple}, which provide access to the underlying Jena objects, e.g.
+ * with {@link JenaRDFTerm#asJenaNode()}.
+ * <p>
+ * For the purpose of {@link BlankNode} identity when using
+ * {@link #createBlankNode(String)} (see {@link BlankNode#equals(Object)} and
+ * {@link BlankNode#uniqueReference()}), each instance of this factory uses an
+ * internal random state. If for some reason consistent/reproducible BlankNode
+ * identity is desired, it is possible to retrieve the state as a UUID using
+ * {@link #salt} for subsequent use with {@link JenaFactory#JenaFactory(UUID)} -
+ * note that such consistency is only guaranteed within the same minor version
+ * of Commons RDF.
  * 
  * @see RDFTermFactory
  */
@@ -68,7 +82,7 @@ public final class JenaFactory implements RDFTermFactory {
 	 * Create a JenaFactory.
 	 * <p>
 	 * This constructor will use a randomly generated {@link UUID} as a salt 
-	 * for the purposes of {@link BlankNode} identity, see {@link #getSalt()}.
+	 * for the purposes of {@link BlankNode} identity, see {@link #salt()}.
 	 */
 	public JenaFactory() {
 		this.salt = UUID.randomUUID();
@@ -91,22 +105,22 @@ public final class JenaFactory implements RDFTermFactory {
 
 	@Override
 	public JenaBlankNode createBlankNode() {
-		return internalJenaFactory.createBlankNode(getSalt());
+		return internalJenaFactory.createBlankNode(salt());
 	}
 
 	@Override
 	public JenaBlankNode createBlankNode(String name) {
-		return internalJenaFactory.createBlankNode(name, getSalt());
+		return internalJenaFactory.createBlankNode(name, salt());
 	}
 	
 	@Override
 	public JenaDataset createDataset() {
-		return internalJenaFactory.createDataset(getSalt());
+		return internalJenaFactory.createDataset(salt());
 	}
 
 	@Override
 	public JenaGraph createGraph() {
-		return internalJenaFactory.createGraph(getSalt());
+		return internalJenaFactory.createGraph(salt());
 	}
 
 	@Override
@@ -203,7 +217,7 @@ public final class JenaFactory implements RDFTermFactory {
 	 * {@link Node#getBlankNodeId()} for the purpose of its
 	 * {@link BlankNode#uniqueReference()}.
 	 * 
-	 * @see #fromJena(RDFTermFactory, Node)
+	 * @see #asRDFTerm(RDFTermFactory, Node)
 	 * 
 	 * @param node
 	 *            The Jena Node to adapt. It's {@link Node#isConcrete()} must be
@@ -212,8 +226,8 @@ public final class JenaFactory implements RDFTermFactory {
 	 * @throws ConversionException If the {@link Node} can't be represented as an {@link RDFTerm}, e.g.
 	 *             if the node is not concrete or represents a variable in Jena.
 	 */
-	public JenaRDFTerm fromJena(Node node) throws ConversionException {
-		return internalJenaFactory.fromJena(node, getSalt());
+	public JenaRDFTerm asRDFTerm(Node node) throws ConversionException {
+		return internalJenaFactory.createRDFTerm(node, salt());
 	}
 
 	/**
@@ -224,7 +238,7 @@ public final class JenaFactory implements RDFTermFactory {
 	 * that care should be taken if reusing an {@link RDFTermFactory} instance
 	 * for multiple conversion sessions.
 	 * 
-	 * @see #fromJena(Node)
+	 * @see #asRDFTerm(Node)
 	 * 
 	 * @param factory {@link RDFTermFactory} to use for creating {@link RDFTerm}.
 	 * @param node
@@ -234,13 +248,13 @@ public final class JenaFactory implements RDFTermFactory {
 	 * @throws ConversionException If the {@link Node} can't be represented as an {@link RDFTerm}, e.g.
 	 *             if the node is not concrete or represents a variable in Jena.
 	 */
-	public static RDFTerm fromJena(RDFTermFactory factory, Node node) {
+	public static RDFTerm asRDFTerm(RDFTermFactory factory, Node node) {
 		if (node == null) {
 			return null;
 		}
 		if (factory instanceof JenaFactory) {
 			// No need to convert, just wrap
-			return ((JenaFactory) factory).fromJena(node);
+			return ((JenaFactory) factory).asRDFTerm(node);
 		}
 		if (node.isURI())
 			return factory.createIRI(node.getURI());
@@ -268,7 +282,7 @@ public final class JenaFactory implements RDFTermFactory {
 	 * {@link Node#getBlankNodeId()} for the purpose of its
 	 * {@link BlankNode#uniqueReference()}.
 	 *
-	 * @see #fromJena(RDFTermFactory, org.apache.jena.graph.Triple)
+	 * @see #asTriple(RDFTermFactory, org.apache.jena.graph.Triple)
 	 * 
 	 * @param triple
 	 *            Jena {@link org.apache.jena.graph.Triple} to adapt
@@ -277,8 +291,8 @@ public final class JenaFactory implements RDFTermFactory {
 	 *             if any of the triple's nodes are not concrete or the triple
 	 *             is a generalized triple
 	 */
-	public JenaTriple fromJena(org.apache.jena.graph.Triple triple) throws ConversionException {
-		return internalJenaFactory.fromJena(triple, getSalt());
+	public JenaTriple asTriple(org.apache.jena.graph.Triple triple) throws ConversionException {
+		return internalJenaFactory.createTriple(triple, salt());
 	}
 
 	/**
@@ -293,7 +307,7 @@ public final class JenaFactory implements RDFTermFactory {
 	 * {@link Node#getBlankNodeId()} for the purpose of its
 	 * {@link BlankNode#uniqueReference()}.
 	 *
-	 * @see #fromJena(RDFTermFactory, org.apache.jena.graph.Triple)
+	 * @see #asTriple(RDFTermFactory, org.apache.jena.graph.Triple)
 	 * 
 	 * @param triple
 	 *            Jena triple
@@ -303,8 +317,8 @@ public final class JenaFactory implements RDFTermFactory {
 	 * @throws ConversionException
 	 *             if any of the triple's nodes are not concrete
 	 */
-	public JenaTripleLike fromJenaGeneralized(org.apache.jena.graph.Triple triple) throws ConversionException {
-		return internalJenaFactory.fromJenaGeneralized(triple, getSalt());
+	public JenaTripleLike asGeneralizedTriple(org.apache.jena.graph.Triple triple) throws ConversionException {
+		return internalJenaFactory.createGeneralizedTriple(triple, salt());
 	}
 
 	/**
@@ -322,8 +336,8 @@ public final class JenaFactory implements RDFTermFactory {
 	 * {@link Node#getBlankNodeId()} for the purpose of its
 	 * {@link BlankNode#uniqueReference()}.
 	 *
-	 * @see #fromJena(org.apache.jena.sparql.core.Quad)
-	 * @see #fromJenaGeneralized(org.apache.jena.graph.Triple)
+	 * @see #asQuad(org.apache.jena.sparql.core.Quad)
+	 * @see #asGeneralizedTriple(org.apache.jena.graph.Triple)
 	 * 
 	 * @param quad
 	 *            Jena quad
@@ -333,8 +347,8 @@ public final class JenaFactory implements RDFTermFactory {
 	 * @throws ConversionException
 	 *             if any of the quad nodes are not concrete
 	 */
-	public JenaQuadLike<RDFTerm> fromJenaGeneralized(org.apache.jena.sparql.core.Quad quad) throws ConversionException {
-		return internalJenaFactory.fromJenaGeneralized(quad, getSalt());
+	public JenaQuadLike<RDFTerm> asGeneralizedQuad(org.apache.jena.sparql.core.Quad quad) throws ConversionException {
+		return internalJenaFactory.createGeneralizedQuad(quad, salt());
 	}
 	
 	/**
@@ -346,7 +360,7 @@ public final class JenaFactory implements RDFTermFactory {
 	 * that care should be taken if reusing an {@link RDFTermFactory} instance
 	 * for multiple conversion sessions.
 	 * 
-	 * @see #fromJena(org.apache.jena.graph.Triple)
+	 * @see #asTriple(org.apache.jena.graph.Triple)
 	 *
 	 * @param factory {@link RDFTermFactory} to use for creating the {@link Triple} and its
 	 * {@link RDFTerm}s.
@@ -357,21 +371,21 @@ public final class JenaFactory implements RDFTermFactory {
 	 *             if any of the triple's nodes are not concrete or the triple
 	 *             is a generalized triple
 	 */
-	public static Triple fromJena(RDFTermFactory factory, org.apache.jena.graph.Triple triple) 
+	public static Triple asTriple(RDFTermFactory factory, org.apache.jena.graph.Triple triple) 
 			throws ConversionException{
 		if (factory instanceof JenaFactory) {
 			// No need to convert, just wrap
-			return ((JenaFactory) factory).fromJena(triple);
+			return ((JenaFactory) factory).asTriple(triple);
 		}
 		final BlankNodeOrIRI subject;
 		final IRI predicate;
 		try {
-			subject = (BlankNodeOrIRI) fromJena(factory, triple.getSubject());
-			predicate = (IRI) fromJena(factory, triple.getPredicate());
+			subject = (BlankNodeOrIRI) asRDFTerm(factory, triple.getSubject());
+			predicate = (IRI) asRDFTerm(factory, triple.getPredicate());
 		} catch (ClassCastException ex) {
 			throw new ConversionException("Can't convert generalized triple: " + triple, ex);
 		}
-		RDFTerm object = fromJena(factory, triple.getObject());
+		RDFTerm object = asRDFTerm(factory, triple.getObject());
 		return factory.createTriple(subject, predicate, object);
 	}
 
@@ -388,8 +402,8 @@ public final class JenaFactory implements RDFTermFactory {
 	 *            Jena quad
 	 * @return Adapted quad
 	 */	
-	public JenaQuad fromJena(org.apache.jena.sparql.core.Quad quad) {
-		return internalJenaFactory.fromJena(quad, getSalt());
+	public JenaQuad asQuad(org.apache.jena.sparql.core.Quad quad) {
+		return internalJenaFactory.createQuad(quad, salt());
 	}
 
 	/**
@@ -410,8 +424,8 @@ public final class JenaFactory implements RDFTermFactory {
 	 *            Jena {@link org.apache.jena.graph.Graph} to adapt
 	 * @return Adapted {@link JenaGraph}
 	 */
-	public JenaGraph fromJena(org.apache.jena.graph.Graph graph) {
-		return internalJenaFactory.fromJena(graph, getSalt());
+	public JenaGraph asGraph(org.apache.jena.graph.Graph graph) {
+		return internalJenaFactory.createGraph(graph, salt());
 	}
 
 	/**
@@ -429,8 +443,8 @@ public final class JenaFactory implements RDFTermFactory {
 	 *            Jena {@link org.apache.jena.rdf.model.Model} to adapt
 	 * @return Adapted {@link JenaGraph}
 	 */
-	public JenaGraph fromJena(org.apache.jena.rdf.model.Model model) {
-		return internalJenaFactory.fromJena(model, getSalt());
+	public JenaGraph asGraph(org.apache.jena.rdf.model.Model model) {
+		return internalJenaFactory.createGraph(model, salt());
 	}	
 
 	/**
@@ -449,8 +463,8 @@ public final class JenaFactory implements RDFTermFactory {
 	 * @param datasetGraph Jena {@link DatasetGraph} to adapt
 	 * @return Adapted {@link JenaDataset} 
 	 */
-	public JenaDataset fromJena(DatasetGraph datasetGraph) {
-		return internalJenaFactory.fromJena(datasetGraph, getSalt());
+	public JenaDataset asDataset(DatasetGraph datasetGraph) {
+		return internalJenaFactory.createDataset(datasetGraph, salt());
 	}	
 	
 	/**
@@ -469,8 +483,8 @@ public final class JenaFactory implements RDFTermFactory {
 	 * @param datasetGraph Jena {@link org.apache.jena.query.Dataset} to adapt
 	 * @return Adapted {@link JenaDataset} 
 	 */
-	public JenaDataset fromJena(org.apache.jena.query.Dataset datasetGraph) {
-		return internalJenaFactory.fromJena(datasetGraph.asDatasetGraph(), getSalt());
+	public JenaDataset asDataset(org.apache.jena.query.Dataset datasetGraph) {
+		return internalJenaFactory.createDataset(datasetGraph.asDatasetGraph(), salt());
 	}		
 
 	/**
@@ -482,8 +496,8 @@ public final class JenaFactory implements RDFTermFactory {
 	 * meaning that care should be taken if reusing an {@link RDFTermFactory}
 	 * instance for multiple conversion sessions.
 	 * 
-	 * @see #fromJena(org.apache.jena.sparql.core.Quad)
-	 * @see #fromJenaGeneralized(org.apache.jena.sparql.core.Quad)
+	 * @see #asQuad(org.apache.jena.sparql.core.Quad)
+	 * @see #asGeneralizedQuad(org.apache.jena.sparql.core.Quad)
 	 *
 	 * @param factory
 	 *            {@link RDFTermFactory} to use for creating the {@link Triple}
@@ -495,15 +509,15 @@ public final class JenaFactory implements RDFTermFactory {
 	 *             if any of the quad's nodes are not concrete or the quad
 	 *             is a generalized quad
 	 */
-	public static Quad fromJena(RDFTermFactory factory, org.apache.jena.sparql.core.Quad quad) {
+	public static Quad asQuad(RDFTermFactory factory, org.apache.jena.sparql.core.Quad quad) {
 		if (factory instanceof JenaFactory) {
 			// No need to convert, just wrap
-			return ((JenaFactory) factory).fromJena(quad);
+			return ((JenaFactory) factory).asQuad(quad);
 		}
-		BlankNodeOrIRI graphName = (BlankNodeOrIRI) (fromJena(factory, quad.getGraph()));
-		BlankNodeOrIRI subject = (BlankNodeOrIRI) (fromJena(factory, quad.getSubject()));
-		IRI predicate = (IRI) (fromJena(factory, quad.getPredicate()));
-		RDFTerm object = fromJena(factory, quad.getObject());
+		BlankNodeOrIRI graphName = (BlankNodeOrIRI) (asRDFTerm(factory, quad.getGraph()));
+		BlankNodeOrIRI subject = (BlankNodeOrIRI) (asRDFTerm(factory, quad.getSubject()));
+		IRI predicate = (IRI) (asRDFTerm(factory, quad.getPredicate()));
+		RDFTerm object = asRDFTerm(factory, quad.getObject());
 		return factory.createQuad(graphName, subject, predicate, object);
 	}
 
@@ -513,7 +527,7 @@ public final class JenaFactory implements RDFTermFactory {
 	 * @param lang {@link Lang} to convert
 	 * @return Matched {@link RDFSyntax}, otherwise {@link Optional#empty()}
 	 */
-	public Optional<RDFSyntax> langToRdfSyntax(Lang lang) {
+	public Optional<RDFSyntax> asRDFSyntax(Lang lang) {
 		return RDFSyntax.byMediaType(lang.getContentType().getContentType());
 	}
 
@@ -523,7 +537,7 @@ public final class JenaFactory implements RDFTermFactory {
 	 * @param rdfSyntax {@link RDFSyntax} to convert
 	 * @return Matched {@link Lang}, otherwise {@link Optional#empty()}
 	 */
-	public Optional<Lang> rdfSyntaxToLang(RDFSyntax rdfSyntax) {
+	public Optional<Lang> asJenaLang(RDFSyntax rdfSyntax) {
 		return Optional.ofNullable(RDFLanguages.contentTypeToLang(rdfSyntax.mediaType));
 	}
 
@@ -542,11 +556,11 @@ public final class JenaFactory implements RDFTermFactory {
 	 * @return A {@link StreamRDF} that will stream converted quads to the
 	 *         consumer
 	 */
-	public static StreamRDF streamJenaToCommonsRDF(RDFTermFactory factory, Consumer<Quad> consumer) {
+	public static StreamRDF streamJenaToQuad(RDFTermFactory factory, Consumer<Quad> consumer) {
 		return new StreamRDFBase() {
 			@Override
 			public void quad(org.apache.jena.sparql.core.Quad quad) {
-				consumer.accept(fromJena(factory, quad));
+				consumer.accept(asQuad(factory, quad));
 			}
 		};
 	}
@@ -571,7 +585,7 @@ public final class JenaFactory implements RDFTermFactory {
 		return new StreamRDFBase() {			
 			@Override
 			public void triple(org.apache.jena.graph.Triple triple) {
-				generalizedConsumer.accept(fromJenaGeneralized(triple));
+				generalizedConsumer.accept(asGeneralizedTriple(triple));
 			}
 		};
 	}	
@@ -596,7 +610,7 @@ public final class JenaFactory implements RDFTermFactory {
 		return new StreamRDFBase() {
 			@Override
 			public void quad(org.apache.jena.sparql.core.Quad quad) {
-				generalizedConsumer.accept(fromJenaGeneralized(quad));
+				generalizedConsumer.accept(asGeneralizedQuad(quad));
 			}
 		};
 	}	
@@ -609,11 +623,11 @@ public final class JenaFactory implements RDFTermFactory {
 	 * @param graph Commons RDF {@link Graph} to convert
 	 * @return Converted Jena {@link org.apache.jena.graph.Graph}
 	 */
-	public org.apache.jena.graph.Graph toJena(Graph graph) {
+	public org.apache.jena.graph.Graph asJenaGraph(Graph graph) {
 		if (graph instanceof JenaGraph)
 			return ((JenaGraph) graph).asJenaGraph();
 		org.apache.jena.graph.Graph g = GraphFactory.createGraphMem();
-		graph.stream().forEach(t -> g.add(toJena(t)));
+		graph.stream().forEach(t -> g.add(asJenaTriple(t)));
 		return g;
 	}
 
@@ -625,7 +639,7 @@ public final class JenaFactory implements RDFTermFactory {
 	 * @param term Commons RDF {@link RDFTerm} to convert
 	 * @return Converted Jena {@link Node}
 	 */
-	public Node toJena(RDFTerm term) {
+	public Node asJenaNode(RDFTerm term) {
 		if (term == null) {
 			return null;
 		}
@@ -662,13 +676,13 @@ public final class JenaFactory implements RDFTermFactory {
 	 * @param triple Commons RDF {@link Triple} to convert
 	 * @return Converted Jena {@link org.apache.jena.graph.Triple}
 	 */
-	public org.apache.jena.graph.Triple toJena(Triple triple) {
+	public org.apache.jena.graph.Triple asJenaTriple(Triple triple) {
 		if (triple instanceof JenaTriple)
 			return ((JenaTriple) triple).asJenaTriple();
 		return org.apache.jena.graph.Triple.create(
-				toJena(triple.getSubject()), 
-				toJena(triple.getPredicate()),
-				toJena(triple.getObject()));
+				asJenaNode(triple.getSubject()), 
+				asJenaNode(triple.getPredicate()),
+				asJenaNode(triple.getObject()));
 	}
 
 
@@ -682,15 +696,15 @@ public final class JenaFactory implements RDFTermFactory {
 	 * @param quad Commons RDF {@link Quad} to convert
 	 * @return Converted Jena {@link org.apache.jena.sparql.core.Quad}
 	 */
-	public org.apache.jena.sparql.core.Quad toJena(Quad quad) {
+	public org.apache.jena.sparql.core.Quad asJenaQuad(Quad quad) {
 		if (quad instanceof JenaQuad) {
 			return ((JenaQuad) quad).asJenaQuad();
 		}
 		return org.apache.jena.sparql.core.Quad.create(
-				toJena(quad.getGraphName().orElse(null)),
-				toJena(quad.getSubject()), 
-				toJena(quad.getPredicate()), 
-				toJena(quad.getObject()));
+				asJenaNode(quad.getGraphName().orElse(null)),
+				asJenaNode(quad.getSubject()), 
+				asJenaNode(quad.getPredicate()), 
+				asJenaNode(quad.getObject()));
 	}
 
 	// Some simple validations - full IRI parsing is not cheap.
@@ -720,7 +734,7 @@ public final class JenaFactory implements RDFTermFactory {
 	 * 
 	 * @return The {@link UUID} used as salt
 	 */
-	public UUID getSalt() {
+	public UUID salt() {
 		return salt;
 	}
 

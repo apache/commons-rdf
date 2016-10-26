@@ -67,7 +67,7 @@ public class TestJenaGraphToCommonsRDFGraph {
         JenaFactory factory = new JenaFactory() ;
         
         // "graph" is a CommonsRDF graph 
-        Graph graph = factory.fromJena(jGraph) ;
+        Graph graph = factory.asGraph(jGraph) ;
         
         
         
