@@ -32,9 +32,9 @@ import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.RDFTermFactory;
 import org.apache.commons.rdf.api.Triple;
-import org.apache.commons.rdf.jena.JenaRDFTermFactory;
-import org.apache.commons.rdf.jsonldjava.JsonLdRDFTermFactory;
-import org.apache.commons.rdf.rdf4j.RDF4JTermFactory;
+import org.apache.commons.rdf.jena.JenaFactory;
+import org.apache.commons.rdf.jsonldjava.JsonLdFactory;
+import org.apache.commons.rdf.rdf4j.RDF4JFactory;
 import org.apache.commons.rdf.simple.SimpleRDFTermFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -60,9 +60,9 @@ public class AllToAllTest {
 	public static Collection<Object[]> data() {
 		List<Class> factories = Arrays.asList(
 						SimpleRDFTermFactory.class,
-						JenaRDFTermFactory.class,
-						RDF4JTermFactory.class,
-						JsonLdRDFTermFactory.class);
+						JenaFactory.class,
+						RDF4JFactory.class,
+						JsonLdFactory.class);
 		Collection<Object[]>  allToAll = new ArrayList<>();
 		for (Class from : factories) {
 			for (Class to : factories) {
