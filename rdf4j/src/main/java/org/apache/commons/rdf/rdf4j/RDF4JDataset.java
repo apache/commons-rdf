@@ -25,13 +25,14 @@ import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFTerm;
+import org.apache.commons.rdf.rdf4j.RDF4JFactory.Option;
 
 
 /**
  * Marker interface for RDF4J implementations of Dataset.
  * 
  * @see RDF4JFactory#createDataset()
- * @see RDF4JFactory#asDataset(org.eclipse.rdf4j.repository.Repository, org.apache.commons.rdf.rdf4j.RDF4JFactory.Option...)
+ * @see RDF4JFactory#asDataset(org.eclipse.rdf4j.repository.Repository, Option...)
  */
 public interface RDF4JDataset extends Dataset, RDF4JGraphLike<Quad> {
 	
