@@ -17,15 +17,27 @@
  */
 package org.apache.commons.rdf.api;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * An <a href= "http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-term" >RDF-1.1
  * Term</a>, as defined by
  * <a href= "http://www.w3.org/TR/rdf11-concepts/" >RDF-1.1 Concepts and
- * Abstract Syntax</a>, a W3C Recommendation published on 25 February 2014.<br>
+ * Abstract Syntax</a>, a W3C Recommendation published on 25 February 2014.
  * <p>
- * Instances of RDFTerm SHOULD be an {@link IRI}, {@link BlankNode} or
- * {@link Literal}.
- * 
+ * A {@link RDFTerm} object in Commons RDF is considered <em>immutable</em>,
+ * that is, over it's life time it will have consistent behaviour for its
+ * {@link #equals(Object)} and {@link #hashCode()}, and objects returned from
+ * its getter methods (e.g. {@link IRI#getIRIString()} and
+ * {@link Literal#getLanguageTag()}) will have consistent
+ * {@link #equals(Object)} behaviour.
+ * <p>
+ * Thus, an {@link RDFTerm} is thread-safe and can be safely used in collections
+ * like {@link List}, {@link Map} or {@link Set}, and a {@link RDFTerm} can be
+ * used interchangeably across Commons RDF implementations.
+ *
  * @see <a href= "http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-term" >RDF-1.1
  *      Term</a>
  */
@@ -40,5 +52,47 @@ public interface RDFTerm {
      *      RDF-1.1 N-Triples Canonical form</a>
      */
     String ntriplesString();
+
+	/**
+	 * Check it this RDFTerm is equal to another RDFTerm.
+	 * <p>
+	 * If this object is an {@link IRI}, equality is checked using
+	 * {@link IRI#equals(Object)}, or if this object is a {@link BlankNode},
+	 * equality is checked using {@link BlankNode#equals(Object)}, or if this
+	 * object is a {@link Literal}, equality is checked using
+	 * {@link Literal#equals(Object)}.
+	 * <p>
+	 * Implementations MUST also override {@link #hashCode()} so that two equal
+	 * Literals produce the same hash code.
+	 *
+	 * @see IRI#equals(Object)
+	 * @see BlankNode#equals(Object)
+	 * @see Literal#equals(Object)
+	 * 
+	 * @param other
+	 *            Another object
+	 * @return true if other is a RDFTerm and is equal to this
+	 */
+    @Override
+    public boolean equals(Object other);
+
+	/**
+	 * Calculate a hash code for this RDFTerm.
+	 * <p>
+	 * As an {@link RDFTerm} is <em>immutable</em>, this method will always
+	 * return the same hashCode over the lifetime of this object.
+	 * <p>
+	 * This method MUST be implemented in conjunction with
+	 * {@link #equals(Object)} so that two equal RDFTerm produce the same hash
+	 * code.
+	 * 
+	 * @see IRI#hashCode()
+	 * @see Literal#hashCode()
+	 * @see BlankNode#hashCode()
+	 *
+	 * @return a hash code value for this RDFTerm.
+	 */
+    @Override
+    public int hashCode();
 
 }

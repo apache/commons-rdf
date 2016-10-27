@@ -17,16 +17,30 @@
  */
 package org.apache.commons.rdf.api;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * A Quad is a statement in a
  * <a href= "http://www.w3.org/TR/rdf11-concepts/#section-dataset" >RDF-1.1
  * Dataset</a>, as defined by
- * <a href= "https://www.w3.org/TR/2014/NOTE-rdf11-datasets-20140225/" >RDF-1.1
+ * <a href= "https://www.w3.org/TR/2014/NOTE-rdf11-datasets-20140225/#quad-semantics" >RDF-1.1
  * Concepts and Abstract Syntax</a>, a W3C Working Group Note published on 25
  * February 2014.
+ * <p>
+ * A {@link Quad} object in Commons RDF is considered <em>immutable</em>, that
+ * is, over it's life time it will have consistent behaviour for its
+ * {@link #equals(Object)} and {@link #hashCode()}, and the instances returned
+ * from {@link #getGraphName()}, {@link #getSubject()}, {@link #getPredicate()}
+ * and {@link #getObject()} will have consistent {@link Object#equals(Object)}
+ * behaviour.
+ * <p>
+ * Thus, a {@link Quad} is thread-safe and can be safely used in collections
+ * like {@link List}, {@link Map} or {@link Set}, and a {@link Quad} can be
+ * used interchangeably across Commons RDF implementations.
  * 
  * @since 0.3.0-incubating
  * @see Dataset

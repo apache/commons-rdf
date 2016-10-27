@@ -17,13 +17,27 @@
  */
 package org.apache.commons.rdf.api;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * An <a href= "http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-triple" >RDF-1.1
  * Triple</a>, as defined by
  * <a href= "http://www.w3.org/TR/rdf11-concepts/" >RDF-1.1 Concepts and
  * Abstract Syntax</a>, a W3C Recommendation published on 25 February 2014.<br>
+ * <p>
+ * A {@link Triple} object in Commons RDF is considered <em>immutable</em>, that
+ * is, over it's life time it will have consistent behaviour for its
+ * {@link #equals(Object)} and {@link #hashCode()}, and the {@link RDFTerm}
+ * instances returned from {@link #getSubject()}, {@link #getPredicate()} and
+ * {@link #getObject()} will have consistent {@link RDFTerm#equals(Object)}
+ * behaviour.
+ * <p>
+ * Thus, a {@link Triple} is thread-safe and can be safely used in collections
+ * like {@link List}, {@link Map} or {@link Set}, and a {@link Triple} can be
+ * used interchangeably across Commons RDF implementations.
  *
  * @see Quad
  * @see RDF#createTriple(BlankNodeOrIRI,IRI,RDFTerm)
