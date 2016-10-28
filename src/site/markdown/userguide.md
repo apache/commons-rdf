@@ -222,7 +222,7 @@ subtypes for interoperability with their underlying RDF framework's API.
 the super-interface for instances that can be used as subject, predicate and
 object of a [Triple](apidocs/org/apache/commons/rdf/api/Triple.html).
 
-The RDF term interfaces are arranged in this ty[e hierarchy:
+The RDF term interfaces are arranged in this type hierarchy:
 
 * [RDFTerm](apidocs/org/apache/commons/rdf/api/RDFTerm.html)
     * [BlankNodeOrIRI](apidocs/org/apache/commons/rdf/api/BlankNodeOrIRI.html)
