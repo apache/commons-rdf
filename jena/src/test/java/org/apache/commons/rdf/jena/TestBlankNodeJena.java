@@ -20,8 +20,8 @@ package org.apache.commons.rdf.jena;
 
 import java.util.UUID;
 
-import org.apache.commons.rdf.api.AbstractBlankNodeTest ;
-import org.apache.commons.rdf.api.BlankNode ;
+import org.apache.commons.rdf.api.AbstractBlankNodeTest;
+import org.apache.commons.rdf.api.BlankNode;
 import org.apache.commons.rdf.jena.impl.InternalJenaFactory;
 
 public class TestBlankNodeJena extends AbstractBlankNodeTest {
@@ -35,12 +35,12 @@ public class TestBlankNodeJena extends AbstractBlankNodeTest {
 
 	@Override
     protected BlankNode getBlankNode() {
-        return internalJenaFactory.createBlankNode(SALT) ;
+        return internalJenaFactory.createBlankNode(SALT);
     }
     
     @Override
     protected BlankNode getBlankNode(String identifier) {
-        return internalJenaFactory.createBlankNode(identifier, SALT) ;
+        return internalJenaFactory.createBlankNode(identifier, SALT);
     }
 }
 

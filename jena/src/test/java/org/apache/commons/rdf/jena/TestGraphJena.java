@@ -18,14 +18,14 @@
 
 package org.apache.commons.rdf.jena;
 
-import org.apache.commons.rdf.api.AbstractGraphTest ;
-import org.apache.commons.rdf.api.RDF ;
+import org.apache.commons.rdf.api.AbstractGraphTest;
+import org.apache.commons.rdf.api.RDF;
 
 public class TestGraphJena extends AbstractGraphTest {
 
     @Override
     public RDF createFactory() {
-        return new JenaRDF() ;
+        return new JenaRDF();
     }
 
 }
