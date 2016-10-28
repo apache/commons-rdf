@@ -111,7 +111,7 @@ public class RDF4JParser extends AbstractRDFParser<RDF4JParser> implements RDFPa
 
 	@Override
 	protected RDF4JParser prepareForParsing() throws IOException, IllegalStateException {
-		RDF4JParser c = prepareForParsing();
+		RDF4JParser c = super.prepareForParsing();
 		// Ensure we have an RDF4J for conversion.
 		// We'll make a new one if user has provided a non-RDF4J factory
 		c.rdf4jTermFactory = (RDF4J) getRdfTermFactory().filter(RDF4J.class::isInstance)

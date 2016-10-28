@@ -58,8 +58,8 @@
         
         
         <!--  NOTE: jsonldjava is also used by rdf4j and jena, check  -->
-        <jsonldjava.version>0.8.2</jsonldjava.version>
-        <rdf4j.version>2.0</rdf4j.version>
+        <jsonldjava.version>0.8.3</jsonldjava.version>
+        <rdf4j.version>2.1</rdf4j.version>
         <jena.version>3.1.0</jena.version>
         <!--  NOTE: dexx and xerces versions should match 
         the versions marked as <optional> in jena-osgi pom

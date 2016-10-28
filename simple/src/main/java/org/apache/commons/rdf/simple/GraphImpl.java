@@ -165,7 +165,7 @@ final class GraphImpl implements Graph {
 
     @Override
     public void remove(Triple triple) {
-        triples.remove(Objects.requireNonNull(triple));
+        triples.remove(internallyMap(triple));
     }
 
     @Override

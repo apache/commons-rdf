@@ -1,5 +1,24 @@
 # Apache Commons RDF (incubating)
 
+## 0.3.0-incubating (2016-11)
+
+This release adds RDF implementations based on Apache Jena, Eclipse RDF4J and
+JSONLD-Java. New interfaces include Dataset and Quad. Note that the 
+interface RDFTermFactory has been deprecated and been replaced by the interface
+RDF. Graph.getTriples() has been deprecated and replaced by 
+Graph.iterate(). This release adds an experimental interface 
+RDFParser, note that this may evolve or be removed in the next release.
+
+* [COMMONSRDF-7] - Document that RDFTerm, Triple and Quad are immutable
+* [COMMONSRDF-33] - Jena integration
+* [COMMONSRDF-34] - Add DatasetImpl using Jena
+* [COMMONSRDF-35] - rdf4j integration
+* [COMMONSRDF-36] - jsonld-java integratoin
+* [COMMONSRDF-37] - Quad and Dataset support
+* [COMMONSRDF-38] - simple Graph.contains(Triple) now maps bnodes consistently
+* [COMMONSRDF-39] - Add RDFParser interface (experimental)
+* [COMMONSRDF-46] - Rename RDFTermFactory to RDF
+
 ## 0.2.0-incubating (2016-04)
 
 This release clarifies .equals() and .hashCode() for RDFTerms so that they can
