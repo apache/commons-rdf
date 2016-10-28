@@ -23,7 +23,30 @@ import java.util.Objects;
  * An <a href= "http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-triple" >RDF-1.1
  * Triple</a>, as defined by
  * <a href= "http://www.w3.org/TR/rdf11-concepts/" >RDF-1.1 Concepts and
- * Abstract Syntax</a>, a W3C Recommendation published on 25 February 2014.<br>
+ * Abstract Syntax</a>, a W3C Recommendation published on 25 February 2014.
+ * <p>
+ * A <code>Triple</code> object in Commons RDF is considered
+ * <strong>immutable</strong>, that is, over its life time it will have
+ * consistent behaviour for its {@link #equals(Object)}, and the {@link RDFTerm}
+ * instances returned from {@link #getSubject()}, {@link #getPredicate()} and
+ * {@link #getObject()} will have consistent {@link RDFTerm#equals(Object)}
+ * behaviour.
+ * <p>
+ * Note that <code>Triple</code> methods are not required to return object
+ * identical (<code>==</code>) instances as long as they are equivalent
+ * according to {@link RDFTerm#equals(Object)}. Specialisations of
+ * <code>Triple</code> may provide additional methods that are documented to be
+ * mutable.
+ * <p>
+ * <code>Triple</code> methods are <strong>thread-safe</strong>, however
+ * specialisations may provide additional methods that are documented to not be
+ * thread-safe.
+ * <p>
+ * <code>Triple</code>s can be safely used in hashing collections like
+ * {@link java.util.HashSet} and {@link java.util.HashMap}.
+ * <p>
+ * Any <code>Triple</code> can be used interchangeably across Commons RDF
+ * implementations.
  *
  * @see Quad
  * @see RDF#createTriple(BlankNodeOrIRI,IRI,RDFTerm)
