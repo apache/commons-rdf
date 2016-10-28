@@ -28,49 +28,48 @@ import org.eclipse.rdf4j.model.Statement;
 import org.eclipse.rdf4j.repository.Repository;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 
-abstract class AbstractRepositoryGraphLike<T extends TripleLike>
-		implements RDF4JGraphLike<T> {
+abstract class AbstractRepositoryGraphLike<T extends TripleLike> implements RDF4JGraphLike<T> {
 
-	protected final Repository repository;
-	protected final boolean includeInferred;
-	protected final boolean handleInitAndShutdown;
-	protected final RDF4J rdf4jTermFactory;
-	protected final UUID salt;
+    protected final Repository repository;
+    protected final boolean includeInferred;
+    protected final boolean handleInitAndShutdown;
+    protected final RDF4J rdf4jTermFactory;
+    protected final UUID salt;
 
-	AbstractRepositoryGraphLike(Repository repository, UUID salt, boolean handleInitAndShutdown, boolean includeInferred) {
-		this.repository = repository;
-		this.salt = salt;
-		this.includeInferred = includeInferred;
-		this.handleInitAndShutdown = handleInitAndShutdown;
-		if (handleInitAndShutdown && !repository.isInitialized()) {
-			repository.initialize();
-		}
-		rdf4jTermFactory = new RDF4J(repository.getValueFactory(), salt);
-	}	
-	
-	@Override
-	public void close() throws Exception {
-		if (handleInitAndShutdown) {
-			repository.shutDown();
-		}
-		// else: repository was initialized outside, so we should not shut it
-		// down
-	}
+    AbstractRepositoryGraphLike(Repository repository, UUID salt, boolean handleInitAndShutdown,
+            boolean includeInferred) {
+        this.repository = repository;
+        this.salt = salt;
+        this.includeInferred = includeInferred;
+        this.handleInitAndShutdown = handleInitAndShutdown;
+        if (handleInitAndShutdown && !repository.isInitialized()) {
+            repository.initialize();
+        }
+        rdf4jTermFactory = new RDF4J(repository.getValueFactory(), salt);
+    }
 
-	
-	protected abstract T asTripleLike(Statement s);
+    @Override
+    public void close() throws Exception {
+        if (handleInitAndShutdown) {
+            repository.shutDown();
+        }
+        // else: repository was initialized outside, so we should not shut it
+        // down
+    }
 
-	protected RepositoryConnection getRepositoryConnection() {
-		return repository.getConnection();
-	}
+    protected abstract T asTripleLike(Statement s);
 
-	public Optional<Repository> asRepository() {
-		return Optional.of(repository);
-	}
+    protected RepositoryConnection getRepositoryConnection() {
+        return repository.getConnection();
+    }
 
-	@Override
-	public Optional<Model> asModel() {
-		return Optional.empty();
-	}
+    public Optional<Repository> asRepository() {
+        return Optional.of(repository);
+    }
+
+    @Override
+    public Optional<Model> asModel() {
+        return Optional.empty();
+    }
 
 }

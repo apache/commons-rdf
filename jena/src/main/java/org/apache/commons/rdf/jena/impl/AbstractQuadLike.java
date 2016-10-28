@@ -32,110 +32,107 @@ import org.apache.jena.graph.Triple;
 import org.apache.jena.sparql.core.Quad;
 
 /**
- * A generalized {@link QuadLike}, backed by a Jena {@link Quad} or {@link Triple}.
+ * A generalized {@link QuadLike}, backed by a Jena {@link Quad} or
+ * {@link Triple}.
  * <p>
  * This class does not implement any particular {@link #equals(Object)} or
- * {@link #hashCode()} but can otherwise be used as a base class for both
- * a {@link JenaTriple} and a {@link JenaQuad}.
+ * {@link #hashCode()} but can otherwise be used as a base class for both a
+ * {@link JenaTriple} and a {@link JenaQuad}.
  * 
  * @see JenaTripleImpl
  * @see JenaQuadImpl
  * @see internalJenaFactory#createGeneralizedTriple(RDFTerm, RDFTerm, RDFTerm)
- * @see internalJenaFactory#createGeneralizedQuad(RDFTerm, RDFTerm, RDFTerm, RDFTerm)
+ * @see internalJenaFactory#createGeneralizedQuad(RDFTerm, RDFTerm, RDFTerm,
+ *      RDFTerm)
  *
  */
-abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm, G extends RDFTerm> implements JenaQuadLike<G> {
+abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm, G extends RDFTerm>
+        implements JenaQuadLike<G> {
 
-	private static InternalJenaFactory internalJenaFactory = new InternalJenaFactory(){};
-	
-	final Optional<G> graphName;
-	final S subject;
-	final P predicate;
-	final O object;
-	org.apache.jena.sparql.core.Quad quad = null;
-	org.apache.jena.graph.Triple triple = null;
-	
-	AbstractQuadLike(S subject, P predicate, O object, Optional<G> graphName) {
-		this.subject = Objects.requireNonNull(subject);
-		this.predicate = Objects.requireNonNull(predicate);
-		this.object = Objects.requireNonNull(object);
-		this.graphName = Objects.requireNonNull(graphName);
-	}
+    private static InternalJenaFactory internalJenaFactory = new InternalJenaFactory() {
+    };
 
-	AbstractQuadLike(S subject, P predicate, O object) {
-		this(subject, predicate, object, Optional.empty());
-	}
-	 
-	@SuppressWarnings("unchecked")
-	AbstractQuadLike(org.apache.jena.sparql.core.Quad quad, UUID salt) {
-		this.quad = Objects.requireNonNull(quad);
-		this.subject = (S) internalJenaFactory.createRDFTerm(quad.getSubject(), salt);
-		this.predicate = (P) internalJenaFactory.createRDFTerm(quad.getPredicate(), salt);
-		this.object = (O)internalJenaFactory.createRDFTerm(quad.getObject(), salt);
-		this.graphName = Optional.of((G) internalJenaFactory.createRDFTerm(quad.getGraph(), salt));		
-	}
+    final Optional<G> graphName;
+    final S subject;
+    final P predicate;
+    final O object;
+    org.apache.jena.sparql.core.Quad quad = null;
+    org.apache.jena.graph.Triple triple = null;
 
-	@SuppressWarnings("unchecked")
-	AbstractQuadLike(org.apache.jena.graph.Triple triple, UUID salt) {
-		this.triple = Objects.requireNonNull(triple);		
-		this.subject = (S) internalJenaFactory.createRDFTerm(triple.getSubject(), salt);
-		this.predicate = (P) internalJenaFactory.createRDFTerm(triple.getPredicate(), salt);
-		this.object = (O)internalJenaFactory.createRDFTerm(triple.getObject(), salt);
-		this.graphName = Optional.empty();
-	}
+    AbstractQuadLike(S subject, P predicate, O object, Optional<G> graphName) {
+        this.subject = Objects.requireNonNull(subject);
+        this.predicate = Objects.requireNonNull(predicate);
+        this.object = Objects.requireNonNull(object);
+        this.graphName = Objects.requireNonNull(graphName);
+    }
 
-	@Override
-	public org.apache.jena.sparql.core.Quad asJenaQuad() {
-		JenaRDF factory = new JenaRDF();
-		if (quad == null) {
-			quad = org.apache.jena.sparql.core.Quad.create(
-					factory.asJenaNode(graphName.orElse(null)),
-					factory.asJenaNode(subject), 
-					factory.asJenaNode(predicate),
-					factory.asJenaNode(object));
-		}
-		return quad;
-	}
+    AbstractQuadLike(S subject, P predicate, O object) {
+        this(subject, predicate, object, Optional.empty());
+    }
 
-	@Override
-	public org.apache.jena.graph.Triple asJenaTriple() {
-		JenaRDF factory = new JenaRDF();
-		if (triple == null) {
-			triple = org.apache.jena.graph.Triple.create(
-				factory.asJenaNode(subject), 
-				factory.asJenaNode(predicate),
-				factory.asJenaNode(object));
-		}
-		return triple;
-	}	
-	
-	@Override
-	public S getSubject() {
-		return subject;
-	}
+    @SuppressWarnings("unchecked")
+    AbstractQuadLike(org.apache.jena.sparql.core.Quad quad, UUID salt) {
+        this.quad = Objects.requireNonNull(quad);
+        this.subject = (S) internalJenaFactory.createRDFTerm(quad.getSubject(), salt);
+        this.predicate = (P) internalJenaFactory.createRDFTerm(quad.getPredicate(), salt);
+        this.object = (O) internalJenaFactory.createRDFTerm(quad.getObject(), salt);
+        this.graphName = Optional.of((G) internalJenaFactory.createRDFTerm(quad.getGraph(), salt));
+    }
 
-	@Override
-	public P getPredicate() {
-		return predicate;
-	}
-	
-	@Override
-	public O getObject() {
-		return object;
-	}
+    @SuppressWarnings("unchecked")
+    AbstractQuadLike(org.apache.jena.graph.Triple triple, UUID salt) {
+        this.triple = Objects.requireNonNull(triple);
+        this.subject = (S) internalJenaFactory.createRDFTerm(triple.getSubject(), salt);
+        this.predicate = (P) internalJenaFactory.createRDFTerm(triple.getPredicate(), salt);
+        this.object = (O) internalJenaFactory.createRDFTerm(triple.getObject(), salt);
+        this.graphName = Optional.empty();
+    }
 
-	@Override
-	public Optional<G> getGraphName() {
-		return graphName;
-	}
+    @Override
+    public org.apache.jena.sparql.core.Quad asJenaQuad() {
+        JenaRDF factory = new JenaRDF();
+        if (quad == null) {
+            quad = org.apache.jena.sparql.core.Quad.create(factory.asJenaNode(graphName.orElse(null)),
+                    factory.asJenaNode(subject), factory.asJenaNode(predicate), factory.asJenaNode(object));
+        }
+        return quad;
+    }
 
-	@Override
-	public String toString() {
-		// kind of nquad syntax
-		return getSubject().ntriplesString() + " " + 
-				getPredicate().ntriplesString() + " "
-				+ getObject().ntriplesString() + " " + 
-				getGraphName().map(RDFTerm::ntriplesString).orElse("") + ".";
-	}
+    @Override
+    public org.apache.jena.graph.Triple asJenaTriple() {
+        JenaRDF factory = new JenaRDF();
+        if (triple == null) {
+            triple = org.apache.jena.graph.Triple.create(factory.asJenaNode(subject), factory.asJenaNode(predicate),
+                    factory.asJenaNode(object));
+        }
+        return triple;
+    }
+
+    @Override
+    public S getSubject() {
+        return subject;
+    }
+
+    @Override
+    public P getPredicate() {
+        return predicate;
+    }
+
+    @Override
+    public O getObject() {
+        return object;
+    }
+
+    @Override
+    public Optional<G> getGraphName() {
+        return graphName;
+    }
+
+    @Override
+    public String toString() {
+        // kind of nquad syntax
+        return getSubject().ntriplesString() + " " + getPredicate().ntriplesString() + " "
+                + getObject().ntriplesString() + " " + getGraphName().map(RDFTerm::ntriplesString).orElse("") + ".";
+    }
 
 }

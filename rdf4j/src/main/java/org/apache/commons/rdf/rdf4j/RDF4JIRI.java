@@ -18,18 +18,17 @@
 package org.apache.commons.rdf.rdf4j;
 
 /**
- * Marker interface for RDF4J implementations of 
- * Commons RDF {@link org.apache.commons.rdf.api.IRI}.
+ * Marker interface for RDF4J implementations of Commons RDF
+ * {@link org.apache.commons.rdf.api.IRI}.
  * <p>
- * The underlying RDF4J {@link org.eclipse.rdf4j.model.IRI} 
- * instance can be retrieved with {@link #asValue()}.
+ * The underlying RDF4J {@link org.eclipse.rdf4j.model.IRI} instance can be
+ * retrieved with {@link #asValue()}.
  * 
  * @see RDF4J#createIRI(String)
  */
-public interface RDF4JIRI 
-	extends RDF4JBlankNodeOrIRI, org.apache.commons.rdf.api.IRI {
-	
-	@Override
-	org.eclipse.rdf4j.model.IRI asValue();
-	
+public interface RDF4JIRI extends RDF4JBlankNodeOrIRI, org.apache.commons.rdf.api.IRI {
+
+    @Override
+    org.eclipse.rdf4j.model.IRI asValue();
+
 }

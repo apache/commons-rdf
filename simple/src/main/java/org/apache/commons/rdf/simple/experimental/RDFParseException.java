@@ -21,30 +21,30 @@ package org.apache.commons.rdf.simple.experimental;
 import org.apache.commons.rdf.experimental.RDFParser;
 
 public class RDFParseException extends Exception {
-	private static final long serialVersionUID = 5427752643780702976L;
-	private RDFParser builder;
+    private static final long serialVersionUID = 5427752643780702976L;
+    private RDFParser builder;
 
-	public RDFParseException(RDFParser builder) {
-		super();
-		this.builder = builder;
-	}
+    public RDFParseException(RDFParser builder) {
+        super();
+        this.builder = builder;
+    }
 
-	public RDFParseException(RDFParser builder, String message, Throwable cause) {
-		super(message, cause);
-		this.builder = builder;
-	}
+    public RDFParseException(RDFParser builder, String message, Throwable cause) {
+        super(message, cause);
+        this.builder = builder;
+    }
 
-	public RDFParseException(RDFParser builder, String message) {
-		super(message);
-		this.builder = builder;
-	}
+    public RDFParseException(RDFParser builder, String message) {
+        super(message);
+        this.builder = builder;
+    }
 
-	public RDFParseException(RDFParser builder, Throwable cause) {
-		super(cause);
-		this.builder = builder;
-	}
+    public RDFParseException(RDFParser builder, Throwable cause) {
+        super(cause);
+        this.builder = builder;
+    }
 
-	public RDFParser getRDFParserBuilder() {
-		return builder;
-	}
+    public RDFParser getRDFParserBuilder() {
+        return builder;
+    }
 }

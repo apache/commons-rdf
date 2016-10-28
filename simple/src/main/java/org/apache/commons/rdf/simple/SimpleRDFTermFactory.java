@@ -34,37 +34,37 @@ import org.apache.commons.rdf.api.Triple;
 @Deprecated
 public class SimpleRDFTermFactory implements RDFTermFactory {
 
-	private SimpleRDF factory = new SimpleRDF();
+    private SimpleRDF factory = new SimpleRDF();
 
-	public BlankNode createBlankNode() {
-		return factory.createBlankNode();
-	}
+    public BlankNode createBlankNode() {
+        return factory.createBlankNode();
+    }
 
-	public BlankNode createBlankNode(String name) {
-		return factory.createBlankNode(name);
-	}
+    public BlankNode createBlankNode(String name) {
+        return factory.createBlankNode(name);
+    }
 
-	public Graph createGraph() {
-		return factory.createGraph();
-	}
+    public Graph createGraph() {
+        return factory.createGraph();
+    }
 
-	public IRI createIRI(String iri) {
-		return factory.createIRI(iri);
-	}
+    public IRI createIRI(String iri) {
+        return factory.createIRI(iri);
+    }
 
-	public Literal createLiteral(String literal) {
-		return factory.createLiteral(literal);
-	}
+    public Literal createLiteral(String literal) {
+        return factory.createLiteral(literal);
+    }
 
-	public Literal createLiteral(String literal, IRI dataType) {
-		return factory.createLiteral(literal, dataType);
-	}
+    public Literal createLiteral(String literal, IRI dataType) {
+        return factory.createLiteral(literal, dataType);
+    }
 
-	public Literal createLiteral(String literal, String language) {
-		return factory.createLiteral(literal, language);
-	}
+    public Literal createLiteral(String literal, String language) {
+        return factory.createLiteral(literal, language);
+    }
 
-	public Triple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		return factory.createTriple(subject, predicate, object);
-	} 
+    public Triple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+        return factory.createTriple(subject, predicate, object);
+    }
 }

@@ -17,10 +17,10 @@
   "pred3": 1337,
   "pred4": { "@id": "http://example.com/graph",
              "@graph": [
-             	{ "@id": "http://example.com/test",
-             	  "pred1": "Other value",
-             	  "pred2": "http://example.com/graph"
-             	}               
+                 { "@id": "http://example.com/test",
+                   "pred1": "Other value",
+                   "pred2": "http://example.com/graph"
+                 }               
              ]
            }
 }

@@ -25,50 +25,50 @@ import org.apache.commons.rdf.api.RDFTerm;
 import com.github.jsonldjava.core.RDFDataset.Quad;
 
 public interface JsonLdQuadLike<G extends RDFTerm> extends QuadLike<G>, JsonLdTripleLike {
-	
-}
-	
-	class JsonLdQuadLikeImpl<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm, G extends RDFTerm> implements JsonLdQuadLike<G> {
-		
-		// Note: We always pass the blankNodePrefix and don't rely on the internal
-		// blankNodePrefix in this static factory
-		private static JsonLdRDF rdfTermFactory = new JsonLdRDF();
-		
-		private final Quad quad;
-		private String blankNodePrefix;
-		
-		JsonLdQuadLikeImpl(Quad jsonldQuad, String blankNodePrefix) {
-			this.quad = jsonldQuad;
-			this.blankNodePrefix = blankNodePrefix;			
-		}
-	
-		@SuppressWarnings("unchecked")	
-		@Override
-		public Optional<G> getGraphName() {
-			G g = (G) rdfTermFactory.asRDFTerm(quad.getGraph(), blankNodePrefix);
-			return Optional.ofNullable(g);
-		}
-		
-		@SuppressWarnings("unchecked")
-		@Override
-		public S getSubject() {
-			return (S) rdfTermFactory.asRDFTerm(quad.getSubject(), blankNodePrefix);
-		}
-	
-		@SuppressWarnings("unchecked")
-		@Override
-		public P getPredicate() {
-			return (P) rdfTermFactory.asRDFTerm(quad.getPredicate(), blankNodePrefix);
-		}
-	
-		@SuppressWarnings("unchecked")
-		@Override
-		public O getObject() {
-			return (O) rdfTermFactory.asRDFTerm(quad.getObject(), blankNodePrefix);
-		}
-	
-		public Quad asJsonLdQuad() {
-			return quad;
-		}
-	}
 
+}
+
+class JsonLdQuadLikeImpl<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm, G extends RDFTerm>
+        implements JsonLdQuadLike<G> {
+
+    // Note: We always pass the blankNodePrefix and don't rely on the internal
+    // blankNodePrefix in this static factory
+    private static JsonLdRDF rdfTermFactory = new JsonLdRDF();
+
+    private final Quad quad;
+    private String blankNodePrefix;
+
+    JsonLdQuadLikeImpl(Quad jsonldQuad, String blankNodePrefix) {
+        this.quad = jsonldQuad;
+        this.blankNodePrefix = blankNodePrefix;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public Optional<G> getGraphName() {
+        G g = (G) rdfTermFactory.asRDFTerm(quad.getGraph(), blankNodePrefix);
+        return Optional.ofNullable(g);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public S getSubject() {
+        return (S) rdfTermFactory.asRDFTerm(quad.getSubject(), blankNodePrefix);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public P getPredicate() {
+        return (P) rdfTermFactory.asRDFTerm(quad.getPredicate(), blankNodePrefix);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public O getObject() {
+        return (O) rdfTermFactory.asRDFTerm(quad.getObject(), blankNodePrefix);
+    }
+
+    public Quad asJsonLdQuad() {
+        return quad;
+    }
+}

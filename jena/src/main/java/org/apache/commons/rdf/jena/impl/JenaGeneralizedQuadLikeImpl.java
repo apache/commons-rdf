@@ -25,15 +25,14 @@ import org.apache.commons.rdf.jena.JenaGeneralizedQuadLike;
 import org.apache.jena.sparql.core.Quad;
 
 class JenaGeneralizedQuadLikeImpl extends AbstractQuadLike<RDFTerm, RDFTerm, RDFTerm, RDFTerm>
-	implements JenaGeneralizedQuadLike {
+        implements JenaGeneralizedQuadLike {
 
-	JenaGeneralizedQuadLikeImpl(RDFTerm subject, RDFTerm predicate, RDFTerm object,
-			Optional<RDFTerm> ofNullable) {
-		super(subject, predicate, object, ofNullable);
-	}
+    JenaGeneralizedQuadLikeImpl(RDFTerm subject, RDFTerm predicate, RDFTerm object, Optional<RDFTerm> ofNullable) {
+        super(subject, predicate, object, ofNullable);
+    }
 
-	JenaGeneralizedQuadLikeImpl(Quad quad, UUID salt) {
-		super(quad, salt);
-	}
+    JenaGeneralizedQuadLikeImpl(Quad quad, UUID salt) {
+        super(quad, salt);
+    }
 
 }

@@ -29,13 +29,12 @@ import org.junit.Test;
 public class TypesTest {
 
     /**
-     * Test method for {@link org.apache.commons.rdf.simple.Types#getIRIString()}
-     * .
+     * Test method for
+     * {@link org.apache.commons.rdf.simple.Types#getIRIString()} .
      */
     @Test
     public final void testGetIRIString() {
-        assertEquals("http://www.w3.org/1999/02/22-rdf-syntax-ns#langString",
-                Types.RDF_LANGSTRING.getIRIString());
+        assertEquals("http://www.w3.org/1999/02/22-rdf-syntax-ns#langString", Types.RDF_LANGSTRING.getIRIString());
     }
 
     /**
@@ -44,8 +43,7 @@ public class TypesTest {
      */
     @Test
     public final void testNtriplesString() {
-        assertEquals("<http://www.w3.org/1999/02/22-rdf-syntax-ns#langString>",
-                Types.RDF_LANGSTRING.ntriplesString());
+        assertEquals("<http://www.w3.org/1999/02/22-rdf-syntax-ns#langString>", Types.RDF_LANGSTRING.ntriplesString());
     }
 
     /**
@@ -55,17 +53,10 @@ public class TypesTest {
      */
     @Test
     public final void testGet() {
-        assertTrue(Types.get(
-                new IRIImpl("http://www.w3.org/2001/XMLSchema#boolean"))
-                .isPresent());
-        assertEquals(
-                "http://www.w3.org/2001/XMLSchema#boolean",
-                Types.get(
-                        new IRIImpl("http://www.w3.org/2001/XMLSchema#boolean"))
-                        .get().getIRIString());
-        assertFalse(Types.get(
-                new IRIImpl("http://www.w3.org/2001/XMLSchema#nonExistent"))
-                .isPresent());
+        assertTrue(Types.get(new IRIImpl("http://www.w3.org/2001/XMLSchema#boolean")).isPresent());
+        assertEquals("http://www.w3.org/2001/XMLSchema#boolean",
+                Types.get(new IRIImpl("http://www.w3.org/2001/XMLSchema#boolean")).get().getIRIString());
+        assertFalse(Types.get(new IRIImpl("http://www.w3.org/2001/XMLSchema#nonExistent")).isPresent());
     }
 
 }

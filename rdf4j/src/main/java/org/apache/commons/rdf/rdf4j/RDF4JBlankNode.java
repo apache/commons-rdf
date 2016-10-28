@@ -21,17 +21,17 @@ import org.apache.commons.rdf.api.BlankNode;
 import org.eclipse.rdf4j.model.BNode;
 
 /**
- * Marker interface for RDF4J implementations of 
- * Commons RDF {@link org.apache.commons.rdf.api.BlankNode}.
+ * Marker interface for RDF4J implementations of Commons RDF
+ * {@link org.apache.commons.rdf.api.BlankNode}.
  * <p>
- * The underlying RDF4J {@link BNode} instance can 
- * be retrieved with {@link #asValue()}.
+ * The underlying RDF4J {@link BNode} instance can be retrieved with
+ * {@link #asValue()}.
  * 
- * @see RDF4J#createBlankNode() 
+ * @see RDF4J#createBlankNode()
  */
 public interface RDF4JBlankNode extends RDF4JBlankNodeOrIRI, BlankNode {
-	
-	@Override
-	public BNode asValue();
-	
+
+    @Override
+    public BNode asValue();
+
 }

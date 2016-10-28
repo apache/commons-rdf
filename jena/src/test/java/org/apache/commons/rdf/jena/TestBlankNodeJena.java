@@ -26,21 +26,21 @@ import org.apache.commons.rdf.jena.impl.InternalJenaFactory;
 
 public class TestBlankNodeJena extends AbstractBlankNodeTest {
 
-	InternalJenaFactory internalJenaFactory = new InternalJenaFactory(){};
-	
-	/** 
-	 * Fixed salt for the purpose of this test.
-	 */
+    InternalJenaFactory internalJenaFactory = new InternalJenaFactory() {
+    };
+
+    /**
+     * Fixed salt for the purpose of this test.
+     */
     private static final UUID SALT = UUID.fromString("ccfde817-55b8-4a5f-bc2d-6bfd8eaa41ce");
 
-	@Override
+    @Override
     protected BlankNode getBlankNode() {
         return internalJenaFactory.createBlankNode(SALT);
     }
-    
+
     @Override
     protected BlankNode getBlankNode(String identifier) {
         return internalJenaFactory.createBlankNode(identifier, SALT);
     }
 }
-

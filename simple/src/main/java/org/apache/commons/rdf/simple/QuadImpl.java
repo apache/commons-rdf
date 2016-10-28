@@ -31,7 +31,7 @@ import java.util.Optional;
  */
 final class QuadImpl implements Quad {
 
-	private final BlankNodeOrIRI graphName;
+    private final BlankNodeOrIRI graphName;
     private final BlankNodeOrIRI subject;
     private final IRI predicate;
     private final RDFTerm object;
@@ -42,13 +42,17 @@ final class QuadImpl implements Quad {
      * The objects are not changed. All mapping of BNode objects is done in
      * {@link SimpleRDF#createQuad(BlankNodeOrIRI, BlankNodeOrIRI, IRI, RDFTerm)}.
      *
-     * @param graphName  graphName of triple
-     * @param subject   subject of triple
-     * @param predicate predicate of triple
-     * @param object    object of triple
+     * @param graphName
+     *            graphName of triple
+     * @param subject
+     *            subject of triple
+     * @param predicate
+     *            predicate of triple
+     * @param object
+     *            object of triple
      */
     public QuadImpl(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-    	this.graphName = graphName; // possibly null
+        this.graphName = graphName; // possibly null
         this.subject = Objects.requireNonNull(subject);
         this.predicate = Objects.requireNonNull(predicate);
         this.object = Objects.requireNonNull(object);
@@ -56,9 +60,9 @@ final class QuadImpl implements Quad {
 
     @Override
     public Optional<BlankNodeOrIRI> getGraphName() {
-    	return Optional.ofNullable(graphName);
+        return Optional.ofNullable(graphName);
     }
-    
+
     @Override
     public BlankNodeOrIRI getSubject() {
         return subject;
@@ -75,13 +79,10 @@ final class QuadImpl implements Quad {
     }
 
     @Override
-    public String toString() {    	
-        return 
-			getSubject().ntriplesString() + " "
-	        + getPredicate().ntriplesString() + " "
-	        + getObject().ntriplesString() + " " 
-	        + getGraphName().map(g -> g.ntriplesString() + " ").orElse("")
-	        + ".";    	
+    public String toString() {
+        return getSubject().ntriplesString() + " " + getPredicate().ntriplesString() + " "
+                + getObject().ntriplesString() + " " + getGraphName().map(g -> g.ntriplesString() + " ").orElse("")
+                + ".";
     }
 
     @Override
@@ -95,15 +96,13 @@ final class QuadImpl implements Quad {
             return false;
         }
         Quad other = (Quad) obj;
-        return getGraphName().equals(other.getGraphName()) 
-        		&& getSubject().equals(other.getSubject())
-                && getPredicate().equals(other.getPredicate())
-                && getObject().equals(other.getObject());
+        return getGraphName().equals(other.getGraphName()) && getSubject().equals(other.getSubject())
+                && getPredicate().equals(other.getPredicate()) && getObject().equals(other.getObject());
     }
-    
+
     @Override
     public Triple asTriple() {
-    	return new TripleImpl(getSubject(), getPredicate(), getObject());
+        return new TripleImpl(getSubject(), getPredicate(), getObject());
     }
 
 }

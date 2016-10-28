@@ -28,21 +28,21 @@ package org.apache.commons.rdf.jena;
  */
 
 public class ConversionException extends RuntimeException {
-	private static final long serialVersionUID = -898179977312382568L;
+    private static final long serialVersionUID = -898179977312382568L;
 
-	public ConversionException() {
-		super();
-	}
+    public ConversionException() {
+        super();
+    }
 
-	public ConversionException(String message) {
-		super(message);
-	}
+    public ConversionException(String message) {
+        super(message);
+    }
 
-	public ConversionException(Throwable cause) {
-		super(cause);
-	}
+    public ConversionException(Throwable cause) {
+        super(cause);
+    }
 
-	public ConversionException(String message, Throwable cause) {
-		super(message, cause);
-	}
+    public ConversionException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

@@ -39,9 +39,12 @@ final class TripleImpl implements Triple {
      * The objects are not changed. All mapping of BNode objects is done in
      * {@link SimpleRDF#createTriple(BlankNodeOrIRI, IRI, RDFTerm)}.
      *
-     * @param subject   subject of triple
-     * @param predicate predicate of triple
-     * @param object    object of triple
+     * @param subject
+     *            subject of triple
+     * @param predicate
+     *            predicate of triple
+     * @param object
+     *            object of triple
      */
     public TripleImpl(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
         this.subject = Objects.requireNonNull(subject);
@@ -66,8 +69,7 @@ final class TripleImpl implements Triple {
 
     @Override
     public String toString() {
-        return getSubject().ntriplesString() + " "
-                + getPredicate().ntriplesString() + " "
+        return getSubject().ntriplesString() + " " + getPredicate().ntriplesString() + " "
                 + getObject().ntriplesString() + " .";
     }
 
@@ -82,8 +84,7 @@ final class TripleImpl implements Triple {
             return false;
         }
         Triple other = (Triple) obj;
-        return getSubject().equals(other.getSubject())
-                && getPredicate().equals(other.getPredicate())
+        return getSubject().equals(other.getSubject()) && getPredicate().equals(other.getPredicate())
                 && getObject().equals(other.getObject());
     }
 

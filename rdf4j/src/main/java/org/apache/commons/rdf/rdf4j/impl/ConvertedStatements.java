@@ -29,43 +29,43 @@ import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryResult;
 
 final class ConvertedStatements<T> implements ClosableIterable<T> {
-	
-	private RepositoryConnection conn;
-	private RepositoryResult<Statement> results;
-	private Function<Statement, T> statementAdapter;
 
-	ConvertedStatements(Supplier<RepositoryConnection> repositoryConnector, Function<Statement, T> statementAdapter,
-			Resource subj, org.eclipse.rdf4j.model.IRI pred, Value obj, Resource... contexts) {
-		this.statementAdapter = statementAdapter;
-		this.conn = repositoryConnector.get();
-		this.results = conn.getStatements(subj, pred, obj, contexts);
-	}
+    private RepositoryConnection conn;
+    private RepositoryResult<Statement> results;
+    private Function<Statement, T> statementAdapter;
 
-	@Override
-	public Iterator<T> iterator() {
-		return new ConvertedIterator();
-	}
+    ConvertedStatements(Supplier<RepositoryConnection> repositoryConnector, Function<Statement, T> statementAdapter,
+            Resource subj, org.eclipse.rdf4j.model.IRI pred, Value obj, Resource... contexts) {
+        this.statementAdapter = statementAdapter;
+        this.conn = repositoryConnector.get();
+        this.results = conn.getStatements(subj, pred, obj, contexts);
+    }
 
-	@Override
-	public void close() {
-		results.close();
-		conn.close();
-	}
+    @Override
+    public Iterator<T> iterator() {
+        return new ConvertedIterator();
+    }
 
-	private final class ConvertedIterator implements Iterator<T> {
-		@Override
-		public boolean hasNext() {
-			boolean hasNext = results.hasNext();
-			if (!hasNext) {
-				close();
-			}
-			return hasNext;
-		}
+    @Override
+    public void close() {
+        results.close();
+        conn.close();
+    }
 
-		@Override
-		public T next() {
-			return statementAdapter.apply(results.next());
-		}
-	}
+    private final class ConvertedIterator implements Iterator<T> {
+        @Override
+        public boolean hasNext() {
+            boolean hasNext = results.hasNext();
+            if (!hasNext) {
+                close();
+            }
+            return hasNext;
+        }
+
+        @Override
+        public T next() {
+            return statementAdapter.apply(results.next());
+        }
+    }
 
 }

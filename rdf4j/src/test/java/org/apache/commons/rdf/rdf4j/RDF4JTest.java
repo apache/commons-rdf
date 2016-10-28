@@ -23,15 +23,15 @@ import org.junit.Assume;
 
 public class RDF4JTest extends AbstractRDFTest {
 
-	@Override
-	public RDF createFactory() {
-		return new RDF4J();
-	}
-	
-	@Override
-	public void testInvalidLiteralLang() throws Exception {
-		Assume.assumeTrue("RDF4J doesn't check Lang strings",false);
-		super.testInvalidLiteralLang();
-	}
-	
+    @Override
+    public RDF createFactory() {
+        return new RDF4J();
+    }
+
+    @Override
+    public void testInvalidLiteralLang() throws Exception {
+        Assume.assumeTrue("RDF4J doesn't check Lang strings", false);
+        super.testInvalidLiteralLang();
+    }
+
 }

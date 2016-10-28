@@ -36,28 +36,28 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class TestRDFParserBuilder {
-	
-	private Path turtleFile;
 
-	@Before
-	public void preparePath() throws IOException {
-		turtleFile = Files.createTempFile("commonsrdf", "test.ttl");
-		Files.copy(getClass().getResourceAsStream("/D.ttl"), turtleFile, StandardCopyOption.REPLACE_EXISTING);
-	}
+    private Path turtleFile;
 
-	@After
-	public void deletePath() throws IOException {
-		if (turtleFile != null) {
-			Files.deleteIfExists(turtleFile);
-		}
-	}
+    @Before
+    public void preparePath() throws IOException {
+        turtleFile = Files.createTempFile("commonsrdf", "test.ttl");
+        Files.copy(getClass().getResourceAsStream("/D.ttl"), turtleFile, StandardCopyOption.REPLACE_EXISTING);
+    }
 
-	@Test
-	public void parseTurtle() throws Exception {
-		Graph g = new JenaRDF().createGraph();
-		Future<ParseResult> gFuture = new JenaRDFParser().contentType(RDFSyntax.TURTLE).source(turtleFile)
-				.target(g).parse();
-		gFuture.get(5, TimeUnit.SECONDS);
-		assertEquals(3, g.size());
-	}
+    @After
+    public void deletePath() throws IOException {
+        if (turtleFile != null) {
+            Files.deleteIfExists(turtleFile);
+        }
+    }
+
+    @Test
+    public void parseTurtle() throws Exception {
+        Graph g = new JenaRDF().createGraph();
+        Future<ParseResult> gFuture = new JenaRDFParser().contentType(RDFSyntax.TURTLE).source(turtleFile).target(g)
+                .parse();
+        gFuture.get(5, TimeUnit.SECONDS);
+        assertEquals(3, g.size());
+    }
 }

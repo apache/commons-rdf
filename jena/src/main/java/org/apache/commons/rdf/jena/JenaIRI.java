@@ -23,7 +23,7 @@ import org.apache.jena.graph.Node;
 /**
  * A Jena-backed {@link IRI}.
  * <p>
- * The underlying Jena {@link Node} can be accessed from {@link #asJenaNode()}. 
+ * The underlying Jena {@link Node} can be accessed from {@link #asJenaNode()}.
  * 
  * @see Node#isURI()
  */

@@ -26,16 +26,16 @@ import com.github.jsonldjava.core.RDFDataset;
 
 public class JsonLdBlankNodeTest extends AbstractBlankNodeTest {
 
-	String fixedPrefix = "urn:uuid:d028ca89-8b2f-4e18-90a0-8959f955038d#";
-	
-	@Override
-	protected BlankNode getBlankNode() {
-		return getBlankNode(UUID.randomUUID().toString());
-	}
+    String fixedPrefix = "urn:uuid:d028ca89-8b2f-4e18-90a0-8959f955038d#";
 
-	@Override
-	protected BlankNode getBlankNode(String identifier) {
-		return new JsonLdBlankNodeImpl(new RDFDataset.BlankNode("_:" + identifier), fixedPrefix);
-	}
+    @Override
+    protected BlankNode getBlankNode() {
+        return getBlankNode(UUID.randomUUID().toString());
+    }
+
+    @Override
+    protected BlankNode getBlankNode(String identifier) {
+        return new JsonLdBlankNodeImpl(new RDFDataset.BlankNode("_:" + identifier), fixedPrefix);
+    }
 
 }

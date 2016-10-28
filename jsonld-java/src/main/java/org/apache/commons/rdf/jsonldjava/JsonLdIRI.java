@@ -25,40 +25,40 @@ import com.github.jsonldjava.core.RDFDataset.Node;
 public interface JsonLdIRI extends JsonLdTerm, IRI {
 }
 
-	final class JsonLdIRIImpl extends JsonLdTermImpl implements JsonLdIRI {
-	
-		JsonLdIRIImpl(Node node) {
-			super(node);
-			if (! node.isIRI()) {
-				throw new IllegalArgumentException("Node is not an IRI:" + node);
-			}
-		}
-	
-		JsonLdIRIImpl(String iri) {
-			super(new RDFDataset.IRI(iri));
-		}
-	
-		@Override
-		public String ntriplesString() {
-			return "<" + node.getValue() + ">";
-		}
-	
-		@Override
-		public String getIRIString() {
-			return node.getValue();
-		}
-	
-		@Override
-		public int hashCode() {
-			return node.getValue().hashCode();
-		}
-	
-		@Override
-		public boolean equals(Object obj) {
-			if (! (obj instanceof IRI)) {
-				return false;
-			} 
-			IRI other = (IRI) obj;
-			return node.getValue().equals(other.getIRIString());
-		}
-	}
+final class JsonLdIRIImpl extends JsonLdTermImpl implements JsonLdIRI {
+
+    JsonLdIRIImpl(Node node) {
+        super(node);
+        if (!node.isIRI()) {
+            throw new IllegalArgumentException("Node is not an IRI:" + node);
+        }
+    }
+
+    JsonLdIRIImpl(String iri) {
+        super(new RDFDataset.IRI(iri));
+    }
+
+    @Override
+    public String ntriplesString() {
+        return "<" + node.getValue() + ">";
+    }
+
+    @Override
+    public String getIRIString() {
+        return node.getValue();
+    }
+
+    @Override
+    public int hashCode() {
+        return node.getValue().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof IRI)) {
+            return false;
+        }
+        IRI other = (IRI) obj;
+        return node.getValue().equals(other.getIRIString());
+    }
+}

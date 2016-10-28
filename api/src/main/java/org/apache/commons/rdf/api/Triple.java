@@ -21,14 +21,14 @@ import java.util.Objects;
 
 /**
  * An <a href= "http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-triple" >RDF-1.1
- * Triple</a>, as defined by <a href= "http://www.w3.org/TR/rdf11-concepts/"
- * >RDF-1.1 Concepts and Abstract Syntax</a>, a W3C Recommendation published on
- * 25 February 2014.<br>
+ * Triple</a>, as defined by
+ * <a href= "http://www.w3.org/TR/rdf11-concepts/" >RDF-1.1 Concepts and
+ * Abstract Syntax</a>, a W3C Recommendation published on 25 February 2014.<br>
  *
- * @see Quad 
+ * @see Quad
  * @see RDF#createTriple(BlankNodeOrIRI,IRI,RDFTerm)
  * @see <a href= "http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-triple" >RDF-1.1
- * Triple</a>
+ *      Triple</a>
  */
 public interface Triple extends TripleLike {
 
@@ -39,7 +39,7 @@ public interface Triple extends TripleLike {
      *
      * @return The subject {@link BlankNodeOrIRI} of this triple.
      * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-subject">RDF-1.1
-     * Triple subject</a>
+     *      Triple subject</a>
      */
     BlankNodeOrIRI getSubject();
 
@@ -48,7 +48,7 @@ public interface Triple extends TripleLike {
      *
      * @return The predicate {@link IRI} of this triple.
      * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-predicate">RDF-1.1
-     * Triple predicate</a>
+     *      Triple predicate</a>
      */
     IRI getPredicate();
 
@@ -59,7 +59,7 @@ public interface Triple extends TripleLike {
      *
      * @return The object {@link RDFTerm} of this triple.
      * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-object">RDF-1.1
-     * Triple object</a>
+     *      Triple object</a>
      */
     RDFTerm getObject();
 
@@ -74,7 +74,8 @@ public interface Triple extends TripleLike {
      * Triples produce the same hash code.
      * </p>
      *
-     * @param other Another object
+     * @param other
+     *            Another object
      * @return true if other is a Triple and is equal to this
      * @see Object#equals(Object)
      */
@@ -84,13 +85,13 @@ public interface Triple extends TripleLike {
     /**
      * Calculate a hash code for this Triple.
      * <p>
-     * The returned hash code MUST be equal to the result
-     * of {@link Objects#hash(Object...)} with
-     * the arguments
-     * {@link #getSubject()}, {@link #getPredicate()}, {@link #getObject()}.
+     * The returned hash code MUST be equal to the result of
+     * {@link Objects#hash(Object...)} with the arguments {@link #getSubject()},
+     * {@link #getPredicate()}, {@link #getObject()}.
      * <p>
-     * This method MUST be implemented in conjunction with {@link #equals(Object)}
-     * so that two equal {@link Triple}s produce the same hash code.
+     * This method MUST be implemented in conjunction with
+     * {@link #equals(Object)} so that two equal {@link Triple}s produce the
+     * same hash code.
      *
      * @return a hash code value for this Triple.
      * @see Object#hashCode()

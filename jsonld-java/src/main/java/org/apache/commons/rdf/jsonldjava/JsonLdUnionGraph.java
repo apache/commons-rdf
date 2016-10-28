@@ -34,85 +34,80 @@ import com.github.jsonldjava.core.RDFDataset;
  * A union graph contains all the triples of the dataset, irregardless of their
  * graph names.
  * <p>
- * {@link #add(Triple)} and {@link #add(BlankNodeOrIRI, IRI, RDFTerm)} 
- * will add the triple to the default graph
- * (e.g. <code>@default</code> in JSON-LD), while
- * the remaining methods (including
- * {@link #remove(Triple)} or {@link #remove(BlankNodeOrIRI, IRI, RDFTerm)}) 
- * relate to triples from <strong>all</strong> graphs.
+ * {@link #add(Triple)} and {@link #add(BlankNodeOrIRI, IRI, RDFTerm)} will add
+ * the triple to the default graph (e.g. <code>@default</code> in JSON-LD),
+ * while the remaining methods (including {@link #remove(Triple)} or
+ * {@link #remove(BlankNodeOrIRI, IRI, RDFTerm)}) relate to triples from
+ * <strong>all</strong> graphs.
  * <p>
- * <strong>Note:</strong>
- * Some operations like {@link #stream()} and {@link #size()} are
- * inefficient as they skip any duplicate triples from multiple
- * graphs.
+ * <strong>Note:</strong> Some operations like {@link #stream()} and
+ * {@link #size()} are inefficient as they skip any duplicate triples from
+ * multiple graphs.
  */
 public interface JsonLdUnionGraph extends JsonLdGraphLike<org.apache.commons.rdf.api.Triple>, Graph {
 }
 
-class JsonLdUnionGraphImpl extends AbstractJsonLdGraphLike<org.apache.commons.rdf.api.Triple> implements JsonLdUnionGraph {
+class JsonLdUnionGraphImpl extends AbstractJsonLdGraphLike<org.apache.commons.rdf.api.Triple>
+        implements JsonLdUnionGraph {
 
-	JsonLdUnionGraphImpl(String bnodePrefix) {
-		super(bnodePrefix);
-	}
-	
-	JsonLdUnionGraphImpl(RDFDataset rdfDataSet) {
-		super(rdfDataSet);
-	}
-	
-	JsonLdUnionGraphImpl(RDFDataset rdfDataSet, String bnodePrefix) {
-		super(rdfDataSet, bnodePrefix);
-	}
+    JsonLdUnionGraphImpl(String bnodePrefix) {
+        super(bnodePrefix);
+    }
 
+    JsonLdUnionGraphImpl(RDFDataset rdfDataSet) {
+        super(rdfDataSet);
+    }
 
-	@Override
-	public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		super.add(null, subject, predicate, object);
-	}
+    JsonLdUnionGraphImpl(RDFDataset rdfDataSet, String bnodePrefix) {
+        super(rdfDataSet, bnodePrefix);
+    }
 
-	@Override
-	public boolean contains(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		return super.contains(null, subject, predicate, object);
-	}
-	
-	@Override
-	public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		super.remove(null, subject, predicate, object);
-	}
+    @Override
+    public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+        super.add(null, subject, predicate, object);
+    }
 
-	@Override
-	public void remove(Triple t) {
-		// Remove from ALL graphs, not just default graph
-		super.remove(null, t.getSubject(), t.getPredicate(), t.getObject());
-	}
-	
-	@Override
-	public Stream<JsonLdTriple> stream(BlankNodeOrIRI subject, IRI predicate,
-			RDFTerm object) {				
-		return filteredGraphs(null)
-				.flatMap(List::stream)
-				.filter(quadFilter(subject, predicate, object))
-				.map(factory::asTriple)
-				// Make sure we don't have duplicate triples
-				// NOTE: This can be quite inefficient
-				.distinct();
-	}
-	
-	@Override
-	public Stream<? extends Triple> stream() {		
-		// NOTE: inefficient as we have to remove duplicate triples 
-		// in different graphs :-(
-		return super.stream().distinct();
-	}
+    @Override
+    public boolean contains(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+        return super.contains(null, subject, predicate, object);
+    }
 
-	@Override
-	JsonLdTriple asTripleOrQuad(com.github.jsonldjava.core.RDFDataset.Quad jsonldQuad) {
-		return factory.asTriple(jsonldQuad);
-	}
-	
-	@Override
-	public long size() {
-		// Note: Our specialized stream() already removes duplicates using .distinct()
-		return stream().count();
-	}
+    @Override
+    public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+        super.remove(null, subject, predicate, object);
+    }
+
+    @Override
+    public void remove(Triple t) {
+        // Remove from ALL graphs, not just default graph
+        super.remove(null, t.getSubject(), t.getPredicate(), t.getObject());
+    }
+
+    @Override
+    public Stream<JsonLdTriple> stream(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+        return filteredGraphs(null).flatMap(List::stream).filter(quadFilter(subject, predicate, object))
+                .map(factory::asTriple)
+                // Make sure we don't have duplicate triples
+                // NOTE: This can be quite inefficient
+                .distinct();
+    }
+
+    @Override
+    public Stream<? extends Triple> stream() {
+        // NOTE: inefficient as we have to remove duplicate triples
+        // in different graphs :-(
+        return super.stream().distinct();
+    }
+
+    @Override
+    JsonLdTriple asTripleOrQuad(com.github.jsonldjava.core.RDFDataset.Quad jsonldQuad) {
+        return factory.asTriple(jsonldQuad);
+    }
+
+    @Override
+    public long size() {
+        // Note: Our specialized stream() already removes duplicates using
+        // .distinct()
+        return stream().count();
+    }
 }
-

@@ -40,69 +40,67 @@ import org.apache.jena.riot.system.StreamRDFLib;
 
 public class JenaRDFParser extends AbstractRDFParser<JenaRDFParser> implements RDFParser {
 
-	private Consumer<TripleLike> generalizedConsumerTriple;
-	private Consumer<QuadLike<RDFTerm>> generalizedConsumerQuad;
+    private Consumer<TripleLike> generalizedConsumerTriple;
+    private Consumer<QuadLike<RDFTerm>> generalizedConsumerQuad;
 
-	protected RDF createRDFTermFactory() {
-		return new JenaRDF();
-	}
+    protected RDF createRDFTermFactory() {
+        return new JenaRDF();
+    }
 
-	public JenaRDFParser targetGeneralizedTriple(Consumer<TripleLike> consumer) {
-		JenaRDFParser c = this.clone();
-		c.resetTarget();		
-		c.generalizedConsumerTriple = consumer;
-		return c;
-	}
+    public JenaRDFParser targetGeneralizedTriple(Consumer<TripleLike> consumer) {
+        JenaRDFParser c = this.clone();
+        c.resetTarget();
+        c.generalizedConsumerTriple = consumer;
+        return c;
+    }
 
-	public JenaRDFParser targetGeneralizedQuad(Consumer<QuadLike<RDFTerm>> consumer) {
-		JenaRDFParser c = this.clone();
-		c.resetTarget();		
-		c.generalizedConsumerQuad = consumer;
-		return c;
-	}
-	
-	@Override
-	protected void resetTarget() {		
-		super.resetTarget();
-		this.generalizedConsumerTriple = null;
-		this.generalizedConsumerQuad = null;
-	}
-	
-	@Override
-	protected void parseSynchronusly() throws IOException {
-		StreamRDF dest;
-		JenaRDF jenaRDF = getJenaFactory();
-		if (getTargetGraph().isPresent() && getTargetGraph().get() instanceof JenaGraph) {
-			Graph jenaGraph = ((JenaGraph) getTargetGraph().get()).asJenaGraph();
-			dest = StreamRDFLib.graph(jenaGraph);
-		} else {
-			if (generalizedConsumerQuad != null) {				
-				dest = jenaRDF.streamJenaToGeneralizedQuad(generalizedConsumerQuad);			
-			} else if (generalizedConsumerTriple != null) {				
-				dest = jenaRDF.streamJenaToGeneralizedTriple(generalizedConsumerTriple);			
-			} else {
-				dest = JenaRDF.streamJenaToQuad(getRdfTermFactory().get(), getTarget());
-			}
-		}
+    public JenaRDFParser targetGeneralizedQuad(Consumer<QuadLike<RDFTerm>> consumer) {
+        JenaRDFParser c = this.clone();
+        c.resetTarget();
+        c.generalizedConsumerQuad = consumer;
+        return c;
+    }
 
-		Lang lang = getContentTypeSyntax().flatMap(jenaRDF::asJenaLang).orElse(null);
-		String baseStr = getBase().map(IRI::getIRIString).orElse(null);
+    @Override
+    protected void resetTarget() {
+        super.resetTarget();
+        this.generalizedConsumerTriple = null;
+        this.generalizedConsumerQuad = null;
+    }
 
-		if (getSourceIri().isPresent()) {
-			RDFDataMgr.parse(dest, getSourceIri().get().toString(), baseStr, lang, null);
-		} else if (getSourceFile().isPresent()) {
-			try (InputStream s = Files.newInputStream(getSourceFile().get())) {
-				RDFDataMgr.parse(dest, s, baseStr, lang, null);
-			}
-		} else {
-			RDFDataMgr.parse(dest, getSourceInputStream().get(), baseStr, lang, null);
-		}
-	}
+    @Override
+    protected void parseSynchronusly() throws IOException {
+        StreamRDF dest;
+        JenaRDF jenaRDF = getJenaFactory();
+        if (getTargetGraph().isPresent() && getTargetGraph().get() instanceof JenaGraph) {
+            Graph jenaGraph = ((JenaGraph) getTargetGraph().get()).asJenaGraph();
+            dest = StreamRDFLib.graph(jenaGraph);
+        } else {
+            if (generalizedConsumerQuad != null) {
+                dest = jenaRDF.streamJenaToGeneralizedQuad(generalizedConsumerQuad);
+            } else if (generalizedConsumerTriple != null) {
+                dest = jenaRDF.streamJenaToGeneralizedTriple(generalizedConsumerTriple);
+            } else {
+                dest = JenaRDF.streamJenaToQuad(getRdfTermFactory().get(), getTarget());
+            }
+        }
 
-	private JenaRDF getJenaFactory() {
-		return (JenaRDF) getRdfTermFactory()
-				.filter(JenaRDF.class::isInstance)
-				.orElseGet(this::createRDFTermFactory);		
-	}
+        Lang lang = getContentTypeSyntax().flatMap(jenaRDF::asJenaLang).orElse(null);
+        String baseStr = getBase().map(IRI::getIRIString).orElse(null);
+
+        if (getSourceIri().isPresent()) {
+            RDFDataMgr.parse(dest, getSourceIri().get().toString(), baseStr, lang, null);
+        } else if (getSourceFile().isPresent()) {
+            try (InputStream s = Files.newInputStream(getSourceFile().get())) {
+                RDFDataMgr.parse(dest, s, baseStr, lang, null);
+            }
+        } else {
+            RDFDataMgr.parse(dest, getSourceInputStream().get(), baseStr, lang, null);
+        }
+    }
+
+    private JenaRDF getJenaFactory() {
+        return (JenaRDF) getRdfTermFactory().filter(JenaRDF.class::isInstance).orElseGet(this::createRDFTermFactory);
+    }
 
 }

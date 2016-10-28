@@ -28,8 +28,8 @@ import static org.junit.Assert.assertNotEquals;
 public abstract class AbstractBlankNodeTest {
 
     /**
-     * This method must be overridden by the implementing test to 
-     * create a {@link BlankNode} to be tested.
+     * This method must be overridden by the implementing test to create a
+     * {@link BlankNode} to be tested.
      * <p>
      * Each call to this method must provide a new, unique BlankNode.
      * 
@@ -46,15 +46,15 @@ public abstract class AbstractBlankNodeTest {
      * test may be the same object, or they may be different objects.
      * </p>
      *
-     * @param identifier The identifier to use as the reference for creating the blank
-     *                   node that is returned.
+     * @param identifier
+     *            The identifier to use as the reference for creating the blank
+     *            node that is returned.
      * @return A new blank node based on the
      */
     protected abstract BlankNode getBlankNode(String identifier);
 
     /**
-     * Test method for
-     * {@link BlankNode#uniqueReference()}.
+     * Test method for {@link BlankNode#uniqueReference()}.
      */
     @Test
     public final void testInternalIdentifier() {
@@ -76,35 +76,23 @@ public abstract class AbstractBlankNodeTest {
         BlankNode testManual4 = getBlankNode("4");
 
         // Test against our fake stub
-        assertNotEquals(testNull.uniqueReference(),
-                testAutomatic1.uniqueReference());
-        assertNotEquals(testAutomatic1.uniqueReference(),
-                testNull.uniqueReference());
-        assertNotEquals(testNull.uniqueReference(),
-                testManual3a.uniqueReference());
-        assertNotEquals(testManual3a.uniqueReference(),
-                testNull.uniqueReference());
+        assertNotEquals(testNull.uniqueReference(), testAutomatic1.uniqueReference());
+        assertNotEquals(testAutomatic1.uniqueReference(), testNull.uniqueReference());
+        assertNotEquals(testNull.uniqueReference(), testManual3a.uniqueReference());
+        assertNotEquals(testManual3a.uniqueReference(), testNull.uniqueReference());
 
         // Test the two imported instances against each other
-        assertEquals(testAutomatic1.uniqueReference(),
-                testAutomatic1.uniqueReference());
-        assertEquals(testAutomatic2.uniqueReference(),
-                testAutomatic2.uniqueReference());
-        assertNotEquals(testAutomatic1.uniqueReference(),
-                testAutomatic2.uniqueReference());
-        assertNotEquals(testAutomatic2.uniqueReference(),
-                testAutomatic1.uniqueReference());
-        assertNotEquals(testAutomatic1.uniqueReference(),
-                testManual3a.uniqueReference());
-        assertEquals(testManual3b.uniqueReference(),
-                testManual3a.uniqueReference());
-        assertNotEquals(testManual3a.uniqueReference(),
-                testManual4.uniqueReference());
+        assertEquals(testAutomatic1.uniqueReference(), testAutomatic1.uniqueReference());
+        assertEquals(testAutomatic2.uniqueReference(), testAutomatic2.uniqueReference());
+        assertNotEquals(testAutomatic1.uniqueReference(), testAutomatic2.uniqueReference());
+        assertNotEquals(testAutomatic2.uniqueReference(), testAutomatic1.uniqueReference());
+        assertNotEquals(testAutomatic1.uniqueReference(), testManual3a.uniqueReference());
+        assertEquals(testManual3b.uniqueReference(), testManual3a.uniqueReference());
+        assertNotEquals(testManual3a.uniqueReference(), testManual4.uniqueReference());
     }
 
     /**
-     * Test method for
-     * {@link BlankNode#equals(java.lang.Object)}.
+     * Test method for {@link BlankNode#equals(java.lang.Object)}.
      */
     @Test
     public final void testEquals() {
@@ -180,8 +168,7 @@ public abstract class AbstractBlankNodeTest {
     }
 
     /**
-     * Test method for
-     * {@link RDFTerm#ntriplesString()}.
+     * Test method for {@link RDFTerm#ntriplesString()}.
      */
     @Test
     public final void testNtriplesString() {
@@ -203,30 +190,19 @@ public abstract class AbstractBlankNodeTest {
         BlankNode testManual4 = getBlankNode("4");
 
         // Test against our fake stub
-        assertNotEquals(testNull.ntriplesString(),
-                testAutomatic1.ntriplesString());
-        assertNotEquals(testAutomatic1.ntriplesString(),
-                testNull.ntriplesString());
-        assertNotEquals(testNull.ntriplesString(),
-                testManual3a.ntriplesString());
-        assertNotEquals(testManual3a.ntriplesString(),
-                testNull.ntriplesString());
+        assertNotEquals(testNull.ntriplesString(), testAutomatic1.ntriplesString());
+        assertNotEquals(testAutomatic1.ntriplesString(), testNull.ntriplesString());
+        assertNotEquals(testNull.ntriplesString(), testManual3a.ntriplesString());
+        assertNotEquals(testManual3a.ntriplesString(), testNull.ntriplesString());
 
         // Test the two imported instances against each other
-        assertEquals(testAutomatic1.ntriplesString(),
-                testAutomatic1.ntriplesString());
-        assertEquals(testAutomatic2.ntriplesString(),
-                testAutomatic2.ntriplesString());
-        assertNotEquals(testAutomatic1.ntriplesString(),
-                testAutomatic2.ntriplesString());
-        assertNotEquals(testAutomatic2.ntriplesString(),
-                testAutomatic1.ntriplesString());
-        assertNotEquals(testAutomatic1.ntriplesString(),
-                testManual3a.ntriplesString());
-        assertEquals(testManual3b.ntriplesString(),
-                testManual3a.ntriplesString());
-        assertNotEquals(testManual3a.ntriplesString(),
-                testManual4.ntriplesString());
+        assertEquals(testAutomatic1.ntriplesString(), testAutomatic1.ntriplesString());
+        assertEquals(testAutomatic2.ntriplesString(), testAutomatic2.ntriplesString());
+        assertNotEquals(testAutomatic1.ntriplesString(), testAutomatic2.ntriplesString());
+        assertNotEquals(testAutomatic2.ntriplesString(), testAutomatic1.ntriplesString());
+        assertNotEquals(testAutomatic1.ntriplesString(), testManual3a.ntriplesString());
+        assertEquals(testManual3b.ntriplesString(), testManual3a.ntriplesString());
+        assertNotEquals(testManual3a.ntriplesString(), testManual4.ntriplesString());
     }
 
 }

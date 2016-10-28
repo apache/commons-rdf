@@ -26,11 +26,10 @@ import java.net.URI;
 /**
  * Test simple IRI without relative IRI support.
  * <p>
- * Ensures that {@link AbstractRDFTest#testCreateIRIRelative()} is
- * correctly skipped (without causing an error).
+ * Ensures that {@link AbstractRDFTest#testCreateIRIRelative()} is correctly
+ * skipped (without causing an error).
  */
-public class SimpleNoRelativeIRIRDTest extends
-        AbstractRDFTest {
+public class SimpleNoRelativeIRIRDTest extends AbstractRDFTest {
     @Override
     public RDF createFactory() {
         return new SimpleRDF() {

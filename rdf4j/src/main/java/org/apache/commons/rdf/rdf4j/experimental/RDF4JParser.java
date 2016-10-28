@@ -59,174 +59,178 @@ import org.eclipse.rdf4j.rio.helpers.AbstractRDFHandler;
  */
 public class RDF4JParser extends AbstractRDFParser<RDF4JParser> implements RDFParser {
 
-	private final class AddToQuadConsumer extends AbstractRDFHandler {
-		private final Consumer<Quad> quadTarget;
+    private final class AddToQuadConsumer extends AbstractRDFHandler {
+        private final Consumer<Quad> quadTarget;
 
-		private AddToQuadConsumer(Consumer<Quad> quadTarget) {
-			this.quadTarget = quadTarget;
-		}
+        private AddToQuadConsumer(Consumer<Quad> quadTarget) {
+            this.quadTarget = quadTarget;
+        }
 
-		public void handleStatement(org.eclipse.rdf4j.model.Statement st)
-				throws org.eclipse.rdf4j.rio.RDFHandlerException {
-			// TODO: if getRdfTermFactory() is a non-rdf4j factory, should
-			// we use factory.createQuad() instead?
-			// Unsure what is the promise of setting getRdfTermFactory() --
-			// does it go all the way down to creating BlankNode, IRI and
-			// Literal?
-			quadTarget.accept(rdf4jTermFactory.asQuad(st));
-			// Performance note:
-			// Graph/Quad.add should pick up again our
-			// RDF4JGraphLike.asStatement()
-			// and avoid double conversion.
-			// Additionally the RDF4JQuad and RDF4JTriple implementations
-			// are lazily converting subj/obj/pred/graph.s
-		}
-	}
+        public void handleStatement(org.eclipse.rdf4j.model.Statement st)
+                throws org.eclipse.rdf4j.rio.RDFHandlerException {
+            // TODO: if getRdfTermFactory() is a non-rdf4j factory, should
+            // we use factory.createQuad() instead?
+            // Unsure what is the promise of setting getRdfTermFactory() --
+            // does it go all the way down to creating BlankNode, IRI and
+            // Literal?
+            quadTarget.accept(rdf4jTermFactory.asQuad(st));
+            // Performance note:
+            // Graph/Quad.add should pick up again our
+            // RDF4JGraphLike.asStatement()
+            // and avoid double conversion.
+            // Additionally the RDF4JQuad and RDF4JTriple implementations
+            // are lazily converting subj/obj/pred/graph.s
+        }
+    }
 
-	private final static class AddToModel extends AbstractRDFHandler {
-		private final Model model;
+    private final static class AddToModel extends AbstractRDFHandler {
+        private final Model model;
 
-		public AddToModel(Model model) {
-			this.model = model;
-		}
+        public AddToModel(Model model) {
+            this.model = model;
+        }
 
-		public void handleStatement(org.eclipse.rdf4j.model.Statement st)
-				throws org.eclipse.rdf4j.rio.RDFHandlerException {
-			model.add(st);
-		}
+        public void handleStatement(org.eclipse.rdf4j.model.Statement st)
+                throws org.eclipse.rdf4j.rio.RDFHandlerException {
+            model.add(st);
+        }
 
-		@Override
-		public void handleNamespace(String prefix, String uri) throws RDFHandlerException {
-			model.setNamespace(prefix, uri);
-		}
-	}
+        @Override
+        public void handleNamespace(String prefix, String uri) throws RDFHandlerException {
+            model.setNamespace(prefix, uri);
+        }
+    }
 
-	private RDF4J rdf4jTermFactory;
-	private ParserConfig parserConfig = new ParserConfig();
+    private RDF4J rdf4jTermFactory;
+    private ParserConfig parserConfig = new ParserConfig();
 
-	@Override
-	protected RDF4J createRDFTermFactory() {
-		return new RDF4J();
-	}
+    @Override
+    protected RDF4J createRDFTermFactory() {
+        return new RDF4J();
+    }
 
-	@Override
-	protected RDF4JParser prepareForParsing() throws IOException, IllegalStateException {
-		RDF4JParser c = super.prepareForParsing();
-		// Ensure we have an RDF4J for conversion.
-		// We'll make a new one if user has provided a non-RDF4J factory
-		c.rdf4jTermFactory = (RDF4J) getRdfTermFactory().filter(RDF4J.class::isInstance)
-				.orElseGet(c::createRDFTermFactory);
-		return c;
-	}
+    @Override
+    protected RDF4JParser prepareForParsing() throws IOException, IllegalStateException {
+        RDF4JParser c = super.prepareForParsing();
+        // Ensure we have an RDF4J for conversion.
+        // We'll make a new one if user has provided a non-RDF4J factory
+        c.rdf4jTermFactory = (RDF4J) getRdfTermFactory().filter(RDF4J.class::isInstance)
+                .orElseGet(c::createRDFTermFactory);
+        return c;
+    }
 
-	@Override
-	protected void parseSynchronusly() throws IOException {		
-		Optional<RDFFormat> formatByMimeType = getContentType().flatMap(Rio::getParserFormatForMIMEType);
-		String base = getBase().map(IRI::getIRIString).orElse(null);
-				
-		ParserConfig parserConfig = getParserConfig();
-		// TODO: Should we need to set anything?
-		RDFLoader loader = new RDFLoader(parserConfig, rdf4jTermFactory.getValueFactory());
-		RDFHandler rdfHandler = makeRDFHandler();		
-		if (getSourceFile().isPresent()) {			
-			// NOTE: While we could have used  
-			// loader.load(sourcePath.toFile()
-			// if the path fs provider == FileSystems.getDefault(), 			
-			// that RDFLoader method does not use absolute path
-			// as the base URI, so to be consistent 
-			// we'll always do it with our own input stream
-			//
-			// That means we may have to guess format by extensions:			
-			Optional<RDFFormat> formatByFilename = getSourceFile().map(Path::getFileName).map(Path::toString)
-					.flatMap(Rio::getParserFormatForFileName);
-			// TODO: for the excited.. what about the extension after following symlinks? 
-			
-			RDFFormat format = formatByMimeType.orElse(formatByFilename.orElse(null));
-			try (InputStream in = Files.newInputStream(getSourceFile().get())) {
-				loader.load(in, base, format, rdfHandler);
-			}
-		} else if (getSourceIri().isPresent()) {
-			try {
-				// TODO: Handle international IRIs properly
-				// (Unicode support for for hostname, path and query)
-				URL url = new URL(getSourceIri().get().getIRIString());
-				// TODO: This probably does not support https:// -> http:// redirections
-				loader.load(url, base, formatByMimeType.orElse(null), makeRDFHandler());
-			} catch (MalformedURLException ex) {
-				throw new IOException("Can't handle source URL: " + getSourceIri().get(), ex);
-			}			
-		}
-		// must be getSourceInputStream then, this is guaranteed by super.checkSource(); 		
-		loader.load(getSourceInputStream().get(), base, formatByMimeType.orElse(null), rdfHandler);
-	}
+    @Override
+    protected void parseSynchronusly() throws IOException {
+        Optional<RDFFormat> formatByMimeType = getContentType().flatMap(Rio::getParserFormatForMIMEType);
+        String base = getBase().map(IRI::getIRIString).orElse(null);
 
-	/**
-	 * Get the RDF4J {@link ParserConfig} to use.
-	 * <p>
-	 * If no parser config is set, the default configuration is provided.
-	 * <p>
-	 * <strong>Note:</strong> The parser config is mutable - changes in the 
-	 * returned config is reflected in this instance of the parser.
-	 * To avoid mutation, create a new {@link ParserConfig} and set
-	 * {@link #setParserConfig(ParserConfig)}.
-	 * 
-	 * @return The RDF4J {@link ParserConfig}
-	 */
-	public ParserConfig getParserConfig() {
-		return parserConfig;
-	}
+        ParserConfig parserConfig = getParserConfig();
+        // TODO: Should we need to set anything?
+        RDFLoader loader = new RDFLoader(parserConfig, rdf4jTermFactory.getValueFactory());
+        RDFHandler rdfHandler = makeRDFHandler();
+        if (getSourceFile().isPresent()) {
+            // NOTE: While we could have used
+            // loader.load(sourcePath.toFile()
+            // if the path fs provider == FileSystems.getDefault(),
+            // that RDFLoader method does not use absolute path
+            // as the base URI, so to be consistent
+            // we'll always do it with our own input stream
+            //
+            // That means we may have to guess format by extensions:
+            Optional<RDFFormat> formatByFilename = getSourceFile().map(Path::getFileName).map(Path::toString)
+                    .flatMap(Rio::getParserFormatForFileName);
+            // TODO: for the excited.. what about the extension after following
+            // symlinks?
 
-	/**
-	 * Set an RDF4J {@link ParserConfig} to use
-	 * 
-	 * @param parserConfig Parser configuration
-	 */
-	public void setParserConfig(ParserConfig parserConfig) {
-		this.parserConfig = parserConfig;
-	}
+            RDFFormat format = formatByMimeType.orElse(formatByFilename.orElse(null));
+            try (InputStream in = Files.newInputStream(getSourceFile().get())) {
+                loader.load(in, base, format, rdfHandler);
+            }
+        } else if (getSourceIri().isPresent()) {
+            try {
+                // TODO: Handle international IRIs properly
+                // (Unicode support for for hostname, path and query)
+                URL url = new URL(getSourceIri().get().getIRIString());
+                // TODO: This probably does not support https:// -> http://
+                // redirections
+                loader.load(url, base, formatByMimeType.orElse(null), makeRDFHandler());
+            } catch (MalformedURLException ex) {
+                throw new IOException("Can't handle source URL: " + getSourceIri().get(), ex);
+            }
+        }
+        // must be getSourceInputStream then, this is guaranteed by
+        // super.checkSource();
+        loader.load(getSourceInputStream().get(), base, formatByMimeType.orElse(null), rdfHandler);
+    }
 
-	protected RDFHandler makeRDFHandler() {
+    /**
+     * Get the RDF4J {@link ParserConfig} to use.
+     * <p>
+     * If no parser config is set, the default configuration is provided.
+     * <p>
+     * <strong>Note:</strong> The parser config is mutable - changes in the
+     * returned config is reflected in this instance of the parser. To avoid
+     * mutation, create a new {@link ParserConfig} and set
+     * {@link #setParserConfig(ParserConfig)}.
+     * 
+     * @return The RDF4J {@link ParserConfig}
+     */
+    public ParserConfig getParserConfig() {
+        return parserConfig;
+    }
 
-		// TODO: Can we join the below DF4JDataset and RDF4JGraph cases
-		// using RDF4JGraphLike<TripleLike<BlankNodeOrIRI,IRI,RDFTerm>>
-		// or will that need tricky generics types?
+    /**
+     * Set an RDF4J {@link ParserConfig} to use
+     * 
+     * @param parserConfig
+     *            Parser configuration
+     */
+    public void setParserConfig(ParserConfig parserConfig) {
+        this.parserConfig = parserConfig;
+    }
 
-		if (getTargetDataset().filter(RDF4JDataset.class::isInstance).isPresent()) {
-			// One of us, we can add them as Statements directly
-			RDF4JDataset dataset = (RDF4JDataset) getTargetDataset().get();
-			if (dataset.asRepository().isPresent()) {
-				return new RDFInserter(dataset.asRepository().get().getConnection());
-			}
-			if (dataset.asModel().isPresent()) {
-				Model model = dataset.asModel().get();
-				return new AddToModel(model);
-			}
-			// Not backed by Repository or Model?
-			// Third-party RDF4JDataset subclass, so we'll fall through to the
-			// getTarget() handling further down
-		} else if (getTargetGraph().filter(RDF4JGraph.class::isInstance).isPresent()) {
-			RDF4JGraph graph = (RDF4JGraph) getTargetGraph().get();
+    protected RDFHandler makeRDFHandler() {
 
-			if (graph.asRepository().isPresent()) {
-				RDFInserter inserter = new RDFInserter(graph.asRepository().get().getConnection());
-				if (! graph.getContextMask().isEmpty()) {
-					Stream<RDF4JBlankNodeOrIRI> b = graph.getContextMask().stream();
-					Stream<Resource> c = b.map(RDF4JBlankNodeOrIRI::asValue);
-					Resource[] contexts = c.toArray(Resource[]::new);
-					inserter.enforceContext(contexts);
-				}
-				return inserter;
-			}
-			if (graph.asModel().isPresent() && graph.getContextMask().isEmpty()) {
-				// the model accepts any quad
-				Model model = graph.asModel().get();
-				return new AddToModel(model);
-			}
-			// else - fall through
-		}
+        // TODO: Can we join the below DF4JDataset and RDF4JGraph cases
+        // using RDF4JGraphLike<TripleLike<BlankNodeOrIRI,IRI,RDFTerm>>
+        // or will that need tricky generics types?
 
-		// Fall thorough: let target() consume our converted quads.
-		return new AddToQuadConsumer(getTarget());
-	}
+        if (getTargetDataset().filter(RDF4JDataset.class::isInstance).isPresent()) {
+            // One of us, we can add them as Statements directly
+            RDF4JDataset dataset = (RDF4JDataset) getTargetDataset().get();
+            if (dataset.asRepository().isPresent()) {
+                return new RDFInserter(dataset.asRepository().get().getConnection());
+            }
+            if (dataset.asModel().isPresent()) {
+                Model model = dataset.asModel().get();
+                return new AddToModel(model);
+            }
+            // Not backed by Repository or Model?
+            // Third-party RDF4JDataset subclass, so we'll fall through to the
+            // getTarget() handling further down
+        } else if (getTargetGraph().filter(RDF4JGraph.class::isInstance).isPresent()) {
+            RDF4JGraph graph = (RDF4JGraph) getTargetGraph().get();
+
+            if (graph.asRepository().isPresent()) {
+                RDFInserter inserter = new RDFInserter(graph.asRepository().get().getConnection());
+                if (!graph.getContextMask().isEmpty()) {
+                    Stream<RDF4JBlankNodeOrIRI> b = graph.getContextMask().stream();
+                    Stream<Resource> c = b.map(RDF4JBlankNodeOrIRI::asValue);
+                    Resource[] contexts = c.toArray(Resource[]::new);
+                    inserter.enforceContext(contexts);
+                }
+                return inserter;
+            }
+            if (graph.asModel().isPresent() && graph.getContextMask().isEmpty()) {
+                // the model accepts any quad
+                Model model = graph.asModel().get();
+                return new AddToModel(model);
+            }
+            // else - fall through
+        }
+
+        // Fall thorough: let target() consume our converted quads.
+        return new AddToQuadConsumer(getTarget());
+    }
 
 }

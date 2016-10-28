@@ -22,10 +22,9 @@ import org.apache.commons.rdf.api.RDF;
 
 public class JsonLdGraphTest extends AbstractGraphTest {
 
-	@Override
-	public RDF createFactory() {
-		return new JsonLdRDF();
-	}
-	
+    @Override
+    public RDF createFactory() {
+        return new JsonLdRDF();
+    }
 
 }

@@ -22,30 +22,26 @@
  * are represented by corresponding interfaces:
  * <p>
  * A {@link org.apache.commons.rdf.api.Graph} is a collection of
- * {@link org.apache.commons.rdf.api.Triple}s,
- * which have a <em>subject</em>, <em>predicate</em> and <em>object</em> of
- * {@link org.apache.commons.rdf.api.RDFTerm}s.
- * The three types of RDF terms are {@link org.apache.commons.rdf.api.IRI},
+ * {@link org.apache.commons.rdf.api.Triple}s, which have a <em>subject</em>,
+ * <em>predicate</em> and <em>object</em> of
+ * {@link org.apache.commons.rdf.api.RDFTerm}s. The three types of RDF terms are
+ * {@link org.apache.commons.rdf.api.IRI},
  * {@link org.apache.commons.rdf.api.Literal} and
  * {@link org.apache.commons.rdf.api.BlankNode}.
  * <p>
  * Implementations of this API should provide an
- * {@link org.apache.commons.rdf.api.RDF} to facilitate
- * creation of these objects.
+ * {@link org.apache.commons.rdf.api.RDF} to facilitate creation of these
+ * objects.
  * <p>
  * All the {@link org.apache.commons.rdf.api.RDFTerm} objects are immutable,
- * while a {@link org.apache.commons.rdf.api.Graph}
- * MAY be mutable (e.g. support methods like
- * {@link org.apache.commons.rdf.api.Graph#add(Triple)}).
+ * while a {@link org.apache.commons.rdf.api.Graph} MAY be mutable (e.g. support
+ * methods like {@link org.apache.commons.rdf.api.Graph#add(Triple)}).
  * <p>
- * {@link org.apache.commons.rdf.api.RDFSyntax} enumerates the 
- * W3C standard RDF 1.1 syntaxes and their media types.
+ * {@link org.apache.commons.rdf.api.RDFSyntax} enumerates the W3C standard RDF
+ * 1.1 syntaxes and their media types.
  * <p>
  * For further documentation and contact details, see the
- * <a href="http://commonsrdf.incubator.apache.org/">Commons RDF</a>
- * web site.
+ * <a href="http://commonsrdf.incubator.apache.org/">Commons RDF</a> web site.
  *
  */
 package org.apache.commons.rdf.api;
-
-

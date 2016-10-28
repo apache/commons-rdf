@@ -55,7 +55,6 @@ final class BlankNodeImpl implements BlankNode, SimpleRDFTerm {
         // ntriplesString() (there are no restrictions on
         // RDF.createBlankNode(String) ).
 
-
         // Rather than implement ntriples escaping here, and knowing
         // our uniqueReference() contain a UUID anyway, we simply
         // create another name-based UUID, and use it within both
@@ -65,8 +64,7 @@ final class BlankNodeImpl implements BlankNode, SimpleRDFTerm {
         // is not preserved or shown in ntriplesString. In a way
         // this is a feature, not a bug. as the contract for RDF
         // has no such requirement.
-        this.uniqueReference = UUID.nameUUIDFromBytes(
-                uuidInput.getBytes(StandardCharsets.UTF_8)).toString();
+        this.uniqueReference = UUID.nameUUIDFromBytes(uuidInput.getBytes(StandardCharsets.UTF_8)).toString();
     }
 
     @Override

@@ -28,40 +28,36 @@ import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.jena.ConversionException;
 import org.apache.commons.rdf.jena.JenaTriple;
 
-class JenaTripleImpl extends AbstractQuadLike<BlankNodeOrIRI, IRI, RDFTerm, RDFTerm>
-		implements JenaTriple {
+class JenaTripleImpl extends AbstractQuadLike<BlankNodeOrIRI, IRI, RDFTerm, RDFTerm> implements JenaTriple {
 
-	JenaTripleImpl(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		super(subject, predicate, object);
-	}
+    JenaTripleImpl(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+        super(subject, predicate, object);
+    }
 
-	JenaTripleImpl(org.apache.jena.graph.Triple triple, UUID salt) throws ConversionException {
-		super(triple, salt);
-		// Check the conversion
-		if (! (subject instanceof BlankNodeOrIRI) ||
-			! (predicate instanceof IRI) ||
-			! (object instanceof RDFTerm)) {
-			throw new ConversionException("Can't adapt generalized triple: " + quad);	
-		}
-	}
+    JenaTripleImpl(org.apache.jena.graph.Triple triple, UUID salt) throws ConversionException {
+        super(triple, salt);
+        // Check the conversion
+        if (!(subject instanceof BlankNodeOrIRI) || !(predicate instanceof IRI) || !(object instanceof RDFTerm)) {
+            throw new ConversionException("Can't adapt generalized triple: " + quad);
+        }
+    }
 
-	@Override
-	public boolean equals(Object other) {
-		if (other == this)
-			return true;
-		if (other == null)
-			return false;
-		if (!(other instanceof Triple))
-			return false;
-		Triple triple = (Triple) other;
-		return getSubject().equals(triple.getSubject()) && getPredicate().equals(triple.getPredicate())
-				&& getObject().equals(triple.getObject());
-	}
+    @Override
+    public boolean equals(Object other) {
+        if (other == this)
+            return true;
+        if (other == null)
+            return false;
+        if (!(other instanceof Triple))
+            return false;
+        Triple triple = (Triple) other;
+        return getSubject().equals(triple.getSubject()) && getPredicate().equals(triple.getPredicate())
+                && getObject().equals(triple.getObject());
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(getSubject(), getPredicate(), getObject());
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(getSubject(), getPredicate(), getObject());
+    }
 
-	
 }

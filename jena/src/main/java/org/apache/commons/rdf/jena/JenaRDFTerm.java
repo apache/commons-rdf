@@ -31,5 +31,5 @@ import org.apache.jena.graph.Node;
  * @see JenaBlankNode
  */
 public interface JenaRDFTerm extends RDFTerm {
-	public Node asJenaNode();
+    public Node asJenaNode();
 }

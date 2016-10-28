@@ -37,79 +37,74 @@ public interface JsonLdDataset extends JsonLdGraphLike<org.apache.commons.rdf.ap
 
 class JsonLdDatasetImpl extends AbstractJsonLdGraphLike<org.apache.commons.rdf.api.Quad> implements JsonLdDataset {
 
-	JsonLdDatasetImpl(RDFDataset rdfDataSet) {
-		super(rdfDataSet);
-	}
+    JsonLdDatasetImpl(RDFDataset rdfDataSet) {
+        super(rdfDataSet);
+    }
 
-	JsonLdDatasetImpl(RDFDataset rdfDataset, String bnodePrefix) {
-		super(rdfDataset, bnodePrefix);
-	}
+    JsonLdDatasetImpl(RDFDataset rdfDataset, String bnodePrefix) {
+        super(rdfDataset, bnodePrefix);
+    }
 
-	JsonLdDatasetImpl(String bnodePrefix) {
-		super(bnodePrefix);
-	}
+    JsonLdDatasetImpl(String bnodePrefix) {
+        super(bnodePrefix);
+    }
 
-	@Override
-	public void add(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		super.add(graphName, subject, predicate, object);
-	}
+    @Override
+    public void add(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+        super.add(graphName, subject, predicate, object);
+    }
 
-	@Override
-	public boolean contains(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		return super.contains(graphName, subject, predicate, object);
-	}
-	
-	@Override
-	public Graph getGraph() {
-		return new JsonLdGraphImpl(rdfDataSet, Optional.empty(), bnodePrefix);
-	}	
+    @Override
+    public boolean contains(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+        return super.contains(graphName, subject, predicate, object);
+    }
 
-	@Override
-	public Optional<Graph> getGraph(BlankNodeOrIRI graphName) {
-		if (graphName == null) {
-			return Optional.of(getGraph());
-		}
-		return getGraphNames()
-				.map(g -> (Graph)new JsonLdGraphImpl(rdfDataSet, Optional.of(g), bnodePrefix))
-				.findAny();
-	}
+    @Override
+    public Graph getGraph() {
+        return new JsonLdGraphImpl(rdfDataSet, Optional.empty(), bnodePrefix);
+    }
 
-	@Override
-	public Stream<BlankNodeOrIRI> getGraphNames() {
-		return rdfDataSet.graphNames().parallelStream().filter(Predicate.isEqual("@default").negate())
-				.map(s -> s.startsWith("_:") ? new RDFDataset.BlankNode(s) : new RDFDataset.IRI(s))
-				.map(n -> (BlankNodeOrIRI) factory.asRDFTerm(n));
-	}
+    @Override
+    public Optional<Graph> getGraph(BlankNodeOrIRI graphName) {
+        if (graphName == null) {
+            return Optional.of(getGraph());
+        }
+        return getGraphNames().map(g -> (Graph) new JsonLdGraphImpl(rdfDataSet, Optional.of(g), bnodePrefix)).findAny();
+    }
 
-	@Override
-	public void remove(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		super.remove(graphName, subject, predicate, object);
-	}
+    @Override
+    public Stream<BlankNodeOrIRI> getGraphNames() {
+        return rdfDataSet.graphNames().parallelStream().filter(Predicate.isEqual("@default").negate())
+                .map(s -> s.startsWith("_:") ? new RDFDataset.BlankNode(s) : new RDFDataset.IRI(s))
+                .map(n -> (BlankNodeOrIRI) factory.asRDFTerm(n));
+    }
 
+    @Override
+    public void remove(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+        super.remove(graphName, subject, predicate, object);
+    }
 
-	@Override
-	public void remove(Quad q) {
-		remove(q.getGraphName(), q.getSubject(), q.getPredicate(), q.getObject());
-	}
-	
-	@Override
-	public Stream<? extends Quad> stream(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate,
-			RDFTerm object) {		
-		return filteredGraphs(graphName)
-				.flatMap(List::stream)
-				.filter(quadFilter(subject, predicate, object))
-				.map(factory::asQuad);
-	}
+    @Override
+    public void remove(Quad q) {
+        remove(q.getGraphName(), q.getSubject(), q.getPredicate(), q.getObject());
+    }
 
-	@Override
-	public long size() {		
-		return rdfDataSet.graphNames().parallelStream().map(rdfDataSet::getQuads).collect(Collectors.summingLong(List::size));
-	}
+    @Override
+    public Stream<? extends Quad> stream(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate,
+            RDFTerm object) {
+        return filteredGraphs(graphName).flatMap(List::stream).filter(quadFilter(subject, predicate, object))
+                .map(factory::asQuad);
+    }
 
-	@Override
-	Quad asTripleOrQuad(com.github.jsonldjava.core.RDFDataset.Quad jsonldQuad) {
-		return factory.asQuad(jsonldQuad);
-	}
+    @Override
+    public long size() {
+        return rdfDataSet.graphNames().parallelStream().map(rdfDataSet::getQuads)
+                .collect(Collectors.summingLong(List::size));
+    }
 
+    @Override
+    Quad asTripleOrQuad(com.github.jsonldjava.core.RDFDataset.Quad jsonldQuad) {
+        return factory.asQuad(jsonldQuad);
+    }
 
 }

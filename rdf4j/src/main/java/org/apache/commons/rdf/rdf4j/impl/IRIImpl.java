@@ -19,43 +19,46 @@ package org.apache.commons.rdf.rdf4j.impl;
 
 import org.apache.commons.rdf.rdf4j.RDF4JIRI;
 
-final class IRIImpl extends AbstractRDFTerm<org.eclipse.rdf4j.model.IRI> 
-	implements RDF4JIRI {
+final class IRIImpl extends AbstractRDFTerm<org.eclipse.rdf4j.model.IRI> implements RDF4JIRI {
 
-	IRIImpl(org.eclipse.rdf4j.model.IRI iri) {
-		super(iri);			
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == this) { return true; }
-		if (obj instanceof IRIImpl) {
-			IRIImpl impl = (IRIImpl) obj; 
-			return asValue().equals(impl.asValue());
-		}
-		if (obj instanceof org.apache.commons.rdf.api.IRI) {
-			org.apache.commons.rdf.api.IRI iri = (org.apache.commons.rdf.api.IRI) obj;
-			return value.toString().equals(iri.getIRIString());
-		}
-		return false;
-	}
+    IRIImpl(org.eclipse.rdf4j.model.IRI iri) {
+        super(iri);
+    }
 
-	@Override
-	public String getIRIString() {
-		return value.toString();
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (obj instanceof IRIImpl) {
+            IRIImpl impl = (IRIImpl) obj;
+            return asValue().equals(impl.asValue());
+        }
+        if (obj instanceof org.apache.commons.rdf.api.IRI) {
+            org.apache.commons.rdf.api.IRI iri = (org.apache.commons.rdf.api.IRI) obj;
+            return value.toString().equals(iri.getIRIString());
+        }
+        return false;
+    }
 
-	public int hashCode() {
-		// Same definition
-		return value.hashCode();
-	}
+    @Override
+    public String getIRIString() {
+        return value.toString();
+    }
 
-	@Override
-	public String ntriplesString() {
-		return "<" + value.toString() +  ">";
-	}
-	@Override
-	public String toString() {
-		return value.toString();
-	}
-	
+    public int hashCode() {
+        // Same definition
+        return value.hashCode();
+    }
+
+    @Override
+    public String ntriplesString() {
+        return "<" + value.toString() + ">";
+    }
+
+    @Override
+    public String toString() {
+        return value.toString();
+    }
+
 }

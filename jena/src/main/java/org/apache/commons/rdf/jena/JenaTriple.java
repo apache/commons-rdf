@@ -17,11 +17,11 @@
  */
 package org.apache.commons.rdf.jena;
 
-/** 
+/**
  * A Jena-backed {@link org.apache.commons.rdf.api.Triple}.
  * <p>
- * The underlying Jena {@link org.apache.jena.graph.Triple}
- * can be accessed with {@link #asJenaTriple()}.
+ * The underlying Jena {@link org.apache.jena.graph.Triple} can be accessed with
+ * {@link #asJenaTriple()}.
  */
 public interface JenaTriple extends org.apache.commons.rdf.api.Triple, JenaTripleLike {
 }

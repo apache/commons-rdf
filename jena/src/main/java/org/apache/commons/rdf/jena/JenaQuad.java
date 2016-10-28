@@ -19,12 +19,11 @@ package org.apache.commons.rdf.jena;
 
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
 
-/** 
+/**
  * A Jena-backed {@link org.apache.commons.rdf.api.Quad}.
  * <p>
- * The underlying Jena {@link org.apache.jena.sparql.core.Quad}
- * can be accessed with {@link #asJenaQuad()}.
+ * The underlying Jena {@link org.apache.jena.sparql.core.Quad} can be accessed
+ * with {@link #asJenaQuad()}.
  */
-public interface JenaQuad extends org.apache.commons.rdf.api.Quad, 
-	JenaQuadLike<BlankNodeOrIRI> {	
+public interface JenaQuad extends org.apache.commons.rdf.api.Quad, JenaQuadLike<BlankNodeOrIRI> {
 }

@@ -23,19 +23,20 @@ import java.util.stream.Stream;
 
 /**
  * An <a href="http://www.w3.org/TR/rdf11-concepts/#section-rdf-graph"> RDF 1.1
- * Graph</a>, a set of RDF triples, as defined by <a
- * href="http://www.w3.org/TR/rdf11-concepts/" >RDF-1.1 Concepts and Abstract
+ * Graph</a>, a set of RDF triples, as defined by
+ * <a href="http://www.w3.org/TR/rdf11-concepts/" >RDF-1.1 Concepts and Abstract
  * Syntax</a>, a W3C Recommendation published on 25 February 2014.
  * 
  * @see RDF#createGraph()
  */
-public interface Graph extends AutoCloseable,GraphLike<Triple> {
+public interface Graph extends AutoCloseable, GraphLike<Triple> {
 
     /**
      * Add a triple to the graph, possibly mapping any of the components of the
      * Triple to those supported by this Graph.
      *
-     * @param triple The triple to add
+     * @param triple
+     *            The triple to add
      */
     void add(Triple triple);
 
@@ -43,16 +44,20 @@ public interface Graph extends AutoCloseable,GraphLike<Triple> {
      * Add a triple to the graph, possibly mapping any of the components to
      * those supported by this Graph.
      *
-     * @param subject   The triple subject
-     * @param predicate The triple predicate
-     * @param object    The triple object
+     * @param subject
+     *            The triple subject
+     * @param predicate
+     *            The triple predicate
+     * @param object
+     *            The triple object
      */
     void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
 
     /**
      * Check if graph contains triple.
      *
-     * @param triple The triple to check.
+     * @param triple
+     *            The triple to check.
      * @return True if the Graph contains the given Triple.
      */
     boolean contains(Triple triple);
@@ -60,11 +65,14 @@ public interface Graph extends AutoCloseable,GraphLike<Triple> {
     /**
      * Check if graph contains a pattern of triples.
      *
-     * @param subject   The triple subject (null is a wildcard)
-     * @param predicate The triple predicate (null is a wildcard)
-     * @param object    The triple object (null is a wildcard)
+     * @param subject
+     *            The triple subject (null is a wildcard)
+     * @param predicate
+     *            The triple predicate (null is a wildcard)
+     * @param object
+     *            The triple object (null is a wildcard)
      * @return True if the Graph contains any Triples that match the given
-     * pattern.
+     *         pattern.
      */
     boolean contains(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
 
@@ -87,16 +95,20 @@ public interface Graph extends AutoCloseable,GraphLike<Triple> {
     /**
      * Remove a concrete triple from the graph.
      *
-     * @param triple triple to remove
+     * @param triple
+     *            triple to remove
      */
     void remove(Triple triple);
 
     /**
      * Remove a concrete pattern of triples from the graph.
      *
-     * @param subject   The triple subject (null is a wildcard)
-     * @param predicate The triple predicate (null is a wildcard)
-     * @param object    The triple object (null is a wildcard)
+     * @param subject
+     *            The triple subject (null is a wildcard)
+     * @param predicate
+     *            The triple predicate (null is a wildcard)
+     * @param object
+     *            The triple object (null is a wildcard)
      */
     void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
 
@@ -121,76 +133,82 @@ public interface Graph extends AutoCloseable,GraphLike<Triple> {
      * The iteration does not contain any duplicate triples, as determined by
      * the {@link Triple#equals(Object)} method for each {@link Triple}.
      * <p>
-     * The behaviour of the {@link Stream} is not specified if {@link #add(Triple)},
-     * {@link #remove(Triple)} or {@link #clear()} are called on the
-     * {@link Graph} before it terminates.
+     * The behaviour of the {@link Stream} is not specified if
+     * {@link #add(Triple)}, {@link #remove(Triple)} or {@link #clear()} are
+     * called on the {@link Graph} before it terminates.
      * <p>
-     * Implementations may throw {@link ConcurrentModificationException} from Stream
-     * methods if they detect a conflict while the Stream is active.
+     * Implementations may throw {@link ConcurrentModificationException} from
+     * Stream methods if they detect a conflict while the Stream is active.
      * 
      * @since 0.3.0-incubating
      * @return A {@link Stream} over all of the triples in the graph
      */
     Stream<? extends Triple> stream();
-    
+
     /**
      * Get all triples contained by the graph matched with the pattern.
      * <p>
      * The iteration does not contain any duplicate triples, as determined by
      * the {@link Triple#equals(Object)} method for each {@link Triple}.
      * <p>
-     * The behaviour of the {@link Stream} is not specified if {@link #add(Triple)},
-     * {@link #remove(Triple)} or {@link #clear()} are called on the
-     * {@link Graph} before it terminates.
+     * The behaviour of the {@link Stream} is not specified if
+     * {@link #add(Triple)}, {@link #remove(Triple)} or {@link #clear()} are
+     * called on the {@link Graph} before it terminates.
      * <p>
-     * Implementations may throw {@link ConcurrentModificationException} from Stream
-     * methods if they detect a conflict while the Stream is active.
+     * Implementations may throw {@link ConcurrentModificationException} from
+     * Stream methods if they detect a conflict while the Stream is active.
      * <p>
      * 
      * @since 0.3.0-incubating
-     * @param subject   The triple subject (null is a wildcard)
-     * @param predicate The triple predicate (null is a wildcard)
-     * @param object    The triple object (null is a wildcard)
+     * @param subject
+     *            The triple subject (null is a wildcard)
+     * @param predicate
+     *            The triple predicate (null is a wildcard)
+     * @param object
+     *            The triple object (null is a wildcard)
      * @return A {@link Stream} over the matched triples.
      */
-    Stream<? extends Triple> stream(BlankNodeOrIRI subject, IRI predicate,
-                                        RDFTerm object);
+    Stream<? extends Triple> stream(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
 
     /**
-     * This method is deprecated, use the equivalent method 
-     * {@link #stream()} instead. 
+     * This method is deprecated, use the equivalent method {@link #stream()}
+     * instead.
      * 
      * @return A {@link Stream} over all triples.
      */
     @Deprecated
     default Stream<? extends Triple> getTriples() {
-    	return stream();
+        return stream();
     }
 
     /**
-     * This method is deprecated, use the equivalent method 
+     * This method is deprecated, use the equivalent method
      * {@link #stream(BlankNodeOrIRI, IRI, RDFTerm)} instead.
      * 
-     * @param subject   The triple subject (null is a wildcard)
-     * @param predicate The triple predicate (null is a wildcard)
-     * @param object    The triple object (null is a wildcard)
+     * @param subject
+     *            The triple subject (null is a wildcard)
+     * @param predicate
+     *            The triple predicate (null is a wildcard)
+     * @param object
+     *            The triple object (null is a wildcard)
      * @return A {@link Stream} over the matched triples.
      */
-    @Deprecated    
-    default Stream<? extends Triple> getTriples(BlankNodeOrIRI subject, IRI predicate,
-            RDFTerm object) {
-    	return stream(subject, predicate, object);
+    @Deprecated
+    default Stream<? extends Triple> getTriples(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+        return stream(subject, predicate, object);
     }
-    
+
     /**
      * Get an Iterable for iterating over all triples in the graph.
      * <p>
      * This method is meant to be used with a Java for-each loop, e.g.:
+     * 
      * <pre>
-     *  for (Triple t : graph.iterate()) {
-     *      System.out.println(t);
-     *  }
+     * for (Triple t : graph.iterate()) {
+     *     System.out.println(t);
+     * }
      * </pre>
+     * 
      * The behaviour of the iterator is not specified if {@link #add(Triple)},
      * {@link #remove(Triple)} or {@link #clear()}, are called on the
      * {@link Graph} before it terminates. It is undefined if the returned
@@ -213,9 +231,8 @@ public interface Graph extends AutoCloseable,GraphLike<Triple> {
      *             active.
      */
     @SuppressWarnings("unchecked")
-    default Iterable<Triple> iterate()
-            throws ConcurrentModificationException, IllegalStateException {
-        return ((Stream<Triple>)stream())::iterator;
+    default Iterable<Triple> iterate() throws ConcurrentModificationException, IllegalStateException {
+        return ((Stream<Triple>) stream())::iterator;
     }
 
     /**
@@ -223,18 +240,19 @@ public interface Graph extends AutoCloseable,GraphLike<Triple> {
      * the pattern.
      * <p>
      * This method is meant to be used with a Java for-each loop, e.g.:
+     * 
      * <pre>
-     *  IRI alice = factory.createIRI("http://example.com/alice");
-     *  IRI knows = factory.createIRI("http://xmlns.com/foaf/0.1/");
-     *  for (Triple t : graph.iterate(alice, knows, null)) {
-     *      System.out.println(t.getObject());
-     *  }
+     * IRI alice = factory.createIRI("http://example.com/alice");
+     * IRI knows = factory.createIRI("http://xmlns.com/foaf/0.1/");
+     * for (Triple t : graph.iterate(alice, knows, null)) {
+     *     System.out.println(t.getObject());
+     * }
      * </pre>
      * <p>
-     * The behaviour of the iterator is not specified if
-     * {@link #add(Triple)}, {@link #remove(Triple)} or {@link #clear()}, are
-     * called on the {@link Graph} before it terminates. It is undefined if the
-     * returned {@link Iterator} supports the {@link Iterator#remove()} method.
+     * The behaviour of the iterator is not specified if {@link #add(Triple)},
+     * {@link #remove(Triple)} or {@link #clear()}, are called on the
+     * {@link Graph} before it terminates. It is undefined if the returned
+     * {@link Iterator} supports the {@link Iterator#remove()} method.
      * <p>
      * Implementations may throw {@link ConcurrentModificationException} from
      * Iterator methods if they detect a concurrency conflict while the Iterator
@@ -259,9 +277,8 @@ public interface Graph extends AutoCloseable,GraphLike<Triple> {
      *             active.
      */
     @SuppressWarnings("unchecked")
-    default Iterable<Triple> iterate(
-            BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
-        throws ConcurrentModificationException, IllegalStateException {
+    default Iterable<Triple> iterate(BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
+            throws ConcurrentModificationException, IllegalStateException {
         return ((Stream<Triple>) stream(subject, predicate, object))::iterator;
     }
 }

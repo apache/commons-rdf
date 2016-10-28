@@ -37,82 +37,76 @@ import com.github.jsonldjava.core.RDFDataset;
 public interface JsonLdGraph extends JsonLdGraphLike<Triple>, Graph {
 }
 
-class JsonLdGraphImpl extends AbstractJsonLdGraphLike<Triple> 
-	implements JsonLdGraph {
+class JsonLdGraphImpl extends AbstractJsonLdGraphLike<Triple> implements JsonLdGraph {
 
-	private final Optional<BlankNodeOrIRI> graphName;
+    private final Optional<BlankNodeOrIRI> graphName;
 
-	JsonLdGraphImpl(RDFDataset rdfDataSet) {
-		super(rdfDataSet);
-		this.graphName = Optional.empty();
-	}
-	
-	JsonLdGraphImpl(RDFDataset rdfDataSet, Optional<BlankNodeOrIRI> graphName, String bnodePrefix) {
-		super(rdfDataSet, bnodePrefix);
-		this.graphName = Objects.requireNonNull(graphName);
-	}
-	
-	JsonLdGraphImpl(String bnodePrefix) {
-		super(bnodePrefix);
-		this.graphName = Optional.empty();
-	}
+    JsonLdGraphImpl(RDFDataset rdfDataSet) {
+        super(rdfDataSet);
+        this.graphName = Optional.empty();
+    }
 
-	@Override
-	public void clear() {
-		filteredGraphs(graphName).forEach(l -> l.clear());
-	}
+    JsonLdGraphImpl(RDFDataset rdfDataSet, Optional<BlankNodeOrIRI> graphName, String bnodePrefix) {
+        super(rdfDataSet, bnodePrefix);
+        this.graphName = Objects.requireNonNull(graphName);
+    }
 
-	@Override
-	public void add(Triple t) {
-		// Ensure it's added in the correct graph
-		super.add(graphName.orElse(null), t.getSubject(), t.getPredicate(), t.getObject());
-	}
-	
-	@Override
-	public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		super.add(graphName.orElse(null), subject, predicate, object);
-	}
+    JsonLdGraphImpl(String bnodePrefix) {
+        super(bnodePrefix);
+        this.graphName = Optional.empty();
+    }
 
-	@Override
-	public boolean contains(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		return super.contains(graphName, subject, predicate, object);
-	}
-	
-	@Override
-	public boolean contains(Triple t) {
-		return contains(graphName, t.getSubject(), t.getPredicate(), t.getObject());
-	}
-	
-	@Override
-	public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		super.remove(graphName, subject, predicate, object);
-	}
-	
-	@Override
-	public void remove(Triple t) {
-		// Only remove from the particular graph
-		remove(graphName, t.getSubject(), t.getPredicate(), t.getObject());		
-	}
+    @Override
+    public void clear() {
+        filteredGraphs(graphName).forEach(l -> l.clear());
+    }
 
-	@Override
-	public long size() {
-		String g = graphName.map(factory::asJsonLdString).orElse("@default");
-		return Optional.ofNullable(rdfDataSet.getQuads(g))
-				.map(List::size).orElse(0);
-	}
+    @Override
+    public void add(Triple t) {
+        // Ensure it's added in the correct graph
+        super.add(graphName.orElse(null), t.getSubject(), t.getPredicate(), t.getObject());
+    }
 
-	@Override
-	public Stream<JsonLdTriple> stream(BlankNodeOrIRI subject, IRI predicate,
-			RDFTerm object) {		
-		return filteredGraphs(graphName)
-				.flatMap(List::stream)
-				.filter(quadFilter(subject, predicate, object))
-				.map(factory::asTriple);
-	}
-	
-	@Override
-	JsonLdTriple asTripleOrQuad(com.github.jsonldjava.core.RDFDataset.Quad jsonldQuad) {
-		return factory.asTriple(jsonldQuad);
-	}
+    @Override
+    public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+        super.add(graphName.orElse(null), subject, predicate, object);
+    }
+
+    @Override
+    public boolean contains(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+        return super.contains(graphName, subject, predicate, object);
+    }
+
+    @Override
+    public boolean contains(Triple t) {
+        return contains(graphName, t.getSubject(), t.getPredicate(), t.getObject());
+    }
+
+    @Override
+    public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+        super.remove(graphName, subject, predicate, object);
+    }
+
+    @Override
+    public void remove(Triple t) {
+        // Only remove from the particular graph
+        remove(graphName, t.getSubject(), t.getPredicate(), t.getObject());
+    }
+
+    @Override
+    public long size() {
+        String g = graphName.map(factory::asJsonLdString).orElse("@default");
+        return Optional.ofNullable(rdfDataSet.getQuads(g)).map(List::size).orElse(0);
+    }
+
+    @Override
+    public Stream<JsonLdTriple> stream(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+        return filteredGraphs(graphName).flatMap(List::stream).filter(quadFilter(subject, predicate, object))
+                .map(factory::asTriple);
+    }
+
+    @Override
+    JsonLdTriple asTripleOrQuad(com.github.jsonldjava.core.RDFDataset.Quad jsonldQuad) {
+        return factory.asTriple(jsonldQuad);
+    }
 }
-

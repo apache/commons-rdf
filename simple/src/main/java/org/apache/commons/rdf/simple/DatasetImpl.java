@@ -43,7 +43,7 @@ import org.apache.commons.rdf.simple.SimpleRDF.SimpleRDFTerm;
  * All Stream operations are performed using parallel and unordered directives.
  */
 final class DatasetImpl implements Dataset {
-	
+
     private static final int TO_STRING_MAX = 10;
     private final Set<Quad> quads = new HashSet<Quad>();
     private final SimpleRDF factory;
@@ -51,43 +51,39 @@ final class DatasetImpl implements Dataset {
     DatasetImpl(SimpleRDF simpleRDF) {
         this.factory = simpleRDF;
     }
-    
-	@Override
-	public void add(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		BlankNodeOrIRI newGraphName = (BlankNodeOrIRI) internallyMap(graphName);
-		BlankNodeOrIRI newSubject = (BlankNodeOrIRI) internallyMap(subject);
+
+    @Override
+    public void add(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+        BlankNodeOrIRI newGraphName = (BlankNodeOrIRI) internallyMap(graphName);
+        BlankNodeOrIRI newSubject = (BlankNodeOrIRI) internallyMap(subject);
         IRI newPredicate = (IRI) internallyMap(predicate);
         RDFTerm newObject = internallyMap(object);
         Quad result = factory.createQuad(newGraphName, newSubject, newPredicate, newObject);
         quads.add(result);
-	}    
+    }
 
     @Override
-    public void add(Quad quad) {    	
-    	BlankNodeOrIRI newGraph = (BlankNodeOrIRI) internallyMap(quad.getGraphName().orElse(null));
-    	BlankNodeOrIRI newSubject = (BlankNodeOrIRI) internallyMap(quad
-                .getSubject());        
+    public void add(Quad quad) {
+        BlankNodeOrIRI newGraph = (BlankNodeOrIRI) internallyMap(quad.getGraphName().orElse(null));
+        BlankNodeOrIRI newSubject = (BlankNodeOrIRI) internallyMap(quad.getSubject());
         IRI newPredicate = (IRI) internallyMap(quad.getPredicate());
         RDFTerm newObject = internallyMap(quad.getObject());
         // Check if any of the object references changed during the mapping, to
         // avoid creating a new Quad object if possible
-        if (newGraph == quad.getGraphName().orElse(null) 
-        	&& newSubject == quad.getSubject()
-            && newPredicate == quad.getPredicate()
-            && newObject == quad.getObject()) {
+        if (newGraph == quad.getGraphName().orElse(null) && newSubject == quad.getSubject()
+                && newPredicate == quad.getPredicate() && newObject == quad.getObject()) {
             quads.add(quad);
         } else {
-        	// Make a new Quad with our mapped instances
-            Quad result = factory.createQuad(newGraph, newSubject, newPredicate,
-                    newObject);
+            // Make a new Quad with our mapped instances
+            Quad result = factory.createQuad(newGraph, newSubject, newPredicate, newObject);
             quads.add(result);
         }
     }
 
     private <T extends RDFTerm> RDFTerm internallyMap(T object) {
-    	if (object == null || object instanceof SimpleRDFTerm) {
-    		return object;
-    	}    	
+        if (object == null || object instanceof SimpleRDFTerm) {
+            return object;
+        }
         if (object instanceof BlankNode && !(object instanceof BlankNodeImpl)) {
             BlankNode blankNode = (BlankNode) object;
             // This guarantees that adding the same BlankNode multiple times to
@@ -98,18 +94,15 @@ final class DatasetImpl implements Dataset {
         } else if (object instanceof IRI && !(object instanceof IRIImpl)) {
             IRI iri = (IRI) object;
             return factory.createIRI(iri.getIRIString());
-        } else if (object instanceof Literal
-                && !(object instanceof LiteralImpl)) {
+        } else if (object instanceof Literal && !(object instanceof LiteralImpl)) {
             Literal literal = (Literal) object;
             if (literal.getLanguageTag().isPresent()) {
-                return factory.createLiteral(literal.getLexicalForm(), literal
-                        .getLanguageTag().get());
+                return factory.createLiteral(literal.getLexicalForm(), literal.getLanguageTag().get());
             } else {
-                return factory.createLiteral(literal.getLexicalForm(),
-                        (IRI) internallyMap(literal.getDatatype()));
+                return factory.createLiteral(literal.getLexicalForm(), (IRI) internallyMap(literal.getDatatype()));
             }
         } else {
-        	throw new IllegalArgumentException("Not a BlankNode, IRI or Literal: " + object);
+            throw new IllegalArgumentException("Not a BlankNode, IRI or Literal: " + object);
         }
     }
 
@@ -118,34 +111,34 @@ final class DatasetImpl implements Dataset {
         quads.clear();
     }
 
-	@Override
-	public boolean contains(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-		return stream(graphName, subject, predicate, object).findAny().isPresent();
-	}
-    
+    @Override
+    public boolean contains(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+        return stream(graphName, subject, predicate, object).findAny().isPresent();
+    }
+
     @Override
     public boolean contains(Quad quad) {
         return quads.contains(Objects.requireNonNull(quad));
     }
-    
-	@Override
-	public Stream<Quad> stream() {
-        return quads.parallelStream().unordered();
-	}
 
-	@Override
-	public Stream<Quad> stream(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate,
-			RDFTerm object) {
-		final Optional<BlankNodeOrIRI> newGraphName = graphName.map(g -> (BlankNodeOrIRI)internallyMap(g));
+    @Override
+    public Stream<Quad> stream() {
+        return quads.parallelStream().unordered();
+    }
+
+    @Override
+    public Stream<Quad> stream(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate,
+            RDFTerm object) {
+        final Optional<BlankNodeOrIRI> newGraphName = graphName.map(g -> (BlankNodeOrIRI) internallyMap(g));
         final BlankNodeOrIRI newSubject = (BlankNodeOrIRI) internallyMap(subject);
         final IRI newPredicate = (IRI) internallyMap(predicate);
         final RDFTerm newObject = internallyMap(object);
 
         return getQuads(t -> {
             if (newGraphName != null && !t.getGraphName().equals(newGraphName)) {
-            	// This would check Optional.empty() == Optional.empty()
+                // This would check Optional.empty() == Optional.empty()
                 return false;
-            }        	
+            }
             if (subject != null && !t.getSubject().equals(newSubject)) {
                 return false;
             }
@@ -157,20 +150,20 @@ final class DatasetImpl implements Dataset {
             }
             return true;
         });
-	}    
+    }
 
     private Stream<Quad> getQuads(final Predicate<Quad> filter) {
         return stream().filter(filter);
     }
 
-	@Override
-	public void remove(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    @Override
+    public void remove(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
         Stream<Quad> toRemove = stream(graphName, subject, predicate, object);
         for (Quad t : toRemove.collect(Collectors.toList())) {
             // Avoid ConcurrentModificationException in ArrayList
             remove(t);
         }
-	}
+    }
 
     @Override
     public void remove(Quad quad) {
@@ -184,8 +177,7 @@ final class DatasetImpl implements Dataset {
 
     @Override
     public String toString() {
-        String s = stream().limit(TO_STRING_MAX).map(Object::toString)
-                .collect(Collectors.joining("\n"));
+        String s = stream().limit(TO_STRING_MAX).map(Object::toString).collect(Collectors.joining("\n"));
         if (size() > TO_STRING_MAX) {
             return s + "\n# ... +" + (size() - TO_STRING_MAX) + " more";
         } else {
@@ -193,29 +185,24 @@ final class DatasetImpl implements Dataset {
         }
     }
 
-	@Override
-	public void close() {
-	}
+    @Override
+    public void close() {
+    }
 
-	@Override
-	public Graph getGraph() {
-		return getGraph(null).get();
-	}
+    @Override
+    public Graph getGraph() {
+        return getGraph(null).get();
+    }
 
-	@Override
-	public Optional<Graph> getGraph(BlankNodeOrIRI graphName) {
-		return Optional.of(new DatasetGraphView(this, graphName));
-	}
+    @Override
+    public Optional<Graph> getGraph(BlankNodeOrIRI graphName) {
+        return Optional.of(new DatasetGraphView(this, graphName));
+    }
 
-	@Override
-	public Stream<BlankNodeOrIRI> getGraphNames() {
-		// Not very efficient..
-		return stream()
-				.map(Quad::getGraphName)
-				.filter(Optional::isPresent).map(Optional::get)
-				.distinct();
-	}
-
-
+    @Override
+    public Stream<BlankNodeOrIRI> getGraphNames() {
+        // Not very efficient..
+        return stream().map(Quad::getGraphName).filter(Optional::isPresent).map(Optional::get).distinct();
+    }
 
 }

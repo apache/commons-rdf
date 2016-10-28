@@ -22,11 +22,10 @@ import org.apache.commons.rdf.api.AbstractRDFTest;
 import org.apache.commons.rdf.api.RDF;
 
 public class JenaRDFTest extends AbstractRDFTest {
-	
+
     @Override
     public RDF createFactory() {
         return new JenaRDF();
     }
 
 }
-

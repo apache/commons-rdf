@@ -24,31 +24,31 @@ import org.junit.Test;
 
 public class JsonLdRDFTest extends AbstractRDFTest {
 
-	@Override
-	public RDF createFactory() {
-		return new JsonLdRDF();
-	}
-	
-	// TODO: Add support for checking for invalid lang/iri/blanknode IDs
-	@Ignore("JSONLD-Java does not validate lang strings")
-	@Test
-	@Override
-	public void testInvalidLiteralLang() throws Exception {
-		super.testInvalidLiteralLang();
-	}
-	
-	@Ignore("JSONLD-Java does not validate IRIs")
-	@Test
-	@Override
-	public void testInvalidIRI() throws Exception {
-		super.testInvalidIRI();
-	}
-	
-	@Ignore("JSONLD-Java does not validate blanknode identifiers")
-	@Test
-	@Override
-	public void testPossiblyInvalidBlankNode() throws Exception {
-		// TODO: Fix blank node in ntriplesString()
-		super.testPossiblyInvalidBlankNode();
-	}
+    @Override
+    public RDF createFactory() {
+        return new JsonLdRDF();
+    }
+
+    // TODO: Add support for checking for invalid lang/iri/blanknode IDs
+    @Ignore("JSONLD-Java does not validate lang strings")
+    @Test
+    @Override
+    public void testInvalidLiteralLang() throws Exception {
+        super.testInvalidLiteralLang();
+    }
+
+    @Ignore("JSONLD-Java does not validate IRIs")
+    @Test
+    @Override
+    public void testInvalidIRI() throws Exception {
+        super.testInvalidIRI();
+    }
+
+    @Ignore("JSONLD-Java does not validate blanknode identifiers")
+    @Test
+    @Override
+    public void testPossiblyInvalidBlankNode() throws Exception {
+        // TODO: Fix blank node in ntriplesString()
+        super.testPossiblyInvalidBlankNode();
+    }
 }

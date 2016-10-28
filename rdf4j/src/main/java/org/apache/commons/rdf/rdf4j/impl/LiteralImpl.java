@@ -24,62 +24,62 @@ import org.apache.commons.rdf.rdf4j.RDF4JLiteral;
 import org.eclipse.rdf4j.model.vocabulary.XMLSchema;
 import org.eclipse.rdf4j.rio.turtle.TurtleUtil;
 
-final class LiteralImpl 
-	extends AbstractRDFTerm<org.eclipse.rdf4j.model.Literal>
-    implements RDF4JLiteral {		
+final class LiteralImpl extends AbstractRDFTerm<org.eclipse.rdf4j.model.Literal> implements RDF4JLiteral {
 
-	private static final String QUOTE = "\"";
-	
-	LiteralImpl(org.eclipse.rdf4j.model.Literal literal) {
-		super(literal);			
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == this) { return true; }
-		if (obj instanceof org.apache.commons.rdf.api.Literal) {
-			org.apache.commons.rdf.api.Literal other = (org.apache.commons.rdf.api.Literal) obj;
-			return getLexicalForm().equals(other.getLexicalForm()) &&
-					getDatatype().equals(other.getDatatype()) && 
-					getLanguageTag().equals(other.getLanguageTag());
-			
-		}
-		return false;
-	}
+    private static final String QUOTE = "\"";
 
-	@Override
-	public org.apache.commons.rdf.api.IRI getDatatype() {
-		return new IRIImpl(value.getDatatype());
-	}
+    LiteralImpl(org.eclipse.rdf4j.model.Literal literal) {
+        super(literal);
+    }
 
-	@Override
-	public Optional<String> getLanguageTag() {
-		return value.getLanguage();
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (obj instanceof org.apache.commons.rdf.api.Literal) {
+            org.apache.commons.rdf.api.Literal other = (org.apache.commons.rdf.api.Literal) obj;
+            return getLexicalForm().equals(other.getLexicalForm()) && getDatatype().equals(other.getDatatype())
+                    && getLanguageTag().equals(other.getLanguageTag());
 
-	@Override
-	public String getLexicalForm() {
-		return value.getLabel();
-	}
+        }
+        return false;
+    }
 
-	public int hashCode() {
-		return Objects.hash(value.getLabel(), value.getDatatype(), value.getLanguage());
-	}
+    @Override
+    public org.apache.commons.rdf.api.IRI getDatatype() {
+        return new IRIImpl(value.getDatatype());
+    }
 
-	@Override
-	public String ntriplesString() {
-		// TODO: Use a more efficient StringBuffer
-		String escaped = QUOTE + TurtleUtil.encodeString(value.getLabel()) + QUOTE;
-		if (value.getLanguage().isPresent()) {
-			return escaped + "@" + value.getLanguage().get();
-		}
-		if (value.getDatatype().equals(XMLSchema.STRING)) { 
-			return escaped;
-		}
-		return escaped + "^^<" + TurtleUtil.encodeURIString(value.getDatatype().toString()) + ">";
-	}
+    @Override
+    public Optional<String> getLanguageTag() {
+        return value.getLanguage();
+    }
 
-	@Override
-	public String toString() {
-		return ntriplesString();
-	}
+    @Override
+    public String getLexicalForm() {
+        return value.getLabel();
+    }
+
+    public int hashCode() {
+        return Objects.hash(value.getLabel(), value.getDatatype(), value.getLanguage());
+    }
+
+    @Override
+    public String ntriplesString() {
+        // TODO: Use a more efficient StringBuffer
+        String escaped = QUOTE + TurtleUtil.encodeString(value.getLabel()) + QUOTE;
+        if (value.getLanguage().isPresent()) {
+            return escaped + "@" + value.getLanguage().get();
+        }
+        if (value.getDatatype().equals(XMLSchema.STRING)) {
+            return escaped;
+        }
+        return escaped + "^^<" + TurtleUtil.encodeURIString(value.getDatatype().toString()) + ">";
+    }
+
+    @Override
+    public String toString() {
+        return ntriplesString();
+    }
 }

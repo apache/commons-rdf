@@ -29,38 +29,36 @@ import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.jena.ConversionException;
 import org.apache.commons.rdf.jena.JenaQuad;
 
-class JenaQuadImpl	extends AbstractQuadLike<BlankNodeOrIRI,IRI,RDFTerm,BlankNodeOrIRI>
-	implements JenaQuad {
+class JenaQuadImpl extends AbstractQuadLike<BlankNodeOrIRI, IRI, RDFTerm, BlankNodeOrIRI> implements JenaQuad {
 
-	JenaQuadImpl(BlankNodeOrIRI subject, IRI predicate, RDFTerm object, Optional<BlankNodeOrIRI> graphName) {
-		super(subject, predicate, object, graphName);
-	}
+    JenaQuadImpl(BlankNodeOrIRI subject, IRI predicate, RDFTerm object, Optional<BlankNodeOrIRI> graphName) {
+        super(subject, predicate, object, graphName);
+    }
 
-	JenaQuadImpl(org.apache.jena.sparql.core.Quad quad, UUID salt) {
-		super(quad, salt);
-		// Check the conversion
-		if ((graphName.isPresent() && ! (graphName.get() instanceof BlankNodeOrIRI)) ||
-			! (subject instanceof BlankNodeOrIRI) ||
-			! (predicate instanceof IRI) ||
-			! (object instanceof RDFTerm)) {
-			throw new ConversionException("Can't adapt generalized quad: " + quad);	
-		}
-	}
+    JenaQuadImpl(org.apache.jena.sparql.core.Quad quad, UUID salt) {
+        super(quad, salt);
+        // Check the conversion
+        if ((graphName.isPresent() && !(graphName.get() instanceof BlankNodeOrIRI))
+                || !(subject instanceof BlankNodeOrIRI) || !(predicate instanceof IRI)
+                || !(object instanceof RDFTerm)) {
+            throw new ConversionException("Can't adapt generalized quad: " + quad);
+        }
+    }
 
-	@Override
-	public boolean equals(Object other) {
-		if (other == this)
-			return true;
-		if (!(other instanceof Quad))
-			return false;
-		Quad quad = (Quad) other;
-		return getGraphName().equals(quad.getGraphName()) && getSubject().equals(quad.getSubject())
-				&& getPredicate().equals(quad.getPredicate()) && getObject().equals(quad.getObject());
-	}
+    @Override
+    public boolean equals(Object other) {
+        if (other == this)
+            return true;
+        if (!(other instanceof Quad))
+            return false;
+        Quad quad = (Quad) other;
+        return getGraphName().equals(quad.getGraphName()) && getSubject().equals(quad.getSubject())
+                && getPredicate().equals(quad.getPredicate()) && getObject().equals(quad.getObject());
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(getSubject(), getPredicate(), getObject(), getGraphName());
-	}
-	
+    @Override
+    public int hashCode() {
+        return Objects.hash(getSubject(), getPredicate(), getObject(), getGraphName());
+    }
+
 }

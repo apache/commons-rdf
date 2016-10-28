@@ -29,29 +29,28 @@ import org.apache.jena.sparql.core.DatasetGraph;
  * {@link #asJenaDatasetGraph()}.
  */
 public interface JenaDataset extends org.apache.commons.rdf.api.Dataset {
-	
 
-	/**
-	 * Return the underlying Jena {@link DatasetGraph}.
-	 * <p>
-	 * Changes to the Jena <em>dataset graph</em> are reflected in the Commons
-	 * RDF dataset and vice versa.
-	 * 
-	 * @return A Jena {@link DatasetGraph}
-	 */	
-	public DatasetGraph asJenaDatasetGraph();
-	
-	/**
-	 * Return a union graph view of this dataset.
-	 * <p>
-	 * The <em>union graph</em> contains triples in any graph (including the
-	 * default graph).
-	 * <p>
-	 * Changes in the union graph are reflected in the Commons RDF dataset and
-	 * vice versa. Triples added to the graph are added to the default graph.
-	 * 
-	 * @return A union {@link Graph}
-	 */
-	public JenaGraph getUnionGraph();
+    /**
+     * Return the underlying Jena {@link DatasetGraph}.
+     * <p>
+     * Changes to the Jena <em>dataset graph</em> are reflected in the Commons
+     * RDF dataset and vice versa.
+     * 
+     * @return A Jena {@link DatasetGraph}
+     */
+    public DatasetGraph asJenaDatasetGraph();
+
+    /**
+     * Return a union graph view of this dataset.
+     * <p>
+     * The <em>union graph</em> contains triples in any graph (including the
+     * default graph).
+     * <p>
+     * Changes in the union graph are reflected in the Commons RDF dataset and
+     * vice versa. Triples added to the graph are added to the default graph.
+     * 
+     * @return A union {@link Graph}
+     */
+    public JenaGraph getUnionGraph();
 
 }

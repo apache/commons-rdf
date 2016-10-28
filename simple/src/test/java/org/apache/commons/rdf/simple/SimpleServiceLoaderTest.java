@@ -31,10 +31,10 @@ public class SimpleServiceLoaderTest {
     public void testServiceLoaderLookup() {
         ServiceLoader<RDF> loader = ServiceLoader.load(RDF.class);
         for (RDF impl : loader) {
-        	if (impl instanceof SimpleRDF) {
-        		return; // yay
-        	}
+            if (impl instanceof SimpleRDF) {
+                return; // yay
+            }
         }
-        fail("SimpleRDF not found in ServiceLoader");        
+        fail("SimpleRDF not found in ServiceLoader");
     }
 }

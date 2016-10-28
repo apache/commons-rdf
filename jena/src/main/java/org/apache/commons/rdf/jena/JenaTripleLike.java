@@ -34,13 +34,12 @@ import org.apache.jena.graph.Triple;
  * @see JenaGeneralizedQuadLike
  * 
  */
-public interface JenaTripleLike 
-	extends org.apache.commons.rdf.api.TripleLike {
+public interface JenaTripleLike extends org.apache.commons.rdf.api.TripleLike {
 
-	/**
-	 * Return the adapted Jena triple
-	 * 
-	 * @return Adapted Jena {@link Triple}.
-	 */
-	Triple asJenaTriple();
+    /**
+     * Return the adapted Jena triple
+     * 
+     * @return Adapted Jena {@link Triple}.
+     */
+    Triple asJenaTriple();
 }

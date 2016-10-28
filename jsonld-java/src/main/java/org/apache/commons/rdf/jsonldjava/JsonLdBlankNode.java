@@ -22,42 +22,41 @@ import org.apache.commons.rdf.api.BlankNode;
 import com.github.jsonldjava.core.RDFDataset.Node;
 
 public interface JsonLdBlankNode extends JsonLdTerm, BlankNode {
-}	
-	
-	final class JsonLdBlankNodeImpl extends JsonLdTermImpl implements JsonLdBlankNode {
-		private String blankNodePrefix;
-	
-		JsonLdBlankNodeImpl(Node node, String blankNodePrefix) {
-			super(node);
-			this.blankNodePrefix = blankNodePrefix;
-			if (! node.isBlankNode()) {
-				throw new IllegalArgumentException("Node is not a BlankNode:" + node);
-			}
-		}
-	
-		@Override
-		public String ntriplesString() {
-			// TODO: Escape if this is not valid ntriples string (e.g. contains :)
-			return node.getValue();
-		}
-	
-		@Override
-		public String uniqueReference() {					
-			return blankNodePrefix + node.getValue();
-		}
-	
-		@Override
-		public boolean equals(Object obj) {
-			if (! ( obj instanceof BlankNode)) {
-				return false;
-			}
-			BlankNode other = (BlankNode) obj;
-			return uniqueReference().equals(other.uniqueReference());
-		}
-	
-		@Override
-		public int hashCode() {
-			return uniqueReference().hashCode();
-		}
-	}
+}
 
+final class JsonLdBlankNodeImpl extends JsonLdTermImpl implements JsonLdBlankNode {
+    private String blankNodePrefix;
+
+    JsonLdBlankNodeImpl(Node node, String blankNodePrefix) {
+        super(node);
+        this.blankNodePrefix = blankNodePrefix;
+        if (!node.isBlankNode()) {
+            throw new IllegalArgumentException("Node is not a BlankNode:" + node);
+        }
+    }
+
+    @Override
+    public String ntriplesString() {
+        // TODO: Escape if this is not valid ntriples string (e.g. contains :)
+        return node.getValue();
+    }
+
+    @Override
+    public String uniqueReference() {
+        return blankNodePrefix + node.getValue();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof BlankNode)) {
+            return false;
+        }
+        BlankNode other = (BlankNode) obj;
+        return uniqueReference().equals(other.uniqueReference());
+    }
+
+    @Override
+    public int hashCode() {
+        return uniqueReference().hashCode();
+    }
+}

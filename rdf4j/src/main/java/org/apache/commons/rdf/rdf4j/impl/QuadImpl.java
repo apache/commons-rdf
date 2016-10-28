@@ -30,70 +30,69 @@ import org.apache.commons.rdf.rdf4j.RDF4J;
 import org.eclipse.rdf4j.model.Statement;
 
 final class QuadImpl implements Quad, RDF4JQuad {
-		private transient int hashCode = 0;	
-		private UUID salt;
-		private final Statement statement;
-		
-		QuadImpl(Statement statement, UUID salt) {
-			this.statement = statement;
-			this.salt = salt;
-		}
-	
-		@Override
-		public Statement asStatement() { 
-			return statement;
-		}
-		
-		@Override
-		public Triple asTriple() {
-			return new TripleImpl(statement, salt);
-		}
-	
-		@Override
-		public boolean equals(Object obj) {
-			if (obj instanceof Triple) {
-				Triple triple = (Triple) obj;
-				return getSubject().equals(triple.getSubject()) &&
-						getPredicate().equals(triple.getPredicate()) && 
-						getObject().equals(triple.getObject());
-			}
-			return false;
-		}
-	
-		@Override
-		public Optional<BlankNodeOrIRI> getGraphName() {
-			if (statement.getContext() == null) { 
-				return Optional.empty();
-			}			
-			BlankNodeOrIRI g = (BlankNodeOrIRI) RDF4J.asRDFTerm(statement.getContext(), salt);
-			return Optional.of(g);
-		}
-		
-		@Override
-		public RDFTerm getObject() {
-			return RDF4J.asRDFTerm(statement.getObject(), salt);
-		}
-	
-		@Override
-		public org.apache.commons.rdf.api.IRI getPredicate() {
-			return (org.apache.commons.rdf.api.IRI) RDF4J.asRDFTerm(statement.getPredicate(), null);
-		}
-		
-		@Override
-		public BlankNodeOrIRI getSubject() {
-			return (BlankNodeOrIRI) RDF4J.asRDFTerm(statement.getSubject(), salt);
-		}
+    private transient int hashCode = 0;
+    private UUID salt;
+    private final Statement statement;
 
-		@Override
-		public int hashCode() {
-			if (hashCode  != 0) {
-				return hashCode;
-			}
-			return hashCode = Objects.hash(getSubject(), getPredicate(), getObject(), getGraphName());
-		}
-		
-		@Override
-		public String toString() {
-			return statement.toString();
-		}
+    QuadImpl(Statement statement, UUID salt) {
+        this.statement = statement;
+        this.salt = salt;
+    }
+
+    @Override
+    public Statement asStatement() {
+        return statement;
+    }
+
+    @Override
+    public Triple asTriple() {
+        return new TripleImpl(statement, salt);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Triple) {
+            Triple triple = (Triple) obj;
+            return getSubject().equals(triple.getSubject()) && getPredicate().equals(triple.getPredicate())
+                    && getObject().equals(triple.getObject());
+        }
+        return false;
+    }
+
+    @Override
+    public Optional<BlankNodeOrIRI> getGraphName() {
+        if (statement.getContext() == null) {
+            return Optional.empty();
+        }
+        BlankNodeOrIRI g = (BlankNodeOrIRI) RDF4J.asRDFTerm(statement.getContext(), salt);
+        return Optional.of(g);
+    }
+
+    @Override
+    public RDFTerm getObject() {
+        return RDF4J.asRDFTerm(statement.getObject(), salt);
+    }
+
+    @Override
+    public org.apache.commons.rdf.api.IRI getPredicate() {
+        return (org.apache.commons.rdf.api.IRI) RDF4J.asRDFTerm(statement.getPredicate(), null);
+    }
+
+    @Override
+    public BlankNodeOrIRI getSubject() {
+        return (BlankNodeOrIRI) RDF4J.asRDFTerm(statement.getSubject(), salt);
+    }
+
+    @Override
+    public int hashCode() {
+        if (hashCode != 0) {
+            return hashCode;
+        }
+        return hashCode = Objects.hash(getSubject(), getPredicate(), getObject(), getGraphName());
+    }
+
+    @Override
+    public String toString() {
+        return statement.toString();
+    }
 }

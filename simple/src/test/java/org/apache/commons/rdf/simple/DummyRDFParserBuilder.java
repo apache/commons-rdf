@@ -28,71 +28,66 @@ import org.apache.commons.rdf.experimental.RDFParser;
 import org.apache.commons.rdf.simple.experimental.AbstractRDFParser;
 import org.apache.commons.rdf.simple.experimental.RDFParseException;
 
-/** 
- * For test purposes - a {@link RDFParser} that inserts information
- * about what it has been asked to parse instead of actually parsing anything.
+/**
+ * For test purposes - a {@link RDFParser} that inserts information about what
+ * it has been asked to parse instead of actually parsing anything.
  * <p>
  * This always insert at least the triple equivalent to:
+ * 
  * <pre>
  *    &lt;urn:uuid:b7ac3fcc-4d86-4d28-8358-a1cd094974a6&gt; &lt;http://example.com/greeting&gt; "Hello world" .
  * </pre>
- * Additional triples match the corresponding getter in AbstractRDFParser,
- * e.g.:
+ * 
+ * Additional triples match the corresponding getter in AbstractRDFParser, e.g.:
+ * 
  * <pre>
  *   &lt;urn:uuid:b7ac3fcc-4d86-4d28-8358-a1cd094974a6&gt; &lt;http://example.com/base&gt; &lt;http://www.example.org/&gt; .
- *   &lt;urn:uuid:b7ac3fcc-4d86-4d28-8358-a1cd094974a6&gt; &lt;http://example.com/sourceFile&gt; "/tmp/file.ttl" .   
- * </pre> 
+ *   &lt;urn:uuid:b7ac3fcc-4d86-4d28-8358-a1cd094974a6&gt; &lt;http://example.com/sourceFile&gt; "/tmp/file.ttl" .
+ * </pre>
  * 
  *
  */
 public class DummyRDFParserBuilder extends AbstractRDFParser<DummyRDFParserBuilder> {
-	
-	@Override
-	protected void parseSynchronusly() throws IOException, IllegalStateException, RDFParseException {		
-		// From parseSynchronusly both of these are always present
-		RDF factory = getRdfTermFactory().get();
-		Consumer<Quad> t = getTarget();
-				
-		// well - each parsing is unique. This should hopefully
-		// catch any accidental double parsing
-		IRI parsing = factory.createIRI("urn:uuid:" + UUID.randomUUID());
-		t.accept(factory.createQuad(null, parsing, factory.createIRI("http://example.com/greeting"), 
-				factory.createLiteral("Hello world")));
-		
-		// Now we'll expose the finalized AbstractRDFParser settings
-		// so they can be inspected by the junit test
 
-		if (getSourceIri().isPresent()) {
-			t.accept(factory.createQuad(null, parsing, 
-					factory.createIRI("http://example.com/source"),
-					getSourceIri().get()));			
-		}		
-		if (getSourceFile().isPresent()) {
-			t.accept(factory.createQuad(null, parsing, 
-					factory.createIRI("http://example.com/source"),
-					factory.createIRI(getSourceFile().get().toUri().toString())));
-		}
-		if (getSourceInputStream().isPresent()) { 
-			t.accept(factory.createQuad(null, parsing, 
-					factory.createIRI("http://example.com/source"),
-					factory.createBlankNode()));
-		}
+    @Override
+    protected void parseSynchronusly() throws IOException, IllegalStateException, RDFParseException {
+        // From parseSynchronusly both of these are always present
+        RDF factory = getRdfTermFactory().get();
+        Consumer<Quad> t = getTarget();
 
-		if (getBase().isPresent()) { 
-			t.accept(factory.createQuad(null, parsing, 
-					factory.createIRI("http://example.com/base"),
-					getBase().get()));
-		}
-		if (getContentType().isPresent()) {
-			t.accept(factory.createQuad(null, parsing, 
-					factory.createIRI("http://example.com/contentType"),
-					factory.createLiteral(getContentType().get())));
-		}
-		if (getContentTypeSyntax().isPresent()) {
-			t.accept(factory.createQuad(null, parsing, 
-					factory.createIRI("http://example.com/contentTypeSyntax"),
-					factory.createLiteral(getContentTypeSyntax().get().name())));
-		}		
-	}
+        // well - each parsing is unique. This should hopefully
+        // catch any accidental double parsing
+        IRI parsing = factory.createIRI("urn:uuid:" + UUID.randomUUID());
+        t.accept(factory.createQuad(null, parsing, factory.createIRI("http://example.com/greeting"),
+                factory.createLiteral("Hello world")));
+
+        // Now we'll expose the finalized AbstractRDFParser settings
+        // so they can be inspected by the junit test
+
+        if (getSourceIri().isPresent()) {
+            t.accept(factory.createQuad(null, parsing, factory.createIRI("http://example.com/source"),
+                    getSourceIri().get()));
+        }
+        if (getSourceFile().isPresent()) {
+            t.accept(factory.createQuad(null, parsing, factory.createIRI("http://example.com/source"),
+                    factory.createIRI(getSourceFile().get().toUri().toString())));
+        }
+        if (getSourceInputStream().isPresent()) {
+            t.accept(factory.createQuad(null, parsing, factory.createIRI("http://example.com/source"),
+                    factory.createBlankNode()));
+        }
+
+        if (getBase().isPresent()) {
+            t.accept(factory.createQuad(null, parsing, factory.createIRI("http://example.com/base"), getBase().get()));
+        }
+        if (getContentType().isPresent()) {
+            t.accept(factory.createQuad(null, parsing, factory.createIRI("http://example.com/contentType"),
+                    factory.createLiteral(getContentType().get())));
+        }
+        if (getContentTypeSyntax().isPresent()) {
+            t.accept(factory.createQuad(null, parsing, factory.createIRI("http://example.com/contentTypeSyntax"),
+                    factory.createLiteral(getContentTypeSyntax().get().name())));
+        }
+    }
 
 }

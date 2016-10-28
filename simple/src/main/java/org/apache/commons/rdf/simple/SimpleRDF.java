@@ -33,26 +33,25 @@ import org.apache.commons.rdf.api.Triple;
 /**
  * Simple RDF implementation.
  * <p>
- * The {@link RDFTerm}, {@link Triple}, {@link Quad}, {@link Graph}
- * and {@link Dataset} instances created by SimpleRDF are
- * simple in-memory Implementations that are not thread-safe or efficient, but
- * which may be useful for testing and prototyping purposes.
+ * The {@link RDFTerm}, {@link Triple}, {@link Quad}, {@link Graph} and
+ * {@link Dataset} instances created by SimpleRDF are simple in-memory
+ * Implementations that are not thread-safe or efficient, but which may be
+ * useful for testing and prototyping purposes.
  */
 public class SimpleRDF implements RDF {
 
-	/**
-	 * Marker interface to say that this RDFTerm is part of the 
-	 * Simple implementation. Used by {@link GraphImpl} to avoid
-	 * double remapping. 
-	 * <p>
-	 * This method is package protected to avoid any third-party
-	 * subclasses.
-	 *
-	 */
-	static interface SimpleRDFTerm extends RDFTerm {		
-	}
-	
-    /** Unique salt per instance, for {@link #createBlankNode(String)}
+    /**
+     * Marker interface to say that this RDFTerm is part of the Simple
+     * implementation. Used by {@link GraphImpl} to avoid double remapping.
+     * <p>
+     * This method is package protected to avoid any third-party subclasses.
+     *
+     */
+    static interface SimpleRDFTerm extends RDFTerm {
+    }
+
+    /**
+     * Unique salt per instance, for {@link #createBlankNode(String)}
      */
     private final UUID SALT = UUID.randomUUID();
 
@@ -75,9 +74,9 @@ public class SimpleRDF implements RDF {
 
     @Override
     public Dataset createDataset() throws UnsupportedOperationException {
-    	return new DatasetImpl(this);
+        return new DatasetImpl(this);
     }
-    
+
     @Override
     public IRI createIRI(String iri) {
         IRI result = new IRIImpl(iri);
@@ -101,14 +100,13 @@ public class SimpleRDF implements RDF {
     }
 
     @Override
-    public Triple createTriple(BlankNodeOrIRI subject, IRI predicate,
-                               RDFTerm object) {
+    public Triple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
         return new TripleImpl(subject, predicate, object);
     }
-    
+
     @Override
     public Quad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
-    		throws IllegalArgumentException {
-    	return new QuadImpl(graphName, subject, predicate, object);
+            throws IllegalArgumentException {
+        return new QuadImpl(graphName, subject, predicate, object);
     }
 }

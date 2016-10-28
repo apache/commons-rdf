@@ -68,20 +68,13 @@ public class TestWritingGraph {
         Collections.shuffle(types);
         for (int i = 0; i < TRIPLES; i++) {
             if (i % 11 == 0) {
-                graph.add(subject, predicate,
-                        factory.createBlankNode("Example " + i));
+                graph.add(subject, predicate, factory.createBlankNode("Example " + i));
             } else if (i % 5 == 0) {
-                graph.add(subject, predicate,
-                        factory.createLiteral("Example " + i, "en"));
+                graph.add(subject, predicate, factory.createLiteral("Example " + i, "en"));
             } else if (i % 3 == 0) {
-                graph.add(
-                        subject,
-                        predicate,
-                        factory.createLiteral("Example " + i,
-                                types.get(i % types.size())));
+                graph.add(subject, predicate, factory.createLiteral("Example " + i, types.get(i % types.size())));
             } else {
-                graph.add(subject, predicate,
-                        factory.createLiteral("Example " + i));
+                graph.add(subject, predicate, factory.createLiteral("Example " + i));
             }
         }
     }
@@ -101,16 +94,14 @@ public class TestWritingGraph {
     public void countQuery() {
         IRI subject = factory.createIRI("subj");
         IRI predicate = factory.createIRI("pred");
-        long count = graph.stream(subject, predicate, null).unordered()
-                .parallel().count();
-        //System.out.println("Counted - " + count);
+        long count = graph.stream(subject, predicate, null).unordered().parallel().count();
+        // System.out.println("Counted - " + count);
         assertEquals(count, TRIPLES);
     }
 
     public static String tripleAsString(Triple t) {
-        return t.getSubject().ntriplesString() + " "
-                + t.getPredicate().ntriplesString() + " " +
-                t.getObject().ntriplesString() + " .";
+        return t.getSubject().ntriplesString() + " " + t.getPredicate().ntriplesString() + " "
+                + t.getObject().ntriplesString() + " .";
     }
 
     @Test
@@ -137,8 +128,7 @@ public class TestWritingGraph {
 
         IRI subject = factory.createIRI("subj");
         IRI predicate = factory.createIRI("pred");
-        Stream<CharSequence> stream = graph
-                .stream(subject, predicate, null).map(TestWritingGraph::tripleAsString);
+        Stream<CharSequence> stream = graph.stream(subject, predicate, null).map(TestWritingGraph::tripleAsString);
         Files.write(graphFile, stream::iterator, StandardCharsets.UTF_8);
 
     }
@@ -154,8 +144,7 @@ public class TestWritingGraph {
 
         IRI subject = factory.createIRI("nonexistent");
         IRI predicate = factory.createIRI("pred");
-        Stream<CharSequence> stream = graph
-                .stream(subject, predicate, null).map(Object::toString);
+        Stream<CharSequence> stream = graph.stream(subject, predicate, null).map(Object::toString);
         Files.write(graphFile, stream::iterator, StandardCharsets.UTF_8);
 
     }

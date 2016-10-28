@@ -33,57 +33,57 @@ import org.eclipse.rdf4j.sail.memory.model.MemValueFactory;
 
 public class MemoryGraphTest extends AbstractGraphTest {
 
-	public static final class MemoryStoreRDF implements RDF {
+    public static final class MemoryStoreRDF implements RDF {
 
-		RDF4J rdf4jFactory = new RDF4J(new MemValueFactory());
+        RDF4J rdf4jFactory = new RDF4J(new MemValueFactory());
 
-		public RDF4JBlankNode createBlankNode() {
-			return rdf4jFactory.createBlankNode();
-		}
+        public RDF4JBlankNode createBlankNode() {
+            return rdf4jFactory.createBlankNode();
+        }
 
-		public RDF4JBlankNode createBlankNode(String name) {
-			return rdf4jFactory.createBlankNode(name);
-		}
+        public RDF4JBlankNode createBlankNode(String name) {
+            return rdf4jFactory.createBlankNode(name);
+        }
 
-		public Dataset createDataset() {
-			return rdf4jFactory.createDataset();
-		}
+        public Dataset createDataset() {
+            return rdf4jFactory.createDataset();
+        }
 
-		public RDF4JIRI createIRI(String iri) throws IllegalArgumentException, UnsupportedOperationException {
-			return rdf4jFactory.createIRI(iri);
-		}
+        public RDF4JIRI createIRI(String iri) throws IllegalArgumentException, UnsupportedOperationException {
+            return rdf4jFactory.createIRI(iri);
+        }
 
-		public RDF4JLiteral createLiteral(String lexicalForm) {
-			return rdf4jFactory.createLiteral(lexicalForm);
-		}
+        public RDF4JLiteral createLiteral(String lexicalForm) {
+            return rdf4jFactory.createLiteral(lexicalForm);
+        }
 
-		public Literal createLiteral(String lexicalForm, IRI dataType) {
-			return rdf4jFactory.createLiteral(lexicalForm, dataType);
-		}
+        public Literal createLiteral(String lexicalForm, IRI dataType) {
+            return rdf4jFactory.createLiteral(lexicalForm, dataType);
+        }
 
-		public Literal createLiteral(String lexicalForm, String languageTag) {
-			return rdf4jFactory.createLiteral(lexicalForm, languageTag);
-		}
+        public Literal createLiteral(String lexicalForm, String languageTag) {
+            return rdf4jFactory.createLiteral(lexicalForm, languageTag);
+        }
 
-		public RDF4JTriple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-			return rdf4jFactory.createTriple(subject, predicate, object);
-		}
+        public RDF4JTriple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+            return rdf4jFactory.createTriple(subject, predicate, object);
+        }
 
-		public Quad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-			return rdf4jFactory.createQuad(graphName, subject, predicate, object);
-		}
+        public Quad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+            return rdf4jFactory.createQuad(graphName, subject, predicate, object);
+        }
 
-		public RDF4JGraph createGraph() {
-			Sail sail = new MemoryStore();
-			Repository repository = new SailRepository(sail);
-			repository.initialize();
-			return rdf4jFactory.asGraph(repository);
-		}
-	}
+        public RDF4JGraph createGraph() {
+            Sail sail = new MemoryStore();
+            Repository repository = new SailRepository(sail);
+            repository.initialize();
+            return rdf4jFactory.asGraph(repository);
+        }
+    }
 
-	@Override
-	public RDF createFactory() {
-		return new MemoryStoreRDF();
-	}
+    @Override
+    public RDF createFactory() {
+        return new MemoryStoreRDF();
+    }
 
 }

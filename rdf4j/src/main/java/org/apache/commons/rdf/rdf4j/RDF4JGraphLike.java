@@ -37,31 +37,30 @@ import org.eclipse.rdf4j.repository.Repository;
  * @see RDF4JDataset
  * @see RDF4JGraph
  */
-public interface RDF4JGraphLike<T extends TripleLike>
-		extends GraphLike<T>, AutoCloseable {
+public interface RDF4JGraphLike<T extends TripleLike> extends GraphLike<T>, AutoCloseable {
 
-	/**
-	 * Return the corresponding RDF4J {@link Model}, if present.
-	 * <p>
-	 * The return value is {@link Optional#isPresent()} if this is backed by a
-	 * Model.
-	 * <p>
-	 * Changes to the Model are reflected in both directions.
-	 * 
-	 * @return The corresponding RDF4J Model.
-	 */
-	public Optional<Model> asModel();
+    /**
+     * Return the corresponding RDF4J {@link Model}, if present.
+     * <p>
+     * The return value is {@link Optional#isPresent()} if this is backed by a
+     * Model.
+     * <p>
+     * Changes to the Model are reflected in both directions.
+     * 
+     * @return The corresponding RDF4J Model.
+     */
+    public Optional<Model> asModel();
 
-	/**
-	 * Return the corresponding RDF4J {@link Repository}, if present.
-	 * <p>
-	 * The return value is {@link Optional#isPresent()} if this is backed by a
-	 * Repository.
-	 * <p>
-	 * Changes to the Repository are reflected in both directions.
-	 * 
-	 * @return The corresponding RDF4J Repository.
-	 */
-	public Optional<Repository> asRepository();
+    /**
+     * Return the corresponding RDF4J {@link Repository}, if present.
+     * <p>
+     * The return value is {@link Optional#isPresent()} if this is backed by a
+     * Repository.
+     * <p>
+     * Changes to the Repository are reflected in both directions.
+     * 
+     * @return The corresponding RDF4J Repository.
+     */
+    public Optional<Repository> asRepository();
 
 }

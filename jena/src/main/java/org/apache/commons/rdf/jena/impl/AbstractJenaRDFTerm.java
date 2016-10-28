@@ -24,24 +24,24 @@ import org.apache.jena.graph.Node;
 import org.apache.jena.riot.out.NodeFmtLib;
 
 class AbstractJenaRDFTerm implements JenaRDFTerm, RDFTerm {
-	private Node node;
-	// static private PrefixMapping empty = new PrefixMappingImpl();
+    private Node node;
+    // static private PrefixMapping empty = new PrefixMappingImpl();
 
-	protected AbstractJenaRDFTerm(Node node) {
-		this.node = node;
-	}
+    protected AbstractJenaRDFTerm(Node node) {
+        this.node = node;
+    }
 
-	@Override
-	public Node asJenaNode() {
-		return node;
-	}
+    @Override
+    public Node asJenaNode() {
+        return node;
+    }
 
-	public String ntriplesString() {
-		return NodeFmtLib.str(node);
-	}
+    public String ntriplesString() {
+        return NodeFmtLib.str(node);
+    }
 
-	@Override
-	public String toString() {
-		return ntriplesString();
-	}
+    @Override
+    public String toString() {
+        return ntriplesString();
+    }
 }

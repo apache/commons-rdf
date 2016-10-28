@@ -25,10 +25,9 @@ import java.util.Optional;
  * A QuadLike statement has at least a {@link #getSubject()},
  * {@link #getPredicate()}, {@link #getObject()} and {@link #getGraphName()},
  * but unlike a {@link Quad} does not have a formalised
- * {@link Quad#equals(Object)} 
- * or {@link Quad#hashCode()} 
- * semantics. This interface can also be used for <em>generalised quads</em>
- * (e.g. a {@link BlankNode} as predicate).
+ * {@link Quad#equals(Object)} or {@link Quad#hashCode()} semantics. This
+ * interface can also be used for <em>generalised quads</em> (e.g. a
+ * {@link BlankNode} as predicate).
  * <p>
  * Implementations should specialise which specific {@link RDFTerm} types they
  * return by overriding {@link #getSubject()}, {@link #getPredicate()},
@@ -39,19 +38,18 @@ import java.util.Optional;
  */
 public interface QuadLike<G extends RDFTerm> extends TripleLike {
 
-	/**
-	 * The graph name (graph label) of this statement, if present.
-	 * <p>
-	 * If {@link Optional#isPresent()}, then the {@link Optional#get()} indicate
-	 * the graph name of this statement. If the graph name is not present,e.g.
-	 * the value is {@link Optional#empty()}, it indicates that this Quad is in
-	 * the default graph.
-	 *
-	 * @return If {@link Optional#isPresent()}, the graph name of this quad,
-	 *         otherwise {@link Optional#empty()}, indicating the default
-	 *         graph. The graph name is typically an {@link IRI} or
-	 *         {@link BlankNode}.
-	 */
-	Optional<G> getGraphName();
+    /**
+     * The graph name (graph label) of this statement, if present.
+     * <p>
+     * If {@link Optional#isPresent()}, then the {@link Optional#get()} indicate
+     * the graph name of this statement. If the graph name is not present,e.g.
+     * the value is {@link Optional#empty()}, it indicates that this Quad is in
+     * the default graph.
+     *
+     * @return If {@link Optional#isPresent()}, the graph name of this quad,
+     *         otherwise {@link Optional#empty()}, indicating the default graph.
+     *         The graph name is typically an {@link IRI} or {@link BlankNode}.
+     */
+    Optional<G> getGraphName();
 
 }

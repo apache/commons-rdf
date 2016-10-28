@@ -39,7 +39,7 @@ import java.util.stream.Stream;
  * @param <T>
  *            A {@link TripleLike} type used by the graph methods, typically
  *            {@link Triple} or {@link Quad}
- *            
+ * 
  * @since 0.3.0-incubating
  * @see Graph
  * @see Dataset
@@ -47,60 +47,60 @@ import java.util.stream.Stream;
  */
 public interface GraphLike<T extends TripleLike> {
 
-	/**
-	 * Add a statement.
-	 * 
-	 * @param statement
-	 *            The TripleLike statement to add
-	 */
-	void add(T statement);
+    /**
+     * Add a statement.
+     * 
+     * @param statement
+     *            The TripleLike statement to add
+     */
+    void add(T statement);
 
-	/**
-	 * Check if statement is contained.
-	 * 
-	 * @param statement
-	 *            The {@link TripleLike} statement to check
-	 * @return True if the statement is contained
-	 */
-	boolean contains(T statement);
+    /**
+     * Check if statement is contained.
+     * 
+     * @param statement
+     *            The {@link TripleLike} statement to check
+     * @return True if the statement is contained
+     */
+    boolean contains(T statement);
 
-	/**
-	 * Add a statement.
-	 * 
-	 * @param statement
-	 *            The TripleLike statement to add
-	 */
-	void remove(T statement);
+    /**
+     * Add a statement.
+     * 
+     * @param statement
+     *            The TripleLike statement to add
+     */
+    void remove(T statement);
 
-	/**
-	 * Remove all statements.
-	 */
-	void clear();
+    /**
+     * Remove all statements.
+     */
+    void clear();
 
-	/**
-	 * Number of statements.
-	 * 
-	 * @return Number of statements
-	 */
-	long size();
+    /**
+     * Number of statements.
+     * 
+     * @return Number of statements
+     */
+    long size();
 
-	/**
-	 * Return a Stream of contained statements.
-	 * 
-	 * @return A {@link Stream} of {@link TripleLike} statements.
-	 */
-	Stream<? extends T> stream();
+    /**
+     * Return a Stream of contained statements.
+     * 
+     * @return A {@link Stream} of {@link TripleLike} statements.
+     */
+    Stream<? extends T> stream();
 
-	/**
-	 * Iterate over contained statements.
-	 * 
-	 * @return An {@link Iterable} of {@link TripleLike} statements.
-	 * @throws IllegalStateException
-	 *             if the {@link Iterable} has been reused
-	 * @throws ConcurrentModificationException
-	 *             if a concurrency conflict occurs while the Iterator is
-	 *             active.
-	 */
-	Iterable<T> iterate() throws ConcurrentModificationException, IllegalStateException;
+    /**
+     * Iterate over contained statements.
+     * 
+     * @return An {@link Iterable} of {@link TripleLike} statements.
+     * @throws IllegalStateException
+     *             if the {@link Iterable} has been reused
+     * @throws ConcurrentModificationException
+     *             if a concurrency conflict occurs while the Iterator is
+     *             active.
+     */
+    Iterable<T> iterate() throws ConcurrentModificationException, IllegalStateException;
 
 }

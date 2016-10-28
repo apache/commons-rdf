@@ -28,48 +28,49 @@ import org.apache.jena.graph.Node;
 
 class JenaLiteralImpl extends AbstractJenaRDFTerm implements JenaLiteral {
 
-	private static InternalJenaFactory internalJenaFactory = new InternalJenaFactory(){};
-	
-	JenaLiteralImpl(Node node) {
-		super(node);
-		if (! node.isLiteral()) {
-			throw new IllegalArgumentException("Node is not a literal: " + node);
-		}		
-	}
+    private static InternalJenaFactory internalJenaFactory = new InternalJenaFactory() {
+    };
 
-	@Override
-	public boolean equals(Object other) {
-		if (other == this)
-			return true;
-		if (other == null)
-			return false;
-		if (!(other instanceof Literal))
-			return false;
-		Literal literal = (Literal) other;
-		return getLexicalForm().equals(literal.getLexicalForm()) && getLanguageTag().equals(literal.getLanguageTag())
-				&& getDatatype().equals(literal.getDatatype());
-	}
+    JenaLiteralImpl(Node node) {
+        super(node);
+        if (!node.isLiteral()) {
+            throw new IllegalArgumentException("Node is not a literal: " + node);
+        }
+    }
 
-	@Override
-	public IRI getDatatype() {
-		return internalJenaFactory.createIRI(asJenaNode().getLiteralDatatype().getURI());
-	}
+    @Override
+    public boolean equals(Object other) {
+        if (other == this)
+            return true;
+        if (other == null)
+            return false;
+        if (!(other instanceof Literal))
+            return false;
+        Literal literal = (Literal) other;
+        return getLexicalForm().equals(literal.getLexicalForm()) && getLanguageTag().equals(literal.getLanguageTag())
+                && getDatatype().equals(literal.getDatatype());
+    }
 
-	@Override
-	public Optional<String> getLanguageTag() {
-		String x = asJenaNode().getLiteralLanguage();
-		if (x == null || x.isEmpty())
-			return Optional.empty();
-		return Optional.of(x);
-	}
+    @Override
+    public IRI getDatatype() {
+        return internalJenaFactory.createIRI(asJenaNode().getLiteralDatatype().getURI());
+    }
 
-	@Override
-	public String getLexicalForm() {
-		return asJenaNode().getLiteralLexicalForm();
-	}
+    @Override
+    public Optional<String> getLanguageTag() {
+        String x = asJenaNode().getLiteralLanguage();
+        if (x == null || x.isEmpty())
+            return Optional.empty();
+        return Optional.of(x);
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(getLexicalForm(), getDatatype(), getLanguageTag());
-	}
+    @Override
+    public String getLexicalForm() {
+        return asJenaNode().getLiteralLexicalForm();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getLexicalForm(), getDatatype(), getLanguageTag());
+    }
 }

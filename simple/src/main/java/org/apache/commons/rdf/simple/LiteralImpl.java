@@ -42,20 +42,17 @@ final class LiteralImpl implements Literal, SimpleRDF.SimpleRDFTerm {
 
     public LiteralImpl(String lexicalForm, IRI dataType) {
         this.lexicalForm = Objects.requireNonNull(lexicalForm);
-        this.dataType = Types.get(Objects.requireNonNull(dataType)).orElse(
-                dataType);
+        this.dataType = Types.get(Objects.requireNonNull(dataType)).orElse(dataType);
         if (Types.RDF_LANGSTRING.equals(this.dataType)) {
             throw new IllegalArgumentException(
-                    "Cannot create a non-language literal with type "
-                            + Types.RDF_LANGSTRING);
+                    "Cannot create a non-language literal with type " + Types.RDF_LANGSTRING);
         }
         this.languageTag = null;
     }
 
     public LiteralImpl(String literal, String languageTag) {
         this.lexicalForm = Objects.requireNonNull(literal);
-        this.languageTag = Objects.requireNonNull(languageTag).toLowerCase(
-                Locale.ENGLISH);
+        this.languageTag = Objects.requireNonNull(languageTag).toLowerCase(Locale.ENGLISH);
         if (languageTag.isEmpty()) {
             // TODO: Check against
             // http://www.w3.org/TR/n-triples/#n-triples-grammar
@@ -64,8 +61,7 @@ final class LiteralImpl implements Literal, SimpleRDF.SimpleRDFTerm {
         try {
             new Locale.Builder().setLanguageTag(languageTag);
         } catch (IllformedLocaleException ex) {
-            throw new IllegalArgumentException("Invalid languageTag: "
-                    + languageTag, ex);
+            throw new IllegalArgumentException("Invalid languageTag: " + languageTag, ex);
         }
 
         // System.out.println(aLocale);
@@ -129,8 +125,7 @@ final class LiteralImpl implements Literal, SimpleRDF.SimpleRDFTerm {
             return false;
         }
         Literal literal = (Literal) obj;
-        return getDatatype().equals(literal.getDatatype())
-                && getLexicalForm().equals(literal.getLexicalForm())
+        return getDatatype().equals(literal.getDatatype()) && getLexicalForm().equals(literal.getLexicalForm())
                 && getLanguageTag().equals(literal.getLanguageTag());
     }
 
