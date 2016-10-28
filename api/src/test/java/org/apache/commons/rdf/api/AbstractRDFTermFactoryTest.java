@@ -164,32 +164,6 @@ public abstract class AbstractRDFTermFactoryTest {
     }
 
     @Test
-    public void testCreateIRIRelative() throws Exception {
-        // Although relative IRIs are defined in
-        // http://www.w3.org/TR/rdf11-concepts/#section-IRIs
-        // it is not a requirement for an implementation to support
-        // it (all instances of an relative IRI should eventually
-        // be possible to resolve to an absolute IRI)
-        try {
-            factory.createIRI("../relative");
-        } catch (IllegalArgumentException ex) {
-            Assume.assumeNoException("Relative IRIs not supported - ignore this test", ex);
-            return;
-        }
-        IRI relative = factory.createIRI("../relative");
-        assertEquals("../relative", relative.getIRIString());
-        assertEquals("<../relative>", relative.ntriplesString());
-
-        IRI relativeTerm = factory.createIRI("../relative#term");
-        assertEquals("../relative#term", relativeTerm.getIRIString());
-        assertEquals("<../relative#term>", relativeTerm.ntriplesString());
-
-        IRI emptyRelative = factory.createIRI(""); // <> equals the base URI
-        assertEquals("", emptyRelative.getIRIString());
-        assertEquals("<>", emptyRelative.ntriplesString());
-    }
-
-    @Test
     public void testCreateLiteral() throws Exception {
         Literal example = factory.createLiteral("Example");
         assertEquals("Example", example.getLexicalForm());
