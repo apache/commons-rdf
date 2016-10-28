@@ -32,14 +32,14 @@ import java.util.Optional;
  * <strong>immutable</strong>, that is, over its life time it will have
  * consistent behaviour for its {@link #equals(Object)}, and the instances
  * returned from {@link #getGraphName()}, {@link #getSubject()},
- * {@link #getPredicate()} and {@link #getObject()} will have consistent
- * {@link Object#equals(Object)} behaviour.
+ * {@link #getPredicate()}, {@link #getObject()} and {@link #asTriple()} will
+ * have consistent {@link Object#equals(Object)} behaviour.
  * <p>
  * Note that <code>Quad</code> methods are not required to return object
  * identical (<code>==</code>) instances as long as they are equivalent
- * according to their {@link RDFTerm#equals(Object)} and/or
- * {@link Optional#equals(Object)}. Specialisations of <code>Quad</code> may
- * provide additional methods that are documented to be mutable.
+ * according to {@link Object#equals(Object)}. Specialisations of
+ * <code>Quad</code> may provide additional methods that are documented to be
+ * mutable.
  * <p>
  * <code>Quad</code> methods are <strong>thread-safe</strong>, however
  * specialisations may provide additional methods that are documented to not be
