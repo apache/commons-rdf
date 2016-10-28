@@ -1,8 +1,8 @@
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
+ * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
+ * regarding copyright ownership. The ASF licenses this file
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
@@ -15,18 +15,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.apache.commons.rdf.rdf4j;
 
-package org.apache.commons.rdf.jena;
-
-import org.apache.commons.rdf.api.AbstractRDFTermFactoryTest;
+import org.apache.commons.rdf.api.AbstractRDFTest;
 import org.apache.commons.rdf.api.RDF;
+import org.junit.Assume;
 
-public class TestRDFTermFactoryJena extends AbstractRDFTermFactoryTest {
+public class MemoryStoreRDFTest extends AbstractRDFTest {
+
+	@Override
+	public RDF createFactory() {
+		return new MemoryGraphTest.MemoryStoreRDF();
+	}
 	
-    @Override
-    public RDF createFactory() {
-        return new JenaRDF();
-    }
-
+	@Override
+	public void testInvalidLiteralLang() throws Exception {
+		Assume.assumeTrue("RDF4J doesn't check Lang strings",false);
+		super.testInvalidLiteralLang();
+	}
+	
 }
-

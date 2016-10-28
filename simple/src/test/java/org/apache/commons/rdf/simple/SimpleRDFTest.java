@@ -15,23 +15,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.commons.rdf.rdf4j;
+package org.apache.commons.rdf.simple;
 
-import org.apache.commons.rdf.api.AbstractRDFTermFactoryTest;
+import org.apache.commons.rdf.api.AbstractRDFTest;
 import org.apache.commons.rdf.api.RDF;
-import org.junit.Assume;
 
-public class Rdf4JRDFTermFactoryTest extends AbstractRDFTermFactoryTest {
+/**
+ * Simple RDF Test
+ */
+public class SimpleRDFTest extends AbstractRDFTest {
 
-	@Override
-	public RDF createFactory() {
-		return new RDF4J();
-	}
-	
-	@Override
-	public void testInvalidLiteralLang() throws Exception {
-		Assume.assumeTrue("RDD4J doesn't check Lang strings",false);
-		super.testInvalidLiteralLang();
-	}
-	
+    @Override
+    public RDF createFactory() {
+        return new SimpleRDF();
+    }
+
 }

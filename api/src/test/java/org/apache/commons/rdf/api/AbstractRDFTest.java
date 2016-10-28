@@ -37,7 +37,7 @@ import org.junit.Test;
  *
  * @see RDF
  */
-public abstract class AbstractRDFTermFactoryTest {
+public abstract class AbstractRDFTest {
 
     private RDF factory;
 

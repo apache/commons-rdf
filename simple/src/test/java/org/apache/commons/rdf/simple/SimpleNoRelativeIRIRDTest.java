@@ -17,7 +17,7 @@
  */
 package org.apache.commons.rdf.simple;
 
-import org.apache.commons.rdf.api.AbstractRDFTermFactoryTest;
+import org.apache.commons.rdf.api.AbstractRDFTest;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDF;
 
@@ -26,11 +26,11 @@ import java.net.URI;
 /**
  * Test simple IRI without relative IRI support.
  * <p>
- * Ensures that {@link AbstractRDFTermFactoryTest#testCreateIRIRelative()} is
+ * Ensures that {@link AbstractRDFTest#testCreateIRIRelative()} is
  * correctly skipped (without causing an error).
  */
-public class SimpleNoRelativeIRIRDFTermFactoryTest extends
-        AbstractRDFTermFactoryTest {
+public class SimpleNoRelativeIRIRDTest extends
+        AbstractRDFTest {
     @Override
     public RDF createFactory() {
         return new SimpleRDF() {
