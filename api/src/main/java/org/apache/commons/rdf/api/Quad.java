@@ -32,7 +32,7 @@ import java.util.Set;
  * February 2014.
  * <p>
  * A {@link Quad} object in Commons RDF is considered <em>immutable</em>, that
- * is, over it's life time it will have consistent behaviour for its
+ * is, over its life time it will have consistent behaviour for its
  * {@link #equals(Object)} and {@link #hashCode()}, and the instances returned
  * from {@link #getGraphName()}, {@link #getSubject()}, {@link #getPredicate()}
  * and {@link #getObject()} will have consistent {@link Object#equals(Object)}

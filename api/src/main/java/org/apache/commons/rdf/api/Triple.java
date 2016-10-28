@@ -29,7 +29,7 @@ import java.util.Set;
  * Abstract Syntax</a>, a W3C Recommendation published on 25 February 2014.<br>
  * <p>
  * A {@link Triple} object in Commons RDF is considered <em>immutable</em>, that
- * is, over it's life time it will have consistent behaviour for its
+ * is, over its life time it will have consistent behaviour for its
  * {@link #equals(Object)} and {@link #hashCode()}, and the {@link RDFTerm}
  * instances returned from {@link #getSubject()}, {@link #getPredicate()} and
  * {@link #getObject()} will have consistent {@link RDFTerm#equals(Object)}

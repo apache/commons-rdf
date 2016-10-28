@@ -28,7 +28,7 @@ import java.util.Set;
  * Abstract Syntax</a>, a W3C Recommendation published on 25 February 2014.
  * <p>
  * A {@link RDFTerm} object in Commons RDF is considered <em>immutable</em>,
- * that is, over it's life time it will have consistent behaviour for its
+ * that is, over its life time it will have consistent behaviour for its
  * {@link #equals(Object)} and {@link #hashCode()}, and objects returned from
  * its getter methods (e.g. {@link IRI#getIRIString()} and
  * {@link Literal#getLanguageTag()}) will have consistent
