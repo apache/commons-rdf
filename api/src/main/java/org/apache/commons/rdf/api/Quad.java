@@ -17,31 +17,40 @@
  */
 package org.apache.commons.rdf.api;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * A Quad is a statement in a
  * <a href= "http://www.w3.org/TR/rdf11-concepts/#section-dataset" >RDF-1.1
- * Dataset</a>, as defined by
- * <a href= "https://www.w3.org/TR/2014/NOTE-rdf11-datasets-20140225/#quad-semantics" >RDF-1.1
- * Concepts and Abstract Syntax</a>, a W3C Working Group Note published on 25
- * February 2014.
+ * Dataset</a>, as defined by <a href=
+ * "https://www.w3.org/TR/2014/NOTE-rdf11-datasets-20140225/#quad-semantics"
+ * >RDF-1.1 Concepts and Abstract Syntax</a>, a W3C Working Group Note published
+ * on 25 February 2014.
  * <p>
- * A {@link Quad} object in Commons RDF is considered <em>immutable</em>, that
- * is, over its life time it will have consistent behaviour for its
- * {@link #equals(Object)} and {@link #hashCode()}, and the instances returned
- * from {@link #getGraphName()}, {@link #getSubject()}, {@link #getPredicate()}
- * and {@link #getObject()} will have consistent {@link Object#equals(Object)}
- * behaviour.
+ * A <code>Quad</code> object in Commons RDF is considered
+ * <strong>immutable</strong>, that is, over its life time it will have
+ * consistent behaviour for its {@link #equals(Object)}, and the instances
+ * returned from {@link #getGraphName()}, {@link #getSubject()},
+ * {@link #getPredicate()} and {@link #getObject()} will have consistent
+ * {@link Object#equals(Object)} behaviour.
  * <p>
- * Thus, a {@link Quad} is thread-safe and can be safely used in collections
- * like {@link List}, {@link Map} or {@link Set}, and a {@link Quad} can be
- * used interchangeably across Commons RDF implementations.
- * 
+ * Note that <code>Quad</code> methods are not required to return object
+ * identical (<code>==</code>) instances as long as they are equivalent
+ * according to their {@link RDFTerm#equals(Object)} and/or
+ * {@link Optional#equals(Object)}. Specialisations of <code>Quad</code> may
+ * provide additional methods that are documented to be mutable.
+ * <p>
+ * <code>Quad</code> methods are <strong>thread-safe</strong>, however
+ * specialisations may provide additional methods that are documented to not be
+ * thread-safe.
+ * <p>
+ * <code>Quad</code>s can be safely used in hashing collections like
+ * {@link java.util.HashSet} and {@link java.util.HashMap}.
+ * <p>
+ * Any <code>Quad</code> can be used interchangeably across Commons RDF
+ * implementations.
+ *
  * @since 0.3.0-incubating
  * @see Dataset
  * @see RDF#createQuad(BlankNodeOrIRI,BlankNodeOrIRI,IRI,RDFTerm)
@@ -53,7 +62,7 @@ public interface Quad extends QuadLike<BlankNodeOrIRI> {
 
     /**
      * The graph name (graph label) of this quad, if present.
-     * 
+     *
      * If {@link Optional#isPresent()}, then the {@link Optional#get()} is
      * either a {@link BlankNode} or an {@link IRI}, indicating the
      * <a href="https://www.w3.org/TR/rdf11-concepts/#dfn-named-graph">graph
@@ -65,7 +74,7 @@ public interface Quad extends QuadLike<BlankNodeOrIRI> {
      * @return If {@link Optional#isPresent()}, the graph name
      *         {@link BlankNodeOrIRI} of this quad, otherwise
      *         {@link Optional#empty()}, indicating the default graph.
-     * 
+     *
      * @see <a href="https://www.w3.org/TR/rdf11-concepts/#dfn-rdf-dataset">RDF-
      *      1.1 Dataset</a>
      */
@@ -114,7 +123,7 @@ public interface Quad extends QuadLike<BlankNodeOrIRI> {
      * {@link #getGraphName()} value of {@link Optional#empty()}, but MUST
      * follow the {@link Triple#equals(Object)} semantics. This means that the
      * following MUST be true:
-     * 
+     *
      * <pre>
      * Quad q1, q2;
      * if (q1.equals(q2)) {
@@ -126,14 +135,14 @@ public interface Quad extends QuadLike<BlankNodeOrIRI> {
      *     assert (!q1.getGraphName().equals(q2.getGraphName()));
      * }
      * </pre>
-     * 
+     *
      * The <code>default</code> implementation of this method return a proxy
      * {@link Triple} instance that keeps a reference to this {@link Quad} to
      * call the underlying {@link TripleLike} methods, but supplies a
      * {@link Triple} compatible implementation of {@link Triple#equals(Object)}
      * and {@link Triple#hashCode()}. Implementations may override this method,
      * e.g. for a more efficient solution.
-     * 
+     *
      * @return A {@link Triple} that contains the same {@link TripleLike}
      *         properties as this Quad.
      */
@@ -191,7 +200,7 @@ public interface Quad extends QuadLike<BlankNodeOrIRI> {
      * this Quad's {@link #getGraphName()} is {@link Optional#empty()}. To test
      * triple-like equivalence, callers can use:
      * </p>
-     * 
+     *
      * <pre>
      * Quad q1;
      * Triple t2;

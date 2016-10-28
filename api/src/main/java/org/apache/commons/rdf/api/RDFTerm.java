@@ -17,26 +17,35 @@
  */
 package org.apache.commons.rdf.api;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 /**
  * An <a href= "http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-term" >RDF-1.1
  * Term</a>, as defined by
  * <a href= "http://www.w3.org/TR/rdf11-concepts/" >RDF-1.1 Concepts and
  * Abstract Syntax</a>, a W3C Recommendation published on 25 February 2014.
  * <p>
- * A {@link RDFTerm} object in Commons RDF is considered <em>immutable</em>,
- * that is, over its life time it will have consistent behaviour for its
- * {@link #equals(Object)} and {@link #hashCode()}, and objects returned from
- * its getter methods (e.g. {@link IRI#getIRIString()} and
- * {@link Literal#getLanguageTag()}) will have consistent
+ * A {@link RDFTerm} object in Commons RDF is considered
+ * <strong>immutable</strong>, that is, over its life time it will have
+ * consistent behaviour for its {@link #equals(Object)} and {@link #hashCode()},
+ * and objects returned from its getter methods (e.g. {@link IRI#getIRIString()}
+ * and {@link Literal#getLanguageTag()}) will have consistent
  * {@link #equals(Object)} behaviour.
  * <p>
- * Thus, an {@link RDFTerm} is thread-safe and can be safely used in collections
- * like {@link List}, {@link Map} or {@link Set}, and a {@link RDFTerm} can be
- * used interchangeably across Commons RDF implementations.
+ * Note that methods in <code>RDFTerm</code> and its Commons RDF specialisations
+ * {@link IRI}, {@link BlankNode} and {@link Literal} are not required to return
+ * object identical (<code>==</code>) instances as long as they are equivalent
+ * according to their {@link Object#equals(Object)}. Further specialisations may
+ * provide additional methods that are documented to be mutable.
+ * <p>
+ * Methods in <code>RDFTerm</code> and its Commons RDF specialisations
+ * {@link IRI}, {@link BlankNode} and {@link Literal} are
+ * <strong>thread-safe</strong>, however further specialisations may add
+ * additional methods that are documented to not be thread-safe.
+ * <p>
+ * <code>RDFTerm</code>s can be safely used in hashing collections like
+ * {@link java.util.HashSet} and {@link java.util.HashMap}.
+ * <p>
+ * Any <code>RDFTerm</code> can be used interchangeably across Commons RDF
+ * implementations.
  *
  * @see <a href= "http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-term" >RDF-1.1
  *      Term</a>
@@ -68,7 +77,7 @@ public interface RDFTerm {
 	 * @see IRI#equals(Object)
 	 * @see BlankNode#equals(Object)
 	 * @see Literal#equals(Object)
-	 * 
+	 *
 	 * @param other
 	 *            Another object
 	 * @return true if other is a RDFTerm and is equal to this
@@ -85,7 +94,7 @@ public interface RDFTerm {
 	 * This method MUST be implemented in conjunction with
 	 * {@link #equals(Object)} so that two equal RDFTerm produce the same hash
 	 * code.
-	 * 
+	 *
 	 * @see IRI#hashCode()
 	 * @see Literal#hashCode()
 	 * @see BlankNode#hashCode()
