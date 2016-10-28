@@ -22,7 +22,7 @@ import org.apache.commons.rdf.api.BlankNode;
 
 public class BlankNodeTest extends AbstractBlankNodeTest {
 
-	RDF4JFactory factory = new RDF4JFactory();
+	RDF4J factory = new RDF4J();
 	
 	@Override
 	protected BlankNode getBlankNode() {

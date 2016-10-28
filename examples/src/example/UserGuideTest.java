@@ -32,21 +32,21 @@ import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.QuadLike;
 import org.apache.commons.rdf.api.RDFTerm;
-import org.apache.commons.rdf.api.RDFTermFactory;
+import org.apache.commons.rdf.api.RDF;
 import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.api.TripleLike;
-import org.apache.commons.rdf.simple.SimpleRDFTermFactory;
+import org.apache.commons.rdf.simple.SimpleRDF;
 import org.apache.commons.rdf.simple.Types;
 import org.junit.Before;
 import org.junit.Test;
 
 public class UserGuideTest {
 
-	private RDFTermFactory factory;
+	private RDF factory;
 
 	@Before
 	public void factory() {
-		factory = new SimpleRDFTermFactory();
+		factory = new SimpleRDF();
 	}
 
 	@Test
@@ -89,7 +89,7 @@ public class UserGuideTest {
 		System.out.println(b1.ntriplesString());
 
 		System.out.println(b1.equals(factory.createBlankNode("b1")));
-		System.out.println(b1.equals(new SimpleRDFTermFactory().createBlankNode("b1")));
+		System.out.println(b1.equals(new SimpleRDF().createBlankNode("b1")));
 
 		System.out.println(bnode.uniqueReference());
 	}

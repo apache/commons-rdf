@@ -20,18 +20,18 @@ package org.apache.commons.rdf.simple;
 import static org.junit.Assert.assertTrue;
 
 import org.apache.commons.rdf.api.AbstractGraphTest;
-import org.apache.commons.rdf.api.RDFTermFactory;
+import org.apache.commons.rdf.api.RDF;
 import org.junit.Assume;
 import org.junit.Test;
 
 /**
- * Test SimpleRDFTermFactory with AbstractGraphTest
+ * Test SimpleRDF with AbstractGraphTest
  */
 public class SimpleGraphTest extends AbstractGraphTest {
 
     @Override
-    public RDFTermFactory createFactory() {
-        return new SimpleRDFTermFactory();
+    public RDF createFactory() {
+        return new SimpleRDF();
     }
 
     @Test

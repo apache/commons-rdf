@@ -39,7 +39,7 @@ import org.junit.Test;
 public class JsonLdParserBuilderTest {	
 	private static final String TEST_JSONLD = "/test.jsonld";
 	
-	static JsonLdFactory factory = new JsonLdFactory();
+	static JsonLdRDF factory = new JsonLdRDF();
 	IRI test = factory.createIRI("http://example.com/test");
 	IRI Type = factory.createIRI("http://example.com/Type");
 	IRI type = factory.createIRI("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");

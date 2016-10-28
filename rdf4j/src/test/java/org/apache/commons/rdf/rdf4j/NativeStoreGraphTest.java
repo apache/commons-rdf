@@ -24,10 +24,12 @@ import java.util.Set;
 
 import org.apache.commons.rdf.api.AbstractGraphTest;
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
+import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Literal;
+import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFTerm;
-import org.apache.commons.rdf.api.RDFTermFactory;
+import org.apache.commons.rdf.api.RDF;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryResult;
 import org.eclipse.rdf4j.repository.sail.SailRepository;
@@ -49,9 +51,9 @@ import org.junit.rules.Timeout;
  */
 public class NativeStoreGraphTest extends AbstractGraphTest {
 
-	public final class NativeStoreFactory implements RDFTermFactory {
+	public final class NativeStoreRDF implements RDF {
 
-		RDF4JFactory rdf4jFactory = new RDF4JFactory(getRepository().getValueFactory());
+		RDF4J rdf4jFactory = new RDF4J(getRepository().getValueFactory());
 
 		@Override
 		public RDF4JGraph createGraph() {
@@ -59,7 +61,13 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
 			Set<RDF4JBlankNode> context = Collections.singleton(rdf4jFactory.createBlankNode());
 			return rdf4jFactory.asGraph(getRepository(), context);
 		}
-
+		@Override
+		public Dataset createDataset() {
+			throw new UnsupportedOperationException("Can't create more than one Dataset in this test");
+			// ...as the below would re-use the same repository:
+			//return rdf4jFactory.asRDFTermDataset(getRepository()); 
+		}
+		
 		// Delegate methods 
 		public RDF4JBlankNode createBlankNode() {
 			return rdf4jFactory.createBlankNode();
@@ -81,6 +89,10 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
 		}
 		public RDF4JTriple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
 			return rdf4jFactory.createTriple(subject, predicate, object);
+		}
+		public Quad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
+				throws IllegalArgumentException {
+			return rdf4jFactory.createQuad(graphName, subject, predicate, object);
 		}
 	}
 
@@ -145,8 +157,8 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
 //	}
 
 	@Override
-	public RDFTermFactory createFactory() {
-		return new NativeStoreFactory();
+	public RDF createFactory() {
+		return new NativeStoreRDF();
 	}
 
 }

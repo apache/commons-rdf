@@ -15,19 +15,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.commons.rdf.api;
 
-/**
- * The default RDFTermFactory might be useless (every method throws
- * UnsupportedOperationException), but this test ensures that
- * AbstractRDFTermFactoryTest does not fall over on unsupported operations.
- */
-public class DefaultRDFTermFactoryTest extends AbstractRDFTermFactoryTest {
+package org.apache.commons.rdf.jena;
 
-    @Override
-    public RDFTermFactory createFactory() {
-        return new RDFTermFactory() {
-        };
+import static org.junit.Assert.fail;
+
+import java.util.ServiceLoader;
+
+import org.apache.commons.rdf.api.RDF;
+import org.junit.Test;
+
+public class JenaServiceLoaderTest {
+
+    @Test
+    public void testServiceLoaderLookup() {
+        ServiceLoader<RDF> loader = ServiceLoader.load(RDF.class);
+        for (RDF impl : loader) {
+        	if (impl instanceof JenaRDF) {
+        		return; // yay
+        	}
+        }
+        fail("JenaRDF not found in ServiceLoader");        
     }
-
 }

@@ -27,6 +27,9 @@ import java.util.stream.Stream;
  * 1.1 dataset</a>, a set of RDF quads, as defined by
  * <a href="http://www.w3.org/TR/rdf11-concepts/" >RDF-1.1 Concepts and Abstract
  * Syntax</a>, a W3C Recommendation published on 25 February 2014.
+ * 
+ * @since 0.3.0-incubating
+ * @see RDF#createDataset()
  */
 public interface Dataset extends AutoCloseable, GraphLike<Quad> {
 

@@ -22,7 +22,7 @@ import org.apache.commons.rdf.api.Quad;
 /**
  * Marker interface for RDF4J implementations of Quad.
  * 
- * @see RDF4JFactory#createQuad(org.apache.commons.rdf.api.BlankNodeOrIRI, org.apache.commons.rdf.api.BlankNodeOrIRI, org.apache.commons.rdf.api.IRI, org.apache.commons.rdf.api.RDFTerm)
+ * @see RDF4J#createQuad(org.apache.commons.rdf.api.BlankNodeOrIRI, org.apache.commons.rdf.api.BlankNodeOrIRI, org.apache.commons.rdf.api.IRI, org.apache.commons.rdf.api.RDFTerm)
  */
 public interface RDF4JQuad extends Quad, RDF4JTripleLike {
 	

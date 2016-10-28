@@ -23,7 +23,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.commons.rdf.api.BlankNode;
-import org.apache.commons.rdf.simple.SimpleRDFTermFactory.SimpleRDFTerm;
+import org.apache.commons.rdf.simple.SimpleRDF.SimpleRDFTerm;
 
 /**
  * A simple implementation of BlankNode.
@@ -47,13 +47,13 @@ final class BlankNodeImpl implements BlankNode, SimpleRDFTerm {
         // Build a semi-URN - to be hashed for a name-based UUID below
         // Both the scope and the id are used to create the UUID, ensuring that
         // a caller can reliably create the same bnode if necessary by sending
-        // in the same scope to RDFTermFactory.createBlankNode(String)
+        // in the same scope to RDF.createBlankNode(String)
         String uuidInput = "urn:uuid:" + uuidSalt + "#" + name;
 
         // The above is not a good value for this.id, as the id
         // needs to be further escaped for
         // ntriplesString() (there are no restrictions on
-        // RDFTermFactory.createBlankNode(String) ).
+        // RDF.createBlankNode(String) ).
 
 
         // Rather than implement ntriples escaping here, and knowing
@@ -63,7 +63,7 @@ final class BlankNodeImpl implements BlankNode, SimpleRDFTerm {
         //
         // A side-effect from this is that the blank node identifier
         // is not preserved or shown in ntriplesString. In a way
-        // this is a feature, not a bug. as the contract for RDFTermFactory
+        // this is a feature, not a bug. as the contract for RDF
         // has no such requirement.
         this.uniqueReference = UUID.nameUUIDFromBytes(
                 uuidInput.getBytes(StandardCharsets.UTF_8)).toString();

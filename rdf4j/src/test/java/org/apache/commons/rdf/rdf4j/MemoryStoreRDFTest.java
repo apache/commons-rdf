@@ -17,21 +17,21 @@
  */
 package org.apache.commons.rdf.rdf4j;
 
-import org.apache.commons.rdf.api.BlankNode;
-import org.eclipse.rdf4j.model.BNode;
+import org.apache.commons.rdf.api.AbstractRDFTest;
+import org.apache.commons.rdf.api.RDF;
+import org.junit.Assume;
 
-/**
- * Marker interface for RDF4J implementations of 
- * Commons RDF {@link org.apache.commons.rdf.api.BlankNode}.
- * <p>
- * The underlying RDF4J {@link BNode} instance can 
- * be retrieved with {@link #asValue()}.
- * 
- * @see RDF4J#createBlankNode() 
- */
-public interface RDF4JBlankNode extends RDF4JBlankNodeOrIRI, BlankNode {
+public class MemoryStoreRDFTest extends AbstractRDFTest {
+
+	@Override
+	public RDF createFactory() {
+		return new MemoryGraphTest.MemoryStoreRDF();
+	}
 	
 	@Override
-	public BNode asValue();
+	public void testInvalidLiteralLang() throws Exception {
+		Assume.assumeTrue("RDF4J doesn't check Lang strings",false);
+		super.testInvalidLiteralLang();
+	}
 	
 }

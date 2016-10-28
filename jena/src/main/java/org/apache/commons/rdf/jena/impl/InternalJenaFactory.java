@@ -35,7 +35,7 @@ import org.apache.commons.rdf.jena.JenaIRI;
 import org.apache.commons.rdf.jena.JenaLiteral;
 import org.apache.commons.rdf.jena.JenaQuad;
 import org.apache.commons.rdf.jena.JenaRDFTerm;
-import org.apache.commons.rdf.jena.JenaFactory;
+import org.apache.commons.rdf.jena.JenaRDF;
 import org.apache.commons.rdf.jena.JenaTriple;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.NodeFactory;
@@ -49,7 +49,7 @@ import org.apache.jena.sparql.graph.GraphFactory;
  * <p>
  * This class is deliberately an abstract class, as it is an internal helper
  * which <strong>may change</strong> in any minor version update; users should
- * instead use {@link JenaFactory}.
+ * instead use {@link JenaRDF}.
  * <p>
  * For the purpose of blank node identity, some of these methods require a
  * {@link UUID} to use as a salt. See {@link BlankNode#uniqueReference()} for

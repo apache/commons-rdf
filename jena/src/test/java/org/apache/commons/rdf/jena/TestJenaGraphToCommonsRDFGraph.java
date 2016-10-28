@@ -19,7 +19,6 @@
 package org.apache.commons.rdf.jena;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -29,13 +28,13 @@ import java.nio.file.StandardCopyOption;
 
 import org.apache.commons.rdf.api.BlankNode;
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
-import org.apache.commons.rdf.api.Graph ;
+import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.simple.Types;
 import org.apache.jena.riot.Lang;
-import org.apache.jena.riot.RDFDataMgr ;
-import org.apache.jena.sparql.graph.GraphFactory ;
+import org.apache.jena.riot.RDFDataMgr;
+import org.apache.jena.sparql.graph.GraphFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,13 +60,13 @@ public class TestJenaGraphToCommonsRDFGraph {
     
     @Test
 	public void jenaToCommonsRDF() throws Exception {
-        org.apache.jena.graph.Graph jGraph = GraphFactory.createGraphMem() ;        
-        RDFDataMgr.read(jGraph, turtleFile.toUri().toString()) ;
+        org.apache.jena.graph.Graph jGraph = GraphFactory.createGraphMem();
+        RDFDataMgr.read(jGraph, turtleFile.toUri().toString());
         
-        JenaFactory factory = new JenaFactory() ;
+        JenaRDF factory = new JenaRDF();
         
         // "graph" is a CommonsRDF graph 
-        Graph graph = factory.asGraph(jGraph) ;
+        Graph graph = factory.asGraph(jGraph);
         
         
         
@@ -116,7 +115,7 @@ public class TestJenaGraphToCommonsRDFGraph {
 		JenaLiteral foo = factory.createLiteral("foo");
 		graph.add(s2,
         		  p2,
-        		  foo) ;
+        		  foo);
 		assertEquals(4, graph.size());
 		assertTrue(graph.contains(s2,p2,foo));
         
@@ -124,11 +123,11 @@ public class TestJenaGraphToCommonsRDFGraph {
         assertTrue(jGraph.contains(s2.asJenaNode(), p2.asJenaNode(), foo.asJenaNode()));
         
         if (DEBUG) {
-	        System.out.println("==== Write CommonsRDF graph\n") ;
-	        graph.stream().forEach(System.out::println) ;        
+	        System.out.println("==== Write CommonsRDF graph\n");
+	        graph.stream().forEach(System.out::println);        
 	        // And its in the Jena graph
-	        System.out.println("\n==== Write Jena graph directly\n") ;
-	        RDFDataMgr.write(System.out, jGraph, Lang.TTL) ;
+	        System.out.println("\n==== Write Jena graph directly\n");
+	        RDFDataMgr.write(System.out, jGraph, Lang.TTL);
         }
     }
 }

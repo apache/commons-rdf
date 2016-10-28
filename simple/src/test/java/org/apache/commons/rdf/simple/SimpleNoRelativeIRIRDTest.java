@@ -17,35 +17,30 @@
  */
 package org.apache.commons.rdf.simple;
 
-import org.apache.commons.rdf.api.AbstractGraphTest;
-import org.apache.commons.rdf.api.Graph;
+import org.apache.commons.rdf.api.AbstractRDFTest;
 import org.apache.commons.rdf.api.IRI;
-import org.apache.commons.rdf.api.RDFTermFactory;
+import org.apache.commons.rdf.api.RDF;
+
+import java.net.URI;
 
 /**
- * Ensure AbstractGraphTest does not crash if the RDFTermFactory throws
- * UnsupportedOperationException
+ * Test simple IRI without relative IRI support.
+ * <p>
+ * Ensures that {@link AbstractRDFTest#testCreateIRIRelative()} is
+ * correctly skipped (without causing an error).
  */
-
-public class DefaultGraphTest extends AbstractGraphTest {
-
+public class SimpleNoRelativeIRIRDTest extends
+        AbstractRDFTest {
     @Override
-    public RDFTermFactory createFactory() {
-        // The most minimal RDFTermFactory that would still
-        // make sense with a Graph
-        return new RDFTermFactory() {
+    public RDF createFactory() {
+        return new SimpleRDF() {
             @Override
-            public Graph createGraph() throws UnsupportedOperationException {
-                return new GraphImpl(new SimpleRDFTermFactory());
-            }
-
-            @Override
-            public IRI createIRI(String iri)
-                    throws UnsupportedOperationException,
-                    IllegalArgumentException {
-                return new IRIImpl(iri);
+            public IRI createIRI(String iri) {
+                if (!URI.create(iri).isAbsolute()) {
+                    throw new IllegalArgumentException("IRIs must be absolute");
+                }
+                return super.createIRI(iri);
             }
         };
     }
-
 }

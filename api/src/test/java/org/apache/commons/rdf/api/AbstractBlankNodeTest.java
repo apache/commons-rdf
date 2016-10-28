@@ -27,6 +27,14 @@ import static org.junit.Assert.assertNotEquals;
  */
 public abstract class AbstractBlankNodeTest {
 
+    /**
+     * This method must be overridden by the implementing test to 
+     * create a {@link BlankNode} to be tested.
+     * <p>
+     * Each call to this method must provide a new, unique BlankNode.
+     * 
+     * @return {@link RDF} instance to be tested.
+     */
     protected abstract BlankNode getBlankNode();
 
     /**

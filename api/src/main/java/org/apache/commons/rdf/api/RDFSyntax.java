@@ -31,7 +31,7 @@ import java.util.Optional;
  * and <a href="https://en.wikipedia.org/wiki/TriX_%28syntax%29">TriX</a>.
  * 
  * @see <a href="https://www.w3.org/TR/rdf11-primer/#section-graph-syntax">RDF 1.1 Primer</a>
- *
+ * @see org.apache.commons.rdf.experimental.RDFParser
  */
 public enum RDFSyntax {
 	

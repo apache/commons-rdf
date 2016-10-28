@@ -15,23 +15,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.commons.rdf.rdf4j;
 
-import org.apache.commons.rdf.api.BlankNode;
-import org.eclipse.rdf4j.model.BNode;
+package org.apache.commons.rdf.jsonldjava;
 
-/**
- * Marker interface for RDF4J implementations of 
- * Commons RDF {@link org.apache.commons.rdf.api.BlankNode}.
- * <p>
- * The underlying RDF4J {@link BNode} instance can 
- * be retrieved with {@link #asValue()}.
- * 
- * @see RDF4J#createBlankNode() 
- */
-public interface RDF4JBlankNode extends RDF4JBlankNodeOrIRI, BlankNode {
-	
-	@Override
-	public BNode asValue();
-	
-}
+import static org.junit.Assert.fail;
+
+import java.util.ServiceLoader;
+
+import org.apache.commons.rdf.api.RDF;
+import org.junit.Test;
+
+public class JsonLdServiceLoaderTest {
+
+    @Test
+    public void testServiceLoaderLookup() {
+        ServiceLoader<RDF> loader = ServiceLoader.load(RDF.class);
+        for (RDF impl : loader) {
+        	if (impl instanceof JsonLdRDF) {
+        		return; // yay
+        	}
+        }
+        fail("JsonLdRDF not found in ServiceLoader");        
+    }
+ }

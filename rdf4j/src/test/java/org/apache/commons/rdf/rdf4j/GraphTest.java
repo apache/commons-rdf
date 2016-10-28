@@ -18,13 +18,13 @@
 package org.apache.commons.rdf.rdf4j;
 
 import org.apache.commons.rdf.api.AbstractGraphTest;
-import org.apache.commons.rdf.api.RDFTermFactory;
+import org.apache.commons.rdf.api.RDF;
 
 public class GraphTest extends AbstractGraphTest{
 
 	@Override
-	public RDFTermFactory createFactory() {
-		return new RDF4JFactory();
+	public RDF createFactory() {
+		return new RDF4J();
 	}
 
 }

@@ -32,7 +32,7 @@ import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.jena.JenaDataset;
 import org.apache.commons.rdf.jena.JenaGraph;
-import org.apache.commons.rdf.jena.JenaFactory;
+import org.apache.commons.rdf.jena.JenaRDF;
 import org.apache.jena.atlas.iterator.Iter;
 import org.apache.jena.graph.Node;
 import org.apache.jena.riot.Lang;
@@ -44,12 +44,12 @@ class JenaDatasetImpl implements JenaDataset {
 
 	private DatasetGraph graph;
 	private UUID salt;
-	private JenaFactory factory;
+	private JenaRDF factory;
 
 	JenaDatasetImpl(DatasetGraph graph, UUID salt) {
 		this.graph = graph;
 		this.salt = salt;
-		this.factory = new JenaFactory(salt);
+		this.factory = new JenaRDF(salt);
 	}
 
 	@Override
@@ -136,14 +136,14 @@ class JenaDatasetImpl implements JenaDataset {
 
 	@Override
 	public Stream<? extends Quad> stream() {
-		JenaFactory factory = new JenaFactory(salt);
+		JenaRDF factory = new JenaRDF(salt);
 		return Iter.asStream(graph.find(ANY, ANY, ANY, ANY), true)
 				.map(factory::asQuad);
 	}
 
 	@Override
 	public Stream<? extends Quad> stream(Optional<BlankNodeOrIRI> g, BlankNodeOrIRI s, IRI p, RDFTerm o) {
-		JenaFactory factory = new JenaFactory(salt);
+		JenaRDF factory = new JenaRDF(salt);
 		return Iter.asStream(graph.find(toJenaPattern(g), toJenaPattern(s), toJenaPattern(p), toJenaPattern(o)), true)
 				.map(factory::asQuad);
 	}
@@ -175,14 +175,14 @@ class JenaDatasetImpl implements JenaDataset {
 
 	@Override
 	public Stream<BlankNodeOrIRI> getGraphNames() {
-		JenaFactory factory = new JenaFactory(salt);
+		JenaRDF factory = new JenaRDF(salt);
 		return Iter.asStream(graph.listGraphNodes()).map(node -> 
 			(BlankNodeOrIRI) factory.asRDFTerm(node));		
 	}
 
 	@Override
 	public Iterable<Quad> iterate() {
-		final JenaFactory factory = new JenaFactory(salt);
+		final JenaRDF factory = new JenaRDF(salt);
 		return Iter.asStream(graph.find(), false)
 				.map(q -> (Quad) factory.asQuad(q))
 				::iterator;

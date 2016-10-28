@@ -19,8 +19,10 @@ package org.apache.commons.rdf.api;
 
 /**
  * This interface represents the {@link RDFTerm}s that may be used in the
- * subject position of an RDF-1.1 {@link Triple}, including {@link BlankNode}
- * and {@link IRI}.
+ * subject position of an RDF-1.1 {@link Triple} as well as the graph name
+ * position of a {@link Quad}.
+ * <p>
+ * Instances of BlankNodeOrIRI SHOULD be a {@link BlankNode} or an {@link IRI}.
  */
 public interface BlankNodeOrIRI extends RDFTerm {
 }

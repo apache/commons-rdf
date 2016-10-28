@@ -30,7 +30,7 @@ import java.util.Optional;
  * 
  * @since 0.3.0-incubating
  * @see Dataset
- * @see RDFTermFactory#createQuad(BlankNodeOrIRI,BlankNodeOrIRI,IRI,RDFTerm)
+ * @see RDF#createQuad(BlankNodeOrIRI,BlankNodeOrIRI,IRI,RDFTerm)
  * @see <a href="http://www.w3.org/TR/2014/NOTE-rdf11-datasets-20140225/">RDF
  *      1.1: On Semantics of RDF Datasets</a>
  * @see <a href="http://www.w3.org/TR/rdf11-concepts/#section-dataset"> </a>

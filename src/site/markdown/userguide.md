@@ -28,8 +28,8 @@ Commons RDF [API](apidocs/).
     * [RDF concepts](#RDF_concepts)
 * [Using Commons RDF from Maven](#Using_Commons_RDF_from_Maven)
 * [Creating Commons RDF instances](#Creating_Commons_RDF_instances)
-  * [Creating a RDFTermFactory](#Creating_a_RDFTermFactory)
-  * [Using a RDFTermFactory](#Using_a_RDFTermFactory)
+  * [Finding an RDF implementation](#Finding_an_RDF_implementation)
+  * [Using an RDF implementation](#Using_an_RDF_implementation)
 * [RDF terms](#RDF_terms)
     * [N-Triples string](#N-Triples_string)
     * [IRI](#IRI)
@@ -146,25 +146,26 @@ see the [download page](download.html) for the latest version._
 To create instances of Commons RDF interfaces like
 [`Graph`](apidocs/org/apache/commons/rdf/api/Graph.html) and
 [`IRI`](apidocs/org/apache/commons/rdf/api/IRI.html) you will need a
-[RDFTermFactory](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html).
+[RDF](apidocs/org/apache/commons/rdf/api/RDF.html) implementation.
 
-### Creating a RDFTermFactory
+### Finding an RDF implementation
 
-How to get an instance of this factory is implementation-specific, for the
-_simple_ implementation, you can construct the
-[SimpleRDFTermFactory](apidocs/org/apache/commons/rdf/simple/SimpleRDFTermFactory.html):
+The [implementations](implementations.md) of `RDF` can usually be
+created using a normal Java constructor, for instance the
+_simple_ implementation from
+[SimpleRDF](apidocs/org/apache/commons/rdf/simple/SimpleRDF.html):
 
 ```java
 import org.apache.commons.rdf.api.*;
-import org.apache.commons.rdf.simple.SimpleRDFTermFactory;
+import org.apache.commons.rdf.simple.SimpleRDF;
 // ...
-RDFTermFactory factory = new SimpleRDFTermFactory();
+RDF rdf = new SimpleRDF();
 ```
 
-If you don't want to depend on instantiating a concrete implementation,
-you can alternatively use the
+If you don't want to depend on instantiating a concrete `RDF`
+implementation, you can alternatively use the
 [ServiceLoader](http://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html)
-to lookup any `RDFTermFactory` implementations found on the classpath:
+to lookup any `RDF` implementations found on the classpath:
 
 ```java
 import java.util.Iterator;
@@ -172,43 +173,47 @@ import java.util.ServiceLoader;
 
 import org.apache.commons.rdf.api.*;
 // ...
-ServiceLoader<RDFTermFactory> loader = ServiceLoader.load(RDFTermFactory.class);
-Iterator<RDFTermFactory> iterator = loader.iterator();
-RDFTermFactory factory = iterator.next();
+ServiceLoader<RDF> loader = ServiceLoader.load(RDF.class);
+Iterator<RDF> iterator = loader.iterator();
+RDF rdf = iterator.next();
 ```
 
 Note that the `ServiceLoader` approach above might not work well within
 split classloader systems like OSGi.
 
+When using the factory method
+[createBlankNode(String)](apidocs/org/apache/commons/rdf/api/RDF.html#createBlankNode-java.lang.String-)
+from different sources,
+care should be taken to create correspondingly different `RDF` instances.
 
-### Using a RDFTermFactory
 
-Using the factory you can construct
+### Using an RDF implementation
+
+Using the `RDF` implementation you can construct
 any [RDFTerm](apidocs/org/apache/commons/rdf/api/RDFTerm.html), e.g. to create a
 [BlankNode](apidocs/org/apache/commons/rdf/api/BlankNode.html),
 [IRI](apidocs/org/apache/commons/rdf/api/IRI.html) and
 [Literal](apidocs/org/apache/commons/rdf/api/Literal.html):
 
 ```java
-BlankNode aliceBlankNode = factory.createBlankNode();
-IRI nameIri = factory.createIRI("http://example.com/name");
-Literal aliceLiteral = factory.createLiteral("Alice");
+BlankNode aliceBlankNode = rdf.createBlankNode();
+IRI nameIri = rdf.createIRI("http://example.com/name");
+Literal aliceLiteral = rdf.createLiteral("Alice");
 ```
 
 You can also create a stand-alone [Triple](apidocs/org/apache/commons/rdf/api/Triple.html):
 
 ```java
-Triple triple = factory.createTriple(aliceBlankNode, nameIri, aliceLiteral);
+Triple triple = rdf.createTriple(aliceBlankNode, nameIri, aliceLiteral);
 ```
 
-The [RDFTermFactory](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html) also
+The [RDF](apidocs/org/apache/commons/rdf/api/RDF.html) interface also
 contains more specific variants of some of the methods above, e.g. to create a
 typed literal.
 
-Note that for any given implementation, `RDFTerm` instances need not be created
-using a `RDFTermFactory`. More likely, implementation-specific methods might create these
-objects as part of data parsing, storage lookup and queries.
-
+In addition, the [implementations](implementations.md) of `RDF` may add
+specific converter methods and implementation-specific
+subtypes for interoperability with their underlying RDF framework's API.
 
 
 ## RDF terms
@@ -217,7 +222,7 @@ objects as part of data parsing, storage lookup and queries.
 the super-interface for instances that can be used as subject, predicate and
 object of a [Triple](apidocs/org/apache/commons/rdf/api/Triple.html).
 
-The RDF term interfaces are arranged in this class hierarchy:
+The RDF term interfaces are arranged in this type hierarchy:
 
 * [RDFTerm](apidocs/org/apache/commons/rdf/api/RDFTerm.html)
     * [BlankNodeOrIRI](apidocs/org/apache/commons/rdf/api/BlankNodeOrIRI.html)
@@ -243,7 +248,7 @@ System.out.println(aliceLiteral.ntriplesString());
 > ``"Alice"``
 
 This returns the [N-Triples](http://www.w3.org/TR/n-triples) canonical form
-of the term, which can be useful both for debugging and simple serialization.
+of the term, which can be useful for debugging or simple serialization.
 
 _Note: The `.toString()` of the `simple` implementation used in
 some of these examples use `ntriplesString()` internally, but Commons RDF
@@ -292,10 +297,10 @@ _predicate_ or _object_ of a [Triple](apidocs/org/apache/commons/rdf/api/Triple.
 [Quad](apidocs/org/apache/commons/rdf/api/Quad.html),
 where it can also be used a _graph name_.
 
-To create an `IRI` instance from a `RDFTermFactory`, use [createIRI](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createIRI-java.lang.String-):
+To create an `IRI` instance from an `RDF` implementation, use [createIRI](apidocs/org/apache/commons/rdf/api/RDF.html#createIRI-java.lang.String-):
 
 ```java
-IRI iri = factory.createIRI("http://example.com/alice");
+IRI iri = rdf.createIRI("http://example.com/alice");
 ```
 
 You can retrieve the IRI string using [getIRIString](apidocs/org/apache/commons/rdf/api/IRI.html#getIRIString--):
@@ -316,14 +321,14 @@ Two IRI instances can be compared using the
 method, which uses [simple string comparison](http://tools.ietf.org/html/rfc3987#section-5.3.1):
 
 ```java
-IRI iri2 = factory.createIRI("http://example.com/alice");
+IRI iri2 = rdf.createIRI("http://example.com/alice");
 System.out.println(iri.equals(iri2));
 ```
 
 > `true`
 
 ```java
-IRI iri3 = factory.createIRI("http://example.com/alice/./");
+IRI iri3 = rdf.createIRI("http://example.com/alice/./");
 System.out.println(iri.equals(iri3));
 ```
 
@@ -335,7 +340,7 @@ instances of [IRI](apidocs/org/apache/commons/rdf/api/IRI.html):
 
 ```java
 System.out.println(iri.equals("http://example.com/alice"));
-System.out.println(iri.equals(factory.createLiteral("http://example.com/alice")));
+System.out.println(iri.equals(rdf.createLiteral("http://example.com/alice")));
 ```
 > `false`
 >
@@ -353,11 +358,11 @@ where it can also be used a _graph name_.
 
 To create a new
 [BlankNode](apidocs/org/apache/commons/rdf/api/BlankNode.html) instance from a
-`RDFTermFactory`, use
-[createBlankNode](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createBlankNode--):
+`RDF` implementation, use
+[createBlankNode](apidocs/org/apache/commons/rdf/api/RDF.html#createBlankNode--):
 
 ```java
-BlankNode bnode = factory.createBlankNode();
+BlankNode bnode = rdf.createBlankNode();
 ```
 
 Every call to `createBlankNode()` returns a brand new blank node
@@ -368,7 +373,7 @@ to itself:
 
 ```java
 System.out.println(bnode.equals(bnode));
-System.out.println(bnode.equals(factory.createBlankNode()));
+System.out.println(bnode.equals(rdf.createBlankNode()));
 ```
 
 > `true`
@@ -377,13 +382,13 @@ System.out.println(bnode.equals(factory.createBlankNode()));
 
 Sometimes it can be beneficial to create a blank node based on a
 localized _name_, without needing to keep object references
-to earlier `BlankNode` instances. For that purpose, `RDFTermFactory`
-may support the
-[expanded createBlankNode](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createBlankNode-java.lang.String-)
+to earlier `BlankNode` instances. For that purpose, the
+`RDF` interface provides the
+[expanded createBlankNode](apidocs/org/apache/commons/rdf/api/RDF.html#createBlankNode-java.lang.String-)
 method:
 
 ```java
-BlankNode b1 = factory.createBlankNode("b1");
+BlankNode b1 = rdf.createBlankNode("b1");
 ```
 
 Note that there is no requirement for the
@@ -398,22 +403,22 @@ System.out.println(b1.ntriplesString());
 
 
 
-Any later `createBlankNode("b1")` **on the same factory instance**
+Any later `createBlankNode("b1")` **on the same `RDF` instance**
 returns a `BlankNode` which are
 [equal](apidocs/org/apache/commons/rdf/api/BlankNode.html#equals-java.lang.Object-)
 to the previous b1:
 
 ```java
-System.out.println(b1.equals(factory.createBlankNode("b1")));
+System.out.println(b1.equals(rdf.createBlankNode("b1")));
 ```
 > `true`
 
-That means that care should be taken to create a new `RDFTermFactory` if making
-"different" blank nodes (e.g. parsed from a different RDF file)
+That means that care should be taken to create a new `RDF` instance
+if making "different" blank nodes (e.g. parsed from a different RDF file)
 which accidfentally might have the same name:
 
 ```java
-System.out.println(b1.equals(new SimpleRDFTermFactory().createBlankNode("b1")));
+System.out.println(b1.equals(new SimpleRDF().createBlankNode("b1")));
 ```
 > `false`
 
@@ -455,11 +460,11 @@ an _object_ of a [Triple](apidocs/org/apache/commons/rdf/api/Triple.html#getObje
 or [Quad](apidocs/org/apache/commons/rdf/api/Quad.html#getObject--)
 
 To create a [Literal](apidocs/org/apache/commons/rdf/api/Literal.html) instance
-from an `RDFTermFactory`, use
-[createLiteral](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createLiteral-java.lang.String-):
+from an `RDF` implementation, use
+[createLiteral](apidocs/org/apache/commons/rdf/api/RDF.html#createLiteral-java.lang.String-):
 
 ```java
-Literal literal = factory.createLiteral("Hello world!");
+Literal literal = rdf.createLiteral("Hello world!");
 System.out.println(literal.ntriplesString());
 ```
 
@@ -515,11 +520,11 @@ literal</a> data type.
 To create a literal with any other
 [datatype](http://www.w3.org/TR/rdf11-concepts/#dfn-datatype-iri) (e.g. `xsd:double`),
 then create the datatype `IRI` and pass it to the expanded
-[createLiteral](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createLiteral-java.lang.String-org.apache.commons.rdf.api.IRI-):
+[createLiteral](apidocs/org/apache/commons/rdf/api/RDF.html#createLiteral-java.lang.String-org.apache.commons.rdf.api.IRI-):
 
 ```java
-IRI xsdDouble = factory.createIRI("http://www.w3.org/2001/XMLSchema#double");
-Literal literalDouble = factory.createLiteral("13.37", xsdDouble);
+IRI xsdDouble = rdf.createIRI("http://www.w3.org/2001/XMLSchema#double");
+Literal literalDouble = rdf.createLiteral("13.37", xsdDouble);
 System.out.println(literalDouble.ntriplesString());
 ```
 
@@ -536,7 +541,7 @@ XML Schema datatypes like `xsd:dateTime` and `xsd:float`. Using `Types`,
 the above example can be simplified to:
 
 ```java
-Literal literalDouble2 = factory.createLiteral("13.37", Types.XSD_DOUBLE);
+Literal literalDouble2 = rdf.createLiteral("13.37", Types.XSD_DOUBLE);
 ```
 
 As the constants in `Types` are all instances of `IRI`, so they can
@@ -552,10 +557,10 @@ System.out.println(Types.XSD_STRING.equals(literal.getDatatype()));
 
 Literals may be created with an associated
 [language tag](http://www.w3.org/TR/rdf11-concepts/#dfn-language-tagged-string)
-using the expanded [createLiteral](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createLiteral-java.lang.String-java.lang.String-):
+using the expanded [createLiteral](apidocs/org/apache/commons/rdf/api/RDF.html#createLiteral-java.lang.String-java.lang.String-):
 
 ```java
-Literal inSpanish = factory.createLiteral("¡Hola, Mundo!", "es");
+Literal inSpanish = rdf.createLiteral("¡Hola, Mundo!", "es");
 System.out.println(inSpanish.ntriplesString());
 System.out.println(inSpanish.getLexicalForm());
 ```
@@ -609,15 +614,15 @@ RDF 1.1 consists of:
 * The [object](apidocs/org/apache/commons/rdf/api/Triple.html#getObject--), which is an [IRI](apidocs/org/apache/commons/rdf/api/IRI.html), a [BlankNode](apidocs/org/apache/commons/rdf/api/BlankNode.html) or a [Literal](apidocs/org/apache/commons/rdf/api/Literal.html)
 
 
-To construct a [Triple](apidocs/org/apache/commons/rdf/api/Triple.html) from a
-`RDFTermFactory`, use
-[createTriple](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createTriple-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-):
+To construct a [Triple](apidocs/org/apache/commons/rdf/api/Triple.html) from an
+`RDF` implementation, use
+[createTriple](apidocs/org/apache/commons/rdf/api/RDF.html#createTriple-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-):
 
 ```java
-BlankNodeOrIRI subject = factory.createBlankNode();
-IRI predicate = factory.createIRI("http://example.com/says");
-RDFTerm object = factory.createLiteral("Hello");
-Triple triple = factory.createTriple(subject, predicate, object);
+BlankNodeOrIRI subject = rdf.createBlankNode();
+IRI predicate = rdf.createIRI("http://example.com/says");
+RDFTerm object = rdf.createLiteral("Hello");
+Triple triple = rdf.createTriple(subject, predicate, object);
 ```
 
 The subject of the triple can be retrieved
@@ -675,7 +680,7 @@ to another `Triple` if each of their subject, predicate and object are
 equal:
 
 ```java
-System.out.println(triple.equals(factory.createTriple(subj, pred, obj)));
+System.out.println(triple.equals(rdf.createTriple(subj, pred, obj)));
 ```
 
 > `true`
@@ -700,14 +705,14 @@ Commons RDF represents such statements using the class [Quad](apidocs/org/apache
 * The [graph name](apidocs/org/apache/commons/rdf/api/Quad.html#getGraphName--), which is an [IRI](apidocs/org/apache/commons/rdf/api/IRI.html) or a [BlankNode](apidocs/org/apache/commons/rdf/api/BlankNode.html); wrapped as an `java.util.Optional`
 
 
-To create a `Quad`, use [createQuad](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createQuad-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-):
+To create a `Quad`, use [createQuad](apidocs/org/apache/commons/rdf/api/RDF.html#createQuad-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-):
 
 ```
-BlankNodeOrIRI graph = factory.createIRI("http://example.com/graph");
-BlankNodeOrIRI subject = factory.createBlankNode();
-IRI predicate = factory.createIRI("http://example.com/says");
-RDFTerm object = factory.createLiteral("Hello");
-Quad quad = factory.createQuad(graph, subject, predicate, object);
+BlankNodeOrIRI graph = rdf.createIRI("http://example.com/graph");
+BlankNodeOrIRI subject = rdf.createBlankNode();
+IRI predicate = rdf.createIRI("http://example.com/says");
+RDFTerm object = rdf.createLiteral("Hello");
+Quad quad = rdf.createQuad(graph, subject, predicate, object);
 ```
 
 The subject, predicate and object are accessible just like in a `Triple`:
@@ -747,7 +752,7 @@ To create a quad in the _default graph_, supply `null` as the graph name
 to the factory method:
 
 ```
-Quad otherQuad = factory.createQuad(null, subject, predicate, object);
+Quad otherQuad = rdf.createQuad(null, subject, predicate, object);
 System.out.println(otherQuad.getGraphName().isPresent());
 ```
 
@@ -769,7 +774,7 @@ BlankNodeOrIRI g = quad.getGraphName().orElse(null);
 if (g == null) {
   System.out.println("In default graph");
 }
-factory.createQuad(g,s,p,o);
+rdf.createQuad(g,s,p,o);
 ```
 
 
@@ -810,13 +815,13 @@ System.out.println(quadAsTriple.equals(otherQuad.asTriple());
 > `true`
 
 To create a triple from a quad, you will need to use
-[RDFTermFactory.createQuad](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createQuad-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-)
+[RDF.createQuad](apidocs/org/apache/commons/rdf/api/RDF.html#createQuad-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-)
 providing the desired graph name:
 
 ```
 Triple t; // ..
 BlankNodeOrIRI g; // ..
-Quad q = factory.createQuad(g, t.getSubject(), t.getPredicate(), t.getObject());
+Quad q = rdf.createQuad(g, t.getSubject(), t.getPredicate(), t.getObject());
 ```
 
 
@@ -867,11 +872,11 @@ A [graph](http://www.w3.org/TR/rdf11-concepts/#section-rdf-graph)
 is a collection of triples.
 
 To create a [Graph](apidocs/org/apache/commons/rdf/api/Graph.html) instance
-from a `RDFTermFactory`, use
-[createGraph()](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createGraph--):
+from a `RDF` implementation, use
+[createGraph()](apidocs/org/apache/commons/rdf/api/RDF.html#createGraph--):
 
 ```java
-Graph graph = factory.createGraph();
+Graph graph = rdf.createGraph();
 ```
 
 Implementations will typically also have other ways of retrieving a `Graph`,
@@ -892,9 +897,9 @@ _subject/predicate/object_ form of
 [Graph.add](apidocs/org/apache/commons/rdf/api/Graph.html#add-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-):
 
 ```java
-IRI bob = factory.createIRI("http://example.com/bob");
-IRI nameIri = factory.createIRI("http://example.com/name");
-Literal bobName = factory.createLiteral("Bob");
+IRI bob = rdf.createIRI("http://example.com/bob");
+IRI nameIri = rdf.createIRI("http://example.com/name");
+Literal bobName = rdf.createLiteral("Bob");
 graph.add(bob, nameIRI, bobName);
 ```
 
@@ -1037,11 +1042,11 @@ A [dataset](https://www.w3.org/TR/rdf11-concepts/#section-dataset)
 is a collection of quads, or if you like, a collection of `Graph`s.
 
 To create a [Dataset](apidocs/org/apache/commons/rdf/api/Dataset.html) instance
-from a `RDFTermFactory`, use
-[createDataset()](apidocs/org/apache/commons/rdf/api/RDFTermFactory.html#createDataset--):
+from a `RDF` implementation, use
+[createDataset()](apidocs/org/apache/commons/rdf/api/RDF.html#createDataset--):
 
 ```java
-Dataset dataset = factory.createDataset();
+Dataset dataset = rdf.createDataset();
 ```
 
 Implementations will typically also have other ways of retrieving a `Dataset`,
@@ -1065,7 +1070,7 @@ dataset.remove(quad);
 
 
 The convenience method [add(g,s,p,o)](apidocs/org/apache/commons/rdf/api/Dataset.html#add-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-) take an additional `BlankNodeOrIRI` parameter for the
-graph name - matching `RDFTermFactory.createQuad(g,s,p,o)`.
+graph name - matching `RDF.createQuad(g,s,p,o)`.
 
 Note that the expanded pattern methods like [contains(g,s,p,o)](apidocs/org/apache/commons/rdf/api/Dataset.html#contains-java.util.Optional-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-) and
 [stream(g,s,p,o)](apidocs/org/apache/commons/rdf/api/Dataset.html#stream-java.util.Optional-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-) uses `null` as a wildcard pattern, and
@@ -1073,7 +1078,7 @@ therefore an explicit _graph name_ parameter must be supplied as [Optional.empty
 or wrapped using [Optional.of(g)](https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html#of-T-):
 
 ```
-Literal foo = factory.createLiteral("Foo");
+Literal foo = rdf.createLiteral("Foo");
 // Match Foo in any graph, any subject, any predicate
 if (dataset.contains(null, null, null, foo)) {
   System.out.println("Foo literal found");
@@ -1085,7 +1090,7 @@ if (dataset.contains(Optional.empty(), null, null, foo)) {
 }
 
 
-BlankNodeOrIRI g1 = factory.createIRI("http://example.com/graph1");
+BlankNodeOrIRI g1 = rdf.createIRI("http://example.com/graph1");
 // Match Foo in named graph, any subject, any predicate
 if (dataset.contains(Optional.of(g1), null, null, foo)) {
   System.out.println("Foo literal found in default graph");
@@ -1110,7 +1115,7 @@ It is possible to retrieve these graphs from a `Dataset` using:
 
 ```
 Graph defaultGraph = dataset.getGraph();
-BlankNodeOrIRI graphName = factory.createIRI("http://example.com/graph");
+BlankNodeOrIRI graphName = rdf.createIRI("http://example.com/graph");
 Optional<Graph> otherGraph = dataset.getGraph(graphName);
 ```
 
@@ -1198,43 +1203,44 @@ is a set of Java interfaces, which can be implemented by several Java RDF
 frameworks.  See the [implementations](implementations.html) page for an
 updated list of providers.
 
-Implementations are free to choose their level of integration with Commons RDF.
-Several methods defined in Commons RDF therefore explicitly note the
-possibility of throwing a `UnsupportedOperationException` - however the
-implementations provided by Commons RDF
+Commons RDF defines a `RDF` interface as a factory for
+using a particular implementations' `RDFTerm`, `Triple`, `Quad`,
+`Graph` and `Dataset`. The `RDF` implementations
+also add adapter/converter methods to facilitate interoperability with their
+underlying framework's API.
 
-Different RDF frameworks might have different mechanisms to retrieve a Commons
-RDF objects like `Graph` or `Triple` (e.g. returned from a query).
-
-Commons RDF provides a `RDFTermFactory` interface as an interoperable
-way to create new instances, but does not mandate how the factory
-itself should be instantiated (e.g. a factory might be returned for an
-open network connection).
+Note that some RDF frameworks have several possibilities for creating a backend
+for a `Graph` or `Dataset`, which configuration is implementation-specific.
 
 
 ### Cross-compatibility
 
-While different frameworks will have their own classes implementing the Commons
-RDF interfaces, Commons RDF objects are intended to be cross-compatible. Thus a
-client would be able to mix and match objects from multiple implementations:
+While different frameworks have their own classes implementing the Commons
+RDF interfaces, Commons RDF objects are cross-compatible. Thus a
+client is able to mix and match objects from multiple implementations:
 
 ```java
-import com.example.foo.FooRDFTermFactory;
-import net.example.bar.BarGraph;
+import org.apache.commons.rdf.rdf4j.RDF4J;
+import org.apache.commons.rdf.jena.JenaRDF;
 
-RDFTermFactory fooFactory = new FooRDFTermFactory();
-FooGraph g1 = (FooGraph) fooFactory.createGraph();
-// Foo-specific load method
-g1.load("dataset.ttl");
+RDF rdf4j = new RDF4J();
+JenaRDF jena = new JenaRDF();
+
+JenaGraph jenaGraph = jena.createGraph();
+// Jena-specific load method
+jenaGraph.asJenaModel().read("dataset.ttl");
+
 
 // Another Graph, from a different implementation
-Graph g2 = new BarGraph("localhost", 1337);
+Graph rdf4jGraph = rdf4j.createGraph();  
 
-// Any factory can be used
-IRI iri1 = fooFactory.createIRI("http://example.com/property1");
+// Any RDF implementation can make RDFTerms
+IRI rdfIRI = rdf4j.createIRI("http://example.com/property1");
+// and used added to a different implementation's
+jenaGraph.add(rdfIRI,rdfIRI,rdfIRI);
 
 // Both Triple and RDFTerm instances can be used
-//
+// with interoperability
 for (Triple t1: g1.stream(null, iri1, null)) {
     if (g2.contains(t1.getSubject(), null, t1.getObject())) {
       g2.remove(t1);
@@ -1242,24 +1248,29 @@ for (Triple t1: g1.stream(null, iri1, null)) {
 }
 ```
 
-_Note: Special care might need to be taken for cross-interoperability of
-`BlankNode` instances. While multiple triples with the same
-"foreign" `BlankNode` can be added without breaking their
-connections, the `Graph` is not required to
-return blank node instances that `.equals()` those
-inserted - specifically it is **not** required to persist the
-blank node [uniqueReference](apidocs/org/apache/commons/rdf/api/BlankNode.html#uniqueReference--).
- See
-[COMMONSRDF-15](https://issues.apache.org/jira/browse/COMMONSRDF-15)._
-
-The `.equals()` methods of `RDFTerm` interfaces are explicitly defined, so
-their instances can be compared across implementations.
+It is however generally recommended to use the matching `RDF` implementation
+for operations on a `Graph` or `Dataset` as it avoids unnecessary
+conversion round-trips.
 
 _Note: The `Graph` implementation is not required to keep the JVM object
 reference, e.g. after  `g2.add(subj1, pred, obj)` it is not required to later
 return the same `subj1` implementation in `g2.stream()`. Special care
 should be taken if returned values needs to be casted to implementation
-specific types._
+specific types, e.g. using the appropriate adapter method from the
+desired `RDF` implementation._
+
+The `.equals()` methods of `RDFTerm`, `Triple` and `Quad`
+are explicitly defined, so their instances can be compared
+across implementations, and thus can safely
+be used for instance as keys in a `java.util.Map` or `java.util.Set`.
+
+_Note: Special care might need to be taken for cross-interoperability of
+`BlankNode` instances. While multiple triples/quads with the same
+"foreign" `BlankNode` can be added without breaking their
+connections, the `Graph`/`Quad` is not required to
+**return** blank node instances that `.equals()` those previously
+inserted - specifically implementations are **not** expected to persist the
+blank node [uniqueReference](apidocs/org/apache/commons/rdf/api/BlankNode.html#uniqueReference--)._
 
 
 ## Complete example

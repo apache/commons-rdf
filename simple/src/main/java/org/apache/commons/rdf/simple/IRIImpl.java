@@ -24,7 +24,7 @@ import java.net.URI;
 /**
  * A simple implementation of IRI.
  */
-final class IRIImpl implements IRI, SimpleRDFTermFactory.SimpleRDFTerm {
+final class IRIImpl implements IRI, SimpleRDF.SimpleRDFTerm {
 
     private final String iri;
 

@@ -25,7 +25,7 @@ import org.apache.jena.riot.out.NodeFmtLib;
 
 class AbstractJenaRDFTerm implements JenaRDFTerm, RDFTerm {
 	private Node node;
-	// static private PrefixMapping empty = new PrefixMappingImpl() ;
+	// static private PrefixMapping empty = new PrefixMappingImpl();
 
 	protected AbstractJenaRDFTerm(Node node) {
 		this.node = node;

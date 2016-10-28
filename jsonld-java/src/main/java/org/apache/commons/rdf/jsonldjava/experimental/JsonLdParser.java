@@ -32,7 +32,7 @@ import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDFSyntax;
 import org.apache.commons.rdf.jsonldjava.JsonLdDataset;
 import org.apache.commons.rdf.jsonldjava.JsonLdGraph;
-import org.apache.commons.rdf.jsonldjava.JsonLdFactory;
+import org.apache.commons.rdf.jsonldjava.JsonLdRDF;
 import org.apache.commons.rdf.simple.experimental.AbstractRDFParser;
 
 import com.github.jsonldjava.core.JsonLdError;
@@ -44,8 +44,8 @@ import com.github.jsonldjava.utils.JsonUtils;
 public class JsonLdParser extends AbstractRDFParser<JsonLdParser> {
 
 	@Override
-	protected JsonLdFactory createRDFTermFactory() {
-		return new JsonLdFactory();
+	protected JsonLdRDF createRDFTermFactory() {
+		return new JsonLdRDF();
 	}
 
 	@Override
@@ -129,9 +129,9 @@ public class JsonLdParser extends AbstractRDFParser<JsonLdParser> {
 		}
 	}
 	
-	private JsonLdFactory getJsonLdFactory() {
-		if (getRdfTermFactory().isPresent() && getRdfTermFactory().get() instanceof JsonLdFactory) {
-			return (JsonLdFactory) getRdfTermFactory().get();
+	private JsonLdRDF getJsonLdFactory() {
+		if (getRdfTermFactory().isPresent() && getRdfTermFactory().get() instanceof JsonLdRDF) {
+			return (JsonLdRDF) getRdfTermFactory().get();
 		}
 		return createRDFTermFactory();		
 	}

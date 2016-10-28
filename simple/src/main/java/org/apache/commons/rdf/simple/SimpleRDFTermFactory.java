@@ -17,97 +17,54 @@
  */
 package org.apache.commons.rdf.simple;
 
-import java.util.UUID;
-
 import org.apache.commons.rdf.api.BlankNode;
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
-import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Literal;
-import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.RDFTermFactory;
 import org.apache.commons.rdf.api.Triple;
 
 /**
- * A simple implementation of RDFTermFactory.
+ * A Simple implementation of {@link RDFTermFactory}
  * <p>
- * The {@link RDFTerm} and {@link Graph} instances created by this factory are
- * simple in-memory Implementations that are not thread-safe or efficient, but
- * which may be useful for testing and prototyping purposes.
+ * This class is <strong>deprecated</strong>, use instead {@link SimpleRDF}.
  */
+@Deprecated
 public class SimpleRDFTermFactory implements RDFTermFactory {
 
-	/**
-	 * Marker interface to say that this RDFTerm is part of the 
-	 * Simple implementation. Used by {@link GraphImpl} to avoid
-	 * double remapping. 
-	 * <p>
-	 * This method is package protected to avoid any third-party
-	 * subclasses.
-	 *
-	 */
-	static interface SimpleRDFTerm extends RDFTerm {		
+	private SimpleRDF factory = new SimpleRDF();
+
+	public BlankNode createBlankNode() {
+		return factory.createBlankNode();
 	}
-	
-    /** Unique salt per instance, for {@link #createBlankNode(String)}
-     */
-    private final UUID SALT = UUID.randomUUID();
 
-    @Override
-    public BlankNode createBlankNode() {
-        return new BlankNodeImpl();
-    }
+	public BlankNode createBlankNode(String name) {
+		return factory.createBlankNode(name);
+	}
 
-    @Override
-    public BlankNode createBlankNode(String name) {
-        return new BlankNodeImpl(SALT, name);
-    }
+	public Graph createGraph() {
+		return factory.createGraph();
+	}
 
-    @Override
-    public Graph createGraph() {
-        // Creates a GraphImpl object using this object as the factory for
-        // delegating all object creation to
-        return new GraphImpl(this);
-    }
+	public IRI createIRI(String iri) {
+		return factory.createIRI(iri);
+	}
 
-    @Override
-    public Dataset createDataset() throws UnsupportedOperationException {
-    	return new DatasetImpl(this);
-    }
-    
-    @Override
-    public IRI createIRI(String iri) {
-        IRI result = new IRIImpl(iri);
-        // Reuse any IRI objects already created in Types
-        return Types.get(result).orElse(result);
-    }
+	public Literal createLiteral(String literal) {
+		return factory.createLiteral(literal);
+	}
 
-    @Override
-    public Literal createLiteral(String literal) {
-        return new LiteralImpl(literal);
-    }
+	public Literal createLiteral(String literal, IRI dataType) {
+		return factory.createLiteral(literal, dataType);
+	}
 
-    @Override
-    public Literal createLiteral(String literal, IRI dataType) {
-        return new LiteralImpl(literal, dataType);
-    }
+	public Literal createLiteral(String literal, String language) {
+		return factory.createLiteral(literal, language);
+	}
 
-    @Override
-    public Literal createLiteral(String literal, String language) {
-        return new LiteralImpl(literal, language);
-    }
-
-    @Override
-    public Triple createTriple(BlankNodeOrIRI subject, IRI predicate,
-                               RDFTerm object) {
-        return new TripleImpl(subject, predicate, object);
-    }
-    
-    @Override
-    public Quad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
-    		throws IllegalArgumentException, UnsupportedOperationException {
-    	return new QuadImpl(graphName, subject, predicate, object);
-    }
+	public Triple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+		return factory.createTriple(subject, predicate, object);
+	} 
 }

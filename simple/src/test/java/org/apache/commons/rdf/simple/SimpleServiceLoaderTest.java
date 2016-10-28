@@ -15,23 +15,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.commons.rdf.rdf4j;
 
-import org.apache.commons.rdf.api.AbstractRDFTermFactoryTest;
-import org.apache.commons.rdf.api.RDFTermFactory;
-import org.junit.Assume;
+package org.apache.commons.rdf.simple;
 
-public class Rdf4JRDFTermFactoryTest extends AbstractRDFTermFactoryTest {
+import static org.junit.Assert.fail;
 
-	@Override
-	public RDFTermFactory createFactory() {
-		return new RDF4JFactory();
-	}
-	
-	@Override
-	public void testInvalidLiteralLang() throws Exception {
-		Assume.assumeTrue("Sesame doesn't check Lang strings",false);
-		super.testInvalidLiteralLang();
-	}
-	
+import java.util.ServiceLoader;
+
+import org.apache.commons.rdf.api.RDF;
+import org.junit.Test;
+
+public class SimpleServiceLoaderTest {
+
+    @Test
+    public void testServiceLoaderLookup() {
+        ServiceLoader<RDF> loader = ServiceLoader.load(RDF.class);
+        for (RDF impl : loader) {
+        	if (impl instanceof SimpleRDF) {
+        		return; // yay
+        	}
+        }
+        fail("SimpleRDF not found in ServiceLoader");        
+    }
 }

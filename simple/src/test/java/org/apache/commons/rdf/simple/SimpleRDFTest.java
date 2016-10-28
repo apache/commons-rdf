@@ -15,28 +15,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.apache.commons.rdf.simple;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.apache.commons.rdf.api.AbstractRDFTest;
+import org.apache.commons.rdf.api.RDF;
 
-import java.util.Iterator;
-import java.util.ServiceLoader;
+/**
+ * Simple RDF Test
+ */
+public class SimpleRDFTest extends AbstractRDFTest {
 
-import org.apache.commons.rdf.api.RDFTermFactory;
-import org.junit.Test;
-
-public class SimpleRDFTermFactoryLookupTest {
-
-    @Test
-    public void testServiceLoaderLookup() {
-        ServiceLoader<RDFTermFactory> loader = ServiceLoader.load(RDFTermFactory.class);
-
-        Iterator<RDFTermFactory> iterator = loader.iterator();
-        RDFTermFactory factory = iterator.next();
-
-        assertTrue(factory instanceof SimpleRDFTermFactory);
-        assertFalse(iterator.hasNext());
+    @Override
+    public RDF createFactory() {
+        return new SimpleRDF();
     }
+
 }

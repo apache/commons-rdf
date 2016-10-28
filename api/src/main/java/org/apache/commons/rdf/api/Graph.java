@@ -26,6 +26,8 @@ import java.util.stream.Stream;
  * Graph</a>, a set of RDF triples, as defined by <a
  * href="http://www.w3.org/TR/rdf11-concepts/" >RDF-1.1 Concepts and Abstract
  * Syntax</a>, a W3C Recommendation published on 25 February 2014.
+ * 
+ * @see RDF#createGraph()
  */
 public interface Graph extends AutoCloseable,GraphLike<Triple> {
 

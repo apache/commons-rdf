@@ -29,13 +29,13 @@ import org.apache.commons.rdf.api.BlankNode;
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Literal;
+import org.apache.commons.rdf.api.RDF;
 import org.apache.commons.rdf.api.RDFTerm;
-import org.apache.commons.rdf.api.RDFTermFactory;
 import org.apache.commons.rdf.api.Triple;
-import org.apache.commons.rdf.jena.JenaFactory;
-import org.apache.commons.rdf.jsonldjava.JsonLdFactory;
-import org.apache.commons.rdf.rdf4j.RDF4JFactory;
-import org.apache.commons.rdf.simple.SimpleRDFTermFactory;
+import org.apache.commons.rdf.jena.JenaRDF;
+import org.apache.commons.rdf.jsonldjava.JsonLdRDF;
+import org.apache.commons.rdf.rdf4j.RDF4J;
+import org.apache.commons.rdf.simple.SimpleRDF;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -44,13 +44,13 @@ import org.junit.runners.Parameterized.Parameters;
 @RunWith(Parameterized.class)
 public class AllToAllTest {
 
-	private RDFTermFactory nodeFactory;
-	private RDFTermFactory graphFactory;
+	private RDF nodeFactory;
+	private RDF graphFactory;
 
 
 	public AllToAllTest(
-			Class<? extends RDFTermFactory> from,
-			Class<? extends RDFTermFactory> to) throws InstantiationException, IllegalAccessException {
+			Class<? extends RDF> from,
+			Class<? extends RDF> to) throws InstantiationException, IllegalAccessException {
 		this.nodeFactory = from.newInstance();
 		this.graphFactory = to.newInstance();
 	}
@@ -59,10 +59,10 @@ public class AllToAllTest {
 	@Parameters(name = "{index}: {0}->{1}")
 	public static Collection<Object[]> data() {
 		List<Class> factories = Arrays.asList(
-						SimpleRDFTermFactory.class,
-						JenaFactory.class,
-						RDF4JFactory.class,
-						JsonLdFactory.class);
+						SimpleRDF.class,
+						JenaRDF.class,
+						RDF4J.class,
+						JsonLdRDF.class);
 		Collection<Object[]>  allToAll = new ArrayList<>();
 		for (Class from : factories) {
 			for (Class to : factories) {

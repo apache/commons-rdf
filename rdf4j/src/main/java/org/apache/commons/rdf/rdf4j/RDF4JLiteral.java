@@ -24,7 +24,7 @@ package org.apache.commons.rdf.rdf4j;
  * The underlying RDF4J {@link org.eclipse.rdf4j.model.Literal} instance can be
  * retrieved with {@link #asValue()}.
  * 
- * @see RDF4JFactory#createLiteral(String)
+ * @see RDF4J#createLiteral(String)
  */
 public interface RDF4JLiteral extends RDF4JTerm, org.apache.commons.rdf.api.Literal {
 }

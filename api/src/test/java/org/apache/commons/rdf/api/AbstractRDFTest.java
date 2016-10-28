@@ -29,26 +29,26 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Test RDFTermFactory implementation (and thus its RDFTerm implementations)
+ * Test RDF implementation (and thus its RDFTerm implementations)
  * <p>
  * To add to your implementation's tests, create a subclass with a name ending
  * in <code>Test</code> and provide {@link #createFactory()} which minimally
  * supports one of the operations, but ideally supports all operations.
  *
- * @see RDFTermFactory
+ * @see RDF
  */
-public abstract class AbstractRDFTermFactoryTest {
+public abstract class AbstractRDFTest {
 
-    private RDFTermFactory factory;
+    private RDF factory;
 
     /**
-     * testCreate a new, distinct {@link RDFTermFactory} object using the
-     * implementation being tested here.
-     *
-     * @return a new, distinct {@link RDFTermFactory} object using the
-     * implementation being tested here
+     * 
+     * This method must be overridden by the implementing test to provide a
+     * factory for the test to create {@link Literal}, {@link IRI} etc.
+     * 
+     * @return {@link RDF} instance to be tested.
      */
-    public abstract RDFTermFactory createFactory();
+    protected abstract RDF createFactory();
 
     @Before
     public void setUp() {
@@ -57,13 +57,7 @@ public abstract class AbstractRDFTermFactoryTest {
 
     @Test
     public void testCreateBlankNode() throws Exception {
-        BlankNode bnode;
-        try {
-            bnode = factory.createBlankNode();
-        } catch (UnsupportedOperationException ex) {
-            Assume.assumeNoException(ex);
-            return;
-        }
+        BlankNode bnode = factory.createBlankNode();
 
         BlankNode bnode2 = factory.createBlankNode();
         assertNotEquals(
@@ -75,8 +69,6 @@ public abstract class AbstractRDFTermFactoryTest {
     public void testCreateBlankNodeIdentifierEmpty() throws Exception {
         try {
             factory.createBlankNode("");
-        } catch (UnsupportedOperationException e) {
-            Assume.assumeNoException(e);
         } catch (IllegalArgumentException e) {
             // Expected exception
         }
@@ -84,25 +76,15 @@ public abstract class AbstractRDFTermFactoryTest {
 
     @Test
     public void testCreateBlankNodeIdentifier() throws Exception {
-        try {
-            factory.createBlankNode("example1");
-        } catch (UnsupportedOperationException ex) {
-            Assume.assumeNoException(ex);
-            return;
-        }
+        factory.createBlankNode("example1");
     }
 
     @Test
     public void testCreateBlankNodeIdentifierTwice() throws Exception {
         BlankNode bnode1, bnode2, bnode3;
-        try {
-            bnode1 = factory.createBlankNode("example1");
-            bnode2 = factory.createBlankNode("example1");
-            bnode3 = factory.createBlankNode("differ");
-        } catch (UnsupportedOperationException ex) {
-            Assume.assumeNoException(ex);
-            return;
-        }
+        bnode1 = factory.createBlankNode("example1");
+        bnode2 = factory.createBlankNode("example1");
+        bnode3 = factory.createBlankNode("differ");
         // We don't know what the identifier is, but it MUST be the same
         assertEquals(bnode1.uniqueReference(), bnode2.uniqueReference());
         // We don't know what the ntriplesString is, but it MUST be the same
@@ -116,24 +98,18 @@ public abstract class AbstractRDFTermFactoryTest {
     @Test
     public void testCreateBlankNodeIdentifierTwiceDifferentFactories() throws Exception {
         BlankNode bnode1, differentFactory;
-        try {
-            bnode1 = factory.createBlankNode();
-            // it MUST differ from a second factory
-            differentFactory = createFactory().createBlankNode();
-            
-            // NOTE: We can't make similar assumption if we provide a 
-            // name to createBlankNode(String) as its documentation
-            // only says:
-            // 
-            // * BlankNodes created using this method with the same parameter, for
-            // * different instances of RDFTermFactory, SHOULD NOT be equivalent.
-            //
-            // https://github.com/apache/incubator-commonsrdf/pull/7#issuecomment-92312779
-        } catch (UnsupportedOperationException ex) {
-            Assume.assumeNoException(ex);
-            return;
-        }
+        bnode1 = factory.createBlankNode();
+        // it MUST differ from a second factory
+        differentFactory = createFactory().createBlankNode();
+        
+        // NOTE: We can't make similar assumption if we provide a 
+        // name to createBlankNode(String) as its documentation
+        // only says:
+        // 
+        // * BlankNodes created using this method with the same parameter, for
+        // * different instances of RDFFactory, SHOULD NOT be equivalent.
         //
+        // https://github.com/apache/incubator-commonsrdf/pull/7#issuecomment-92312779
         assertNotEquals(bnode1, differentFactory);
         assertNotEquals(bnode1.uniqueReference(),
                 differentFactory.uniqueReference());
@@ -144,13 +120,7 @@ public abstract class AbstractRDFTermFactoryTest {
 
     @Test
     public void testCreateGraph() {
-        Graph graph;
-        try {
-            graph = factory.createGraph();
-        } catch (UnsupportedOperationException ex) {
-            Assume.assumeNoException(ex);
-            return;
-        }
+        Graph graph = factory.createGraph();
 
         assertEquals("Graph was not empty", 0, graph.size());
         graph.add(factory.createBlankNode(),
@@ -165,13 +135,7 @@ public abstract class AbstractRDFTermFactoryTest {
 
     @Test
     public void testCreateIRI() throws Exception {
-        IRI example;
-        try {
-            example = factory.createIRI("http://example.com/");
-        } catch (UnsupportedOperationException ex) {
-            Assume.assumeNoException("createIRI not supported", ex);
-            return;
-        }
+        IRI example = factory.createIRI("http://example.com/");
 
         assertEquals("http://example.com/", example.getIRIString());
         assertEquals("<http://example.com/>", example.ntriplesString());
@@ -200,41 +164,8 @@ public abstract class AbstractRDFTermFactoryTest {
     }
 
     @Test
-    public void testCreateIRIRelative() throws Exception {
-        // Although relative IRIs are defined in
-        // http://www.w3.org/TR/rdf11-concepts/#section-IRIs
-        // it is not a requirement for an implementation to support
-        // it (all instances of an relative IRI should eventually
-        // be possible to resolve to an absolute IRI)
-        try {
-            factory.createIRI("../relative");
-        } catch (UnsupportedOperationException | IllegalArgumentException ex) {
-            Assume.assumeNoException(ex);
-            return;
-        }
-        IRI relative = factory.createIRI("../relative");
-        assertEquals("../relative", relative.getIRIString());
-        assertEquals("<../relative>", relative.ntriplesString());
-
-        IRI relativeTerm = factory.createIRI("../relative#term");
-        assertEquals("../relative#term", relativeTerm.getIRIString());
-        assertEquals("<../relative#term>", relativeTerm.ntriplesString());
-
-        IRI emptyRelative = factory.createIRI(""); // <> equals the base URI
-        assertEquals("", emptyRelative.getIRIString());
-        assertEquals("<>", emptyRelative.ntriplesString());
-    }
-
-    @Test
     public void testCreateLiteral() throws Exception {
-        Literal example;
-        try {
-            example = factory.createLiteral("Example");
-        } catch (UnsupportedOperationException ex) {
-            Assume.assumeNoException(ex);
-            return;
-        }
-
+        Literal example = factory.createLiteral("Example");
         assertEquals("Example", example.getLexicalForm());
         assertFalse(example.getLanguageTag().isPresent());
         assertEquals("http://www.w3.org/2001/XMLSchema#string", example
@@ -245,16 +176,10 @@ public abstract class AbstractRDFTermFactoryTest {
 
     @Test
     public void testCreateLiteralDateTime() throws Exception {
-        Literal dateTime;
-        try {
-            dateTime = factory
+        Literal dateTime = factory
                     .createLiteral(
                             "2014-12-27T00:50:00T-0600",
                             factory.createIRI("http://www.w3.org/2001/XMLSchema#dateTime"));
-        } catch (UnsupportedOperationException ex) {
-            Assume.assumeNoException(ex);
-            return;
-        }
         assertEquals("2014-12-27T00:50:00T-0600", dateTime.getLexicalForm());
         assertFalse(dateTime.getLanguageTag().isPresent());
         assertEquals("http://www.w3.org/2001/XMLSchema#dateTime", dateTime
@@ -266,13 +191,7 @@ public abstract class AbstractRDFTermFactoryTest {
 
     @Test
     public void testCreateLiteralLang() throws Exception {
-        Literal example;
-        try {
-            example = factory.createLiteral("Example", "en");
-        } catch (UnsupportedOperationException ex) {
-            Assume.assumeNoException(ex);
-            return;
-        }
+        Literal example = factory.createLiteral("Example", "en");
 
         assertEquals("Example", example.getLexicalForm());
         assertEquals("en", example.getLanguageTag().get());
@@ -284,14 +203,7 @@ public abstract class AbstractRDFTermFactoryTest {
     @Test
     public void testCreateLiteralLangISO693_3() throws Exception {
         // see https://issues.apache.org/jira/browse/JENA-827
-        Literal vls;
-        try {
-            vls = factory.createLiteral("Herbert Van de Sompel", "vls"); // JENA-827
-            // reference
-        } catch (UnsupportedOperationException ex) {
-            Assume.assumeNoException(ex);
-            return;
-        }
+        Literal vls = factory.createLiteral("Herbert Van de Sompel", "vls"); // JENA-827
 
         assertEquals("vls", vls.getLanguageTag().get());
         assertEquals("http://www.w3.org/1999/02/22-rdf-syntax-ns#langString",
@@ -301,14 +213,8 @@ public abstract class AbstractRDFTermFactoryTest {
 
     @Test
     public void testCreateLiteralString() throws Exception {
-        Literal example;
-        try {
-            example = factory.createLiteral("Example", factory
+        Literal example = factory.createLiteral("Example", factory
                     .createIRI("http://www.w3.org/2001/XMLSchema#string"));
-        } catch (UnsupportedOperationException ex) {
-            Assume.assumeNoException(ex);
-            return;
-        }
         assertEquals("Example", example.getLexicalForm());
         assertFalse(example.getLanguageTag().isPresent());
         assertEquals("http://www.w3.org/2001/XMLSchema#string", example
@@ -319,19 +225,10 @@ public abstract class AbstractRDFTermFactoryTest {
 
     @Test
     public void testCreateTripleBnodeBnode() {
-        BlankNode subject;
-        IRI predicate;
-        BlankNode object;
-        Triple triple;
-        try {
-            subject = factory.createBlankNode("b1");
-            predicate = factory.createIRI("http://example.com/pred");
-            object = factory.createBlankNode("b2");
-            triple = factory.createTriple(subject, predicate, object);
-        } catch (UnsupportedOperationException ex) {
-            Assume.assumeNoException(ex);
-            return;
-        }
+        BlankNode subject = factory.createBlankNode("b1");
+        IRI predicate = factory.createIRI("http://example.com/pred");
+        BlankNode object = factory.createBlankNode("b2");
+        Triple triple = factory.createTriple(subject, predicate, object);
 
         // bnode equivalence should be OK as we used the same
         // factory and have not yet inserted Triple into a Graph
@@ -342,19 +239,10 @@ public abstract class AbstractRDFTermFactoryTest {
 
     @Test
     public void testCreateTripleBnodeIRI() {
-        BlankNode subject;
-        IRI predicate;
-        IRI object;
-        Triple triple;
-        try {
-            subject = factory.createBlankNode("b1");
-            predicate = factory.createIRI("http://example.com/pred");
-            object = factory.createIRI("http://example.com/obj");
-            triple = factory.createTriple(subject, predicate, object);
-        } catch (UnsupportedOperationException ex) {
-            Assume.assumeNoException(ex);
-            return;
-        }
+    	BlankNode subject = factory.createBlankNode("b1");
+    	IRI predicate = factory.createIRI("http://example.com/pred");
+    	IRI object = factory.createIRI("http://example.com/obj");
+    	Triple triple = factory.createTriple(subject, predicate, object);
 
         // bnode equivalence should be OK as we used the same
         // factory and have not yet inserted Triple into a Graph
@@ -365,20 +253,11 @@ public abstract class AbstractRDFTermFactoryTest {
 
     @Test
     public void testCreateTripleBnodeTriple() {
-        BlankNode subject;
-        IRI predicate;
-        Literal object;
-        Triple triple;
-        try {
-            subject = factory.createBlankNode();
-            predicate = factory.createIRI("http://example.com/pred");
-            object = factory.createLiteral("Example", "en");
-            triple = factory.createTriple(subject, predicate, object);
-        } catch (UnsupportedOperationException ex) {
-            Assume.assumeNoException(ex);
-            return;
-        }
-
+    	BlankNode subject = factory.createBlankNode();
+    	IRI predicate = factory.createIRI("http://example.com/pred");
+    	Literal object = factory.createLiteral("Example", "en");
+    	Triple triple = factory.createTriple(subject, predicate, object);
+ 
         // bnode equivalence should be OK as we used the same
         // factory and have not yet inserted Triple into a Graph
         assertEquals(subject, triple.getSubject());
@@ -391,10 +270,6 @@ public abstract class AbstractRDFTermFactoryTest {
         BlankNode withColon;
         try {
             withColon = factory.createBlankNode("with:colon");
-        } catch (UnsupportedOperationException ex) {
-            Assume.assumeNoException("createBlankNode(String) not supported",
-                    ex);
-            return;
         } catch (IllegalArgumentException ex) {
             // Good!
             return;
@@ -410,23 +285,12 @@ public abstract class AbstractRDFTermFactoryTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidIRI() throws Exception {
-        try {
-            factory.createIRI("<no_brackets>");
-        } catch (UnsupportedOperationException ex) {
-            Assume.assumeNoException("createIRI not supported", ex);
-            return;
-        }
+        factory.createIRI("<no_brackets>");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidLiteralLang() throws Exception {
-        try {
-            factory.createLiteral("Example", "with space");
-        } catch (UnsupportedOperationException ex) {
-            Assume.assumeNoException(
-                    "createLiteral(String,String) not supported", ex);
-            return;
-        }
+        factory.createLiteral("Example", "with space");
     }
 
     @Test(expected = Exception.class)
@@ -439,40 +303,19 @@ public abstract class AbstractRDFTermFactoryTest {
 
     @Test
     public void hashCodeBlankNode() throws Exception {
-        BlankNode bnode1;
-        try {
-            bnode1 = factory.createBlankNode();
-        } catch (UnsupportedOperationException ex) {
-            Assume.assumeNoException(
-                    "createBlankNode() not supported", ex);
-            return;
-        }
+        BlankNode bnode1 = factory.createBlankNode();
         assertEquals(bnode1.uniqueReference().hashCode(), bnode1.hashCode());
     }
 
     @Test
     public void hashCodeIRI() throws Exception {
-        IRI iri;
-        try {
-            iri = factory.createIRI("http://example.com/");
-        } catch (UnsupportedOperationException ex) {
-            Assume.assumeNoException(
-                    "createIRI(String) not supported", ex);
-            return;
-        }
+        IRI iri = factory.createIRI("http://example.com/");
         assertEquals(iri.getIRIString().hashCode(), iri.hashCode());
     }
 
     @Test
     public void hashCodeLiteral() throws Exception {
-        Literal literal;
-        try {
-            literal = factory.createLiteral("Hello");
-        } catch (UnsupportedOperationException ex) {
-            Assume.assumeNoException(
-                    "createLiteral(String) not supported", ex);
-            return;
-        }
+        Literal literal = factory.createLiteral("Hello");
         assertEquals(Objects.hash(
                     literal.getLexicalForm(),
                     literal.getDatatype(),
@@ -483,22 +326,8 @@ public abstract class AbstractRDFTermFactoryTest {
 
     @Test
     public void hashCodeTriple() throws Exception {
-        IRI iri;
-        try {
-            iri = factory.createIRI("http://example.com/");
-        } catch (UnsupportedOperationException ex) {
-            Assume.assumeNoException(
-                    "createIRI() not supported", ex);
-            return;
-        }
-        Triple triple;
-        try {
-            triple = factory.createTriple(iri, iri, iri);
-        } catch (UnsupportedOperationException ex) {
-            Assume.assumeNoException(
-                    "createTriple() not supported", ex);
-            return;
-        }
+        IRI iri = factory.createIRI("http://example.com/");
+        Triple triple = factory.createTriple(iri, iri, iri);
         assertEquals(Objects.hash(iri, iri, iri),
                      triple.hashCode());
     }
