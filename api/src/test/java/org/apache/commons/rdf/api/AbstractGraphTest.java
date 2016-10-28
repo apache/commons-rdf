@@ -67,7 +67,14 @@ public abstract class AbstractGraphTest {
     protected Literal companyName;
     protected Triple bobNameTriple;
 
-    public abstract RDF createFactory();
+    /**
+     * 
+     * This method must be overridden by the implementing test to provide a
+     * factory for the test to create {@link Graph}, {@link IRI} etc.
+     * 
+     * @return {@link RDF} instance to be tested.
+     */
+    protected abstract RDF createFactory();
 
     @Before
     public void createGraphAndAdd() {

@@ -42,13 +42,13 @@ public abstract class AbstractRDFTermFactoryTest {
     private RDF factory;
 
     /**
-     * testCreate a new, distinct {@link RDF} object using the
-     * implementation being tested here.
-     *
-     * @return a new, distinct {@link RDF} object using the
-     * implementation being tested here
+     * 
+     * This method must be overridden by the implementing test to provide a
+     * factory for the test to create {@link Literal}, {@link IRI} etc.
+     * 
+     * @return {@link RDF} instance to be tested.
      */
-    public abstract RDF createFactory();
+    protected abstract RDF createFactory();
 
     @Before
     public void setUp() {
