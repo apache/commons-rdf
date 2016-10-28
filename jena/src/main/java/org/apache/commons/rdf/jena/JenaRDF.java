@@ -551,7 +551,7 @@ public final class JenaRDF implements RDF {
      * @return Matched {@link Lang}, otherwise {@link Optional#empty()}
      */
     public Optional<Lang> asJenaLang(RDFSyntax rdfSyntax) {
-        return Optional.ofNullable(RDFLanguages.contentTypeToLang(rdfSyntax.mediaType));
+        return Optional.ofNullable(RDFLanguages.contentTypeToLang(rdfSyntax.mediaType()));
     }
 
     /**

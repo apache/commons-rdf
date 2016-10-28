@@ -240,7 +240,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     public T contentType(RDFSyntax rdfSyntax) throws IllegalArgumentException {
         AbstractRDFParser<T> c = clone();
         c.contentTypeSyntax = Optional.ofNullable(rdfSyntax);
-        c.contentType = c.contentTypeSyntax.map(syntax -> syntax.mediaType);
+        c.contentType = c.contentTypeSyntax.map(syntax -> syntax.mediaType());
         return c.asT();
     }
 

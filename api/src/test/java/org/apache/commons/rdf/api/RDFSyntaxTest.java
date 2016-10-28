@@ -84,26 +84,26 @@ public class RDFSyntaxTest {
 
     @Test
     public void fileExtension() throws Exception {
-        assertEquals(".jsonld", RDFSyntax.JSONLD.fileExtension);
-        assertEquals(".nq", RDFSyntax.NQUADS.fileExtension);
-        assertEquals(".nt", RDFSyntax.NTRIPLES.fileExtension);
-        assertEquals(".html", RDFSyntax.RDFA_HTML.fileExtension);
-        assertEquals(".xhtml", RDFSyntax.RDFA_XHTML.fileExtension);
-        assertEquals(".rdf", RDFSyntax.RDFXML.fileExtension);
-        assertEquals(".trig", RDFSyntax.TRIG.fileExtension);
-        assertEquals(".ttl", RDFSyntax.TURTLE.fileExtension);
+        assertEquals(".jsonld", RDFSyntax.JSONLD.fileExtension());
+        assertEquals(".nq", RDFSyntax.NQUADS.fileExtension());
+        assertEquals(".nt", RDFSyntax.NTRIPLES.fileExtension());
+        assertEquals(".html", RDFSyntax.RDFA_HTML.fileExtension());
+        assertEquals(".xhtml", RDFSyntax.RDFA_XHTML.fileExtension());
+        assertEquals(".rdf", RDFSyntax.RDFXML.fileExtension());
+        assertEquals(".trig", RDFSyntax.TRIG.fileExtension());
+        assertEquals(".ttl", RDFSyntax.TURTLE.fileExtension());
     }
 
     @Test
     public void mediaType() throws Exception {
-        assertEquals("application/ld+json", RDFSyntax.JSONLD.mediaType);
-        assertEquals("application/n-quads", RDFSyntax.NQUADS.mediaType);
-        assertEquals("application/n-triples", RDFSyntax.NTRIPLES.mediaType);
-        assertEquals("text/html", RDFSyntax.RDFA_HTML.mediaType);
-        assertEquals("application/xhtml+xml", RDFSyntax.RDFA_XHTML.mediaType);
-        assertEquals("application/rdf+xml", RDFSyntax.RDFXML.mediaType);
-        assertEquals("application/trig", RDFSyntax.TRIG.mediaType);
-        assertEquals("text/turtle", RDFSyntax.TURTLE.mediaType);
+        assertEquals("application/ld+json", RDFSyntax.JSONLD.mediaType());
+        assertEquals("application/n-quads", RDFSyntax.NQUADS.mediaType());
+        assertEquals("application/n-triples", RDFSyntax.NTRIPLES.mediaType());
+        assertEquals("text/html", RDFSyntax.RDFA_HTML.mediaType());
+        assertEquals("application/xhtml+xml", RDFSyntax.RDFA_XHTML.mediaType());
+        assertEquals("application/rdf+xml", RDFSyntax.RDFXML.mediaType());
+        assertEquals("application/trig", RDFSyntax.TRIG.mediaType());
+        assertEquals("text/turtle", RDFSyntax.TURTLE.mediaType());
     }
 
     @Test

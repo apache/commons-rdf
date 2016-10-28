@@ -22,6 +22,124 @@ import java.util.Locale;
 import java.util.Optional;
 
 /**
+ * An RDF syntax, e.g. as used for parsing and writing RDF.
+ * <p>
+ * An RDF syntax is uniquely identified by its {@link #mediaType()}, and has a
+ * suggested {@link #fileExtension()}.
+ * <p>
+ * Some of the RDF syntaxes may {@link #supportsDataset()}, meaning they can
+ * represent {@link Quad}s.
+ * <p>
+ * An enumeration of the official RDF 1.1 syntaxes is available in 
+ * {@link OfficialRDFSyntax} - for convenience they are also accessible
+ * as constants here, e.g. <code>RDFSyntax.JSONLD</code>.
+ * 
+ */
+public interface RDFSyntax {
+ 
+    public static OfficialRDFSyntax JSONLD = OfficialRDFSyntax.JSONLD;
+    public static OfficialRDFSyntax TURTLE = OfficialRDFSyntax.TURTLE;
+    public static OfficialRDFSyntax NQUADS = OfficialRDFSyntax.NQUADS;
+    public static OfficialRDFSyntax NTRIPLES = OfficialRDFSyntax.NTRIPLES;
+    public static OfficialRDFSyntax RDFA_HTML = OfficialRDFSyntax.RDFA_HTML;
+    public static OfficialRDFSyntax RDFA_XHTML = OfficialRDFSyntax.RDFA_XHTML;
+    public static OfficialRDFSyntax RDFXML = OfficialRDFSyntax.RDFXML;
+    public static OfficialRDFSyntax TRIG = OfficialRDFSyntax.TRIG;
+    
+    /**
+     * A short name of the RDF Syntax.
+     * <p>
+     * The name typically corresponds to the {@link Enum#name()} of for
+     * {@link OfficialRDFSyntax}, e.g. <code>JSONLD</code>.
+     * 
+     * @return Short name for RDF syntax
+     */
+    public String name();
+
+    /**
+     * The title of the RDF Syntax.
+     * <p>
+     * This is generally the title of the corresponding standard, 
+     * e.g. <em>RDF 1.1 Turtle</em>.
+     * 
+     * @return Title of RDF Syntax
+     */
+    public String title();    
+    
+    /**
+     * The <a href="https://tools.ietf.org/html/rfc2046">IANA media type</a> for
+     * the RDF syntax.
+     * <p>
+     * The media type can be used as part of <code>Content-Type</code> and
+     * <code>Accept</code> for <em>content negotiation</em> in the
+     * <a href="https://tools.ietf.org/html/rfc7231#section-3.1.1.1">HTTP
+     * protocol</a>.
+     */
+    public String mediaType();
+
+    /**
+     * The <a href="https://tools.ietf.org/html/rfc2046">IANA-registered</a>
+     * file extension.
+     * <p>
+     * The file extension includes the leading period, e.g. <code>.jsonld</code>
+     */
+    public String fileExtension();
+
+    /**
+     * Indicate if this RDF syntax supports
+     * <a href="https://www.w3.org/TR/rdf11-concepts/#section-dataset">RDF
+     * Datasets</a>.
+     */
+    public boolean supportsDataset();
+
+
+    /**
+     * Return the RDFSyntax with the specified media type.
+     * <p>
+     * The <code>mediaType</code> is compared in lower case, therefore it might
+     * not be equal to the {@link RDFSyntax#mediaType} of the returned
+     * RDFSyntax.
+     * <p>
+     * For convenience matching of media types used in a
+     * <code>Content-Type</code> header, if the <code>mediaType</code> contains
+     * the characters <code>;</code>, <code>,</code> or white space, only the
+     * part of the string to the left of those characters are considered.
+     * 
+     * @param mediaType
+     *            The media type to match
+     * @return If {@link Optional#isPresent()}, the {@link RDFSyntax} which has
+     *         a matching {@link RDFSyntax#mediaType}, otherwise
+     *         {@link Optional#empty()} indicating that no matching syntax was
+     *         found.
+     */
+    public static Optional<RDFSyntax> byMediaType(String mediaType) {
+        final String type = mediaType.toLowerCase(Locale.ENGLISH).split("\\s*[;,]", 2)[0];
+        return Arrays.stream(OfficialRDFSyntax.values()).filter(t -> t.mediaType().equals(type))
+                .map(RDFSyntax.class::cast).findAny();
+    }
+
+    /**
+     * Return the RDFSyntax with the specified file extension.
+     * <p>
+     * The <code>fileExtension</code> is compared in lower case, therefore it
+     * might not be equal to the {@link RDFSyntax#fileExtension} of the returned
+     * RDFSyntax.
+     * 
+     * @param fileExtension
+     *            The fileExtension to match, starting with <code>.</code>
+     * @return If {@link Optional#isPresent()}, the {@link RDFSyntax} which has
+     *         a matching {@link RDFSyntax#fileExtension}, otherwise
+     *         {@link Optional#empty()} indicating that no matching file
+     *         extension was found.
+     */
+    public static Optional<RDFSyntax> byFileExtension(String fileExtension) {
+        final String ext = fileExtension.toLowerCase(Locale.ENGLISH);        
+        return Arrays.stream(OfficialRDFSyntax.values()).filter(t -> t.fileExtension().equals(ext))
+                .map(RDFSyntax.class::cast).findAny();
+    }    
+    
+
+/**
  * Enumeration of the RDF 1.1 serialization syntaxes.
  * <p>
  * This enumeration lists the W3C standardized RDF 1.1 syntaxes like
@@ -34,7 +152,7 @@ import java.util.Optional;
  *      1.1 Primer</a>
  * @see org.apache.commons.rdf.experimental.RDFParser
  */
-public enum RDFSyntax {
+  public enum OfficialRDFSyntax implements RDFSyntax {
 
     /**
      * JSON-LD 1.0
@@ -103,92 +221,56 @@ public enum RDFSyntax {
     TRIG("RDF 1.1 TriG", "application/trig", ".trig", true);
 
     /**
-     * The <a href="https://tools.ietf.org/html/rfc2046">IANA media type</a> for
-     * the RDF syntax.
-     * <p>
-     * The media type can be used as part of <code>Content-Type</code> and
-     * <code>Accept</code> for <em>content negotiation</em> in the
-     * <a href="https://tools.ietf.org/html/rfc7231#section-3.1.1.1">HTTP
-     * protocol</a>.
+     * Deprecated, use {@link #mediaType()}. 
      */
+    @Deprecated
     public final String mediaType;
 
     /**
-     * The <a href="https://tools.ietf.org/html/rfc2046">IANA-registered</a>
-     * file extension.
-     * <p>
-     * The file extension includes the leading period, e.g. <code>.jsonld</code>
+     * Deprecated, use {@link #fileExtension()}.
      */
+    @Deprecated
     public final String fileExtension;
 
     /**
-     * Indicate if this RDF syntax supports
-     * <a href="https://www.w3.org/TR/rdf11-concepts/#section-dataset">RDF
-     * Datasets</a>.
+     * Deprecated, use {@link #supportsDataset()}.
      */
+    @Deprecated
     public final boolean supportsDataset;
 
-    private final String name;
+    private final String title;
 
-    /**
-     * A human-readable name for the RDF syntax.
-     * <p>
-     * The name is equivalent to the the title of the corresponding W3C
-     * Specification.
-     */
     @Override
     public String toString() {
-        return name;
+        return title();
     }
 
-    private RDFSyntax(String name, String mediaType, String fileExtension, boolean supportsDataset) {
-        this.name = name;
+    private OfficialRDFSyntax(String title, String mediaType, String fileExtension, boolean supportsDataset) {
+        this.title = title;
         this.mediaType = mediaType;
         this.fileExtension = fileExtension;
         this.supportsDataset = supportsDataset;
     }
 
-    /**
-     * Return the RDFSyntax with the specified media type.
-     * <p>
-     * The <code>mediaType</code> is compared in lower case, therefore it might
-     * not be equal to the {@link RDFSyntax#mediaType} of the returned
-     * RDFSyntax.
-     * <p>
-     * For convenience matching of media types used in a
-     * <code>Content-Type</code> header, if the <code>mediaType</code> contains
-     * the characters <code>;</code>, <code>,</code> or white space, only the
-     * part of the string to the left of those characters are considered.
-     * 
-     * @param mediaType
-     *            The media type to match
-     * @return If {@link Optional#isPresent()}, the {@link RDFSyntax} which has
-     *         a matching {@link RDFSyntax#mediaType}, otherwise
-     *         {@link Optional#empty()} indicating that no matching syntax was
-     *         found.
-     */
-    public static Optional<RDFSyntax> byMediaType(String mediaType) {
-        final String type = mediaType.toLowerCase(Locale.ENGLISH).split("\\s*[;,]", 2)[0];
-        return Arrays.stream(RDFSyntax.values()).filter(t -> t.mediaType.equals(type)).findAny();
+    @Override
+    public String mediaType() {
+        return mediaType;
     }
 
-    /**
-     * Return the RDFSyntax with the specified file extension.
-     * <p>
-     * The <code>fileExtension</code> is compared in lower case, therefore it
-     * might not be equal to the {@link RDFSyntax#fileExtension} of the returned
-     * RDFSyntax.
-     * 
-     * @param fileExtension
-     *            The fileExtension to match, starting with <code>.</code>
-     * @return If {@link Optional#isPresent()}, the {@link RDFSyntax} which has
-     *         a matching {@link RDFSyntax#fileExtension}, otherwise
-     *         {@link Optional#empty()} indicating that no matching file
-     *         extension was found.
-     */
-    public static Optional<RDFSyntax> byFileExtension(String fileExtension) {
-        final String ext = fileExtension.toLowerCase(Locale.ENGLISH);
-        return Arrays.stream(RDFSyntax.values()).filter(t -> t.fileExtension.equals(ext)).findAny();
+    @Override
+    public String fileExtension() {
+        return fileExtension;
     }
 
+    @Override
+    public boolean supportsDataset() {
+        return supportsDataset;
+    }
+    
+    @Override
+    public String title() {
+        return title;
+    }
+
+  }
 }
