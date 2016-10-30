@@ -56,4 +56,11 @@
 [BlankNodeOrIRI]<:-[IRI]
 
 #.factory: fill=#ccbbdd italics
-[<factory>RDFTermFactory||createGraph()|createDataset()|createTriple(..)|createQuad(..)|..]
+[<factory>RDF||createGraph()|createDataset()|createTriple(..)|createQuad(..)|..]
+
+// [RDF]<:-[<factory>Simple]
+// [RDF]<:-[<factory>JenaRDF]
+// [RDF]<:-[<factory>RDF4J]
+// [RDF]<:-[<factory>JsonLdRDF]
+
+
