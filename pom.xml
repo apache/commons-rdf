@@ -239,10 +239,10 @@
         <module>integration-tests</module>
     </modules>
 
-	<!--  
-	Common dependencies across modules. 
-	Keep this list small and only <scope>test</scope> !
-	-->
+    <!--  
+    Common dependencies across modules. 
+    Keep this list small and only <scope>test</scope> !
+    -->
         <dependencies>
             <dependency>
                 <groupId>junit</groupId>
@@ -250,14 +250,14 @@
                 <version>${junit.version}</version>
                 <scope>test</scope>
             </dependency>
-			<dependency>
-				<!-- System.err logging for Jena, JSONLD-Java, RDF4J 
-				-->
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-simple</artifactId>
-				<version>${slf4j.version}</version>
-				<scope>test</scope>
-			</dependency>
+            <dependency>
+                <!-- System.err logging for Jena, JSONLD-Java, RDF4J 
+                -->
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>${slf4j.version}</version>
+                <scope>test</scope>
+            </dependency>
         </dependencies>
 
     <build>
@@ -311,12 +311,12 @@
                 </executions>
                 <configuration>
                     <additionalparam>-Xdoclint:all</additionalparam>
-					<links>
-					<link>${commons.javadoc.java.link}</link>
-					<link>https://jena.apache.org/documentation/javadoc/jena/</link>
-					<link>https://jena.apache.org/documentation/javadoc/arq/</link>
-					<link>http://rdf4j.org/javadoc/2.0/</link>
-					</links>
+                    <links>
+                    <link>${commons.javadoc.java.link}</link>
+                    <link>https://jena.apache.org/documentation/javadoc/jena/</link>
+                    <link>https://jena.apache.org/documentation/javadoc/arq/</link>
+                    <link>http://rdf4j.org/javadoc/2.0/</link>
+                    </links>
                 </configuration>
             </plugin>
             <!--
@@ -429,37 +429,37 @@
                                     </action>
                                 </pluginExecution>
                                 <pluginExecution>
-                                	<pluginExecutionFilter>
-                                		<groupId>org.apache.felix</groupId>
-                                		<artifactId>maven-bundle-plugin</artifactId>
-                                		<versionRange>[2.5.3,)</versionRange>
-                                		<goals>
-                                			<goal>manifest</goal>
-                                		</goals>
-                                	</pluginExecutionFilter>
-                                	<action>
-                                		<ignore />
-                                	</action>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.apache.felix</groupId>
+                                        <artifactId>maven-bundle-plugin</artifactId>
+                                        <versionRange>[2.5.3,)</versionRange>
+                                        <goals>
+                                            <goal>manifest</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore />
+                                    </action>
                                 </pluginExecution>
                             </pluginExecutions>
                         </lifecycleMappingMetadata>
                     </configuration>
                 </plugin>
-	      <plugin>
-		<!-- Check if we broke compatibibility against previous release -->
-		<groupId>com.github.siom79.japicmp</groupId>
-		<artifactId>japicmp-maven-plugin</artifactId>
-		<version>${commons.japicmp.version}</version>
-		<configuration>
-		  <parameter>
-		    <!-- Tell japicmp about the -incubator suffix  -->
-		    <oldVersionPattern>\d+\.\d+\.\d+\-incubating</oldVersionPattern>
-		    <!-- japicmp requires "mvn package site" - below means "mvn
-			 site" still works (but without japicmp report) -->
-		    <ignoreMissingNewVersion/>
-		  </parameter>
-		</configuration>
-	      </plugin>
+          <plugin>
+        <!-- Check if we broke compatibibility against previous release -->
+        <groupId>com.github.siom79.japicmp</groupId>
+        <artifactId>japicmp-maven-plugin</artifactId>
+        <version>${commons.japicmp.version}</version>
+        <configuration>
+          <parameter>
+            <!-- Tell japicmp about the -incubator suffix  -->
+            <oldVersionPattern>\d+\.\d+\.\d+\-incubating</oldVersionPattern>
+            <!-- japicmp requires "mvn package site" - below means "mvn
+             site" still works (but without japicmp report) -->
+            <ignoreMissingNewVersion/>
+          </parameter>
+        </configuration>
+          </plugin>
 
                 <!--
                 <plugin>
