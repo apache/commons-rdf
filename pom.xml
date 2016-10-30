@@ -29,7 +29,7 @@
 
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-rdf-parent</artifactId>
-    <version>0.3.0-incubating</version>
+    <version>0.4.0-incubating-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Commons RDF</name>
@@ -78,7 +78,7 @@
         <url>https://git-wip-us.apache.org/repos/asf/incubator-commonsrdf.git</url>
         <connection>scm:git:https://git-wip-us.apache.org/repos/asf/incubator-commonsrdf.git</connection>
         <developerConnection>scm:git:https://git-wip-us.apache.org/repos/asf/incubator-commonsrdf.git</developerConnection>
-        <tag>0.3.0-incubating-RC1</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
