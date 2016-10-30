@@ -25,10 +25,11 @@
     
     This module should not be built as part of a release.  
     -->
+    <name>Commons RDF: Examples</name>
     
     <groupId>com.example</groupId> <!--  Change to your groupId -->
     <artifactId>commons-rdf-examples</artifactId> <!-- Change to your artifactId -->
-    <version>0.1-SNAPSHOT</version>
+    <version>0.1</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -50,13 +51,13 @@
     		<groupId>org.apache.commons</groupId>
     		<artifactId>commons-rdf-api</artifactId>
         <!-- update to latest version -->
-    		<version>0.3.0-incubating-SNAPSHOT</version>
+    		<version>0.3.0-incubating</version>
     	</dependency>
     	<dependency>
     		<groupId>org.apache.commons</groupId>
     		<artifactId>commons-rdf-simple</artifactId>
         <!-- update to latest version -->
-    		<version>0.3.0-incubating-SNAPSHOT</version>
+    		<version>0.3.0-incubating</version>
     	</dependency>
     	<dependency>
     		<groupId>junit</groupId>
@@ -66,7 +67,7 @@
     	</dependency>
     </dependencies>
     <repositories>
-      <!-- Only needed if testing -SNAPSHOT release of commons-rdf -->
+      <!-- Only needed if testing  release of commons-rdf -->
     	<repository>
     		<id>apache.snapshots</id>
     		<name>Apache Snapshot Repository</name>
@@ -76,5 +77,4 @@
     		</releases>
     	</repository>
     </repositories>
-    <name>Commons RDF: Examples</name>
 </project>

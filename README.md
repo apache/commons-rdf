@@ -100,9 +100,13 @@ Building has been tested with [Apache Maven 3.2](http://maven.apache.org/downloa
     [INFO] ------------------------------------------------------------------------
     [INFO] Reactor Summary:
     [INFO] 
-    [INFO] Commons RDF ....................................... SUCCESS [  1.792 s]
-    [INFO] Commons RDF: API .................................. SUCCESS [  2.676 s]
-    [INFO] Commons RDF: Simple impl .......................... SUCCESS [  3.142 s]
+    [INFO] Commons RDF ........................................ SUCCESS [  0.404 s]
+    [INFO] Commons RDF: API ................................... SUCCESS [  0.031 s]
+    [INFO] Commons RDF: Simple Implementation ................. SUCCESS [  0.010 s]
+    [INFO] Commons RDF: Integration: RDF4j .................... SUCCESS [  0.012 s]
+    [INFO] Commons RDF: Integration: Apache Jena .............. SUCCESS [  0.011 s]
+    [INFO] Commons RDF: Integration: JSON-LD Java ............. SUCCESS [  0.009 s]
+    [INFO] Commons RDF: Integration tests ..................... SUCCESS [  0.005 s]
     [INFO] ------------------------------------------------------------------------
     [INFO] BUILD SUCCESS
     [INFO] ------------------------------------------------------------------------
@@ -117,8 +121,12 @@ To then use this build from your project, add to Maven (update `<version>` to ma
     <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-rdf-api</artifactId>
-        <version>0.2.0-incubating-SNAPSHOT</version>
+        <version>0.3.0-incubating</version>
     </dependency>
+
+.. and an equivalent `<dependency>` for the 
+[implementation](http://commonsrdf.incubator.apache.org/implementations.html)
+you would like, e.g. `commons-rdf-simple`.
 
 The `<version>` above might not be up to date, 
 see the [downloads](http://commonsrdf.incubator.apache.org/download.html) to
@@ -188,7 +196,7 @@ classifier for the commons-rdf-api module, for example (for Maven):
     <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-rdf-api</artifactId>
-        <version>0.2.0-incubating-SNAPSHOT</version>
+        <version>0.3.0-incubating</version>
         <classifier>tests</classifier>
         <scope>test</scope>
     </dependency>

@@ -89,7 +89,7 @@ add the following dependency to your `pom.xml`:
     <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-rdf-api</artifactId>
-        <version>0.2.0-incubating</version>
+        <version>0.3.0-incubating</version>
     </dependency>
 </dependencies>
 ```
@@ -133,7 +133,7 @@ _simple_ implementation, add to your `<dependencies>`:
     <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-rdf-simple</artifactId>
-        <version>0.2.0-incubating</version>
+        <version>0.3.0-incubating</version>
     </dependency>
 ```
 
