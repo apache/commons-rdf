@@ -144,7 +144,7 @@ Objects created with  [RDF4J](apidocs/org/apache/commons/rdf/rdf4j/RDF4J.html) i
 
 #### Closing RDF4J resources
 
-When using `RDF4J` with an RDF4J `Repository`, e.g. from [asRDFTermGraph(Repository)](apidocs/org/apache/commons/rdf/rdf4j/RDF4J.html#asRDFTermGraph-org.eclipse.rdf4j.repository.Repository-org.apache.commons.rdf.rdf4j.RDF4J.Option...-), care must be taken to close underlying resources when using the methods [stream()](apidocs/org/apache/commons/rdf/rdf4j/RDF4JGraph.html#stream--) and [iterate()](apidocs/org/apache/commons/rdf/rdf4j/RDF4JGraph.html#iterate--) for both `Graph`s and `Dataset`s.
+When using `RDF4J` with an RDF4J `Repository`, e.g. from [asRDFTermGraph(Repository)](apidocs/org/apache/commons/rdf/rdf4j/RDF4J.html#asGraph-org.eclipse.rdf4j.repository.Repository-org.apache.commons.rdf.rdf4j.RDF4J.Option...-), care must be taken to close underlying resources when using the methods [stream()](apidocs/org/apache/commons/rdf/rdf4j/RDF4JGraph.html#stream--) and [iterate()](apidocs/org/apache/commons/rdf/rdf4j/RDF4JGraph.html#iterate--) for both `Graph`s and `Dataset`s.
 
 This can generally achieved using a [try-with-resources](https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html) block, e.g.:
 
