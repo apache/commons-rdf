@@ -200,6 +200,7 @@
             <roles>
                 <role>Emeritus Committer</role>
                 <role>Emeritus PPMC Member</role>
+                <role>Reviewer</role>
             </roles>
         </contributor>
         <contributor>
@@ -217,6 +218,7 @@
             <roles>
                 <role>Emeritus Committer</role>
                 <role>Emeritus PPPMC Member</role>
+                <role>Reviewer</role>
             </roles>
             <timezone>+0</timezone>
         </contributor>
@@ -225,6 +227,14 @@
             <email>rvesse[at]apache[dot]org</email>
             <roles>
                 <role>Emeritus Mentor</role>
+            </roles>
+            <timezone>+0</timezone>
+        </contributor>
+        <contributor>
+            <name>Adam Soroka</name>
+            <email>ajs6f[at]apache[dot]org</email>
+            <roles>
+                <role>Reviewer</role>
             </roles>
             <timezone>+0</timezone>
         </contributor>
