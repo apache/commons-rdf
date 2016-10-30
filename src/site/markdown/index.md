@@ -98,9 +98,10 @@ explicit convertion.
 
 To create such instances without hard-coding an implementation, one can use:
 
-* [RDFTermFactory](apidocs/index.html?org/apache/commons/rdf/api/RDFTermFactory.html):
-  factory interface for creating instances of the above types
-  (e.g. `LiteralImpl` and `GraphImpl`).
+* [RDF](apidocs/index.html?org/apache/commons/rdf/api/RDF.html):
+  interface for creating instances of the above types
+  (e.g. `LiteralImpl` and `GraphImpl`) as well as converting from/to
+  the underlying framework's API.
 
 
 The API also includes a couple of "upper" interfaces  which do not have
