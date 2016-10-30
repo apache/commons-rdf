@@ -128,7 +128,6 @@ The project is composed by two modules:
   scenarios.
 * [jena](apidocs/index.html?org/apache/commons/rdf/jena/package-summary.html)
     provides an Apache Jena-backed implementation
-
 * [rdf4j](apidocs/index.html?org/apache/commons/rdf/rdf4j/package-summary.html)
     provides an Eclipse RDF4J-backed implementation
 * [jsonld-java](apidocs/index.html?org/apache/commons/rdf/jsonldjava/package-summary.html)
