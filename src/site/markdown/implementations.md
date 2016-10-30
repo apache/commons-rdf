@@ -67,11 +67,11 @@ usage (e.g. prototyping and creating graph fragments).
 
 ```java
 import org.apache.commons.rdf.api.Graph;
-import org.apache.commons.rdf.api.RDFTermFactory;
-import org.apache.commons.rdf.simple.SimpleRDFTermFactory;
+import org.apache.commons.rdf.api.RDF;
+import org.apache.commons.rdf.simple.SimpleRDF;
 
-RDFTermFactory rdfTermFactory = new SimpleRDFTermFactory();
-Graph graph = rdfTermFactory.createGraph();
+RDF rdf = new SimpleRDF();
+Graph graph = rdf.createGraph();
 ```
 
 ### Apache Jena
@@ -92,15 +92,15 @@ Graph graph = rdfTermFactory.createGraph();
 ```java
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.RDFTermFactory;
-import org.apache.commons.rdf.jena.JenaFactory;
+import org.apache.commons.rdf.jena.JenaRDF;
 
-RDFTermFactory rdfTermFactory = new JenaFactory();
-Graph graph = rdfTermFactory.createGraph();
+RDF rdf = new JenaRDF();
+Graph graph = rdf.createGraph();
 ```
 
-Objects created with  [JenaFactory](apidocs/org/apache/commons/rdf/jena/JenaFactory.html) implement interfaces like [JenaQuad](apidocs/org/apache/commons/rdf/jena/JenaQuad.html) and [JenaLiteral](apidocs/org/apache/commons/rdf/jena/JenaLiteral.html) which give access to the underlying Jena objects through methods like [asJenaNode()](apidocs/org/apache/commons/rdf/jena/JenaRDFTerm.html#asJenaNode--) and [asJenaGraph()](apidocs/org/apache/commons/rdf/jena/JenaGraph.html#asJenaGraph--).
+Objects created with  [JenaRDF](apidocs/org/apache/commons/rdf/jena/JenaRDF.html) implement interfaces like [JenaQuad](apidocs/org/apache/commons/rdf/jena/JenaQuad.html) and [JenaLiteral](apidocs/org/apache/commons/rdf/jena/JenaLiteral.html) which give access to the underlying Jena objects through methods like [asJenaNode()](apidocs/org/apache/commons/rdf/jena/JenaRDFTerm.html#asJenaNode--) and [asJenaGraph()](apidocs/org/apache/commons/rdf/jena/JenaGraph.html#asJenaGraph--).
 
-`JenaFactory` includes additional methods for converting from/to Apache Jena and Commons RDF, like [fromJena(Node)](apidocs/org/apache/commons/rdf/jena/JenaFactory.html#fromJena-org.apache.jena.graph.Node-) and [toJena(RDFTerm)](apidocs/org/apache/commons/rdf/jena/JenaFactory.html#toJena-org.apache.commons.rdf.api.RDFTerm-).
+`JenaRDF` includes additional methods for converting from/to Apache Jena and Commons RDF, like [asRDFTerm(Node)](apidocs/org/apache/commons/rdf/jena/JenaRDF.html#asRDFTerm-org.apache.jena.graph.Node-) and [asJenaNode(RDFTerm)](apidocs/org/apache/commons/rdf/jena/JenaRDF.html#asJenaNode-org.apache.commons.rdf.api.RDFTerm-).
 
 #### Generalized RDF
 
@@ -108,7 +108,7 @@ Apache Jena can support [generalized RDF](https://www.w3.org/TR/rdf11-concepts/#
 
 > A generalized RDF triple is a triple having a subject, a predicate, and object, where each can be an IRI, a blank node or a literal.
 
-Within Commons RDF it is possible to create [generalized triples](apidocs/org/apache/commons/rdf/jena/JenaFactory.html#createGeneralizedTriple-org.apache.commons.rdf.api.RDFTerm-org.apache.commons.rdf.api.RDFTerm-org.apache.commons.rdf.api.RDFTerm-) and [quads](apidocs/org/apache/commons/rdf/jena/JenaFactory.html#createGeneralizedQuad-org.apache.commons.rdf.api.RDFTerm-org.apache.commons.rdf.api.RDFTerm-org.apache.commons.rdf.api.RDFTerm-org.apache.commons.rdf.api.RDFTerm-) using `JenaFactory` - however note that the returned [JenaGeneralizedTripleLike](apidocs/org/apache/commons/rdf/jena/JenaGeneralizedTripleLike.html) and
+Within Commons RDF it is possible to create [generalized triples](apidocs/org/apache/commons/rdf/jena/JenaRDF.html#createGeneralizedTriple-org.apache.commons.rdf.api.RDFTerm-org.apache.commons.rdf.api.RDFTerm-org.apache.commons.rdf.api.RDFTerm-) and [quads](apidocs/org/apache/commons/rdf/jena/JenaRDF.html#createGeneralizedQuad-org.apache.commons.rdf.api.RDFTerm-org.apache.commons.rdf.api.RDFTerm-org.apache.commons.rdf.api.RDFTerm-org.apache.commons.rdf.api.RDFTerm-) using `JenaRDF` - however note that the returned [JenaGeneralizedTripleLike](apidocs/org/apache/commons/rdf/jena/JenaGeneralizedTripleLike.html) and
 [JenaGeneralizedQuadLike](apidocs/org/apache/commons/rdf/jena/JenaGeneralizedQuadLike.html)
  do not have the [equality semantics of Triple](apidocs/org/apache/commons/rdf/api/Triple.html#equals-java.lang.Object-) or [Quad](apidocs/org/apache/commons/rdf/api/Quad.html#equals-java.lang.Object-) and thus can't be used with the regular [Graph](apidocs/org/apache/commons/rdf/api/Graph.html) or [Dataset](apidocs/org/apache/commons/rdf/api/Dataset.html) methods.
 
@@ -130,21 +130,21 @@ The generalized triples/quads can be accessed as [org.apache.jena.graph.Triple](
 
 ```java
 import org.apache.commons.rdf.api.Graph;
-import org.apache.commons.rdf.api.RDFTermFactory;
-import org.apache.commons.rdf.rdf4j.RDF4JFactory;
+import org.apache.commons.rdf.api.RDF;
+import org.apache.commons.rdf.rdf4j.RDF4J;
 
-RDFTermFactory rdfTermFactory = new RDF4JFactory();
-Graph graph = rdfTermFactory.createGraph();
+RDF rdf = new RDF4J();
+Graph graph = rdf.createGraph();
 ```
 
-Objects created with  [RDF4JFactory](apidocs/org/apache/commons/rdf/rdf4j/RDF4JFactory.html) implement interfaces like [RDF4JTerm](apidocs/org/apache/commons/rdf/rdf4j/RDF4JTerm.html) and [RDF4JGraph](apidocs/org/apache/commons/rdf/rdf4j/RDF4JGraph.html) which give access to the underlying Jena objects through methods like [asValue()](apidocs/org/apache/commons/rdf/rdf4j/RDF4JTerm.html#asValue--) and [asRepository()](apidocs/org/apache/commons/rdf/rdf4j/RDF4JGraphLike.html#asRepository--).
+Objects created with  [RDF4J](apidocs/org/apache/commons/rdf/rdf4j/RDF4J.html) implement interfaces like [RDF4JTerm](apidocs/org/apache/commons/rdf/rdf4j/RDF4JTerm.html) and [RDF4JGraph](apidocs/org/apache/commons/rdf/rdf4j/RDF4JGraph.html) which give access to the underlying Jena objects through methods like [asValue()](apidocs/org/apache/commons/rdf/rdf4j/RDF4JTerm.html#asValue--) and [asRepository()](apidocs/org/apache/commons/rdf/rdf4j/RDF4JGraphLike.html#asRepository--).
 
-`RDF4JFactory` includes additional methods for converting from/to RDF4J and Commons RDF, like [asTriple(Statement)](apidocs/org/apache/commons/rdf/rdf4j/RDF4JFactory.html#asTriple-org.eclipse.rdf4j.model.Statement-) and
-[asRDFTerm(Value)](apidocs/org/apache/commons/rdf/rdf4j/RDF4JFactory.html#asRDFTerm-org.eclipse.rdf4j.model.Value-).
+`RDF4J` includes additional methods for converting from/to RDF4J and Commons RDF, like [asTriple(Statement)](apidocs/org/apache/commons/rdf/rdf4j/RDF4J.html#asTriple-org.eclipse.rdf4j.model.Statement-) and
+[asRDFTerm(Value)](apidocs/org/apache/commons/rdf/rdf4j/RDF4J.html#asRDFTerm-org.eclipse.rdf4j.model.Value-).
 
 #### Closing RDF4J resources
 
-When using `RDF4JFactory` with an RDF4J `Repository`, e.g. from [asRDFTermGraph(Repository)](apidocs/org/apache/commons/rdf/rdf4j/RDF4JFactory.html#asRDFTermGraph-org.eclipse.rdf4j.repository.Repository-org.apache.commons.rdf.rdf4j.RDF4JFactory.Option...-), care must be taken to close underlying resources when using the methods [stream()](apidocs/org/apache/commons/rdf/rdf4j/RDF4JGraph.html#stream--) and [iterate()](apidocs/org/apache/commons/rdf/rdf4j/RDF4JGraph.html#iterate--) for both `Graph`s and `Dataset`s.
+When using `RDF4J` with an RDF4J `Repository`, e.g. from [asRDFTermGraph(Repository)](apidocs/org/apache/commons/rdf/rdf4j/RDF4J.html#asRDFTermGraph-org.eclipse.rdf4j.repository.Repository-org.apache.commons.rdf.rdf4j.RDF4J.Option...-), care must be taken to close underlying resources when using the methods [stream()](apidocs/org/apache/commons/rdf/rdf4j/RDF4JGraph.html#stream--) and [iterate()](apidocs/org/apache/commons/rdf/rdf4j/RDF4JGraph.html#iterate--) for both `Graph`s and `Dataset`s.
 
 This can generally achieved using a [try-with-resources](https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html) block, e.g.:
 
@@ -196,7 +196,7 @@ import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.RDFTermFactory;
 import org.apache.commons.rdf.jsonld.JsonLdFactory;
 
-RDFTermFactory rdfTermFactory = new JsonLdFactory();
+RDF rdf = new JsonLdRDF();
 Graph graph = rdfTermFactory.createGraph();
 ```
 
