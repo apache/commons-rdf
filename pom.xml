@@ -302,6 +302,7 @@
                 <artifactId>maven-assembly-plugin</artifactId>
 		<configuration>
 		    <finalName>apache-commons-rdf-${project.version}</finalName>
+		    <runOnlyAtExecutionRoot>true</runOnlyAtExecutionRoot>
 		</configuration>
             </plugin>
             <plugin>
