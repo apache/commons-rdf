@@ -293,9 +293,7 @@
                 <executions>
                     <execution>
                         <configuration>
-                            <descriptor>src/assembly/src.xml</descriptor>
                             <finalName>apache-commons-rdf-${project.version}</finalName>
-                            <tarLongFileMode>gnu</tarLongFileMode>
                         </configuration>
                     </execution>
                 </executions>
@@ -587,7 +585,6 @@
             <id>release</id>
             <!-- extends the release profile from commons -->
             <build>
-        	<finalName>apache-commonsrdf-${project.version}</finalName>
                 <plugins>
                   <!-- Generate convenience *.md5 *.sha1 files for dist puropses -->
                   <plugin>
@@ -599,7 +596,7 @@
                               <goals>
                                   <goal>run</goal>
                               </goals>
-                              <phase>package</phase>
+                              <phase>verify</phase>
                               <configuration>
                                   <tasks>
                                       <checksum algorithm="MD5" fileext=".md5">
