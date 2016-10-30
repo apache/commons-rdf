@@ -29,7 +29,6 @@
                 <exclude>**/*~</exclude>
                 <exclude>pom.xml.*</exclude>
                 <exclude>prelease.properties</exclude>
-                <exclude>examples/**</exclude>
                 <exclude>**/target/**</exclude>
                 <exclude>**/.*/**</exclude>
                 <exclude>**/*.iml</exclude>
