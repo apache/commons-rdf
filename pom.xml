@@ -290,13 +290,9 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <configuration>
-                            <finalName>apache-commons-rdf-${project.version}</finalName>
-                        </configuration>
-                    </execution>
-                </executions>
+		<configuration>
+		    <finalName>apache-commons-rdf-${project.version}</finalName>
+		</configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -335,7 +331,9 @@
                 <artifactId>maven-release-plugin</artifactId>
                 <configuration>
                     <useReleaseProfile>true</useReleaseProfile>
-                    <!-- TODO: Use apache-parent's apache-release rather than common-parent's release? -->
+		    <!-- TODO: Can we use apache-parent's apache-release rather than common-parent's release?
+			It seems to force adding a -source-release
+		    -->
                     <releaseProfiles>release</releaseProfiles>
                     <goals>deploy</goals>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
@@ -583,8 +581,11 @@
     <profiles>
         <profile>
             <id>release</id>
-            <!-- extends the release profile from commons -->
+        <!-- extends the release profile from commons -->
             <build>
+		    <!--
+                <finalName>apache-commons-rdf-${project.version}</finalName>
+-->
                 <plugins>
                   <!-- Generate convenience *.md5 *.sha1 files for dist puropses -->
                   <plugin>
@@ -625,6 +626,7 @@
                   </plugin>
 
                     <plugin>
+			    <!-- Avoid making *.asc.asc -->
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
                         <configuration>
