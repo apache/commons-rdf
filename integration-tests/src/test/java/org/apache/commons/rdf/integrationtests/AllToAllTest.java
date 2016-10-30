@@ -69,7 +69,7 @@ public class AllToAllTest {
     }
 
     /**
-     * This test creates a {@link Graph} with the first {@link RDFTermFactory},
+     * This test creates a {@link Graph} with the first {@link RDF},
      * then inserts/queries with triples using {@link RDFTerm}s created with the
      * second factory.
      *
