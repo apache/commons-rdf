@@ -598,44 +598,6 @@
                 <finalName>apache-commons-rdf-${project.version}</finalName>
 -->
                 <plugins>
-                  <!-- Generate convenience *.md5 *.sha1 files for dist puropses -->
-                  <plugin>
-                      <groupId>org.apache.maven.plugins</groupId>
-                      <artifactId>maven-antrun-plugin</artifactId>
-                      <executions>
-                          <execution>
-                              <id>default-cli</id>
-                              <goals>
-                                  <goal>run</goal>
-                              </goals>
-                              <phase>verify</phase>
-                              <configuration>
-                                  <tasks>
-                                      <checksum algorithm="MD5" fileext=".md5">
-                                          <fileset dir="${project.build.directory}">
-                                              <include name="*.zip" />
-                                              <include name="*.tar.gz" />
-                                          </fileset>
-                                      </checksum>
-                                      <checksum algorithm="SHA1" fileext=".sha1">
-                                          <fileset dir="${project.build.directory}">
-                                              <include name="*.zip" />
-                                              <include name="*.tar.gz" />
-                                          </fileset>
-                                      </checksum>
-                                  </tasks>
-                              </configuration>
-                          </execution>
-                      </executions>
-                      <dependencies>
-                          <dependency>
-                              <groupId>org.apache.ant</groupId>
-                              <artifactId>ant-nodeps</artifactId>
-                              <version>1.8.1</version>
-                          </dependency>
-                      </dependencies>
-                  </plugin>
-
                     <plugin>
 			    <!-- Avoid making *.asc.asc -->
                         <groupId>org.apache.maven.plugins</groupId>
