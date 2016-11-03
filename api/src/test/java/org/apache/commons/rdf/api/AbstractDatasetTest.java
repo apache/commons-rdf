@@ -17,11 +17,7 @@
  */
 package org.apache.commons.rdf.api;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -29,7 +25,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.junit.Assume;
@@ -464,7 +462,74 @@ public abstract class AbstractDatasetTest {
         g2.add(b2, b2, hasChild, b1);
         return g2;
     }
+    
+    /**
+     * Ensure {@link Dataset#getGraphNames()} contains our two graphs.
+     * 
+     * @throws Exception
+     *             If test fails
+     */
+    @Test
+    public void getGraphNames() throws Exception {
+        Set<BlankNodeOrIRI> names = dataset.getGraphNames().collect(Collectors.toSet());        
+        assertTrue("Can't find graph name " + graph1, names.contains(graph1));
+        assertTrue("Can't find graph name " + graph2, names.contains(graph2));
 
+        // Some implementations like Virtuoso might have additional internal graphs,
+        // so we can't assume this:
+        //assertEquals(2, names.size());
+    }
+    
+    @Test
+    public void getGraph() throws Exception {
+        Graph defaultGraph = dataset.getGraph();
+        // TODO: Can we assume the default graph was empty before our new triples?
+        assertEquals(2, defaultGraph.size());
+        assertTrue(defaultGraph.contains(alice, isPrimaryTopicOf, graph1));
+        // NOTE: graph2 is a BlankNode
+        assertTrue(defaultGraph.contains(bob, isPrimaryTopicOf, graph2));
+    }
+
+
+    @Test
+    public void getGraphNull() throws Exception {
+        // Default graph should be present
+        Graph defaultGraph = dataset.getGraph(null).get();
+        // TODO: Can we assume the default graph was empty before our new triples?
+        assertEquals(2, defaultGraph.size());
+        assertTrue(defaultGraph.contains(alice, isPrimaryTopicOf, graph1));
+        // NOTE: graph2 is a BlankNode
+        assertTrue(defaultGraph.contains(bob, isPrimaryTopicOf, graph2));
+    }
+    
+
+    @Test
+    public void getGraph1() throws Exception {
+        // graph1 should be present
+        Graph g1 = dataset.getGraph(graph1).get();
+        assertEquals(4, g1.size());
+        
+        assertTrue(g1.contains(alice, name, aliceName));
+        assertTrue(g1.contains(alice, knows, bob));
+        assertTrue(g1.contains(alice, member, bnode1));
+        assertTrue(g1.contains(bnode1, name, secretClubName));
+    }
+
+    @Test
+    public void getGraph2() throws Exception {
+        // graph2 should be present, even if is named by a BlankNode
+        Graph g2 = dataset.getGraph(graph2).get();
+        assertEquals(4, g2.size());
+        Triple bobNameTriple = bobNameQuad.asTriple();
+        assertTrue(g2.contains(bobNameTriple));
+        assertTrue(g2.contains(bob, member, bnode1));
+        assertTrue(g2.contains(bob, member, bnode2));
+        assertFalse(g2.contains(bnode1, name, secretClubName));
+        assertTrue(g2.contains(bnode2, name, companyName));
+    }
+    
+
+    
     /**
      * An attempt to use the Java 8 streams to look up a more complicated query.
      * <p>
