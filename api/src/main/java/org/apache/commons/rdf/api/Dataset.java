@@ -272,6 +272,9 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
      * The {@link Iterable#iterator()} must only be called once, that is the
      * Iterable must only be iterated over once. A {@link IllegalStateException}
      * may be thrown on attempt to reuse the Iterable.
+     * <p>
+     * The default implementation of this method will call {@link #stream()} to
+     * return its {@link Stream#iterator()}.
      *
      * @return A {@link Iterable} that returns {@link Iterator} over all of the
      *         quads in the dataset
@@ -313,6 +316,10 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
      * The {@link Iterable#iterator()} must only be called once, that is the
      * Iterable must only be iterated over once. A {@link IllegalStateException}
      * may be thrown on attempt to reuse the Iterable.
+     * <p>
+     * The default implementation of this method will call
+     * {@link #stream(Optional, BlankNodeOrIRI, IRI, RDFTerm)} to return its
+     * {@link Stream#iterator()}.
      *
      * @param graphName
      *            The graph the quad belongs to, wrapped as an {@link Optional}

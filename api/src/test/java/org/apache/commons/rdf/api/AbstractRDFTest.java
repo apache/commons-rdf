@@ -24,7 +24,6 @@ import static org.junit.Assert.assertNotSame;
 
 import java.util.Objects;
 
-import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 

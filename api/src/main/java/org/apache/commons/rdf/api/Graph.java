@@ -221,6 +221,9 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      * The {@link Iterable#iterator()} must only be called once, that is the
      * Iterable must only be iterated over once. A {@link IllegalStateException}
      * may be thrown on attempt to reuse the Iterable.
+     * <p>
+     * The default implementation of this method will call {@link #stream()} to return
+     * its {@link Stream#iterator()}.
      *
      * @return A {@link Iterable} that returns {@link Iterator} over all of the
      *         triples in the graph
@@ -261,6 +264,10 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      * The {@link Iterable#iterator()} must only be called once, that is the
      * Iterable must only be iterated over once. A {@link IllegalStateException}
      * may be thrown on attempt to reuse the Iterable.
+     * <p>
+     * The default implementation of this method will call
+     * {@link #stream(BlankNodeOrIRI, IRI, RDFTerm)} to return its
+     * {@link Stream#iterator()}.
      *
      * @param subject
      *            The triple subject (null is a wildcard)
