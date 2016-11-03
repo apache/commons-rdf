@@ -465,7 +465,7 @@
             <oldVersionPattern>\d+\.\d+\.\d+\-incubating</oldVersionPattern>
             <!-- japicmp requires "mvn package site" - below means "mvn
              site" still works (but without japicmp report) -->
-            <ignoreMissingNewVersion />
+	    <ignoreMissingNewVersion>true</ignoreMissingNewVersion>
           </parameter>
         </configuration>
           </plugin>
