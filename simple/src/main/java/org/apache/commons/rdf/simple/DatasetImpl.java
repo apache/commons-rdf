@@ -129,7 +129,13 @@ final class DatasetImpl implements Dataset {
     @Override
     public Stream<Quad> stream(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate,
             RDFTerm object) {
-        final Optional<BlankNodeOrIRI> newGraphName = graphName.map(g -> (BlankNodeOrIRI) internallyMap(g));
+        final Optional<BlankNodeOrIRI> newGraphName;
+        if (graphName == null) { 
+            // Avoid Optional<Optional<BlankNodeOrIRI>> ...
+            newGraphName = null;
+        } else {
+            newGraphName = graphName.map(g -> (BlankNodeOrIRI) internallyMap(g));
+        }
         final BlankNodeOrIRI newSubject = (BlankNodeOrIRI) internallyMap(subject);
         final IRI newPredicate = (IRI) internallyMap(predicate);
         final RDFTerm newObject = internallyMap(object);
