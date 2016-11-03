@@ -504,7 +504,7 @@ public abstract class AbstractGraphTest {
      *    }
      * </pre>
      *
-     * @throws Exception
+     * @throws Exception If test fails
      */
     @Test
     public void whyJavaStreamsMightNotTakeOverFromSparql() throws Exception {
