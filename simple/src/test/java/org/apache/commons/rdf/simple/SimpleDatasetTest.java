@@ -17,8 +17,12 @@
  */
 package org.apache.commons.rdf.simple;
 
+import static org.junit.Assert.*;
+
 import org.apache.commons.rdf.api.AbstractDatasetTest;
 import org.apache.commons.rdf.api.RDF;
+import org.junit.Assume;
+import org.junit.Test;
 
 /**
  * Test SimpleRDF with AbstractGraphTest
@@ -29,15 +33,16 @@ public class SimpleDatasetTest extends AbstractDatasetTest {
     public RDF createFactory() {
         return new SimpleRDF();
     }
-//
-//    @Test
-//    public void graphToString() {
-//        Assume.assumeNotNull(aliceName, companyName);
-//        // System.out.println(graph);
-//        assertTrue(
-//                graph.toString().contains("<http://example.com/alice> <http://xmlns.com/foaf/0.1/name> \"Alice\" ."));
-//        assertTrue(graph.toString().contains(" <http://xmlns.com/foaf/0.1/name> \"A company\" ."));
-//
-//    }
+
+    @Test
+    public void datasetToString() {
+        Assume.assumeNotNull(aliceName, companyName);
+        //System.out.println(dataset);
+        assertTrue(
+                dataset.toString().contains("<http://example.com/alice> <http://xmlns.com/foaf/0.1/name> \"Alice\" <http://example.com/graph1> ."));
+        assertTrue(dataset.toString().contains(" <http://xmlns.com/foaf/0.1/name> \"A company\" _:"));
+        assertTrue(dataset.toString().contains("<http://example.com/alice> <http://xmlns.com/foaf/0.1/isPrimaryTopicOf> <http://example.com/graph1> ."));
+
+    }
 
 }
