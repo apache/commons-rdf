@@ -83,7 +83,7 @@ class JenaGraphImpl implements JenaGraph {
 
     @Override
     public boolean contains(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-        return graph.contains(factory.asJenaNode(subject), factory.asJenaNode(predicate), factory.asJenaNode(object));
+        return graph.contains(toJenaPattern(subject), toJenaPattern(predicate), toJenaPattern(object));
     }
 
     @Override
@@ -93,8 +93,15 @@ class JenaGraphImpl implements JenaGraph {
 
     @Override
     public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-        graph.delete(org.apache.jena.graph.Triple.create(factory.asJenaNode(subject), factory.asJenaNode(predicate),
-                factory.asJenaNode(object)));
+        graph.delete(org.apache.jena.graph.Triple.create(toJenaPattern(subject), toJenaPattern(predicate),
+                toJenaPattern(object)));
+    }
+
+    private Node toJenaPattern(RDFTerm pattern) {
+        if (pattern == null) { 
+            return Node.ANY;
+        }
+        return factory.asJenaNode(pattern);
     }
 
     @Override

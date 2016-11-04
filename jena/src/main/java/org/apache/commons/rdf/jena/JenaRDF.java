@@ -695,7 +695,8 @@ public final class JenaRDF implements RDF {
     public org.apache.jena.graph.Triple asJenaTriple(Triple triple) {
         if (triple instanceof JenaTriple)
             return ((JenaTriple) triple).asJenaTriple();
-        return org.apache.jena.graph.Triple.create(asJenaNode(triple.getSubject()), asJenaNode(triple.getPredicate()),
+        return org.apache.jena.graph.Triple.create(asJenaNode(triple.getSubject()), 
+                asJenaNode(triple.getPredicate()),
                 asJenaNode(triple.getObject()));
     }
 
@@ -714,8 +715,11 @@ public final class JenaRDF implements RDF {
         if (quad instanceof JenaQuad) {
             return ((JenaQuad) quad).asJenaQuad();
         }
-        return org.apache.jena.sparql.core.Quad.create(asJenaNode(quad.getGraphName().orElse(null)),
-                asJenaNode(quad.getSubject()), asJenaNode(quad.getPredicate()), asJenaNode(quad.getObject()));
+        return org.apache.jena.sparql.core.Quad.create(
+                asJenaNode(quad.getGraphName().orElse(null)),
+                asJenaNode(quad.getSubject()), 
+                asJenaNode(quad.getPredicate()),
+                asJenaNode(quad.getObject()));
     }
 
     // Some simple validations - full IRI parsing is not cheap.
