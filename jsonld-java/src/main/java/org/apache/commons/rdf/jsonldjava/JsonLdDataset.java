@@ -69,7 +69,8 @@ class JsonLdDatasetImpl extends AbstractJsonLdGraphLike<org.apache.commons.rdf.a
         if (graphName == null) {
             return Optional.of(getGraph());
         }
-        return getGraphNames().map(g -> (Graph) new JsonLdGraphImpl(rdfDataSet, Optional.of(g), bnodePrefix)).findAny();
+        
+        return Optional.of(new JsonLdGraphImpl(rdfDataSet, Optional.of(graphName), bnodePrefix));
     }
 
     @Override
