@@ -279,7 +279,7 @@ public final class JsonLdRDF implements RDF {
             if (ref.startsWith(bnodePrefix)) {
                 // One of ours (but possibly not a JsonLdBlankNode) -
                 // we can use the suffix directly
-                return ref.replace(bnodePrefix, "_:");
+                return ref.replace(bnodePrefix, "");
             } else {
                 // Map to unique bnode identifier, e.g.
                 // _:0dbd92ee-ab1a-45e7-bba2-7ade54f87ec5
