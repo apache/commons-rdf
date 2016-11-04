@@ -473,12 +473,12 @@ public abstract class AbstractDatasetTest {
     public void getGraphNames() throws Exception {
         Set<BlankNodeOrIRI> names = dataset.getGraphNames().collect(Collectors.toSet());        
         assertTrue("Can't find graph name " + graph1, names.contains(graph1));
+        assertTrue("Found no quads in graph1", dataset.contains(Optional.of(graph1), null, null, null));
         
         Optional<BlankNodeOrIRI> graphName2 = dataset.getGraphNames().filter(BlankNode.class::isInstance).findAny();
         assertTrue("Could not find graph2-like BlankNode", graphName2.isPresent()); 
-        Graph g = dataset.getGraph(graphName2.get()).get();
-        assertEquals(4, g.size());
-    
+        assertTrue("Found no quads in graph2", dataset.contains(graphName2, null, null, null));
+
         // Some implementations like Virtuoso might have additional internal graphs,
         // so we can't assume this:
         //assertEquals(2, names.size());
@@ -491,7 +491,7 @@ public abstract class AbstractDatasetTest {
         assertEquals(2, defaultGraph.size());
         assertTrue(defaultGraph.contains(alice, isPrimaryTopicOf, graph1));
         // NOTE: graph2 is a BlankNode
-        assertTrue(defaultGraph.contains(bob, isPrimaryTopicOf, graph2));
+        assertTrue(defaultGraph.contains(bob, isPrimaryTopicOf, null));
     }
 
 
@@ -502,8 +502,8 @@ public abstract class AbstractDatasetTest {
         // TODO: Can we assume the default graph was empty before our new triples?
         assertEquals(2, defaultGraph.size());
         assertTrue(defaultGraph.contains(alice, isPrimaryTopicOf, graph1));
-        // NOTE: graph2 is a BlankNode
-        assertTrue(defaultGraph.contains(bob, isPrimaryTopicOf, graph2));
+        // NOTE: wildcard as graph2 is a (potentially mapped) BlankNode
+        assertTrue(defaultGraph.contains(bob, isPrimaryTopicOf, null));
     }
     
 
@@ -515,14 +515,18 @@ public abstract class AbstractDatasetTest {
         
         assertTrue(g1.contains(alice, name, aliceName));
         assertTrue(g1.contains(alice, knows, bob));
-        assertTrue(g1.contains(alice, member, bnode1));
-        assertTrue(g1.contains(bnode1, name, secretClubName));
+        assertTrue(g1.contains(alice, member, null));
+        assertTrue(g1.contains(null, name, secretClubName));
     }
 
     @Test
     public void getGraph2() throws Exception {
         // graph2 should be present, even if is named by a BlankNode
-        Graph g2 = dataset.getGraph(graph2).get();
+        // We'll look up the potentially mapped graph2 blanknode
+        BlankNodeOrIRI graph2Name = (BlankNodeOrIRI) dataset.stream(Optional.empty(), bob, isPrimaryTopicOf, null)
+                .map(Quad::getObject).findAny().get();
+        
+        Graph g2 = dataset.getGraph(graph2Name).get();
         assertEquals(4, g2.size());
         Triple bobNameTriple = bobNameQuad.asTriple();
         assertTrue(g2.contains(bobNameTriple));
