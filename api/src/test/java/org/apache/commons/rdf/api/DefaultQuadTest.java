@@ -19,6 +19,8 @@ package org.apache.commons.rdf.api;
 
 import static org.junit.Assert.*;
 
+import java.util.Objects;
+
 import org.junit.Test;
 
 public class DefaultQuadTest {
@@ -26,11 +28,20 @@ public class DefaultQuadTest {
     public void asQuad() throws Exception {
         Quad q = new DummyQuad();
         Triple t = q.asTriple();
+        assertEquals(t, t);
+        assertNotEquals(t,  q);
+        assertEquals(t, new DummyTriple());
+        assertEquals(t, new DummyQuad().asTriple());
+        
         // FIXME: This would not catch if asTriple() accidentally mixed up s/p/o
         // as they are here all the same
         assertEquals(new DummyIRI(1), t.getSubject());
         assertEquals(new DummyIRI(2), t.getPredicate());
         assertEquals(new DummyIRI(3), t.getObject());
+        
+        
+        
+        assertEquals(Objects.hash(q.getSubject(), q.getPredicate(), q.getObject()), t.hashCode());
     }
     
 }
