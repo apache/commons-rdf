@@ -473,8 +473,12 @@ public abstract class AbstractDatasetTest {
     public void getGraphNames() throws Exception {
         Set<BlankNodeOrIRI> names = dataset.getGraphNames().collect(Collectors.toSet());        
         assertTrue("Can't find graph name " + graph1, names.contains(graph1));
-        assertTrue("Can't find graph name " + graph2, names.contains(graph2));
-
+        
+        Optional<BlankNodeOrIRI> graphName2 = dataset.getGraphNames().filter(BlankNode.class::isInstance).findAny();
+        assertTrue("Could not find graph2-like BlankNode", graphName2.isPresent()); 
+        Graph g = dataset.getGraph(graphName2.get()).get();
+        assertEquals(4, g.size());
+    
         // Some implementations like Virtuoso might have additional internal graphs,
         // so we can't assume this:
         //assertEquals(2, names.size());
