@@ -51,10 +51,12 @@ final class QuadImpl implements Quad, RDF4JQuad {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Triple) {
-            Triple triple = (Triple) obj;
-            return getSubject().equals(triple.getSubject()) && getPredicate().equals(triple.getPredicate())
-                    && getObject().equals(triple.getObject());
+        if (obj instanceof Quad) {
+            Quad quad = (Quad) obj;
+            return getGraphName().equals(quad.getGraphName()) &&
+                    getSubject().equals(quad.getSubject()) && 
+                    getPredicate().equals(quad.getPredicate()) &&
+                    getObject().equals(quad.getObject());
         }
         return false;
     }
