@@ -98,7 +98,7 @@ class JsonLdDatasetImpl extends AbstractJsonLdGraphLike<org.apache.commons.rdf.a
 
     @Override
     public long size() {
-        return rdfDataSet.graphNames().parallelStream().map(rdfDataSet::getQuads)
+        return rdfDataSet.graphNames().stream().map(rdfDataSet::getQuads)
                 .collect(Collectors.summingLong(List::size));
     }
 
