@@ -23,6 +23,7 @@ import static org.apache.jena.graph.Node.ANY;
 import java.io.StringWriter;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
@@ -120,7 +121,10 @@ class JenaDatasetImpl implements JenaDataset {
 
     @Override
     public long size() {
-        return graph.size();
+        long quads = Iter.asStream(graph.listGraphNodes())
+                .map(graph::getGraph)
+                .collect(Collectors.summingLong(org.apache.jena.graph.Graph::size));
+        return quads + graph.getDefaultGraph().size();
     }
 
     @Override
@@ -145,8 +149,8 @@ class JenaDatasetImpl implements JenaDataset {
 
     @Override
     public Graph getGraph() {
-        GraphView gv = GraphView.createDefaultGraph(graph);
-        return new JenaGraphImpl(gv, salt);
+        GraphView g = GraphView.createDefaultGraph(graph);
+        return new JenaGraphImpl(g, salt);
     }
 
     @Override
