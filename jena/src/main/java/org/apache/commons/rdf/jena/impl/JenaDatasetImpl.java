@@ -110,8 +110,8 @@ class JenaDatasetImpl implements JenaDataset {
 
     @Override
     public void remove(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-        graph.delete(org.apache.jena.sparql.core.Quad.create(toJenaPattern(graphName), toJenaPattern(subject),
-                toJenaPattern(predicate), toJenaPattern(object)));
+        graph.deleteAny(toJenaPattern(graphName), toJenaPattern(subject),
+                toJenaPattern(predicate), toJenaPattern(object));
     }
 
     @Override
