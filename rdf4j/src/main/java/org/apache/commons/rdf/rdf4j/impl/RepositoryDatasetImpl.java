@@ -215,14 +215,10 @@ class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> implements
 
     @Override
     public Stream<BlankNodeOrIRI> getGraphNames() {
-        // FIXME: Will the below close the connection before the stream has been
-        // consumed outside?
-        try (RepositoryConnection conn = getRepositoryConnection()) {
-            RepositoryResult<Resource> contexts = conn.getContextIDs();
-            // NOTE: connection will be closed outside by the
-            // Iterations.stream()
-            return Iterations.stream(contexts).map(g -> (BlankNodeOrIRI) rdf4jTermFactory.asRDFTerm(g));
-        }
+       RepositoryConnection conn = getRepositoryConnection();
+       RepositoryResult<Resource> contexts = conn.getContextIDs();
+        return Iterations.stream(contexts).map(g -> (BlankNodeOrIRI) rdf4jTermFactory.asRDFTerm(g))
+                .onClose(conn::close);
     }
 
 }
