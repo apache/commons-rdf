@@ -41,4 +41,10 @@ abstract class JsonLdTermImpl implements JsonLdTerm {
     public Node asJsonLdNode() {
         return node;
     }
+    
+    @Override
+    public String toString() {
+        return ntriplesString();
+    }
+    
 }
