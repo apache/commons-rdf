@@ -34,8 +34,8 @@ import org.apache.commons.rdf.jena.JenaGraph;
 import org.apache.commons.rdf.jena.JenaIRI;
 import org.apache.commons.rdf.jena.JenaLiteral;
 import org.apache.commons.rdf.jena.JenaQuad;
-import org.apache.commons.rdf.jena.JenaRDFTerm;
 import org.apache.commons.rdf.jena.JenaRDF;
+import org.apache.commons.rdf.jena.JenaRDFTerm;
 import org.apache.commons.rdf.jena.JenaTriple;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.NodeFactory;
@@ -43,6 +43,7 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.sparql.core.DatasetGraph;
 import org.apache.jena.sparql.core.DatasetGraphFactory;
 import org.apache.jena.sparql.graph.GraphFactory;
+import org.apache.jena.system.JenaSystem;
 
 /**
  * Construct Jena implementations of Commons RDF.
@@ -58,6 +59,12 @@ import org.apache.jena.sparql.graph.GraphFactory;
  */
 public abstract class InternalJenaFactory {
 
+    static { 
+        // http://jena.apache.org/documentation/notes/system-initialization.html
+        JenaSystem.init();
+    }
+    
+    
     public JenaBlankNode createBlankNode(String id, UUID salt) {
         return new JenaBlankNodeImpl(NodeFactory.createBlankNode(id), salt);
     }
