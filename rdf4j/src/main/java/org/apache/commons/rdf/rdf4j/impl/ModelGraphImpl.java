@@ -39,8 +39,8 @@ import org.eclipse.rdf4j.repository.Repository;
 
 final class ModelGraphImpl implements RDF4JGraph {
 
-    private Model model;
-    private RDF4J rdf4jTermFactory;
+    private final Model model;
+    private final RDF4J rdf4jTermFactory;
 
     ModelGraphImpl(Model model, RDF4J rdf4jTermFactory) {
         this.model = model;

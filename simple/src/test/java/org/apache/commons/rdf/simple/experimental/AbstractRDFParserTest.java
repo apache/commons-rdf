@@ -48,9 +48,9 @@ import org.junit.rules.ExpectedException;
 
 public class AbstractRDFParserTest {
 
-    private RDF factory = new SimpleRDF();
+    private final RDF factory = new SimpleRDF();
 
-    private DummyRDFParserBuilder dummyParser = new DummyRDFParserBuilder();
+    private final DummyRDFParserBuilder dummyParser = new DummyRDFParserBuilder();
     private Path testNt;
     private Path testTtl;
     private Path testXml;

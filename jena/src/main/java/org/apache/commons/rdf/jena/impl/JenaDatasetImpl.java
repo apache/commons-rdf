@@ -43,9 +43,9 @@ import org.apache.jena.sparql.core.GraphView;
 
 class JenaDatasetImpl implements JenaDataset {
 
-    private DatasetGraph graph;
-    private UUID salt;
-    private JenaRDF factory;
+    private final DatasetGraph graph;
+    private final UUID salt;
+    private final JenaRDF factory;
 
     JenaDatasetImpl(DatasetGraph graph, UUID salt) {
         this.graph = graph;

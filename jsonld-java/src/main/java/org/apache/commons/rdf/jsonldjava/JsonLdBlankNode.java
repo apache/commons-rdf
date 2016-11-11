@@ -25,7 +25,7 @@ public interface JsonLdBlankNode extends JsonLdTerm, BlankNode {
 }
 
 final class JsonLdBlankNodeImpl extends JsonLdTermImpl implements JsonLdBlankNode {
-    private String blankNodePrefix;
+    private final String blankNodePrefix;
 
     JsonLdBlankNodeImpl(Node node, String blankNodePrefix) {
         super(node);

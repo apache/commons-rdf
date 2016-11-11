@@ -44,8 +44,8 @@ import org.junit.runners.Parameterized.Parameters;
 @RunWith(Parameterized.class)
 public class AllToAllTest {
 
-    private RDF nodeFactory;
-    private RDF graphFactory;
+    private final RDF nodeFactory;
+    private final RDF graphFactory;
 
     public AllToAllTest(Class<? extends RDF> from, Class<? extends RDF> to)
             throws InstantiationException, IllegalAccessException {

@@ -28,8 +28,8 @@ import org.eclipse.rdf4j.rio.turtle.TurtleUtil;
 final class BlankNodeImpl extends AbstractRDFTerm<BNode> implements RDF4JBlankNode {
 
     private transient int hashCode = 0;
-    private long saltUUIDleast;
-    private long saltUUIDmost;
+    private final long saltUUIDleast;
+    private final long saltUUIDmost;
 
     BlankNodeImpl(BNode bNode, UUID salt) {
         super(bNode);

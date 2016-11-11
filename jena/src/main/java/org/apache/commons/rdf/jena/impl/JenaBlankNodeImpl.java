@@ -26,7 +26,7 @@ import org.apache.jena.graph.Node;
 
 class JenaBlankNodeImpl extends AbstractJenaRDFTerm implements JenaBlankNode {
 
-    private UUID salt;
+    private final UUID salt;
 
     JenaBlankNodeImpl(Node node, UUID salt) {
         super(node);

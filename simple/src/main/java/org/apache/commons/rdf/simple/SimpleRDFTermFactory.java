@@ -34,7 +34,7 @@ import org.apache.commons.rdf.api.Triple;
 @Deprecated
 public class SimpleRDFTermFactory implements RDFTermFactory {
 
-    private SimpleRDF factory = new SimpleRDF();
+    private final SimpleRDF factory = new SimpleRDF();
 
     @Override
     public BlankNode createBlankNode() {

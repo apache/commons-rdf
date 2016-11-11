@@ -31,7 +31,7 @@ import org.eclipse.rdf4j.model.Statement;
 
 final class QuadImpl implements Quad, RDF4JQuad {
     private transient int hashCode = 0;
-    private UUID salt;
+    private final UUID salt;
     private final Statement statement;
 
     QuadImpl(Statement statement, UUID salt) {

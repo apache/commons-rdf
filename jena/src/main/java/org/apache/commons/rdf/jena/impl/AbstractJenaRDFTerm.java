@@ -24,7 +24,7 @@ import org.apache.jena.graph.Node;
 import org.apache.jena.riot.out.NodeFmtLib;
 
 class AbstractJenaRDFTerm implements JenaRDFTerm, RDFTerm {
-    private Node node;
+    private final Node node;
     // static private PrefixMapping empty = new PrefixMappingImpl();
 
     protected AbstractJenaRDFTerm(Node node) {
