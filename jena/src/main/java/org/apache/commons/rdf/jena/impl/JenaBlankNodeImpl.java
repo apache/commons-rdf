@@ -38,12 +38,15 @@ class JenaBlankNodeImpl extends AbstractJenaRDFTerm implements JenaBlankNode {
 
     @Override
     public boolean equals(Object other) {
-        if (other == this)
+        if (other == this) {
             return true;
-        if (other == null)
+        }
+        if (other == null) {
             return false;
-        if (!(other instanceof BlankNode))
+        }
+        if (!(other instanceof BlankNode)) {
             return false;
+        }
         BlankNode bNode = (BlankNode) other;
         return uniqueReference().equals(bNode.uniqueReference());
     }

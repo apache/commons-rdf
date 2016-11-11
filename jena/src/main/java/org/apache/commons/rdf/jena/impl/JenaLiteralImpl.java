@@ -40,12 +40,15 @@ class JenaLiteralImpl extends AbstractJenaRDFTerm implements JenaLiteral {
 
     @Override
     public boolean equals(Object other) {
-        if (other == this)
+        if (other == this) {
             return true;
-        if (other == null)
+        }
+        if (other == null) {
             return false;
-        if (!(other instanceof Literal))
+        }
+        if (!(other instanceof Literal)) {
             return false;
+        }
         Literal literal = (Literal) other;
         return getLexicalForm().equals(literal.getLexicalForm()) && getLanguageTag().equals(literal.getLanguageTag())
                 && getDatatype().equals(literal.getDatatype());
@@ -59,8 +62,9 @@ class JenaLiteralImpl extends AbstractJenaRDFTerm implements JenaLiteral {
     @Override
     public Optional<String> getLanguageTag() {
         String x = asJenaNode().getLiteralLanguage();
-        if (x == null || x.isEmpty())
+        if (x == null || x.isEmpty()) {
             return Optional.empty();
+        }
         return Optional.of(x);
     }
 

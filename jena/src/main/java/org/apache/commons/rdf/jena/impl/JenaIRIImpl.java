@@ -39,12 +39,15 @@ class JenaIRIImpl extends AbstractJenaRDFTerm implements JenaIRI {
 
     @Override
     public boolean equals(Object other) {
-        if (other == this)
+        if (other == this) {
             return true;
-        if (other == null)
+        }
+        if (other == null) {
             return false;
-        if (!(other instanceof IRI))
+        }
+        if (!(other instanceof IRI)) {
             return false;
+        }
         IRI iri = (IRI) other;
         return getIRIString().equals(iri.getIRIString());
     }

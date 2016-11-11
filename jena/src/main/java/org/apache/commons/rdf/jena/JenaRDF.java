@@ -262,20 +262,24 @@ public final class JenaRDF implements RDF {
             // No need to convert, just wrap
             return ((JenaRDF) factory).asRDFTerm(node);
         }
-        if (node.isURI())
+        if (node.isURI()) {
             return factory.createIRI(node.getURI());
+        }
         if (node.isLiteral()) {
             String lang = node.getLiteralLanguage();
-            if (lang != null && !lang.isEmpty())
+            if (lang != null && !lang.isEmpty()) {
                 return factory.createLiteral(node.getLiteralLexicalForm(), lang);
-            if (node.getLiteralDatatype().equals(XSDDatatype.XSDstring))
+            }
+            if (node.getLiteralDatatype().equals(XSDDatatype.XSDstring)) {
                 return factory.createLiteral(node.getLiteralLexicalForm());
+            }
             IRI dt = factory.createIRI(node.getLiteralDatatype().getURI());
             return factory.createLiteral(node.getLiteralLexicalForm(), dt);
         }
-        if (node.isBlank())
+        if (node.isBlank()) {
             // The factory
             return factory.createBlankNode(node.getBlankNodeLabel());
+        }
         throw new ConversionException("Node is not a concrete RDF Term: " + node);
     }
 
@@ -638,8 +642,9 @@ public final class JenaRDF implements RDF {
      * @return Converted Jena {@link org.apache.jena.graph.Graph}
      */
     public org.apache.jena.graph.Graph asJenaGraph(Graph graph) {
-        if (graph instanceof JenaGraph)
+        if (graph instanceof JenaGraph) {
             return ((JenaGraph) graph).asJenaGraph();
+        }
         org.apache.jena.graph.Graph g = GraphFactory.createGraphMem();
         graph.stream().forEach(t -> g.add(asJenaTriple(t)));
         return g;
@@ -658,14 +663,16 @@ public final class JenaRDF implements RDF {
         if (term == null) {
             return null;
         }
-        if (term instanceof JenaRDFTerm)
+        if (term instanceof JenaRDFTerm) {
             // TODO: What if it's a JenaBlankNodeImpl with
             // a different salt? Do we need to rewrite the
             // jena blanknode identifier?
             return ((JenaRDFTerm) term).asJenaNode();
+        }
 
-        if (term instanceof IRI)
+        if (term instanceof IRI) {
             return NodeFactory.createURI(((IRI) term).getIRIString());
+        }
 
         if (term instanceof Literal) {
             Literal lit = (Literal) term;
@@ -693,8 +700,9 @@ public final class JenaRDF implements RDF {
      * @return Converted Jena {@link org.apache.jena.graph.Triple}
      */
     public org.apache.jena.graph.Triple asJenaTriple(Triple triple) {
-        if (triple instanceof JenaTriple)
+        if (triple instanceof JenaTriple) {
             return ((JenaTriple) triple).asJenaTriple();
+        }
         return org.apache.jena.graph.Triple.create(asJenaNode(triple.getSubject()), 
                 asJenaNode(triple.getPredicate()),
                 asJenaNode(triple.getObject()));
@@ -724,17 +732,21 @@ public final class JenaRDF implements RDF {
 
     // Some simple validations - full IRI parsing is not cheap.
     private void validateIRI(String iri) {
-        if (iri.contains(" "))
+        if (iri.contains(" ")) {
             throw new IllegalArgumentException();
-        if (iri.contains("<"))
+        }
+        if (iri.contains("<")) {
             throw new IllegalArgumentException();
-        if (iri.contains(">"))
+        }
+        if (iri.contains(">")) {
             throw new IllegalArgumentException();
+        }
     }
 
     private static void validateLang(String languageTag) {
-        if (languageTag.contains(" "))
+        if (languageTag.contains(" ")) {
             throw new IllegalArgumentException("Invalid language tag: " + languageTag);
+        }
     }
 
     /**

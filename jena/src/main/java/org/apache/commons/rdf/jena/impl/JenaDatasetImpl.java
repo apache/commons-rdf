@@ -98,8 +98,9 @@ class JenaDatasetImpl implements JenaDataset {
     }
 
     private Node toJenaPattern(RDFTerm term) {
-        if (term == null)
+        if (term == null) {
             return ANY;
+        }
         return factory.asJenaNode(term);
     }
 

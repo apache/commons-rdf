@@ -127,8 +127,9 @@ class JenaGraphImpl implements JenaGraph {
     }
 
     private Node toJenaAny(RDFTerm term) {
-        if (term == null)
+        if (term == null) {
             return Node.ANY;
+        }
         return factory.asJenaNode(term);
     }
 
