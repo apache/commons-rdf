@@ -58,7 +58,7 @@ public class JsonLdParser extends AbstractRDFParser<JsonLdParser> {
 
     @Override
     public JsonLdParser contentType(String contentType) throws IllegalArgumentException {
-        JsonLdParser c = (JsonLdParser) super.contentType(contentType);
+        JsonLdParser c = super.contentType(contentType);
         if (c.getContentType().filter(Predicate.isEqual(RDFSyntax.JSONLD).negate()).isPresent()) {
             throw new IllegalArgumentException("Unsupported contentType: " + contentType);
         }
