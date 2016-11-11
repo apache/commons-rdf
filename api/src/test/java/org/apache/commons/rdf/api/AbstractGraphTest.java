@@ -176,7 +176,7 @@ public abstract class AbstractGraphTest {
     /**
      * Special triple closing for RDF4J.
      */
-    private void closeIterable(Iterable<Triple> iterate) throws Exception {
+    private void closeIterable(final Iterable<Triple> iterate) throws Exception {
         if (iterate instanceof AutoCloseable) {
             ((AutoCloseable) iterate).close();
         }
@@ -385,7 +385,7 @@ public abstract class AbstractGraphTest {
         }
     }
 
-    private void notEquals(BlankNodeOrIRI node1, BlankNodeOrIRI node2) {
+    private void notEquals(final BlankNodeOrIRI node1, final BlankNodeOrIRI node2) {
         assertFalse(node1.equals(node2));
         // in which case we should be able to assume
         // (as they are in the same graph)
@@ -403,7 +403,7 @@ public abstract class AbstractGraphTest {
      * @param target
      *            Target Graph where triples will be added
      */
-    private void addAllTriples(Graph source, Graph target) {
+    private void addAllTriples(final Graph source, final Graph target) {
 
         // unordered() as we don't need to preserve triple order
         // sequential() as we don't (currently) require target Graph to be
@@ -443,7 +443,7 @@ public abstract class AbstractGraphTest {
      * @param name
      * @return
      */
-    private BlankNode createOwnBlankNode(String name, String uuid) {
+    private BlankNode createOwnBlankNode(final String name, final String uuid) {
         return new BlankNode() {
             @Override
             public String ntriplesString() {
@@ -461,7 +461,7 @@ public abstract class AbstractGraphTest {
             }
 
             @Override
-            public boolean equals(Object obj) {
+            public boolean equals(final Object obj) {
                 if (!(obj instanceof BlankNode)) {
                     return false;
                 }

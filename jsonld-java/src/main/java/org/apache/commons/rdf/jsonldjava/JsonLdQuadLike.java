@@ -38,7 +38,7 @@ class JsonLdQuadLikeImpl<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm
     private final Quad quad;
     private final String blankNodePrefix;
 
-    JsonLdQuadLikeImpl(Quad jsonldQuad, String blankNodePrefix) {
+    JsonLdQuadLikeImpl(final Quad jsonldQuad, final String blankNodePrefix) {
         this.quad = jsonldQuad;
         this.blankNodePrefix = blankNodePrefix;
     }

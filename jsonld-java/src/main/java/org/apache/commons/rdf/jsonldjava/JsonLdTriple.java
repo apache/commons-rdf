@@ -32,12 +32,12 @@ public interface JsonLdTriple extends Triple, JsonLdTripleLike {
 
 final class JsonLdTripleImpl extends JsonLdQuadLikeImpl<BlankNodeOrIRI, IRI, RDFTerm, RDFTerm> implements JsonLdTriple {
 
-    JsonLdTripleImpl(Quad quad, String blankNodePrefix) {
+    JsonLdTripleImpl(final Quad quad, final String blankNodePrefix) {
         super(quad, blankNodePrefix);
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (!(obj instanceof Triple)) {
             return false;
         }

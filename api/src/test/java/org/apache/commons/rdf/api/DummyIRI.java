@@ -21,7 +21,7 @@ class DummyIRI implements IRI {
     static final String EXAMPLE_COM = "http://example.com/";
     final int i;
 
-    public DummyIRI(int i) {
+    public DummyIRI(final int i) {
         this.i = i;
     }
 
@@ -36,7 +36,7 @@ class DummyIRI implements IRI {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         return (obj instanceof IRI) && ((IRI) obj).getIRIString().equals(EXAMPLE_COM + i);
     }
 

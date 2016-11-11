@@ -141,7 +141,7 @@ public enum RDFSyntax {
         return name;
     }
 
-    private RDFSyntax(String name, String mediaType, String fileExtension, boolean supportsDataset) {
+    private RDFSyntax(final String name, final String mediaType, final String fileExtension, final boolean supportsDataset) {
         this.name = name;
         this.mediaType = mediaType;
         this.fileExtension = fileExtension;
@@ -167,7 +167,7 @@ public enum RDFSyntax {
      *         {@link Optional#empty()} indicating that no matching syntax was
      *         found.
      */
-    public static Optional<RDFSyntax> byMediaType(String mediaType) {
+    public static Optional<RDFSyntax> byMediaType(final String mediaType) {
         final String type = mediaType.toLowerCase(Locale.ENGLISH).split("\\s*[;,]", 2)[0];
         return Arrays.stream(RDFSyntax.values()).filter(t -> t.mediaType.equals(type)).findAny();
     }
@@ -186,7 +186,7 @@ public enum RDFSyntax {
      *         {@link Optional#empty()} indicating that no matching file
      *         extension was found.
      */
-    public static Optional<RDFSyntax> byFileExtension(String fileExtension) {
+    public static Optional<RDFSyntax> byFileExtension(final String fileExtension) {
         final String ext = fileExtension.toLowerCase(Locale.ENGLISH);
         return Arrays.stream(RDFSyntax.values()).filter(t -> t.fileExtension.equals(ext)).findAny();
     }

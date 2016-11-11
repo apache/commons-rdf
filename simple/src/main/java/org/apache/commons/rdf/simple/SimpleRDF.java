@@ -61,7 +61,7 @@ public class SimpleRDF implements RDF {
     }
 
     @Override
-    public BlankNode createBlankNode(String name) {
+    public BlankNode createBlankNode(final String name) {
         return new BlankNodeImpl(SALT, name);
     }
 
@@ -78,34 +78,34 @@ public class SimpleRDF implements RDF {
     }
 
     @Override
-    public IRI createIRI(String iri) {
+    public IRI createIRI(final String iri) {
         IRI result = new IRIImpl(iri);
         // Reuse any IRI objects already created in Types
         return Types.get(result).orElse(result);
     }
 
     @Override
-    public Literal createLiteral(String literal) {
+    public Literal createLiteral(final String literal) {
         return new LiteralImpl(literal);
     }
 
     @Override
-    public Literal createLiteral(String literal, IRI dataType) {
+    public Literal createLiteral(final String literal, final IRI dataType) {
         return new LiteralImpl(literal, dataType);
     }
 
     @Override
-    public Literal createLiteral(String literal, String language) {
+    public Literal createLiteral(final String literal, final String language) {
         return new LiteralImpl(literal, language);
     }
 
     @Override
-    public Triple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public Triple createTriple(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         return new TripleImpl(subject, predicate, object);
     }
 
     @Override
-    public Quad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
+    public Quad createQuad(final BlankNodeOrIRI graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object)
             throws IllegalArgumentException {
         return new QuadImpl(graphName, subject, predicate, object);
     }

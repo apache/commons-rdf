@@ -32,7 +32,7 @@ public interface RDFTermFactory {
         throw new UnsupportedOperationException("createBlankNode() not supported");
     }
 
-    default BlankNode createBlankNode(String name) throws UnsupportedOperationException {
+    default BlankNode createBlankNode(final String name) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("createBlankNode(String) not supported");
     }
 
@@ -40,25 +40,25 @@ public interface RDFTermFactory {
         throw new UnsupportedOperationException("createGraph() not supported");
     }
 
-    default IRI createIRI(String iri) throws IllegalArgumentException, UnsupportedOperationException {
+    default IRI createIRI(final String iri) throws IllegalArgumentException, UnsupportedOperationException {
         throw new UnsupportedOperationException("createIRI(String) not supported");
     }
 
-    default Literal createLiteral(String lexicalForm) throws IllegalArgumentException, UnsupportedOperationException {
+    default Literal createLiteral(final String lexicalForm) throws IllegalArgumentException, UnsupportedOperationException {
         throw new UnsupportedOperationException("createLiteral(String) not supported");
     }
 
-    default Literal createLiteral(String lexicalForm, IRI dataType)
+    default Literal createLiteral(final String lexicalForm, final IRI dataType)
             throws IllegalArgumentException, UnsupportedOperationException {
         throw new UnsupportedOperationException("createLiteral(String) not supported");
     }
 
-    default Literal createLiteral(String lexicalForm, String languageTag)
+    default Literal createLiteral(final String lexicalForm, final String languageTag)
             throws IllegalArgumentException, UnsupportedOperationException {
         throw new UnsupportedOperationException("createLiteral(String,String) not supported");
     }
 
-    default Triple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
+    default Triple createTriple(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object)
             throws IllegalArgumentException, UnsupportedOperationException {
         throw new UnsupportedOperationException("createTriple(BlankNodeOrIRI,IRI,RDFTerm) not supported");
     }

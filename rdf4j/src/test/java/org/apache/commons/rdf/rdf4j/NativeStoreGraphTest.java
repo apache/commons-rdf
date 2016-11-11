@@ -76,37 +76,37 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
         }
 
         @Override
-        public RDF4JBlankNode createBlankNode(String name) {
+        public RDF4JBlankNode createBlankNode(final String name) {
             return rdf4jFactory.createBlankNode(name);
         }
 
         @Override
-        public RDF4JIRI createIRI(String iri) throws IllegalArgumentException, UnsupportedOperationException {
+        public RDF4JIRI createIRI(final String iri) throws IllegalArgumentException, UnsupportedOperationException {
             return rdf4jFactory.createIRI(iri);
         }
 
         @Override
-        public RDF4JLiteral createLiteral(String lexicalForm) {
+        public RDF4JLiteral createLiteral(final String lexicalForm) {
             return rdf4jFactory.createLiteral(lexicalForm);
         }
 
         @Override
-        public Literal createLiteral(String lexicalForm, IRI dataType) {
+        public Literal createLiteral(final String lexicalForm, final IRI dataType) {
             return rdf4jFactory.createLiteral(lexicalForm, dataType);
         }
 
         @Override
-        public Literal createLiteral(String lexicalForm, String languageTag) {
+        public Literal createLiteral(final String lexicalForm, final String languageTag) {
             return rdf4jFactory.createLiteral(lexicalForm, languageTag);
         }
 
         @Override
-        public RDF4JTriple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+        public RDF4JTriple createTriple(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
             return rdf4jFactory.createTriple(subject, predicate, object);
         }
 
         @Override
-        public Quad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
+        public Quad createQuad(final BlankNodeOrIRI graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object)
                 throws IllegalArgumentException {
             return rdf4jFactory.createQuad(graphName, subject, predicate, object);
         }

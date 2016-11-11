@@ -25,7 +25,7 @@ import org.apache.jena.graph.NodeFactory;
 
 class JenaIRIImpl extends AbstractJenaRDFTerm implements JenaIRI {
 
-    JenaIRIImpl(Node node) {
+    JenaIRIImpl(final Node node) {
         super(node);
         if (!node.isURI()) {
             throw new IllegalArgumentException("Node is not a blank node: " + node);
@@ -33,12 +33,12 @@ class JenaIRIImpl extends AbstractJenaRDFTerm implements JenaIRI {
 
     }
 
-    JenaIRIImpl(String iriStr) {
+    JenaIRIImpl(final String iriStr) {
         super(NodeFactory.createURI(iriStr));
     }
 
     @Override
-    public boolean equals(Object other) {
+    public boolean equals(final Object other) {
         if (other == this) {
             return true;
         }

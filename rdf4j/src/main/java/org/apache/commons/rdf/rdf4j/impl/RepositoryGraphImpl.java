@@ -46,14 +46,14 @@ class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> implements
 
     private final Resource[] contextMask;
 
-    RepositoryGraphImpl(Repository repository, UUID salt, boolean handleInitAndShutdown, boolean includeInferred,
-            Resource... contextMask) {
+    RepositoryGraphImpl(final Repository repository, final UUID salt, final boolean handleInitAndShutdown, final boolean includeInferred,
+            final Resource... contextMask) {
         super(repository, salt, handleInitAndShutdown, includeInferred);
         this.contextMask = Objects.requireNonNull(contextMask);
     }
 
     @Override
-    public void add(Triple tripleLike) {
+    public void add(final Triple tripleLike) {
         Statement statement = rdf4jTermFactory.asStatement(tripleLike);
         try (RepositoryConnection conn = getRepositoryConnection()) {
             conn.add(statement, contextMask);
@@ -62,7 +62,7 @@ class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> implements
     }
 
     @Override
-    public boolean contains(Triple tripleLike) {
+    public boolean contains(final Triple tripleLike) {
         Statement statement = rdf4jTermFactory.asStatement(tripleLike);
         try (RepositoryConnection conn = getRepositoryConnection()) {
             return conn.hasStatement(statement, includeInferred, contextMask);
@@ -70,7 +70,7 @@ class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> implements
     }
 
     @Override
-    public void remove(Triple tripleLike) {
+    public void remove(final Triple tripleLike) {
         Statement statement = rdf4jTermFactory.asStatement(tripleLike);
         try (RepositoryConnection conn = getRepositoryConnection()) {
             conn.remove(statement, contextMask);
@@ -100,7 +100,7 @@ class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> implements
     }
 
     @Override
-    public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public void add(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         Resource subj = (Resource) rdf4jTermFactory.asValue(subject);
         org.eclipse.rdf4j.model.IRI pred = (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate);
         Value obj = rdf4jTermFactory.asValue(object);
@@ -111,7 +111,7 @@ class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> implements
     }
 
     @Override
-    public boolean contains(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public boolean contains(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         Resource subj = (Resource) rdf4jTermFactory.asValue(subject);
         org.eclipse.rdf4j.model.IRI pred = (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate);
         Value obj = rdf4jTermFactory.asValue(object);
@@ -121,7 +121,7 @@ class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> implements
     }
 
     @Override
-    public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public void remove(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         Resource subj = (Resource) rdf4jTermFactory.asValue(subject);
         org.eclipse.rdf4j.model.IRI pred = (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate);
         Value obj = rdf4jTermFactory.asValue(object);
@@ -137,7 +137,7 @@ class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> implements
     }
 
     @Override
-    public ClosableIterable<Triple> iterate(BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
+    public ClosableIterable<Triple> iterate(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object)
             throws ConcurrentModificationException, IllegalStateException {
         Resource subj = (Resource) rdf4jTermFactory.asValue(subject);
         org.eclipse.rdf4j.model.IRI pred = (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate);
@@ -152,7 +152,7 @@ class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> implements
     }
 
     @Override
-    public Stream<RDF4JTriple> stream(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public Stream<RDF4JTriple> stream(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         Resource subj = (Resource) rdf4jTermFactory.asValue(subject);
         org.eclipse.rdf4j.model.IRI pred = (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate);
         Value obj = rdf4jTermFactory.asValue(object);
@@ -179,7 +179,7 @@ class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> implements
     }
 
     @Override
-    protected RDF4JTriple asTripleLike(Statement statement) {
+    protected RDF4JTriple asTripleLike(final Statement statement) {
         return rdf4jTermFactory.asTriple(statement);
     }
 

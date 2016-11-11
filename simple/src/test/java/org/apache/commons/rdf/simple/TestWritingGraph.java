@@ -99,7 +99,7 @@ public class TestWritingGraph {
         assertEquals(count, TRIPLES);
     }
 
-    public static String tripleAsString(Triple t) {
+    public static String tripleAsString(final Triple t) {
         return t.getSubject().ntriplesString() + " " + t.getPredicate().ntriplesString() + " "
                 + t.getObject().ntriplesString() + " .";
     }

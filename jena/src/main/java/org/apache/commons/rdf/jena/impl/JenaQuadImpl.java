@@ -31,11 +31,11 @@ import org.apache.commons.rdf.jena.JenaQuad;
 
 class JenaQuadImpl extends AbstractQuadLike<BlankNodeOrIRI, IRI, RDFTerm, BlankNodeOrIRI> implements JenaQuad {
 
-    JenaQuadImpl(BlankNodeOrIRI subject, IRI predicate, RDFTerm object, Optional<BlankNodeOrIRI> graphName) {
+    JenaQuadImpl(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object, final Optional<BlankNodeOrIRI> graphName) {
         super(subject, predicate, object, graphName);
     }
 
-    JenaQuadImpl(org.apache.jena.sparql.core.Quad quad, UUID salt) {
+    JenaQuadImpl(final org.apache.jena.sparql.core.Quad quad, final UUID salt) {
         super(quad, salt);
         // Check the conversion
         if ((graphName.isPresent() && !(graphName.get() instanceof BlankNodeOrIRI))
@@ -46,7 +46,7 @@ class JenaQuadImpl extends AbstractQuadLike<BlankNodeOrIRI, IRI, RDFTerm, BlankN
     }
 
     @Override
-    public boolean equals(Object other) {
+    public boolean equals(final Object other) {
         if (other == this) {
             return true;
         }

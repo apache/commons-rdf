@@ -40,7 +40,7 @@ class DummyQuad implements Quad {
         return new DummyIRI(3);
     }
 
-    private static List<RDFTerm> quadList(Quad q) {
+    private static List<RDFTerm> quadList(final Quad q) {
          return Arrays.asList(
              q.getGraphName().orElse(null),
              q.getSubject(),
@@ -49,7 +49,7 @@ class DummyQuad implements Quad {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (!(obj instanceof Quad)) {
             return false;
         }

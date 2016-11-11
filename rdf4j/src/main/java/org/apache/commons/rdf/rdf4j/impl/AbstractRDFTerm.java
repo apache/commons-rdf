@@ -23,7 +23,7 @@ import org.eclipse.rdf4j.model.Value;
 abstract class AbstractRDFTerm<T extends Value> implements RDF4JTerm {
     T value;
 
-    AbstractRDFTerm(T value) {
+    AbstractRDFTerm(final T value) {
         this.value = value;
     }
 

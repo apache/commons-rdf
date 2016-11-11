@@ -28,12 +28,12 @@ final class LiteralImpl extends AbstractRDFTerm<org.eclipse.rdf4j.model.Literal>
 
     private static final String QUOTE = "\"";
 
-    LiteralImpl(org.eclipse.rdf4j.model.Literal literal) {
+    LiteralImpl(final org.eclipse.rdf4j.model.Literal literal) {
         super(literal);
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (obj == this) {
             return true;
         }

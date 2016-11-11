@@ -31,7 +31,7 @@ final class BlankNodeImpl extends AbstractRDFTerm<BNode> implements RDF4JBlankNo
     private final long saltUUIDleast;
     private final long saltUUIDmost;
 
-    BlankNodeImpl(BNode bNode, UUID salt) {
+    BlankNodeImpl(final BNode bNode, final UUID salt) {
         super(bNode);
         // Space-efficient storage of salt UUID
         saltUUIDmost = salt.getMostSignificantBits();
@@ -39,7 +39,7 @@ final class BlankNodeImpl extends AbstractRDFTerm<BNode> implements RDF4JBlankNo
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (obj == this) {
             return true;
         }
@@ -60,7 +60,7 @@ final class BlankNodeImpl extends AbstractRDFTerm<BNode> implements RDF4JBlankNo
         return hashCode = uniqueReference().hashCode();
     }
 
-    private boolean isValidBlankNodeLabel(String id) {
+    private boolean isValidBlankNodeLabel(final String id) {
         // FIXME: Replace with a regular expression?
         if (id.isEmpty()) {
             return false;

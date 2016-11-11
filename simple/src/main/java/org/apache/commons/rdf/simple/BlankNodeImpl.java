@@ -39,7 +39,7 @@ final class BlankNodeImpl implements BlankNode, SimpleRDFTerm {
         this(SALT, Long.toString(COUNTER.incrementAndGet()));
     }
 
-    public BlankNodeImpl(UUID uuidSalt, String name) {
+    public BlankNodeImpl(final UUID uuidSalt, final String name) {
         if (Objects.requireNonNull(name).isEmpty()) {
             throw new IllegalArgumentException("Invalid blank node id: " + name);
         }
@@ -88,7 +88,7 @@ final class BlankNodeImpl implements BlankNode, SimpleRDFTerm {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }

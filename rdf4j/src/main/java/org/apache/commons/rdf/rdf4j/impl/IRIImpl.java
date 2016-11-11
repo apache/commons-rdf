@@ -21,12 +21,12 @@ import org.apache.commons.rdf.rdf4j.RDF4JIRI;
 
 final class IRIImpl extends AbstractRDFTerm<org.eclipse.rdf4j.model.IRI> implements RDF4JIRI {
 
-    IRIImpl(org.eclipse.rdf4j.model.IRI iri) {
+    IRIImpl(final org.eclipse.rdf4j.model.IRI iri) {
         super(iri);
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (obj == this) {
             return true;
         }

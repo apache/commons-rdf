@@ -163,7 +163,7 @@ public abstract class AbstractDatasetTest {
     /**
      * Special quad closing for RDF4J.
      */
-    private void closeIterable(Iterable<Quad> iterate) throws Exception {
+    private void closeIterable(final Iterable<Quad> iterate) throws Exception {
         if (iterate instanceof AutoCloseable) {
             ((AutoCloseable) iterate).close();
         }
@@ -364,7 +364,7 @@ public abstract class AbstractDatasetTest {
             assertFalse(g3.contains(null, b1Charlie, hasChild, null));
     }
 
-    private void notEquals(BlankNodeOrIRI node1, BlankNodeOrIRI node2) {
+    private void notEquals(final BlankNodeOrIRI node1, final BlankNodeOrIRI node2) {
         assertFalse(node1.equals(node2));
         // in which case we should be able to assume
         // (as they are in the same dataset)
@@ -382,7 +382,7 @@ public abstract class AbstractDatasetTest {
      * @param target
      *            Target Dataset where quads will be added
      */
-    private void addAllQuads(Dataset source, Dataset target) {
+    private void addAllQuads(final Dataset source, final Dataset target) {
 
         // unordered() as we don't need to preserve quad order
         // sequential() as we don't (currently) require target Dataset to be
@@ -422,7 +422,7 @@ public abstract class AbstractDatasetTest {
      * @param name
      * @return
      */
-    private BlankNode createOwnBlankNode(String name, String uuid) {
+    private BlankNode createOwnBlankNode(final String name, final String uuid) {
         return new BlankNode() {
             @Override
             public String ntriplesString() {                
@@ -440,7 +440,7 @@ public abstract class AbstractDatasetTest {
             }
 
             @Override
-            public boolean equals(Object obj) {
+            public boolean equals(final Object obj) {
                 if (!(obj instanceof BlankNode)) {
                     return false;
                 }

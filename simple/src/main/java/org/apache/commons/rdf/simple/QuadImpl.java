@@ -51,7 +51,7 @@ final class QuadImpl implements Quad {
      * @param object
      *            object of triple
      */
-    public QuadImpl(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public QuadImpl(final BlankNodeOrIRI graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         this.graphName = graphName; // possibly null
         this.subject = Objects.requireNonNull(subject);
         this.predicate = Objects.requireNonNull(predicate);
@@ -91,7 +91,7 @@ final class QuadImpl implements Quad {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (!(obj instanceof Quad)) {
             return false;
         }

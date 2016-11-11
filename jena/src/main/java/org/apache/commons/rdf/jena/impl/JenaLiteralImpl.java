@@ -31,7 +31,7 @@ class JenaLiteralImpl extends AbstractJenaRDFTerm implements JenaLiteral {
     private static InternalJenaFactory internalJenaFactory = new InternalJenaFactory() {
     };
 
-    JenaLiteralImpl(Node node) {
+    JenaLiteralImpl(final Node node) {
         super(node);
         if (!node.isLiteral()) {
             throw new IllegalArgumentException("Node is not a literal: " + node);
@@ -39,7 +39,7 @@ class JenaLiteralImpl extends AbstractJenaRDFTerm implements JenaLiteral {
     }
 
     @Override
-    public boolean equals(Object other) {
+    public boolean equals(final Object other) {
         if (other == this) {
             return true;
         }

@@ -200,7 +200,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      * @return A {@link Stream} over the matched triples.
      */
     @Deprecated
-    default Stream<? extends Triple> getTriples(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    default Stream<? extends Triple> getTriples(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         return stream(subject, predicate, object);
     }
 
@@ -291,7 +291,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      *             active.
      */
     @SuppressWarnings("unchecked")
-    default Iterable<Triple> iterate(BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
+    default Iterable<Triple> iterate(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object)
             throws ConcurrentModificationException, IllegalStateException {
         return ((Stream<Triple>) stream(subject, predicate, object))::iterator;
     }

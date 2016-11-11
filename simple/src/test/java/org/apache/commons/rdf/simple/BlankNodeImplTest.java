@@ -36,7 +36,7 @@ public class BlankNodeImplTest extends AbstractBlankNodeTest {
     }
 
     @Override
-    protected BlankNode getBlankNode(String identifier) {
+    protected BlankNode getBlankNode(final String identifier) {
         return new BlankNodeImpl(SALT, identifier);
     }
 

@@ -230,14 +230,14 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     }
 
     @Override
-    public T rdfTermFactory(RDF rdfTermFactory) {
+    public T rdfTermFactory(final RDF rdfTermFactory) {
         AbstractRDFParser<T> c = clone();
         c.rdfTermFactory = Optional.ofNullable(rdfTermFactory);
         return c.asT();
     }
 
     @Override
-    public T contentType(RDFSyntax rdfSyntax) throws IllegalArgumentException {
+    public T contentType(final RDFSyntax rdfSyntax) throws IllegalArgumentException {
         AbstractRDFParser<T> c = clone();
         c.contentTypeSyntax = Optional.ofNullable(rdfSyntax);
         c.contentType = c.contentTypeSyntax.map(syntax -> syntax.mediaType);
@@ -245,7 +245,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     }
 
     @Override
-    public T contentType(String contentType) throws IllegalArgumentException {
+    public T contentType(final String contentType) throws IllegalArgumentException {
         AbstractRDFParser<T> c = clone();
         c.contentType = Optional.ofNullable(contentType);
         c.contentTypeSyntax = c.contentType.flatMap(RDFSyntax::byMediaType);
@@ -253,7 +253,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     }
 
     @Override
-    public T base(IRI base) {
+    public T base(final IRI base) {
         AbstractRDFParser<T> c = clone();
         c.base = Optional.ofNullable(base);
         c.base.ifPresent(i -> checkIsAbsolute(i));
@@ -261,12 +261,12 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     }
 
     @Override
-    public T base(String base) throws IllegalArgumentException {
+    public T base(final String base) throws IllegalArgumentException {
         return base(internalRdfTermFactory.createIRI(base));
     }
 
     @Override
-    public T source(InputStream inputStream) {
+    public T source(final InputStream inputStream) {
         AbstractRDFParser<T> c = clone();
         c.resetSource();
         c.sourceInputStream = Optional.ofNullable(inputStream);
@@ -274,7 +274,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     }
 
     @Override
-    public T source(Path file) {
+    public T source(final Path file) {
         AbstractRDFParser<T> c = clone();
         c.resetSource();
         c.sourceFile = Optional.ofNullable(file);
@@ -282,7 +282,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     }
 
     @Override
-    public T source(IRI iri) {
+    public T source(final IRI iri) {
         AbstractRDFParser<T> c = clone();
         c.resetSource();
         c.sourceIri = Optional.ofNullable(iri);
@@ -291,7 +291,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     }
 
     @Override
-    public T source(String iri) throws IllegalArgumentException {
+    public T source(final String iri) throws IllegalArgumentException {
         AbstractRDFParser<T> c = clone();
         c.resetSource();
         c.sourceIri = Optional.ofNullable(iri).map(internalRdfTermFactory::createIRI);
@@ -309,7 +309,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      * @throws IllegalArgumentException
      *             If the IRI is not absolute
      */
-    protected void checkIsAbsolute(IRI iri) throws IllegalArgumentException {
+    protected void checkIsAbsolute(final IRI iri) throws IllegalArgumentException {
         if (!URI.create(iri.getIRIString()).isAbsolute()) {
             throw new IllegalArgumentException("IRI is not absolute: " + iri);
         }
@@ -484,7 +484,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      *         {@link RDFSyntax#fileExtension}, otherwise
      *         {@link Optional#empty()}.
      */
-    protected static Optional<RDFSyntax> guessRDFSyntax(Path path) {
+    protected static Optional<RDFSyntax> guessRDFSyntax(final Path path) {
         return fileExtension(path).flatMap(RDFSyntax::byFileExtension);
     }
 
@@ -501,7 +501,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      * @return File extension (including the leading <code>.</code>, or
      *         {@link Optional#empty()} if the path has no extension
      */
-    private static Optional<String> fileExtension(Path path) {
+    private static Optional<String> fileExtension(final Path path) {
         Path fileName = path.getFileName();
         if (fileName == null) {
             return Optional.empty();
@@ -540,7 +540,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     }
 
     @Override
-    public T target(Consumer<Quad> consumer) {
+    public T target(final Consumer<Quad> consumer) {
         AbstractRDFParser<T> c = clone();
         c.resetTarget();
         c.target = consumer;
@@ -548,7 +548,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     }
 
     @Override
-    public T target(Dataset dataset) {
+    public T target(final Dataset dataset) {
         @SuppressWarnings({ "rawtypes", "unchecked" })
         AbstractRDFParser<T> c = (AbstractRDFParser) RDFParser.super.target(dataset);
         c.resetTarget();
@@ -557,7 +557,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     }
 
     @Override
-    public T target(Graph graph) {
+    public T target(final Graph graph) {
         @SuppressWarnings({ "rawtypes", "unchecked" }) // super calls our
                                                        // .clone()
         AbstractRDFParser<T> c = (AbstractRDFParser) RDFParser.super.target(graph);

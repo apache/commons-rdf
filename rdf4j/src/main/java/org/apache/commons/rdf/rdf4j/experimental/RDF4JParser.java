@@ -62,12 +62,12 @@ public class RDF4JParser extends AbstractRDFParser<RDF4JParser> implements RDFPa
     private final class AddToQuadConsumer extends AbstractRDFHandler {
         private final Consumer<Quad> quadTarget;
 
-        private AddToQuadConsumer(Consumer<Quad> quadTarget) {
+        private AddToQuadConsumer(final Consumer<Quad> quadTarget) {
             this.quadTarget = quadTarget;
         }
 
         @Override
-        public void handleStatement(org.eclipse.rdf4j.model.Statement st)
+        public void handleStatement(final org.eclipse.rdf4j.model.Statement st)
                 throws org.eclipse.rdf4j.rio.RDFHandlerException {
             // TODO: if getRdfTermFactory() is a non-rdf4j factory, should
             // we use factory.createQuad() instead?
@@ -87,18 +87,18 @@ public class RDF4JParser extends AbstractRDFParser<RDF4JParser> implements RDFPa
     private final static class AddToModel extends AbstractRDFHandler {
         private final Model model;
 
-        public AddToModel(Model model) {
+        public AddToModel(final Model model) {
             this.model = model;
         }
 
         @Override
-        public void handleStatement(org.eclipse.rdf4j.model.Statement st)
+        public void handleStatement(final org.eclipse.rdf4j.model.Statement st)
                 throws org.eclipse.rdf4j.rio.RDFHandlerException {
             model.add(st);
         }
 
         @Override
-        public void handleNamespace(String prefix, String uri) throws RDFHandlerException {
+        public void handleNamespace(final String prefix, final String uri) throws RDFHandlerException {
             model.setNamespace(prefix, uri);
         }
     }
@@ -187,7 +187,7 @@ public class RDF4JParser extends AbstractRDFParser<RDF4JParser> implements RDFPa
      * @param parserConfig
      *            Parser configuration
      */
-    public void setParserConfig(ParserConfig parserConfig) {
+    public void setParserConfig(final ParserConfig parserConfig) {
         this.parserConfig = parserConfig;
     }
 

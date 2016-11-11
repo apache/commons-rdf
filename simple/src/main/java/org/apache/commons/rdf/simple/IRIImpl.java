@@ -28,7 +28,7 @@ final class IRIImpl implements IRI, SimpleRDF.SimpleRDFTerm {
 
     private final String iri;
 
-    public IRIImpl(String iri) {
+    public IRIImpl(final String iri) {
         // should throw IllegalArgumentException on most illegal IRIs
         URI.create(iri);
         // NOTE: We don't keep the URI as it uses outdated RFC2396 and will get
@@ -52,7 +52,7 @@ final class IRIImpl implements IRI, SimpleRDF.SimpleRDFTerm {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }

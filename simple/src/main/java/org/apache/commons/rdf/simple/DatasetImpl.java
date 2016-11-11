@@ -48,12 +48,12 @@ final class DatasetImpl implements Dataset {
     private final Set<Quad> quads = new HashSet<>();
     private final SimpleRDF factory;
 
-    DatasetImpl(SimpleRDF simpleRDF) {
+    DatasetImpl(final SimpleRDF simpleRDF) {
         this.factory = simpleRDF;
     }
 
     @Override
-    public void add(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public void add(final BlankNodeOrIRI graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         BlankNodeOrIRI newGraphName = (BlankNodeOrIRI) internallyMap(graphName);
         BlankNodeOrIRI newSubject = (BlankNodeOrIRI) internallyMap(subject);
         IRI newPredicate = (IRI) internallyMap(predicate);
@@ -63,7 +63,7 @@ final class DatasetImpl implements Dataset {
     }
 
     @Override
-    public void add(Quad quad) {
+    public void add(final Quad quad) {
         BlankNodeOrIRI newGraph = (BlankNodeOrIRI) internallyMap(quad.getGraphName().orElse(null));
         BlankNodeOrIRI newSubject = (BlankNodeOrIRI) internallyMap(quad.getSubject());
         IRI newPredicate = (IRI) internallyMap(quad.getPredicate());
@@ -80,7 +80,7 @@ final class DatasetImpl implements Dataset {
         }
     }
 
-    private <T extends RDFTerm> RDFTerm internallyMap(T object) {
+    private <T extends RDFTerm> RDFTerm internallyMap(final T object) {
         if (object == null || object instanceof SimpleRDFTerm) {
             return object;
         }
@@ -112,12 +112,12 @@ final class DatasetImpl implements Dataset {
     }
 
     @Override
-    public boolean contains(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public boolean contains(final Optional<BlankNodeOrIRI> graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         return stream(graphName, subject, predicate, object).findAny().isPresent();
     }
 
     @Override
-    public boolean contains(Quad quad) {
+    public boolean contains(final Quad quad) {
         return quads.contains(Objects.requireNonNull(quad));
     }
 
@@ -127,8 +127,8 @@ final class DatasetImpl implements Dataset {
     }
 
     @Override
-    public Stream<Quad> stream(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate,
-            RDFTerm object) {
+    public Stream<Quad> stream(final Optional<BlankNodeOrIRI> graphName, final BlankNodeOrIRI subject, final IRI predicate,
+            final RDFTerm object) {
         final Optional<BlankNodeOrIRI> newGraphName;
         if (graphName == null) { 
             // Avoid Optional<Optional<BlankNodeOrIRI>> ...
@@ -163,7 +163,7 @@ final class DatasetImpl implements Dataset {
     }
 
     @Override
-    public void remove(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public void remove(final Optional<BlankNodeOrIRI> graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         Stream<Quad> toRemove = stream(graphName, subject, predicate, object);
         for (Quad t : toRemove.collect(Collectors.toList())) {
             // Avoid ConcurrentModificationException in ArrayList
@@ -172,7 +172,7 @@ final class DatasetImpl implements Dataset {
     }
 
     @Override
-    public void remove(Quad quad) {
+    public void remove(final Quad quad) {
         quads.remove(Objects.requireNonNull(quad));
     }
 
@@ -201,7 +201,7 @@ final class DatasetImpl implements Dataset {
     }
 
     @Override
-    public Optional<Graph> getGraph(BlankNodeOrIRI graphName) {
+    public Optional<Graph> getGraph(final BlankNodeOrIRI graphName) {
         return Optional.of(new DatasetGraphView(this, graphName));
     }
 

@@ -287,7 +287,7 @@ public final class Types implements IRI, SimpleRDF.SimpleRDFTerm {
 
     private final IRI field;
 
-    private Types(String field) {
+    private Types(final String field) {
         this.field = new IRIImpl(field);
     }
 
@@ -302,7 +302,7 @@ public final class Types implements IRI, SimpleRDF.SimpleRDFTerm {
     }
 
     @Override
-    public boolean equals(Object other) {
+    public boolean equals(final Object other) {
         return this.field.equals(other);
     }
 
@@ -335,7 +335,7 @@ public final class Types implements IRI, SimpleRDF.SimpleRDFTerm {
      * @return An {@link Optional} containing the IRI from this collection or
      *         {@link Optional#empty()} if it is not present here.
      */
-    public static Optional<IRI> get(IRI nextIRI) {
+    public static Optional<IRI> get(final IRI nextIRI) {
         if (ALL_TYPES.contains(nextIRI)) {
             // If we know about this IRI, then look through our set to find the
             // object that matches and return it

@@ -27,7 +27,7 @@ class AbstractJenaRDFTerm implements JenaRDFTerm, RDFTerm {
     private final Node node;
     // static private PrefixMapping empty = new PrefixMappingImpl();
 
-    protected AbstractJenaRDFTerm(Node node) {
+    protected AbstractJenaRDFTerm(final Node node) {
         this.node = node;
     }
 

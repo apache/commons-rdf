@@ -42,19 +42,19 @@ final class ModelGraphImpl implements RDF4JGraph {
     private final Model model;
     private final RDF4J rdf4jTermFactory;
 
-    ModelGraphImpl(Model model, RDF4J rdf4jTermFactory) {
+    ModelGraphImpl(final Model model, final RDF4J rdf4jTermFactory) {
         this.model = model;
         this.rdf4jTermFactory = rdf4jTermFactory;
     }
 
     @Override
-    public void add(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
+    public void add(final BlankNodeOrIRI subject, final org.apache.commons.rdf.api.IRI predicate, final RDFTerm object) {
         model.add((Resource) rdf4jTermFactory.asValue(subject),
                 (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate), rdf4jTermFactory.asValue(object));
     }
 
     @Override
-    public void add(Triple triple) {
+    public void add(final Triple triple) {
         model.add(rdf4jTermFactory.asStatement(triple));
     }
 
@@ -74,24 +74,24 @@ final class ModelGraphImpl implements RDF4JGraph {
     }
 
     @Override
-    public boolean contains(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
+    public boolean contains(final BlankNodeOrIRI subject, final org.apache.commons.rdf.api.IRI predicate, final RDFTerm object) {
         return model.contains((Resource) rdf4jTermFactory.asValue(subject),
                 (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate), rdf4jTermFactory.asValue(object));
     }
 
     @Override
-    public boolean contains(Triple triple) {
+    public boolean contains(final Triple triple) {
         return model.contains(rdf4jTermFactory.asStatement(triple));
     }
 
     @Override
-    public void remove(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object) {
+    public void remove(final BlankNodeOrIRI subject, final org.apache.commons.rdf.api.IRI predicate, final RDFTerm object) {
         model.remove((Resource) rdf4jTermFactory.asValue(subject),
                 (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate), rdf4jTermFactory.asValue(object));
     }
 
     @Override
-    public void remove(Triple triple) {
+    public void remove(final Triple triple) {
         model.remove(rdf4jTermFactory.asStatement(triple));
     }
 
@@ -113,8 +113,8 @@ final class ModelGraphImpl implements RDF4JGraph {
     }
 
     @Override
-    public Stream<RDF4JTriple> stream(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate,
-            RDFTerm object) {
+    public Stream<RDF4JTriple> stream(final BlankNodeOrIRI subject, final org.apache.commons.rdf.api.IRI predicate,
+            final RDFTerm object) {
         return model.filter((Resource) rdf4jTermFactory.asValue(subject),
                 (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate), rdf4jTermFactory.asValue(object))
                 .parallelStream().map(rdf4jTermFactory::asTriple);
@@ -128,7 +128,7 @@ final class ModelGraphImpl implements RDF4JGraph {
     }
 
     @Override
-    public ClosableIterable<Triple> iterate(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public ClosableIterable<Triple> iterate(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         return new ClosableIterable<Triple>() {
             @SuppressWarnings("unchecked")
             @Override

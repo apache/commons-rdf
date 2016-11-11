@@ -79,7 +79,7 @@ public class AbstractRDFParserTest {
         assertFalse(AbstractRDFParser.guessRDFSyntax(testXml).isPresent());
     }
 
-    private void checkGraph(Graph g) throws Exception {
+    private void checkGraph(final Graph g) throws Exception {
         assertTrue(g.size() > 0);
         IRI greeting = factory.createIRI("http://example.com/greeting");
         // Should only have parsed once!
@@ -166,7 +166,7 @@ public class AbstractRDFParserTest {
         assertEquals("\"application/n-triples\"", firstPredicate(g, "contentType"));
     }
 
-    private String firstPredicate(Graph g, String pred) {
+    private String firstPredicate(final Graph g, final String pred) {
         return g.stream(null, factory.createIRI("http://example.com/" + pred), null).map(Triple::getObject)
                 .map(RDFTerm::ntriplesString).findAny().orElse(null);
     }

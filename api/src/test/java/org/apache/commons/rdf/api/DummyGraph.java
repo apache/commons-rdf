@@ -26,35 +26,35 @@ class DummyGraph implements Graph {
     boolean filteredStreamCalled;
     
     @Override
-    public void add(Triple triple) {
+    public void add(final Triple triple) {
         if (! contains(triple)) {
             throw new IllegalStateException("DummyGraph can't be modified");
         }
     }
     @Override
-    public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public void add(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         if (! contains(subject, predicate, object)) { 
             throw new IllegalStateException("DummyGraph can't be modified");
         }
     }
     @Override
-    public boolean contains(Triple triple) {
+    public boolean contains(final Triple triple) {
         return triple.equals(new DummyTriple());
     }
     @Override
-    public boolean contains(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public boolean contains(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         return (subject == null || subject.equals(new DummyIRI(1))) && 
                 (predicate == null || predicate.equals(new DummyIRI(2))) && 
                 (object == null || object.equals(new DummyIRI(3)));
     }
     @Override
-    public void remove(Triple triple) {
+    public void remove(final Triple triple) {
         if (contains(triple)) {
             throw new IllegalStateException("DummyGraph can't be modified");
         }
     }
     @Override
-    public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public void remove(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         if (contains(subject, predicate, object)) {
             throw new IllegalStateException("DummyGraph can't be modified");
         }
@@ -74,7 +74,7 @@ class DummyGraph implements Graph {
     }
 
     @Override
-    public Stream<? extends Triple> stream(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public Stream<? extends Triple> stream(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         filteredStreamCalled = true;
         if (contains(subject, predicate, object)) { 
             return Stream.of(new DummyTriple());

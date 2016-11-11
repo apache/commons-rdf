@@ -31,7 +31,7 @@ final class TripleImpl implements Triple, RDF4JTriple {
     private final UUID salt;
     private final Statement statement;
 
-    TripleImpl(Statement statement, UUID salt) {
+    TripleImpl(final Statement statement, final UUID salt) {
         this.statement = statement;
         this.salt = salt;
     }
@@ -42,7 +42,7 @@ final class TripleImpl implements Triple, RDF4JTriple {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (obj instanceof Triple) {
             Triple triple = (Triple) obj;
             return getSubject().equals(triple.getSubject()) && getPredicate().equals(triple.getPredicate())

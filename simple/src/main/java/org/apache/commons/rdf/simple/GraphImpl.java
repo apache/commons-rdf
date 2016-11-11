@@ -39,12 +39,12 @@ final class GraphImpl implements Graph {
     private final Set<Triple> triples = new HashSet<>();
     private final SimpleRDF factory;
 
-    GraphImpl(SimpleRDF simpleRDF) {
+    GraphImpl(final SimpleRDF simpleRDF) {
         this.factory = simpleRDF;
     }
 
     @Override
-    public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public void add(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         BlankNodeOrIRI newSubject = (BlankNodeOrIRI) internallyMap(subject);
         IRI newPredicate = (IRI) internallyMap(predicate);
         RDFTerm newObject = internallyMap(object);
@@ -53,11 +53,11 @@ final class GraphImpl implements Graph {
     }
 
     @Override
-    public void add(Triple triple) {
+    public void add(final Triple triple) {
         triples.add(internallyMap(triple));
     }
 
-    private <T extends RDFTerm> RDFTerm internallyMap(T object) {
+    private <T extends RDFTerm> RDFTerm internallyMap(final T object) {
         if (object == null || object instanceof SimpleRDFTerm) {
             // No need to re-map our own objects.
             // We support null as internallyMap() is also used by the filters,
@@ -87,7 +87,7 @@ final class GraphImpl implements Graph {
         }
     }
 
-    private Triple internallyMap(Triple triple) {
+    private Triple internallyMap(final Triple triple) {
         BlankNodeOrIRI newSubject = (BlankNodeOrIRI) internallyMap(triple.getSubject());
         IRI newPredicate = (IRI) internallyMap(triple.getPredicate());
         RDFTerm newObject = internallyMap(triple.getObject());
@@ -107,12 +107,12 @@ final class GraphImpl implements Graph {
     }
 
     @Override
-    public boolean contains(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public boolean contains(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         return stream(subject, predicate, object).findFirst().isPresent();
     }
 
     @Override
-    public boolean contains(Triple triple) {
+    public boolean contains(final Triple triple) {
         return triples.contains(internallyMap(triple));
     }
 
@@ -148,7 +148,7 @@ final class GraphImpl implements Graph {
     }
 
     @Override
-    public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public void remove(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         Stream<Triple> toRemove = stream(subject, predicate, object);
         for (Triple t : toRemove.collect(Collectors.toList())) {
             // Avoid ConcurrentModificationException in ArrayList
@@ -157,7 +157,7 @@ final class GraphImpl implements Graph {
     }
 
     @Override
-    public void remove(Triple triple) {
+    public void remove(final Triple triple) {
         triples.remove(internallyMap(triple));
     }
 

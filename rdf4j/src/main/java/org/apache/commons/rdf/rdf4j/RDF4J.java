@@ -142,7 +142,7 @@ public final class RDF4J implements RDF {
      * @param valueFactory
      *            The RDF4J {@link ValueFactory} to use
      */
-    public RDF4J(ValueFactory valueFactory) {
+    public RDF4J(final ValueFactory valueFactory) {
         this(valueFactory, UUID.randomUUID());
     }
 
@@ -157,7 +157,7 @@ public final class RDF4J implements RDF {
      *            {@link BlankNode}s for the purpose of
      *            {@link BlankNode#uniqueReference()}
      */
-    public RDF4J(UUID salt) {
+    public RDF4J(final UUID salt) {
         this(SimpleValueFactory.getInstance(), salt);
     }
 
@@ -174,7 +174,7 @@ public final class RDF4J implements RDF {
      *            {@link BlankNode}s for the purpose of
      *            {@link BlankNode#uniqueReference()}
      */
-    public RDF4J(ValueFactory valueFactory, UUID salt) {
+    public RDF4J(final ValueFactory valueFactory, final UUID salt) {
         this.valueFactory = valueFactory;
         this.salt = salt;
     }
@@ -228,7 +228,7 @@ public final class RDF4J implements RDF {
      * @throws IllegalArgumentException
      *             if the value is not a BNode, Literal or IRI
      */
-    public RDF4JTerm asRDFTerm(Value value) {
+    public RDF4JTerm asRDFTerm(final Value value) {
         return asRDFTerm(value, salt);
     }
 
@@ -255,7 +255,7 @@ public final class RDF4J implements RDF {
      * @throws IllegalArgumentException
      *             if the value is not a BNode, Literal or IRI
      */
-    public static RDF4JTerm asRDFTerm(final Value value, UUID salt) {
+    public static RDF4JTerm asRDFTerm(final Value value, final UUID salt) {
         if (value instanceof BNode) {
             return rdf4j.createBlankNodeImpl((BNode) value, salt);
         }
@@ -284,7 +284,7 @@ public final class RDF4J implements RDF {
      *            Zero or more {@link Option}
      * @return A {@link Dataset} backed by the RDF4J repository.
      */
-    public RDF4JDataset asDataset(Repository repository, Option... options) {
+    public RDF4JDataset asDataset(final Repository repository, final Option... options) {
         EnumSet<Option> opts = optionSet(options);
         return rdf4j.createRepositoryDatasetImpl(repository, opts.contains(Option.handleInitAndShutdown),
                 opts.contains(Option.includeInferred));
@@ -299,7 +299,7 @@ public final class RDF4J implements RDF {
      *            RDF4J {@link Model} to adapt.
      * @return Adapted {@link Graph}.
      */
-    public RDF4JGraph asGraph(Model model) {
+    public RDF4JGraph asGraph(final Model model) {
         return rdf4j.createModelGraphImpl(model, this);
     }
 
@@ -322,7 +322,7 @@ public final class RDF4J implements RDF {
      *            Zero or more {@link Option}
      * @return A {@link Graph} backed by the RDF4J repository.
      */
-    public RDF4JGraph asGraph(Repository repository, Option... options) {
+    public RDF4JGraph asGraph(final Repository repository, final Option... options) {
         EnumSet<Option> opts = optionSet(options);
         return rdf4j.createRepositoryGraphImpl(repository, opts.contains(Option.handleInitAndShutdown),
                 opts.contains(Option.includeInferred), new Resource[] { null }); // default
@@ -342,7 +342,7 @@ public final class RDF4J implements RDF {
      *            Zero or more {@link Option}
      * @return A union {@link Graph} backed by the RDF4J repository.
      */
-    public RDF4JGraph asGraphUnion(Repository repository, Option... options) {
+    public RDF4JGraph asGraphUnion(final Repository repository, final Option... options) {
         EnumSet<Option> opts = optionSet(options);
         return rdf4j.createRepositoryGraphImpl(repository, opts.contains(Option.handleInitAndShutdown),
                 opts.contains(Option.includeInferred), new Resource[] {}); // union
@@ -375,7 +375,7 @@ public final class RDF4J implements RDF {
      *            Zero or more {@link Option}s
      * @return A {@link Graph} backed by the RDF4J repository.
      */
-    public RDF4JGraph asGraph(Repository repository, Set<? extends BlankNodeOrIRI> contexts, Option... option) {
+    public RDF4JGraph asGraph(final Repository repository, final Set<? extends BlankNodeOrIRI> contexts, final Option... option) {
         EnumSet<Option> opts = optionSet(option);
         /** NOTE: asValue() deliberately CAN handle <code>null</code> */
         Resource[] resources = contexts.stream().map(g -> (Resource) asValue(g)).toArray(Resource[]::new);
@@ -398,7 +398,7 @@ public final class RDF4J implements RDF {
      *            A {@link Triple} or {@link Quad} to adapt
      * @return A corresponding {@link Statement}
      */
-    public Statement asStatement(TripleLike tripleLike) {
+    public Statement asStatement(final TripleLike tripleLike) {
         if (tripleLike instanceof RDF4JTripleLike) {
             // Return original statement - this covers both RDF4JQuad and
             // RDF4JTriple
@@ -462,7 +462,7 @@ public final class RDF4J implements RDF {
      *            RDFTerm to adapt to RDF4J Value
      * @return Adapted RDF4J {@link Value}
      */
-    public Value asValue(RDFTerm term) {
+    public Value asValue(final RDFTerm term) {
         if (term == null) {
             return null;
         }
@@ -503,7 +503,7 @@ public final class RDF4J implements RDF {
     }
 
     @Override
-    public RDF4JBlankNode createBlankNode(String name) {
+    public RDF4JBlankNode createBlankNode(final String name) {
         BNode bnode = getValueFactory().createBNode(name);
         return (RDF4JBlankNode) asRDFTerm(bnode);
     }
@@ -530,18 +530,18 @@ public final class RDF4J implements RDF {
     }
 
     @Override
-    public RDF4JIRI createIRI(String iri) throws IllegalArgumentException {
+    public RDF4JIRI createIRI(final String iri) throws IllegalArgumentException {
         return (RDF4JIRI) asRDFTerm(getValueFactory().createIRI(iri));
     }
 
     @Override
-    public RDF4JLiteral createLiteral(String lexicalForm) throws IllegalArgumentException {
+    public RDF4JLiteral createLiteral(final String lexicalForm) throws IllegalArgumentException {
         org.eclipse.rdf4j.model.Literal lit = getValueFactory().createLiteral(lexicalForm);
         return (RDF4JLiteral) asRDFTerm(lit);
     }
 
     @Override
-    public org.apache.commons.rdf.api.Literal createLiteral(String lexicalForm, org.apache.commons.rdf.api.IRI dataType)
+    public org.apache.commons.rdf.api.Literal createLiteral(final String lexicalForm, final org.apache.commons.rdf.api.IRI dataType)
             throws IllegalArgumentException {
         org.eclipse.rdf4j.model.IRI iri = getValueFactory().createIRI(dataType.getIRIString());
         org.eclipse.rdf4j.model.Literal lit = getValueFactory().createLiteral(lexicalForm, iri);
@@ -549,14 +549,14 @@ public final class RDF4J implements RDF {
     }
 
     @Override
-    public org.apache.commons.rdf.api.Literal createLiteral(String lexicalForm, String languageTag)
+    public org.apache.commons.rdf.api.Literal createLiteral(final String lexicalForm, final String languageTag)
             throws IllegalArgumentException {
         org.eclipse.rdf4j.model.Literal lit = getValueFactory().createLiteral(lexicalForm, languageTag);
         return (org.apache.commons.rdf.api.Literal) asRDFTerm(lit);
     }
 
     @Override
-    public RDF4JTriple createTriple(BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate, RDFTerm object)
+    public RDF4JTriple createTriple(final BlankNodeOrIRI subject, final org.apache.commons.rdf.api.IRI predicate, final RDFTerm object)
             throws IllegalArgumentException {
         final Statement statement = getValueFactory().createStatement(
                 (org.eclipse.rdf4j.model.Resource) asValue(subject), (org.eclipse.rdf4j.model.IRI) asValue(predicate),
@@ -565,8 +565,8 @@ public final class RDF4J implements RDF {
     }
 
     @Override
-    public Quad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, org.apache.commons.rdf.api.IRI predicate,
-            RDFTerm object) throws IllegalArgumentException {
+    public Quad createQuad(final BlankNodeOrIRI graphName, final BlankNodeOrIRI subject, final org.apache.commons.rdf.api.IRI predicate,
+            final RDFTerm object) throws IllegalArgumentException {
         final Statement statement = getValueFactory().createStatement(
                 (org.eclipse.rdf4j.model.Resource) asValue(subject), (org.eclipse.rdf4j.model.IRI) asValue(predicate),
                 asValue(object), (org.eclipse.rdf4j.model.Resource) asValue(graphName));
@@ -577,7 +577,7 @@ public final class RDF4J implements RDF {
         return valueFactory;
     }
 
-    private EnumSet<Option> optionSet(Option... options) {
+    private EnumSet<Option> optionSet(final Option... options) {
         EnumSet<Option> opts = EnumSet.noneOf(Option.class);
         opts.addAll(Arrays.asList(options));
         return opts;

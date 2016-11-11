@@ -47,7 +47,7 @@ public final class JsonLdRDF implements RDF {
         this("urn:uuid:" + UUID.randomUUID() + "#b");
     }
 
-    JsonLdRDF(String bnodePrefix) {
+    JsonLdRDF(final String bnodePrefix) {
         this.bnodePrefix = Objects.requireNonNull(bnodePrefix);
     }
 
@@ -62,7 +62,7 @@ public final class JsonLdRDF implements RDF {
      *            JsonLd {@link RDFDataset} to adapt
      * @return Adapted {@link Dataset}
      */
-    public JsonLdDataset asDataset(RDFDataset rdfDataSet) {
+    public JsonLdDataset asDataset(final RDFDataset rdfDataSet) {
         return new JsonLdDatasetImpl(rdfDataSet);
     }
 
@@ -82,11 +82,11 @@ public final class JsonLdRDF implements RDF {
      *            JsonLd {@link RDFDataset} to adapt
      * @return Adapted {@link Graph} covering the <em>default graph</em>
      */
-    public JsonLdGraph asGraph(RDFDataset rdfDataSet) {
+    public JsonLdGraph asGraph(final RDFDataset rdfDataSet) {
         return new JsonLdGraphImpl(rdfDataSet);
     }
 
-    public Node asJsonLdNode(RDFTerm term) {
+    public Node asJsonLdNode(final RDFTerm term) {
         if (term instanceof JsonLdBlankNode) {
             JsonLdBlankNode jsonLdBlankNode = (JsonLdBlankNode) term;
             if (jsonLdBlankNode.uniqueReference().startsWith(bnodePrefix)) {
@@ -128,7 +128,7 @@ public final class JsonLdRDF implements RDF {
      *            Commons RDF {@link org.apache.commons.rdf.api.Quad} to adapt
      * @return Adapted JsonLd {@link com.github.jsonldjava.core.RDFDataset.Quad}
      */
-    public RDFDataset.Quad asJsonLdQuad(org.apache.commons.rdf.api.Quad quad) {
+    public RDFDataset.Quad asJsonLdQuad(final org.apache.commons.rdf.api.Quad quad) {
         BlankNodeOrIRI g = quad.getGraphName().orElse(null);
         return createJsonLdQuad(g, quad.getSubject(), quad.getPredicate(), quad.getObject());
     }
@@ -141,7 +141,7 @@ public final class JsonLdRDF implements RDF {
      *            Commons RDF {@link Triple} to adapt
      * @return Adapted JsonLd {@link com.github.jsonldjava.core.RDFDataset.Quad}
      */
-    public RDFDataset.Quad asJsonLdQuad(Triple triple) {
+    public RDFDataset.Quad asJsonLdQuad(final Triple triple) {
         return createJsonLdQuad(null, triple.getSubject(), triple.getPredicate(), triple.getObject());
     }
 
@@ -209,7 +209,7 @@ public final class JsonLdRDF implements RDF {
      *            JsonLd {@link RDFDataset} to adapt
      * @return Adapted {@link Dataset}
      */
-    public JsonLdUnionGraph asUnionGraph(RDFDataset rdfDataSet) {
+    public JsonLdUnionGraph asUnionGraph(final RDFDataset rdfDataSet) {
         return new JsonLdUnionGraphImpl(rdfDataSet);
     }
 
@@ -220,7 +220,7 @@ public final class JsonLdRDF implements RDF {
     }
 
     @Override
-    public JsonLdBlankNode createBlankNode(String name) {
+    public JsonLdBlankNode createBlankNode(final String name) {
         String id = "_:" + name;
         // TODO: Check if name is valid JSON-LD BlankNode identifier
         return new JsonLdBlankNodeImpl(new RDFDataset.BlankNode(id), bnodePrefix);
@@ -237,37 +237,37 @@ public final class JsonLdRDF implements RDF {
     }
 
     @Override
-    public JsonLdIRI createIRI(String iri) {
+    public JsonLdIRI createIRI(final String iri) {
         return new JsonLdIRIImpl(iri);
     }
 
     @Override
-    public JsonLdLiteral createLiteral(String literal) {
+    public JsonLdLiteral createLiteral(final String literal) {
         return new JsonLdLiteralImpl(new RDFDataset.Literal(literal, null, null));
     }
 
     @Override
-    public JsonLdLiteral createLiteral(String literal, IRI dataType) {
+    public JsonLdLiteral createLiteral(final String literal, final IRI dataType) {
         return new JsonLdLiteralImpl(new RDFDataset.Literal(literal, dataType.getIRIString(), null));
     }
 
     @Override
-    public JsonLdLiteral createLiteral(String literal, String language) {
+    public JsonLdLiteral createLiteral(final String literal, final String language) {
         return new JsonLdLiteralImpl(new RDFDataset.Literal(literal, Types.RDF_LANGSTRING.getIRIString(), language));
     }
 
     @Override
-    public JsonLdQuad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
+    public JsonLdQuad createQuad(final BlankNodeOrIRI graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object)
             throws IllegalArgumentException, UnsupportedOperationException {
         return new JsonLdQuadImpl(createJsonLdQuad(graphName, subject, predicate, object), bnodePrefix);
     }
 
     @Override
-    public JsonLdTriple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public JsonLdTriple createTriple(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         return new JsonLdTripleImpl(createJsonLdQuad(null, subject, predicate, object), bnodePrefix);
     }
 
-    String asJsonLdString(BlankNodeOrIRI blankNodeOrIRI) {
+    String asJsonLdString(final BlankNodeOrIRI blankNodeOrIRI) {
         if (blankNodeOrIRI == null) {
             return null;
         }
@@ -291,7 +291,7 @@ public final class JsonLdRDF implements RDF {
         }
     }
 
-    JsonLdTerm asRDFTerm(final Node node, String blankNodePrefix) {
+    JsonLdTerm asRDFTerm(final Node node, final String blankNodePrefix) {
         if (node == null) {
             return null; // e.g. default graph
         }
@@ -311,7 +311,7 @@ public final class JsonLdRDF implements RDF {
         }
     }
 
-    RDFDataset.Quad createJsonLdQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    RDFDataset.Quad createJsonLdQuad(final BlankNodeOrIRI graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         return new RDFDataset.Quad(asJsonLdNode(subject), asJsonLdNode(predicate), asJsonLdNode(object),
                 asJsonLdString(graphName));
     }

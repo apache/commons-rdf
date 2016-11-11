@@ -47,7 +47,7 @@ public class AllToAllTest {
     private final RDF nodeFactory;
     private final RDF graphFactory;
 
-    public AllToAllTest(Class<? extends RDF> from, Class<? extends RDF> to)
+    public AllToAllTest(final Class<? extends RDF> from, final Class<? extends RDF> to)
             throws InstantiationException, IllegalAccessException {
         this.nodeFactory = from.newInstance();
         this.graphFactory = to.newInstance();

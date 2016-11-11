@@ -34,7 +34,7 @@ public interface JsonLdTerm extends RDFTerm {
 abstract class JsonLdTermImpl implements JsonLdTerm {
     final Node node;
 
-    JsonLdTermImpl(Node node) {
+    JsonLdTermImpl(final Node node) {
         this.node = node;
     }
 

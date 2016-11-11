@@ -46,7 +46,7 @@ final class TripleImpl implements Triple {
      * @param object
      *            object of triple
      */
-    public TripleImpl(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public TripleImpl(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         this.subject = Objects.requireNonNull(subject);
         this.predicate = Objects.requireNonNull(predicate);
         this.object = Objects.requireNonNull(object);
@@ -79,7 +79,7 @@ final class TripleImpl implements Triple {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (!(obj instanceof Triple)) {
             return false;
         }

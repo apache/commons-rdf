@@ -49,7 +49,7 @@ public class JsonLdParser extends AbstractRDFParser<JsonLdParser> {
     }
 
     @Override
-    public JsonLdParser contentType(RDFSyntax rdfSyntax) throws IllegalArgumentException {
+    public JsonLdParser contentType(final RDFSyntax rdfSyntax) throws IllegalArgumentException {
         if (rdfSyntax != null && rdfSyntax != RDFSyntax.JSONLD) {
             throw new IllegalArgumentException("Unsupported contentType: " + rdfSyntax);
         }
@@ -57,7 +57,7 @@ public class JsonLdParser extends AbstractRDFParser<JsonLdParser> {
     }
 
     @Override
-    public JsonLdParser contentType(String contentType) throws IllegalArgumentException {
+    public JsonLdParser contentType(final String contentType) throws IllegalArgumentException {
         JsonLdParser c = super.contentType(contentType);
         if (c.getContentType().filter(Predicate.isEqual(RDFSyntax.JSONLD).negate()).isPresent()) {
             throw new IllegalArgumentException("Unsupported contentType: " + contentType);
@@ -65,7 +65,7 @@ public class JsonLdParser extends AbstractRDFParser<JsonLdParser> {
         return c;
     }
 
-    private static URL asURL(IRI iri) throws IllegalStateException {
+    private static URL asURL(final IRI iri) throws IllegalStateException {
         try {
             return new URI(iri.getIRIString()).toURL();
         } catch (MalformedURLException | URISyntaxException e) {

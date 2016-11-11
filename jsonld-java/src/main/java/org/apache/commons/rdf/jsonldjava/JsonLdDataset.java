@@ -37,25 +37,25 @@ public interface JsonLdDataset extends JsonLdGraphLike<org.apache.commons.rdf.ap
 
 class JsonLdDatasetImpl extends AbstractJsonLdGraphLike<org.apache.commons.rdf.api.Quad> implements JsonLdDataset {
 
-    JsonLdDatasetImpl(RDFDataset rdfDataSet) {
+    JsonLdDatasetImpl(final RDFDataset rdfDataSet) {
         super(rdfDataSet);
     }
 
-    JsonLdDatasetImpl(RDFDataset rdfDataset, String bnodePrefix) {
+    JsonLdDatasetImpl(final RDFDataset rdfDataset, final String bnodePrefix) {
         super(rdfDataset, bnodePrefix);
     }
 
-    JsonLdDatasetImpl(String bnodePrefix) {
+    JsonLdDatasetImpl(final String bnodePrefix) {
         super(bnodePrefix);
     }
 
     @Override
-    public void add(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public void add(final BlankNodeOrIRI graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         super.add(graphName, subject, predicate, object);
     }
 
     @Override
-    public boolean contains(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public boolean contains(final Optional<BlankNodeOrIRI> graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         return super.contains(graphName, subject, predicate, object);
     }
 
@@ -65,7 +65,7 @@ class JsonLdDatasetImpl extends AbstractJsonLdGraphLike<org.apache.commons.rdf.a
     }
 
     @Override
-    public Optional<Graph> getGraph(BlankNodeOrIRI graphName) {
+    public Optional<Graph> getGraph(final BlankNodeOrIRI graphName) {
         if (graphName == null) {
             return Optional.of(getGraph());
         }
@@ -81,18 +81,18 @@ class JsonLdDatasetImpl extends AbstractJsonLdGraphLike<org.apache.commons.rdf.a
     }
 
     @Override
-    public void remove(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public void remove(final Optional<BlankNodeOrIRI> graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         super.remove(graphName, subject, predicate, object);
     }
 
     @Override
-    public void remove(Quad q) {
+    public void remove(final Quad q) {
         remove(q.getGraphName(), q.getSubject(), q.getPredicate(), q.getObject());
     }
 
     @Override
-    public Stream<? extends Quad> stream(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate,
-            RDFTerm object) {
+    public Stream<? extends Quad> stream(final Optional<BlankNodeOrIRI> graphName, final BlankNodeOrIRI subject, final IRI predicate,
+            final RDFTerm object) {
         return filteredGraphs(graphName).flatMap(List::stream).filter(quadFilter(subject, predicate, object))
                 .map(factory::asQuad);
     }
@@ -104,7 +104,7 @@ class JsonLdDatasetImpl extends AbstractJsonLdGraphLike<org.apache.commons.rdf.a
     }
 
     @Override
-    Quad asTripleOrQuad(com.github.jsonldjava.core.RDFDataset.Quad jsonldQuad) {
+    Quad asTripleOrQuad(final com.github.jsonldjava.core.RDFDataset.Quad jsonldQuad) {
         return factory.asQuad(jsonldQuad);
     }
 

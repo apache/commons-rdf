@@ -28,7 +28,7 @@ class JenaBlankNodeImpl extends AbstractJenaRDFTerm implements JenaBlankNode {
 
     private final UUID salt;
 
-    JenaBlankNodeImpl(Node node, UUID salt) {
+    JenaBlankNodeImpl(final Node node, final UUID salt) {
         super(node);
         if (!node.isBlank()) {
             throw new IllegalArgumentException("Node is not a blank node: " + node);
@@ -37,7 +37,7 @@ class JenaBlankNodeImpl extends AbstractJenaRDFTerm implements JenaBlankNode {
     }
 
     @Override
-    public boolean equals(Object other) {
+    public boolean equals(final Object other) {
         if (other == this) {
             return true;
         }

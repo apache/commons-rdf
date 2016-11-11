@@ -42,7 +42,7 @@ public class SimpleRDFTermFactory implements RDFTermFactory {
     }
 
     @Override
-    public BlankNode createBlankNode(String name) {
+    public BlankNode createBlankNode(final String name) {
         return factory.createBlankNode(name);
     }
 
@@ -52,27 +52,27 @@ public class SimpleRDFTermFactory implements RDFTermFactory {
     }
 
     @Override
-    public IRI createIRI(String iri) {
+    public IRI createIRI(final String iri) {
         return factory.createIRI(iri);
     }
 
     @Override
-    public Literal createLiteral(String literal) {
+    public Literal createLiteral(final String literal) {
         return factory.createLiteral(literal);
     }
 
     @Override
-    public Literal createLiteral(String literal, IRI dataType) {
+    public Literal createLiteral(final String literal, final IRI dataType) {
         return factory.createLiteral(literal, dataType);
     }
 
     @Override
-    public Literal createLiteral(String literal, String language) {
+    public Literal createLiteral(final String literal, final String language) {
         return factory.createLiteral(literal, language);
     }
 
     @Override
-    public Triple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public Triple createTriple(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         return factory.createTriple(subject, predicate, object);
     }
 }

@@ -347,8 +347,8 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
      *             active.
      */
     @SuppressWarnings("unchecked")
-    default Iterable<Quad> iterate(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate,
-            RDFTerm object) throws ConcurrentModificationException, IllegalStateException {
+    default Iterable<Quad> iterate(final Optional<BlankNodeOrIRI> graphName, final BlankNodeOrIRI subject, final IRI predicate,
+            final RDFTerm object) throws ConcurrentModificationException, IllegalStateException {
         return ((Stream<Quad>) stream(graphName, subject, predicate, object))::iterator;
     }
 }

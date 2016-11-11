@@ -50,41 +50,41 @@ public interface JsonLdUnionGraph extends JsonLdGraphLike<org.apache.commons.rdf
 class JsonLdUnionGraphImpl extends AbstractJsonLdGraphLike<org.apache.commons.rdf.api.Triple>
         implements JsonLdUnionGraph {
 
-    JsonLdUnionGraphImpl(String bnodePrefix) {
+    JsonLdUnionGraphImpl(final String bnodePrefix) {
         super(bnodePrefix);
     }
 
-    JsonLdUnionGraphImpl(RDFDataset rdfDataSet) {
+    JsonLdUnionGraphImpl(final RDFDataset rdfDataSet) {
         super(rdfDataSet);
     }
 
-    JsonLdUnionGraphImpl(RDFDataset rdfDataSet, String bnodePrefix) {
+    JsonLdUnionGraphImpl(final RDFDataset rdfDataSet, final String bnodePrefix) {
         super(rdfDataSet, bnodePrefix);
     }
 
     @Override
-    public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public void add(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         super.add(null, subject, predicate, object);
     }
 
     @Override
-    public boolean contains(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public boolean contains(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         return super.contains(null, subject, predicate, object);
     }
 
     @Override
-    public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public void remove(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         super.remove(null, subject, predicate, object);
     }
 
     @Override
-    public void remove(Triple t) {
+    public void remove(final Triple t) {
         // Remove from ALL graphs, not just default graph
         super.remove(null, t.getSubject(), t.getPredicate(), t.getObject());
     }
 
     @Override
-    public Stream<JsonLdTriple> stream(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public Stream<JsonLdTriple> stream(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         return filteredGraphs(null).flatMap(List::stream).filter(quadFilter(subject, predicate, object))
                 .map(factory::asTriple)
                 // Make sure we don't have duplicate triples
@@ -100,7 +100,7 @@ class JsonLdUnionGraphImpl extends AbstractJsonLdGraphLike<org.apache.commons.rd
     }
 
     @Override
-    JsonLdTriple asTripleOrQuad(com.github.jsonldjava.core.RDFDataset.Quad jsonldQuad) {
+    JsonLdTriple asTripleOrQuad(final com.github.jsonldjava.core.RDFDataset.Quad jsonldQuad) {
         return factory.asTriple(jsonldQuad);
     }
 

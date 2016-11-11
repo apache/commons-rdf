@@ -48,14 +48,14 @@ public class JenaRDFParser extends AbstractRDFParser<JenaRDFParser> implements R
         return new JenaRDF();
     }
 
-    public JenaRDFParser targetGeneralizedTriple(Consumer<TripleLike> consumer) {
+    public JenaRDFParser targetGeneralizedTriple(final Consumer<TripleLike> consumer) {
         JenaRDFParser c = this.clone();
         c.resetTarget();
         c.generalizedConsumerTriple = consumer;
         return c;
     }
 
-    public JenaRDFParser targetGeneralizedQuad(Consumer<QuadLike<RDFTerm>> consumer) {
+    public JenaRDFParser targetGeneralizedQuad(final Consumer<QuadLike<RDFTerm>> consumer) {
         JenaRDFParser c = this.clone();
         c.resetTarget();
         c.generalizedConsumerQuad = consumer;

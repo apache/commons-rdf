@@ -84,7 +84,7 @@ public class JsonLdParserBuilderTest {
         checkGraph(g);
     }
 
-    private void checkGraph(Graph g) {
+    private void checkGraph(final Graph g) {
         assertTrue(g.contains(test, type, Type));
         // Should not include statements from the named graph
 

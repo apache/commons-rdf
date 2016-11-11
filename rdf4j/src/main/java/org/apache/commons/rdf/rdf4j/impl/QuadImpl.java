@@ -34,7 +34,7 @@ final class QuadImpl implements Quad, RDF4JQuad {
     private final UUID salt;
     private final Statement statement;
 
-    QuadImpl(Statement statement, UUID salt) {
+    QuadImpl(final Statement statement, final UUID salt) {
         this.statement = statement;
         this.salt = salt;
     }
@@ -50,7 +50,7 @@ final class QuadImpl implements Quad, RDF4JQuad {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (obj instanceof Quad) {
             Quad quad = (Quad) obj;
             return getGraphName().equals(quad.getGraphName()) &&
