@@ -61,6 +61,7 @@ final class LiteralImpl extends AbstractRDFTerm<org.eclipse.rdf4j.model.Literal>
         return value.getLabel();
     }
 
+    @Override
     public int hashCode() {
         return Objects.hash(value.getLabel(), value.getDatatype(), value.getLanguage());
     }

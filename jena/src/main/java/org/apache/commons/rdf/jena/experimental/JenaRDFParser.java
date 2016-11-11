@@ -43,6 +43,7 @@ public class JenaRDFParser extends AbstractRDFParser<JenaRDFParser> implements R
     private Consumer<TripleLike> generalizedConsumerTriple;
     private Consumer<QuadLike<RDFTerm>> generalizedConsumerQuad;
 
+    @Override
     protected RDF createRDFTermFactory() {
         return new JenaRDF();
     }

@@ -70,34 +70,42 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
         }
 
         // Delegate methods
+        @Override
         public RDF4JBlankNode createBlankNode() {
             return rdf4jFactory.createBlankNode();
         }
 
+        @Override
         public RDF4JBlankNode createBlankNode(String name) {
             return rdf4jFactory.createBlankNode(name);
         }
 
+        @Override
         public RDF4JIRI createIRI(String iri) throws IllegalArgumentException, UnsupportedOperationException {
             return rdf4jFactory.createIRI(iri);
         }
 
+        @Override
         public RDF4JLiteral createLiteral(String lexicalForm) {
             return rdf4jFactory.createLiteral(lexicalForm);
         }
 
+        @Override
         public Literal createLiteral(String lexicalForm, IRI dataType) {
             return rdf4jFactory.createLiteral(lexicalForm, dataType);
         }
 
+        @Override
         public Literal createLiteral(String lexicalForm, String languageTag) {
             return rdf4jFactory.createLiteral(lexicalForm, languageTag);
         }
 
+        @Override
         public RDF4JTriple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
             return rdf4jFactory.createTriple(subject, predicate, object);
         }
 
+        @Override
         public Quad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
                 throws IllegalArgumentException {
             return rdf4jFactory.createQuad(graphName, subject, predicate, object);

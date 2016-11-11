@@ -66,6 +66,7 @@ public class RDF4JParser extends AbstractRDFParser<RDF4JParser> implements RDFPa
             this.quadTarget = quadTarget;
         }
 
+        @Override
         public void handleStatement(org.eclipse.rdf4j.model.Statement st)
                 throws org.eclipse.rdf4j.rio.RDFHandlerException {
             // TODO: if getRdfTermFactory() is a non-rdf4j factory, should
@@ -90,6 +91,7 @@ public class RDF4JParser extends AbstractRDFParser<RDF4JParser> implements RDFPa
             this.model = model;
         }
 
+        @Override
         public void handleStatement(org.eclipse.rdf4j.model.Statement st)
                 throws org.eclipse.rdf4j.rio.RDFHandlerException {
             model.add(st);

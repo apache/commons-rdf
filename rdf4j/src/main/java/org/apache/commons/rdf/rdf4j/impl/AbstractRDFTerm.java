@@ -27,6 +27,7 @@ abstract class AbstractRDFTerm<T extends Value> implements RDF4JTerm {
         this.value = value;
     }
 
+    @Override
     public T asValue() {
         return value;
     }

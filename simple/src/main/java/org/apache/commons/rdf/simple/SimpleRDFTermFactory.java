@@ -36,34 +36,42 @@ public class SimpleRDFTermFactory implements RDFTermFactory {
 
     private SimpleRDF factory = new SimpleRDF();
 
+    @Override
     public BlankNode createBlankNode() {
         return factory.createBlankNode();
     }
 
+    @Override
     public BlankNode createBlankNode(String name) {
         return factory.createBlankNode(name);
     }
 
+    @Override
     public Graph createGraph() {
         return factory.createGraph();
     }
 
+    @Override
     public IRI createIRI(String iri) {
         return factory.createIRI(iri);
     }
 
+    @Override
     public Literal createLiteral(String literal) {
         return factory.createLiteral(literal);
     }
 
+    @Override
     public Literal createLiteral(String literal, IRI dataType) {
         return factory.createLiteral(literal, dataType);
     }
 
+    @Override
     public Literal createLiteral(String literal, String language) {
         return factory.createLiteral(literal, language);
     }
 
+    @Override
     public Triple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
         return factory.createTriple(subject, predicate, object);
     }

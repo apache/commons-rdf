@@ -58,6 +58,7 @@ final class ModelGraphImpl implements RDF4JGraph {
         model.add(rdf4jTermFactory.asStatement(triple));
     }
 
+    @Override
     public Optional<Model> asModel() {
         return Optional.of(model);
     }

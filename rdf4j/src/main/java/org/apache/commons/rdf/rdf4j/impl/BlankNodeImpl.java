@@ -38,6 +38,7 @@ final class BlankNodeImpl extends AbstractRDFTerm<BNode> implements RDF4JBlankNo
         saltUUIDleast = salt.getLeastSignificantBits();
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (obj == this) {
             return true;

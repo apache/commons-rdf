@@ -46,6 +46,7 @@ final class IRIImpl extends AbstractRDFTerm<org.eclipse.rdf4j.model.IRI> impleme
         return value.toString();
     }
 
+    @Override
     public int hashCode() {
         // Same definition
         return value.hashCode();

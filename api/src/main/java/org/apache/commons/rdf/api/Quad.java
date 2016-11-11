@@ -78,6 +78,7 @@ public interface Quad extends QuadLike<BlankNodeOrIRI> {
      * @see <a href="https://www.w3.org/TR/rdf11-concepts/#dfn-rdf-dataset">RDF-
      *      1.1 Dataset</a>
      */
+    @Override
     Optional<BlankNodeOrIRI> getGraphName();
 
     /**
@@ -89,6 +90,7 @@ public interface Quad extends QuadLike<BlankNodeOrIRI> {
      * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-subject">RDF-1.1
      *      Triple subject</a>
      */
+    @Override
     BlankNodeOrIRI getSubject();
 
     /**
@@ -98,6 +100,7 @@ public interface Quad extends QuadLike<BlankNodeOrIRI> {
      * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-predicate">RDF-1.1
      *      Triple predicate</a>
      */
+    @Override
     IRI getPredicate();
 
     /**
@@ -109,6 +112,7 @@ public interface Quad extends QuadLike<BlankNodeOrIRI> {
      * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-object">RDF-1.1
      *      Triple object</a>
      */
+    @Override
     RDFTerm getObject();
 
     /**

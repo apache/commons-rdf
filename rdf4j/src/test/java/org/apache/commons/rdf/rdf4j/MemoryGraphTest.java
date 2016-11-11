@@ -37,42 +37,52 @@ public class MemoryGraphTest extends AbstractGraphTest {
 
         RDF4J rdf4jFactory = new RDF4J(new MemValueFactory());
 
+        @Override
         public RDF4JBlankNode createBlankNode() {
             return rdf4jFactory.createBlankNode();
         }
 
+        @Override
         public RDF4JBlankNode createBlankNode(String name) {
             return rdf4jFactory.createBlankNode(name);
         }
 
+        @Override
         public Dataset createDataset() {
             return rdf4jFactory.createDataset();
         }
 
+        @Override
         public RDF4JIRI createIRI(String iri) throws IllegalArgumentException, UnsupportedOperationException {
             return rdf4jFactory.createIRI(iri);
         }
 
+        @Override
         public RDF4JLiteral createLiteral(String lexicalForm) {
             return rdf4jFactory.createLiteral(lexicalForm);
         }
 
+        @Override
         public Literal createLiteral(String lexicalForm, IRI dataType) {
             return rdf4jFactory.createLiteral(lexicalForm, dataType);
         }
 
+        @Override
         public Literal createLiteral(String lexicalForm, String languageTag) {
             return rdf4jFactory.createLiteral(lexicalForm, languageTag);
         }
 
+        @Override
         public RDF4JTriple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
             return rdf4jFactory.createTriple(subject, predicate, object);
         }
 
+        @Override
         public Quad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
             return rdf4jFactory.createQuad(graphName, subject, predicate, object);
         }
 
+        @Override
         public RDF4JGraph createGraph() {
             Sail sail = new MemoryStore();
             Repository repository = new SailRepository(sail);

@@ -36,6 +36,7 @@ class AbstractJenaRDFTerm implements JenaRDFTerm, RDFTerm {
         return node;
     }
 
+    @Override
     public String ntriplesString() {
         return NodeFmtLib.str(node);
     }

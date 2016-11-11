@@ -143,6 +143,7 @@ abstract class AbstractJsonLdGraphLike<T extends TripleLike> implements JsonLdGr
         return stream().anyMatch(Predicate.isEqual(tripleOrQuad));
     }
 
+    @Override
     public RDFDataset getRdfDataSet() {
         return rdfDataSet;
     }

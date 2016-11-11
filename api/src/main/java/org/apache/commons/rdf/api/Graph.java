@@ -38,6 +38,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      * @param triple
      *            The triple to add
      */
+    @Override
     void add(Triple triple);
 
     /**
@@ -60,6 +61,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      *            The triple to check.
      * @return True if the Graph contains the given Triple.
      */
+    @Override
     boolean contains(Triple triple);
 
     /**
@@ -98,6 +100,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      * @param triple
      *            triple to remove
      */
+    @Override
     void remove(Triple triple);
 
     /**
@@ -115,6 +118,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
     /**
      * Clear the graph, removing all triples.
      */
+    @Override
     void clear();
 
     /**
@@ -125,6 +129,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      *
      * @return The number of triples in the graph
      */
+    @Override
     long size();
 
     /**
@@ -143,6 +148,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      * @since 0.3.0-incubating
      * @return A {@link Stream} over all of the triples in the graph
      */
+    @Override
     Stream<? extends Triple> stream();
 
     /**
@@ -233,6 +239,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      *             if a concurrency conflict occurs while the Iterator is
      *             active.
      */
+    @Override
     @SuppressWarnings("unchecked")
     default Iterable<Triple> iterate() throws ConcurrentModificationException, IllegalStateException {
         return ((Stream<Triple>) stream())::iterator;

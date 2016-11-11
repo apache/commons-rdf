@@ -38,6 +38,7 @@ abstract class JsonLdTermImpl implements JsonLdTerm {
         this.node = node;
     }
 
+    @Override
     public Node asJsonLdNode() {
         return node;
     }

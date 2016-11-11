@@ -68,6 +68,7 @@ class JsonLdQuadLikeImpl<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm
         return (O) rdfTermFactory.asRDFTerm(quad.getObject(), blankNodePrefix);
     }
 
+    @Override
     public Quad asJsonLdQuad() {
         return quad;
     }

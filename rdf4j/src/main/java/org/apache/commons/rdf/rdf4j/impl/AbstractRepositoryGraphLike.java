@@ -63,6 +63,7 @@ abstract class AbstractRepositoryGraphLike<T extends TripleLike> implements RDF4
         return repository.getConnection();
     }
 
+    @Override
     public Optional<Repository> asRepository() {
         return Optional.of(repository);
     }
