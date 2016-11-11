@@ -18,12 +18,11 @@
 
 package org.apache.commons.rdf.jena.impl;
 
-import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.jena.JenaRDFTerm;
 import org.apache.jena.graph.Node;
 import org.apache.jena.riot.out.NodeFmtLib;
 
-class AbstractJenaRDFTerm implements JenaRDFTerm, RDFTerm {
+class AbstractJenaRDFTerm implements JenaRDFTerm {
     private final Node node;
     // static private PrefixMapping empty = new PrefixMappingImpl();
 

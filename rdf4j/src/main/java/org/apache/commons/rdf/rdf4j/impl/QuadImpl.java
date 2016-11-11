@@ -25,11 +25,11 @@ import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.Triple;
-import org.apache.commons.rdf.rdf4j.RDF4JQuad;
 import org.apache.commons.rdf.rdf4j.RDF4J;
+import org.apache.commons.rdf.rdf4j.RDF4JQuad;
 import org.eclipse.rdf4j.model.Statement;
 
-final class QuadImpl implements Quad, RDF4JQuad {
+final class QuadImpl implements RDF4JQuad {
     private transient int hashCode = 0;
     private final UUID salt;
     private final Statement statement;

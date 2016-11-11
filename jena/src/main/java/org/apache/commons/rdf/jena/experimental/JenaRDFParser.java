@@ -25,10 +25,9 @@ import java.util.function.Consumer;
 
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.QuadLike;
-import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.RDF;
+import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.TripleLike;
-import org.apache.commons.rdf.experimental.RDFParser;
 import org.apache.commons.rdf.jena.JenaGraph;
 import org.apache.commons.rdf.jena.JenaRDF;
 import org.apache.commons.rdf.simple.experimental.AbstractRDFParser;
@@ -38,7 +37,7 @@ import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.system.StreamRDF;
 import org.apache.jena.riot.system.StreamRDFLib;
 
-public class JenaRDFParser extends AbstractRDFParser<JenaRDFParser> implements RDFParser {
+public class JenaRDFParser extends AbstractRDFParser<JenaRDFParser> {
 
     private Consumer<TripleLike> generalizedConsumerTriple;
     private Consumer<QuadLike<RDFTerm>> generalizedConsumerQuad;

@@ -27,7 +27,7 @@ import org.apache.commons.rdf.rdf4j.RDF4J;
 import org.apache.commons.rdf.rdf4j.RDF4JTriple;
 import org.eclipse.rdf4j.model.Statement;
 
-final class TripleImpl implements Triple, RDF4JTriple {
+final class TripleImpl implements RDF4JTriple {
     private final UUID salt;
     private final Statement statement;
 

@@ -23,7 +23,6 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
-import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Quad;
@@ -39,7 +38,7 @@ import org.eclipse.rdf4j.repository.Repository;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryResult;
 
-class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> implements RDF4JDataset, Dataset {
+class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> implements RDF4JDataset {
 
     RepositoryDatasetImpl(final Repository repository, final UUID salt, final boolean handleInitAndShutdown, final boolean includeInferred) {
         super(repository, salt, handleInitAndShutdown, includeInferred);

@@ -30,11 +30,10 @@ import java.util.stream.Stream;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFSyntax;
-import org.apache.commons.rdf.experimental.RDFParser;
+import org.apache.commons.rdf.rdf4j.RDF4J;
 import org.apache.commons.rdf.rdf4j.RDF4JBlankNodeOrIRI;
 import org.apache.commons.rdf.rdf4j.RDF4JDataset;
 import org.apache.commons.rdf.rdf4j.RDF4JGraph;
-import org.apache.commons.rdf.rdf4j.RDF4J;
 import org.apache.commons.rdf.simple.experimental.AbstractRDFParser;
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.Resource;
@@ -57,7 +56,7 @@ import org.eclipse.rdf4j.rio.helpers.AbstractRDFHandler;
  * <em>rdf4j-rio-*</em> module on the classpath.
  *
  */
-public class RDF4JParser extends AbstractRDFParser<RDF4JParser> implements RDFParser {
+public class RDF4JParser extends AbstractRDFParser<RDF4JParser> {
 
     private final class AddToQuadConsumer extends AbstractRDFHandler {
         private final Consumer<Quad> quadTarget;
