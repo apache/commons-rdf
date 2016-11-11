@@ -326,7 +326,7 @@ public abstract class AbstractDatasetTest {
 
             assertEquals(4, whoIsWho.size());
             // and contains 4 unique values
-            assertEquals(4, new HashSet<BlankNodeOrIRI>(whoIsWho.values()).size());
+            assertEquals(4, new HashSet<>(whoIsWho.values()).size());
 
             BlankNodeOrIRI b1Alice = whoIsWho.get("\"Alice\"");
             assertNotNull(b1Alice);

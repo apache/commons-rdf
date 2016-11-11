@@ -37,7 +37,7 @@ import java.util.stream.Stream;
 final class GraphImpl implements Graph {
 
     private static final int TO_STRING_MAX = 10;
-    private final Set<Triple> triples = new HashSet<Triple>();
+    private final Set<Triple> triples = new HashSet<>();
     private final SimpleRDF factory;
 
     GraphImpl(SimpleRDF simpleRDF) {

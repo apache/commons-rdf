@@ -142,7 +142,7 @@ class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> implements
         Resource subj = (Resource) rdf4jTermFactory.asValue(subject);
         org.eclipse.rdf4j.model.IRI pred = (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate);
         Value obj = rdf4jTermFactory.asValue(object);
-        return new ConvertedStatements<Triple>(this::getRepositoryConnection, rdf4jTermFactory::asTriple, subj, pred,
+        return new ConvertedStatements<>(this::getRepositoryConnection, rdf4jTermFactory::asTriple, subj, pred,
                 obj, contextMask);
     }
 

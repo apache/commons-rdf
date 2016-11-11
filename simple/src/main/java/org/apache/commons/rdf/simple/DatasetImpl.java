@@ -45,7 +45,7 @@ import org.apache.commons.rdf.simple.SimpleRDF.SimpleRDFTerm;
 final class DatasetImpl implements Dataset {
 
     private static final int TO_STRING_MAX = 10;
-    private final Set<Quad> quads = new HashSet<Quad>();
+    private final Set<Quad> quads = new HashSet<>();
     private final SimpleRDF factory;
 
     DatasetImpl(SimpleRDF simpleRDF) {
