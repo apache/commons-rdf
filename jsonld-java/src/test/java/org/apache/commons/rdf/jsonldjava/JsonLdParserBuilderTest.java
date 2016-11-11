@@ -52,30 +52,30 @@ public class JsonLdParserBuilderTest {
 
     @Test
     public void parseByUrl() throws Exception {
-        URL url = getClass().getResource(TEST_JSONLD);
+        final URL url = getClass().getResource(TEST_JSONLD);
         assertNotNull("Test resource not found: " + TEST_JSONLD, url);
-        IRI iri = factory.createIRI(url.toString());
-        Graph g = factory.createGraph();
+        final IRI iri = factory.createIRI(url.toString());
+        final Graph g = factory.createGraph();
         new JsonLdParser().contentType(RDFSyntax.JSONLD).source(iri).target(g).parse().get(10, TimeUnit.SECONDS);
         checkGraph(g);
     }
 
     @Test
     public void parseByPath() throws Exception {
-        Path path = Files.createTempFile("test", ".jsonld");
+        final Path path = Files.createTempFile("test", ".jsonld");
         path.toFile().deleteOnExit();
         try (InputStream is = getClass().getResourceAsStream(TEST_JSONLD)) {
             assertNotNull("Test resource not found: " + TEST_JSONLD, is);
             Files.copy(is, path, StandardCopyOption.REPLACE_EXISTING);
         }
-        Graph g = factory.createGraph();
+        final Graph g = factory.createGraph();
         new JsonLdParser().contentType(RDFSyntax.JSONLD).source(path).target(g).parse().get(10, TimeUnit.SECONDS);
         checkGraph(g);
     }
 
     @Test
     public void parseByStream() throws Exception {
-        Graph g = factory.createGraph();
+        final Graph g = factory.createGraph();
         try (InputStream is = getClass().getResourceAsStream(TEST_JSONLD)) {
             assertNotNull("Test resource not found: " + TEST_JSONLD, is);
             new JsonLdParser().base("http://example.com/base/").contentType(RDFSyntax.JSONLD).source(is).target(g)

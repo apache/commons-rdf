@@ -90,7 +90,7 @@ abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
 
     @Override
     public org.apache.jena.sparql.core.Quad asJenaQuad() {
-        JenaRDF factory = new JenaRDF();
+        final JenaRDF factory = new JenaRDF();
         if (quad == null) {
             quad = org.apache.jena.sparql.core.Quad.create(factory.asJenaNode(graphName.orElse(null)),
                     factory.asJenaNode(subject), factory.asJenaNode(predicate), factory.asJenaNode(object));
@@ -100,7 +100,7 @@ abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
 
     @Override
     public org.apache.jena.graph.Triple asJenaTriple() {
-        JenaRDF factory = new JenaRDF();
+        final JenaRDF factory = new JenaRDF();
         if (triple == null) {
             triple = org.apache.jena.graph.Triple.create(factory.asJenaNode(subject), factory.asJenaNode(predicate),
                     factory.asJenaNode(object));

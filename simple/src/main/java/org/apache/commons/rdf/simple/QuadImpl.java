@@ -95,7 +95,7 @@ final class QuadImpl implements Quad {
         if (!(obj instanceof Quad)) {
             return false;
         }
-        Quad other = (Quad) obj;
+        final Quad other = (Quad) obj;
         return getGraphName().equals(other.getGraphName()) && getSubject().equals(other.getSubject())
                 && getPredicate().equals(other.getPredicate()) && getObject().equals(other.getObject());
     }

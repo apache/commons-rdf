@@ -266,14 +266,14 @@ public final class JenaRDF implements RDF {
             return factory.createIRI(node.getURI());
         }
         if (node.isLiteral()) {
-            String lang = node.getLiteralLanguage();
+            final String lang = node.getLiteralLanguage();
             if (lang != null && !lang.isEmpty()) {
                 return factory.createLiteral(node.getLiteralLexicalForm(), lang);
             }
             if (node.getLiteralDatatype().equals(XSDDatatype.XSDstring)) {
                 return factory.createLiteral(node.getLiteralLexicalForm());
             }
-            IRI dt = factory.createIRI(node.getLiteralDatatype().getURI());
+            final IRI dt = factory.createIRI(node.getLiteralDatatype().getURI());
             return factory.createLiteral(node.getLiteralLexicalForm(), dt);
         }
         if (node.isBlank()) {
@@ -392,10 +392,10 @@ public final class JenaRDF implements RDF {
         try {
             subject = (BlankNodeOrIRI) asRDFTerm(factory, triple.getSubject());
             predicate = (IRI) asRDFTerm(factory, triple.getPredicate());
-        } catch (ClassCastException ex) {
+        } catch (final ClassCastException ex) {
             throw new ConversionException("Can't convert generalized triple: " + triple, ex);
         }
-        RDFTerm object = asRDFTerm(factory, triple.getObject());
+        final RDFTerm object = asRDFTerm(factory, triple.getObject());
         return factory.createTriple(subject, predicate, object);
     }
 
@@ -529,10 +529,10 @@ public final class JenaRDF implements RDF {
             // No need to convert, just wrap
             return ((JenaRDF) factory).asQuad(quad);
         }
-        BlankNodeOrIRI graphName = (BlankNodeOrIRI) (asRDFTerm(factory, quad.getGraph()));
-        BlankNodeOrIRI subject = (BlankNodeOrIRI) (asRDFTerm(factory, quad.getSubject()));
-        IRI predicate = (IRI) (asRDFTerm(factory, quad.getPredicate()));
-        RDFTerm object = asRDFTerm(factory, quad.getObject());
+        final BlankNodeOrIRI graphName = (BlankNodeOrIRI) (asRDFTerm(factory, quad.getGraph()));
+        final BlankNodeOrIRI subject = (BlankNodeOrIRI) (asRDFTerm(factory, quad.getSubject()));
+        final IRI predicate = (IRI) (asRDFTerm(factory, quad.getPredicate()));
+        final RDFTerm object = asRDFTerm(factory, quad.getObject());
         return factory.createQuad(graphName, subject, predicate, object);
     }
 
@@ -645,7 +645,7 @@ public final class JenaRDF implements RDF {
         if (graph instanceof JenaGraph) {
             return ((JenaGraph) graph).asJenaGraph();
         }
-        org.apache.jena.graph.Graph g = GraphFactory.createGraphMem();
+        final org.apache.jena.graph.Graph g = GraphFactory.createGraphMem();
         graph.stream().forEach(t -> g.add(asJenaTriple(t)));
         return g;
     }
@@ -675,14 +675,14 @@ public final class JenaRDF implements RDF {
         }
 
         if (term instanceof Literal) {
-            Literal lit = (Literal) term;
-            RDFDatatype dt = NodeFactory.getType(lit.getDatatype().getIRIString());
-            String lang = lit.getLanguageTag().orElse("");
+            final Literal lit = (Literal) term;
+            final RDFDatatype dt = NodeFactory.getType(lit.getDatatype().getIRIString());
+            final String lang = lit.getLanguageTag().orElse("");
             return NodeFactory.createLiteral(lit.getLexicalForm(), lang, dt);
         }
 
         if (term instanceof BlankNode) {
-            String id = ((BlankNode) term).uniqueReference();
+            final String id = ((BlankNode) term).uniqueReference();
             return NodeFactory.createBlankNode(id);
         }
         throw new ConversionException("Not a concrete RDF Term: " + term);

@@ -58,7 +58,7 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
         public RDF4JGraph createGraph() {
             // We re-use the repository connection, but use a different context
             // every time
-            Set<RDF4JBlankNode> context = Collections.singleton(rdf4jFactory.createBlankNode());
+            final Set<RDF4JBlankNode> context = Collections.singleton(rdf4jFactory.createBlankNode());
             return rdf4jFactory.asGraph(getRepository(), context);
         }
 
@@ -118,7 +118,7 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
     private SailRepository repository;
 
     public void createRepository() throws IOException {
-        Sail sail = new NativeStore(tempDir.newFolder());
+        final Sail sail = new NativeStore(tempDir.newFolder());
         repository = new SailRepository(sail);
         repository.initialize();
     }
@@ -127,7 +127,7 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
         if (repository == null) {
             try {
                 createRepository();
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 throw new UncheckedIOException(e);
             }
         }

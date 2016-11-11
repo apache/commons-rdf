@@ -88,7 +88,7 @@ public final class JsonLdRDF implements RDF {
 
     public Node asJsonLdNode(final RDFTerm term) {
         if (term instanceof JsonLdBlankNode) {
-            JsonLdBlankNode jsonLdBlankNode = (JsonLdBlankNode) term;
+            final JsonLdBlankNode jsonLdBlankNode = (JsonLdBlankNode) term;
             if (jsonLdBlankNode.uniqueReference().startsWith(bnodePrefix)) {
                 // Only return blank nodes 'as is' if they have the same prefix
                 return jsonLdBlankNode.asJsonLdNode();
@@ -101,7 +101,7 @@ public final class JsonLdRDF implements RDF {
             return new RDFDataset.IRI(((IRI) term).getIRIString());
         }
         if (term instanceof BlankNode) {
-            String ref = ((BlankNode) term).uniqueReference();
+            final String ref = ((BlankNode) term).uniqueReference();
             if (ref.startsWith(bnodePrefix)) {
                 // one of our own (but no longer a JsonLdBlankNode),
                 // we can recover the label after our unique prefix
@@ -109,11 +109,11 @@ public final class JsonLdRDF implements RDF {
             }
             // The "foreign" unique reference might not be a valid bnode string,
             // we'll convert to a UUID
-            UUID uuid = UUID.nameUUIDFromBytes(ref.getBytes(StandardCharsets.UTF_8));
+            final UUID uuid = UUID.nameUUIDFromBytes(ref.getBytes(StandardCharsets.UTF_8));
             return new RDFDataset.BlankNode("_:" + uuid);
         }
         if (term instanceof Literal) {
-            Literal literal = (Literal) term;
+            final Literal literal = (Literal) term;
             return new RDFDataset.Literal(literal.getLexicalForm(), literal.getDatatype().getIRIString(),
                     literal.getLanguageTag().orElse(null));
         }
@@ -129,7 +129,7 @@ public final class JsonLdRDF implements RDF {
      * @return Adapted JsonLd {@link com.github.jsonldjava.core.RDFDataset.Quad}
      */
     public RDFDataset.Quad asJsonLdQuad(final org.apache.commons.rdf.api.Quad quad) {
-        BlankNodeOrIRI g = quad.getGraphName().orElse(null);
+        final BlankNodeOrIRI g = quad.getGraphName().orElse(null);
         return createJsonLdQuad(g, quad.getSubject(), quad.getPredicate(), quad.getObject());
     }
 
@@ -215,13 +215,13 @@ public final class JsonLdRDF implements RDF {
 
     @Override
     public JsonLdBlankNode createBlankNode() {
-        String id = "_:" + UUID.randomUUID().toString();
+        final String id = "_:" + UUID.randomUUID().toString();
         return new JsonLdBlankNodeImpl(new RDFDataset.BlankNode(id), bnodePrefix);
     }
 
     @Override
     public JsonLdBlankNode createBlankNode(final String name) {
-        String id = "_:" + name;
+        final String id = "_:" + name;
         // TODO: Check if name is valid JSON-LD BlankNode identifier
         return new JsonLdBlankNodeImpl(new RDFDataset.BlankNode(id), bnodePrefix);
     }
@@ -274,8 +274,8 @@ public final class JsonLdRDF implements RDF {
         if (blankNodeOrIRI instanceof IRI) {
             return ((IRI) blankNodeOrIRI).getIRIString();
         } else if (blankNodeOrIRI instanceof BlankNode) {
-            BlankNode blankNode = (BlankNode) blankNodeOrIRI;
-            String ref = blankNode.uniqueReference();
+            final BlankNode blankNode = (BlankNode) blankNodeOrIRI;
+            final String ref = blankNode.uniqueReference();
             if (ref.startsWith(bnodePrefix)) {
                 // One of ours (but possibly not a JsonLdBlankNode) -
                 // we can use the suffix directly
@@ -283,7 +283,7 @@ public final class JsonLdRDF implements RDF {
             } else {
                 // Map to unique bnode identifier, e.g.
                 // _:0dbd92ee-ab1a-45e7-bba2-7ade54f87ec5
-                UUID uuid = UUID.nameUUIDFromBytes(ref.getBytes(StandardCharsets.UTF_8));
+                final UUID uuid = UUID.nameUUIDFromBytes(ref.getBytes(StandardCharsets.UTF_8));
                 return "_:" + uuid;
             }
         } else {

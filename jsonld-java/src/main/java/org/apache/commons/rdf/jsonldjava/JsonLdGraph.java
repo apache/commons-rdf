@@ -95,7 +95,7 @@ class JsonLdGraphImpl extends AbstractJsonLdGraphLike<Triple> implements JsonLdG
 
     @Override
     public long size() {
-        String g = graphName.map(factory::asJsonLdString).orElse("@default");
+        final String g = graphName.map(factory::asJsonLdString).orElse("@default");
         return Optional.ofNullable(rdfDataSet.getQuads(g)).map(List::size).orElse(0);
     }
 

@@ -51,7 +51,7 @@ final class JsonLdBlankNodeImpl extends JsonLdTermImpl implements JsonLdBlankNod
         if (!(obj instanceof BlankNode)) {
             return false;
         }
-        BlankNode other = (BlankNode) obj;
+        final BlankNode other = (BlankNode) obj;
         return uniqueReference().equals(other.uniqueReference());
     }
 

@@ -46,7 +46,7 @@ final class BlankNodeImpl extends AbstractRDFTerm<BNode> implements RDF4JBlankNo
         // NOTE: Do NOT use Bnode.equals() as it has a more generous
         // equality based only on the value.getID();
         if (obj instanceof BlankNode) {
-            BlankNode blankNode = (BlankNode) obj;
+            final BlankNode blankNode = (BlankNode) obj;
             return uniqueReference().equals(blankNode.uniqueReference());
         }
         return false;
@@ -87,7 +87,7 @@ final class BlankNodeImpl extends AbstractRDFTerm<BNode> implements RDF4JBlankNo
 
     @Override
     public String uniqueReference() {
-        UUID uuid = new UUID(saltUUIDmost, saltUUIDleast);
+        final UUID uuid = new UUID(saltUUIDmost, saltUUIDleast);
         return "urn:uuid:" + uuid + "#" + value.getID();
     }
     

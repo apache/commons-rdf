@@ -44,7 +44,7 @@ final class TripleImpl implements Triple, RDF4JTriple {
     @Override
     public boolean equals(final Object obj) {
         if (obj instanceof Triple) {
-            Triple triple = (Triple) obj;
+            final Triple triple = (Triple) obj;
             return getSubject().equals(triple.getSubject()) && getPredicate().equals(triple.getPredicate())
                     && getObject().equals(triple.getObject());
         }

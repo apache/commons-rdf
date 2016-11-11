@@ -129,8 +129,8 @@ public abstract class AbstractDatasetTest {
     @Test
     public void iterate() throws Exception {
         Assume.assumeTrue(dataset.size() > 0);
-        List<Quad> quads = new ArrayList<>();
-        for (Quad t : dataset.iterate()) {
+        final List<Quad> quads = new ArrayList<>();
+        for (final Quad t : dataset.iterate()) {
             quads.add(t);
         }
         assertEquals(dataset.size(), quads.size());
@@ -138,12 +138,12 @@ public abstract class AbstractDatasetTest {
         //assertTrue(quads.contains(bobNameQuad));
         // java.util.List won't do any BlankNode mapping, so 
         // instead bobNameQuad of let's check for an IRI-centric quad 
-        Quad q = factory.createQuad(graph1, alice, name, aliceName);
+        final Quad q = factory.createQuad(graph1, alice, name, aliceName);
         quads.contains(q);
 
         // aborted iteration
-        Iterable<Quad> iterate = dataset.iterate();
-        Iterator<Quad> it = iterate.iterator();
+        final Iterable<Quad> iterate = dataset.iterate();
+        final Iterator<Quad> it = iterate.iterator();
 
         assertTrue(it.hasNext());
         it.next();
@@ -152,8 +152,8 @@ public abstract class AbstractDatasetTest {
         // second iteration - should start from fresh and
         // get the same count
         long count = 0;
-        Iterable<Quad> iterable = dataset.iterate();
-        for (@SuppressWarnings("unused")
+        final Iterable<Quad> iterable = dataset.iterate();
+        for (@SuppressWarnings("unused") final
         Quad t : iterable) {
             count++;
         }
@@ -171,18 +171,18 @@ public abstract class AbstractDatasetTest {
 
     @Test
     public void iterateFilter() throws Exception {
-        List<RDFTerm> friends = new ArrayList<>();
-        IRI alice = factory.createIRI("http://example.com/alice");
-        IRI knows = factory.createIRI("http://xmlns.com/foaf/0.1/knows");
-        for (Quad t : dataset.iterate(null, alice, knows, null)) {
+        final List<RDFTerm> friends = new ArrayList<>();
+        final IRI alice = factory.createIRI("http://example.com/alice");
+        final IRI knows = factory.createIRI("http://xmlns.com/foaf/0.1/knows");
+        for (final Quad t : dataset.iterate(null, alice, knows, null)) {
             friends.add(t.getObject());
         }
         assertEquals(1, friends.size());
         assertEquals(bob, friends.get(0));
 
         // .. can we iterate over zero hits?
-        Iterable<Quad> iterate = dataset.iterate(Optional.of(graph2), bob, knows, alice);
-        for (Quad unexpected : iterate) {
+        final Iterable<Quad> iterate = dataset.iterate(Optional.of(graph2), bob, knows, alice);
+        for (final Quad unexpected : iterate) {
             fail("Unexpected quad " + unexpected);
         }
         // closeIterable(iterate);
@@ -195,26 +195,26 @@ public abstract class AbstractDatasetTest {
         assertTrue(dataset.contains(Optional.of(graph1), alice, knows, bob));
 
         try (Stream<? extends Quad> stream = dataset.stream()) {
-            Optional<? extends Quad> first = stream.skip(4).findFirst();
+            final Optional<? extends Quad> first = stream.skip(4).findFirst();
             Assume.assumeTrue(first.isPresent());
-            Quad existingQuad = first.get();
+            final Quad existingQuad = first.get();
             assertTrue(dataset.contains(existingQuad));
         }
 
-        Quad nonExistingQuad = factory.createQuad(graph2, bob, knows, alice);
+        final Quad nonExistingQuad = factory.createQuad(graph2, bob, knows, alice);
         assertFalse(dataset.contains(nonExistingQuad));
 
         // An existing quad
-        Quad quad = factory.createQuad(graph1, alice, knows, bob);
+        final Quad quad = factory.createQuad(graph1, alice, knows, bob);
         // FIXME: Should not this always be true?
          assertTrue(dataset.contains(quad));
     }
 
     @Test
     public void remove() throws Exception {
-        long fullSize = dataset.size();
+        final long fullSize = dataset.size();
         dataset.remove(Optional.of(graph1), alice, knows, bob);
-        long shrunkSize = dataset.size();
+        final long shrunkSize = dataset.size();
         assertEquals(1, fullSize - shrunkSize);
 
         dataset.remove(Optional.of(graph1), alice, knows, bob);
@@ -233,7 +233,7 @@ public abstract class AbstractDatasetTest {
 
         Quad otherQuad;
         try (Stream<? extends Quad> stream = dataset.stream()) {
-            Optional<? extends Quad> anyQuad = stream.findAny();
+            final Optional<? extends Quad> anyQuad = stream.findAny();
             Assume.assumeTrue(anyQuad.isPresent());
             otherQuad = anyQuad.get();
         }
@@ -281,7 +281,7 @@ public abstract class AbstractDatasetTest {
     public void getQuadsQuery() throws Exception {
 
         try (Stream<? extends Quad> stream = dataset.stream(Optional.of(graph1), alice, null, null)) {
-            long aliceCount = stream.count();
+            final long aliceCount = stream.count();
             assertTrue(aliceCount > 0);
             Assume.assumeNotNull(aliceName);
             assertEquals(3, aliceCount);
@@ -300,11 +300,11 @@ public abstract class AbstractDatasetTest {
     @Test
     public void addBlankNodesFromMultipleDatasets() {
             // Create two separate Dataset instances
-            Dataset g1 = createDataset1();
-            Dataset g2 = createDataset2();
+            final Dataset g1 = createDataset1();
+            final Dataset g2 = createDataset2();
 
             // and add them to a new Dataset g3
-            Dataset g3 = factory.createDataset();
+            final Dataset g3 = factory.createDataset();
             addAllQuads(g1, g3);
             addAllQuads(g2, g3);
 
@@ -319,7 +319,7 @@ public abstract class AbstractDatasetTest {
             // HashMap!)
 
             // look up BlankNodes by name
-            IRI name = factory.createIRI("http://xmlns.com/foaf/0.1/name");
+            final IRI name = factory.createIRI("http://xmlns.com/foaf/0.1/name");
             try (Stream<? extends Quad> stream = g3.stream(null, null, name, null)) {
                 stream.parallel().forEach(t -> whoIsWho.put(t.getObject().ntriplesString(), t.getSubject()));
             }
@@ -328,13 +328,13 @@ public abstract class AbstractDatasetTest {
             // and contains 4 unique values
             assertEquals(4, new HashSet<>(whoIsWho.values()).size());
 
-            BlankNodeOrIRI b1Alice = whoIsWho.get("\"Alice\"");
+            final BlankNodeOrIRI b1Alice = whoIsWho.get("\"Alice\"");
             assertNotNull(b1Alice);
-            BlankNodeOrIRI b2Bob = whoIsWho.get("\"Bob\"");
+            final BlankNodeOrIRI b2Bob = whoIsWho.get("\"Bob\"");
             assertNotNull(b2Bob);
-            BlankNodeOrIRI b1Charlie = whoIsWho.get("\"Charlie\"");
+            final BlankNodeOrIRI b1Charlie = whoIsWho.get("\"Charlie\"");
             assertNotNull(b1Charlie);
-            BlankNodeOrIRI b2Dave = whoIsWho.get("\"Dave\"");
+            final BlankNodeOrIRI b2Dave = whoIsWho.get("\"Dave\"");
             assertNotNull(b2Dave);
 
             // All blank nodes should differ
@@ -347,7 +347,7 @@ public abstract class AbstractDatasetTest {
 
             // And we should be able to query with them again
             // as we got them back from g3
-            IRI hasChild = factory.createIRI("http://example.com/hasChild");
+            final IRI hasChild = factory.createIRI("http://example.com/hasChild");
             // FIXME: Check graph2 BlankNode in these ..?
             assertTrue(g3.contains(null, b1Alice, hasChild, b2Bob));
             assertTrue(g3.contains(null, b2Dave, hasChild, b1Charlie));
@@ -398,17 +398,17 @@ public abstract class AbstractDatasetTest {
      * uniqueReference
      */
     private Dataset createDataset1() {
-        RDF factory1 = createFactory();
+        final RDF factory1 = createFactory();
 
-        IRI name = factory1.createIRI("http://xmlns.com/foaf/0.1/name");
-        Dataset g1 = factory1.createDataset();
-        BlankNode b1 = createOwnBlankNode("b1", "0240eaaa-d33e-4fc0-a4f1-169d6ced3680");
+        final IRI name = factory1.createIRI("http://xmlns.com/foaf/0.1/name");
+        final Dataset g1 = factory1.createDataset();
+        final BlankNode b1 = createOwnBlankNode("b1", "0240eaaa-d33e-4fc0-a4f1-169d6ced3680");
         g1.add(b1, b1, name, factory1.createLiteral("Alice"));
 
-        BlankNode b2 = createOwnBlankNode("b2", "9de7db45-0ce7-4b0f-a1ce-c9680ffcfd9f");
+        final BlankNode b2 = createOwnBlankNode("b2", "9de7db45-0ce7-4b0f-a1ce-c9680ffcfd9f");
         g1.add(b2, b2, name, factory1.createLiteral("Bob"));
 
-        IRI hasChild = factory1.createIRI("http://example.com/hasChild");
+        final IRI hasChild = factory1.createIRI("http://example.com/hasChild");
         g1.add(null, b1, hasChild, b2);
 
         return g1;
@@ -444,25 +444,25 @@ public abstract class AbstractDatasetTest {
                 if (!(obj instanceof BlankNode)) {
                     return false;
                 }
-                BlankNode other = (BlankNode) obj;
+                final BlankNode other = (BlankNode) obj;
                 return uuid.equals(other.uniqueReference());
             }
         };
     }
 
     private Dataset createDataset2() {
-        RDF factory2 = createFactory();
-        IRI name = factory2.createIRI("http://xmlns.com/foaf/0.1/name");
+        final RDF factory2 = createFactory();
+        final IRI name = factory2.createIRI("http://xmlns.com/foaf/0.1/name");
 
-        Dataset g2 = factory2.createDataset();
+        final Dataset g2 = factory2.createDataset();
 
-        BlankNode b1 = createOwnBlankNode("b1", "bc8d3e45-a08f-421d-85b3-c25b373abf87");
+        final BlankNode b1 = createOwnBlankNode("b1", "bc8d3e45-a08f-421d-85b3-c25b373abf87");
         g2.add(b1, b1, name, factory2.createLiteral("Charlie"));
 
-        BlankNode b2 = createOwnBlankNode("b2", "2209097a-5078-4b03-801a-6a2d2f50d739");
+        final BlankNode b2 = createOwnBlankNode("b2", "2209097a-5078-4b03-801a-6a2d2f50d739");
         g2.add(b2, b2, name, factory2.createLiteral("Dave"));
 
-        IRI hasChild = factory2.createIRI("http://example.com/hasChild");
+        final IRI hasChild = factory2.createIRI("http://example.com/hasChild");
         // NOTE: Opposite direction of loadDataset1
         g2.add(b2, b2, hasChild, b1);
         return g2;
@@ -476,11 +476,11 @@ public abstract class AbstractDatasetTest {
      */
     @Test
     public void getGraphNames() throws Exception {
-        Set<BlankNodeOrIRI> names = dataset.getGraphNames().collect(Collectors.toSet());        
+        final Set<BlankNodeOrIRI> names = dataset.getGraphNames().collect(Collectors.toSet());        
         assertTrue("Can't find graph name " + graph1, names.contains(graph1));
         assertTrue("Found no quads in graph1", dataset.contains(Optional.of(graph1), null, null, null));
         
-        Optional<BlankNodeOrIRI> graphName2 = dataset.getGraphNames().filter(BlankNode.class::isInstance).findAny();
+        final Optional<BlankNodeOrIRI> graphName2 = dataset.getGraphNames().filter(BlankNode.class::isInstance).findAny();
         assertTrue("Could not find graph2-like BlankNode", graphName2.isPresent()); 
         assertTrue("Found no quads in graph2", dataset.contains(graphName2, null, null, null));
 
@@ -491,7 +491,7 @@ public abstract class AbstractDatasetTest {
     
     @Test
     public void getGraph() throws Exception {
-        Graph defaultGraph = dataset.getGraph();
+        final Graph defaultGraph = dataset.getGraph();
         // TODO: Can we assume the default graph was empty before our new triples?
         assertEquals(2, defaultGraph.size());
         assertTrue(defaultGraph.contains(alice, isPrimaryTopicOf, graph1));
@@ -503,7 +503,7 @@ public abstract class AbstractDatasetTest {
     @Test
     public void getGraphNull() throws Exception {
         // Default graph should be present
-        Graph defaultGraph = dataset.getGraph(null).get();
+        final Graph defaultGraph = dataset.getGraph(null).get();
         // TODO: Can we assume the default graph was empty before our new triples?
         assertEquals(2, defaultGraph.size());
         assertTrue(defaultGraph.contains(alice, isPrimaryTopicOf, graph1));
@@ -515,7 +515,7 @@ public abstract class AbstractDatasetTest {
     @Test
     public void getGraph1() throws Exception {
         // graph1 should be present
-        Graph g1 = dataset.getGraph(graph1).get();
+        final Graph g1 = dataset.getGraph(graph1).get();
         assertEquals(4, g1.size());
         
         assertTrue(g1.contains(alice, name, aliceName));
@@ -528,12 +528,12 @@ public abstract class AbstractDatasetTest {
     public void getGraph2() throws Exception {
         // graph2 should be present, even if is named by a BlankNode
         // We'll look up the potentially mapped graph2 blanknode
-        BlankNodeOrIRI graph2Name = (BlankNodeOrIRI) dataset.stream(Optional.empty(), bob, isPrimaryTopicOf, null)
+        final BlankNodeOrIRI graph2Name = (BlankNodeOrIRI) dataset.stream(Optional.empty(), bob, isPrimaryTopicOf, null)
                 .map(Quad::getObject).findAny().get();
         
-        Graph g2 = dataset.getGraph(graph2Name).get();
+        final Graph g2 = dataset.getGraph(graph2Name).get();
         assertEquals(4, g2.size());
-        Triple bobNameTriple = bobNameQuad.asTriple();
+        final Triple bobNameTriple = bobNameQuad.asTriple();
         assertTrue(g2.contains(bobNameTriple));
         assertTrue(g2.contains(bob, member, bnode1));
         assertTrue(g2.contains(bob, member, bnode2));

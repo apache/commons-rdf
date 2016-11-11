@@ -53,7 +53,7 @@ class JenaQuadImpl extends AbstractQuadLike<BlankNodeOrIRI, IRI, RDFTerm, BlankN
         if (!(other instanceof Quad)) {
             return false;
         }
-        Quad quad = (Quad) other;
+        final Quad quad = (Quad) other;
         return getGraphName().equals(quad.getGraphName()) && getSubject().equals(quad.getSubject())
                 && getPredicate().equals(quad.getPredicate()) && getObject().equals(quad.getObject());
     }

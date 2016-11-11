@@ -41,7 +41,7 @@ final class JsonLdTripleImpl extends JsonLdQuadLikeImpl<BlankNodeOrIRI, IRI, RDF
         if (!(obj instanceof Triple)) {
             return false;
         }
-        Triple other = (Triple) obj;
+        final Triple other = (Triple) obj;
         return getSubject().equals(other.getSubject()) && getPredicate().equals(other.getPredicate())
                 && getObject().equals(other.getObject());
     }

@@ -240,7 +240,7 @@ public final class Types implements IRI, SimpleRDF.SimpleRDFTerm {
     private static final Set<IRI> ALL_TYPES;
 
     static {
-        Set<IRI> tempTypes = new LinkedHashSet<>();
+        final Set<IRI> tempTypes = new LinkedHashSet<>();
         tempTypes.add(RDF_HTML);
         tempTypes.add(RDF_LANGSTRING);
         tempTypes.add(RDF_PLAINLITERAL);
@@ -339,7 +339,7 @@ public final class Types implements IRI, SimpleRDF.SimpleRDFTerm {
         if (ALL_TYPES.contains(nextIRI)) {
             // If we know about this IRI, then look through our set to find the
             // object that matches and return it
-            for (IRI nextType : ALL_TYPES) {
+            for (final IRI nextType : ALL_TYPES) {
                 if (nextType.equals(nextIRI)) {
                     return Optional.of(nextType);
                 }

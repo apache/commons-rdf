@@ -285,7 +285,7 @@ public final class RDF4J implements RDF {
      * @return A {@link Dataset} backed by the RDF4J repository.
      */
     public RDF4JDataset asDataset(final Repository repository, final Option... options) {
-        EnumSet<Option> opts = optionSet(options);
+        final EnumSet<Option> opts = optionSet(options);
         return rdf4j.createRepositoryDatasetImpl(repository, opts.contains(Option.handleInitAndShutdown),
                 opts.contains(Option.includeInferred));
     }
@@ -323,7 +323,7 @@ public final class RDF4J implements RDF {
      * @return A {@link Graph} backed by the RDF4J repository.
      */
     public RDF4JGraph asGraph(final Repository repository, final Option... options) {
-        EnumSet<Option> opts = optionSet(options);
+        final EnumSet<Option> opts = optionSet(options);
         return rdf4j.createRepositoryGraphImpl(repository, opts.contains(Option.handleInitAndShutdown),
                 opts.contains(Option.includeInferred), new Resource[] { null }); // default
                                                                                  // graph
@@ -343,7 +343,7 @@ public final class RDF4J implements RDF {
      * @return A union {@link Graph} backed by the RDF4J repository.
      */
     public RDF4JGraph asGraphUnion(final Repository repository, final Option... options) {
-        EnumSet<Option> opts = optionSet(options);
+        final EnumSet<Option> opts = optionSet(options);
         return rdf4j.createRepositoryGraphImpl(repository, opts.contains(Option.handleInitAndShutdown),
                 opts.contains(Option.includeInferred), new Resource[] {}); // union
                                                                            // graph
@@ -376,9 +376,9 @@ public final class RDF4J implements RDF {
      * @return A {@link Graph} backed by the RDF4J repository.
      */
     public RDF4JGraph asGraph(final Repository repository, final Set<? extends BlankNodeOrIRI> contexts, final Option... option) {
-        EnumSet<Option> opts = optionSet(option);
+        final EnumSet<Option> opts = optionSet(option);
         /** NOTE: asValue() deliberately CAN handle <code>null</code> */
-        Resource[] resources = contexts.stream().map(g -> (Resource) asValue(g)).toArray(Resource[]::new);
+        final Resource[] resources = contexts.stream().map(g -> (Resource) asValue(g)).toArray(Resource[]::new);
         return rdf4j.createRepositoryGraphImpl(Objects.requireNonNull(repository),
                 opts.contains(Option.handleInitAndShutdown), opts.contains(Option.includeInferred), resources);
     }
@@ -405,13 +405,13 @@ public final class RDF4J implements RDF {
             return ((RDF4JTripleLike) tripleLike).asStatement();
         }
 
-        org.eclipse.rdf4j.model.Resource subject = (org.eclipse.rdf4j.model.Resource) asValue(tripleLike.getSubject());
-        org.eclipse.rdf4j.model.IRI predicate = (org.eclipse.rdf4j.model.IRI) asValue(tripleLike.getPredicate());
-        Value object = asValue(tripleLike.getObject());
+        final org.eclipse.rdf4j.model.Resource subject = (org.eclipse.rdf4j.model.Resource) asValue(tripleLike.getSubject());
+        final org.eclipse.rdf4j.model.IRI predicate = (org.eclipse.rdf4j.model.IRI) asValue(tripleLike.getPredicate());
+        final Value object = asValue(tripleLike.getObject());
 
         org.eclipse.rdf4j.model.Resource context = null;
         if (tripleLike instanceof Quad) {
-            Quad quad = (Quad) tripleLike;
+            final Quad quad = (Quad) tripleLike;
             context = (org.eclipse.rdf4j.model.Resource) asValue(quad.getGraphName().orElse(null));
         }
 
@@ -472,22 +472,22 @@ public final class RDF4J implements RDF {
             return ((RDF4JTerm) term).asValue();
         }
         if (term instanceof org.apache.commons.rdf.api.IRI) {
-            org.apache.commons.rdf.api.IRI iri = (org.apache.commons.rdf.api.IRI) term;
+            final org.apache.commons.rdf.api.IRI iri = (org.apache.commons.rdf.api.IRI) term;
             return getValueFactory().createIRI(iri.getIRIString());
         }
         if (term instanceof org.apache.commons.rdf.api.Literal) {
-            org.apache.commons.rdf.api.Literal literal = (org.apache.commons.rdf.api.Literal) term;
-            String label = literal.getLexicalForm();
+            final org.apache.commons.rdf.api.Literal literal = (org.apache.commons.rdf.api.Literal) term;
+            final String label = literal.getLexicalForm();
             if (literal.getLanguageTag().isPresent()) {
-                String lang = literal.getLanguageTag().get();
+                final String lang = literal.getLanguageTag().get();
                 return getValueFactory().createLiteral(label, lang);
             }
-            org.eclipse.rdf4j.model.IRI dataType = (org.eclipse.rdf4j.model.IRI) asValue(literal.getDatatype());
+            final org.eclipse.rdf4j.model.IRI dataType = (org.eclipse.rdf4j.model.IRI) asValue(literal.getDatatype());
             return getValueFactory().createLiteral(label, dataType);
         }
         if (term instanceof BlankNode) {
             // This is where it gets tricky to support round trips!
-            BlankNode blankNode = (BlankNode) term;
+            final BlankNode blankNode = (BlankNode) term;
             // FIXME: The uniqueReference might not be a valid BlankNode
             // identifier..
             // does it have to be in RDF4J?
@@ -498,13 +498,13 @@ public final class RDF4J implements RDF {
 
     @Override
     public RDF4JBlankNode createBlankNode() {
-        BNode bnode = getValueFactory().createBNode();
+        final BNode bnode = getValueFactory().createBNode();
         return (RDF4JBlankNode) asRDFTerm(bnode);
     }
 
     @Override
     public RDF4JBlankNode createBlankNode(final String name) {
-        BNode bnode = getValueFactory().createBNode(name);
+        final BNode bnode = getValueFactory().createBNode(name);
         return (RDF4JBlankNode) asRDFTerm(bnode);
     }
 
@@ -519,8 +519,8 @@ public final class RDF4J implements RDF {
      */
     @Override
     public RDF4JDataset createDataset() {
-        Sail sail = new MemoryStore();
-        Repository repository = new SailRepository(sail);
+        final Sail sail = new MemoryStore();
+        final Repository repository = new SailRepository(sail);
         return rdf4j.createRepositoryDatasetImpl(repository, true, false);
     }
 
@@ -536,22 +536,22 @@ public final class RDF4J implements RDF {
 
     @Override
     public RDF4JLiteral createLiteral(final String lexicalForm) throws IllegalArgumentException {
-        org.eclipse.rdf4j.model.Literal lit = getValueFactory().createLiteral(lexicalForm);
+        final org.eclipse.rdf4j.model.Literal lit = getValueFactory().createLiteral(lexicalForm);
         return (RDF4JLiteral) asRDFTerm(lit);
     }
 
     @Override
     public org.apache.commons.rdf.api.Literal createLiteral(final String lexicalForm, final org.apache.commons.rdf.api.IRI dataType)
             throws IllegalArgumentException {
-        org.eclipse.rdf4j.model.IRI iri = getValueFactory().createIRI(dataType.getIRIString());
-        org.eclipse.rdf4j.model.Literal lit = getValueFactory().createLiteral(lexicalForm, iri);
+        final org.eclipse.rdf4j.model.IRI iri = getValueFactory().createIRI(dataType.getIRIString());
+        final org.eclipse.rdf4j.model.Literal lit = getValueFactory().createLiteral(lexicalForm, iri);
         return (org.apache.commons.rdf.api.Literal) asRDFTerm(lit);
     }
 
     @Override
     public org.apache.commons.rdf.api.Literal createLiteral(final String lexicalForm, final String languageTag)
             throws IllegalArgumentException {
-        org.eclipse.rdf4j.model.Literal lit = getValueFactory().createLiteral(lexicalForm, languageTag);
+        final org.eclipse.rdf4j.model.Literal lit = getValueFactory().createLiteral(lexicalForm, languageTag);
         return (org.apache.commons.rdf.api.Literal) asRDFTerm(lit);
     }
 
@@ -578,7 +578,7 @@ public final class RDF4J implements RDF {
     }
 
     private EnumSet<Option> optionSet(final Option... options) {
-        EnumSet<Option> opts = EnumSet.noneOf(Option.class);
+        final EnumSet<Option> opts = EnumSet.noneOf(Option.class);
         opts.addAll(Arrays.asList(options));
         return opts;
     }

@@ -31,11 +31,11 @@ final class IRIImpl extends AbstractRDFTerm<org.eclipse.rdf4j.model.IRI> impleme
             return true;
         }
         if (obj instanceof IRIImpl) {
-            IRIImpl impl = (IRIImpl) obj;
+            final IRIImpl impl = (IRIImpl) obj;
             return asValue().equals(impl.asValue());
         }
         if (obj instanceof org.apache.commons.rdf.api.IRI) {
-            org.apache.commons.rdf.api.IRI iri = (org.apache.commons.rdf.api.IRI) obj;
+            final org.apache.commons.rdf.api.IRI iri = (org.apache.commons.rdf.api.IRI) obj;
             return value.toString().equals(iri.getIRIString());
         }
         return false;

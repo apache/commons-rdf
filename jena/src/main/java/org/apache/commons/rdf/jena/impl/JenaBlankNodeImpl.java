@@ -47,7 +47,7 @@ class JenaBlankNodeImpl extends AbstractJenaRDFTerm implements JenaBlankNode {
         if (!(other instanceof BlankNode)) {
             return false;
         }
-        BlankNode bNode = (BlankNode) other;
+        final BlankNode bNode = (BlankNode) other;
         return uniqueReference().equals(bNode.uniqueReference());
     }
 

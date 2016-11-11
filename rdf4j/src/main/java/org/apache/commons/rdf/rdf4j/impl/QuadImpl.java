@@ -52,7 +52,7 @@ final class QuadImpl implements Quad, RDF4JQuad {
     @Override
     public boolean equals(final Object obj) {
         if (obj instanceof Quad) {
-            Quad quad = (Quad) obj;
+            final Quad quad = (Quad) obj;
             return getGraphName().equals(quad.getGraphName()) &&
                     getSubject().equals(quad.getSubject()) && 
                     getPredicate().equals(quad.getPredicate()) &&
@@ -66,7 +66,7 @@ final class QuadImpl implements Quad, RDF4JQuad {
         if (statement.getContext() == null) {
             return Optional.empty();
         }
-        BlankNodeOrIRI g = (BlankNodeOrIRI) RDF4J.asRDFTerm(statement.getContext(), salt);
+        final BlankNodeOrIRI g = (BlankNodeOrIRI) RDF4J.asRDFTerm(statement.getContext(), salt);
         return Optional.of(g);
     }
 

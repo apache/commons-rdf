@@ -53,7 +53,7 @@ class JenaTripleImpl extends AbstractQuadLike<BlankNodeOrIRI, IRI, RDFTerm, RDFT
         if (!(other instanceof Triple)) {
             return false;
         }
-        Triple triple = (Triple) other;
+        final Triple triple = (Triple) other;
         return getSubject().equals(triple.getSubject()) && getPredicate().equals(triple.getPredicate())
                 && getObject().equals(triple.getObject());
     }

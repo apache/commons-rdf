@@ -128,7 +128,7 @@ public class DatasetGraphView implements Graph {
 
     @Override
     public Stream<? extends Triple> stream(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
-        Stream<Triple> stream = dataset.stream(unionOrNamedGraph(), subject, predicate, object).map(Quad::asTriple);
+        final Stream<Triple> stream = dataset.stream(unionOrNamedGraph(), subject, predicate, object).map(Quad::asTriple);
         if (unionGraph) {
             // remove duplicates
             return stream.distinct();

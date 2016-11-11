@@ -219,7 +219,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     public T clone() {
         try {
             return (T) super.clone();
-        } catch (CloneNotSupportedException e) {
+        } catch (final CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }
     }
@@ -231,14 +231,14 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
 
     @Override
     public T rdfTermFactory(final RDF rdfTermFactory) {
-        AbstractRDFParser<T> c = clone();
+        final AbstractRDFParser<T> c = clone();
         c.rdfTermFactory = Optional.ofNullable(rdfTermFactory);
         return c.asT();
     }
 
     @Override
     public T contentType(final RDFSyntax rdfSyntax) throws IllegalArgumentException {
-        AbstractRDFParser<T> c = clone();
+        final AbstractRDFParser<T> c = clone();
         c.contentTypeSyntax = Optional.ofNullable(rdfSyntax);
         c.contentType = c.contentTypeSyntax.map(syntax -> syntax.mediaType);
         return c.asT();
@@ -246,7 +246,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
 
     @Override
     public T contentType(final String contentType) throws IllegalArgumentException {
-        AbstractRDFParser<T> c = clone();
+        final AbstractRDFParser<T> c = clone();
         c.contentType = Optional.ofNullable(contentType);
         c.contentTypeSyntax = c.contentType.flatMap(RDFSyntax::byMediaType);
         return c.asT();
@@ -254,7 +254,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
 
     @Override
     public T base(final IRI base) {
-        AbstractRDFParser<T> c = clone();
+        final AbstractRDFParser<T> c = clone();
         c.base = Optional.ofNullable(base);
         c.base.ifPresent(i -> checkIsAbsolute(i));
         return c.asT();
@@ -267,7 +267,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
 
     @Override
     public T source(final InputStream inputStream) {
-        AbstractRDFParser<T> c = clone();
+        final AbstractRDFParser<T> c = clone();
         c.resetSource();
         c.sourceInputStream = Optional.ofNullable(inputStream);
         return c.asT();
@@ -275,7 +275,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
 
     @Override
     public T source(final Path file) {
-        AbstractRDFParser<T> c = clone();
+        final AbstractRDFParser<T> c = clone();
         c.resetSource();
         c.sourceFile = Optional.ofNullable(file);
         return c.asT();
@@ -283,7 +283,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
 
     @Override
     public T source(final IRI iri) {
-        AbstractRDFParser<T> c = clone();
+        final AbstractRDFParser<T> c = clone();
         c.resetSource();
         c.sourceIri = Optional.ofNullable(iri);
         c.sourceIri.ifPresent(i -> checkIsAbsolute(i));
@@ -292,7 +292,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
 
     @Override
     public T source(final String iri) throws IllegalArgumentException {
-        AbstractRDFParser<T> c = clone();
+        final AbstractRDFParser<T> c = clone();
         c.resetSource();
         c.sourceIri = Optional.ofNullable(iri).map(internalRdfTermFactory::createIRI);
         c.sourceIri.ifPresent(i -> checkIsAbsolute(i));
@@ -428,7 +428,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
 
         // We'll make a clone of our current state which will be passed to
         // parseSynchronously()
-        AbstractRDFParser<T> c = clone();
+        final AbstractRDFParser<T> c = clone();
 
         // Use a fresh SimpleRDF for each parse
         if (!c.rdfTermFactory.isPresent()) {
@@ -437,7 +437,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
         // sourceFile, but no base? Let's follow any symlinks and use
         // the file:/// URI
         if (c.sourceFile.isPresent() && !c.base.isPresent()) {
-            URI baseUri = c.sourceFile.get().toRealPath().toUri();
+            final URI baseUri = c.sourceFile.get().toRealPath().toUri();
             c.base = Optional.of(internalRdfTermFactory.createIRI(baseUri.toString()));
         }
 
@@ -502,12 +502,12 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      *         {@link Optional#empty()} if the path has no extension
      */
     private static Optional<String> fileExtension(final Path path) {
-        Path fileName = path.getFileName();
+        final Path fileName = path.getFileName();
         if (fileName == null) {
             return Optional.empty();
         }
-        String filenameStr = fileName.toString();
-        int last = filenameStr.lastIndexOf(".");
+        final String filenameStr = fileName.toString();
+        final int last = filenameStr.lastIndexOf(".");
         if (last > -1) {
             return Optional.of(filenameStr.substring(last));
         }
@@ -541,7 +541,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
 
     @Override
     public T target(final Consumer<Quad> consumer) {
-        AbstractRDFParser<T> c = clone();
+        final AbstractRDFParser<T> c = clone();
         c.resetTarget();
         c.target = consumer;
         return c.asT();
@@ -550,6 +550,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     @Override
     public T target(final Dataset dataset) {
         @SuppressWarnings({ "rawtypes", "unchecked" })
+        final
         AbstractRDFParser<T> c = (AbstractRDFParser) RDFParser.super.target(dataset);
         c.resetTarget();
         c.targetDataset = Optional.of(dataset);
@@ -559,6 +560,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     @Override
     public T target(final Graph graph) {
         @SuppressWarnings({ "rawtypes", "unchecked" }) // super calls our
+        final
                                                        // .clone()
         AbstractRDFParser<T> c = (AbstractRDFParser) RDFParser.super.target(graph);
         c.resetTarget();

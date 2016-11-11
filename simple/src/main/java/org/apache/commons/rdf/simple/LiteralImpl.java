@@ -60,7 +60,7 @@ final class LiteralImpl implements Literal, SimpleRDF.SimpleRDFTerm {
         }
         try {
             new Locale.Builder().setLanguageTag(languageTag);
-        } catch (IllformedLocaleException ex) {
+        } catch (final IllformedLocaleException ex) {
             throw new IllegalArgumentException("Invalid languageTag: " + languageTag, ex);
         }
 
@@ -85,7 +85,7 @@ final class LiteralImpl implements Literal, SimpleRDF.SimpleRDFTerm {
 
     @Override
     public String ntriplesString() {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         sb.append(QUOTE);
         // Escape special characters
         sb.append(getLexicalForm().replace("\\", "\\\\"). // escaped to \\
@@ -124,7 +124,7 @@ final class LiteralImpl implements Literal, SimpleRDF.SimpleRDFTerm {
         if (obj == null || !(obj instanceof Literal)) {
             return false;
         }
-        Literal literal = (Literal) obj;
+        final Literal literal = (Literal) obj;
         return getDatatype().equals(literal.getDatatype()) && getLexicalForm().equals(literal.getLexicalForm())
                 && getLanguageTag().equals(literal.getLanguageTag());
     }

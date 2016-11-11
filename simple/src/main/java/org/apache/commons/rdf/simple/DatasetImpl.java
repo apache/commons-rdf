@@ -54,20 +54,20 @@ final class DatasetImpl implements Dataset {
 
     @Override
     public void add(final BlankNodeOrIRI graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
-        BlankNodeOrIRI newGraphName = (BlankNodeOrIRI) internallyMap(graphName);
-        BlankNodeOrIRI newSubject = (BlankNodeOrIRI) internallyMap(subject);
-        IRI newPredicate = (IRI) internallyMap(predicate);
-        RDFTerm newObject = internallyMap(object);
-        Quad result = factory.createQuad(newGraphName, newSubject, newPredicate, newObject);
+        final BlankNodeOrIRI newGraphName = (BlankNodeOrIRI) internallyMap(graphName);
+        final BlankNodeOrIRI newSubject = (BlankNodeOrIRI) internallyMap(subject);
+        final IRI newPredicate = (IRI) internallyMap(predicate);
+        final RDFTerm newObject = internallyMap(object);
+        final Quad result = factory.createQuad(newGraphName, newSubject, newPredicate, newObject);
         quads.add(result);
     }
 
     @Override
     public void add(final Quad quad) {
-        BlankNodeOrIRI newGraph = (BlankNodeOrIRI) internallyMap(quad.getGraphName().orElse(null));
-        BlankNodeOrIRI newSubject = (BlankNodeOrIRI) internallyMap(quad.getSubject());
-        IRI newPredicate = (IRI) internallyMap(quad.getPredicate());
-        RDFTerm newObject = internallyMap(quad.getObject());
+        final BlankNodeOrIRI newGraph = (BlankNodeOrIRI) internallyMap(quad.getGraphName().orElse(null));
+        final BlankNodeOrIRI newSubject = (BlankNodeOrIRI) internallyMap(quad.getSubject());
+        final IRI newPredicate = (IRI) internallyMap(quad.getPredicate());
+        final RDFTerm newObject = internallyMap(quad.getObject());
         // Check if any of the object references changed during the mapping, to
         // avoid creating a new Quad object if possible
         if (newGraph == quad.getGraphName().orElse(null) && newSubject == quad.getSubject()
@@ -75,7 +75,7 @@ final class DatasetImpl implements Dataset {
             quads.add(quad);
         } else {
             // Make a new Quad with our mapped instances
-            Quad result = factory.createQuad(newGraph, newSubject, newPredicate, newObject);
+            final Quad result = factory.createQuad(newGraph, newSubject, newPredicate, newObject);
             quads.add(result);
         }
     }
@@ -85,17 +85,17 @@ final class DatasetImpl implements Dataset {
             return object;
         }
         if (object instanceof BlankNode && !(object instanceof BlankNodeImpl)) {
-            BlankNode blankNode = (BlankNode) object;
+            final BlankNode blankNode = (BlankNode) object;
             // This guarantees that adding the same BlankNode multiple times to
             // this graph will generate a local object that is mapped to an
             // equivalent object, based on the code in the package private
             // BlankNodeImpl class
             return factory.createBlankNode(blankNode.uniqueReference());
         } else if (object instanceof IRI && !(object instanceof IRIImpl)) {
-            IRI iri = (IRI) object;
+            final IRI iri = (IRI) object;
             return factory.createIRI(iri.getIRIString());
         } else if (object instanceof Literal && !(object instanceof LiteralImpl)) {
-            Literal literal = (Literal) object;
+            final Literal literal = (Literal) object;
             if (literal.getLanguageTag().isPresent()) {
                 return factory.createLiteral(literal.getLexicalForm(), literal.getLanguageTag().get());
             } else {
@@ -164,8 +164,8 @@ final class DatasetImpl implements Dataset {
 
     @Override
     public void remove(final Optional<BlankNodeOrIRI> graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
-        Stream<Quad> toRemove = stream(graphName, subject, predicate, object);
-        for (Quad t : toRemove.collect(Collectors.toList())) {
+        final Stream<Quad> toRemove = stream(graphName, subject, predicate, object);
+        for (final Quad t : toRemove.collect(Collectors.toList())) {
             // Avoid ConcurrentModificationException in ArrayList
             remove(t);
         }
@@ -183,7 +183,7 @@ final class DatasetImpl implements Dataset {
 
     @Override
     public String toString() {
-        String s = stream().limit(TO_STRING_MAX).map(Object::toString).collect(Collectors.joining("\n"));
+        final String s = stream().limit(TO_STRING_MAX).map(Object::toString).collect(Collectors.joining("\n"));
         if (size() > TO_STRING_MAX) {
             return s + "\n# ... +" + (size() - TO_STRING_MAX) + " more";
         } else {

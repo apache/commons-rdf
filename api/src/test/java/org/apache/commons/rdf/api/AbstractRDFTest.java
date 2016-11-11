@@ -56,9 +56,9 @@ public abstract class AbstractRDFTest {
 
     @Test
     public void testCreateBlankNode() throws Exception {
-        BlankNode bnode = factory.createBlankNode();
+        final BlankNode bnode = factory.createBlankNode();
 
-        BlankNode bnode2 = factory.createBlankNode();
+        final BlankNode bnode2 = factory.createBlankNode();
         assertNotEquals("Second blank node has not got a unique internal identifier", bnode.uniqueReference(),
                 bnode2.uniqueReference());
     }
@@ -67,7 +67,7 @@ public abstract class AbstractRDFTest {
     public void testCreateBlankNodeIdentifierEmpty() throws Exception {
         try {
             factory.createBlankNode("");
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             // Expected exception
         }
     }
@@ -116,12 +116,12 @@ public abstract class AbstractRDFTest {
 
     @Test
     public void testCreateGraph() {
-        Graph graph = factory.createGraph();
+        final Graph graph = factory.createGraph();
 
         assertEquals("Graph was not empty", 0, graph.size());
         graph.add(factory.createBlankNode(), factory.createIRI("http://example.com/"), factory.createBlankNode());
 
-        Graph graph2 = factory.createGraph();
+        final Graph graph2 = factory.createGraph();
         assertNotSame(graph, graph2);
         assertEquals("Graph was empty after adding", 1, graph.size());
         assertEquals("New graph was not empty", 0, graph2.size());
@@ -129,33 +129,33 @@ public abstract class AbstractRDFTest {
 
     @Test
     public void testCreateIRI() throws Exception {
-        IRI example = factory.createIRI("http://example.com/");
+        final IRI example = factory.createIRI("http://example.com/");
 
         assertEquals("http://example.com/", example.getIRIString());
         assertEquals("<http://example.com/>", example.ntriplesString());
 
-        IRI term = factory.createIRI("http://example.com/vocab#term");
+        final IRI term = factory.createIRI("http://example.com/vocab#term");
         assertEquals("http://example.com/vocab#term", term.getIRIString());
         assertEquals("<http://example.com/vocab#term>", term.ntriplesString());
 
         // and now for the international fun!
 
-        IRI latin1 = factory.createIRI("http://accént.example.com/première");
+        final IRI latin1 = factory.createIRI("http://accént.example.com/première");
         assertEquals("http://accént.example.com/première", latin1.getIRIString());
         assertEquals("<http://accént.example.com/première>", latin1.ntriplesString());
 
-        IRI cyrillic = factory.createIRI("http://example.испытание/Кириллица");
+        final IRI cyrillic = factory.createIRI("http://example.испытание/Кириллица");
         assertEquals("http://example.испытание/Кириллица", cyrillic.getIRIString());
         assertEquals("<http://example.испытание/Кириллица>", cyrillic.ntriplesString());
 
-        IRI deseret = factory.createIRI("http://𐐀.example.com/𐐀");
+        final IRI deseret = factory.createIRI("http://𐐀.example.com/𐐀");
         assertEquals("http://𐐀.example.com/𐐀", deseret.getIRIString());
         assertEquals("<http://𐐀.example.com/𐐀>", deseret.ntriplesString());
     }
 
     @Test
     public void testCreateLiteral() throws Exception {
-        Literal example = factory.createLiteral("Example");
+        final Literal example = factory.createLiteral("Example");
         assertEquals("Example", example.getLexicalForm());
         assertFalse(example.getLanguageTag().isPresent());
         assertEquals("http://www.w3.org/2001/XMLSchema#string", example.getDatatype().getIRIString());
@@ -165,7 +165,7 @@ public abstract class AbstractRDFTest {
 
     @Test
     public void testCreateLiteralDateTime() throws Exception {
-        Literal dateTime = factory.createLiteral("2014-12-27T00:50:00T-0600",
+        final Literal dateTime = factory.createLiteral("2014-12-27T00:50:00T-0600",
                 factory.createIRI("http://www.w3.org/2001/XMLSchema#dateTime"));
         assertEquals("2014-12-27T00:50:00T-0600", dateTime.getLexicalForm());
         assertFalse(dateTime.getLanguageTag().isPresent());
@@ -176,7 +176,7 @@ public abstract class AbstractRDFTest {
 
     @Test
     public void testCreateLiteralLang() throws Exception {
-        Literal example = factory.createLiteral("Example", "en");
+        final Literal example = factory.createLiteral("Example", "en");
 
         assertEquals("Example", example.getLexicalForm());
         assertEquals("en", example.getLanguageTag().get());
@@ -187,7 +187,7 @@ public abstract class AbstractRDFTest {
     @Test
     public void testCreateLiteralLangISO693_3() throws Exception {
         // see https://issues.apache.org/jira/browse/JENA-827
-        Literal vls = factory.createLiteral("Herbert Van de Sompel", "vls"); // JENA-827
+        final Literal vls = factory.createLiteral("Herbert Van de Sompel", "vls"); // JENA-827
 
         assertEquals("vls", vls.getLanguageTag().get());
         assertEquals("http://www.w3.org/1999/02/22-rdf-syntax-ns#langString", vls.getDatatype().getIRIString());
@@ -196,7 +196,7 @@ public abstract class AbstractRDFTest {
 
     @Test
     public void testCreateLiteralString() throws Exception {
-        Literal example = factory.createLiteral("Example",
+        final Literal example = factory.createLiteral("Example",
                 factory.createIRI("http://www.w3.org/2001/XMLSchema#string"));
         assertEquals("Example", example.getLexicalForm());
         assertFalse(example.getLanguageTag().isPresent());
@@ -207,10 +207,10 @@ public abstract class AbstractRDFTest {
 
     @Test
     public void testCreateTripleBnodeBnode() {
-        BlankNode subject = factory.createBlankNode("b1");
-        IRI predicate = factory.createIRI("http://example.com/pred");
-        BlankNode object = factory.createBlankNode("b2");
-        Triple triple = factory.createTriple(subject, predicate, object);
+        final BlankNode subject = factory.createBlankNode("b1");
+        final IRI predicate = factory.createIRI("http://example.com/pred");
+        final BlankNode object = factory.createBlankNode("b2");
+        final Triple triple = factory.createTriple(subject, predicate, object);
 
         // bnode equivalence should be OK as we used the same
         // factory and have not yet inserted Triple into a Graph
@@ -221,10 +221,10 @@ public abstract class AbstractRDFTest {
 
     @Test
     public void testCreateTripleBnodeIRI() {
-        BlankNode subject = factory.createBlankNode("b1");
-        IRI predicate = factory.createIRI("http://example.com/pred");
-        IRI object = factory.createIRI("http://example.com/obj");
-        Triple triple = factory.createTriple(subject, predicate, object);
+        final BlankNode subject = factory.createBlankNode("b1");
+        final IRI predicate = factory.createIRI("http://example.com/pred");
+        final IRI object = factory.createIRI("http://example.com/obj");
+        final Triple triple = factory.createTriple(subject, predicate, object);
 
         // bnode equivalence should be OK as we used the same
         // factory and have not yet inserted Triple into a Graph
@@ -235,10 +235,10 @@ public abstract class AbstractRDFTest {
 
     @Test
     public void testCreateTripleBnodeTriple() {
-        BlankNode subject = factory.createBlankNode();
-        IRI predicate = factory.createIRI("http://example.com/pred");
-        Literal object = factory.createLiteral("Example", "en");
-        Triple triple = factory.createTriple(subject, predicate, object);
+        final BlankNode subject = factory.createBlankNode();
+        final IRI predicate = factory.createIRI("http://example.com/pred");
+        final Literal object = factory.createLiteral("Example", "en");
+        final Triple triple = factory.createTriple(subject, predicate, object);
 
         // bnode equivalence should be OK as we used the same
         // factory and have not yet inserted Triple into a Graph
@@ -252,7 +252,7 @@ public abstract class AbstractRDFTest {
         BlankNode withColon;
         try {
             withColon = factory.createBlankNode("with:colon");
-        } catch (IllegalArgumentException ex) {
+        } catch (final IllegalArgumentException ex) {
             // Good!
             return;
         }
@@ -276,35 +276,35 @@ public abstract class AbstractRDFTest {
 
     @Test(expected = Exception.class)
     public void testInvalidTriplePredicate() {
-        BlankNode subject = factory.createBlankNode("b1");
-        BlankNode predicate = factory.createBlankNode("b2");
-        BlankNode object = factory.createBlankNode("b3");
+        final BlankNode subject = factory.createBlankNode("b1");
+        final BlankNode predicate = factory.createBlankNode("b2");
+        final BlankNode object = factory.createBlankNode("b3");
         factory.createTriple(subject, (IRI) predicate, object);
     }
 
     @Test
     public void hashCodeBlankNode() throws Exception {
-        BlankNode bnode1 = factory.createBlankNode();
+        final BlankNode bnode1 = factory.createBlankNode();
         assertEquals(bnode1.uniqueReference().hashCode(), bnode1.hashCode());
     }
 
     @Test
     public void hashCodeIRI() throws Exception {
-        IRI iri = factory.createIRI("http://example.com/");
+        final IRI iri = factory.createIRI("http://example.com/");
         assertEquals(iri.getIRIString().hashCode(), iri.hashCode());
     }
 
     @Test
     public void hashCodeLiteral() throws Exception {
-        Literal literal = factory.createLiteral("Hello");
+        final Literal literal = factory.createLiteral("Hello");
         assertEquals(Objects.hash(literal.getLexicalForm(), literal.getDatatype(), literal.getLanguageTag()),
                 literal.hashCode());
     }
 
     @Test
     public void hashCodeTriple() throws Exception {
-        IRI iri = factory.createIRI("http://example.com/");
-        Triple triple = factory.createTriple(iri, iri, iri);
+        final IRI iri = factory.createIRI("http://example.com/");
+        final Triple triple = factory.createTriple(iri, iri, iri);
         assertEquals(Objects.hash(iri, iri, iri), triple.hashCode());
     }
 }

@@ -84,8 +84,8 @@ public class MemoryGraphTest extends AbstractGraphTest {
 
         @Override
         public RDF4JGraph createGraph() {
-            Sail sail = new MemoryStore();
-            Repository repository = new SailRepository(sail);
+            final Sail sail = new MemoryStore();
+            final Repository repository = new SailRepository(sail);
             repository.initialize();
             return rdf4jFactory.asGraph(repository);
         }

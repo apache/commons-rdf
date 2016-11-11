@@ -56,10 +56,10 @@ public class AllToAllTest {
     @SuppressWarnings("rawtypes")
     @Parameters(name = "{index}: {0}->{1}")
     public static Collection<Object[]> data() {
-        List<Class> factories = Arrays.asList(SimpleRDF.class, JenaRDF.class, RDF4J.class, JsonLdRDF.class);
-        Collection<Object[]> allToAll = new ArrayList<>();
-        for (Class from : factories) {
-            for (Class to : factories) {
+        final List<Class> factories = Arrays.asList(SimpleRDF.class, JenaRDF.class, RDF4J.class, JsonLdRDF.class);
+        final Collection<Object[]> allToAll = new ArrayList<>();
+        for (final Class from : factories) {
+            for (final Class to : factories) {
                 // NOTE: we deliberately include self-to-self here
                 // to test two instances of the same implementation
                 allToAll.add(new Object[] { from, to });
@@ -78,16 +78,16 @@ public class AllToAllTest {
      */
     @Test
     public void addTermsFromOtherFactory() throws Exception {
-        Graph g = graphFactory.createGraph();
-        BlankNode s = nodeFactory.createBlankNode();
-        IRI p = nodeFactory.createIRI("http://example.com/p");
-        Literal o = nodeFactory.createLiteral("Hello");
+        final Graph g = graphFactory.createGraph();
+        final BlankNode s = nodeFactory.createBlankNode();
+        final IRI p = nodeFactory.createIRI("http://example.com/p");
+        final Literal o = nodeFactory.createLiteral("Hello");
 
         g.add(s, p, o);
 
         // blankNode should still work with g.contains()
         assertTrue(g.contains(s, p, o));
-        Triple t1 = g.stream().findAny().get();
+        final Triple t1 = g.stream().findAny().get();
 
         // Can't make assumptions about BlankNode equality - it might
         // have been mapped to a different BlankNode.uniqueReference()
@@ -96,7 +96,7 @@ public class AllToAllTest {
         assertEquals(p, t1.getPredicate());
         assertEquals(o, t1.getObject());
 
-        IRI s2 = nodeFactory.createIRI("http://example.com/s2");
+        final IRI s2 = nodeFactory.createIRI("http://example.com/s2");
         g.add(s2, p, s);
         assertTrue(g.contains(s2, p, s));
 
@@ -104,14 +104,14 @@ public class AllToAllTest {
         // (even if it has a different identifier), e.g.
         // we should be able to do:
 
-        Triple t2 = g.stream(s2, p, null).findAny().get();
+        final Triple t2 = g.stream(s2, p, null).findAny().get();
 
-        BlankNode bnode = (BlankNode) t2.getObject();
+        final BlankNode bnode = (BlankNode) t2.getObject();
         // And that (possibly adapted) BlankNode object should
         // match the subject of t1 statement
         assertEquals(bnode, t1.getSubject());
         // And can be used as a key:
-        Triple t3 = g.stream(bnode, p, null).findAny().get();
+        final Triple t3 = g.stream(bnode, p, null).findAny().get();
         assertEquals(t1, t3);
     }
 
@@ -125,12 +125,12 @@ public class AllToAllTest {
      */
     @Test
     public void addTriplesFromOtherFactory() throws Exception {
-        Graph g = graphFactory.createGraph();
-        BlankNode s = nodeFactory.createBlankNode();
-        IRI p = nodeFactory.createIRI("http://example.com/p");
-        Literal o = nodeFactory.createLiteral("Hello");
+        final Graph g = graphFactory.createGraph();
+        final BlankNode s = nodeFactory.createBlankNode();
+        final IRI p = nodeFactory.createIRI("http://example.com/p");
+        final Literal o = nodeFactory.createLiteral("Hello");
 
-        Triple srcT1 = nodeFactory.createTriple(s, p, o);
+        final Triple srcT1 = nodeFactory.createTriple(s, p, o);
         // This should work even with BlankNode as they are from the same
         // factory
         assertEquals(s, srcT1.getSubject());
@@ -140,7 +140,7 @@ public class AllToAllTest {
 
         // what about the blankNode within?
         assertTrue(g.contains(srcT1));
-        Triple t1 = g.stream().findAny().get();
+        final Triple t1 = g.stream().findAny().get();
 
         // Can't make assumptions about BlankNode equality - it might
         // have been mapped to a different BlankNode.uniqueReference()
@@ -149,8 +149,8 @@ public class AllToAllTest {
         assertEquals(p, t1.getPredicate());
         assertEquals(o, t1.getObject());
 
-        IRI s2 = nodeFactory.createIRI("http://example.com/s2");
-        Triple srcT2 = nodeFactory.createTriple(s2, p, s);
+        final IRI s2 = nodeFactory.createIRI("http://example.com/s2");
+        final Triple srcT2 = nodeFactory.createTriple(s2, p, s);
         g.add(srcT2);
         assertTrue(g.contains(srcT2));
 
@@ -158,14 +158,14 @@ public class AllToAllTest {
         // (even if it has a different identifier), e.g.
         // we should be able to do:
 
-        Triple t2 = g.stream(s2, p, null).findAny().get();
+        final Triple t2 = g.stream(s2, p, null).findAny().get();
 
-        BlankNode bnode = (BlankNode) t2.getObject();
+        final BlankNode bnode = (BlankNode) t2.getObject();
         // And that (possibly adapted) BlankNode object should
         // match the subject of t1 statement
         assertEquals(bnode, t1.getSubject());
         // And can be used as a key:
-        Triple t3 = g.stream(bnode, p, null).findAny().get();
+        final Triple t3 = g.stream(bnode, p, null).findAny().get();
         assertEquals(t1, t3);
     }
 }

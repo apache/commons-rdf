@@ -99,7 +99,7 @@ abstract class AbstractJsonLdGraphLike<T extends TripleLike> implements JsonLdGr
         // add triples to default graph by default
         BlankNodeOrIRI graphName = null;
         if (t instanceof org.apache.commons.rdf.api.Quad) {
-            org.apache.commons.rdf.api.Quad q = (org.apache.commons.rdf.api.Quad) t;
+            final org.apache.commons.rdf.api.Quad q = (org.apache.commons.rdf.api.Quad) t;
             graphName = q.getGraphName().orElse(null);
         }
         // FIXME: JSON-LD's rdfDataSet.addQuad method does not support
@@ -108,16 +108,16 @@ abstract class AbstractJsonLdGraphLike<T extends TripleLike> implements JsonLdGr
     }
 
     void add(final BlankNodeOrIRI graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
-        String g = factory.asJsonLdString(graphName);
-        String s = factory.asJsonLdString(subject);
-        String p = factory.asJsonLdString(predicate);
+        final String g = factory.asJsonLdString(graphName);
+        final String s = factory.asJsonLdString(subject);
+        final String p = factory.asJsonLdString(predicate);
         if (object instanceof BlankNodeOrIRI) {
-            String o = factory.asJsonLdString((BlankNodeOrIRI) object);
+            final String o = factory.asJsonLdString((BlankNodeOrIRI) object);
             rdfDataSet.addQuad(s, p, o, g);
         } else if (object instanceof Literal) {
-            Literal literal = (Literal) object;
-            String language = literal.getLanguageTag().orElse(null);
-            String datatype = literal.getDatatype().getIRIString();
+            final Literal literal = (Literal) object;
+            final String language = literal.getLanguageTag().orElse(null);
+            final String datatype = literal.getDatatype().getIRIString();
             rdfDataSet.addQuad(s, p, literal.getLexicalForm(), datatype, language, g);
         }
     }
@@ -186,16 +186,16 @@ abstract class AbstractJsonLdGraphLike<T extends TripleLike> implements JsonLdGr
 
     String graphNameAsJsonLdString(final T tripleOrQuad) {
         if (tripleOrQuad instanceof org.apache.commons.rdf.api.Quad) {
-            org.apache.commons.rdf.api.Quad quad = (org.apache.commons.rdf.api.Quad) tripleOrQuad;
+            final org.apache.commons.rdf.api.Quad quad = (org.apache.commons.rdf.api.Quad) tripleOrQuad;
             return quad.getGraphName().map(factory::asJsonLdString).orElse("@default");
         }
         return "@default";
     }
 
     Predicate<RDFDataset.Quad> quadFilter(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
-        Optional<Node> subjectNode = Optional.ofNullable(subject).map(factory::asJsonLdNode);
-        Optional<Node> predicateNode = Optional.ofNullable(predicate).map(factory::asJsonLdNode);
-        Optional<Node> objectNode = Optional.ofNullable(object).map(factory::asJsonLdNode);
+        final Optional<Node> subjectNode = Optional.ofNullable(subject).map(factory::asJsonLdNode);
+        final Optional<Node> predicateNode = Optional.ofNullable(predicate).map(factory::asJsonLdNode);
+        final Optional<Node> objectNode = Optional.ofNullable(object).map(factory::asJsonLdNode);
 
         return q -> {
             if (subjectNode.isPresent() && subjectNode.get().compareTo(q.getSubject()) != 0) {

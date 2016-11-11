@@ -49,14 +49,14 @@ public class JenaRDFParser extends AbstractRDFParser<JenaRDFParser> implements R
     }
 
     public JenaRDFParser targetGeneralizedTriple(final Consumer<TripleLike> consumer) {
-        JenaRDFParser c = this.clone();
+        final JenaRDFParser c = this.clone();
         c.resetTarget();
         c.generalizedConsumerTriple = consumer;
         return c;
     }
 
     public JenaRDFParser targetGeneralizedQuad(final Consumer<QuadLike<RDFTerm>> consumer) {
-        JenaRDFParser c = this.clone();
+        final JenaRDFParser c = this.clone();
         c.resetTarget();
         c.generalizedConsumerQuad = consumer;
         return c;
@@ -72,9 +72,9 @@ public class JenaRDFParser extends AbstractRDFParser<JenaRDFParser> implements R
     @Override
     protected void parseSynchronusly() throws IOException {
         StreamRDF dest;
-        JenaRDF jenaRDF = getJenaFactory();
+        final JenaRDF jenaRDF = getJenaFactory();
         if (getTargetGraph().isPresent() && getTargetGraph().get() instanceof JenaGraph) {
-            Graph jenaGraph = ((JenaGraph) getTargetGraph().get()).asJenaGraph();
+            final Graph jenaGraph = ((JenaGraph) getTargetGraph().get()).asJenaGraph();
             dest = StreamRDFLib.graph(jenaGraph);
         } else {
             if (generalizedConsumerQuad != null) {
@@ -86,8 +86,8 @@ public class JenaRDFParser extends AbstractRDFParser<JenaRDFParser> implements R
             }
         }
 
-        Lang lang = getContentTypeSyntax().flatMap(jenaRDF::asJenaLang).orElse(null);
-        String baseStr = getBase().map(IRI::getIRIString).orElse(null);
+        final Lang lang = getContentTypeSyntax().flatMap(jenaRDF::asJenaLang).orElse(null);
+        final String baseStr = getBase().map(IRI::getIRIString).orElse(null);
 
         if (getSourceIri().isPresent()) {
             RDFDataMgr.parse(dest, getSourceIri().get().toString(), baseStr, lang, null);

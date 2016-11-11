@@ -175,7 +175,7 @@ public interface Quad extends QuadLike<BlankNodeOrIRI> {
                 if (!(obj instanceof Triple)) {
                     return false;
                 }
-                Triple other = (Triple) obj;
+                final Triple other = (Triple) obj;
                 return Objects.equals(getSubject(), other.getSubject())
                         && Objects.equals(getPredicate(), other.getPredicate())
                         && Objects.equals(getObject(), other.getObject());

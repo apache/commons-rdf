@@ -58,7 +58,7 @@ final class JsonLdIRIImpl extends JsonLdTermImpl implements JsonLdIRI {
         if (!(obj instanceof IRI)) {
             return false;
         }
-        IRI other = (IRI) obj;
+        final IRI other = (IRI) obj;
         return node.getValue().equals(other.getIRIString());
     }
 }

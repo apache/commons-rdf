@@ -59,7 +59,7 @@ final class IRIImpl implements IRI, SimpleRDF.SimpleRDFTerm {
         if (obj == null || !(obj instanceof IRI)) {
             return false;
         }
-        IRI other = (IRI) obj;
+        final IRI other = (IRI) obj;
         return getIRIString().equals(other.getIRIString());
     }
 

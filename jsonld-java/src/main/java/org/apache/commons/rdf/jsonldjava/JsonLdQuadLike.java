@@ -46,7 +46,7 @@ class JsonLdQuadLikeImpl<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm
     @SuppressWarnings("unchecked")
     @Override
     public Optional<G> getGraphName() {
-        G g = (G) rdfTermFactory.asRDFTerm(quad.getGraph(), blankNodePrefix);
+        final G g = (G) rdfTermFactory.asRDFTerm(quad.getGraph(), blankNodePrefix);
         return Optional.ofNullable(g);
     }
 

@@ -79,7 +79,7 @@ public class SimpleRDF implements RDF {
 
     @Override
     public IRI createIRI(final String iri) {
-        IRI result = new IRIImpl(iri);
+        final IRI result = new IRIImpl(iri);
         // Reuse any IRI objects already created in Types
         return Types.get(result).orElse(result);
     }

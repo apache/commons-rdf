@@ -55,7 +55,7 @@ final class ConvertedStatements<T> implements ClosableIterable<T> {
     private final class ConvertedIterator implements Iterator<T> {
         @Override
         public boolean hasNext() {
-            boolean hasNext = results.hasNext();
+            final boolean hasNext = results.hasNext();
             if (!hasNext) {
                 close();
             }

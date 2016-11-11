@@ -97,7 +97,7 @@ final class ModelGraphImpl implements RDF4JGraph {
 
     @Override
     public long size() {
-        int size = model.size();
+        final int size = model.size();
         if (size < Integer.MAX_VALUE) {
             return size;
         } else {
@@ -134,7 +134,7 @@ final class ModelGraphImpl implements RDF4JGraph {
             @Override
             public Iterator<Triple> iterator() {
                 // double-cast to fight Java generics..
-                Stream<? extends Triple> s = stream(subject, predicate, object);
+                final Stream<? extends Triple> s = stream(subject, predicate, object);
                 return (Iterator<Triple>) s.iterator();
             }
 

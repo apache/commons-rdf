@@ -43,7 +43,7 @@ final class JsonLdQuadImpl extends JsonLdQuadLikeImpl<BlankNodeOrIRI, IRI, RDFTe
         if (!(obj instanceof org.apache.commons.rdf.api.Quad)) {
             return false;
         }
-        org.apache.commons.rdf.api.Quad other = (org.apache.commons.rdf.api.Quad) obj;
+        final org.apache.commons.rdf.api.Quad other = (org.apache.commons.rdf.api.Quad) obj;
         return getGraphName().equals(other.getGraphName()) && getSubject().equals(other.getSubject())
                 && getPredicate().equals(other.getPredicate()) && getObject().equals(other.getObject());
     }

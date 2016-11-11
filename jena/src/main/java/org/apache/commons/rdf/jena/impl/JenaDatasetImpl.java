@@ -122,7 +122,7 @@ class JenaDatasetImpl implements JenaDataset {
 
     @Override
     public long size() {
-        long quads = Iter.asStream(graph.listGraphNodes())
+        final long quads = Iter.asStream(graph.listGraphNodes())
                 .map(graph::getGraph)
                 .collect(Collectors.summingLong(org.apache.jena.graph.Graph::size));
         return quads + graph.getDefaultGraph().size();
@@ -130,45 +130,45 @@ class JenaDatasetImpl implements JenaDataset {
 
     @Override
     public Stream<? extends Quad> stream() {
-        JenaRDF factory = new JenaRDF(salt);
+        final JenaRDF factory = new JenaRDF(salt);
         return Iter.asStream(graph.find(ANY, ANY, ANY, ANY), true).map(factory::asQuad);
     }
 
     @Override
     public Stream<? extends Quad> stream(final Optional<BlankNodeOrIRI> g, final BlankNodeOrIRI s, final IRI p, final RDFTerm o) {
-        JenaRDF factory = new JenaRDF(salt);
+        final JenaRDF factory = new JenaRDF(salt);
         return Iter.asStream(graph.find(toJenaPattern(g), toJenaPattern(s), toJenaPattern(p), toJenaPattern(o)), true)
                 .map(factory::asQuad);
     }
 
     @Override
     public String toString() {
-        StringWriter sw = new StringWriter();
+        final StringWriter sw = new StringWriter();
         RDFDataMgr.write(sw, graph, Lang.NT);
         return sw.toString();
     }
 
     @Override
     public Graph getGraph() {
-        GraphView g = GraphView.createDefaultGraph(graph);
+        final GraphView g = GraphView.createDefaultGraph(graph);
         return new JenaGraphImpl(g, salt);
     }
 
     @Override
     public JenaGraph getUnionGraph() {
-        GraphView gv = GraphView.createUnionGraph(graph);
+        final GraphView gv = GraphView.createUnionGraph(graph);
         return new JenaGraphImpl(gv, salt);
     }
 
     @Override
     public Optional<Graph> getGraph(final BlankNodeOrIRI graphName) {
-        GraphView gv = GraphView.createNamedGraph(graph, factory.asJenaNode(graphName));
+        final GraphView gv = GraphView.createNamedGraph(graph, factory.asJenaNode(graphName));
         return Optional.of(new JenaGraphImpl(gv, salt));
     }
 
     @Override
     public Stream<BlankNodeOrIRI> getGraphNames() {
-        JenaRDF factory = new JenaRDF(salt);
+        final JenaRDF factory = new JenaRDF(salt);
         return Iter.asStream(graph.listGraphNodes()).map(node -> (BlankNodeOrIRI) factory.asRDFTerm(node));
     }
 

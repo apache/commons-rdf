@@ -48,7 +48,7 @@ final class BlankNodeImpl implements BlankNode, SimpleRDFTerm {
         // Both the scope and the id are used to create the UUID, ensuring that
         // a caller can reliably create the same bnode if necessary by sending
         // in the same scope to RDF.createBlankNode(String)
-        String uuidInput = "urn:uuid:" + uuidSalt + "#" + name;
+        final String uuidInput = "urn:uuid:" + uuidSalt + "#" + name;
 
         // The above is not a good value for this.id, as the id
         // needs to be further escaped for
@@ -99,7 +99,7 @@ final class BlankNodeImpl implements BlankNode, SimpleRDFTerm {
         if (!(obj instanceof BlankNodeImpl)) {
             return false;
         }
-        BlankNodeImpl other = (BlankNodeImpl) obj;
+        final BlankNodeImpl other = (BlankNodeImpl) obj;
         if (uniqueReference == null) {
             if (other.uniqueReference != null) {
                 return false;

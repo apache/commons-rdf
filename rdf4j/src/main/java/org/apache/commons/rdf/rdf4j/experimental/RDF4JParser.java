@@ -113,7 +113,7 @@ public class RDF4JParser extends AbstractRDFParser<RDF4JParser> implements RDFPa
 
     @Override
     protected RDF4JParser prepareForParsing() throws IOException, IllegalStateException {
-        RDF4JParser c = super.prepareForParsing();
+        final RDF4JParser c = super.prepareForParsing();
         // Ensure we have an RDF4J for conversion.
         // We'll make a new one if user has provided a non-RDF4J factory
         c.rdf4jTermFactory = (RDF4J) getRdfTermFactory().filter(RDF4J.class::isInstance)
@@ -123,13 +123,13 @@ public class RDF4JParser extends AbstractRDFParser<RDF4JParser> implements RDFPa
 
     @Override
     protected void parseSynchronusly() throws IOException {
-        Optional<RDFFormat> formatByMimeType = getContentType().flatMap(Rio::getParserFormatForMIMEType);
-        String base = getBase().map(IRI::getIRIString).orElse(null);
+        final Optional<RDFFormat> formatByMimeType = getContentType().flatMap(Rio::getParserFormatForMIMEType);
+        final String base = getBase().map(IRI::getIRIString).orElse(null);
 
-        ParserConfig parserConfig = getParserConfig();
+        final ParserConfig parserConfig = getParserConfig();
         // TODO: Should we need to set anything?
-        RDFLoader loader = new RDFLoader(parserConfig, rdf4jTermFactory.getValueFactory());
-        RDFHandler rdfHandler = makeRDFHandler();
+        final RDFLoader loader = new RDFLoader(parserConfig, rdf4jTermFactory.getValueFactory());
+        final RDFHandler rdfHandler = makeRDFHandler();
         if (getSourceFile().isPresent()) {
             // NOTE: While we could have used
             // loader.load(sourcePath.toFile()
@@ -139,12 +139,12 @@ public class RDF4JParser extends AbstractRDFParser<RDF4JParser> implements RDFPa
             // we'll always do it with our own input stream
             //
             // That means we may have to guess format by extensions:
-            Optional<RDFFormat> formatByFilename = getSourceFile().map(Path::getFileName).map(Path::toString)
+            final Optional<RDFFormat> formatByFilename = getSourceFile().map(Path::getFileName).map(Path::toString)
                     .flatMap(Rio::getParserFormatForFileName);
             // TODO: for the excited.. what about the extension after following
             // symlinks?
 
-            RDFFormat format = formatByMimeType.orElse(formatByFilename.orElse(null));
+            final RDFFormat format = formatByMimeType.orElse(formatByFilename.orElse(null));
             try (InputStream in = Files.newInputStream(getSourceFile().get())) {
                 loader.load(in, base, format, rdfHandler);
             }
@@ -152,11 +152,11 @@ public class RDF4JParser extends AbstractRDFParser<RDF4JParser> implements RDFPa
             try {
                 // TODO: Handle international IRIs properly
                 // (Unicode support for for hostname, path and query)
-                URL url = new URL(getSourceIri().get().getIRIString());
+                final URL url = new URL(getSourceIri().get().getIRIString());
                 // TODO: This probably does not support https:// -> http://
                 // redirections
                 loader.load(url, base, formatByMimeType.orElse(null), makeRDFHandler());
-            } catch (MalformedURLException ex) {
+            } catch (final MalformedURLException ex) {
                 throw new IOException("Can't handle source URL: " + getSourceIri().get(), ex);
             }
         }
@@ -199,33 +199,33 @@ public class RDF4JParser extends AbstractRDFParser<RDF4JParser> implements RDFPa
 
         if (getTargetDataset().filter(RDF4JDataset.class::isInstance).isPresent()) {
             // One of us, we can add them as Statements directly
-            RDF4JDataset dataset = (RDF4JDataset) getTargetDataset().get();
+            final RDF4JDataset dataset = (RDF4JDataset) getTargetDataset().get();
             if (dataset.asRepository().isPresent()) {
                 return new RDFInserter(dataset.asRepository().get().getConnection());
             }
             if (dataset.asModel().isPresent()) {
-                Model model = dataset.asModel().get();
+                final Model model = dataset.asModel().get();
                 return new AddToModel(model);
             }
             // Not backed by Repository or Model?
             // Third-party RDF4JDataset subclass, so we'll fall through to the
             // getTarget() handling further down
         } else if (getTargetGraph().filter(RDF4JGraph.class::isInstance).isPresent()) {
-            RDF4JGraph graph = (RDF4JGraph) getTargetGraph().get();
+            final RDF4JGraph graph = (RDF4JGraph) getTargetGraph().get();
 
             if (graph.asRepository().isPresent()) {
-                RDFInserter inserter = new RDFInserter(graph.asRepository().get().getConnection());
+                final RDFInserter inserter = new RDFInserter(graph.asRepository().get().getConnection());
                 if (!graph.getContextMask().isEmpty()) {
-                    Stream<RDF4JBlankNodeOrIRI> b = graph.getContextMask().stream();
-                    Stream<Resource> c = b.map(RDF4JBlankNodeOrIRI::asValue);
-                    Resource[] contexts = c.toArray(Resource[]::new);
+                    final Stream<RDF4JBlankNodeOrIRI> b = graph.getContextMask().stream();
+                    final Stream<Resource> c = b.map(RDF4JBlankNodeOrIRI::asValue);
+                    final Resource[] contexts = c.toArray(Resource[]::new);
                     inserter.enforceContext(contexts);
                 }
                 return inserter;
             }
             if (graph.asModel().isPresent() && graph.getContextMask().isEmpty()) {
                 // the model accepts any quad
-                Model model = graph.asModel().get();
+                final Model model = graph.asModel().get();
                 return new AddToModel(model);
             }
             // else - fall through

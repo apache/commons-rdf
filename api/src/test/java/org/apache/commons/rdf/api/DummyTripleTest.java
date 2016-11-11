@@ -46,7 +46,7 @@ public class DummyTripleTest {
     
     @Test
     public void testHashCode() {
-        int expected = Objects.hash(triple.getSubject(), triple.getPredicate(), triple.getObject()); 
+        final int expected = Objects.hash(triple.getSubject(), triple.getPredicate(), triple.getObject()); 
         assertEquals(expected, triple.hashCode());
     }
 }

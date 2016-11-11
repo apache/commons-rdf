@@ -48,7 +48,7 @@ class JenaIRIImpl extends AbstractJenaRDFTerm implements JenaIRI {
         if (!(other instanceof IRI)) {
             return false;
         }
-        IRI iri = (IRI) other;
+        final IRI iri = (IRI) other;
         return getIRIString().equals(iri.getIRIString());
     }
 

@@ -38,7 +38,7 @@ final class LiteralImpl extends AbstractRDFTerm<org.eclipse.rdf4j.model.Literal>
             return true;
         }
         if (obj instanceof org.apache.commons.rdf.api.Literal) {
-            org.apache.commons.rdf.api.Literal other = (org.apache.commons.rdf.api.Literal) obj;
+            final org.apache.commons.rdf.api.Literal other = (org.apache.commons.rdf.api.Literal) obj;
             return getLexicalForm().equals(other.getLexicalForm()) && getDatatype().equals(other.getDatatype())
                     && getLanguageTag().equals(other.getLanguageTag());
 
@@ -69,7 +69,7 @@ final class LiteralImpl extends AbstractRDFTerm<org.eclipse.rdf4j.model.Literal>
     @Override
     public String ntriplesString() {
         // TODO: Use a more efficient StringBuffer
-        String escaped = QUOTE + TurtleUtil.encodeString(value.getLabel()) + QUOTE;
+        final String escaped = QUOTE + TurtleUtil.encodeString(value.getLabel()) + QUOTE;
         if (value.getLanguage().isPresent()) {
             return escaped + "@" + value.getLanguage().get();
         }
