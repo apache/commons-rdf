@@ -21,7 +21,6 @@ import org.apache.commons.rdf.api.*;
 import org.apache.commons.rdf.simple.SimpleRDF.SimpleRDFTerm;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
