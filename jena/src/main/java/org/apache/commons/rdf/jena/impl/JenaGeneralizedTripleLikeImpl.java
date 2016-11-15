@@ -26,11 +26,11 @@ import org.apache.jena.graph.Triple;
 class JenaGeneralizedTripleLikeImpl extends AbstractQuadLike<RDFTerm, RDFTerm, RDFTerm, RDFTerm>
         implements JenaGeneralizedTripleLike {
 
-    JenaGeneralizedTripleLikeImpl(RDFTerm subject, RDFTerm predicate, RDFTerm object) {
+    JenaGeneralizedTripleLikeImpl(final RDFTerm subject, final RDFTerm predicate, final RDFTerm object) {
         super(subject, predicate, object);
     }
 
-    JenaGeneralizedTripleLikeImpl(Triple triple, UUID salt) {
+    JenaGeneralizedTripleLikeImpl(final Triple triple, final UUID salt) {
         super(triple, salt);
     }
 

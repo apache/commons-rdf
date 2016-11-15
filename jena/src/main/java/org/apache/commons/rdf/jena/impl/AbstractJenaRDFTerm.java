@@ -18,16 +18,15 @@
 
 package org.apache.commons.rdf.jena.impl;
 
-import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.jena.JenaRDFTerm;
 import org.apache.jena.graph.Node;
 import org.apache.jena.riot.out.NodeFmtLib;
 
-class AbstractJenaRDFTerm implements JenaRDFTerm, RDFTerm {
-    private Node node;
+class AbstractJenaRDFTerm implements JenaRDFTerm {
+    private final Node node;
     // static private PrefixMapping empty = new PrefixMappingImpl();
 
-    protected AbstractJenaRDFTerm(Node node) {
+    protected AbstractJenaRDFTerm(final Node node) {
         this.node = node;
     }
 
@@ -36,6 +35,7 @@ class AbstractJenaRDFTerm implements JenaRDFTerm, RDFTerm {
         return node;
     }
 
+    @Override
     public String ntriplesString() {
         return NodeFmtLib.str(node);
     }

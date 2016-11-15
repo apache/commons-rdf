@@ -35,7 +35,7 @@ class DummyTriple implements Triple {
         return new DummyIRI(3);
     }
 
-    private static List<RDFTerm> tripleList(Triple q) {
+    private static List<RDFTerm> tripleList(final Triple q) {
          return Arrays.asList(             
              q.getSubject(),
              q.getPredicate(),
@@ -43,7 +43,7 @@ class DummyTriple implements Triple {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (!(obj instanceof Triple)) {
             return false;
         }

@@ -42,13 +42,13 @@ class JenaGraphImpl implements JenaGraph {
     private final transient JenaRDF factory;
     private Model model;
 
-    JenaGraphImpl(org.apache.jena.graph.Graph graph, UUID salt) {
+    JenaGraphImpl(final org.apache.jena.graph.Graph graph, final UUID salt) {
         this.graph = graph;
         this.salt = salt;
         this.factory = new JenaRDF(salt);
     }
 
-    JenaGraphImpl(Model model, UUID salt) {
+    JenaGraphImpl(final Model model, final UUID salt) {
         this.model = model;
         this.graph = model.getGraph();
         this.salt = salt;
@@ -56,13 +56,13 @@ class JenaGraphImpl implements JenaGraph {
     }
 
     @Override
-    public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public void add(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         graph.add(org.apache.jena.graph.Triple.create(factory.asJenaNode(subject), factory.asJenaNode(predicate),
                 factory.asJenaNode(object)));
     }
 
     @Override
-    public void add(Triple triple) {
+    public void add(final Triple triple) {
         graph.add(factory.asJenaTriple(triple));
     }
 
@@ -82,22 +82,22 @@ class JenaGraphImpl implements JenaGraph {
     }
 
     @Override
-    public boolean contains(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public boolean contains(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         return graph.contains(toJenaPattern(subject), toJenaPattern(predicate), toJenaPattern(object));
     }
 
     @Override
-    public boolean contains(Triple triple) {
+    public boolean contains(final Triple triple) {
         return graph.contains(factory.asJenaTriple(triple));
     }
 
     @Override
-    public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public void remove(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         graph.delete(org.apache.jena.graph.Triple.create(toJenaPattern(subject), toJenaPattern(predicate),
                 toJenaPattern(object)));
     }
 
-    private Node toJenaPattern(RDFTerm pattern) {
+    private Node toJenaPattern(final RDFTerm pattern) {
         if (pattern == null) { 
             return Node.ANY;
         }
@@ -105,7 +105,7 @@ class JenaGraphImpl implements JenaGraph {
     }
 
     @Override
-    public void remove(Triple triple) {
+    public void remove(final Triple triple) {
         graph.delete(factory.asJenaTriple(triple));
     }
 
@@ -116,25 +116,26 @@ class JenaGraphImpl implements JenaGraph {
 
     @Override
     public Stream<? extends Triple> stream() {
-        JenaRDF factory = new JenaRDF(salt);
+        final JenaRDF factory = new JenaRDF(salt);
         return Iter.asStream(graph.find(null, null, null), true).map(factory::asTriple);
     }
 
     @Override
-    public Stream<? extends Triple> stream(BlankNodeOrIRI s, IRI p, RDFTerm o) {
-        JenaRDF factory = new JenaRDF(salt);
+    public Stream<? extends Triple> stream(final BlankNodeOrIRI s, final IRI p, final RDFTerm o) {
+        final JenaRDF factory = new JenaRDF(salt);
         return Iter.asStream(graph.find(toJenaAny(s), toJenaAny(p), toJenaAny(o)), true).map(factory::asTriple);
     }
 
-    private Node toJenaAny(RDFTerm term) {
-        if (term == null)
+    private Node toJenaAny(final RDFTerm term) {
+        if (term == null) {
             return Node.ANY;
+        }
         return factory.asJenaNode(term);
     }
 
     @Override
     public String toString() {
-        StringWriter sw = new StringWriter();
+        final StringWriter sw = new StringWriter();
         RDFDataMgr.write(sw, graph, Lang.NT);
         return sw.toString();
     }

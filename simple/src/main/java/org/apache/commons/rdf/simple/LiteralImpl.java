@@ -36,11 +36,11 @@ final class LiteralImpl implements Literal, SimpleRDF.SimpleRDFTerm {
     private final String languageTag;
     private final String lexicalForm;
 
-    public LiteralImpl(String literal) {
+    public LiteralImpl(final String literal) {
         this(literal, Types.XSD_STRING);
     }
 
-    public LiteralImpl(String lexicalForm, IRI dataType) {
+    public LiteralImpl(final String lexicalForm, final IRI dataType) {
         this.lexicalForm = Objects.requireNonNull(lexicalForm);
         this.dataType = Types.get(Objects.requireNonNull(dataType)).orElse(dataType);
         if (Types.RDF_LANGSTRING.equals(this.dataType)) {
@@ -50,7 +50,7 @@ final class LiteralImpl implements Literal, SimpleRDF.SimpleRDFTerm {
         this.languageTag = null;
     }
 
-    public LiteralImpl(String literal, String languageTag) {
+    public LiteralImpl(final String literal, final String languageTag) {
         this.lexicalForm = Objects.requireNonNull(literal);
         this.languageTag = Objects.requireNonNull(languageTag).toLowerCase(Locale.ENGLISH);
         if (languageTag.isEmpty()) {
@@ -60,7 +60,7 @@ final class LiteralImpl implements Literal, SimpleRDF.SimpleRDFTerm {
         }
         try {
             new Locale.Builder().setLanguageTag(languageTag);
-        } catch (IllformedLocaleException ex) {
+        } catch (final IllformedLocaleException ex) {
             throw new IllegalArgumentException("Invalid languageTag: " + languageTag, ex);
         }
 
@@ -85,7 +85,7 @@ final class LiteralImpl implements Literal, SimpleRDF.SimpleRDFTerm {
 
     @Override
     public String ntriplesString() {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         sb.append(QUOTE);
         // Escape special characters
         sb.append(getLexicalForm().replace("\\", "\\\\"). // escaped to \\
@@ -117,14 +117,14 @@ final class LiteralImpl implements Literal, SimpleRDF.SimpleRDFTerm {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
         if (obj == null || !(obj instanceof Literal)) {
             return false;
         }
-        Literal literal = (Literal) obj;
+        final Literal literal = (Literal) obj;
         return getDatatype().equals(literal.getDatatype()) && getLexicalForm().equals(literal.getLexicalForm())
                 && getLanguageTag().equals(literal.getLanguageTag());
     }

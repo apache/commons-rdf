@@ -51,7 +51,7 @@ public class DummyQuadTest {
     
     @Test
     public void testHashCode() {
-        int expected = Objects.hash(quad.getSubject(), quad.getPredicate(), quad.getObject(), quad.getGraphName()); 
+        final int expected = Objects.hash(quad.getSubject(), quad.getPredicate(), quad.getObject(), quad.getGraphName()); 
         assertEquals(expected, quad.hashCode());
     }
 }

@@ -40,7 +40,7 @@ public class TestBlankNodeJena extends AbstractBlankNodeTest {
     }
 
     @Override
-    protected BlankNode getBlankNode(String identifier) {
+    protected BlankNode getBlankNode(final String identifier) {
         return internalJenaFactory.createBlankNode(identifier, SALT);
     }
 }

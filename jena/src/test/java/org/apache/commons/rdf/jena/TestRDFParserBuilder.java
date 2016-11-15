@@ -54,8 +54,8 @@ public class TestRDFParserBuilder {
 
     @Test
     public void parseTurtle() throws Exception {
-        Graph g = new JenaRDF().createGraph();
-        Future<ParseResult> gFuture = new JenaRDFParser().contentType(RDFSyntax.TURTLE).source(turtleFile).target(g)
+        final Graph g = new JenaRDF().createGraph();
+        final Future<ParseResult> gFuture = new JenaRDFParser().contentType(RDFSyntax.TURTLE).source(turtleFile).target(g)
                 .parse();
         gFuture.get(5, TimeUnit.SECONDS);
         assertEquals(3, g.size());

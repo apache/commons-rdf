@@ -36,7 +36,7 @@ public class DefaultDatasetTest {
     public void defaultIterate() throws Exception {
         assertFalse(dataset.streamCalled);
         assertFalse(dataset.filteredStreamCalled);
-        for (Quad t : dataset.iterate()) {
+        for (final Quad t : dataset.iterate()) {
             assertEquals(t, new DummyQuad());
         }
         assertTrue(dataset.streamCalled);
@@ -47,7 +47,7 @@ public class DefaultDatasetTest {
     public void defaultFilteredIterate() throws Exception {
         assertFalse(dataset.streamCalled);
         assertFalse(dataset.filteredStreamCalled);
-        for (Quad t : dataset.iterate(null, null, new DummyIRI(2), null)) {
+        for (final Quad t : dataset.iterate(null, null, new DummyIRI(2), null)) {
             assertEquals(t, new DummyQuad());
         }
         assertTrue(dataset.filteredStreamCalled);

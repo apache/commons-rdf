@@ -48,9 +48,9 @@ import org.junit.rules.ExpectedException;
 
 public class AbstractRDFParserTest {
 
-    private RDF factory = new SimpleRDF();
+    private final RDF factory = new SimpleRDF();
 
-    private DummyRDFParserBuilder dummyParser = new DummyRDFParserBuilder();
+    private final DummyRDFParserBuilder dummyParser = new DummyRDFParserBuilder();
     private Path testNt;
     private Path testTtl;
     private Path testXml;
@@ -79,20 +79,20 @@ public class AbstractRDFParserTest {
         assertFalse(AbstractRDFParser.guessRDFSyntax(testXml).isPresent());
     }
 
-    private void checkGraph(Graph g) throws Exception {
+    private void checkGraph(final Graph g) throws Exception {
         assertTrue(g.size() > 0);
-        IRI greeting = factory.createIRI("http://example.com/greeting");
+        final IRI greeting = factory.createIRI("http://example.com/greeting");
         // Should only have parsed once!
         assertEquals(1, g.stream(null, greeting, null).count());
-        Triple triple = g.stream(null, greeting, null).findAny().get();
+        final Triple triple = g.stream(null, greeting, null).findAny().get();
         assertTrue(triple.getSubject() instanceof IRI);
-        IRI parsing = (IRI) triple.getSubject();
+        final IRI parsing = (IRI) triple.getSubject();
         assertTrue(parsing.getIRIString().startsWith("urn:uuid:"));
 
         assertEquals("http://example.com/greeting", triple.getPredicate().getIRIString());
 
         assertTrue(triple.getObject() instanceof Literal);
-        Literal literal = (Literal) triple.getObject();
+        final Literal literal = (Literal) triple.getObject();
         assertEquals("Hello world", literal.getLexicalForm());
         assertFalse(literal.getLanguageTag().isPresent());
         assertEquals(Types.XSD_STRING, literal.getDatatype());
@@ -108,8 +108,8 @@ public class AbstractRDFParserTest {
 
     @Test
     public void parseFile() throws Exception {
-        Graph g = factory.createGraph();
-        RDFParser parser = dummyParser.source(testNt).target(g);
+        final Graph g = factory.createGraph();
+        final RDFParser parser = dummyParser.source(testNt).target(g);
         parser.parse().get(5, TimeUnit.SECONDS);
         checkGraph(g);
         // FIXME: this could potentially break if the equivalent of /tmp
@@ -133,8 +133,8 @@ public class AbstractRDFParserTest {
     @Test
     public void parseBaseAndContentTypeNoSource() throws Exception {
         // Can set the other options, even without source()
-        IRI base = dummyParser.createRDFTermFactory().createIRI("http://www.example.org/test.rdf");
-        RDFParser parser = dummyParser.base(base).contentType(RDFSyntax.RDFXML);
+        final IRI base = dummyParser.createRDFTermFactory().createIRI("http://www.example.org/test.rdf");
+        final RDFParser parser = dummyParser.base(base).contentType(RDFSyntax.RDFXML);
         thrown.expect(IllegalStateException.class);
         thrown.expectMessage("No source has been set");
         // but .parse() should fail
@@ -145,7 +145,7 @@ public class AbstractRDFParserTest {
     public void parseFileMissing() throws Exception {
         Files.delete(testNt);
         // This should not fail yet
-        RDFParser parser = dummyParser.source(testNt);
+        final RDFParser parser = dummyParser.source(testNt);
         // but here:
         thrown.expect(IOException.class);
         parser.parse();
@@ -153,8 +153,8 @@ public class AbstractRDFParserTest {
 
     @Test
     public void parseFileContentType() throws Exception {
-        Graph g = factory.createGraph();
-        RDFParser parser = dummyParser.source(testNt).contentType(RDFSyntax.NTRIPLES).target(g);
+        final Graph g = factory.createGraph();
+        final RDFParser parser = dummyParser.source(testNt).contentType(RDFSyntax.NTRIPLES).target(g);
         parser.parse().get(5, TimeUnit.SECONDS);
         checkGraph(g);
         // FIXME: this could potentially break if the equivalent of /tmp
@@ -166,7 +166,7 @@ public class AbstractRDFParserTest {
         assertEquals("\"application/n-triples\"", firstPredicate(g, "contentType"));
     }
 
-    private String firstPredicate(Graph g, String pred) {
+    private String firstPredicate(final Graph g, final String pred) {
         return g.stream(null, factory.createIRI("http://example.com/" + pred), null).map(Triple::getObject)
                 .map(RDFTerm::ntriplesString).findAny().orElse(null);
     }
@@ -176,9 +176,9 @@ public class AbstractRDFParserTest {
 
     @Test
     public void parseInputStreamFailsIfBaseMissing() throws Exception {
-        InputStream inputStream = new ByteArrayInputStream(new byte[0]);
+        final InputStream inputStream = new ByteArrayInputStream(new byte[0]);
         // Should not fail at this point
-        RDFParser parser = dummyParser.source(inputStream);
+        final RDFParser parser = dummyParser.source(inputStream);
         // but here:
         thrown.expect(IllegalStateException.class);
         thrown.expectMessage("base iri required for inputstream source");
@@ -187,10 +187,10 @@ public class AbstractRDFParserTest {
 
     @Test
     public void parseInputStreamWithBase() throws Exception {
-        InputStream inputStream = new ByteArrayInputStream(new byte[0]);
-        IRI base = dummyParser.createRDFTermFactory().createIRI("http://www.example.org/test.rdf");
-        Graph g = factory.createGraph();
-        RDFParser parser = dummyParser.source(inputStream).base(base).target(g);
+        final InputStream inputStream = new ByteArrayInputStream(new byte[0]);
+        final IRI base = dummyParser.createRDFTermFactory().createIRI("http://www.example.org/test.rdf");
+        final Graph g = factory.createGraph();
+        final RDFParser parser = dummyParser.source(inputStream).base(base).target(g);
         parser.parse().get(5, TimeUnit.SECONDS);
         checkGraph(g);
         assertEquals("<http://www.example.org/test.rdf>", firstPredicate(g, "base"));
@@ -203,9 +203,9 @@ public class AbstractRDFParserTest {
 
     @Test
     public void parseInputStreamWithNQuads() throws Exception {
-        InputStream inputStream = new ByteArrayInputStream(new byte[0]);
-        Graph g = factory.createGraph();
-        RDFParser parser = dummyParser.source(inputStream).contentType(RDFSyntax.NQUADS).target(g);
+        final InputStream inputStream = new ByteArrayInputStream(new byte[0]);
+        final Graph g = factory.createGraph();
+        final RDFParser parser = dummyParser.source(inputStream).contentType(RDFSyntax.NQUADS).target(g);
         parser.parse().get(5, TimeUnit.SECONDS);
         checkGraph(g);
         assertNull(firstPredicate(g, "base"));
@@ -218,9 +218,9 @@ public class AbstractRDFParserTest {
 
     @Test
     public void parseIRI() throws Exception {
-        IRI iri = dummyParser.createRDFTermFactory().createIRI("http://www.example.net/test.ttl");
-        Graph g = factory.createGraph();
-        RDFParser parser = dummyParser.source(iri).target(g);
+        final IRI iri = dummyParser.createRDFTermFactory().createIRI("http://www.example.net/test.ttl");
+        final Graph g = factory.createGraph();
+        final RDFParser parser = dummyParser.source(iri).target(g);
         parser.parse().get(5, TimeUnit.SECONDS);
         checkGraph(g);
         assertEquals("<http://www.example.net/test.ttl>", firstPredicate(g, "source"));
@@ -236,9 +236,9 @@ public class AbstractRDFParserTest {
 
     @Test
     public void parseIRIBaseContentType() throws Exception {
-        IRI iri = dummyParser.createRDFTermFactory().createIRI("http://www.example.net/test.ttl");
-        Graph g = factory.createGraph();
-        RDFParser parser = dummyParser.source(iri).base(iri).contentType(RDFSyntax.TURTLE).target(g);
+        final IRI iri = dummyParser.createRDFTermFactory().createIRI("http://www.example.net/test.ttl");
+        final Graph g = factory.createGraph();
+        final RDFParser parser = dummyParser.source(iri).base(iri).contentType(RDFSyntax.TURTLE).target(g);
         parser.parse().get(5, TimeUnit.SECONDS);
         checkGraph(g);
         assertEquals("<http://www.example.net/test.ttl>", firstPredicate(g, "source"));

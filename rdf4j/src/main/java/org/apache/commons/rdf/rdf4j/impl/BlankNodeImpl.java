@@ -28,24 +28,25 @@ import org.eclipse.rdf4j.rio.turtle.TurtleUtil;
 final class BlankNodeImpl extends AbstractRDFTerm<BNode> implements RDF4JBlankNode {
 
     private transient int hashCode = 0;
-    private long saltUUIDleast;
-    private long saltUUIDmost;
+    private final long saltUUIDleast;
+    private final long saltUUIDmost;
 
-    BlankNodeImpl(BNode bNode, UUID salt) {
+    BlankNodeImpl(final BNode bNode, final UUID salt) {
         super(bNode);
         // Space-efficient storage of salt UUID
         saltUUIDmost = salt.getMostSignificantBits();
         saltUUIDleast = salt.getLeastSignificantBits();
     }
 
-    public boolean equals(Object obj) {
+    @Override
+    public boolean equals(final Object obj) {
         if (obj == this) {
             return true;
         }
         // NOTE: Do NOT use Bnode.equals() as it has a more generous
         // equality based only on the value.getID();
         if (obj instanceof BlankNode) {
-            BlankNode blankNode = (BlankNode) obj;
+            final BlankNode blankNode = (BlankNode) obj;
             return uniqueReference().equals(blankNode.uniqueReference());
         }
         return false;
@@ -59,7 +60,7 @@ final class BlankNodeImpl extends AbstractRDFTerm<BNode> implements RDF4JBlankNo
         return hashCode = uniqueReference().hashCode();
     }
 
-    private boolean isValidBlankNodeLabel(String id) {
+    private boolean isValidBlankNodeLabel(final String id) {
         // FIXME: Replace with a regular expression?
         if (id.isEmpty()) {
             return false;
@@ -86,7 +87,7 @@ final class BlankNodeImpl extends AbstractRDFTerm<BNode> implements RDF4JBlankNo
 
     @Override
     public String uniqueReference() {
-        UUID uuid = new UUID(saltUUIDmost, saltUUIDleast);
+        final UUID uuid = new UUID(saltUUIDmost, saltUUIDleast);
         return "urn:uuid:" + uuid + "#" + value.getID();
     }
     

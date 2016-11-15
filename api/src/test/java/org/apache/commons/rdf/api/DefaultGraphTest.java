@@ -56,7 +56,7 @@ public class DefaultGraphTest {
     public void defaultIterate() throws Exception {
         assertFalse(graph.streamCalled);
         assertFalse(graph.filteredStreamCalled);
-        for (Triple t : graph.iterate()) {
+        for (final Triple t : graph.iterate()) {
             assertEquals(t, new DummyTriple());
         }
         assertTrue(graph.streamCalled);
@@ -67,7 +67,7 @@ public class DefaultGraphTest {
     public void defaultFilteredIterate() throws Exception {
         assertFalse(graph.streamCalled);
         assertFalse(graph.filteredStreamCalled);
-        for (Triple t : graph.iterate(null, new DummyIRI(2), null)) {
+        for (final Triple t : graph.iterate(null, new DummyIRI(2), null)) {
             assertEquals(t, new DummyTriple());
         }
         assertTrue(graph.filteredStreamCalled);

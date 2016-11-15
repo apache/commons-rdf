@@ -59,35 +59,35 @@ public class TestJenaGraphToCommonsRDFGraph {
 
     @Test
     public void jenaToCommonsRDF() throws Exception {
-        org.apache.jena.graph.Graph jGraph = GraphFactory.createGraphMem();
+        final org.apache.jena.graph.Graph jGraph = GraphFactory.createGraphMem();
         RDFDataMgr.read(jGraph, turtleFile.toUri().toString());
 
-        JenaRDF factory = new JenaRDF();
+        final JenaRDF factory = new JenaRDF();
 
         // "graph" is a CommonsRDF graph
-        Graph graph = factory.asGraph(jGraph);
+        final Graph graph = factory.asGraph(jGraph);
 
         // The below check expected statements from D.ttl
 
-        JenaIRI p = factory.createIRI("http://example.com/p");
-        JenaIRI s = factory.createIRI("http://example.com/s");
-        JenaLiteral literal123 = factory.createLiteral("123", Types.XSD_INTEGER);
+        final JenaIRI p = factory.createIRI("http://example.com/p");
+        final JenaIRI s = factory.createIRI("http://example.com/s");
+        final JenaLiteral literal123 = factory.createLiteral("123", Types.XSD_INTEGER);
         assertTrue(graph.contains(s, p, literal123));
 
-        JenaIRI p1 = factory.createIRI("http://example.com/p1");
+        final JenaIRI p1 = factory.createIRI("http://example.com/p1");
         // Let's look up the BlankNode
-        BlankNodeOrIRI bnode1 = graph.stream(null, p1, null).findFirst().map(Triple::getSubject).get();
+        final BlankNodeOrIRI bnode1 = graph.stream(null, p1, null).findFirst().map(Triple::getSubject).get();
         assertTrue(bnode1 instanceof BlankNode);
 
         // Verify we can use BlankNode in query again
-        RDFTerm obj = graph.stream(bnode1, p1, null).findFirst().map(Triple::getObject).get();
+        final RDFTerm obj = graph.stream(bnode1, p1, null).findFirst().map(Triple::getObject).get();
 
         // Let's look up also that nested blank node
         assertTrue(obj instanceof BlankNode);
-        BlankNode bnode2 = (BlankNode) obj;
+        final BlankNode bnode2 = (BlankNode) obj;
 
-        JenaIRI q = factory.createIRI("http://example.com/q");
-        JenaLiteral literalR = factory.createLiteral("r", "en");
+        final JenaIRI q = factory.createIRI("http://example.com/q");
+        final JenaLiteral literalR = factory.createLiteral("r", "en");
         assertTrue(graph.contains(bnode2, q, literalR));
 
         // Can we add the same triple again as s/p/o
@@ -102,9 +102,9 @@ public class TestJenaGraphToCommonsRDFGraph {
         assertEquals(3, graph.size());
 
         // Add to CommonsRDF Graph
-        JenaIRI s2 = factory.createIRI("http://example/s2");
-        JenaIRI p2 = factory.createIRI("http://example/p2");
-        JenaLiteral foo = factory.createLiteral("foo");
+        final JenaIRI s2 = factory.createIRI("http://example/s2");
+        final JenaIRI p2 = factory.createIRI("http://example/p2");
+        final JenaLiteral foo = factory.createLiteral("foo");
         graph.add(s2, p2, foo);
         assertEquals(4, graph.size());
         assertTrue(graph.contains(s2, p2, foo));

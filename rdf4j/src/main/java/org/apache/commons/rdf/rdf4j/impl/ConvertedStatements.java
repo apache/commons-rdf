@@ -30,12 +30,12 @@ import org.eclipse.rdf4j.repository.RepositoryResult;
 
 final class ConvertedStatements<T> implements ClosableIterable<T> {
 
-    private RepositoryConnection conn;
-    private RepositoryResult<Statement> results;
-    private Function<Statement, T> statementAdapter;
+    private final RepositoryConnection conn;
+    private final RepositoryResult<Statement> results;
+    private final Function<Statement, T> statementAdapter;
 
-    ConvertedStatements(Supplier<RepositoryConnection> repositoryConnector, Function<Statement, T> statementAdapter,
-            Resource subj, org.eclipse.rdf4j.model.IRI pred, Value obj, Resource... contexts) {
+    ConvertedStatements(final Supplier<RepositoryConnection> repositoryConnector, final Function<Statement, T> statementAdapter,
+            final Resource subj, final org.eclipse.rdf4j.model.IRI pred, final Value obj, final Resource... contexts) {
         this.statementAdapter = statementAdapter;
         this.conn = repositoryConnector.get();
         this.results = conn.getStatements(subj, pred, obj, contexts);
@@ -55,7 +55,7 @@ final class ConvertedStatements<T> implements ClosableIterable<T> {
     private final class ConvertedIterator implements Iterator<T> {
         @Override
         public boolean hasNext() {
-            boolean hasNext = results.hasNext();
+            final boolean hasNext = results.hasNext();
             if (!hasNext) {
                 close();
             }

@@ -49,7 +49,7 @@ public class JsonLdParser extends AbstractRDFParser<JsonLdParser> {
     }
 
     @Override
-    public JsonLdParser contentType(RDFSyntax rdfSyntax) throws IllegalArgumentException {
+    public JsonLdParser contentType(final RDFSyntax rdfSyntax) throws IllegalArgumentException {
         if (rdfSyntax != null && rdfSyntax != RDFSyntax.JSONLD) {
             throw new IllegalArgumentException("Unsupported contentType: " + rdfSyntax);
         }
@@ -57,15 +57,15 @@ public class JsonLdParser extends AbstractRDFParser<JsonLdParser> {
     }
 
     @Override
-    public JsonLdParser contentType(String contentType) throws IllegalArgumentException {
-        JsonLdParser c = (JsonLdParser) super.contentType(contentType);
+    public JsonLdParser contentType(final String contentType) throws IllegalArgumentException {
+        final JsonLdParser c = super.contentType(contentType);
         if (c.getContentType().filter(Predicate.isEqual(RDFSyntax.JSONLD).negate()).isPresent()) {
             throw new IllegalArgumentException("Unsupported contentType: " + contentType);
         }
         return c;
     }
 
-    private static URL asURL(IRI iri) throws IllegalStateException {
+    private static URL asURL(final IRI iri) throws IllegalStateException {
         try {
             return new URI(iri.getIRIString()).toURL();
         } catch (MalformedURLException | URISyntaxException e) {
@@ -82,8 +82,8 @@ public class JsonLdParser extends AbstractRDFParser<JsonLdParser> {
 
     @Override
     protected void parseSynchronusly() throws IOException {
-        Object json = readSource();
-        JsonLdOptions options = new JsonLdOptions();
+        final Object json = readSource();
+        final JsonLdOptions options = new JsonLdOptions();
         getBase().map(IRI::getIRIString).ifPresent(options::setBase);
         // TODO: base from readSource() (after redirection and Content-Location
         // header)
@@ -93,26 +93,26 @@ public class JsonLdParser extends AbstractRDFParser<JsonLdParser> {
         RDFDataset rdfDataset;
         try {
             rdfDataset = (RDFDataset) JsonLdProcessor.toRDF(json, options);
-        } catch (JsonLdError e) {
+        } catch (final JsonLdError e) {
             throw new IOException("Could not parse Json-LD", e);
         }
         if (getTargetGraph().isPresent()) {
-            Graph intoGraph = getTargetGraph().get();
+            final Graph intoGraph = getTargetGraph().get();
             if (intoGraph instanceof JsonLdGraph && !intoGraph.contains(null, null, null)) {
                 // Empty graph, we can just move over the map content directly:
-                JsonLdGraph jsonLdGraph = (JsonLdGraph) intoGraph;
+                final JsonLdGraph jsonLdGraph = (JsonLdGraph) intoGraph;
                 jsonLdGraph.getRdfDataSet().putAll(rdfDataset);
                 return;
                 // otherwise we have to merge as normal
             }
             // TODO: Modify JsonLdProcessor to have an actual triple callback
-            Graph parsedGraph = getJsonLdFactory().asGraph(rdfDataset);
+            final Graph parsedGraph = getJsonLdFactory().asGraph(rdfDataset);
             // sequential() as we don't know if destination is thread safe :-/
             parsedGraph.stream().sequential().forEach(intoGraph::add);
         } else if (getTargetDataset().isPresent()) {
-            Dataset intoDataset = getTargetDataset().get();
+            final Dataset intoDataset = getTargetDataset().get();
             if (intoDataset instanceof JsonLdDataset && !intoDataset.contains(null, null, null, null)) {
-                JsonLdDataset jsonLdDataset = (JsonLdDataset) intoDataset;
+                final JsonLdDataset jsonLdDataset = (JsonLdDataset) intoDataset;
                 // Empty - we can just do a brave replace!
                 jsonLdDataset.getRdfDataSet().putAll(rdfDataset);
                 return;
@@ -121,11 +121,11 @@ public class JsonLdParser extends AbstractRDFParser<JsonLdParser> {
                 // map blank nodes etc, so we'll fall back to normal Dataset
                 // appending.
             }
-            Dataset fromDataset = getJsonLdFactory().asDataset(rdfDataset);
+            final Dataset fromDataset = getJsonLdFactory().asDataset(rdfDataset);
             // .sequential() as we don't know if destination is thread-safe :-/
             fromDataset.stream().sequential().forEach(intoDataset::add);
         } else {
-            Dataset fromDataset = getJsonLdFactory().asDataset(rdfDataset);
+            final Dataset fromDataset = getJsonLdFactory().asDataset(rdfDataset);
             // No need for .sequential() here
             fromDataset.stream().forEach(getTarget());
         }

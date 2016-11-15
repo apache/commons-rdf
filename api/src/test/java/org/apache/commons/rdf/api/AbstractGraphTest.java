@@ -90,7 +90,7 @@ public abstract class AbstractGraphTest {
         try {
             bnode1 = factory.createBlankNode("org1");
             bnode2 = factory.createBlankNode("org2");
-        } catch (UnsupportedOperationException ex) {
+        } catch (final UnsupportedOperationException ex) {
             // leave as null
         }
 
@@ -99,7 +99,7 @@ public abstract class AbstractGraphTest {
             companyName = factory.createLiteral("A company");
             aliceName = factory.createLiteral("Alice");
             bobName = factory.createLiteral("Bob", "en-US");
-        } catch (UnsupportedOperationException ex) {
+        } catch (final UnsupportedOperationException ex) {
             // leave as null
         }
 
@@ -115,7 +115,7 @@ public abstract class AbstractGraphTest {
         if (bobName != null) {
             try {
                 bobNameTriple = factory.createTriple(bob, name, bobName);
-            } catch (UnsupportedOperationException ex) {
+            } catch (final UnsupportedOperationException ex) {
                 // leave as null
             }
             if (bobNameTriple != null) {
@@ -145,8 +145,8 @@ public abstract class AbstractGraphTest {
 
         Assume.assumeTrue(graph.size() > 0);
 
-        List<Triple> triples = new ArrayList<>();
-        for (Triple t : graph.iterate()) {
+        final List<Triple> triples = new ArrayList<>();
+        for (final Triple t : graph.iterate()) {
             triples.add(t);
         }
         assertEquals(graph.size(), triples.size());
@@ -155,8 +155,8 @@ public abstract class AbstractGraphTest {
         }
 
         // aborted iteration
-        Iterable<Triple> iterate = graph.iterate();
-        Iterator<Triple> it = iterate.iterator();
+        final Iterable<Triple> iterate = graph.iterate();
+        final Iterator<Triple> it = iterate.iterator();
 
         assertTrue(it.hasNext());
         it.next();
@@ -165,8 +165,8 @@ public abstract class AbstractGraphTest {
         // second iteration - should start from fresh and
         // get the same count
         long count = 0;
-        Iterable<Triple> iterable = graph.iterate();
-        for (@SuppressWarnings("unused")
+        final Iterable<Triple> iterable = graph.iterate();
+        for (@SuppressWarnings("unused") final
         Triple t : iterable) {
             count++;
         }
@@ -176,7 +176,7 @@ public abstract class AbstractGraphTest {
     /**
      * Special triple closing for RDF4J.
      */
-    private void closeIterable(Iterable<Triple> iterate) throws Exception {
+    private void closeIterable(final Iterable<Triple> iterate) throws Exception {
         if (iterate instanceof AutoCloseable) {
             ((AutoCloseable) iterate).close();
         }
@@ -184,18 +184,18 @@ public abstract class AbstractGraphTest {
 
     @Test
     public void iterateFilter() throws Exception {
-        List<RDFTerm> friends = new ArrayList<>();
-        IRI alice = factory.createIRI("http://example.com/alice");
-        IRI knows = factory.createIRI("http://xmlns.com/foaf/0.1/knows");
-        for (Triple t : graph.iterate(alice, knows, null)) {
+        final List<RDFTerm> friends = new ArrayList<>();
+        final IRI alice = factory.createIRI("http://example.com/alice");
+        final IRI knows = factory.createIRI("http://xmlns.com/foaf/0.1/knows");
+        for (final Triple t : graph.iterate(alice, knows, null)) {
             friends.add(t.getObject());
         }
         assertEquals(1, friends.size());
         assertEquals(bob, friends.get(0));
 
         // .. can we iterate over zero hits?
-        Iterable<Triple> iterate = graph.iterate(bob, knows, alice);
-        for (Triple unexpected : iterate) {
+        final Iterable<Triple> iterate = graph.iterate(bob, knows, alice);
+        for (final Triple unexpected : iterate) {
             fail("Unexpected triple " + unexpected);
         }
         // closeIterable(iterate);
@@ -208,19 +208,19 @@ public abstract class AbstractGraphTest {
         assertTrue(graph.contains(alice, knows, bob));
 
         try (Stream<? extends Triple> stream = graph.stream()) {
-            Optional<? extends Triple> first = stream.skip(4).findFirst();
+            final Optional<? extends Triple> first = stream.skip(4).findFirst();
             Assume.assumeTrue(first.isPresent());
-            Triple existingTriple = first.get();
+            final Triple existingTriple = first.get();
             assertTrue(graph.contains(existingTriple));
         }
 
-        Triple nonExistingTriple = factory.createTriple(bob, knows, alice);
+        final Triple nonExistingTriple = factory.createTriple(bob, knows, alice);
         assertFalse(graph.contains(nonExistingTriple));
 
         Triple triple = null;
         try {
             triple = factory.createTriple(alice, knows, bob);
-        } catch (UnsupportedOperationException ex) {
+        } catch (final UnsupportedOperationException ex) {
         }
         if (triple != null) {
             // FIXME: Should not this always be true?
@@ -230,9 +230,9 @@ public abstract class AbstractGraphTest {
 
     @Test
     public void remove() throws Exception {
-        long fullSize = graph.size();
+        final long fullSize = graph.size();
         graph.remove(alice, knows, bob);
-        long shrunkSize = graph.size();
+        final long shrunkSize = graph.size();
         assertEquals(1, fullSize - shrunkSize);
 
         graph.remove(alice, knows, bob);
@@ -251,7 +251,7 @@ public abstract class AbstractGraphTest {
 
         Triple otherTriple;
         try (Stream<? extends Triple> stream = graph.stream()) {
-            Optional<? extends Triple> anyTriple = stream.findAny();
+            final Optional<? extends Triple> anyTriple = stream.findAny();
             Assume.assumeTrue(anyTriple.isPresent());
             otherTriple = anyTriple.get();
         }
@@ -298,7 +298,7 @@ public abstract class AbstractGraphTest {
     public void getTriplesQuery() throws Exception {
 
         try (Stream<? extends Triple> stream = graph.stream(alice, null, null)) {
-            long aliceCount = stream.count();
+            final long aliceCount = stream.count();
             assertTrue(aliceCount > 0);
             Assume.assumeNotNull(aliceName);
             assertEquals(3, aliceCount);
@@ -319,11 +319,11 @@ public abstract class AbstractGraphTest {
 
         try {
             // Create two separate Graph instances
-            Graph g1 = createGraph1();
-            Graph g2 = createGraph2();
+            final Graph g1 = createGraph1();
+            final Graph g2 = createGraph2();
 
             // and add them to a new Graph g3
-            Graph g3 = factory.createGraph();
+            final Graph g3 = factory.createGraph();
             addAllTriples(g1, g3);
             addAllTriples(g2, g3);
 
@@ -338,22 +338,22 @@ public abstract class AbstractGraphTest {
             // HashMap!)
 
             // look up BlankNodes by name
-            IRI name = factory.createIRI("http://xmlns.com/foaf/0.1/name");
+            final IRI name = factory.createIRI("http://xmlns.com/foaf/0.1/name");
             try (Stream<? extends Triple> stream = g3.stream(null, name, null)) {
                 stream.parallel().forEach(t -> whoIsWho.put(t.getObject().ntriplesString(), t.getSubject()));
             }
 
             assertEquals(4, whoIsWho.size());
             // and contains 4 unique values
-            assertEquals(4, new HashSet<BlankNodeOrIRI>(whoIsWho.values()).size());
+            assertEquals(4, new HashSet<>(whoIsWho.values()).size());
 
-            BlankNodeOrIRI b1Alice = whoIsWho.get("\"Alice\"");
+            final BlankNodeOrIRI b1Alice = whoIsWho.get("\"Alice\"");
             assertNotNull(b1Alice);
-            BlankNodeOrIRI b2Bob = whoIsWho.get("\"Bob\"");
+            final BlankNodeOrIRI b2Bob = whoIsWho.get("\"Bob\"");
             assertNotNull(b2Bob);
-            BlankNodeOrIRI b1Charlie = whoIsWho.get("\"Charlie\"");
+            final BlankNodeOrIRI b1Charlie = whoIsWho.get("\"Charlie\"");
             assertNotNull(b1Charlie);
-            BlankNodeOrIRI b2Dave = whoIsWho.get("\"Dave\"");
+            final BlankNodeOrIRI b2Dave = whoIsWho.get("\"Dave\"");
             assertNotNull(b2Dave);
 
             // All blank nodes should differ
@@ -366,7 +366,7 @@ public abstract class AbstractGraphTest {
 
             // And we should be able to query with them again
             // as we got them back from g3
-            IRI hasChild = factory.createIRI("http://example.com/hasChild");
+            final IRI hasChild = factory.createIRI("http://example.com/hasChild");
             assertTrue(g3.contains(b1Alice, hasChild, b2Bob));
             assertTrue(g3.contains(b2Dave, hasChild, b1Charlie));
             // But not
@@ -380,12 +380,12 @@ public abstract class AbstractGraphTest {
             // and these don't have any children (as far as we know)
             assertFalse(g3.contains(b2Bob, hasChild, null));
             assertFalse(g3.contains(b1Charlie, hasChild, null));
-        } catch (UnsupportedOperationException ex) {
+        } catch (final UnsupportedOperationException ex) {
             Assume.assumeNoException(ex);
         }
     }
 
-    private void notEquals(BlankNodeOrIRI node1, BlankNodeOrIRI node2) {
+    private void notEquals(final BlankNodeOrIRI node1, final BlankNodeOrIRI node2) {
         assertFalse(node1.equals(node2));
         // in which case we should be able to assume
         // (as they are in the same graph)
@@ -403,7 +403,7 @@ public abstract class AbstractGraphTest {
      * @param target
      *            Target Graph where triples will be added
      */
-    private void addAllTriples(Graph source, Graph target) {
+    private void addAllTriples(final Graph source, final Graph target) {
 
         // unordered() as we don't need to preserve triple order
         // sequential() as we don't (currently) require target Graph to be
@@ -419,17 +419,17 @@ public abstract class AbstractGraphTest {
      * uniqueReference
      */
     private Graph createGraph1() {
-        RDF factory1 = createFactory();
+        final RDF factory1 = createFactory();
 
-        IRI name = factory1.createIRI("http://xmlns.com/foaf/0.1/name");
-        Graph g1 = factory1.createGraph();
-        BlankNode b1 = createOwnBlankNode("b1", "0240eaaa-d33e-4fc0-a4f1-169d6ced3680");
+        final IRI name = factory1.createIRI("http://xmlns.com/foaf/0.1/name");
+        final Graph g1 = factory1.createGraph();
+        final BlankNode b1 = createOwnBlankNode("b1", "0240eaaa-d33e-4fc0-a4f1-169d6ced3680");
         g1.add(b1, name, factory1.createLiteral("Alice"));
 
-        BlankNode b2 = createOwnBlankNode("b2", "9de7db45-0ce7-4b0f-a1ce-c9680ffcfd9f");
+        final BlankNode b2 = createOwnBlankNode("b2", "9de7db45-0ce7-4b0f-a1ce-c9680ffcfd9f");
         g1.add(b2, name, factory1.createLiteral("Bob"));
 
-        IRI hasChild = factory1.createIRI("http://example.com/hasChild");
+        final IRI hasChild = factory1.createIRI("http://example.com/hasChild");
         g1.add(b1, hasChild, b2);
 
         return g1;
@@ -443,7 +443,7 @@ public abstract class AbstractGraphTest {
      * @param name
      * @return
      */
-    private BlankNode createOwnBlankNode(String name, String uuid) {
+    private BlankNode createOwnBlankNode(final String name, final String uuid) {
         return new BlankNode() {
             @Override
             public String ntriplesString() {
@@ -461,29 +461,29 @@ public abstract class AbstractGraphTest {
             }
 
             @Override
-            public boolean equals(Object obj) {
+            public boolean equals(final Object obj) {
                 if (!(obj instanceof BlankNode)) {
                     return false;
                 }
-                BlankNode other = (BlankNode) obj;
+                final BlankNode other = (BlankNode) obj;
                 return uuid.equals(other.uniqueReference());
             }
         };
     }
 
     private Graph createGraph2() {
-        RDF factory2 = createFactory();
-        IRI name = factory2.createIRI("http://xmlns.com/foaf/0.1/name");
+        final RDF factory2 = createFactory();
+        final IRI name = factory2.createIRI("http://xmlns.com/foaf/0.1/name");
 
-        Graph g2 = factory2.createGraph();
+        final Graph g2 = factory2.createGraph();
 
-        BlankNode b1 = createOwnBlankNode("b1", "bc8d3e45-a08f-421d-85b3-c25b373abf87");
+        final BlankNode b1 = createOwnBlankNode("b1", "bc8d3e45-a08f-421d-85b3-c25b373abf87");
         g2.add(b1, name, factory2.createLiteral("Charlie"));
 
-        BlankNode b2 = createOwnBlankNode("b2", "2209097a-5078-4b03-801a-6a2d2f50d739");
+        final BlankNode b2 = createOwnBlankNode("b2", "2209097a-5078-4b03-801a-6a2d2f50d739");
         g2.add(b2, name, factory2.createLiteral("Dave"));
 
-        IRI hasChild = factory2.createIRI("http://example.com/hasChild");
+        final IRI hasChild = factory2.createIRI("http://example.com/hasChild");
         // NOTE: Opposite direction of loadGraph1
         g2.add(b2, hasChild, b1);
         return g2;

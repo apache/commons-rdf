@@ -29,8 +29,8 @@ public class RDF4JServiceLoaderTest {
 
     @Test
     public void testServiceLoaderLookup() {
-        ServiceLoader<RDF> loader = ServiceLoader.load(RDF.class);
-        for (RDF impl : loader) {
+        final ServiceLoader<RDF> loader = ServiceLoader.load(RDF.class);
+        for (final RDF impl : loader) {
             if (impl instanceof RDF4J) {
                 return; // yay
             }

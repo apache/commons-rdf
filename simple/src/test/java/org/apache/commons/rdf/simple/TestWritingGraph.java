@@ -59,9 +59,9 @@ public class TestWritingGraph {
     public static void createGraph() throws Exception {
         factory = new SimpleRDF();
         graph = factory.createGraph();
-        IRI subject = factory.createIRI("subj");
-        IRI predicate = factory.createIRI("pred");
-        List<IRI> types = new ArrayList<>(Types.values());
+        final IRI subject = factory.createIRI("subj");
+        final IRI predicate = factory.createIRI("pred");
+        final List<IRI> types = new ArrayList<>(Types.values());
         // Ensure we don't try to create a literal with rdf:langString but
         // without a language tag
         types.remove(Types.RDF_LANGSTRING);
@@ -92,59 +92,59 @@ public class TestWritingGraph {
 
     @Test
     public void countQuery() {
-        IRI subject = factory.createIRI("subj");
-        IRI predicate = factory.createIRI("pred");
-        long count = graph.stream(subject, predicate, null).unordered().parallel().count();
+        final IRI subject = factory.createIRI("subj");
+        final IRI predicate = factory.createIRI("pred");
+        final long count = graph.stream(subject, predicate, null).unordered().parallel().count();
         // System.out.println("Counted - " + count);
         assertEquals(count, TRIPLES);
     }
 
-    public static String tripleAsString(Triple t) {
+    public static String tripleAsString(final Triple t) {
         return t.getSubject().ntriplesString() + " " + t.getPredicate().ntriplesString() + " "
                 + t.getObject().ntriplesString() + " .";
     }
 
     @Test
     public void writeGraphFromStream() throws Exception {
-        Path graphFile = Files.createTempFile("graph", ".nt");
+        final Path graphFile = Files.createTempFile("graph", ".nt");
         if (KEEP_FILES) {
             System.out.println("From stream: " + graphFile);
         } else {
             graphFile.toFile().deleteOnExit();
         }
 
-        Stream<CharSequence> stream = graph.stream().map(TestWritingGraph::tripleAsString);
+        final Stream<CharSequence> stream = graph.stream().map(TestWritingGraph::tripleAsString);
         Files.write(graphFile, stream::iterator, StandardCharsets.UTF_8);
     }
 
     @Test
     public void writeGraphFromStreamFiltered() throws Exception {
-        Path graphFile = Files.createTempFile("graph", ".nt");
+        final Path graphFile = Files.createTempFile("graph", ".nt");
         if (KEEP_FILES) {
             System.out.println("Filtered stream: " + graphFile);
         } else {
             graphFile.toFile().deleteOnExit();
         }
 
-        IRI subject = factory.createIRI("subj");
-        IRI predicate = factory.createIRI("pred");
-        Stream<CharSequence> stream = graph.stream(subject, predicate, null).map(TestWritingGraph::tripleAsString);
+        final IRI subject = factory.createIRI("subj");
+        final IRI predicate = factory.createIRI("pred");
+        final Stream<CharSequence> stream = graph.stream(subject, predicate, null).map(TestWritingGraph::tripleAsString);
         Files.write(graphFile, stream::iterator, StandardCharsets.UTF_8);
 
     }
 
     @Test
     public void writeGraphFromStreamFilteredNoMatches() throws Exception {
-        Path graphFile = Files.createTempFile("graph-empty-", ".nt");
+        final Path graphFile = Files.createTempFile("graph-empty-", ".nt");
         if (KEEP_FILES) {
             System.out.println("Filtered stream: " + graphFile);
         } else {
             graphFile.toFile().deleteOnExit();
         }
 
-        IRI subject = factory.createIRI("nonexistent");
-        IRI predicate = factory.createIRI("pred");
-        Stream<CharSequence> stream = graph.stream(subject, predicate, null).map(Object::toString);
+        final IRI subject = factory.createIRI("nonexistent");
+        final IRI predicate = factory.createIRI("pred");
+        final Stream<CharSequence> stream = graph.stream(subject, predicate, null).map(Object::toString);
         Files.write(graphFile, stream::iterator, StandardCharsets.UTF_8);
 
     }

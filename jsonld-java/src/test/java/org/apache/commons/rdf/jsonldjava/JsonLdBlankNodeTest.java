@@ -34,7 +34,7 @@ public class JsonLdBlankNodeTest extends AbstractBlankNodeTest {
     }
 
     @Override
-    protected BlankNode getBlankNode(String identifier) {
+    protected BlankNode getBlankNode(final String identifier) {
         return new JsonLdBlankNodeImpl(new RDFDataset.BlankNode("_:" + identifier), fixedPrefix);
     }
 

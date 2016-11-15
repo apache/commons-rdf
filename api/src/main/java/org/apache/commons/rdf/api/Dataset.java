@@ -40,6 +40,7 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
      * @param quad
      *            The quad to add
      */
+    @Override
     void add(Quad quad);
 
     /**
@@ -65,6 +66,7 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
      *            The quad to check.
      * @return True if the dataset contains the given Quad.
      */
+    @Override
     boolean contains(Quad quad);
 
     /**
@@ -171,6 +173,7 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
      * @param quad
      *            quad to remove
      */
+    @Override
     void remove(Quad quad);
 
     /**
@@ -192,6 +195,7 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
     /**
      * Clear the dataset, removing all quads.
      */
+    @Override
     void clear();
 
     /**
@@ -202,6 +206,7 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
      *
      * @return The number of quads in the dataset
      */
+    @Override
     long size();
 
     /**
@@ -219,6 +224,7 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
      *
      * @return A {@link Stream} over all of the quads in the dataset
      */
+    @Override
     Stream<? extends Quad> stream();
 
     /**
@@ -284,6 +290,7 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
      *             if a concurrency conflict occurs while the Iterator is
      *             active.
      */
+    @Override
     @SuppressWarnings("unchecked")
     default Iterable<Quad> iterate() throws ConcurrentModificationException, IllegalStateException {
         return ((Stream<Quad>) stream())::iterator;
@@ -340,8 +347,8 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
      *             active.
      */
     @SuppressWarnings("unchecked")
-    default Iterable<Quad> iterate(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate,
-            RDFTerm object) throws ConcurrentModificationException, IllegalStateException {
+    default Iterable<Quad> iterate(final Optional<BlankNodeOrIRI> graphName, final BlankNodeOrIRI subject, final IRI predicate,
+            final RDFTerm object) throws ConcurrentModificationException, IllegalStateException {
         return ((Stream<Quad>) stream(graphName, subject, predicate, object))::iterator;
     }
 }

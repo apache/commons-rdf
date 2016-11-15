@@ -64,6 +64,7 @@ public interface Triple extends TripleLike {
      * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-subject">RDF-1.1
      *      Triple subject</a>
      */
+    @Override
     BlankNodeOrIRI getSubject();
 
     /**
@@ -73,6 +74,7 @@ public interface Triple extends TripleLike {
      * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-predicate">RDF-1.1
      *      Triple predicate</a>
      */
+    @Override
     IRI getPredicate();
 
     /**
@@ -84,6 +86,7 @@ public interface Triple extends TripleLike {
      * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-object">RDF-1.1
      *      Triple object</a>
      */
+    @Override
     RDFTerm getObject();
 
     /**

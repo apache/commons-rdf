@@ -26,8 +26,8 @@ import org.junit.Test;
 public class DefaultQuadTest {
     @Test
     public void asQuad() throws Exception {
-        Quad q = new DummyQuad();
-        Triple t = q.asTriple();
+        final Quad q = new DummyQuad();
+        final Triple t = q.asTriple();
         assertEquals(t, t);
         assertNotEquals(t,  q);
         assertEquals(t, new DummyTriple());

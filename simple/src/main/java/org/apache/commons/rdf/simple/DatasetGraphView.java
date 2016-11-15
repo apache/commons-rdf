@@ -56,13 +56,13 @@ public class DatasetGraphView implements Graph {
     private final BlankNodeOrIRI namedGraph;
     private final Dataset dataset;
 
-    public DatasetGraphView(Dataset dataset) {
+    public DatasetGraphView(final Dataset dataset) {
         this.dataset = dataset;
         this.namedGraph = null;
         this.unionGraph = true;
     }
 
-    public DatasetGraphView(Dataset dataset, BlankNodeOrIRI namedGraph) {
+    public DatasetGraphView(final Dataset dataset, final BlankNodeOrIRI namedGraph) {
         this.dataset = dataset;
         this.namedGraph = namedGraph;
         this.unionGraph = false;
@@ -75,17 +75,17 @@ public class DatasetGraphView implements Graph {
     }
 
     @Override
-    public void add(Triple triple) {
+    public void add(final Triple triple) {
         dataset.add(namedGraph, triple.getSubject(), triple.getPredicate(), triple.getObject());
     }
 
     @Override
-    public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public void add(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         dataset.add(namedGraph, subject, predicate, object);
     }
 
     @Override
-    public boolean contains(Triple triple) {
+    public boolean contains(final Triple triple) {
         return dataset.contains(unionOrNamedGraph(), triple.getSubject(), triple.getPredicate(), triple.getObject());
     }
 
@@ -97,17 +97,17 @@ public class DatasetGraphView implements Graph {
     }
 
     @Override
-    public boolean contains(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public boolean contains(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         return dataset.contains(unionOrNamedGraph(), subject, predicate, object);
     }
 
     @Override
-    public void remove(Triple triple) {
+    public void remove(final Triple triple) {
         dataset.remove(unionOrNamedGraph(), triple.getSubject(), triple.getPredicate(), triple.getObject());
     }
 
     @Override
-    public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public void remove(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         dataset.remove(unionOrNamedGraph(), subject, predicate, object);
     }
 
@@ -127,8 +127,8 @@ public class DatasetGraphView implements Graph {
     }
 
     @Override
-    public Stream<? extends Triple> stream(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-        Stream<Triple> stream = dataset.stream(unionOrNamedGraph(), subject, predicate, object).map(Quad::asTriple);
+    public Stream<? extends Triple> stream(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
+        final Stream<Triple> stream = dataset.stream(unionOrNamedGraph(), subject, predicate, object).map(Quad::asTriple);
         if (unionGraph) {
             // remove duplicates
             return stream.distinct();

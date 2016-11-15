@@ -28,17 +28,17 @@ final class LiteralImpl extends AbstractRDFTerm<org.eclipse.rdf4j.model.Literal>
 
     private static final String QUOTE = "\"";
 
-    LiteralImpl(org.eclipse.rdf4j.model.Literal literal) {
+    LiteralImpl(final org.eclipse.rdf4j.model.Literal literal) {
         super(literal);
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (obj == this) {
             return true;
         }
         if (obj instanceof org.apache.commons.rdf.api.Literal) {
-            org.apache.commons.rdf.api.Literal other = (org.apache.commons.rdf.api.Literal) obj;
+            final org.apache.commons.rdf.api.Literal other = (org.apache.commons.rdf.api.Literal) obj;
             return getLexicalForm().equals(other.getLexicalForm()) && getDatatype().equals(other.getDatatype())
                     && getLanguageTag().equals(other.getLanguageTag());
 
@@ -61,6 +61,7 @@ final class LiteralImpl extends AbstractRDFTerm<org.eclipse.rdf4j.model.Literal>
         return value.getLabel();
     }
 
+    @Override
     public int hashCode() {
         return Objects.hash(value.getLabel(), value.getDatatype(), value.getLanguage());
     }
@@ -68,7 +69,7 @@ final class LiteralImpl extends AbstractRDFTerm<org.eclipse.rdf4j.model.Literal>
     @Override
     public String ntriplesString() {
         // TODO: Use a more efficient StringBuffer
-        String escaped = QUOTE + TurtleUtil.encodeString(value.getLabel()) + QUOTE;
+        final String escaped = QUOTE + TurtleUtil.encodeString(value.getLabel()) + QUOTE;
         if (value.getLanguage().isPresent()) {
             return escaped + "@" + value.getLanguage().get();
         }

@@ -31,7 +31,7 @@ class JenaLiteralImpl extends AbstractJenaRDFTerm implements JenaLiteral {
     private static InternalJenaFactory internalJenaFactory = new InternalJenaFactory() {
     };
 
-    JenaLiteralImpl(Node node) {
+    JenaLiteralImpl(final Node node) {
         super(node);
         if (!node.isLiteral()) {
             throw new IllegalArgumentException("Node is not a literal: " + node);
@@ -39,14 +39,17 @@ class JenaLiteralImpl extends AbstractJenaRDFTerm implements JenaLiteral {
     }
 
     @Override
-    public boolean equals(Object other) {
-        if (other == this)
+    public boolean equals(final Object other) {
+        if (other == this) {
             return true;
-        if (other == null)
+        }
+        if (other == null) {
             return false;
-        if (!(other instanceof Literal))
+        }
+        if (!(other instanceof Literal)) {
             return false;
-        Literal literal = (Literal) other;
+        }
+        final Literal literal = (Literal) other;
         return getLexicalForm().equals(literal.getLexicalForm()) && getLanguageTag().equals(literal.getLanguageTag())
                 && getDatatype().equals(literal.getDatatype());
     }
@@ -58,9 +61,10 @@ class JenaLiteralImpl extends AbstractJenaRDFTerm implements JenaLiteral {
 
     @Override
     public Optional<String> getLanguageTag() {
-        String x = asJenaNode().getLiteralLanguage();
-        if (x == null || x.isEmpty())
+        final String x = asJenaNode().getLiteralLanguage();
+        if (x == null || x.isEmpty()) {
             return Optional.empty();
+        }
         return Optional.of(x);
     }
 

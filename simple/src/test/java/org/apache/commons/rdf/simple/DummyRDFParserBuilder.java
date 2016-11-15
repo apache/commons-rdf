@@ -52,12 +52,12 @@ public class DummyRDFParserBuilder extends AbstractRDFParser<DummyRDFParserBuild
     @Override
     protected void parseSynchronusly() throws IOException, IllegalStateException, RDFParseException {
         // From parseSynchronusly both of these are always present
-        RDF factory = getRdfTermFactory().get();
-        Consumer<Quad> t = getTarget();
+        final RDF factory = getRdfTermFactory().get();
+        final Consumer<Quad> t = getTarget();
 
         // well - each parsing is unique. This should hopefully
         // catch any accidental double parsing
-        IRI parsing = factory.createIRI("urn:uuid:" + UUID.randomUUID());
+        final IRI parsing = factory.createIRI("urn:uuid:" + UUID.randomUUID());
         t.accept(factory.createQuad(null, parsing, factory.createIRI("http://example.com/greeting"),
                 factory.createLiteral("Hello world")));
 

@@ -36,8 +36,8 @@ abstract class AbstractRepositoryGraphLike<T extends TripleLike> implements RDF4
     protected final RDF4J rdf4jTermFactory;
     protected final UUID salt;
 
-    AbstractRepositoryGraphLike(Repository repository, UUID salt, boolean handleInitAndShutdown,
-            boolean includeInferred) {
+    AbstractRepositoryGraphLike(final Repository repository, final UUID salt, final boolean handleInitAndShutdown,
+            final boolean includeInferred) {
         this.repository = repository;
         this.salt = salt;
         this.includeInferred = includeInferred;
@@ -63,6 +63,7 @@ abstract class AbstractRepositoryGraphLike<T extends TripleLike> implements RDF4
         return repository.getConnection();
     }
 
+    @Override
     public Optional<Repository> asRepository() {
         return Optional.of(repository);
     }
