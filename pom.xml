@@ -35,7 +35,7 @@
     <name>Commons RDF</name>
     <description>Commons Java API for RDF 1.1</description>
 
-    <url>http://commonsrdf.incubator.apache.org/</url>
+    <url>https://commonsrdf.incubator.apache.org/</url>
 
     <inceptionYear>2015</inceptionYear>
 
@@ -615,6 +615,15 @@
         </profile>
     </profiles>
 
+
+    <distributionManagement>
+      <site>
+        <id>commons.site</id>
+        <name>Apache Commons Site SVN</name>
+        <url>scm:svn:${commons.scmPubUrl}</url>
+      </site>
+      <downloadUrl>${project.url}download.html</downloadUrl>
+    </distributionManagement>
 
 
 </project>

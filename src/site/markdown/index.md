@@ -144,9 +144,8 @@ For more details, read about the
 
 ## Contributing
 
-Please, take into account that this library is still <strong>work in progress</strong>,
-this set of interfaces are still under discussion and evolution. Therefore everybody
-is welcomed to [join the project](mail-lists.html) and [contribute](contributing.html)!
+Everybody is welcomed to [join the project](mail-lists.html) and
+[contribute](contributing.html)!
 
 ## Disclaimer
 
