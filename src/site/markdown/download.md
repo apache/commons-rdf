@@ -42,7 +42,7 @@ To use Commons RDF with [Maven](https://maven.apache.org/), add to your `pom.xml
       <version>0.3.0-incubating</version>
   </dependency>
 
-  <!-- and one of the implementations: -->
+  <!-- and at least one of the implementations: -->
 
   <dependency>
       <groupId>org.apache.commons</groupId>
@@ -86,7 +86,7 @@ which is also [mirrored to GitHub](http://github.com/apache/incubator-commonsrdf
 
 ### 0.3.0-incubating
 
-**Apache Commons RDF 0.3.0-incubating** was published on 2016-11-`TOOD`, and is available for download
+**Apache Commons RDF 0.3.0-incubating** was published on 2016-11-15, and is available for download
 from official mirrors of the
 ASF Distribution Directory [incubator/commonsrdf](https://www.apache.org/dyn/closer.lua/incubator/commonsrdf/0.3.0-incubating/):
 
@@ -99,7 +99,8 @@ ASF Distribution Directory [incubator/commonsrdf](https://www.apache.org/dyn/clo
   [md5](https://www.apache.org/dist/incubator/commonsrdf/0.3.0-incubating/apache-commons-rdf-0.3.0-incubating-src.tar.gz.md5),
   [sha1](https://www.apache.org/dist/incubator/commonsrdf/0.3.0-incubating/apache-commons-rdf-0.3.0-incubating-src.tar.gz.sha1))
 
-After downloading the files, check the signatures using the following [KEYS](https://www.apache.org/dist/incubator/commonsrdf/KEYS)
+After downloading the files, [check the signatures](https://www.apache.org/info/verification.html) 
+using the following [KEYS](https://www.apache.org/dist/incubator/commonsrdf/KEYS)
 file. The [changelog](https://s.apache.org/rdf-0.3.0)
 is available from the [Apache Commons RDF Jira](https://issues.apache.org/jira/browse/COMMONSRDF).
 
