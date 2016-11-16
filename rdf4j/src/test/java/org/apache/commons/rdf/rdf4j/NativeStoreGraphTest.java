@@ -142,7 +142,7 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
     public Timeout globalTimeout = Timeout.seconds(15);
 
     @After
-    public void shutdownAndDelete() throws IOException {
+    public void shutdownAndDelete() {
         // must shutdown before we delete
         if (repository != null) {
             System.out.print("Shutting down rdf4j repository " + repository + "...");
