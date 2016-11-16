@@ -30,7 +30,7 @@
 	<artifactId>commons-rdf-rdf4j</artifactId>
 	<packaging>jar</packaging>
 
-	<name>Commons RDF: Integration: RDF4j</name>
+	<name>Commons RDF impl: RDF4j</name>
 	<description>Eclipse RDF4j implementation of Commons RDF API</description>
 
 	<build>

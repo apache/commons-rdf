@@ -26,7 +26,7 @@
 		<version>0.3.0-incubating</version>
 	</parent>
 	<artifactId>commons-rdf-integration-tests</artifactId>
-	<name>Commons RDF: Integration tests</name>
+	<name>Commons RDF Integration tests</name>
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
