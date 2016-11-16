@@ -616,5 +616,13 @@
     </profiles>
 
 
+    <distributionManagement>
+      <site>
+        <id>commons.site</id>
+        <name>Apache Commons Site SVN</name>
+        <url>scm:svn:${commons.scmPubUrl}</url>
+      </site>
+    </distributionManagement>
+
 
 </project>
