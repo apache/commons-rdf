@@ -150,7 +150,7 @@ To create instances of Commons RDF interfaces like
 
 ### Finding an RDF implementation
 
-The [implementations](implementations.md) of `RDF` can usually be
+The [implementations](implementations.html) of `RDF` can usually be
 created using a normal Java constructor, for instance the
 _simple_ implementation from
 [SimpleRDF](apidocs/org/apache/commons/rdf/simple/SimpleRDF.html):
@@ -211,7 +211,7 @@ The [RDF](apidocs/org/apache/commons/rdf/api/RDF.html) interface also
 contains more specific variants of some of the methods above, e.g. to create a
 typed literal.
 
-In addition, the [implementations](implementations.md) of `RDF` may add
+In addition, the [implementations](implementations.html) of `RDF` may add
 specific converter methods and implementation-specific
 subtypes for interoperability with their underlying RDF framework's API.
 

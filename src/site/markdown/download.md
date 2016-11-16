@@ -72,7 +72,7 @@ The `<version>` above might not be up to date,
 see the [source code releases](#Source_code) below to find the latest version.
 
 See the [user guide](userguide.html) for documentation of the
-Apache Commons RDF API, and the [implementations](implementations.md) for
+Apache Commons RDF API, and the [implementations](implementations.html) for
 details on each of the bindings.
 
 

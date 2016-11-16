@@ -27,8 +27,8 @@ A diagram of the interfaces included in Commons RDF:
 <a href="src/site/resources/images/class-diagram.png"><img height="400" src="src/site/resources/images/class-diagram.png" alt="Class diagram" /></a>
 
 
-This library is still <strong>work in progress</strong>. Therefore everybody is
-welcomed to join the project and [contribute](http://commonsrdf.incubator.apache.org/contributing.html)!
+Everybody is welcomed to join the project and
+[contribute](http://commonsrdf.incubator.apache.org/contributing.html)!
 
 See the [Commons RDF homepage](http://commonsrdf.incubator.apache.org/) for more details.
 
@@ -178,9 +178,10 @@ and simple usage (e.g. output from an independent RDF parser).
 ## Testing
 
 The abstract classes
-[AbstractGraphTest](api/src/test/java/org/apache/commons/rdf/api/AbstractGraphTest.java)
-and 
-[AbstractRDFTermFactoryTest](api/src/test/java/org/apache/commons/rdf/api/AbstractRDFTermFactoryTest.java)
+[AbstractGraphTest](api/src/test/java/org/apache/commons/rdf/api/AbstractGraphTest.java),
+[AbstractDatasetTest](api/src/test/java/org/apache/commons/rdf/api/AbstractDatasetTest.java),
+[AbstractBlankNodeTest](api/src/test/java/org/apache/commons/rdf/api/AbstractBlankNodeTest.java) and
+[AbstractRDFTest](api/src/test/java/org/apache/commons/rdf/api/AbstractRDFTest.java)
 can be realised as JUnit tests by implementations in order to verify that they
 pass the minimal requirements of this API.
 
@@ -202,7 +203,7 @@ classifier for the commons-rdf-api module, for example (for Maven):
     </dependency>
 
 The extensions of each Test class need to provide a 
-[RDFTermFactory](api/src/main/java/org/apache/commons/rdf/api/RDFTermFactory.java)
+[RDF](api/src/main/java/org/apache/commons/rdf/api/RDF.java) instance
 that can create the corresponding implementations of a `Graph`, `IRI`, etc.
 
 For an example, see 
