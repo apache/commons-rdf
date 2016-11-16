@@ -50,4 +50,12 @@
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+      <site>
+        <id>commonsrdf-api-site</id>
+        <url>scm:svn:${commons.scmPubUrl}/api/</url>
+      </site>
+    </distributionManagement>
+
 </project>

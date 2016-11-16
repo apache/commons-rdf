@@ -33,6 +33,13 @@
     <name>Commons RDF impl: JSON-LD Java</name>
     <description>Parser integration of JSON-LD Java</description>
 
+    <distributionManagement>
+      <site>
+        <id>commonsrdf-api-site</id>
+        <url>scm:svn:${commons.scmPubUrl}/jsonld-java/</url>
+      </site>
+    </distributionManagement>
+
     <dependencies>
         <dependency>
             <groupId>${project.parent.groupId}</groupId>

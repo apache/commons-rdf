@@ -618,7 +618,7 @@
 
     <distributionManagement>
       <site>
-        <id>commons.site</id>
+        <id>commonsrdf-site</id>
         <name>Apache Commons Site SVN</name>
         <url>scm:svn:${commons.scmPubUrl}</url>
       </site>

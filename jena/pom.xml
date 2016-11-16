@@ -33,6 +33,13 @@
 	<name>Commons RDF impl: Jena</name>
 	<description>Apache Jena implementation of Commons RDF API</description>
 
+    <distributionManagement>
+      <site>
+        <id>commonsrdf-api-site</id>
+        <url>scm:svn:${commons.scmPubUrl}/jena/</url>
+      </site>
+    </distributionManagement>
+
 	<dependencies>
 		<dependency>
 			<groupId>${project.parent.groupId}</groupId>

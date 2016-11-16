@@ -52,6 +52,13 @@
 		</plugins>
 	</build>
 
+    <distributionManagement>
+      <site>
+        <id>commonsrdf-api-site</id>
+        <url>scm:svn:${commons.scmPubUrl}/rdf4j/</url>
+      </site>
+    </distributionManagement>
+
 	<dependencies>
 		<dependency>
 			<groupId>${project.parent.groupId}</groupId>

@@ -33,6 +33,13 @@
     <name>Commons RDF impl: Simple</name>
     <description>Simple (if not naive) implementation of Commons RDF API</description>
 
+    <distributionManagement>
+      <site>
+        <id>commonsrdf-api-site</id>
+        <url>scm:svn:${commons.scmPubUrl}/smple/</url>
+      </site>
+    </distributionManagement>
+
     <dependencies>
         <dependency>
             <groupId>${project.parent.groupId}</groupId>
@@ -47,4 +54,5 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
 </project>

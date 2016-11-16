@@ -35,6 +35,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
+
     <build>
       <!-- simplify folder structure for this example -
            real projects should use regular
@@ -45,6 +46,12 @@
       <sourceDirectory>src-2</sourceDirectory> <!-- not used -->
     </build>
 
+    <distributionManagement>
+      <site>
+        <id>commonsrdf-api-site</id>
+        <url>scm:svn:${commons.scmPubUrl}/examples/</url>
+      </site>
+    </distributionManagement>
 
     <dependencies>
     	<dependency>
@@ -66,6 +73,7 @@
     		<scope>test</scope>
     	</dependency>
     </dependencies>
+
     <repositories>
       <!-- Only needed if testing  release of commons-rdf -->
     	<repository>
@@ -77,4 +85,5 @@
     		</releases>
     	</repository>
     </repositories>
+
 </project>
