@@ -30,7 +30,7 @@
     <artifactId>commons-rdf-api</artifactId>
     <packaging>jar</packaging>
 
-    <name>Commons RDF: API</name>
+    <name>Commons RDF API</name>
     <description>Commons Java API for RDF 1.1</description>
 
     <build>

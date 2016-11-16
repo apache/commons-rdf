@@ -30,7 +30,7 @@
     <artifactId>commons-rdf-jsonld-java</artifactId>
     <packaging>jar</packaging>
 
-    <name>Commons RDF: Integration: JSON-LD Java</name>
+    <name>Commons RDF impl: JSON-LD Java</name>
     <description>Parser integration of JSON-LD Java</description>
 
     <dependencies>

@@ -67,6 +67,7 @@
       <item name="Source (GitHub mirror)" href="https://github.com/apache/incubator-commonsrdf/" />
       <item name="Issues (Jira)"        href="https://issues.apache.org/jira/browse/COMMONSRDF" />
     </menu>
+    <menu ref="modules" />
   </body>
 
   <poweredBy>

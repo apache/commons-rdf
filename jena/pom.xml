@@ -30,7 +30,7 @@
 	<artifactId>commons-rdf-jena</artifactId>
 	<packaging>jar</packaging>
 
-	<name>Commons RDF: Integration: Apache Jena</name>
+	<name>Commons RDF impl: Jena</name>
 	<description>Apache Jena implementation of Commons RDF API</description>
 
 	<dependencies>
