@@ -36,7 +36,7 @@
     <distributionManagement>
       <site>
         <id>commonsrdf-api-site</id>
-        <url>scm:svn:${commons.scmPubUrl}/smple/</url>
+        <url>scm:svn:${commons.scmPubUrl}/simple/</url>
       </site>
     </distributionManagement>
 
