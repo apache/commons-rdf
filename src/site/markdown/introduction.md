@@ -422,6 +422,8 @@ You can use `optional.isPresent()` and `optional.get()` to check if a
 `Triple` matched the graph stream pattern:
 
 ```java
+import java.util.Optional;
+// ...
 Optional<? extends Triple> nameTriple = graph.stream(alice, name, null).findAny();
 if (nameTriple.isPresent()) {
     System.out.println(nameTriple.get());

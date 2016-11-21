@@ -17,8 +17,10 @@
  */
 package example;
 
+import java.util.Optional;
 import org.apache.commons.rdf.api.*;
 import org.apache.commons.rdf.simple.SimpleRDF;
+import org.apache.commons.rdf.simple.Types;
 
 /** See http://commonsrdf.incubator.apache.org/introduction.html
  */
