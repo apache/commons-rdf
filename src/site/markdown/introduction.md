@@ -377,7 +377,263 @@ for (Triple triple : graph.iterate(alice, knows, null)) {
 
 ## Literal values
 
-We talked briefly about literals above as a way to represent values in RDF.
-What is a value? In a way you could a value is when we no longer want to
-stay in graph land and just want to use primitive types like `long`,
-`int` or `String`.  
+We talked briefly about literals above as a way to represent _values_ in RDF.
+What is a literal value? In a way you could think of a value as when you no longer
+want to stay in graph-land of related resources, and just want to use primitive
+types like `float`, `int` or `String` to represent values like
+a player rating, the number of matches played, or the full name of a person
+(including spaces and punctuation which don't work well in an identifier).
+
+Such values are in Commons RDF represented as instances of `Literal`,
+which we can create using `rdf.createLiteral(..)`. Strings are easy:
+
+```java
+Literal aliceName = rdf.createLiteral("Alice W. Land");
+```
+
+We can then add a triple that relates the resource `<Alice>`
+to this value, let's use a new predicate `<name>`:
+
+```java
+IRI name = rdf.createIRI("name");
+graph.add(alice, name, aliceName);
+```
+
+When you look up literal properties in a graph,
+take care that in RDF a property is not necessarily _functional_, that is,
+it would be perfectly valid RDF-wise for a person to have multiple names;
+Alice might also have a `<name> "Alice Land"`.  Instead of using
+`graph.iterate()` and `break` in a for-loop, it might be easier to use the
+Java 8 `Stream` returned from `.stream()` together with `.findAny()`
+- which  return an `Optional` in case there is no `<name>`:
+
+```java
+System.out.println(graph.stream(alice, name, null).findAny());
+```
+
+> `Optional[<Alice> <name> "Alice W. Land" .]``
+
+**Note:** Using `.findFirst()` will not returned the "first"
+recorded triple, as triples in a graph are not necessarily
+kept in order.
+
+You can use `optional.isPresent()` and `optional.get()` to check if a
+`Triple` matched the graph stream pattern:
+
+```java
+Optional<? extends Triple> nameTriple = graph.stream(alice, name, null).findAny();
+if (nameTriple.isPresent()) {
+    System.out.println(nameTriple.get());
+}
+```
+
+If you feel adventerous, you can try the
+[Java 8 functional programming](http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/Lambda-QuickStart/index.html)
+style to work with of `Stream` and `Optional` and get the literal value unquoted:
+
+```java
+graph.stream(alice, name, null)
+        .findAny().map(Triple::getObject)
+        .filter(obj -> obj instanceof Literal)
+        .map(literalName -> ((Literal)literalName).getLexicalForm())
+        .ifPresent(System.out::println);
+```
+
+> `Alice W. Land`
+
+Notice how we here used a `.filter` to skip any non-`Literal` names
+(which would not have the `.getLexicalForm()` method).
+
+
+
+### Typed literals
+
+Non-String value types are represented in RDF as _typed literals_;
+which is similar to (but not the same as) Java native types. A
+typed literal is a combination of a _string representation_
+(e.g. "13.37") and a data type IRI, e.g. `<http://www.w3.org/2001/XMLSchema#float>`.
+RDF reuse the XSD datatypes.
+
+A collection of the standardized datatype `IRI`s
+are provided in Simple's [Types](apidocs/org/apache/commons/rdf/simple/Types.html)
+class, which we can use with `createLiteral` by adding the corresponding `import`:
+
+```java
+import org.apache.commons.rdf.simple.Types;
+// ...
+IRI playerRating = rdf.createIRI("playerRating");
+Literal aliceRating = rdf.createLiteral("13.37", Types.XSD_FLOAT);
+graph.add(alice, playerRating, aliceRating);
+```
+
+Note that Commons RDF does not currently provide converters
+from/to native Java data types and the RDF string representations.
+
+### Language-specific literals
+
+We live in a globalized world, with many spoken and written languages.
+While we can often agree about a concept like `<Football>`, different
+languages might call it differently. The distinction in RDF
+between identified resources and literal values, mean we can represent
+names or labels for the same thing.
+
+Rather than introducing language-specific predicates like
+`<name_in_english>` and `<name_in_norwegian>`
+it is usually better in RDF to use _language-typed literals_:
+
+```java
+Literal footballInEnglish = rdf.createLiteral("football", "en");
+Literal footballInNorwegian = rdf.createLiteral("fotball", "no");
+
+graph.add(football, name, footballInEnglish);
+graph.add(football, name, footballInNorwegian);
+```
+
+The language tags like `"en"` and `"no"` are
+identified by [BCP47](https://tools.ietf.org/html/bcp47) - you can't just make
+up your own but must use one that matches the language. It is possible to use
+localized languages as well, e.g.
+
+```java
+Literal footballInAmericanEnglish = rdf.createLiteral("soccer", "en-US");
+graph.add(football, name, footballInAmericanEnglish);
+```
+
+Note that Commons RDF does not currently provide constants for
+the standardized languages or methods to look up localized languages.
+
+## Blank nodes - when you don't know the identity
+
+Sometimes you don't know the identity of a resource. This can be the case
+where you know the _existence_ of a resource, similar to "someone" or "some"
+in English.  For instance,
+
+```turtle
+<Charlie> <knows> _:someone .
+_:someone <plays> <Football> .
+```
+
+We don't know who this `_:someone` is, it could be `<Bob>` (which we know
+plays football), it could be someone else, even `<Alice>`
+(we don't know that she doesn't play football).
+
+In RDF we represent `_:someone` as a _blank node_ - it's a resource without
+a global identity.  Different RDF files can all talk about `_:blanknode`, but they
+would all be different resources.  Crucially, a blank node can be used
+in multiple triples within the same graph, so that we can relate
+a subject to a blank node resource, and then describe that resource (usually incomplete).
+
+Let's add the blank node statements to our graph:
+
+```turtle
+BlankNode someone = rdf.createBlankNode();
+graph.add(charlie, knows, someone);
+graph.add(someone, plays, football);
+BlankNode someoneElse = rdf.createBlankNode();
+graph.add(charlie, knows, someoneElse);
+```
+
+Every call to `rdf.createBlankNode()` creates a new, unrelated blank node
+with an internal identifier. Let's have a look:
+
+```java
+for (Triple heKnows : graph.iterate(charlie, knows, null)) {
+    if (! (heKnows.getObject() instanceof BlankNodeOrIRI)) {
+        continue;
+    }
+    BlankNodeOrIRI who = (BlankNodeOrIRI)heKnows.getObject();
+    System.out.println("Charlie knows "+ who);
+    for (Triple whoPlays : graph.iterate(who, plays, null)) {
+        System.out.println("  who plays " + whoPlays.getObject());
+    }
+}      
+```
+
+> `Charlie knows _:ae4115fb-86bf-3330-bc3b-713810e5a1ea` <br>
+> `  who plays <Football>` <br>
+> `Charlie knows _:884d5c05-93a9-3709-b655-4152c2e51258`
+
+As we see above, given a `BlankNode` instance it is perfectly
+valid to ask the same `Graph` about further triples
+relating to the `BlankNode`.
+
+### Blank node labels
+
+In Commons RDF it is also possible to create a blank node from a
+_name_ - which can be useful if you don't want to keep (or look up)
+the `BlankNode` instance to later add statements about the same node.
+
+Let's first delete the old BlankNode statements:
+
+```java
+graph.remove(null,null,someone);
+graph.remove(someone,null,null);
+```
+
+And now we'll try an alternate approach:
+
+```java
+// no Java variable for the new BlankNode instance
+graph.add(charlie, knows, rdf.createBlankNode("someone"));        
+// at any point later (with the same RDF instance)
+graph.add(rdf.createBlankNode("someone"), plays, football);
+```
+
+
+Running the `"Charlie knows"` query again should still work, but now
+return a different identifier.
+
+
+> `Charlie knows _:5e2a75b2-33b4-3bb8-b2dc-019d42c2215a` <br>
+> `  who plays <Football>` <br>
+> `Charlie knows _:884d5c05-93a9-3709-b655-4152c2e51258`
+
+
+You may notice that with `SimpleRDF` the string `"someone"` does not
+survive into the string representation of the `BlankNode` label `_:someone`,
+other `RDF` implementations may support that.
+
+Note that it needs to be the same `RDF` instance to recreate
+the same _"someone"_ `BlankNode`.  This is a Commons RDF-specific behaviour to improve
+cross-graph compatibility, other RDF frameworks may save the blank node using
+the provided name as a blank node label, which in some cases
+could cause collisions (but perhaps more readable output).
+
+
+### Open world assumption
+
+How to interpret a blank node depends on the assumptions you build into your
+RDF application - it could be thought of as a logical "there exists a resource that.."
+or a more pragmatic "I don't know/care about the resource's IRI". Blank nodes can be
+useful if your RDF model describes intermediate resources like
+"a person's membership of an organization" or "a participant's result in a race"
+which it often is not worth maintaining identifiers for.
+
+It is common on the semantic web to use the
+[open world assumption](http://wiki.opensemanticframework.org/index.php/Overview_of_the_Open_World_Assumption) -
+if it is not stated as a _triple_ in your graph, then you don't know if
+something is is true or false,
+for instance if `<Alice> <plays> <Football> .`  
+
+Note that the open world assumption applies both to `IRI`s and `BlankNode`s,
+that is, you can't necessarily assume that the
+resources `<Alice>` and `<Charlie>` describe
+two different people just because they have
+two different identifiers - in fact it is very common that different systems use
+different identifiers to describe the same (or pretty much the same) thing in the
+real world.
+
+It is however common for applications to
+"close the world"; saying "given this information I have
+gathered as RDF, I'll assume these resources are all separate things in the world,
+then do I then know if `<Alice> <plays> <Football>` is false?".
+
+Using logical _inference rules_ and _ontologies_
+is one method to get stronger assumptions and conclusions.
+Note that building good rules or ontologies requires a fair
+bit more knowledge than what can be conveyed in this short tutorial.
+
+It is out of scope for Commons RDF to support the many ways to deal with
+logical assumptions and conclusions, however you may find interest in using
+[Jena implementation](implementations.html#Apache_Jena)
+combined with Jena's [ontology API](https://jena.apache.org/documentation/ontology/).
