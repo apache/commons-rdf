@@ -224,7 +224,7 @@ than `<Bob>` or `<Tennis>`.
 
 It is therefore possible to _query_ the graph, such as _"Who plays Tennis?_ or
 _"Who does Alice know?"_, but also more complex, like
-_"Does Alice anyone that plays Football?"_.
+_"Does Alice know anyone that plays Football?"_.
 
 Let's try that now using Commons RDF. To keep the triples we'll need a `Graph`:
 
@@ -305,7 +305,7 @@ for (Triple triple : graph.iterate(alice, knows, null)) {
 Let's try to look up which of those friends play football:
 
 ```java
-System.out.println("Does Alice anyone that plays Football?");
+System.out.println("Does Alice know anyone that plays Football?");
 for (Triple triple : graph.iterate(alice, knows, null)) {
     RDFTerm aliceFriend = triple.getObject();
     if (graph.contains(aliceFriend, plays, football)) {
@@ -360,7 +360,7 @@ check (skipping any literals) and cast to `BlankNodeOrIRI`:
 
 
 ```java
-System.out.println("Does Alice anyone that plays Football?");
+System.out.println("Does Alice know anyone that plays Football?");
 for (Triple triple : graph.iterate(alice, knows, null)) {
     RDFTerm aliceFriend = triple.getObject();
     if (! (aliceFriend instanceof BlankNodeOrIRI)) {
@@ -372,7 +372,7 @@ for (Triple triple : graph.iterate(alice, knows, null)) {
 }
 ```
 
-> `Does Alice anyone that plays Football?` <br />
+> `Does Alice know anyone that plays Football?` <br />
 > `Yes, <Bob>`
 
 ## Literal values
@@ -522,9 +522,9 @@ In RDF we represent `_:someone` as a _blank node_ - it's a resource without
 a global identity.  Different RDF files can all talk about `_:blanknode`, but they
 would all be different resources.  Crucially, a blank node can be used
 in multiple triples within the same graph, so that we can relate
-a subject to a blank node resource, and then describe that resource (usually incomplete).
+a subject to a blank node resource, and then describe the blank node further.
 
-Let's add the blank node statements to our graph:
+Let's add some blank node statements to our graph:
 
 ```turtle
 BlankNode someone = rdf.createBlankNode();
@@ -556,15 +556,16 @@ for (Triple heKnows : graph.iterate(charlie, knows, null)) {
 
 As we see above, given a `BlankNode` instance it is perfectly
 valid to ask the same `Graph` about further triples
-relating to the `BlankNode`.
+relating to the `BlankNode`. (Asking any other graph will probably
+not give any results).
 
 ### Blank node labels
 
 In Commons RDF it is also possible to create a blank node from a
-_name_ - which can be useful if you don't want to keep (or look up)
+_name_ or _label_ - which can be useful if you don't want to keep or retrieve
 the `BlankNode` instance to later add statements about the same node.
 
-Let's first delete the old BlankNode statements:
+Let's first delete the old `BlankNode` statements:
 
 ```java
 graph.remove(null,null,someone);
@@ -581,8 +582,9 @@ graph.add(rdf.createBlankNode("someone"), plays, football);
 ```
 
 
-Running the `"Charlie knows"` query again should still work, but now
-return a different identifier.
+Running the `"Charlie knows"` query again (try making it into a function)
+should still work, but now return a different label for the football
+player:
 
 
 > `Charlie knows _:5e2a75b2-33b4-3bb8-b2dc-019d42c2215a` <br />
@@ -590,15 +592,16 @@ return a different identifier.
 > `Charlie knows _:884d5c05-93a9-3709-b655-4152c2e51258`
 
 
-You may notice that with `SimpleRDF` the string `"someone"` does not
-survive into the string representation of the `BlankNode` label `_:someone`,
-other `RDF` implementations may support that.
+You may notice that with `SimpleRDF` the string `"someone"` does **not**
+survive into the string representation of the `BlankNode` label as `_:someone`,
+that is because unlike `IRI`s the label of a blank node carries no meaning
+and does not need to be preserved.
 
 Note that it needs to be the same `RDF` instance to recreate
-the same _"someone"_ `BlankNode`.  This is a Commons RDF-specific behaviour to improve
-cross-graph compatibility, other RDF frameworks may save the blank node using
-the provided name as a blank node label, which in some cases
-could cause collisions (but perhaps more readable output).
+the same _"someone"_ `BlankNode`.  This is a Commons RDF-specific
+behaviour to improve cross-graph compatibility, other RDF frameworks may save
+the blank node using the provided label as-is with a `_:` prefix,
+which in some cases could cause collisions (but perhaps more readable output).
 
 
 ### Open world assumption
