@@ -183,8 +183,8 @@ System.out.println(aliceKnowsBob.getPredicate().ntriplesString());
 System.out.println(aliceKnowsBob.getObject().ntriplesString());
 ```
 
-> `<Alice>` <br>
-> `<knows>` <br>
+> `<Alice>` <br />
+> `<knows>` <br />
 > `<Bob>`
 
 _**Tip**: Instances from `SimpleRDF` can be printed directly, as
@@ -270,8 +270,8 @@ for (Triple triple : graph.iterate(null, plays, tennis)) {
 }
 ```
 
-> `Who plays Tennis?` <br>
-> `<Alice>` <br>
+> `Who plays Tennis?` <br />
+> `<Alice>` <br />
 > `<Charlie>`
 
 
@@ -298,8 +298,8 @@ for (Triple triple : graph.iterate(alice, knows, null)) {
 }
 ```
 
-> `Who does Alice know?` <br>
-> `<Bob>` <br>
+> `Who does Alice know?` <br />
+> `<Bob>` <br />
 > `<Charlie>`
 
 Let's try to look up which of those friends play football:
@@ -344,7 +344,7 @@ As we are retrieving triples from the graph, the `triple.getObject()` is only kn
 to be an RDFTerm if we use it as a Java variable - there could in theory be triples
 in the graph with `Literal` and `BlankNode` objects:
 
-```
+```turtle
 <Alice> <knows> "Santa Claus".
 <Alice> <knows> _:someone.
 ```
@@ -372,7 +372,7 @@ for (Triple triple : graph.iterate(alice, knows, null)) {
 }
 ```
 
-> `Does Alice anyone that plays Football?`
+> `Does Alice anyone that plays Football?` <br />
 > `Yes, <Bob>`
 
 ## Literal values
@@ -402,8 +402,9 @@ graph.add(alice, name, aliceName);
 When you look up literal properties in a graph,
 take care that in RDF a property is not necessarily _functional_, that is,
 it would be perfectly valid RDF-wise for a person to have multiple names;
-Alice might also have a `<name> "Alice Land"`.  Instead of using
-`graph.iterate()` and `break` in a for-loop, it might be easier to use the
+Alice might also be called _"Alice Land"_.  
+
+Instead of using `graph.iterate()` and `break` in a for-loop, it might be easier to use the
 Java 8 `Stream` returned from `.stream()` together with `.findAny()`
 - which  return an `Optional` in case there is no `<name>`:
 
@@ -411,7 +412,7 @@ Java 8 `Stream` returned from `.stream()` together with `.findAny()`
 System.out.println(graph.stream(alice, name, null).findAny());
 ```
 
-> `Optional[<Alice> <name> "Alice W. Land" .]``
+> `Optional[<Alice> <name> "Alice W. Land" .]`
 
 **Note:** Using `.findFirst()` will not returned the "first"
 recorded triple, as triples in a graph are not necessarily
@@ -549,8 +550,8 @@ for (Triple heKnows : graph.iterate(charlie, knows, null)) {
 }      
 ```
 
-> `Charlie knows _:ae4115fb-86bf-3330-bc3b-713810e5a1ea` <br>
-> `  who plays <Football>` <br>
+> `Charlie knows _:ae4115fb-86bf-3330-bc3b-713810e5a1ea` <br />
+> `  who plays <Football>` <br />
 > `Charlie knows _:884d5c05-93a9-3709-b655-4152c2e51258`
 
 As we see above, given a `BlankNode` instance it is perfectly
@@ -584,8 +585,8 @@ Running the `"Charlie knows"` query again should still work, but now
 return a different identifier.
 
 
-> `Charlie knows _:5e2a75b2-33b4-3bb8-b2dc-019d42c2215a` <br>
-> `  who plays <Football>` <br>
+> `Charlie knows _:5e2a75b2-33b4-3bb8-b2dc-019d42c2215a` <br />
+> `  who plays <Football>` <br />
 > `Charlie knows _:884d5c05-93a9-3709-b655-4152c2e51258`
 
 
