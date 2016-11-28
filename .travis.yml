@@ -23,7 +23,7 @@ install: /bin/true
 
 notifications:
   email:
-    - commits@commonsrdf.incubator.apache.org
+    - notifications@commons.apache.org
 
 after_success:
   - mvn clean test coveralls:report

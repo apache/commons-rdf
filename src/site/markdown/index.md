@@ -18,19 +18,15 @@
 
 -->
 
-# Apache Commons RDF (incubating)
+# Apache Commons RDF
 
 <div class="alert alert-info" role="alert">
   <p>
     <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-    Commons RDF has transitioned to the
-    <a class="alert-link" href="http://incubator.apache.org/">Apache Incubator</a>, with an aim to
-    become part of
-    <a class="alert-link" href="http://commons.apache.org/">Apache Commons</a>.
-    This project
-    was previously hosted at
-    <a class="alert-link" href="http://commons-rdf.github.io/">commons-rdf.github.io</a>,
-    which is not affiliated with the Apache Software Foundation.
+    Commons RDF has <strong>graduated</strong> from the
+    <a class="alert-link" href="http://incubator.apache.org/">Apache Incubator</a> and is 
+    now a component of the 
+    <a class="alert-link" href="https://commons.apache.org/">Apache Commons</a> project.
   </p>
 </div>
 
@@ -147,16 +143,3 @@ For more details, read about the
 Everybody is welcomed to [join the project](mail-lists.html) and
 [contribute](contributing.html)!
 
-## Disclaimer
-
-Apache Commons RDF is an effort undergoing incubation at [The Apache Software Foundation
-(ASF)](http://apache.org/) sponsored by the [Apache Incubator PMC](http://incubator.apache.org/).
-Incubation is required of all newly accepted projects until a further review
-indicates that the infrastructure, communications, and decision making process
-have stabilized in a manner consistent with other successful ASF projects.
-While incubation status is not necessarily a reflection of the completeness or
-stability of the code, it does indicate that the project has yet to be fully
-endorsed by the ASF.
-
-<a href="http://incubator.apache.org/"><img
-  alt="Apache Incubator" src="images/apache-incubator-logo.png" height="57" width="229" /></a>

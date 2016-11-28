@@ -1,4 +1,4 @@
-# Apache Commons RDF (Incubating)
+# Apache Commons RDF
 
 [![Build Status](https://travis-ci.org/apache/incubator-commonsrdf.svg?branch=master)](https://travis-ci.org/apache/incubator-commonsrdf)
 
@@ -63,19 +63,6 @@ about its usage, or help shape Commons RDF by
 [contributing](http://commonsrdf.incubator.apache.org/contributing.html)
 your ideas, code and use cases. 
  
-
-
-## Disclaimer
-
-Apache Commons RDF is an effort undergoing incubation at [The Apache Software Foundation
-(ASF)](http://apache.org/) sponsored by the [Apache Incubator PMC](http://incubator.apache.org/).
-Incubation is required of all newly accepted projects until a further review
-indicates that the infrastructure, communications, and decision making process
-have stabilized in a manner consistent with other successful ASF projects.
-While incubation status is not necessarily a reflection of the completeness or
-stability of the code, it does indicate that the project has yet to be fully
-endorsed by the ASF.
-
 
 
 ## Building
