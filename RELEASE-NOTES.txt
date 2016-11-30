@@ -1,4 +1,10 @@
-# Apache Commons RDF (incubating)
+# Apache Commons RDF
+
+## 1.0.0-SNAPSHOT
+
+See https://issues.apache.org/jira/browse/COMMONSRDF/
+for issues fixed since the last release.
+
 
 ## 0.3.0-incubating (2016-11)
 

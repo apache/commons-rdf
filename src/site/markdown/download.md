@@ -23,8 +23,8 @@
 
 ## Maven
 
-Apache Commons RDF (incubating) is available from
-[Maven Central](http://central.maven.org/maven2/org/apache/commons/commons-rdf-api/),
+Apache Commons RDF is available from
+[Maven Central](https://repo.maven.apache.org/maven2/org/apache/commons/commons-rdf-api/),
 mirrored from
 [ASF's Maven repository](https://repository.apache.org/content/repositories/releases/org/apache/commons/commons-rdf-api/).
 For convenience of IDE users, the Maven artifacts include `-javadoc.jar` and
@@ -78,11 +78,12 @@ details on each of the bindings.
 
 ## Source code
 
-Here you can find all source releases published by Apache Commons RDF (incubating).
+Here you can find all source releases published of Apache Commons RDF.
 
 For the latest developments
 you may also be interested in the [source code repository](source-repository.html),
-which is also [mirrored to GitHub](http://github.com/apache/incubator-commonsrdf).
+which is also [mirrored to GitHub](http://github.com/apache/commons-rdf).
+
 
 ### 0.3.0-incubating
 
@@ -106,4 +107,8 @@ is available from the [Apache Commons RDF Jira](https://issues.apache.org/jira/b
 
 ### Previous Releases
 
-Previous release are available from [archive.apache.org](https://archive.apache.org/dist/incubator/commonsrdf/).
+Previous release are available from [archive.apache.org](https://archive.apache.org/dist/commons/rdf/).
+
+Note that earlier 
+[incubator releases](https://archive.apache.org/dist/incubator/commonsrdf/)
+(0.3.0-incubating and earlier) are archived separately. 

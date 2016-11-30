@@ -26,7 +26,7 @@ and that you use an _IDE_ like
 [Netbeans](https://netbeans.org/).  Note that Commons RDF requires
 Open JDK 8, [Java 8](https://www.java.com/) or equivalent.
 
-The Commons RDF JARs are [available from Maven Central](download.html).
+The Commons RDF JARs are [available from Maven Central](download.html#Maven).
 While there are multiple [Commons RDF implementations](implementations.html),
 this tutorial will use the built-in _simple_ implementation as it requires no
 additional dependencies.
@@ -70,7 +70,7 @@ This tutorial assumes a classic Java project with local `.jar` files (say in you
 ([signature](https://repo.maven.apache.org/maven2/org/apache/commons/commons-rdf-api/0.3.0-incubating/commons-rdf-api-0.3.0-incubating.jar.asc))
 * [commons-rdf-simple-0.3.0-incubating.jar](https://repo.maven.apache.org/maven2/org/apache/commons/commons-rdf-simple/0.3.0-incubating/commons-rdf-simple-0.3.0-incubating.jar) ([signature](https://repo.maven.apache.org/maven2/org/apache/commons/commons-rdf-simple/0.3.0-incubating/commons-rdf-simple-0.3.0-incubating.jar.asc))
 
-_Tip: If you prefer you can [verify the  signatures](https://www.apache.org/info/verification.html) using the Commons RDF [KEYS](http://www.apache.org/dist/incubator/commonsrdf/KEYS)._
+_Tip: If you prefer you can [verify the  signatures](https://www.apache.org/info/verification.html) using the Apache Commons [KEYS](https://www.apache.org/dist/commons/KEYS)._
 
 As there are [multiple Commons RDF implementations](implementations.html),
 we have to say which one we want to use. Add to your `RdfTutorial` class:
@@ -326,7 +326,7 @@ interfaces:
 * [BlankNode](apidocs/org/apache/commons/rdf/api/BlankNode.html) (indirect)
 * [Literal](apidocs/org/apache/commons/rdf/api/Literal.html) (value)
 
-Look at the method signature of [graph.contains(s,p,o)](http://commonsrdf.incubator.apache.org/apidocs/org/apache/commons/rdf/api/Graph.html#contains-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-):
+Look at the method signature of [graph.contains(s,p,o)](apidocs/org/apache/commons/rdf/api/Graph.html#contains-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-):
 
 ```java
 boolean contains(BlankNodeOrIRI subject,

@@ -98,8 +98,8 @@ _The `<version>` above might not be up to date,
 see the [download page](download.html) for the latest version._
 
 If you are testing a `SNAPSHOT` version, then you will have to either build
-Commons RDF from [source](https://github.com/apache/incubator-commonsrdf), or
-add this [snapshot repository](https://github.com/apache/incubator-commonsrdf#snapshot-repository):
+Commons RDF from [source](https://github.com/apache/commons-rdf), or
+add this [snapshot repository](https://github.com/apache/commons-rdf#snapshot-repository):
 
 ```xml
 <repositories>
@@ -1277,8 +1277,8 @@ blank node [uniqueReference](apidocs/org/apache/commons/rdf/api/BlankNode.html#u
 
 The complete source code for the examples used in this user guide can be
 browsed in
-[UserGuideTest.java](https://github.com/apache/incubator-commonsrdf/blob/master/examples/src/example/UserGuideTest.java)
+[UserGuideTest.java](https://github.com/apache/commons-rdf/blob/master/examples/src/example/UserGuideTest.java)
 within the
-[examples](https://github.com/apache/incubator-commonsrdf/tree/master/examples)
+[examples](https://github.com/apache/commons-rdf/tree/master/examples)
 folder of the
 Commons RDF [source code repository](source-repository.html).

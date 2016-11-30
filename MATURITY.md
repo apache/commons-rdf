@@ -3,6 +3,11 @@
 This is a report of Commons RDF following the
 [Maturity Model for Apache Projects](https://community.apache.org/apache-way/apache-project-maturity-model.html) (2016-10).
 
+**NOTE**: Commons RDF [graduated on 2016-11-28](https://lists.apache.org/thread.html/a2e4081e53bde4d1ce2f98c13d1f3c9a783aaf2c5f1acec9c7b22e1b@%3Cgeneral.incubator.apache.org%3E)
+from the [Apache Incubator](http://incubator.apache.org/) to 
+become a sub-project (component) of [Apache Commons](https://commons.apache.org/).
+The links below may not have been updated following graduation.
+
 ## Code
 
 ### CD10

@@ -1,10 +1,10 @@
 # Apache Commons RDF
 
-[![Build Status](https://travis-ci.org/apache/incubator-commonsrdf.svg?branch=master)](https://travis-ci.org/apache/incubator-commonsrdf)
+[![Build Status](https://travis-ci.org/apache/commons-rdf.svg?branch=master)](https://travis-ci.org/apache/commons-rdf)
 
-[![Coverage Status](https://coveralls.io/repos/apache/incubator-commonsrdf/badge.svg?branch=master&service=github)](https://coveralls.io/github/apache/incubator-commonsrdf?branch=master)
+[![Coverage Status](https://coveralls.io/repos/apache/commons-rdf/badge.svg?branch=master&service=github)](https://coveralls.io/github/apache/commons-rdf?branch=master)
 
-[Commons RDF](http://commonsrdf.incubator.apache.org/) aims to provide a common
+[Commons RDF](https://commons.apache.org/proper/commons-rdf/) aims to provide a common
 library for [RDF 1.1](http://www.w3.org/TR/rdf11-concepts/) with implementations
 for common Java RDF frameworks like [RDF4J](http://rdf4j.org/), [Apache
 Jena](http://jena.apache.org/) as well as for other libraries such as
@@ -14,7 +14,7 @@ Jena](http://jena.apache.org/) as well as for other libraries such as
 The main motivation behind this simple library is to revise an historical
 incompatibility issue between these toolkits. This library does not pretend to
 be a generic API wrapping those libraries, but is a 
-[set of common Java interfaces](http://commonsrdf.incubator.apache.org/apidocs/index.html?org/apache/commons/rdf/api/package-summary.html)
+[set of common Java interfaces](https://commons.apache.org/proper/commons-rdf/apidocs/index.html?org/apache/commons/rdf/api/package-summary.html)
 for the RDF 1.1 concepts, e.g. `IRI`, `BlankNode`, `Graph`,
 accompanied with unit test cases for their expected behaviour, and a `simple`
 implementation, which main purpose is to clarify the tests and interfaces.
@@ -28,9 +28,9 @@ A diagram of the interfaces included in Commons RDF:
 
 
 Everybody is welcomed to join the project and
-[contribute](http://commonsrdf.incubator.apache.org/contributing.html)!
+[contribute](https://commons.apache.org/proper/commons-rdf/contributing.html)!
 
-See the [Commons RDF homepage](http://commonsrdf.incubator.apache.org/) for more details.
+See the [Commons RDF homepage](httasp://commons.apache.org/proper/commons-rdf/) for more details.
 
 ## License
 
@@ -60,7 +60,7 @@ mailing list, use the
 [Subject tag `[RDF]`](https://lists.apache.org/list.html?dev@commons.apache.org:lte=1M:%5BRDF%5D)
 to follow the ongoing development of Commons RDF, ask questions 
 about its usage, or help shape Commons RDF by 
-[contributing](http://commonsrdf.incubator.apache.org/contributing.html)
+[contributing](https://commons.apache.org/proper/commons-rdf/contributing.html)
 your ideas, code and use cases. 
  
 
@@ -112,11 +112,11 @@ To then use this build from your project, add to Maven (update `<version>` to ma
     </dependency>
 
 .. and an equivalent `<dependency>` for the 
-[implementation](http://commonsrdf.incubator.apache.org/implementations.html)
+[implementation](https://commons.apache.org/proper/commons-rdf/implementations.html)
 you would like, e.g. `commons-rdf-simple`.
 
 The `<version>` above might not be up to date, 
-see the [downloads](http://commonsrdf.incubator.apache.org/download.html) to
+see the [downloads](https://commons.apache.org/proper/commons-rdf/download.html) to
 use the latest stable release published in Maven Central.
     
 
@@ -124,13 +124,13 @@ use the latest stable release published in Maven Central.
 
 The Apache Commons RDF project is aiming to regularly release early 
 previews releases (0.x.y versions) and publish these to Maven Central.
-See the [downloads](http://commonsrdf.incubator.apache.org/download.html) to 
+See the [downloads](https://commons.apache.org/proper/commons-rdf/download.html) to 
 use the latest stable release.
 
 
 However, if you are following the ongoing
-development on [dev@commonsrdf](http://mail-archives.apache.org/mod_mbox/incubator-commonsrdf-dev/), 
-you may want to try the [snapshot builds](https://builds.apache.org/job/incubator-commonsrdf/), 
+development on [dev@commons](https://lists.apache.org/list.html?dev@commons.apache.org), (using subject tag `[RDF]`)
+you may want to try the [snapshot builds](https://builds.apache.org/job/commons-rdf/), 
 which are automatically deployed to the 
 [Apache snapshot repository](https://repository.apache.org/content/groups/snapshots/org/apache/commons/commons-rdf-api/).
 
@@ -149,7 +149,7 @@ as found in the current [pom.xml](pom.xml), and add to your own `pom.xml`:
   </repository>
 </repositories>
 ```
- 
+
 
 ## Simple implementation
 
