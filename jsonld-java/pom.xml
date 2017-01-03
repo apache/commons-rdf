@@ -33,6 +33,10 @@
     <name>Commons RDF impl: JSON-LD Java</name>
     <description>Parser integration of JSON-LD Java</description>
 
+    <properties>
+      <commons.osgi.symbolicName>org.apache.commons.rdf.jsonldjava</commons.osgi.symbolicName>
+    </properties>
+
     <distributionManagement>
       <site>
         <id>commonsrdf-api-site</id>
