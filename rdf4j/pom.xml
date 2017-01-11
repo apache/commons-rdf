@@ -33,6 +33,10 @@
 	<name>Commons RDF impl: RDF4j</name>
 	<description>Eclipse RDF4j implementation of Commons RDF API</description>
 
+  <properties>
+    <commons.osgi.symbolicName>org.apache.commons.rdf.rdf4j</commons.osgi.symbolicName>
+  </properties>
+
 	<build>
 		<plugins>
 			<plugin>

@@ -33,6 +33,10 @@
     <name>Commons RDF API</name>
     <description>Commons Java API for RDF 1.1</description>
 
+    <properties>
+      <commons.osgi.symbolicName>org.apache.commons.rdf.api</commons.osgi.symbolicName>
+    </properties>
+
     <build>
         <plugins>
             <plugin>

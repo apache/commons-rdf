@@ -216,6 +216,14 @@
             </roles>
             <timezone>+1</timezone>
         </contributor>
+        <contributor>
+            <name>Aaron Coburn</name>
+            <email>acoburn[at]apache[dot]org</email>
+            <roles>
+                <role>Contributor</role>
+            </roles>
+            <timezone>+1</timezone>
+        </contributor>
     </contributors>
 
     <modules>
