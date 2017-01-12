@@ -68,7 +68,9 @@ public class RDFSyntaxTest {
     public void byMediaTypeContentType() throws Exception {
         assertEquals(RDFSyntax.TURTLE, RDFSyntax.byMediaType("text/turtle; charset=\"UTF-8\"").get());
         assertEquals(RDFSyntax.TURTLE, RDFSyntax.byMediaType("text/turtle ; charset=\"UTF-8\"").get());
-        assertEquals(RDFSyntax.TURTLE, RDFSyntax.byMediaType("text/turtle, text/plain").get());
+        // That's a Content-Type, not media type; we won't split by ","
+        assertEquals(Optional.empty(), RDFSyntax.byMediaType("text/turtle, text/plain"));
+        // no trimming will be done
         assertEquals(Optional.empty(), RDFSyntax.byMediaType(" text/turtle"));
     }
 

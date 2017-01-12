@@ -17,9 +17,9 @@
  */
 package org.apache.commons.rdf.api;
 
-import java.util.Arrays;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * An RDF syntax, e.g. as used for parsing and writing RDF.
@@ -31,26 +31,83 @@ import java.util.Optional;
  * represent {@link Quad}s.
  * <p>
  * An enumeration of the official RDF 1.1 syntaxes is available in 
- * {@link OfficialRDFSyntax} - for convenience they are also accessible
+ * {@link W3CRDFSyntax} - for convenience they are also accessible
  * as constants here, e.g. <code>RDFSyntax.JSONLD</code>.
  * 
  */
 public interface RDFSyntax {
- 
-    public static OfficialRDFSyntax JSONLD = OfficialRDFSyntax.JSONLD;
-    public static OfficialRDFSyntax TURTLE = OfficialRDFSyntax.TURTLE;
-    public static OfficialRDFSyntax NQUADS = OfficialRDFSyntax.NQUADS;
-    public static OfficialRDFSyntax NTRIPLES = OfficialRDFSyntax.NTRIPLES;
-    public static OfficialRDFSyntax RDFA_HTML = OfficialRDFSyntax.RDFA_HTML;
-    public static OfficialRDFSyntax RDFA_XHTML = OfficialRDFSyntax.RDFA_XHTML;
-    public static OfficialRDFSyntax RDFXML = OfficialRDFSyntax.RDFXML;
-    public static OfficialRDFSyntax TRIG = OfficialRDFSyntax.TRIG;
+
+    /**
+     * JSON-LD 1.0
+     * 
+     * @see <a href=
+     *      "https://www.w3.org/TR/json-ld/">https://www.w3.org/TR/json-ld/</a>
+     * 
+     */
+    public static RDFSyntax JSONLD = W3CRDFSyntax.JSONLD;
+
+    /**
+     * RDF 1.1 Turtle
+     * 
+     * @see <a href=
+     *      "https://www.w3.org/TR/turtle/">https://www.w3.org/TR/turtle/</a>
+     *
+     */
+    public static RDFSyntax TURTLE = W3CRDFSyntax.TURTLE;
+
+    /**
+     * RDF 1.1 N-Quads
+     * 
+     * @see <a href=
+     *      "https://www.w3.org/TR/n-quads/">https://www.w3.org/TR/n-quads/</a>
+     */
+    public static RDFSyntax NQUADS = W3CRDFSyntax.NQUADS;
+
+    /**
+     * RDF 1.1 N-Triples
+     * 
+     * @see <a href=
+     *      "https://www.w3.org/TR/n-triples/">https://www.w3.org/TR/n-triples/</a>
+     */
+    public static RDFSyntax NTRIPLES = W3CRDFSyntax.NTRIPLES;
+
+    /**
+     * HTML+RDFa 1.1
+     * 
+     * @see <a href=
+     *      "https://www.w3.org/TR/html-rdfa/">https://www.w3.org/TR/html-rdfa/</a>
+     */
+    public static RDFSyntax RDFA_HTML = W3CRDFSyntax.RDFA_HTML;
+
+    /**
+     * XHTML+RDFa 1.1
+     * 
+     * @see <a href=
+     *      "https://www.w3.org/TR/xhtml-rdfa/">https://www.w3.org/TR/xhtml-rdfa/</a>
+     */
+    public static RDFSyntax RDFA_XHTML = W3CRDFSyntax.RDFA_XHTML;
+
+    /**
+     * RDF 1.1 XML Syntax
+     * 
+     * @see <a href=
+     *      "https://www.w3.org/TR/rdf-syntax-grammar/">https://www.w3.org/TR/rdf-syntax-grammar/</a>
+     */
+    public static RDFSyntax RDFXML = W3CRDFSyntax.RDFXML;
+
+    /**
+     * RDF 1.1 TriG
+     * 
+     * @see <a href=
+     *      "https://www.w3.org/TR/trig/">https://www.w3.org/TR/trig/</a>
+     */
+    public static RDFSyntax TRIG = W3CRDFSyntax.TRIG;
     
     /**
-     * A short name of the RDF Syntax.
+     * A short name of the RDF Syntax e.g. <code>JSONLD</code>.
      * <p>
-     * The name typically corresponds to the {@link Enum#name()} of for
-     * {@link OfficialRDFSyntax}, e.g. <code>JSONLD</code>.
+     * The name is specific to Commons RDF and carries no particular meaning 
+     * except that it matches the constants like {@link #JSONLD}. 
      * 
      * @return Short name for RDF syntax
      */
@@ -91,7 +148,30 @@ public interface RDFSyntax {
      * Datasets</a>.
      */
     public boolean supportsDataset();
+   
+    /**
+     * Return the RDF 1.1 serialization syntaxes.
+     * <p>
+     * This lists the W3C standardized RDF 1.1 syntaxes like {@link #TURTLE} and
+     * {@link #JSONLD}. Note the existence of other RDF syntaxes that are not
+     * included here, e.g. <a href="http://www.w3.org/TeamSubmission/n3/">N3</a> and
+     * <a href="https://en.wikipedia.org/wiki/TriX_%28syntax%29">TriX</a>.
+     * <p>
+     * The syntaxes returned only support the {@link #mediaType()}
+     * and {@link #fileExtension()} as defined in the corresponding 
+     * W3C specification.
+     * 
+     * @return
+     *      A set of the official RDF 1.1 {@link RDFSyntax}es.
+     * 
+     * @see <a href="https://www.w3.org/TR/rdf11-primer/#section-graph-syntax">RDF
+     *      1.1 Primer</a>
+     * @see org.apache.commons.rdf.experimental.RDFParser
+     */
 
+    public static Set<RDFSyntax> w3cSyntaxes() {
+        return W3CRDFSyntax.syntaxes;
+    }
 
     /**
      * Return the RDFSyntax with the specified media type.
@@ -100,10 +180,12 @@ public interface RDFSyntax {
      * not be equal to the {@link RDFSyntax#mediaType} of the returned
      * RDFSyntax.
      * <p>
-     * For convenience matching of media types used in a
-     * <code>Content-Type</code> header, if the <code>mediaType</code> contains
-     * the characters <code>;</code>, <code>,</code> or white space, only the
-     * part of the string to the left of those characters are considered.
+     * If the media type specifies parameters, e.g.
+     * <code>text/turtle; charset=ascii</code>, only the part of the string to
+     * before <code>;</code> is considered.
+     * <p>
+     * The list of syntaxes supported is at least those returned by
+     * {@link #w3cSyntaxes()}.
      * 
      * @param mediaType
      *            The media type to match
@@ -113,9 +195,9 @@ public interface RDFSyntax {
      *         found.
      */
     public static Optional<RDFSyntax> byMediaType(String mediaType) {
-        final String type = mediaType.toLowerCase(Locale.ENGLISH).split("\\s*[;,]", 2)[0];
-        return Arrays.stream(OfficialRDFSyntax.values()).filter(t -> t.mediaType().equals(type))
-                .map(RDFSyntax.class::cast).findAny();
+        final String type = mediaType.toLowerCase(Locale.ROOT).split("\\s*;", 2)[0];
+        return w3cSyntaxes().stream().filter(t -> t.mediaType().equals(type))
+                .findAny();
     }
 
     /**
@@ -124,6 +206,9 @@ public interface RDFSyntax {
      * The <code>fileExtension</code> is compared in lower case, therefore it
      * might not be equal to the {@link RDFSyntax#fileExtension} of the returned
      * RDFSyntax.
+     * <p>
+     * The list of syntaxes supported is at least those returned by
+     * {@link #w3cSyntaxes()}.
      * 
      * @param fileExtension
      *            The fileExtension to match, starting with <code>.</code>
@@ -133,144 +218,33 @@ public interface RDFSyntax {
      *         extension was found.
      */
     public static Optional<RDFSyntax> byFileExtension(String fileExtension) {
-        final String ext = fileExtension.toLowerCase(Locale.ENGLISH);        
-        return Arrays.stream(OfficialRDFSyntax.values()).filter(t -> t.fileExtension().equals(ext))
-                .map(RDFSyntax.class::cast).findAny();
-    }    
-    
-
-/**
- * Enumeration of the RDF 1.1 serialization syntaxes.
- * <p>
- * This enumeration lists the W3C standardized RDF 1.1 syntaxes like
- * {@link #TURTLE} and {@link #JSONLD}. Note the existence of other RDF syntaxes
- * that are not included here, e.g.
- * <a href="http://www.w3.org/TeamSubmission/n3/">N3</a> and
- * <a href="https://en.wikipedia.org/wiki/TriX_%28syntax%29">TriX</a>.
- * 
- * @see <a href="https://www.w3.org/TR/rdf11-primer/#section-graph-syntax">RDF
- *      1.1 Primer</a>
- * @see org.apache.commons.rdf.experimental.RDFParser
- */
-  public enum OfficialRDFSyntax implements RDFSyntax {
-
-    /**
-     * JSON-LD 1.0
-     * 
-     * @see <a href=
-     *      "https://www.w3.org/TR/json-ld/">https://www.w3.org/TR/json-ld/</a>
-     * 
-     */
-    JSONLD("JSON-LD 1.0", "application/ld+json", ".jsonld", true),
-
-    /**
-     * RDF 1.1 Turtle
-     * 
-     * @see <a href=
-     *      "https://www.w3.org/TR/turtle/">https://www.w3.org/TR/turtle/</a>
-     *
-     */
-    TURTLE("RDF 1.1 Turtle", "text/turtle", ".ttl", false),
-
-    /**
-     * RDF 1.1 N-Quads
-     * 
-     * @see <a href=
-     *      "https://www.w3.org/TR/n-quads/">https://www.w3.org/TR/n-quads/</a>
-     */
-    NQUADS("RDF 1.1 N-Quads", "application/n-quads", ".nq", true),
-
-    /**
-     * RDF 1.1 N-Triples
-     * 
-     * @see <a href=
-     *      "https://www.w3.org/TR/n-triples/">https://www.w3.org/TR/n-triples/</a>
-     */
-    NTRIPLES("RDF 1.1 N-Triples", "application/n-triples", ".nt", false),
-
-    /**
-     * HTML+RDFa 1.1
-     * 
-     * @see <a href=
-     *      "https://www.w3.org/TR/html-rdfa/">https://www.w3.org/TR/html-rdfa/</a>
-     */
-    RDFA_HTML("HTML+RDFa 1.1", "text/html", ".html", false),
-
-    /**
-     * XHTML+RDFa 1.1
-     * 
-     * @see <a href=
-     *      "https://www.w3.org/TR/xhtml-rdfa/">https://www.w3.org/TR/xhtml-rdfa/</a>
-     */
-    RDFA_XHTML("XHTML+RDFa 1.1", "application/xhtml+xml", ".xhtml", false),
-
-    /**
-     * RDF 1.1 XML Syntax
-     * 
-     * @see <a href=
-     *      "https://www.w3.org/TR/rdf-syntax-grammar/">https://www.w3.org/TR/rdf-syntax-grammar/</a>
-     */
-    RDFXML("RDF 1.1 XML Syntax", "application/rdf+xml", ".rdf", false),
-
-    /**
-     * RDF 1.1 TriG
-     * 
-     * @see <a href=
-     *      "https://www.w3.org/TR/trig/">https://www.w3.org/TR/trig/</a>
-     */
-    TRIG("RDF 1.1 TriG", "application/trig", ".trig", true);
-
-    /**
-     * Deprecated, use {@link #mediaType()}. 
-     */
-    @Deprecated
-    public final String mediaType;
-
-    /**
-     * Deprecated, use {@link #fileExtension()}.
-     */
-    @Deprecated
-    public final String fileExtension;
-
-    /**
-     * Deprecated, use {@link #supportsDataset()}.
-     */
-    @Deprecated
-    public final boolean supportsDataset;
-
-    private final String title;
-
-    @Override
-    public String toString() {
-        return title();
-    }
-
-    private OfficialRDFSyntax(String title, String mediaType, String fileExtension, boolean supportsDataset) {
-        this.title = title;
-        this.mediaType = mediaType;
-        this.fileExtension = fileExtension;
-        this.supportsDataset = supportsDataset;
-    }
-
-    @Override
-    public String mediaType() {
-        return mediaType;
-    }
-
-    @Override
-    public String fileExtension() {
-        return fileExtension;
-    }
-
-    @Override
-    public boolean supportsDataset() {
-        return supportsDataset;
+        final String ext = fileExtension.toLowerCase(Locale.ROOT);        
+        return w3cSyntaxes().stream().filter(t -> t.fileExtension().equals(ext))
+                .findAny();
     }
     
+    /**
+     * Compare this RDFSyntax with another object.
+     * <p>
+     * Two {@link RDFSyntax}es are considered equal if their
+     * {@link #mediaType()}s are equal when compared as lower case strings
+     * according to {@link String#toLowerCase(Locale)} with the locale
+     * {@link Locale#ROOT}.
+     * 
+     * @param obj
+     * @return
+     */
     @Override
-    public String title() {
-        return title;
-    }
-
-  }
+    boolean equals(Object obj);
+    
+    /**
+     * The hash code of an RDFSyntax is equivalent to the hash code 
+     * of the {@link #mediaType()} in lower case according to
+     * {@link String#toLowerCase(Locale)} with the locale
+     * {@link Locale#ROOT}. 
+     * 
+     * @return Hash code of RDFSyntax
+     */
+    @Override
+    int hashCode();
 }
