@@ -190,7 +190,7 @@ public interface RDFSyntax {
      * @param mediaType
      *            The media type to match
      * @return If {@link Optional#isPresent()}, the {@link RDFSyntax} which has
-     *         a matching {@link RDFSyntax#mediaType}, otherwise
+     *         a matching {@link RDFSyntax#mediaType()}, otherwise
      *         {@link Optional#empty()} indicating that no matching syntax was
      *         found.
      */
@@ -213,7 +213,7 @@ public interface RDFSyntax {
      * @param fileExtension
      *            The fileExtension to match, starting with <code>.</code>
      * @return If {@link Optional#isPresent()}, the {@link RDFSyntax} which has
-     *         a matching {@link RDFSyntax#fileExtension}, otherwise
+     *         a matching {@link RDFSyntax#fileExtension()}, otherwise
      *         {@link Optional#empty()} indicating that no matching file
      *         extension was found.
      */
@@ -221,6 +221,22 @@ public interface RDFSyntax {
         final String ext = fileExtension.toLowerCase(Locale.ROOT);        
         return w3cSyntaxes().stream().filter(t -> t.fileExtension().equals(ext))
                 .findAny();
+    }
+    
+    /**
+     * Return the RDFSyntax with the specified {@link #name()}.
+     * <p>
+     * The list of syntaxes supported is at least those returned by
+     * {@link #w3cSyntaxes()}
+     * 
+     * @param name
+     *            The name to match, , e.g. <code>"JSONLD"</code>
+     * @return If {@link Optional#isPresent()}, the {@link RDFSyntax} which has
+     *         a matching {@link RDFSyntax#name()}, otherwise
+     *         {@link Optional#empty()} indicating that no matching name was found.
+     */    
+    public static Optional<RDFSyntax> byName(final String name) {
+        return w3cSyntaxes().stream().filter(t -> t.name().equals(name)).findAny();
     }
     
     /**
@@ -247,4 +263,5 @@ public interface RDFSyntax {
      */
     @Override
     int hashCode();
+
 }

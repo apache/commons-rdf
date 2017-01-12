@@ -116,8 +116,7 @@ public class RDFSyntaxTest {
 
     @Test
     public void valueOf() throws Exception {
-        assertEquals(RDFSyntax.TURTLE, RDFSyntax.valueOf("TURTLE"));
-        // No need to test all of them, we'll trust Enum
+        assertEquals(RDFSyntax.TURTLE, RDFSyntax.byName("TURTLE"));
     }
     
 }
