@@ -100,7 +100,7 @@ public final class JenaRDF implements RDF {
      * @param salt
      *            {@link UUID} to use as salt for {@link BlankNode} equality
      */
-    public JenaRDF(UUID salt) {
+    public JenaRDF(final UUID salt) {
         this.salt = salt;
     }
 
@@ -110,7 +110,7 @@ public final class JenaRDF implements RDF {
     }
 
     @Override
-    public JenaBlankNode createBlankNode(String name) {
+    public JenaBlankNode createBlankNode(final String name) {
         return internalJenaFactory.createBlankNode(name, salt());
     }
 
@@ -125,34 +125,34 @@ public final class JenaRDF implements RDF {
     }
 
     @Override
-    public JenaIRI createIRI(String iri) {
+    public JenaIRI createIRI(final String iri) {
         validateIRI(iri);
         return internalJenaFactory.createIRI(iri);
     }
 
     @Override
-    public JenaLiteral createLiteral(String lexicalForm) {
+    public JenaLiteral createLiteral(final String lexicalForm) {
         return internalJenaFactory.createLiteral(lexicalForm);
     }
 
     @Override
-    public JenaLiteral createLiteral(String lexicalForm, IRI dataType) {
+    public JenaLiteral createLiteral(final String lexicalForm, final IRI dataType) {
         return internalJenaFactory.createLiteralDT(lexicalForm, dataType.getIRIString());
     }
 
     @Override
-    public JenaLiteral createLiteral(String lexicalForm, String languageTag) {
+    public JenaLiteral createLiteral(final String lexicalForm, final String languageTag) {
         validateLang(languageTag);
         return internalJenaFactory.createLiteralLang(lexicalForm, languageTag);
     }
 
     @Override
-    public JenaTriple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public JenaTriple createTriple(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         return internalJenaFactory.createTriple(subject, predicate, object);
     }
 
     @Override
-    public JenaQuad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
+    public JenaQuad createQuad(final BlankNodeOrIRI graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object)
             throws IllegalArgumentException, UnsupportedOperationException {
         return internalJenaFactory.createQuad(subject, predicate, object, graphName);
     }
@@ -177,7 +177,7 @@ public final class JenaRDF implements RDF {
      *         does <strong>not</strong> implement {@link Triple#equals(Object)}
      *         or {@link Triple#hashCode()}.
      */
-    public JenaGeneralizedTripleLike createGeneralizedTriple(RDFTerm subject, RDFTerm predicate, RDFTerm object) {
+    public JenaGeneralizedTripleLike createGeneralizedTriple(final RDFTerm subject, final RDFTerm predicate, final RDFTerm object) {
         return internalJenaFactory.createGeneralizedTriple(subject, predicate, object);
     }
 
@@ -203,8 +203,8 @@ public final class JenaRDF implements RDF {
      *         <strong>not</strong> implement {@link Quad#equals(Object)} or
      *         {@link Quad#hashCode()}.
      */
-    public JenaGeneralizedQuadLike createGeneralizedQuad(RDFTerm subject, RDFTerm predicate, RDFTerm object,
-            RDFTerm graphName) {
+    public JenaGeneralizedQuadLike createGeneralizedQuad(final RDFTerm subject, final RDFTerm predicate, final RDFTerm object,
+            final RDFTerm graphName) {
         return internalJenaFactory.createGeneralizedQuad(subject, predicate, object, graphName);
     }
 
@@ -229,7 +229,7 @@ public final class JenaRDF implements RDF {
      *             {@link RDFTerm}, e.g. if the node is not concrete or
      *             represents a variable in Jena.
      */
-    public JenaRDFTerm asRDFTerm(Node node) throws ConversionException {
+    public JenaRDFTerm asRDFTerm(final Node node) throws ConversionException {
         return internalJenaFactory.createRDFTerm(node, salt());
     }
 
@@ -254,7 +254,7 @@ public final class JenaRDF implements RDF {
      *             {@link RDFTerm}, e.g. if the node is not concrete or
      *             represents a variable in Jena.
      */
-    public static RDFTerm asRDFTerm(RDF factory, Node node) {
+    public static RDFTerm asRDFTerm(final RDF factory, final Node node) {
         if (node == null) {
             return null;
         }
@@ -262,20 +262,24 @@ public final class JenaRDF implements RDF {
             // No need to convert, just wrap
             return ((JenaRDF) factory).asRDFTerm(node);
         }
-        if (node.isURI())
+        if (node.isURI()) {
             return factory.createIRI(node.getURI());
+        }
         if (node.isLiteral()) {
-            String lang = node.getLiteralLanguage();
-            if (lang != null && !lang.isEmpty())
+            final String lang = node.getLiteralLanguage();
+            if (lang != null && !lang.isEmpty()) {
                 return factory.createLiteral(node.getLiteralLexicalForm(), lang);
-            if (node.getLiteralDatatype().equals(XSDDatatype.XSDstring))
+            }
+            if (node.getLiteralDatatype().equals(XSDDatatype.XSDstring)) {
                 return factory.createLiteral(node.getLiteralLexicalForm());
-            IRI dt = factory.createIRI(node.getLiteralDatatype().getURI());
+            }
+            final IRI dt = factory.createIRI(node.getLiteralDatatype().getURI());
             return factory.createLiteral(node.getLiteralLexicalForm(), dt);
         }
-        if (node.isBlank())
+        if (node.isBlank()) {
             // The factory
             return factory.createBlankNode(node.getBlankNodeLabel());
+        }
         throw new ConversionException("Node is not a concrete RDF Term: " + node);
     }
 
@@ -296,7 +300,7 @@ public final class JenaRDF implements RDF {
      *             if any of the triple's nodes are not concrete or the triple
      *             is a generalized triple
      */
-    public JenaTriple asTriple(org.apache.jena.graph.Triple triple) throws ConversionException {
+    public JenaTriple asTriple(final org.apache.jena.graph.Triple triple) throws ConversionException {
         return internalJenaFactory.createTriple(triple, salt());
     }
 
@@ -324,7 +328,7 @@ public final class JenaRDF implements RDF {
      * @throws ConversionException
      *             if any of the triple's nodes are not concrete
      */
-    public JenaTripleLike asGeneralizedTriple(org.apache.jena.graph.Triple triple) throws ConversionException {
+    public JenaTripleLike asGeneralizedTriple(final org.apache.jena.graph.Triple triple) throws ConversionException {
         return internalJenaFactory.createGeneralizedTriple(triple, salt());
     }
 
@@ -353,7 +357,7 @@ public final class JenaRDF implements RDF {
      * @throws ConversionException
      *             if any of the quad nodes are not concrete
      */
-    public JenaQuadLike<RDFTerm> asGeneralizedQuad(org.apache.jena.sparql.core.Quad quad) throws ConversionException {
+    public JenaQuadLike<RDFTerm> asGeneralizedQuad(final org.apache.jena.sparql.core.Quad quad) throws ConversionException {
         return internalJenaFactory.createGeneralizedQuad(quad, salt());
     }
 
@@ -378,7 +382,7 @@ public final class JenaRDF implements RDF {
      *             if any of the triple's nodes are not concrete or the triple
      *             is a generalized triple
      */
-    public static Triple asTriple(RDF factory, org.apache.jena.graph.Triple triple) throws ConversionException {
+    public static Triple asTriple(final RDF factory, final org.apache.jena.graph.Triple triple) throws ConversionException {
         if (factory instanceof JenaRDF) {
             // No need to convert, just wrap
             return ((JenaRDF) factory).asTriple(triple);
@@ -388,10 +392,10 @@ public final class JenaRDF implements RDF {
         try {
             subject = (BlankNodeOrIRI) asRDFTerm(factory, triple.getSubject());
             predicate = (IRI) asRDFTerm(factory, triple.getPredicate());
-        } catch (ClassCastException ex) {
+        } catch (final ClassCastException ex) {
             throw new ConversionException("Can't convert generalized triple: " + triple, ex);
         }
-        RDFTerm object = asRDFTerm(factory, triple.getObject());
+        final RDFTerm object = asRDFTerm(factory, triple.getObject());
         return factory.createTriple(subject, predicate, object);
     }
 
@@ -408,7 +412,7 @@ public final class JenaRDF implements RDF {
      *            Jena quad
      * @return Adapted quad
      */
-    public JenaQuad asQuad(org.apache.jena.sparql.core.Quad quad) {
+    public JenaQuad asQuad(final org.apache.jena.sparql.core.Quad quad) {
         return internalJenaFactory.createQuad(quad, salt());
     }
 
@@ -429,7 +433,7 @@ public final class JenaRDF implements RDF {
      *            Jena {@link org.apache.jena.graph.Graph} to adapt
      * @return Adapted {@link JenaGraph}
      */
-    public JenaGraph asGraph(org.apache.jena.graph.Graph graph) {
+    public JenaGraph asGraph(final org.apache.jena.graph.Graph graph) {
         return internalJenaFactory.createGraph(graph, salt());
     }
 
@@ -450,7 +454,7 @@ public final class JenaRDF implements RDF {
      *            Jena {@link org.apache.jena.rdf.model.Model} to adapt
      * @return Adapted {@link JenaGraph}
      */
-    public JenaGraph asGraph(org.apache.jena.rdf.model.Model model) {
+    public JenaGraph asGraph(final org.apache.jena.rdf.model.Model model) {
         return internalJenaFactory.createGraph(model, salt());
     }
 
@@ -472,7 +476,7 @@ public final class JenaRDF implements RDF {
      *            Jena {@link DatasetGraph} to adapt
      * @return Adapted {@link JenaDataset}
      */
-    public JenaDataset asDataset(DatasetGraph datasetGraph) {
+    public JenaDataset asDataset(final DatasetGraph datasetGraph) {
         return internalJenaFactory.createDataset(datasetGraph, salt());
     }
 
@@ -494,7 +498,7 @@ public final class JenaRDF implements RDF {
      *            Jena {@link org.apache.jena.query.Dataset} to adapt
      * @return Adapted {@link JenaDataset}
      */
-    public JenaDataset asDataset(org.apache.jena.query.Dataset datasetGraph) {
+    public JenaDataset asDataset(final org.apache.jena.query.Dataset datasetGraph) {
         return internalJenaFactory.createDataset(datasetGraph.asDatasetGraph(), salt());
     }
 
@@ -520,15 +524,15 @@ public final class JenaRDF implements RDF {
      *             if any of the quad's nodes are not concrete or the quad is a
      *             generalized quad
      */
-    public static Quad asQuad(RDF factory, org.apache.jena.sparql.core.Quad quad) {
+    public static Quad asQuad(final RDF factory, final org.apache.jena.sparql.core.Quad quad) {
         if (factory instanceof JenaRDF) {
             // No need to convert, just wrap
             return ((JenaRDF) factory).asQuad(quad);
         }
-        BlankNodeOrIRI graphName = (BlankNodeOrIRI) (asRDFTerm(factory, quad.getGraph()));
-        BlankNodeOrIRI subject = (BlankNodeOrIRI) (asRDFTerm(factory, quad.getSubject()));
-        IRI predicate = (IRI) (asRDFTerm(factory, quad.getPredicate()));
-        RDFTerm object = asRDFTerm(factory, quad.getObject());
+        final BlankNodeOrIRI graphName = (BlankNodeOrIRI) (asRDFTerm(factory, quad.getGraph()));
+        final BlankNodeOrIRI subject = (BlankNodeOrIRI) (asRDFTerm(factory, quad.getSubject()));
+        final IRI predicate = (IRI) (asRDFTerm(factory, quad.getPredicate()));
+        final RDFTerm object = asRDFTerm(factory, quad.getObject());
         return factory.createQuad(graphName, subject, predicate, object);
     }
 
@@ -539,7 +543,7 @@ public final class JenaRDF implements RDF {
      *            {@link Lang} to convert
      * @return Matched {@link RDFSyntax}, otherwise {@link Optional#empty()}
      */
-    public Optional<RDFSyntax> asRDFSyntax(Lang lang) {
+    public Optional<RDFSyntax> asRDFSyntax(final Lang lang) {
         return RDFSyntax.byMediaType(lang.getContentType().getContentType());
     }
 
@@ -550,7 +554,7 @@ public final class JenaRDF implements RDF {
      *            {@link RDFSyntax} to convert
      * @return Matched {@link Lang}, otherwise {@link Optional#empty()}
      */
-    public Optional<Lang> asJenaLang(RDFSyntax rdfSyntax) {
+    public Optional<Lang> asJenaLang(final RDFSyntax rdfSyntax) {
         return Optional.ofNullable(RDFLanguages.contentTypeToLang(rdfSyntax.mediaType()));
     }
 
@@ -569,10 +573,10 @@ public final class JenaRDF implements RDF {
      * @return A {@link StreamRDF} that will stream converted quads to the
      *         consumer
      */
-    public static StreamRDF streamJenaToQuad(RDF factory, Consumer<Quad> consumer) {
+    public static StreamRDF streamJenaToQuad(final RDF factory, final Consumer<Quad> consumer) {
         return new StreamRDFBase() {
             @Override
-            public void quad(org.apache.jena.sparql.core.Quad quad) {
+            public void quad(final org.apache.jena.sparql.core.Quad quad) {
                 consumer.accept(asQuad(factory, quad));
             }
         };
@@ -594,10 +598,10 @@ public final class JenaRDF implements RDF {
      * @return A {@link StreamRDF} that will stream generalized triples to the
      *         consumer
      */
-    public StreamRDF streamJenaToGeneralizedTriple(Consumer<TripleLike> generalizedConsumer) {
+    public StreamRDF streamJenaToGeneralizedTriple(final Consumer<TripleLike> generalizedConsumer) {
         return new StreamRDFBase() {
             @Override
-            public void triple(org.apache.jena.graph.Triple triple) {
+            public void triple(final org.apache.jena.graph.Triple triple) {
                 generalizedConsumer.accept(asGeneralizedTriple(triple));
             }
         };
@@ -619,10 +623,10 @@ public final class JenaRDF implements RDF {
      * @return A {@link StreamRDF} that will stream generalized quads to the
      *         consumer
      */
-    public StreamRDF streamJenaToGeneralizedQuad(Consumer<QuadLike<RDFTerm>> generalizedConsumer) {
+    public StreamRDF streamJenaToGeneralizedQuad(final Consumer<QuadLike<RDFTerm>> generalizedConsumer) {
         return new StreamRDFBase() {
             @Override
-            public void quad(org.apache.jena.sparql.core.Quad quad) {
+            public void quad(final org.apache.jena.sparql.core.Quad quad) {
                 generalizedConsumer.accept(asGeneralizedQuad(quad));
             }
         };
@@ -637,10 +641,11 @@ public final class JenaRDF implements RDF {
      *            Commons RDF {@link Graph} to convert
      * @return Converted Jena {@link org.apache.jena.graph.Graph}
      */
-    public org.apache.jena.graph.Graph asJenaGraph(Graph graph) {
-        if (graph instanceof JenaGraph)
+    public org.apache.jena.graph.Graph asJenaGraph(final Graph graph) {
+        if (graph instanceof JenaGraph) {
             return ((JenaGraph) graph).asJenaGraph();
-        org.apache.jena.graph.Graph g = GraphFactory.createGraphMem();
+        }
+        final org.apache.jena.graph.Graph g = GraphFactory.createGraphMem();
         graph.stream().forEach(t -> g.add(asJenaTriple(t)));
         return g;
     }
@@ -654,28 +659,30 @@ public final class JenaRDF implements RDF {
      *            Commons RDF {@link RDFTerm} to convert
      * @return Converted Jena {@link Node}
      */
-    public Node asJenaNode(RDFTerm term) {
+    public Node asJenaNode(final RDFTerm term) {
         if (term == null) {
             return null;
         }
-        if (term instanceof JenaRDFTerm)
+        if (term instanceof JenaRDFTerm) {
             // TODO: What if it's a JenaBlankNodeImpl with
             // a different salt? Do we need to rewrite the
             // jena blanknode identifier?
             return ((JenaRDFTerm) term).asJenaNode();
+        }
 
-        if (term instanceof IRI)
+        if (term instanceof IRI) {
             return NodeFactory.createURI(((IRI) term).getIRIString());
+        }
 
         if (term instanceof Literal) {
-            Literal lit = (Literal) term;
-            RDFDatatype dt = NodeFactory.getType(lit.getDatatype().getIRIString());
-            String lang = lit.getLanguageTag().orElse("");
+            final Literal lit = (Literal) term;
+            final RDFDatatype dt = NodeFactory.getType(lit.getDatatype().getIRIString());
+            final String lang = lit.getLanguageTag().orElse("");
             return NodeFactory.createLiteral(lit.getLexicalForm(), lang, dt);
         }
 
         if (term instanceof BlankNode) {
-            String id = ((BlankNode) term).uniqueReference();
+            final String id = ((BlankNode) term).uniqueReference();
             return NodeFactory.createBlankNode(id);
         }
         throw new ConversionException("Not a concrete RDF Term: " + term);
@@ -692,10 +699,12 @@ public final class JenaRDF implements RDF {
      *            Commons RDF {@link Triple} to convert
      * @return Converted Jena {@link org.apache.jena.graph.Triple}
      */
-    public org.apache.jena.graph.Triple asJenaTriple(Triple triple) {
-        if (triple instanceof JenaTriple)
+    public org.apache.jena.graph.Triple asJenaTriple(final Triple triple) {
+        if (triple instanceof JenaTriple) {
             return ((JenaTriple) triple).asJenaTriple();
-        return org.apache.jena.graph.Triple.create(asJenaNode(triple.getSubject()), asJenaNode(triple.getPredicate()),
+        }
+        return org.apache.jena.graph.Triple.create(asJenaNode(triple.getSubject()), 
+                asJenaNode(triple.getPredicate()),
                 asJenaNode(triple.getObject()));
     }
 
@@ -710,27 +719,34 @@ public final class JenaRDF implements RDF {
      *            Commons RDF {@link Quad} to convert
      * @return Converted Jena {@link org.apache.jena.sparql.core.Quad}
      */
-    public org.apache.jena.sparql.core.Quad asJenaQuad(Quad quad) {
+    public org.apache.jena.sparql.core.Quad asJenaQuad(final Quad quad) {
         if (quad instanceof JenaQuad) {
             return ((JenaQuad) quad).asJenaQuad();
         }
-        return org.apache.jena.sparql.core.Quad.create(asJenaNode(quad.getGraphName().orElse(null)),
-                asJenaNode(quad.getSubject()), asJenaNode(quad.getPredicate()), asJenaNode(quad.getObject()));
+        return org.apache.jena.sparql.core.Quad.create(
+                asJenaNode(quad.getGraphName().orElse(null)),
+                asJenaNode(quad.getSubject()), 
+                asJenaNode(quad.getPredicate()),
+                asJenaNode(quad.getObject()));
     }
 
     // Some simple validations - full IRI parsing is not cheap.
-    private void validateIRI(String iri) {
-        if (iri.contains(" "))
+    private void validateIRI(final String iri) {
+        if (iri.contains(" ")) {
             throw new IllegalArgumentException();
-        if (iri.contains("<"))
+        }
+        if (iri.contains("<")) {
             throw new IllegalArgumentException();
-        if (iri.contains(">"))
+        }
+        if (iri.contains(">")) {
             throw new IllegalArgumentException();
+        }
     }
 
-    private static void validateLang(String languageTag) {
-        if (languageTag.contains(" "))
+    private static void validateLang(final String languageTag) {
+        if (languageTag.contains(" ")) {
             throw new IllegalArgumentException("Invalid language tag: " + languageTag);
+        }
     }
 
     /**

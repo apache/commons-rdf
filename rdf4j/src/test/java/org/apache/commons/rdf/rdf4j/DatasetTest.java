@@ -15,31 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.commons.rdf.simple;
+package org.apache.commons.rdf.rdf4j;
 
-import org.apache.commons.rdf.api.AbstractRDFTest;
-import org.apache.commons.rdf.api.IRI;
+import org.apache.commons.rdf.api.AbstractDatasetTest;
 import org.apache.commons.rdf.api.RDF;
 
-import java.net.URI;
+public class DatasetTest extends AbstractDatasetTest {
 
-/**
- * Test simple IRI without relative IRI support.
- * <p>
- * Ensures that {@link AbstractRDFTest#testCreateIRIRelative()} is correctly
- * skipped (without causing an error).
- */
-public class SimpleNoRelativeIRIRDTest extends AbstractRDFTest {
     @Override
     public RDF createFactory() {
-        return new SimpleRDF() {
-            @Override
-            public IRI createIRI(String iri) {
-                if (!URI.create(iri).isAbsolute()) {
-                    throw new IllegalArgumentException("IRIs must be absolute");
-                }
-                return super.createIRI(iri);
-            }
-        };
+        return new RDF4J();
     }
+
 }

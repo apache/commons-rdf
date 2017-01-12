@@ -23,7 +23,6 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
-import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Quad;
@@ -39,15 +38,15 @@ import org.eclipse.rdf4j.repository.Repository;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryResult;
 
-class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> implements RDF4JDataset, Dataset {
+class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> implements RDF4JDataset {
 
-    RepositoryDatasetImpl(Repository repository, UUID salt, boolean handleInitAndShutdown, boolean includeInferred) {
+    RepositoryDatasetImpl(final Repository repository, final UUID salt, final boolean handleInitAndShutdown, final boolean includeInferred) {
         super(repository, salt, handleInitAndShutdown, includeInferred);
     }
 
     @Override
-    public void add(Quad tripleLike) {
-        Statement statement = rdf4jTermFactory.asStatement(tripleLike);
+    public void add(final Quad tripleLike) {
+        final Statement statement = rdf4jTermFactory.asStatement(tripleLike);
         try (RepositoryConnection conn = getRepositoryConnection()) {
             conn.add(statement);
             conn.commit();
@@ -55,16 +54,16 @@ class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> implements
     }
 
     @Override
-    public boolean contains(Quad tripleLike) {
-        Statement statement = rdf4jTermFactory.asStatement(tripleLike);
+    public boolean contains(final Quad tripleLike) {
+        final Statement statement = rdf4jTermFactory.asStatement(tripleLike);
         try (RepositoryConnection conn = getRepositoryConnection()) {
             return conn.hasStatement(statement, includeInferred);
         }
     }
 
     @Override
-    public void remove(Quad tripleLike) {
-        Statement statement = rdf4jTermFactory.asStatement(tripleLike);
+    public void remove(final Quad tripleLike) {
+        final Statement statement = rdf4jTermFactory.asStatement(tripleLike);
         try (RepositoryConnection conn = getRepositoryConnection()) {
             conn.remove(statement);
             conn.commit();
@@ -92,11 +91,11 @@ class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> implements
     }
 
     @Override
-    public void add(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-        Resource context = (Resource) rdf4jTermFactory.asValue(graphName);
-        Resource subj = (Resource) rdf4jTermFactory.asValue(subject);
-        org.eclipse.rdf4j.model.IRI pred = (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate);
-        Value obj = rdf4jTermFactory.asValue(object);
+    public void add(final BlankNodeOrIRI graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
+        final Resource context = (Resource) rdf4jTermFactory.asValue(graphName);
+        final Resource subj = (Resource) rdf4jTermFactory.asValue(subject);
+        final org.eclipse.rdf4j.model.IRI pred = (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate);
+        final Value obj = rdf4jTermFactory.asValue(object);
         try (RepositoryConnection conn = getRepositoryConnection()) {
             conn.add(subj, pred, obj, context);
             conn.commit();
@@ -104,35 +103,35 @@ class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> implements
     }
 
     @Override
-    public boolean contains(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-        Resource subj = (Resource) rdf4jTermFactory.asValue(subject);
-        org.eclipse.rdf4j.model.IRI pred = (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate);
-        Value obj = rdf4jTermFactory.asValue(object);
-        Resource[] contexts = asContexts(graphName);
+    public boolean contains(final Optional<BlankNodeOrIRI> graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
+        final Resource subj = (Resource) rdf4jTermFactory.asValue(subject);
+        final org.eclipse.rdf4j.model.IRI pred = (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate);
+        final Value obj = rdf4jTermFactory.asValue(object);
+        final Resource[] contexts = asContexts(graphName);
         try (RepositoryConnection conn = getRepositoryConnection()) {
             return conn.hasStatement(subj, pred, obj, includeInferred, contexts);
         }
     }
 
-    private Resource[] asContexts(Optional<BlankNodeOrIRI> graphName) {
+    private Resource[] asContexts(final Optional<BlankNodeOrIRI> graphName) {
         Resource[] contexts;
         if (graphName == null) {
             // no contexts == any contexts
             contexts = new Resource[0];
         } else {
-            BlankNodeOrIRI g = graphName.orElse(null);
-            Resource context = (Resource) rdf4jTermFactory.asValue(g);
+            final BlankNodeOrIRI g = graphName.orElse(null);
+            final Resource context = (Resource) rdf4jTermFactory.asValue(g);
             contexts = new Resource[] { context };
         }
         return contexts;
     }
 
     @Override
-    public void remove(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-        Resource subj = (Resource) rdf4jTermFactory.asValue(subject);
-        org.eclipse.rdf4j.model.IRI pred = (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate);
-        Value obj = rdf4jTermFactory.asValue(object);
-        Resource[] contexts = asContexts(graphName);
+    public void remove(final Optional<BlankNodeOrIRI> graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
+        final Resource subj = (Resource) rdf4jTermFactory.asValue(subject);
+        final org.eclipse.rdf4j.model.IRI pred = (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate);
+        final Value obj = rdf4jTermFactory.asValue(object);
+        final Resource[] contexts = asContexts(graphName);
 
         try (RepositoryConnection conn = getRepositoryConnection()) {
             conn.remove(subj, pred, obj, contexts);
@@ -146,20 +145,20 @@ class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> implements
     }
 
     @Override
-    public Stream<RDF4JQuad> stream(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate,
-            RDFTerm object) {
-        Resource subj = (Resource) rdf4jTermFactory.asValue(subject);
-        org.eclipse.rdf4j.model.IRI pred = (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate);
-        Value obj = rdf4jTermFactory.asValue(object);
-        Resource[] contexts = asContexts(graphName);
+    public Stream<RDF4JQuad> stream(final Optional<BlankNodeOrIRI> graphName, final BlankNodeOrIRI subject, final IRI predicate,
+            final RDFTerm object) {
+        final Resource subj = (Resource) rdf4jTermFactory.asValue(subject);
+        final org.eclipse.rdf4j.model.IRI pred = (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate);
+        final Value obj = rdf4jTermFactory.asValue(object);
+        final Resource[] contexts = asContexts(graphName);
 
         // NOTE: We can't do the usual try..with closing of the
         // RepositoryConnection here as it will have to be closed outside
         // by the user of the returned stream
-        RepositoryConnection conn = getRepositoryConnection();
+        final RepositoryConnection conn = getRepositoryConnection();
         Stream<RDF4JQuad> stream = null;
         try {
-            RepositoryResult<Statement> statements = conn.getStatements(subj, pred, obj, includeInferred, contexts);
+            final RepositoryResult<Statement> statements = conn.getStatements(subj, pred, obj, includeInferred, contexts);
             // NOTE: Iterations.stream should close RepositoryResult as long as
             // our caller closes the stream
             stream = Iterations.stream(statements).map(rdf4jTermFactory::asQuad);
@@ -181,18 +180,18 @@ class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> implements
     }
 
     @Override
-    public ClosableIterable<Quad> iterate(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate,
-            RDFTerm object) throws ConcurrentModificationException, IllegalStateException {
-        Resource[] contexts = asContexts(graphName);
-        Resource subj = (Resource) rdf4jTermFactory.asValue(subject);
-        org.eclipse.rdf4j.model.IRI pred = (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate);
-        Value obj = rdf4jTermFactory.asValue(object);
-        return new ConvertedStatements<Quad>(this::getRepositoryConnection, rdf4jTermFactory::asQuad, subj, pred, obj,
+    public ClosableIterable<Quad> iterate(final Optional<BlankNodeOrIRI> graphName, final BlankNodeOrIRI subject, final IRI predicate,
+            final RDFTerm object) throws ConcurrentModificationException, IllegalStateException {
+        final Resource[] contexts = asContexts(graphName);
+        final Resource subj = (Resource) rdf4jTermFactory.asValue(subject);
+        final org.eclipse.rdf4j.model.IRI pred = (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate);
+        final Value obj = rdf4jTermFactory.asValue(object);
+        return new ConvertedStatements<>(this::getRepositoryConnection, rdf4jTermFactory::asQuad, subj, pred, obj,
                 contexts);
     }
 
     @Override
-    protected RDF4JQuad asTripleLike(Statement s) {
+    protected RDF4JQuad asTripleLike(final Statement s) {
         return rdf4jTermFactory.asQuad(s);
     }
 
@@ -205,9 +204,9 @@ class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> implements
     }
 
     @Override
-    public Optional<Graph> getGraph(BlankNodeOrIRI graphName) {
+    public Optional<Graph> getGraph(final BlankNodeOrIRI graphName) {
         // NOTE: May be null to indicate default context
-        Resource context = (Resource) rdf4jTermFactory.asValue(graphName);
+        final Resource context = (Resource) rdf4jTermFactory.asValue(graphName);
         // NOTE: We carry over the 'salt' as the graph's BlankNode should be
         // equal to our BlankNodes
         return Optional.of(new RepositoryGraphImpl(repository, salt, false, includeInferred, context));
@@ -215,14 +214,10 @@ class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> implements
 
     @Override
     public Stream<BlankNodeOrIRI> getGraphNames() {
-        // FIXME: Will the below close the connection before the stream has been
-        // consumed outside?
-        try (RepositoryConnection conn = getRepositoryConnection()) {
-            RepositoryResult<Resource> contexts = conn.getContextIDs();
-            // NOTE: connection will be closed outside by the
-            // Iterations.stream()
-            return Iterations.stream(contexts).map(g -> (BlankNodeOrIRI) rdf4jTermFactory.asRDFTerm(g));
-        }
+       final RepositoryConnection conn = getRepositoryConnection();
+       final RepositoryResult<Resource> contexts = conn.getContextIDs();
+        return Iterations.stream(contexts).map(g -> (BlankNodeOrIRI) rdf4jTermFactory.asRDFTerm(g))
+                .onClose(conn::close);
     }
 
 }

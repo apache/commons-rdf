@@ -24,7 +24,7 @@
     <name>Apache Commons RDF</name>
     <src>/images/commonsrdf-logo.png</src>
     <alt>Apache Commons RDF logo</alt>
-    <href>http://commonsrdf.incubator.apache.org/</href>
+    <href>https://commons.apache.org/proper/commons-rdf/</href>
   </bannerLeft>
 
   <publishDate format="dd MMMM yyyy" position="left" />
@@ -49,11 +49,9 @@
   </custom>
 
   <body>
-    <links>
-      <item name="Incubator"            href="http://incubator.apache.org/" />
-    </links>
     <menu name="Project">
       <item name="Home"                 href="/index.html" />
+      <item name="Introduction"         href="/introduction.html" />
       <item name="API"                  href="/apidocs/index.html?org/apache/commons/rdf/api/package-summary.html" />
       <item name="Implementations"      href="/implementations.html" />
       <item name="User Guide"           href="/userguide.html" />
@@ -63,10 +61,13 @@
     </menu>
     <menu name="Tools">
       <item name="Mailing Lists"        href="/mail-lists.html" />
-      <item name="Source (Git)"         href="https://git-wip-us.apache.org/repos/asf/incubator-commonsrdf.git" />
-      <item name="Source (GitHub mirror)" href="https://github.com/apache/incubator-commonsrdf/" />
+      <item name="Source (Git)"         href="https://git-wip-us.apache.org/repos/asf/commons-rdf.git" />
+      <item name="Source (GitHub mirror)" href="https://github.com/apache/commons-rdf/" />
       <item name="Issues (Jira)"        href="https://issues.apache.org/jira/browse/COMMONSRDF" />
     </menu>
+    <!-- disabled due to COMMONSRDF-50
+    <menu ref="modules" />
+    -->
   </body>
 
   <poweredBy>

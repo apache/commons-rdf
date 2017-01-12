@@ -31,7 +31,7 @@ public interface JsonLdLiteral extends JsonLdTerm, Literal {
 
 class JsonLdLiteralImpl extends JsonLdTermImpl implements JsonLdLiteral {
 
-    JsonLdLiteralImpl(Node node) {
+    JsonLdLiteralImpl(final Node node) {
         super(node);
         if (!node.isLiteral()) {
             throw new IllegalArgumentException("Node is not a Literal:" + node);
@@ -40,7 +40,7 @@ class JsonLdLiteralImpl extends JsonLdTermImpl implements JsonLdLiteral {
 
     @Override
     public String ntriplesString() {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         sb.append('"');
         // Escape special characters
         sb.append(getLexicalForm().replace("\\", "\\\\"). // escaped to \\
@@ -82,13 +82,13 @@ class JsonLdLiteralImpl extends JsonLdTermImpl implements JsonLdLiteral {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (obj instanceof JsonLdLiteral) {
-            JsonLdLiteral other = (JsonLdLiteral) obj;
+            final JsonLdLiteral other = (JsonLdLiteral) obj;
             return asJsonLdNode().compareTo(other.asJsonLdNode()) == 0;
         }
         if (obj instanceof Literal) {
-            Literal other = (Literal) obj;
+            final Literal other = (Literal) obj;
             return getLexicalForm().equals(other.getLexicalForm()) && getDatatype().equals(other.getDatatype())
                     && getLanguageTag().equals(other.getLanguageTag());
         }

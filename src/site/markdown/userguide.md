@@ -89,7 +89,7 @@ add the following dependency to your `pom.xml`:
     <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-rdf-api</artifactId>
-        <version>0.2.0-incubating</version>
+        <version>0.3.0-incubating</version>
     </dependency>
 </dependencies>
 ```
@@ -98,8 +98,8 @@ _The `<version>` above might not be up to date,
 see the [download page](download.html) for the latest version._
 
 If you are testing a `SNAPSHOT` version, then you will have to either build
-Commons RDF from [source](https://github.com/apache/incubator-commonsrdf), or
-add this [snapshot repository](https://github.com/apache/incubator-commonsrdf#snapshot-repository):
+Commons RDF from [source](https://github.com/apache/commons-rdf), or
+add this [snapshot repository](https://github.com/apache/commons-rdf#snapshot-repository):
 
 ```xml
 <repositories>
@@ -133,7 +133,7 @@ _simple_ implementation, add to your `<dependencies>`:
     <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-rdf-simple</artifactId>
-        <version>0.2.0-incubating</version>
+        <version>0.3.0-incubating</version>
     </dependency>
 ```
 
@@ -150,7 +150,7 @@ To create instances of Commons RDF interfaces like
 
 ### Finding an RDF implementation
 
-The [implementations](implementations.md) of `RDF` can usually be
+The [implementations](implementations.html) of `RDF` can usually be
 created using a normal Java constructor, for instance the
 _simple_ implementation from
 [SimpleRDF](apidocs/org/apache/commons/rdf/simple/SimpleRDF.html):
@@ -211,7 +211,7 @@ The [RDF](apidocs/org/apache/commons/rdf/api/RDF.html) interface also
 contains more specific variants of some of the methods above, e.g. to create a
 typed literal.
 
-In addition, the [implementations](implementations.md) of `RDF` may add
+In addition, the [implementations](implementations.html) of `RDF` may add
 specific converter methods and implementation-specific
 subtypes for interoperability with their underlying RDF framework's API.
 
@@ -1277,8 +1277,8 @@ blank node [uniqueReference](apidocs/org/apache/commons/rdf/api/BlankNode.html#u
 
 The complete source code for the examples used in this user guide can be
 browsed in
-[UserGuideTest.java](https://github.com/apache/incubator-commonsrdf/blob/master/examples/src/example/UserGuideTest.java)
+[UserGuideTest.java](https://github.com/apache/commons-rdf/blob/master/examples/src/example/UserGuideTest.java)
 within the
-[examples](https://github.com/apache/incubator-commonsrdf/tree/master/examples)
+[examples](https://github.com/apache/commons-rdf/tree/master/examples)
 folder of the
 Commons RDF [source code repository](source-repository.html).

@@ -26,9 +26,9 @@ import org.apache.jena.graph.Node;
 
 class JenaBlankNodeImpl extends AbstractJenaRDFTerm implements JenaBlankNode {
 
-    private UUID salt;
+    private final UUID salt;
 
-    JenaBlankNodeImpl(Node node, UUID salt) {
+    JenaBlankNodeImpl(final Node node, final UUID salt) {
         super(node);
         if (!node.isBlank()) {
             throw new IllegalArgumentException("Node is not a blank node: " + node);
@@ -37,14 +37,17 @@ class JenaBlankNodeImpl extends AbstractJenaRDFTerm implements JenaBlankNode {
     }
 
     @Override
-    public boolean equals(Object other) {
-        if (other == this)
+    public boolean equals(final Object other) {
+        if (other == this) {
             return true;
-        if (other == null)
+        }
+        if (other == null) {
             return false;
-        if (!(other instanceof BlankNode))
+        }
+        if (!(other instanceof BlankNode)) {
             return false;
-        BlankNode bNode = (BlankNode) other;
+        }
+        final BlankNode bNode = (BlankNode) other;
         return uniqueReference().equals(bNode.uniqueReference());
     }
 

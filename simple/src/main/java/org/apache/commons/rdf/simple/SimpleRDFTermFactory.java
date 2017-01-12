@@ -34,37 +34,45 @@ import org.apache.commons.rdf.api.Triple;
 @Deprecated
 public class SimpleRDFTermFactory implements RDFTermFactory {
 
-    private SimpleRDF factory = new SimpleRDF();
+    private final SimpleRDF factory = new SimpleRDF();
 
+    @Override
     public BlankNode createBlankNode() {
         return factory.createBlankNode();
     }
 
-    public BlankNode createBlankNode(String name) {
+    @Override
+    public BlankNode createBlankNode(final String name) {
         return factory.createBlankNode(name);
     }
 
+    @Override
     public Graph createGraph() {
         return factory.createGraph();
     }
 
-    public IRI createIRI(String iri) {
+    @Override
+    public IRI createIRI(final String iri) {
         return factory.createIRI(iri);
     }
 
-    public Literal createLiteral(String literal) {
+    @Override
+    public Literal createLiteral(final String literal) {
         return factory.createLiteral(literal);
     }
 
-    public Literal createLiteral(String literal, IRI dataType) {
+    @Override
+    public Literal createLiteral(final String literal, final IRI dataType) {
         return factory.createLiteral(literal, dataType);
     }
 
-    public Literal createLiteral(String literal, String language) {
+    @Override
+    public Literal createLiteral(final String literal, final String language) {
         return factory.createLiteral(literal, language);
     }
 
-    public Triple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    @Override
+    public Triple createTriple(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         return factory.createTriple(subject, predicate, object);
     }
 }

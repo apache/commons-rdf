@@ -23,27 +23,38 @@
 Contributions to this project will be gratefully received.
 
 Feel free to subscribe to the
-[dev@commonsrdf](mail-lists.html)
+[dev@commons](mail-lists.html)
 mailing list to follow the ongoing development of Commons RDF, ask questions
 about its usage, or help shape Commons RDF by contributing your ideas, code and
-use cases.
+use cases. Please use the Subject tag `[RDF]` in your posts.
 
 You can contribute to Apache Commons RDF in many ways:
 
- * Participate in the design discussions on [dev@commonsrdf](mail-lists.html)
+ * Participate in the design discussions on [dev@commons](mail-lists.html)
  * Implement the Commons RDF API in your own [implementation](implementations.html)
  * Raise an [issue](https://issues.apache.org/jira/browse/COMMONSRDF)
- * Raise a [pull request](https://github.com/apache/incubator-commonsrdf/pulls) to:
-    + Contribute new [tests](https://github.com/apache/incubator-commonsrdf/tree/master/api/src/test/java/org/apache/commons/rdf/api)   
-    + Suggest changes to the [API](https://github.com/apache/incubator-commonsrdf/tree/master/api/)
+ * Raise a [pull request](https://github.com/apache/commons-rdf/pulls) to:
+    + Contribute new [tests](https://github.com/apache/commons-rdf/tree/master/api/src/test/java/org/apache/commons/rdf/api)   
+    + Suggest changes to the [API](https://github.com/apache/commons-rdf/tree/master/api/)
     + Improve the [Javadocs](apidocs/)
-    + Fix bugs in the [simple](https://github.com/apache/incubator-commonsrdf/tree/master/simple/src/main/java/org/apache/commons/rdf/simple) implementation
+    + Fix bugs in the [simple](https://github.com/apache/commons-rdf/tree/master/simple/src/main/java/org/apache/commons/rdf/simple) implementation
     + .. and more
- * Improve the [website](http://commonsrdf.incubator.apache.org/) by:
-    + Raising a pull request for changes to [src/site](https://github.com/apache/incubator-commonsrdf/tree/master/src/site)
+ * Improve the [website](https://commons.apache.org/proper/commons-rdf/) by:
+    + Raising a pull request for changes to [src/site](https://github.com/apache/commons-rdf/tree/master/src/site)
     + Contribute example use cases
+
+All ASF committers have write access to Apache Commons repositories
+and are welcome to contribute directly. (No need to ask!) Please make sure
+you have subscribed to the [dev@commons](mail-lists.html) list first for
+any feedback.  We do ask that you 
+raise a corresponding [issue](https://issues.apache.org/jira/browse/COMMONSRDF)
+referenced in your commits (e.g. 
+`COMMONSRDF-999: Avoid NullPointerException in GraphImpl.iterate()`). 
+Larger changes or any changes to the [api](api/) should be raised as a 
+[pull request](https://github.com/apache/commons-rdf/pulls) for code
+review and discussion.
  
-Contributions are assumed to be under the
+All contributions are assumed to be under the
 [Apache License, version 2.0](http://www.apache.org/licenses/LICENSE-2.0),
 however we may ask you to also sign a 
 [software grant](https://www.apache.org/licenses/software-grant.txt) for any 

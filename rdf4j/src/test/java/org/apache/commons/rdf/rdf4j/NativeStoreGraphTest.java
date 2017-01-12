@@ -58,7 +58,7 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
         public RDF4JGraph createGraph() {
             // We re-use the repository connection, but use a different context
             // every time
-            Set<RDF4JBlankNode> context = Collections.singleton(rdf4jFactory.createBlankNode());
+            final Set<RDF4JBlankNode> context = Collections.singleton(rdf4jFactory.createBlankNode());
             return rdf4jFactory.asGraph(getRepository(), context);
         }
 
@@ -70,35 +70,43 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
         }
 
         // Delegate methods
+        @Override
         public RDF4JBlankNode createBlankNode() {
             return rdf4jFactory.createBlankNode();
         }
 
-        public RDF4JBlankNode createBlankNode(String name) {
+        @Override
+        public RDF4JBlankNode createBlankNode(final String name) {
             return rdf4jFactory.createBlankNode(name);
         }
 
-        public RDF4JIRI createIRI(String iri) throws IllegalArgumentException, UnsupportedOperationException {
+        @Override
+        public RDF4JIRI createIRI(final String iri) throws IllegalArgumentException, UnsupportedOperationException {
             return rdf4jFactory.createIRI(iri);
         }
 
-        public RDF4JLiteral createLiteral(String lexicalForm) {
+        @Override
+        public RDF4JLiteral createLiteral(final String lexicalForm) {
             return rdf4jFactory.createLiteral(lexicalForm);
         }
 
-        public Literal createLiteral(String lexicalForm, IRI dataType) {
+        @Override
+        public Literal createLiteral(final String lexicalForm, final IRI dataType) {
             return rdf4jFactory.createLiteral(lexicalForm, dataType);
         }
 
-        public Literal createLiteral(String lexicalForm, String languageTag) {
+        @Override
+        public Literal createLiteral(final String lexicalForm, final String languageTag) {
             return rdf4jFactory.createLiteral(lexicalForm, languageTag);
         }
 
-        public RDF4JTriple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+        @Override
+        public RDF4JTriple createTriple(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
             return rdf4jFactory.createTriple(subject, predicate, object);
         }
 
-        public Quad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
+        @Override
+        public Quad createQuad(final BlankNodeOrIRI graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object)
                 throws IllegalArgumentException {
             return rdf4jFactory.createQuad(graphName, subject, predicate, object);
         }
@@ -110,7 +118,7 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
     private SailRepository repository;
 
     public void createRepository() throws IOException {
-        Sail sail = new NativeStore(tempDir.newFolder());
+        final Sail sail = new NativeStore(tempDir.newFolder());
         repository = new SailRepository(sail);
         repository.initialize();
     }
@@ -119,7 +127,7 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
         if (repository == null) {
             try {
                 createRepository();
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 throw new UncheckedIOException(e);
             }
         }
@@ -134,7 +142,7 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
     public Timeout globalTimeout = Timeout.seconds(15);
 
     @After
-    public void shutdownAndDelete() throws IOException {
+    public void shutdownAndDelete() {
         // must shutdown before we delete
         if (repository != null) {
             System.out.print("Shutting down rdf4j repository " + repository + "...");

@@ -29,13 +29,13 @@
 
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-rdf-parent</artifactId>
-    <version>0.3.0-incubating-SNAPSHOT</version>
+    <version>0.4.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Commons RDF</name>
     <description>Commons Java API for RDF 1.1</description>
 
-    <url>http://commonsrdf.incubator.apache.org/</url>
+    <url>https://commons.apache.org/proper/commons-rdf/</url>
 
     <inceptionYear>2015</inceptionYear>
 
@@ -45,12 +45,14 @@
         <project.build.encoding>UTF-8</project.build.encoding>
         <commons.encoding>UTF-8</commons.encoding>
         <commons.componentid>rdf</commons.componentid>
-        <commons.release.version>0.2.0</commons.release.version>
+        <commons.release.version>0.3.0</commons.release.version>
         <commons.jira.id>COMMONSRDF</commons.jira.id>
         <commons.jira.pid>12316620</commons.jira.pid>
         <commons.site.path>rdf</commons.site.path>
+	<!--
         <commons.scmPubUrl>https://svn.apache.org/repos/infra/websites/production/commonsrdf/content/</commons.scmPubUrl>
         <commons.scmPubCheckoutDirectory>${project.build.directory}/site-content</commons.scmPubCheckoutDirectory>
+        -->
         <commons.javadoc.java.link>https://docs.oracle.com/javase/8/docs/api/</commons.javadoc.java.link>
         
         <!-- upgrade from 0.8.0 for Java 8 support -->
@@ -59,8 +61,8 @@
         
         <!--  NOTE: jsonldjava is also used by rdf4j and jena, check  -->
         <jsonldjava.version>0.8.3</jsonldjava.version>
-        <rdf4j.version>2.1</rdf4j.version>
-        <jena.version>3.1.0</jena.version>
+        <rdf4j.version>2.1.1</rdf4j.version>
+        <jena.version>3.1.1</jena.version>
         <!--  NOTE: dexx and xerces versions should match 
         the versions marked as <optional> in jena-osgi pom
          -->
@@ -75,9 +77,9 @@
     </properties>
 
     <scm>
-        <url>https://git-wip-us.apache.org/repos/asf/incubator-commonsrdf.git</url>
-        <connection>scm:git:https://git-wip-us.apache.org/repos/asf/incubator-commonsrdf.git</connection>
-        <developerConnection>scm:git:https://git-wip-us.apache.org/repos/asf/incubator-commonsrdf.git</developerConnection>
+        <url>https://git-wip-us.apache.org/repos/asf/commons-rdf.git</url>
+        <connection>scm:git:https://git-wip-us.apache.org/repos/asf/commons-rdf.git</connection>
+        <developerConnection>scm:git:https://git-wip-us.apache.org/repos/asf/commons-rdf.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
@@ -90,29 +92,6 @@
       <url>https://builds.apache.org/</url>
     </ciManagement>
 
-    <mailingLists>
-        <mailingList>
-            <name>dev</name>
-            <post>dev@commonsrdf.incubator.apache.org</post>
-            <subscribe>dev-subscribe@commonsrdf.incubator.apache.org</subscribe>
-            <unsubscribe>dev-unsubscribe@commonsrdf.incubator.apache.org</unsubscribe>
-            <archive>https://lists.apache.org/list.html?dev@commonsrdf.apache.org</archive>
-            <otherArchives>
-                <otherArchive>http://markmail.org/search/?q=list%3Aorg.apache.commonsrdf.dev</otherArchive>
-            </otherArchives>
-        </mailingList>
-        <mailingList>
-            <name>commits</name>
-            <post>commits@commonsrdf.incubator.apache.org</post>
-            <subscribe>commits-subscribe@commonsrdf.incubator.apache.org</subscribe>
-            <unsubscribe>commits-unsubscribe@commonsrdf.incubator.apache.org</unsubscribe>
-            <archive>https://lists.apache.org/list.html?commits@commonsrdf.apache.org</archive>
-            <otherArchives>
-                <otherArchive>http://markmail.org/search/?q=list%3Aorg.apache.commonsrdf.commits</otherArchive>
-            </otherArchives>
-        </mailingList>
-    </mailingLists>
-
     <developers>
         <developer>
             <id>lewismc</id>
@@ -121,18 +100,7 @@
             <roles>
                 <role>Committer</role>
                 <role>PPMC Member</role>
-                <role>Champion</role>
-            </roles>
-            <timezone>+1</timezone>
-        </developer>
-        <developer>
-            <id>johndament</id>
-            <name>John D Ament</name>
-            <email>johndament[at]apache[dot]org</email>
-            <roles>
-                <role>Committer</role>
-                <role>PPMC Member</role>
-                <role>Mentor</role>
+                <role>Emeritus Champion</role>
             </roles>
             <timezone>+1</timezone>
         </developer>
@@ -142,8 +110,8 @@
             <email>ggregory[at]apache[dot]org</email>
             <roles>
                 <role>Committer</role>
-                <role>PPMC Member</role>
-                <role>Mentor</role>
+                <role>Emeritus PPMC Member</role>
+                <role>Emeritus Mentor</role>
             </roles>
             <timezone>+1</timezone>
         </developer>
@@ -154,7 +122,7 @@
             <url>http://www.wikier.org</url>
             <roles>
                 <role>Committer</role>
-                <role>PPMC Member</role>
+                <role>Emeritus PPMC Member</role>
             </roles>
             <timezone>+1</timezone>
         </developer>
@@ -165,7 +133,7 @@
             <url>http://orcid.org/0000-0001-9842-9718</url>
             <roles>
                 <role>Committer</role>
-                <role>PPMC Member</role>
+                <role>Emeritus PPMC Member</role>
             </roles>
             <timezone>+0</timezone>
         </developer>
@@ -175,7 +143,7 @@
             <email>enridaga[at]apache[dot]org</email>
             <roles>
                 <role>Committer</role>
-                <role>PPMC Member</role>
+                <role>Emeritus PPMC Member</role>
             </roles>
             <timezone>+0</timezone>
         </developer>
@@ -185,23 +153,33 @@
             <email>britter[at]apache[dot]org</email>
             <roles>
                 <role>Committer</role>
-                <role>PPMC Member</role>
-                <role>Apache Commons Representative</role>
+                <role>Emeritus PPMC Member</role>
             </roles>
             <timezone>+1</timezone>
         </developer>
-    </developers>
-
-    <contributors>
-        <contributor>
+        <developer>
+	    <id>ansell</id>
             <name>Peter Ansell</name>
             <email>ansell[at]apache[dot]org</email>
             <url>https://github.com/ansell</url>
             <roles>
+                <role>Reviewer</role>
                 <role>Emeritus Committer</role>
                 <role>Emeritus PPMC Member</role>
             </roles>
-        </contributor>
+        </developer>
+        <developer>
+	    <id>ajs6f</id>
+            <name>Adam Soroka</name>
+            <email>ajs6f[at]apache[dot]org</email>
+            <roles>
+                <role>Reviewer</role>
+            </roles>
+            <timezone>+0</timezone>
+        </developer>
+    </developers>
+
+    <contributors>
         <contributor>
             <name>Reto Gmür</name>
             <email>reto[at]apache[dot]org</email>
@@ -217,6 +195,7 @@
             <roles>
                 <role>Emeritus Committer</role>
                 <role>Emeritus PPPMC Member</role>
+                <role>Reviewer</role>
             </roles>
             <timezone>+0</timezone>
         </contributor>
@@ -227,6 +206,23 @@
                 <role>Emeritus Mentor</role>
             </roles>
             <timezone>+0</timezone>
+        </contributor>
+        <contributor>
+            <name>John D Ament</name>
+            <email>johndament[at]apache[dot]org</email>
+            <roles>
+                <role>Emeritus PPMC Member</role>
+                <role>Emeritus Mentor</role>
+            </roles>
+            <timezone>+1</timezone>
+        </contributor>
+        <contributor>
+            <name>Aaron Coburn</name>
+            <email>acoburn[at]apache[dot]org</email>
+            <roles>
+                <role>Contributor</role>
+            </roles>
+            <timezone>+1</timezone>
         </contributor>
     </contributors>
 
@@ -239,10 +235,10 @@
         <module>integration-tests</module>
     </modules>
 
-	<!--  
-	Common dependencies across modules. 
-	Keep this list small and only <scope>test</scope> !
-	-->
+    <!--  
+    Common dependencies across modules. 
+    Keep this list small and only <scope>test</scope> !
+    -->
         <dependencies>
             <dependency>
                 <groupId>junit</groupId>
@@ -250,14 +246,14 @@
                 <version>${junit.version}</version>
                 <scope>test</scope>
             </dependency>
-			<dependency>
-				<!-- System.err logging for Jena, JSONLD-Java, RDF4J 
-				-->
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-simple</artifactId>
-				<version>${slf4j.version}</version>
-				<scope>test</scope>
-			</dependency>
+            <dependency>
+                <!-- System.err logging for Jena, JSONLD-Java, RDF4J 
+                -->
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>${slf4j.version}</version>
+                <scope>test</scope>
+            </dependency>
         </dependencies>
 
     <build>
@@ -290,15 +286,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <configuration>
-                            <descriptor>src/assembly/src.xml</descriptor>
-                            <finalName>apache-commons-rdf-${project.version}</finalName>
-                            <tarLongFileMode>gnu</tarLongFileMode>
-                        </configuration>
-                    </execution>
-                </executions>
+		<configuration>
+		    <finalName>apache-commons-rdf-${project.version}</finalName>
+		    <runOnlyAtExecutionRoot>true</runOnlyAtExecutionRoot>
+		</configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -313,12 +304,12 @@
                 </executions>
                 <configuration>
                     <additionalparam>-Xdoclint:all</additionalparam>
-					<links>
-					<link>${commons.javadoc.java.link}</link>
-					<link>https://jena.apache.org/documentation/javadoc/jena/</link>
-					<link>https://jena.apache.org/documentation/javadoc/arq/</link>
-					<link>http://rdf4j.org/javadoc/2.0/</link>
-					</links>
+                    <links>
+                    <link>${commons.javadoc.java.link}</link>
+                    <link>https://jena.apache.org/documentation/javadoc/jena/</link>
+                    <link>https://jena.apache.org/documentation/javadoc/arq/</link>
+                    <link>http://rdf4j.org/javadoc/2.0/</link>
+                    </links>
                 </configuration>
             </plugin>
             <!--
@@ -337,7 +328,9 @@
                 <artifactId>maven-release-plugin</artifactId>
                 <configuration>
                     <useReleaseProfile>true</useReleaseProfile>
-                    <!-- TODO: Use apache-parent's apache-release rather than common-parent's release? -->
+		    <!-- TODO: Can we use apache-parent's apache-release rather than common-parent's release?
+			It seems to force adding a -source-release
+		    -->
                     <releaseProfiles>release</releaseProfiles>
                     <goals>deploy</goals>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
@@ -349,7 +342,7 @@
                 </configuration>
             </plugin>
             <!-- Create code coverage reports and submit them to coveralls.io.
-            https://coveralls.io/github/apache/incubator-commonsrdf
+            https://coveralls.io/github/apache/commons-rdf
             -->
             <plugin>
                 <groupId>org.eluder.coveralls</groupId>
@@ -431,37 +424,37 @@
                                     </action>
                                 </pluginExecution>
                                 <pluginExecution>
-                                	<pluginExecutionFilter>
-                                		<groupId>org.apache.felix</groupId>
-                                		<artifactId>maven-bundle-plugin</artifactId>
-                                		<versionRange>[2.5.3,)</versionRange>
-                                		<goals>
-                                			<goal>manifest</goal>
-                                		</goals>
-                                	</pluginExecutionFilter>
-                                	<action>
-                                		<ignore />
-                                	</action>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.apache.felix</groupId>
+                                        <artifactId>maven-bundle-plugin</artifactId>
+                                        <versionRange>[2.5.3,)</versionRange>
+                                        <goals>
+                                            <goal>manifest</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore />
+                                    </action>
                                 </pluginExecution>
                             </pluginExecutions>
                         </lifecycleMappingMetadata>
                     </configuration>
                 </plugin>
-	      <plugin>
-		<!-- Check if we broke compatibibility against previous release -->
-		<groupId>com.github.siom79.japicmp</groupId>
-		<artifactId>japicmp-maven-plugin</artifactId>
-		<version>${commons.japicmp.version}</version>
-		<configuration>
-		  <parameter>
-		    <!-- Tell japicmp about the -incubator suffix  -->
-		    <oldVersionPattern>\d+\.\d+\.\d+\-incubating</oldVersionPattern>
-		    <!-- japicmp requires "mvn package site" - below means "mvn
-			 site" still works (but without japicmp report) -->
-		    <ignoreMissingNewVersion/>
-		  </parameter>
-		</configuration>
-	      </plugin>
+          <plugin>
+        <!-- Check if we broke compatibibility against previous release -->
+        <groupId>com.github.siom79.japicmp</groupId>
+        <artifactId>japicmp-maven-plugin</artifactId>
+        <version>${commons.japicmp.version}</version>
+        <configuration>
+          <parameter>
+            <!-- Tell japicmp about the -incubator suffix for 0.3.0 -->
+            <oldVersionPattern>\d+\.\d+\.\d+\-incubating</oldVersionPattern>
+            <!-- japicmp requires "mvn package site" - below means "mvn
+             site" still works (but without japicmp report) -->
+	    <ignoreMissingNewVersion>true</ignoreMissingNewVersion>
+          </parameter>
+        </configuration>
+          </plugin>
 
                 <!--
                 <plugin>
@@ -585,49 +578,14 @@
     <profiles>
         <profile>
             <id>release</id>
-            <!-- extends the release profile from commons -->
+        <!-- extends the release profile from commons -->
             <build>
-        	<finalName>apache-commonsrdf-${project.version}</finalName>
+		    <!--
+                <finalName>apache-commons-rdf-${project.version}</finalName>
+-->
                 <plugins>
-                  <!-- Generate convenience *.md5 *.sha1 files for dist puropses -->
-                  <plugin>
-                      <groupId>org.apache.maven.plugins</groupId>
-                      <artifactId>maven-antrun-plugin</artifactId>
-                      <executions>
-                          <execution>
-                              <id>default-cli</id>
-                              <goals>
-                                  <goal>run</goal>
-                              </goals>
-                              <phase>package</phase>
-                              <configuration>
-                                  <tasks>
-                                      <checksum algorithm="MD5" fileext=".md5">
-                                          <fileset dir="${project.build.directory}">
-                                              <include name="*.zip" />
-                                              <include name="*.tar.gz" />
-                                          </fileset>
-                                      </checksum>
-                                      <checksum algorithm="SHA1" fileext=".sha1">
-                                          <fileset dir="${project.build.directory}">
-                                              <include name="*.zip" />
-                                              <include name="*.tar.gz" />
-                                          </fileset>
-                                      </checksum>
-                                  </tasks>
-                              </configuration>
-                          </execution>
-                      </executions>
-                      <dependencies>
-                          <dependency>
-                              <groupId>org.apache.ant</groupId>
-                              <artifactId>ant-nodeps</artifactId>
-                              <version>1.8.1</version>
-                          </dependency>
-                      </dependencies>
-                  </plugin>
-
                     <plugin>
+			    <!-- Avoid making *.asc.asc -->
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
                         <configuration>
@@ -643,6 +601,15 @@
         </profile>
     </profiles>
 
+
+    <distributionManagement>
+      <site>
+        <id>commonsrdf-site</id>
+        <name>Apache Commons Site SVN</name>
+        <url>scm:svn:${commons.scmPubUrl}</url>
+      </site>
+      <downloadUrl>${project.url}download.html</downloadUrl>
+    </distributionManagement>
 
 
 </project>

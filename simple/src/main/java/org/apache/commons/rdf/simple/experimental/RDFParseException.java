@@ -22,24 +22,24 @@ import org.apache.commons.rdf.experimental.RDFParser;
 
 public class RDFParseException extends Exception {
     private static final long serialVersionUID = 5427752643780702976L;
-    private RDFParser builder;
+    private final RDFParser builder;
 
-    public RDFParseException(RDFParser builder) {
+    public RDFParseException(final RDFParser builder) {
         super();
         this.builder = builder;
     }
 
-    public RDFParseException(RDFParser builder, String message, Throwable cause) {
+    public RDFParseException(final RDFParser builder, final String message, final Throwable cause) {
         super(message, cause);
         this.builder = builder;
     }
 
-    public RDFParseException(RDFParser builder, String message) {
+    public RDFParseException(final RDFParser builder, final String message) {
         super(message);
         this.builder = builder;
     }
 
-    public RDFParseException(RDFParser builder, Throwable cause) {
+    public RDFParseException(final RDFParser builder, final Throwable cause) {
         super(cause);
         this.builder = builder;
     }

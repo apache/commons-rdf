@@ -30,7 +30,7 @@ public class BlankNodeTest extends AbstractBlankNodeTest {
     }
 
     @Override
-    protected BlankNode getBlankNode(String identifier) {
+    protected BlankNode getBlankNode(final String identifier) {
         return factory.createBlankNode(identifier);
     }
 

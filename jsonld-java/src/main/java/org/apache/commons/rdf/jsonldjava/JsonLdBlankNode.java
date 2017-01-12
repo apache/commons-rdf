@@ -25,9 +25,9 @@ public interface JsonLdBlankNode extends JsonLdTerm, BlankNode {
 }
 
 final class JsonLdBlankNodeImpl extends JsonLdTermImpl implements JsonLdBlankNode {
-    private String blankNodePrefix;
+    private final String blankNodePrefix;
 
-    JsonLdBlankNodeImpl(Node node, String blankNodePrefix) {
+    JsonLdBlankNodeImpl(final Node node, final String blankNodePrefix) {
         super(node);
         this.blankNodePrefix = blankNodePrefix;
         if (!node.isBlankNode()) {
@@ -47,16 +47,21 @@ final class JsonLdBlankNodeImpl extends JsonLdTermImpl implements JsonLdBlankNod
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (!(obj instanceof BlankNode)) {
             return false;
         }
-        BlankNode other = (BlankNode) obj;
+        final BlankNode other = (BlankNode) obj;
         return uniqueReference().equals(other.uniqueReference());
     }
 
     @Override
     public int hashCode() {
         return uniqueReference().hashCode();
+    }
+    
+    @Override
+    public String toString() {
+        return ntriplesString() + " [" + uniqueReference() + "]";
     }
 }

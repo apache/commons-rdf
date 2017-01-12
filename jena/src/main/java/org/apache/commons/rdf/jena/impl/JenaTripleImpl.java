@@ -30,11 +30,11 @@ import org.apache.commons.rdf.jena.JenaTriple;
 
 class JenaTripleImpl extends AbstractQuadLike<BlankNodeOrIRI, IRI, RDFTerm, RDFTerm> implements JenaTriple {
 
-    JenaTripleImpl(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    JenaTripleImpl(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         super(subject, predicate, object);
     }
 
-    JenaTripleImpl(org.apache.jena.graph.Triple triple, UUID salt) throws ConversionException {
+    JenaTripleImpl(final org.apache.jena.graph.Triple triple, final UUID salt) throws ConversionException {
         super(triple, salt);
         // Check the conversion
         if (!(subject instanceof BlankNodeOrIRI) || !(predicate instanceof IRI) || !(object instanceof RDFTerm)) {
@@ -43,14 +43,17 @@ class JenaTripleImpl extends AbstractQuadLike<BlankNodeOrIRI, IRI, RDFTerm, RDFT
     }
 
     @Override
-    public boolean equals(Object other) {
-        if (other == this)
+    public boolean equals(final Object other) {
+        if (other == this) {
             return true;
-        if (other == null)
+        }
+        if (other == null) {
             return false;
-        if (!(other instanceof Triple))
+        }
+        if (!(other instanceof Triple)) {
             return false;
-        Triple triple = (Triple) other;
+        }
+        final Triple triple = (Triple) other;
         return getSubject().equals(triple.getSubject()) && getPredicate().equals(triple.getPredicate())
                 && getObject().equals(triple.getObject());
     }

@@ -21,7 +21,6 @@ import org.apache.commons.rdf.api.*;
 import org.apache.commons.rdf.simple.SimpleRDF.SimpleRDFTerm;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -37,28 +36,28 @@ import java.util.stream.Stream;
 final class GraphImpl implements Graph {
 
     private static final int TO_STRING_MAX = 10;
-    private final Set<Triple> triples = new HashSet<Triple>();
+    private final Set<Triple> triples = new HashSet<>();
     private final SimpleRDF factory;
 
-    GraphImpl(SimpleRDF simpleRDF) {
+    GraphImpl(final SimpleRDF simpleRDF) {
         this.factory = simpleRDF;
     }
 
     @Override
-    public void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-        BlankNodeOrIRI newSubject = (BlankNodeOrIRI) internallyMap(subject);
-        IRI newPredicate = (IRI) internallyMap(predicate);
-        RDFTerm newObject = internallyMap(object);
-        Triple result = factory.createTriple(newSubject, newPredicate, newObject);
+    public void add(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
+        final BlankNodeOrIRI newSubject = (BlankNodeOrIRI) internallyMap(subject);
+        final IRI newPredicate = (IRI) internallyMap(predicate);
+        final RDFTerm newObject = internallyMap(object);
+        final Triple result = factory.createTriple(newSubject, newPredicate, newObject);
         triples.add(result);
     }
 
     @Override
-    public void add(Triple triple) {
+    public void add(final Triple triple) {
         triples.add(internallyMap(triple));
     }
 
-    private <T extends RDFTerm> RDFTerm internallyMap(T object) {
+    private <T extends RDFTerm> RDFTerm internallyMap(final T object) {
         if (object == null || object instanceof SimpleRDFTerm) {
             // No need to re-map our own objects.
             // We support null as internallyMap() is also used by the filters,
@@ -67,17 +66,17 @@ final class GraphImpl implements Graph {
             return object;
         }
         if (object instanceof BlankNode) {
-            BlankNode blankNode = (BlankNode) object;
+            final BlankNode blankNode = (BlankNode) object;
             // This guarantees that adding the same BlankNode multiple times to
             // this graph will generate a local object that is mapped to an
             // equivalent object, based on the code in the package private
             // BlankNodeImpl class
             return factory.createBlankNode(blankNode.uniqueReference());
         } else if (object instanceof IRI) {
-            IRI iri = (IRI) object;
+            final IRI iri = (IRI) object;
             return factory.createIRI(iri.getIRIString());
         } else if (object instanceof Literal) {
-            Literal literal = (Literal) object;
+            final Literal literal = (Literal) object;
             if (literal.getLanguageTag().isPresent()) {
                 return factory.createLiteral(literal.getLexicalForm(), literal.getLanguageTag().get());
             } else {
@@ -88,10 +87,10 @@ final class GraphImpl implements Graph {
         }
     }
 
-    private Triple internallyMap(Triple triple) {
-        BlankNodeOrIRI newSubject = (BlankNodeOrIRI) internallyMap(triple.getSubject());
-        IRI newPredicate = (IRI) internallyMap(triple.getPredicate());
-        RDFTerm newObject = internallyMap(triple.getObject());
+    private Triple internallyMap(final Triple triple) {
+        final BlankNodeOrIRI newSubject = (BlankNodeOrIRI) internallyMap(triple.getSubject());
+        final IRI newPredicate = (IRI) internallyMap(triple.getPredicate());
+        final RDFTerm newObject = internallyMap(triple.getObject());
         // Check if any of the object references changed during the mapping, to
         // avoid creating a new Triple object if possible
         if (newSubject == triple.getSubject() && newPredicate == triple.getPredicate()
@@ -108,12 +107,12 @@ final class GraphImpl implements Graph {
     }
 
     @Override
-    public boolean contains(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public boolean contains(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         return stream(subject, predicate, object).findFirst().isPresent();
     }
 
     @Override
-    public boolean contains(Triple triple) {
+    public boolean contains(final Triple triple) {
         return triples.contains(internallyMap(triple));
     }
 
@@ -149,16 +148,16 @@ final class GraphImpl implements Graph {
     }
 
     @Override
-    public void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
-        Stream<Triple> toRemove = stream(subject, predicate, object);
-        for (Triple t : toRemove.collect(Collectors.toList())) {
+    public void remove(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
+        final Stream<Triple> toRemove = stream(subject, predicate, object);
+        for (final Triple t : toRemove.collect(Collectors.toList())) {
             // Avoid ConcurrentModificationException in ArrayList
             remove(t);
         }
     }
 
     @Override
-    public void remove(Triple triple) {
+    public void remove(final Triple triple) {
         triples.remove(internallyMap(triple));
     }
 
@@ -169,7 +168,7 @@ final class GraphImpl implements Graph {
 
     @Override
     public String toString() {
-        String s = stream().limit(TO_STRING_MAX).map(Object::toString).collect(Collectors.joining("\n"));
+        final String s = stream().limit(TO_STRING_MAX).map(Object::toString).collect(Collectors.joining("\n"));
         if (size() > TO_STRING_MAX) {
             return s + "\n# ... +" + (size() - TO_STRING_MAX) + " more";
         } else {

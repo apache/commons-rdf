@@ -18,19 +18,16 @@
 
 -->
 
-# Apache Commons RDF (incubating)
+# Apache Commons RDF
 
 <div class="alert alert-info" role="alert">
   <p>
     <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-    Commons RDF has transitioned to the
-    <a class="alert-link" href="http://incubator.apache.org/">Apache Incubator</a>, with an aim to
-    become part of
-    <a class="alert-link" href="http://commons.apache.org/">Apache Commons</a>.
-    This project
-    was previously hosted at
-    <a class="alert-link" href="http://commons-rdf.github.io/">commons-rdf.github.io</a>,
-    which is not affiliated with the Apache Software Foundation.
+    2016-11-28:
+    Commons RDF has <strong>graduated</strong> from the
+    Apache Incubator and is 
+    now a component of the 
+    <a class="alert-link" href="https://commons.apache.org/">Apache Commons</a> project.
   </p>
 </div>
 
@@ -98,9 +95,10 @@ explicit convertion.
 
 To create such instances without hard-coding an implementation, one can use:
 
-* [RDFTermFactory](apidocs/index.html?org/apache/commons/rdf/api/RDFTermFactory.html):
-  factory interface for creating instances of the above types
-  (e.g. `LiteralImpl` and `GraphImpl`).
+* [RDF](apidocs/index.html?org/apache/commons/rdf/api/RDF.html):
+  interface for creating instances of the above types
+  (e.g. `LiteralImpl` and `GraphImpl`) as well as converting from/to
+  the underlying framework's API.
 
 
 The API also includes a couple of "upper" interfaces  which do not have
@@ -127,7 +125,6 @@ The project is composed by two modules:
   scenarios.
 * [jena](apidocs/index.html?org/apache/commons/rdf/jena/package-summary.html)
     provides an Apache Jena-backed implementation
-
 * [rdf4j](apidocs/index.html?org/apache/commons/rdf/rdf4j/package-summary.html)
     provides an Eclipse RDF4J-backed implementation
 * [jsonld-java](apidocs/index.html?org/apache/commons/rdf/jsonldjava/package-summary.html)
@@ -144,20 +141,6 @@ For more details, read about the
 
 ## Contributing
 
-Please, take into account that this library is still <strong>work in progress</strong>,
-this set of interfaces are still under discussion and evolution. Therefore everybody
-is welcomed to [join the project](mail-lists.html) and [contribute](contributing.html)!
+Everybody is welcomed to [join the project](mail-lists.html) and
+[contribute](contributing.html)!
 
-## Disclaimer
-
-Apache Commons RDF is an effort undergoing incubation at [The Apache Software Foundation
-(ASF)](http://apache.org/) sponsored by the [Apache Incubator PMC](http://incubator.apache.org/).
-Incubation is required of all newly accepted projects until a further review
-indicates that the infrastructure, communications, and decision making process
-have stabilized in a manner consistent with other successful ASF projects.
-While incubation status is not necessarily a reflection of the completeness or
-stability of the code, it does indicate that the project has yet to be fully
-endorsed by the ASF.
-
-<a href="http://incubator.apache.org/"><img
-  alt="Apache Incubator" src="images/apache-incubator-logo.png" height="57" width="229" /></a>

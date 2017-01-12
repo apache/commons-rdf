@@ -194,7 +194,7 @@ public interface RDFSyntax {
      *         {@link Optional#empty()} indicating that no matching syntax was
      *         found.
      */
-    public static Optional<RDFSyntax> byMediaType(String mediaType) {
+    public static Optional<RDFSyntax> byMediaType(final String mediaType) {
         final String type = mediaType.toLowerCase(Locale.ROOT).split("\\s*;", 2)[0];
         return w3cSyntaxes().stream().filter(t -> t.mediaType().equals(type))
                 .findAny();
@@ -217,7 +217,7 @@ public interface RDFSyntax {
      *         {@link Optional#empty()} indicating that no matching file
      *         extension was found.
      */
-    public static Optional<RDFSyntax> byFileExtension(String fileExtension) {
+    public static Optional<RDFSyntax> byFileExtension(final String fileExtension) {
         final String ext = fileExtension.toLowerCase(Locale.ROOT);        
         return w3cSyntaxes().stream().filter(t -> t.fileExtension().equals(ext))
                 .findAny();

@@ -25,10 +25,9 @@ import java.util.function.Consumer;
 
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.QuadLike;
-import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.RDF;
+import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.TripleLike;
-import org.apache.commons.rdf.experimental.RDFParser;
 import org.apache.commons.rdf.jena.JenaGraph;
 import org.apache.commons.rdf.jena.JenaRDF;
 import org.apache.commons.rdf.simple.experimental.AbstractRDFParser;
@@ -38,24 +37,25 @@ import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.system.StreamRDF;
 import org.apache.jena.riot.system.StreamRDFLib;
 
-public class JenaRDFParser extends AbstractRDFParser<JenaRDFParser> implements RDFParser {
+public class JenaRDFParser extends AbstractRDFParser<JenaRDFParser> {
 
     private Consumer<TripleLike> generalizedConsumerTriple;
     private Consumer<QuadLike<RDFTerm>> generalizedConsumerQuad;
 
+    @Override
     protected RDF createRDFTermFactory() {
         return new JenaRDF();
     }
 
-    public JenaRDFParser targetGeneralizedTriple(Consumer<TripleLike> consumer) {
-        JenaRDFParser c = this.clone();
+    public JenaRDFParser targetGeneralizedTriple(final Consumer<TripleLike> consumer) {
+        final JenaRDFParser c = this.clone();
         c.resetTarget();
         c.generalizedConsumerTriple = consumer;
         return c;
     }
 
-    public JenaRDFParser targetGeneralizedQuad(Consumer<QuadLike<RDFTerm>> consumer) {
-        JenaRDFParser c = this.clone();
+    public JenaRDFParser targetGeneralizedQuad(final Consumer<QuadLike<RDFTerm>> consumer) {
+        final JenaRDFParser c = this.clone();
         c.resetTarget();
         c.generalizedConsumerQuad = consumer;
         return c;
@@ -71,9 +71,9 @@ public class JenaRDFParser extends AbstractRDFParser<JenaRDFParser> implements R
     @Override
     protected void parseSynchronusly() throws IOException {
         StreamRDF dest;
-        JenaRDF jenaRDF = getJenaFactory();
+        final JenaRDF jenaRDF = getJenaFactory();
         if (getTargetGraph().isPresent() && getTargetGraph().get() instanceof JenaGraph) {
-            Graph jenaGraph = ((JenaGraph) getTargetGraph().get()).asJenaGraph();
+            final Graph jenaGraph = ((JenaGraph) getTargetGraph().get()).asJenaGraph();
             dest = StreamRDFLib.graph(jenaGraph);
         } else {
             if (generalizedConsumerQuad != null) {
@@ -85,8 +85,8 @@ public class JenaRDFParser extends AbstractRDFParser<JenaRDFParser> implements R
             }
         }
 
-        Lang lang = getContentTypeSyntax().flatMap(jenaRDF::asJenaLang).orElse(null);
-        String baseStr = getBase().map(IRI::getIRIString).orElse(null);
+        final Lang lang = getContentTypeSyntax().flatMap(jenaRDF::asJenaLang).orElse(null);
+        final String baseStr = getBase().map(IRI::getIRIString).orElse(null);
 
         if (getSourceIri().isPresent()) {
             RDFDataMgr.parse(dest, getSourceIri().get().toString(), baseStr, lang, null);

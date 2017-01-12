@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements. See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership. The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<!--
+To edit, use https://www.draw.io/
+When saving, use
+File -> Export as -> SVG
+  Zoom: 100%
+  (x) Transparent background
+  (x) Include a copy of the diagram
+-->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="425px" height="136px" version="1.1" content="&lt;mxfile userAgent=&quot;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/53.0.2785.143 Chrome/53.0.2785.143 Safari/537.36&quot; version=&quot;6.0.1.5&quot; editor=&quot;www.draw.io&quot; type=&quot;google&quot;&gt;&lt;diagram&gt;7VdNc5swEP01HNsBhIl9DI7dHNqZzuTQ9CgLGdQIxAj5K7++K7MCYxvbSTs5JZdIT7srad/bFfbItNh+07TKf6iUSy/0061HHrwwDMgkhn8W2TXInT9pgEyLFI064Em8cgR9RFci5XXP0Cgljaj6IFNlyZnpYVRrtembLZXs71rRjJ8AT4zKU/SXSE3eoOMw7vBHLrLc7RzEeL+COmO8SZ3TVG0OIDLzyFQrZZpRsZ1yaZPn8tL4zQdW24NpXppbHMLGYU3lCu/mhTEtKo8kEgIkiVq0QGYBPLbZuVxAPEg7TJJNLgx/qiizKxtgHrDcFBJmgY1HF1wmlL1kWq3KdKqk0rBUqtI6L4WUDvJCMp/Pkvmd3VTTVMBlemv3yXRufVRp5rQQ0srokcs1N4JRXEDVBATnBwH8/R/gVIqsBIzBBhwWk5aOoL3qmmvDt4PpDVrSQO1cFdzoHZigw8jxjEIPSdTMN51sAmeTH0hmjBhFpWZt6I5MGCCf57klp1ylIGOcKm1ylamSylmHJmyl1zzFBOx5amdMFYLB2O/TCpnQu2fE95PfOKkN1ebelltH8x6bC3tmdEidBZO0ru0OFkQTu8EfbswO2aQrowDqzv5dqQrtaqPVCz+geTEeRSO/XXGVGv4P5fCtMM8uAzB2dz6S8XLMOGNXxd8QZdnp6axWK80QwtYC6cu46dXu7WokzsWp0Y+GVYZRfioBwYdDRHE/RHNm9DpsPEeBoslAZbhAzU1PAoFa6O7ArLIG9RsOjHceOteIjC/Zw6A5QVeBbZ5vKsroSsN9Ke3rdLnlQj8y/SLUvBavdLE3sDLErID1KPFGD+dane1roHl5jwuFSNN9C7jSp88UyGAlnaucwa6KjzXeonsiD/VNLurb/+r78V2Pvi/IvuaSGrHu19cNsndhgiOZq+Wy5uZIGW/VwuhTC/+ghcu9LiJBTwjB5MKL+pGkx1dIBw6g539+c737myv8wG8umHbf6o0Yul88ZPYX&lt;/diagram&gt;&lt;/mxfile&gt;"><defs><linearGradient x1="0%" y1="0%" x2="0%" y2="100%" id="mx-gradient-ffebf7-1-ffabcf-1-s-0"><stop offset="0%" style="stop-color:#FFEBF7"/><stop offset="100%" style="stop-color:#FFABCF"/></linearGradient></defs><g transform="translate(0.5,0.5)"><ellipse cx="361" cy="91" rx="60" ry="40" fill="#000000" stroke="#000000" transform="translate(2,3)" opacity="0.25"/><ellipse cx="361" cy="91" rx="60" ry="40" fill="url(#mx-gradient-ffebf7-1-ffabcf-1-s-0)" stroke="#000000" pointer-events="none"/><g transform="translate(341.5,84.5)"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="38" height="13" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 13px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 40px; white-space: nowrap; word-wrap: normal; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;">&lt;Bob&gt;</div></div></foreignObject><text x="19" y="13" fill="#000000" text-anchor="middle" font-size="13px" font-family="Helvetica">&amp;lt;Bob&amp;gt;</text></switch></g><path d="M 103 63 Q 103 21 211 21 Q 319 21 319 54.76" fill="none" stroke="#b85450" stroke-width="2" stroke-miterlimit="10" pointer-events="none"/><path d="M 319 60.76 L 315 52.76 L 319 54.76 L 323 52.76 Z" fill="#b85450" stroke="#b85450" stroke-width="2" stroke-miterlimit="10" pointer-events="none"/><g transform="translate(186.5,0.5)"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="52" height="13" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 13px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; white-space: nowrap; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;">&lt;knows&gt;</div></div></foreignObject><text x="26" y="13" fill="#000000" text-anchor="middle" font-size="13px" font-family="Helvetica">&amp;lt;knows&amp;gt;</text></switch></g><ellipse cx="61" cy="91" rx="60" ry="40" fill="#000000" stroke="#000000" transform="translate(2,3)" opacity="0.25"/><ellipse cx="61" cy="91" rx="60" ry="40" fill="url(#mx-gradient-ffebf7-1-ffabcf-1-s-0)" stroke="#000000" pointer-events="none"/><g transform="translate(38.5,84.5)"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="44" height="13" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 13px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 44px; white-space: nowrap; word-wrap: normal; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;">&lt;Alice&gt;</div></div></foreignObject><text x="22" y="13" fill="#000000" text-anchor="middle" font-size="13px" font-family="Helvetica">&amp;lt;Alice&amp;gt;</text></switch></g></g></svg>

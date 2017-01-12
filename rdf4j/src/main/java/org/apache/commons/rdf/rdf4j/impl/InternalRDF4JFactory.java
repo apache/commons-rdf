@@ -66,7 +66,7 @@ public abstract class InternalRDF4JFactory {
      *            combination with {@link BNode#getID()}
      * @return Adapted {@link RDF4JBlankNode}
      */
-    public RDF4JBlankNode createBlankNodeImpl(BNode bNode, UUID salt) {
+    public RDF4JBlankNode createBlankNodeImpl(final BNode bNode, final UUID salt) {
         return new BlankNodeImpl(bNode, salt);
     }
 
@@ -77,7 +77,7 @@ public abstract class InternalRDF4JFactory {
      *            RDF4J {@link IRI} to adapt
      * @return Adapted {@link RDF4JIRI}
      */
-    public RDF4JIRI createIRIImpl(IRI iri) {
+    public RDF4JIRI createIRIImpl(final IRI iri) {
         return new IRIImpl(iri);
     }
 
@@ -88,7 +88,7 @@ public abstract class InternalRDF4JFactory {
      *            RDF4J {@link Literal}
      * @return Adapted {@link RDF4JLiteral}
      */
-    public RDF4JLiteral createLiteralImpl(Literal literal) {
+    public RDF4JLiteral createLiteralImpl(final Literal literal) {
         return new LiteralImpl(literal);
     }
 
@@ -103,7 +103,7 @@ public abstract class InternalRDF4JFactory {
      *            factory to use for adapting graph triples
      * @return Adapted {@link RDF4JGraph}
      */
-    public RDF4JGraph createModelGraphImpl(Model model, RDF4J rdf4jTermFactory) {
+    public RDF4JGraph createModelGraphImpl(final Model model, final RDF4J rdf4jTermFactory) {
         return new ModelGraphImpl(model, rdf4jTermFactory);
     }
 
@@ -116,7 +116,7 @@ public abstract class InternalRDF4JFactory {
      *            {@link UUID} for adapting any {@link BNode}s
      * @return Adapted {@link RDF4JQuad}
      */
-    public RDF4JQuad createQuadImpl(Statement statement, UUID salt) {
+    public RDF4JQuad createQuadImpl(final Statement statement, final UUID salt) {
         return new QuadImpl(statement, salt);
     }
 
@@ -137,8 +137,8 @@ public abstract class InternalRDF4JFactory {
      * 
      * @return Adapted {@link RDF4JDataset}
      */
-    public RDF4JDataset createRepositoryDatasetImpl(Repository repository, boolean handleInitAndShutdown,
-            boolean includeInferred) {
+    public RDF4JDataset createRepositoryDatasetImpl(final Repository repository, final boolean handleInitAndShutdown,
+            final boolean includeInferred) {
         return new RepositoryDatasetImpl(repository, UUID.randomUUID(), handleInitAndShutdown, includeInferred);
     }
 
@@ -162,8 +162,8 @@ public abstract class InternalRDF4JFactory {
      *            <code>(Resource[]) null</code>.
      * @return Adapted {@link RDF4JGraph}
      */
-    public RDF4JGraph createRepositoryGraphImpl(Repository repository, boolean handleInitAndShutdown,
-            boolean includeInferred, Resource... contextMask) {
+    public RDF4JGraph createRepositoryGraphImpl(final Repository repository, final boolean handleInitAndShutdown,
+            final boolean includeInferred, final Resource... contextMask) {
         return new RepositoryGraphImpl(repository, UUID.randomUUID(), handleInitAndShutdown, includeInferred,
                 contextMask);
     }
@@ -177,7 +177,7 @@ public abstract class InternalRDF4JFactory {
      *            {@link UUID} for adapting any {@link BNode}s
      * @return Adapted {@link RDF4JTriple}
      */
-    public RDF4JTriple createTripleImpl(Statement statement, UUID salt) {
+    public RDF4JTriple createTripleImpl(final Statement statement, final UUID salt) {
         return new TripleImpl(statement, salt);
     }
 

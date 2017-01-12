@@ -189,7 +189,7 @@ public interface RDFParser {
      * @return An {@link RDFParser} that will insert triples into the specified
      *         graph.
      */
-    default RDFParser target(Graph graph) {
+    default RDFParser target(final Graph graph) {
         return target(q -> {
             if (!q.getGraphName().isPresent()) {
                 graph.add(q.asTriple());
@@ -219,7 +219,7 @@ public interface RDFParser {
      * @return An {@link RDFParser} that will insert triples into the specified
      *         dataset.
      */
-    default RDFParser target(Dataset dataset) {
+    default RDFParser target(final Dataset dataset) {
         return target(dataset::add);
     }
 

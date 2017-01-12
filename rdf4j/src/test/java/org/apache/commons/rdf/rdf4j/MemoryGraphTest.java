@@ -37,45 +37,55 @@ public class MemoryGraphTest extends AbstractGraphTest {
 
         RDF4J rdf4jFactory = new RDF4J(new MemValueFactory());
 
+        @Override
         public RDF4JBlankNode createBlankNode() {
             return rdf4jFactory.createBlankNode();
         }
 
-        public RDF4JBlankNode createBlankNode(String name) {
+        @Override
+        public RDF4JBlankNode createBlankNode(final String name) {
             return rdf4jFactory.createBlankNode(name);
         }
 
+        @Override
         public Dataset createDataset() {
             return rdf4jFactory.createDataset();
         }
 
-        public RDF4JIRI createIRI(String iri) throws IllegalArgumentException, UnsupportedOperationException {
+        @Override
+        public RDF4JIRI createIRI(final String iri) throws IllegalArgumentException, UnsupportedOperationException {
             return rdf4jFactory.createIRI(iri);
         }
 
-        public RDF4JLiteral createLiteral(String lexicalForm) {
+        @Override
+        public RDF4JLiteral createLiteral(final String lexicalForm) {
             return rdf4jFactory.createLiteral(lexicalForm);
         }
 
-        public Literal createLiteral(String lexicalForm, IRI dataType) {
+        @Override
+        public Literal createLiteral(final String lexicalForm, final IRI dataType) {
             return rdf4jFactory.createLiteral(lexicalForm, dataType);
         }
 
-        public Literal createLiteral(String lexicalForm, String languageTag) {
+        @Override
+        public Literal createLiteral(final String lexicalForm, final String languageTag) {
             return rdf4jFactory.createLiteral(lexicalForm, languageTag);
         }
 
-        public RDF4JTriple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+        @Override
+        public RDF4JTriple createTriple(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
             return rdf4jFactory.createTriple(subject, predicate, object);
         }
 
-        public Quad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+        @Override
+        public Quad createQuad(final BlankNodeOrIRI graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
             return rdf4jFactory.createQuad(graphName, subject, predicate, object);
         }
 
+        @Override
         public RDF4JGraph createGraph() {
-            Sail sail = new MemoryStore();
-            Repository repository = new SailRepository(sail);
+            final Sail sail = new MemoryStore();
+            final Repository repository = new SailRepository(sail);
             repository.initialize();
             return rdf4jFactory.asGraph(repository);
         }

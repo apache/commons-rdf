@@ -27,14 +27,14 @@ public interface JsonLdIRI extends JsonLdTerm, IRI {
 
 final class JsonLdIRIImpl extends JsonLdTermImpl implements JsonLdIRI {
 
-    JsonLdIRIImpl(Node node) {
+    JsonLdIRIImpl(final Node node) {
         super(node);
         if (!node.isIRI()) {
             throw new IllegalArgumentException("Node is not an IRI:" + node);
         }
     }
 
-    JsonLdIRIImpl(String iri) {
+    JsonLdIRIImpl(final String iri) {
         super(new RDFDataset.IRI(iri));
     }
 
@@ -54,11 +54,11 @@ final class JsonLdIRIImpl extends JsonLdTermImpl implements JsonLdIRI {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (!(obj instanceof IRI)) {
             return false;
         }
-        IRI other = (IRI) obj;
+        final IRI other = (IRI) obj;
         return node.getValue().equals(other.getIRIString());
     }
 }

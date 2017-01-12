@@ -58,7 +58,7 @@ public abstract class AbstractBlankNodeTest {
      */
     @Test
     public final void testInternalIdentifier() {
-        BlankNode testNull = new BlankNode() {
+        final BlankNode testNull = new BlankNode() {
             @Override
             public String ntriplesString() {
                 return null;
@@ -69,11 +69,11 @@ public abstract class AbstractBlankNodeTest {
                 return null;
             }
         };
-        BlankNode testAutomatic1 = getBlankNode();
-        BlankNode testAutomatic2 = getBlankNode();
-        BlankNode testManual3a = getBlankNode("3");
-        BlankNode testManual3b = getBlankNode("3");
-        BlankNode testManual4 = getBlankNode("4");
+        final BlankNode testAutomatic1 = getBlankNode();
+        final BlankNode testAutomatic2 = getBlankNode();
+        final BlankNode testManual3a = getBlankNode("3");
+        final BlankNode testManual3b = getBlankNode("3");
+        final BlankNode testManual4 = getBlankNode("4");
 
         // Test against our fake stub
         assertNotEquals(testNull.uniqueReference(), testAutomatic1.uniqueReference());
@@ -96,7 +96,7 @@ public abstract class AbstractBlankNodeTest {
      */
     @Test
     public final void testEquals() {
-        BlankNode testNull = new BlankNode() {
+        final BlankNode testNull = new BlankNode() {
             @Override
             public String ntriplesString() {
                 return null;
@@ -107,11 +107,11 @@ public abstract class AbstractBlankNodeTest {
                 return null;
             }
         };
-        BlankNode testAutomatic1 = getBlankNode();
-        BlankNode testAutomatic2 = getBlankNode();
-        BlankNode testManual3a = getBlankNode("3");
-        BlankNode testManual3b = getBlankNode("3");
-        BlankNode testManual4 = getBlankNode("4");
+        final BlankNode testAutomatic1 = getBlankNode();
+        final BlankNode testAutomatic2 = getBlankNode();
+        final BlankNode testManual3a = getBlankNode("3");
+        final BlankNode testManual3b = getBlankNode("3");
+        final BlankNode testManual4 = getBlankNode("4");
 
         // Test against our fake stub
         assertNotEquals(testNull, testAutomatic1);
@@ -134,7 +134,7 @@ public abstract class AbstractBlankNodeTest {
      */
     @Test
     public final void testHashCode() {
-        BlankNode testNull = new BlankNode() {
+        final BlankNode testNull = new BlankNode() {
             @Override
             public String ntriplesString() {
                 return null;
@@ -145,11 +145,11 @@ public abstract class AbstractBlankNodeTest {
                 return null;
             }
         };
-        BlankNode testAutomatic1 = getBlankNode();
-        BlankNode testAutomatic2 = getBlankNode();
-        BlankNode testManual3a = getBlankNode("3");
-        BlankNode testManual3b = getBlankNode("3");
-        BlankNode testManual4 = getBlankNode("4");
+        final BlankNode testAutomatic1 = getBlankNode();
+        final BlankNode testAutomatic2 = getBlankNode();
+        final BlankNode testManual3a = getBlankNode("3");
+        final BlankNode testManual3b = getBlankNode("3");
+        final BlankNode testManual4 = getBlankNode("4");
 
         // Test against our fake stub
         assertNotEquals(testNull.hashCode(), testAutomatic1.hashCode());
@@ -172,7 +172,7 @@ public abstract class AbstractBlankNodeTest {
      */
     @Test
     public final void testNtriplesString() {
-        BlankNode testNull = new BlankNode() {
+        final BlankNode testNull = new BlankNode() {
             @Override
             public String ntriplesString() {
                 return null;
@@ -183,11 +183,11 @@ public abstract class AbstractBlankNodeTest {
                 return null;
             }
         };
-        BlankNode testAutomatic1 = getBlankNode();
-        BlankNode testAutomatic2 = getBlankNode();
-        BlankNode testManual3a = getBlankNode("3");
-        BlankNode testManual3b = getBlankNode("3");
-        BlankNode testManual4 = getBlankNode("4");
+        final BlankNode testAutomatic1 = getBlankNode();
+        final BlankNode testAutomatic2 = getBlankNode();
+        final BlankNode testManual3a = getBlankNode("3");
+        final BlankNode testManual3b = getBlankNode("3");
+        final BlankNode testManual4 = getBlankNode("4");
 
         // Test against our fake stub
         assertNotEquals(testNull.ntriplesString(), testAutomatic1.ntriplesString());

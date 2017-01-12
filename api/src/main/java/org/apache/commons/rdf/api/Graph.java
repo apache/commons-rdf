@@ -38,6 +38,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      * @param triple
      *            The triple to add
      */
+    @Override
     void add(Triple triple);
 
     /**
@@ -60,6 +61,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      *            The triple to check.
      * @return True if the Graph contains the given Triple.
      */
+    @Override
     boolean contains(Triple triple);
 
     /**
@@ -98,6 +100,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      * @param triple
      *            triple to remove
      */
+    @Override
     void remove(Triple triple);
 
     /**
@@ -115,6 +118,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
     /**
      * Clear the graph, removing all triples.
      */
+    @Override
     void clear();
 
     /**
@@ -125,6 +129,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      *
      * @return The number of triples in the graph
      */
+    @Override
     long size();
 
     /**
@@ -143,6 +148,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      * @since 0.3.0-incubating
      * @return A {@link Stream} over all of the triples in the graph
      */
+    @Override
     Stream<? extends Triple> stream();
 
     /**
@@ -194,7 +200,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      * @return A {@link Stream} over the matched triples.
      */
     @Deprecated
-    default Stream<? extends Triple> getTriples(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    default Stream<? extends Triple> getTriples(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         return stream(subject, predicate, object);
     }
 
@@ -221,6 +227,9 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      * The {@link Iterable#iterator()} must only be called once, that is the
      * Iterable must only be iterated over once. A {@link IllegalStateException}
      * may be thrown on attempt to reuse the Iterable.
+     * <p>
+     * The default implementation of this method will call {@link #stream()} to return
+     * its {@link Stream#iterator()}.
      *
      * @return A {@link Iterable} that returns {@link Iterator} over all of the
      *         triples in the graph
@@ -230,6 +239,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      *             if a concurrency conflict occurs while the Iterator is
      *             active.
      */
+    @Override
     @SuppressWarnings("unchecked")
     default Iterable<Triple> iterate() throws ConcurrentModificationException, IllegalStateException {
         return ((Stream<Triple>) stream())::iterator;
@@ -261,6 +271,10 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      * The {@link Iterable#iterator()} must only be called once, that is the
      * Iterable must only be iterated over once. A {@link IllegalStateException}
      * may be thrown on attempt to reuse the Iterable.
+     * <p>
+     * The default implementation of this method will call
+     * {@link #stream(BlankNodeOrIRI, IRI, RDFTerm)} to return its
+     * {@link Stream#iterator()}.
      *
      * @param subject
      *            The triple subject (null is a wildcard)
@@ -277,7 +291,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      *             active.
      */
     @SuppressWarnings("unchecked")
-    default Iterable<Triple> iterate(BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
+    default Iterable<Triple> iterate(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object)
             throws ConcurrentModificationException, IllegalStateException {
         return ((Stream<Triple>) stream(subject, predicate, object))::iterator;
     }

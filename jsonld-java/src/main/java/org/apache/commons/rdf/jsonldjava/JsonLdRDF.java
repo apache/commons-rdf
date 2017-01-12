@@ -47,7 +47,7 @@ public final class JsonLdRDF implements RDF {
         this("urn:uuid:" + UUID.randomUUID() + "#b");
     }
 
-    JsonLdRDF(String bnodePrefix) {
+    JsonLdRDF(final String bnodePrefix) {
         this.bnodePrefix = Objects.requireNonNull(bnodePrefix);
     }
 
@@ -62,7 +62,7 @@ public final class JsonLdRDF implements RDF {
      *            JsonLd {@link RDFDataset} to adapt
      * @return Adapted {@link Dataset}
      */
-    public JsonLdDataset asDataset(RDFDataset rdfDataSet) {
+    public JsonLdDataset asDataset(final RDFDataset rdfDataSet) {
         return new JsonLdDatasetImpl(rdfDataSet);
     }
 
@@ -82,13 +82,13 @@ public final class JsonLdRDF implements RDF {
      *            JsonLd {@link RDFDataset} to adapt
      * @return Adapted {@link Graph} covering the <em>default graph</em>
      */
-    public JsonLdGraph asGraph(RDFDataset rdfDataSet) {
+    public JsonLdGraph asGraph(final RDFDataset rdfDataSet) {
         return new JsonLdGraphImpl(rdfDataSet);
     }
 
-    public Node asJsonLdNode(RDFTerm term) {
+    public Node asJsonLdNode(final RDFTerm term) {
         if (term instanceof JsonLdBlankNode) {
-            JsonLdBlankNode jsonLdBlankNode = (JsonLdBlankNode) term;
+            final JsonLdBlankNode jsonLdBlankNode = (JsonLdBlankNode) term;
             if (jsonLdBlankNode.uniqueReference().startsWith(bnodePrefix)) {
                 // Only return blank nodes 'as is' if they have the same prefix
                 return jsonLdBlankNode.asJsonLdNode();
@@ -101,7 +101,7 @@ public final class JsonLdRDF implements RDF {
             return new RDFDataset.IRI(((IRI) term).getIRIString());
         }
         if (term instanceof BlankNode) {
-            String ref = ((BlankNode) term).uniqueReference();
+            final String ref = ((BlankNode) term).uniqueReference();
             if (ref.startsWith(bnodePrefix)) {
                 // one of our own (but no longer a JsonLdBlankNode),
                 // we can recover the label after our unique prefix
@@ -109,11 +109,11 @@ public final class JsonLdRDF implements RDF {
             }
             // The "foreign" unique reference might not be a valid bnode string,
             // we'll convert to a UUID
-            UUID uuid = UUID.nameUUIDFromBytes(ref.getBytes(StandardCharsets.UTF_8));
+            final UUID uuid = UUID.nameUUIDFromBytes(ref.getBytes(StandardCharsets.UTF_8));
             return new RDFDataset.BlankNode("_:" + uuid);
         }
         if (term instanceof Literal) {
-            Literal literal = (Literal) term;
+            final Literal literal = (Literal) term;
             return new RDFDataset.Literal(literal.getLexicalForm(), literal.getDatatype().getIRIString(),
                     literal.getLanguageTag().orElse(null));
         }
@@ -128,8 +128,8 @@ public final class JsonLdRDF implements RDF {
      *            Commons RDF {@link org.apache.commons.rdf.api.Quad} to adapt
      * @return Adapted JsonLd {@link com.github.jsonldjava.core.RDFDataset.Quad}
      */
-    public RDFDataset.Quad asJsonLdQuad(org.apache.commons.rdf.api.Quad quad) {
-        BlankNodeOrIRI g = quad.getGraphName().orElse(null);
+    public RDFDataset.Quad asJsonLdQuad(final org.apache.commons.rdf.api.Quad quad) {
+        final BlankNodeOrIRI g = quad.getGraphName().orElse(null);
         return createJsonLdQuad(g, quad.getSubject(), quad.getPredicate(), quad.getObject());
     }
 
@@ -141,7 +141,7 @@ public final class JsonLdRDF implements RDF {
      *            Commons RDF {@link Triple} to adapt
      * @return Adapted JsonLd {@link com.github.jsonldjava.core.RDFDataset.Quad}
      */
-    public RDFDataset.Quad asJsonLdQuad(Triple triple) {
+    public RDFDataset.Quad asJsonLdQuad(final Triple triple) {
         return createJsonLdQuad(null, triple.getSubject(), triple.getPredicate(), triple.getObject());
     }
 
@@ -209,19 +209,19 @@ public final class JsonLdRDF implements RDF {
      *            JsonLd {@link RDFDataset} to adapt
      * @return Adapted {@link Dataset}
      */
-    public JsonLdUnionGraph asUnionGraph(RDFDataset rdfDataSet) {
+    public JsonLdUnionGraph asUnionGraph(final RDFDataset rdfDataSet) {
         return new JsonLdUnionGraphImpl(rdfDataSet);
     }
 
     @Override
     public JsonLdBlankNode createBlankNode() {
-        String id = "_:" + UUID.randomUUID().toString();
+        final String id = "_:" + UUID.randomUUID().toString();
         return new JsonLdBlankNodeImpl(new RDFDataset.BlankNode(id), bnodePrefix);
     }
 
     @Override
-    public JsonLdBlankNode createBlankNode(String name) {
-        String id = "_:" + name;
+    public JsonLdBlankNode createBlankNode(final String name) {
+        final String id = "_:" + name;
         // TODO: Check if name is valid JSON-LD BlankNode identifier
         return new JsonLdBlankNodeImpl(new RDFDataset.BlankNode(id), bnodePrefix);
     }
@@ -237,53 +237,53 @@ public final class JsonLdRDF implements RDF {
     }
 
     @Override
-    public JsonLdIRI createIRI(String iri) {
+    public JsonLdIRI createIRI(final String iri) {
         return new JsonLdIRIImpl(iri);
     }
 
     @Override
-    public JsonLdLiteral createLiteral(String literal) {
+    public JsonLdLiteral createLiteral(final String literal) {
         return new JsonLdLiteralImpl(new RDFDataset.Literal(literal, null, null));
     }
 
     @Override
-    public JsonLdLiteral createLiteral(String literal, IRI dataType) {
+    public JsonLdLiteral createLiteral(final String literal, final IRI dataType) {
         return new JsonLdLiteralImpl(new RDFDataset.Literal(literal, dataType.getIRIString(), null));
     }
 
     @Override
-    public JsonLdLiteral createLiteral(String literal, String language) {
+    public JsonLdLiteral createLiteral(final String literal, final String language) {
         return new JsonLdLiteralImpl(new RDFDataset.Literal(literal, Types.RDF_LANGSTRING.getIRIString(), language));
     }
 
     @Override
-    public JsonLdQuad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
+    public JsonLdQuad createQuad(final BlankNodeOrIRI graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object)
             throws IllegalArgumentException, UnsupportedOperationException {
         return new JsonLdQuadImpl(createJsonLdQuad(graphName, subject, predicate, object), bnodePrefix);
     }
 
     @Override
-    public JsonLdTriple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    public JsonLdTriple createTriple(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         return new JsonLdTripleImpl(createJsonLdQuad(null, subject, predicate, object), bnodePrefix);
     }
 
-    String asJsonLdString(BlankNodeOrIRI blankNodeOrIRI) {
+    String asJsonLdString(final BlankNodeOrIRI blankNodeOrIRI) {
         if (blankNodeOrIRI == null) {
             return null;
         }
         if (blankNodeOrIRI instanceof IRI) {
             return ((IRI) blankNodeOrIRI).getIRIString();
         } else if (blankNodeOrIRI instanceof BlankNode) {
-            BlankNode blankNode = (BlankNode) blankNodeOrIRI;
-            String ref = blankNode.uniqueReference();
+            final BlankNode blankNode = (BlankNode) blankNodeOrIRI;
+            final String ref = blankNode.uniqueReference();
             if (ref.startsWith(bnodePrefix)) {
                 // One of ours (but possibly not a JsonLdBlankNode) -
                 // we can use the suffix directly
-                return ref.replace(bnodePrefix, "_:");
+                return ref.replace(bnodePrefix, "");
             } else {
                 // Map to unique bnode identifier, e.g.
                 // _:0dbd92ee-ab1a-45e7-bba2-7ade54f87ec5
-                UUID uuid = UUID.nameUUIDFromBytes(ref.getBytes(StandardCharsets.UTF_8));
+                final UUID uuid = UUID.nameUUIDFromBytes(ref.getBytes(StandardCharsets.UTF_8));
                 return "_:" + uuid;
             }
         } else {
@@ -291,7 +291,7 @@ public final class JsonLdRDF implements RDF {
         }
     }
 
-    JsonLdTerm asRDFTerm(final Node node, String blankNodePrefix) {
+    JsonLdTerm asRDFTerm(final Node node, final String blankNodePrefix) {
         if (node == null) {
             return null; // e.g. default graph
         }
@@ -311,7 +311,7 @@ public final class JsonLdRDF implements RDF {
         }
     }
 
-    RDFDataset.Quad createJsonLdQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
+    RDFDataset.Quad createJsonLdQuad(final BlankNodeOrIRI graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         return new RDFDataset.Quad(asJsonLdNode(subject), asJsonLdNode(predicate), asJsonLdNode(object),
                 asJsonLdString(graphName));
     }

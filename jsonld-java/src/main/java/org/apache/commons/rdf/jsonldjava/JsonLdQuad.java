@@ -31,19 +31,19 @@ public interface JsonLdQuad extends org.apache.commons.rdf.api.Quad, JsonLdTripl
 final class JsonLdQuadImpl extends JsonLdQuadLikeImpl<BlankNodeOrIRI, IRI, RDFTerm, BlankNodeOrIRI>
         implements JsonLdQuad {
 
-    JsonLdQuadImpl(com.github.jsonldjava.core.RDFDataset.Quad quad, String blankNodePrefix) {
+    JsonLdQuadImpl(final com.github.jsonldjava.core.RDFDataset.Quad quad, final String blankNodePrefix) {
         super(quad, blankNodePrefix);
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (obj == this) {
             return true;
         }
         if (!(obj instanceof org.apache.commons.rdf.api.Quad)) {
             return false;
         }
-        org.apache.commons.rdf.api.Quad other = (org.apache.commons.rdf.api.Quad) obj;
+        final org.apache.commons.rdf.api.Quad other = (org.apache.commons.rdf.api.Quad) obj;
         return getGraphName().equals(other.getGraphName()) && getSubject().equals(other.getSubject())
                 && getPredicate().equals(other.getPredicate()) && getObject().equals(other.getObject());
     }

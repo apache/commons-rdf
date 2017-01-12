@@ -25,16 +25,16 @@ import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.Triple;
-import org.apache.commons.rdf.rdf4j.RDF4JQuad;
 import org.apache.commons.rdf.rdf4j.RDF4J;
+import org.apache.commons.rdf.rdf4j.RDF4JQuad;
 import org.eclipse.rdf4j.model.Statement;
 
-final class QuadImpl implements Quad, RDF4JQuad {
+final class QuadImpl implements RDF4JQuad {
     private transient int hashCode = 0;
-    private UUID salt;
+    private final UUID salt;
     private final Statement statement;
 
-    QuadImpl(Statement statement, UUID salt) {
+    QuadImpl(final Statement statement, final UUID salt) {
         this.statement = statement;
         this.salt = salt;
     }
@@ -50,11 +50,13 @@ final class QuadImpl implements Quad, RDF4JQuad {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof Triple) {
-            Triple triple = (Triple) obj;
-            return getSubject().equals(triple.getSubject()) && getPredicate().equals(triple.getPredicate())
-                    && getObject().equals(triple.getObject());
+    public boolean equals(final Object obj) {
+        if (obj instanceof Quad) {
+            final Quad quad = (Quad) obj;
+            return getGraphName().equals(quad.getGraphName()) &&
+                    getSubject().equals(quad.getSubject()) && 
+                    getPredicate().equals(quad.getPredicate()) &&
+                    getObject().equals(quad.getObject());
         }
         return false;
     }
@@ -64,7 +66,7 @@ final class QuadImpl implements Quad, RDF4JQuad {
         if (statement.getContext() == null) {
             return Optional.empty();
         }
-        BlankNodeOrIRI g = (BlankNodeOrIRI) RDF4J.asRDFTerm(statement.getContext(), salt);
+        final BlankNodeOrIRI g = (BlankNodeOrIRI) RDF4J.asRDFTerm(statement.getContext(), salt);
         return Optional.of(g);
     }
 
