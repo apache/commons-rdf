@@ -194,6 +194,7 @@ public abstract class AbstractRDFTest {
         assertEquals("\"Herbert Van de Sompel\"@vls", vls.ntriplesString());
     }
 
+    @Test
     public void testCreateLiteralLangCaseInsensitive() throws Exception {
         // COMMONSRDF-51: Literal langtag may not be in lowercase, but
         // must be COMPARED (aka .equals and .hashCode()) in lowercase
@@ -415,4 +416,5 @@ public abstract class AbstractRDFTest {
         final Triple triple = factory.createTriple(iri, iri, iri);
         assertEquals(Objects.hash(iri, iri, iri), triple.hashCode());
     }
+
 }
