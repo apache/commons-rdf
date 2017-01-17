@@ -99,7 +99,7 @@
             <email>lewismc[at]apache[dot]org</email>
             <roles>
                 <role>Committer</role>
-                <role>PPMC Member</role>
+                <role>Emeritus PPMC Member</role>
                 <role>Emeritus Champion</role>
             </roles>
             <timezone>+1</timezone>
@@ -154,12 +154,13 @@
             <email>britter[at]apache[dot]org</email>
             <roles>
                 <role>Committer</role>
+                <role>PMC Member</role>
                 <role>Emeritus PPMC Member</role>
             </roles>
             <timezone>+1</timezone>
         </developer>
         <developer>
-	    <id>ansell</id>
+	        <id>ansell</id>
             <name>Peter Ansell</name>
             <email>ansell[at]apache[dot]org</email>
             <url>https://github.com/ansell</url>
@@ -168,15 +169,6 @@
                 <role>Emeritus Committer</role>
                 <role>Emeritus PPMC Member</role>
             </roles>
-        </developer>
-        <developer>
-	    <id>ajs6f</id>
-            <name>Adam Soroka</name>
-            <email>ajs6f[at]apache[dot]org</email>
-            <roles>
-                <role>Reviewer</role>
-            </roles>
-            <timezone>+0</timezone>
         </developer>
     </developers>
 
@@ -224,6 +216,14 @@
                 <role>Contributor</role>
             </roles>
             <timezone>+1</timezone>
+        </contributor>
+        <contributor>
+            <name>Adam Soroka</name>
+            <email>ajs6f[at]apache[dot]org</email>
+            <roles>
+                <role>Reviewer</role>
+            </roles>
+            <timezone>+0</timezone>
         </contributor>
     </contributors>
 
