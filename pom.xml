@@ -240,22 +240,22 @@
     Common dependencies across modules. 
     Keep this list small and only <scope>test</scope> !
     -->
-        <dependencies>
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <!-- System.err logging for Jena, JSONLD-Java, RDF4J 
-                -->
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-simple</artifactId>
-                <version>${slf4j.version}</version>
-                <scope>test</scope>
-            </dependency>
-        </dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <!-- System.err logging for Jena, JSONLD-Java, RDF4J
+            -->
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
@@ -350,21 +350,19 @@
                 <artifactId>coveralls-maven-plugin</artifactId>
                 <version>4.2.0</version>
             </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>jdepend-maven-plugin</artifactId>
-        <version>${commons.jdepend.version}</version>
-        <dependencies>
-            <!-- Forked jdepend https://github.com/nidi3/jdepend supports Java 8 -->
-            <dependency>
-              <groupId>guru.nidi</groupId>
-              <artifactId>jdepend</artifactId>
-              <version>2.9.5</version>
-            </dependency>
-        </dependencies>
-      </plugin>
-
-
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jdepend-maven-plugin</artifactId>
+                <version>${commons.jdepend.version}</version>
+                <dependencies>
+                    <!-- Forked jdepend https://github.com/nidi3/jdepend supports Java 8 -->
+                    <dependency>
+                      <groupId>guru.nidi</groupId>
+                      <artifactId>jdepend</artifactId>
+                      <version>2.9.5</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
@@ -489,91 +487,86 @@
         </pluginManagement>
     </build>
     <reporting>
-
-      <plugins>
-        <plugin>
-             <groupId>org.apache.maven.plugins</groupId>
-             <artifactId>maven-javadoc-plugin</artifactId>
-             <configuration>
-                 <additionalparam>-Xdoclint:all</additionalparam>
-             </configuration>
-             <reportSets>
-               <reportSet><!-- by default, id = "default" -->
-                 <reports><!-- select non-aggregate reports -->
-                   <report>javadoc</report>
-                   <report>test-javadoc</report>
-                 </reports>
-               </reportSet>
-               <reportSet><!-- aggregate reportSet, to define in poms having modules -->
-                 <id>aggregate</id>
-                 <inherited>false</inherited><!-- don't run aggregate in child modules -->
-                 <reports>
-                   <report>aggregate</report>
-                 </reports>
-               </reportSet>
-             </reportSets>
-         </plugin>
-  <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-checkstyle-plugin</artifactId>
-    <version>${checkstyle.plugin.version}</version>
-        <configuration>
-          <configLocation>${project.basedir}/src/conf/checkstyle.xml</configLocation>
-          <!-- Needed to define config_loc -->
-          <propertyExpansion>config_loc=${project.basedir}</propertyExpansion>
-          <enableRulesSummary>false</enableRulesSummary>
-        </configuration>
-        <reportSets>
-          <reportSet>
-            <reports>
-              <report>checkstyle-aggregate</report>
-            </reports>
-          </reportSet>
-        </reportSets>
-  </plugin>
-
-<plugin>
-  <artifactId>maven-pmd-plugin</artifactId>
-          <version>3.6</version>
-          <configuration>
-            <targetJdk>${maven.compiler.target}</targetJdk>
-            <linkXref>true</linkXref>
-          </configuration>
-          <reportSets>
-            <reportSet>
-              <id>pmd-report</id>
-              <reports>
-                <report>pmd</report>
-              </reports>
-            </reportSet>
-            <reportSet>
-              <id>pmd-aggregate</id>
-              <inherited>false</inherited>
-              <reports>
-                <report>pmd</report>
-              </reports>
-              <configuration>
-                <aggregate>true</aggregate>
-              </configuration>
-            </reportSet>
-          </reportSets>
-        </plugin>
-
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>findbugs-maven-plugin</artifactId>
-        <version>${commons.findbugs.version}</version>
-        <configuration>
-          <threshold>Normal</threshold>
-          <effort>Default</effort>
-          <excludeFilterFile>src/conf/findbugs-exclude-filter.xml</excludeFilterFile>
-          <fork>true</fork>
-          <jvmArgs>-Duser.language=en</jvmArgs>
-        </configuration>
-      </plugin>
-
-</plugins>
-
+        <plugins>
+            <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-javadoc-plugin</artifactId>
+                 <configuration>
+                     <additionalparam>-Xdoclint:all</additionalparam>
+                 </configuration>
+                 <reportSets>
+                   <reportSet><!-- by default, id = "default" -->
+                     <reports><!-- select non-aggregate reports -->
+                       <report>javadoc</report>
+                       <report>test-javadoc</report>
+                     </reports>
+                   </reportSet>
+                   <reportSet><!-- aggregate reportSet, to define in poms having modules -->
+                     <id>aggregate</id>
+                     <inherited>false</inherited><!-- don't run aggregate in child modules -->
+                     <reports>
+                       <report>aggregate</report>
+                     </reports>
+                   </reportSet>
+                 </reportSets>
+             </plugin>
+             <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-checkstyle-plugin</artifactId>
+                 <version>${checkstyle.plugin.version}</version>
+                 <configuration>
+                     <configLocation>${project.basedir}/src/conf/checkstyle.xml</configLocation>
+                     <!-- Needed to define config_loc -->
+                     <propertyExpansion>config_loc=${project.basedir}</propertyExpansion>
+                     <enableRulesSummary>false</enableRulesSummary>
+                 </configuration>
+                 <reportSets>
+                     <reportSet>
+                         <reports>
+                             <report>checkstyle-aggregate</report>
+                         </reports>
+                     </reportSet>
+                 </reportSets>
+             </plugin>
+            <plugin>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.6</version>
+                <configuration>
+                    <targetJdk>${maven.compiler.target}</targetJdk>
+                    <linkXref>true</linkXref>
+                </configuration>
+                <reportSets>
+                    <reportSet>
+                        <id>pmd-report</id>
+                        <reports>
+                            <report>pmd</report>
+                        </reports>
+                    </reportSet>
+                    <reportSet>
+                        <id>pmd-aggregate</id>
+                        <inherited>false</inherited>
+                        <reports>
+                            <report>pmd</report>
+                        </reports>
+                        <configuration>
+                            <aggregate>true</aggregate>
+                        </configuration>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>${commons.findbugs.version}</version>
+                <configuration>
+                    <threshold>Normal</threshold>
+                    <effort>Default</effort>
+                    <excludeFilterFile>src/conf/findbugs-exclude-filter.xml</excludeFilterFile>
+                    <fork>true</fork>
+                    <jvmArgs>-Duser.language=en</jvmArgs>
+                </configuration>
+            </plugin>
+        </plugins>
     </reporting>
 
     <profiles>
@@ -601,7 +594,6 @@
             </build>
         </profile>
     </profiles>
-
 
     <distributionManagement>
       <site>
