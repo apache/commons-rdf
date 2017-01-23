@@ -33,10 +33,6 @@
 	<name>Commons RDF impl: RDF4j</name>
 	<description>Eclipse RDF4j implementation of Commons RDF API</description>
 
-  <properties>
-    <commons.osgi.symbolicName>org.apache.commons.rdf.rdf4j</commons.osgi.symbolicName>
-  </properties>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -50,6 +46,9 @@
 
 						<Export-Package>org.apache.commons.rdf.rdf4j</Export-Package>
 						<Private-Package>org.apache.commons.rdf.rdf4j.impl</Private-Package>
+						<Bundle-SymbolicName>org.apache.commons.rdf.rdf4j</Bundle-SymbolicName>
+						<Require-Capability>osgi.extender; filter:="(osgi.extender=osgi.serviceloader.registrar)";resolution:=optional</Require-Capability>
+						<Provide-Capability>osgi.serviceloader; osgi.serviceloader=org.apache.commons.rdf.api.RDF</Provide-Capability>
 					</instructions>
 				</configuration>
 			</plugin>

@@ -49,7 +49,7 @@
         <commons.jira.id>COMMONSRDF</commons.jira.id>
         <commons.jira.pid>12316620</commons.jira.pid>
         <commons.site.path>rdf</commons.site.path>
-	<!--
+    <!--
         <commons.scmPubUrl>https://svn.apache.org/repos/infra/websites/production/commonsrdf/content/</commons.scmPubUrl>
         <commons.scmPubCheckoutDirectory>${project.build.directory}/site-content</commons.scmPubCheckoutDirectory>
         -->
@@ -99,7 +99,7 @@
             <email>lewismc[at]apache[dot]org</email>
             <roles>
                 <role>Committer</role>
-                <role>PPMC Member</role>
+                <role>Emeritus PPMC Member</role>
                 <role>Emeritus Champion</role>
             </roles>
             <timezone>+1</timezone>
@@ -133,6 +133,7 @@
             <url>http://orcid.org/0000-0001-9842-9718</url>
             <roles>
                 <role>Committer</role>
+                <role>PMC Member</role>
                 <role>Emeritus PPMC Member</role>
             </roles>
             <timezone>+0</timezone>
@@ -153,12 +154,13 @@
             <email>britter[at]apache[dot]org</email>
             <roles>
                 <role>Committer</role>
+                <role>PMC Member</role>
                 <role>Emeritus PPMC Member</role>
             </roles>
             <timezone>+1</timezone>
         </developer>
         <developer>
-	    <id>ansell</id>
+            <id>ansell</id>
             <name>Peter Ansell</name>
             <email>ansell[at]apache[dot]org</email>
             <url>https://github.com/ansell</url>
@@ -167,15 +169,6 @@
                 <role>Emeritus Committer</role>
                 <role>Emeritus PPMC Member</role>
             </roles>
-        </developer>
-        <developer>
-	    <id>ajs6f</id>
-            <name>Adam Soroka</name>
-            <email>ajs6f[at]apache[dot]org</email>
-            <roles>
-                <role>Reviewer</role>
-            </roles>
-            <timezone>+0</timezone>
         </developer>
     </developers>
 
@@ -224,6 +217,14 @@
             </roles>
             <timezone>+1</timezone>
         </contributor>
+        <contributor>
+            <name>Adam Soroka</name>
+            <email>ajs6f[at]apache[dot]org</email>
+            <roles>
+                <role>Reviewer</role>
+            </roles>
+            <timezone>+0</timezone>
+        </contributor>
     </contributors>
 
     <modules>
@@ -239,22 +240,22 @@
     Common dependencies across modules. 
     Keep this list small and only <scope>test</scope> !
     -->
-        <dependencies>
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <!-- System.err logging for Jena, JSONLD-Java, RDF4J 
-                -->
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-simple</artifactId>
-                <version>${slf4j.version}</version>
-                <scope>test</scope>
-            </dependency>
-        </dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <!-- System.err logging for Jena, JSONLD-Java, RDF4J
+            -->
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
@@ -286,10 +287,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
-		<configuration>
-		    <finalName>apache-commons-rdf-${project.version}</finalName>
-		    <runOnlyAtExecutionRoot>true</runOnlyAtExecutionRoot>
-		</configuration>
+                <configuration>
+                    <finalName>apache-commons-rdf-${project.version}</finalName>
+                    <runOnlyAtExecutionRoot>true</runOnlyAtExecutionRoot>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -328,9 +329,9 @@
                 <artifactId>maven-release-plugin</artifactId>
                 <configuration>
                     <useReleaseProfile>true</useReleaseProfile>
-		    <!-- TODO: Can we use apache-parent's apache-release rather than common-parent's release?
-			It seems to force adding a -source-release
-		    -->
+            <!-- TODO: Can we use apache-parent's apache-release rather than common-parent's release?
+            It seems to force adding a -source-release
+            -->
                     <releaseProfiles>release</releaseProfiles>
                     <goals>deploy</goals>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
@@ -349,21 +350,19 @@
                 <artifactId>coveralls-maven-plugin</artifactId>
                 <version>4.2.0</version>
             </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>jdepend-maven-plugin</artifactId>
-        <version>${commons.jdepend.version}</version>
-        <dependencies>
-            <!-- Forked jdepend https://github.com/nidi3/jdepend supports Java 8 -->
-            <dependency>
-              <groupId>guru.nidi</groupId>
-              <artifactId>jdepend</artifactId>
-              <version>2.9.5</version>
-            </dependency>
-        </dependencies>
-      </plugin>
-
-
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jdepend-maven-plugin</artifactId>
+                <version>${commons.jdepend.version}</version>
+                <dependencies>
+                    <!-- Forked jdepend https://github.com/nidi3/jdepend supports Java 8 -->
+                    <dependency>
+                      <groupId>guru.nidi</groupId>
+                      <artifactId>jdepend</artifactId>
+                      <version>2.9.5</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
@@ -451,7 +450,7 @@
             <oldVersionPattern>\d+\.\d+\.\d+\-incubating</oldVersionPattern>
             <!-- japicmp requires "mvn package site" - below means "mvn
              site" still works (but without japicmp report) -->
-	    <ignoreMissingNewVersion>true</ignoreMissingNewVersion>
+        <ignoreMissingNewVersion>true</ignoreMissingNewVersion>
           </parameter>
         </configuration>
           </plugin>
@@ -488,91 +487,86 @@
         </pluginManagement>
     </build>
     <reporting>
-
-      <plugins>
-        <plugin>
-             <groupId>org.apache.maven.plugins</groupId>
-             <artifactId>maven-javadoc-plugin</artifactId>
-             <configuration>
-                 <additionalparam>-Xdoclint:all</additionalparam>
-             </configuration>
-             <reportSets>
-               <reportSet><!-- by default, id = "default" -->
-                 <reports><!-- select non-aggregate reports -->
-                   <report>javadoc</report>
-                   <report>test-javadoc</report>
-                 </reports>
-               </reportSet>
-               <reportSet><!-- aggregate reportSet, to define in poms having modules -->
-                 <id>aggregate</id>
-                 <inherited>false</inherited><!-- don't run aggregate in child modules -->
-                 <reports>
-                   <report>aggregate</report>
-                 </reports>
-               </reportSet>
-             </reportSets>
-         </plugin>
-  <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-checkstyle-plugin</artifactId>
-    <version>${checkstyle.plugin.version}</version>
-        <configuration>
-          <configLocation>${project.basedir}/src/conf/checkstyle.xml</configLocation>
-          <!-- Needed to define config_loc -->
-          <propertyExpansion>config_loc=${project.basedir}</propertyExpansion>
-          <enableRulesSummary>false</enableRulesSummary>
-        </configuration>
-        <reportSets>
-          <reportSet>
-            <reports>
-              <report>checkstyle-aggregate</report>
-            </reports>
-          </reportSet>
-        </reportSets>
-  </plugin>
-
-<plugin>
-  <artifactId>maven-pmd-plugin</artifactId>
-          <version>3.6</version>
-          <configuration>
-            <targetJdk>${maven.compiler.target}</targetJdk>
-            <linkXref>true</linkXref>
-          </configuration>
-          <reportSets>
-            <reportSet>
-              <id>pmd-report</id>
-              <reports>
-                <report>pmd</report>
-              </reports>
-            </reportSet>
-            <reportSet>
-              <id>pmd-aggregate</id>
-              <inherited>false</inherited>
-              <reports>
-                <report>pmd</report>
-              </reports>
-              <configuration>
-                <aggregate>true</aggregate>
-              </configuration>
-            </reportSet>
-          </reportSets>
-        </plugin>
-
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>findbugs-maven-plugin</artifactId>
-        <version>${commons.findbugs.version}</version>
-        <configuration>
-          <threshold>Normal</threshold>
-          <effort>Default</effort>
-          <excludeFilterFile>src/conf/findbugs-exclude-filter.xml</excludeFilterFile>
-          <fork>true</fork>
-          <jvmArgs>-Duser.language=en</jvmArgs>
-        </configuration>
-      </plugin>
-
-</plugins>
-
+        <plugins>
+            <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-javadoc-plugin</artifactId>
+                 <configuration>
+                     <additionalparam>-Xdoclint:all</additionalparam>
+                 </configuration>
+                 <reportSets>
+                   <reportSet><!-- by default, id = "default" -->
+                     <reports><!-- select non-aggregate reports -->
+                       <report>javadoc</report>
+                       <report>test-javadoc</report>
+                     </reports>
+                   </reportSet>
+                   <reportSet><!-- aggregate reportSet, to define in poms having modules -->
+                     <id>aggregate</id>
+                     <inherited>false</inherited><!-- don't run aggregate in child modules -->
+                     <reports>
+                       <report>aggregate</report>
+                     </reports>
+                   </reportSet>
+                 </reportSets>
+             </plugin>
+             <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-checkstyle-plugin</artifactId>
+                 <version>${checkstyle.plugin.version}</version>
+                 <configuration>
+                     <configLocation>${project.basedir}/src/conf/checkstyle.xml</configLocation>
+                     <!-- Needed to define config_loc -->
+                     <propertyExpansion>config_loc=${project.basedir}</propertyExpansion>
+                     <enableRulesSummary>false</enableRulesSummary>
+                 </configuration>
+                 <reportSets>
+                     <reportSet>
+                         <reports>
+                             <report>checkstyle-aggregate</report>
+                         </reports>
+                     </reportSet>
+                 </reportSets>
+             </plugin>
+            <plugin>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.6</version>
+                <configuration>
+                    <targetJdk>${maven.compiler.target}</targetJdk>
+                    <linkXref>true</linkXref>
+                </configuration>
+                <reportSets>
+                    <reportSet>
+                        <id>pmd-report</id>
+                        <reports>
+                            <report>pmd</report>
+                        </reports>
+                    </reportSet>
+                    <reportSet>
+                        <id>pmd-aggregate</id>
+                        <inherited>false</inherited>
+                        <reports>
+                            <report>pmd</report>
+                        </reports>
+                        <configuration>
+                            <aggregate>true</aggregate>
+                        </configuration>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>${commons.findbugs.version}</version>
+                <configuration>
+                    <threshold>Normal</threshold>
+                    <effort>Default</effort>
+                    <excludeFilterFile>src/conf/findbugs-exclude-filter.xml</excludeFilterFile>
+                    <fork>true</fork>
+                    <jvmArgs>-Duser.language=en</jvmArgs>
+                </configuration>
+            </plugin>
+        </plugins>
     </reporting>
 
     <profiles>
@@ -580,12 +574,12 @@
             <id>release</id>
         <!-- extends the release profile from commons -->
             <build>
-		    <!--
+            <!--
                 <finalName>apache-commons-rdf-${project.version}</finalName>
 -->
                 <plugins>
                     <plugin>
-			    <!-- Avoid making *.asc.asc -->
+                <!-- Avoid making *.asc.asc -->
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
                         <configuration>
@@ -600,7 +594,6 @@
             </build>
         </profile>
     </profiles>
-
 
     <distributionManagement>
       <site>
