@@ -410,7 +410,8 @@ public abstract class AbstractGraphTest {
         assertTrue(graph.contains(null, null, mixed));
 
         // Remove should also honour any case
-        graph.remove(example1, greeting, mixed);
+        graph.remove(example1, null, mixed);
+        // no more greetings of any kind
         assertFalse(graph.contains(null, greeting, null));
     }
 
@@ -460,7 +461,8 @@ public abstract class AbstractGraphTest {
             assertTrue(g.contains(exampleTR, null, lowerROOT));
             assertTrue(g.contains(exampleTR, null, mixed));
             assertTrue(g.contains(exampleTR, null, mixedROOT));
-            g.remove(exampleTR, greeting, mixed);
+            g.remove(exampleTR, null, mixed);
+            // No more greetings for exampleTR
             assertFalse(g.contains(exampleTR, null, null));
 
             // What about the triple we added while in ROOT locale?
@@ -470,8 +472,9 @@ public abstract class AbstractGraphTest {
             assertTrue(g.contains(exampleROOT, null, upper));
             assertTrue(g.contains(exampleROOT, null, lower));
             assertTrue(g.contains(exampleROOT, null, mixed));
-            g.remove(exampleROOT, greeting, mixed);
-            assertFalse(g.contains(exampleROOT, null, null));
+            g.remove(exampleROOT, null, mixed);
+            // No more greetings of any kind
+            assertFalse(g.contains(null, null, null));
 
 
         } finally {
