@@ -411,6 +411,8 @@ public abstract class AbstractGraphTest {
 
         // Remove should also honour any case
         graph.remove(example1, null, mixed);
+//        Triple t = graph.stream().findAny().get();
+//        System.out.println(t);
         // no more greetings of any kind
         assertFalse(graph.contains(null, greeting, null));
     }
