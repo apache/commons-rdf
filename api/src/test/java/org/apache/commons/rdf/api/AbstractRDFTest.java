@@ -41,10 +41,10 @@ public abstract class AbstractRDFTest {
     private RDF factory;
 
     /**
-     * 
+     *
      * This method must be overridden by the implementing test to provide a
      * factory for the test to create {@link Literal}, {@link IRI} etc.
-     * 
+     *
      * @return {@link RDF} instance to be tested.
      */
     protected abstract RDF createFactory();
@@ -194,55 +194,67 @@ public abstract class AbstractRDFTest {
         assertEquals("\"Herbert Van de Sompel\"@vls", vls.ntriplesString());
     }
 
+
+    private void assertEqualsBothWays(Object a, Object b) {
+        assertEquals(a, b);
+        assertEquals(b, a);
+        // hashCode must match as well
+        assertEquals(a.hashCode(), b.hashCode());
+    }
+
     @Test
     public void testCreateLiteralLangCaseInsensitive() throws Exception {
-        // COMMONSRDF-51: Literal langtag may not be in lowercase, but
-        // must be COMPARED (aka .equals and .hashCode()) in lowercase
-        // as the language space is lower case.       
-        final Literal lower = factory.createLiteral("Hello", "en-gb"); 
-        final Literal upper = factory.createLiteral("Hello", "EN-GB"); 
+        /*
+         * COMMONSRDF-51: Literal langtag may not be in lowercase, but must be
+         * COMPARED (aka .equals and .hashCode()) in lowercase as the language
+         * space is lower case.
+         */
+        final Literal lower = factory.createLiteral("Hello", "en-gb");
+        final Literal upper = factory.createLiteral("Hello", "EN-GB");
         final Literal mixed = factory.createLiteral("Hello", "en-GB");
 
-        
-        assertEquals("en-gb", lower.getLanguageTag().get());
-     
-        // NOTE: the RDF framework is free to lowercase the language tag 
-        // or leave it as-is, so we can't assume: 
         /*
-         assertEquals("en-gb", upper.getLanguageTag().get());
-         assertEquals("en-gb", mixed.getLanguageTag().get());
-        */
-        // ..unless we do a case-insensitive comparison:
+         * Disabled as some RDF frameworks (namely RDF4J) can be c configured to
+         * do BCP47 normalization (e.g. "en-GB"), so we can't guarantee
+         * lowercase language tags are preserved.
+         */
+        // assertEquals("en-gb", lower.getLanguageTag().get());
+
+        /*
+         * NOTE: the RDF framework is free to lowercase the language tag or
+         * leave it as-is, so we can't assume:
+         */
+        // assertEquals("en-gb", upper.getLanguageTag().get());
+        // assertEquals("en-gb", mixed.getLanguageTag().get());
+
+        /* ..unless we do a case-insensitive comparison: */
+        assertEquals("en-gb",
+                lower.getLanguageTag().get().toLowerCase(Locale.ROOT));
         assertEquals("en-gb",
                 upper.getLanguageTag().get().toLowerCase(Locale.ROOT));
         assertEquals("en-gb",
                 mixed.getLanguageTag().get().toLowerCase(Locale.ROOT));
-                
-        // However these should all be true
-        assertEquals(lower, lower);
-        assertEquals(lower, upper);
-        assertEquals(lower, mixed);
-        assertEquals(upper, lower);
-        assertEquals(upper, upper);
-        assertEquals(upper, mixed);
-        assertEquals(mixed, lower);
-        assertEquals(mixed, upper);
-        assertEquals(mixed, mixed);
 
-        // And then by java.lang.Object contract, also the hashcode:
-        assertEquals(lower.hashCode(), upper.hashCode());
-        assertEquals(lower.hashCode(), mixed.hashCode());        
+        // However these should all be true using .equals
+        assertEquals(lower, lower);
+        assertEqualsBothWays(lower, upper);
+        assertEqualsBothWays(lower, mixed);
+        assertEquals(upper, upper);
+        assertEqualsBothWays(upper, mixed);
+        assertEquals(mixed, mixed);
+        // Note that assertEqualsBothWays also checks
+        // that .hashCode() matches
     }
 
     @Test
     public void testCreateLiteralLangCaseInsensitiveOther() throws Exception {
         // COMMONSRDF-51: Ensure the Literal is using case insensitive
-        // comparison against more 'liberal' literal implementations
+        // comparison against any literal implementation
         // which may not have done .toLowerString() in their constructor
-        final Literal lower = factory.createLiteral("Hello", "en-gb"); 
-        final Literal upper = factory.createLiteral("Hello", "EN-GB"); 
+        final Literal lower = factory.createLiteral("Hello", "en-gb");
+        final Literal upper = factory.createLiteral("Hello", "EN-GB");
         final Literal mixed = factory.createLiteral("Hello", "en-GB");
-        
+
         Literal otherLiteral = new Literal() {
             @Override
             public String ntriplesString() {
@@ -266,6 +278,8 @@ public abstract class AbstractRDFTest {
             }
         };
 
+        // NOTE: Our fake Literal can't do .equals() or .hashCode(),
+        // so don't check the wrong way around!
         assertEquals(mixed, otherLiteral);
         assertEquals(lower, otherLiteral);
         assertEquals(upper, otherLiteral);
@@ -273,36 +287,56 @@ public abstract class AbstractRDFTest {
 
     @Test
     public void testCreateLiteralLangCaseInsensitiveInTurkish() throws Exception {
-        // COMMONSRDF-51: Special test for Turkish issue where 
+        // COMMONSRDF-51: Special test for Turkish issue where
         // "i".toLowerCase() != "i"
         // See also:
         // https://garygregory.wordpress.com/2015/11/03/java-lowercase-conversion-turkey/
         Locale defaultLocale = Locale.getDefault();
-        try { 
+        try {
+            Locale.setDefault(Locale.ROOT);
+            final Literal lowerROOT = factory.createLiteral("moi", "fi");
+            final Literal upperROOT = factory.createLiteral("moi", "FI");
+            final Literal mixedROOT = factory.createLiteral("moi", "fI");
+
             Locale turkish = Locale.forLanguageTag("TR");
             Locale.setDefault(turkish);
+            // If the below assertion fails, then the Turkish
+            // locale no longer have this peculiarity that
+            // we want to test.
             Assume.assumeFalse("FI".toLowerCase().equals("fi"));
 
-            final Literal lower = factory.createLiteral("moi", "fi"); 
-            final Literal upper = factory.createLiteral("moi", "FI"); 
+            final Literal lower = factory.createLiteral("moi", "fi");
+            final Literal upper = factory.createLiteral("moi", "FI");
             final Literal mixed = factory.createLiteral("moi", "fI");
 
             assertEquals(lower, lower);
-            assertEquals(lower, upper);
-            assertEquals(lower, mixed);
-            assertEquals(upper, lower);
+            assertEqualsBothWays(lower, upper);
+            assertEqualsBothWays(lower, mixed);
+
             assertEquals(upper, upper);
-            assertEquals(upper, mixed);
-            assertEquals(mixed, lower);
-            assertEquals(mixed, upper);
+            assertEqualsBothWays(upper, mixed);
+
             assertEquals(mixed, mixed);
-            assertEquals(lower.hashCode(), upper.hashCode());
-            assertEquals(lower.hashCode(), mixed.hashCode());        
+
+            // And our instance created previously in ROOT locale
+            // should still be equal to the instance created in TR locale
+            // (e.g. test constructor is not doing a naive .toLowerCase())
+            assertEqualsBothWays(lower, lowerROOT);
+            assertEqualsBothWays(upper, lowerROOT);
+            assertEqualsBothWays(mixed, lowerROOT);
+
+            assertEqualsBothWays(lower, upperROOT);
+            assertEqualsBothWays(upper, upperROOT);
+            assertEqualsBothWays(mixed, upperROOT);
+
+            assertEqualsBothWays(lower, mixedROOT);
+            assertEqualsBothWays(upper, mixedROOT);
+            assertEqualsBothWays(mixed, mixedROOT);
         } finally {
             Locale.setDefault(defaultLocale);
         }
     }
-    
+
     @Test
     public void testCreateLiteralString() throws Exception {
         final Literal example = factory.createLiteral("Example",
