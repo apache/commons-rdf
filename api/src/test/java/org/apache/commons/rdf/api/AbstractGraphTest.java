@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -46,7 +47,7 @@ import org.junit.Test;
  * <p>
  * This test uses try-with-resources blocks for calls to {@link Graph#stream()}
  * and {@link Graph#iterate()}.
- * 
+ *
  * @see Graph
  * @see RDF
  */
@@ -68,10 +69,10 @@ public abstract class AbstractGraphTest {
     protected Triple bobNameTriple;
 
     /**
-     * 
+     *
      * This method must be overridden by the implementing test to provide a
      * factory for the test to create {@link Graph}, {@link IRI} etc.
-     * 
+     *
      * @return {@link RDF} instance to be tested.
      */
     protected abstract RDF createFactory();
@@ -385,6 +386,100 @@ public abstract class AbstractGraphTest {
         }
     }
 
+    @Test
+    public void containsLanguageTagsCaseInsensitive() {
+        // COMMONSRDF-51: Ensure we can add/contains/remove with any casing
+        // of literal language tag
+        final Literal lower = factory.createLiteral("Hello", "en-gb");
+        final Literal upper = factory.createLiteral("Hello", "EN-GB");
+        final Literal mixed = factory.createLiteral("Hello", "en-GB");
+
+        final IRI example1 = factory.createIRI("http://example.com/s1");
+        final IRI greeting = factory.createIRI("http://example.com/greeting");
+
+        final Graph graph = factory.createGraph();
+        graph.add(example1, greeting, upper);
+
+        assertTrue(graph.contains(factory.createTriple(example1, greeting, upper)));
+        assertTrue(graph.contains(factory.createTriple(example1, greeting, lower)));
+        assertTrue(graph.contains(factory.createTriple(example1, greeting, mixed)));
+
+        // or as patterns
+        assertTrue(graph.contains(null, null, upper));
+        assertTrue(graph.contains(null, null, lower));
+        assertTrue(graph.contains(null, null, mixed));
+
+        // Remove should also honour any case
+        graph.remove(example1, greeting, mixed);
+        assertFalse(graph.contains(null, greeting, null));
+    }
+
+    @Test
+    public void containsLanguageTagsCaseInsensitiveTurkish() {
+        // COMMONSRDF-51: Special test for Turkish issue where
+        // "i".toLowerCase() != "i"
+        // See also:
+        // https://garygregory.wordpress.com/2015/11/03/java-lowercase-conversion-turkey/
+
+        // This is similar to the test in AbstractRDFTest, but on a graph
+        Locale defaultLocale = Locale.getDefault();
+        try {
+            Locale.setDefault(Locale.ROOT);
+            final Literal lowerROOT = factory.createLiteral("moi", "fi");
+            final Literal upperROOT = factory.createLiteral("moi", "FI");
+            final Literal mixedROOT = factory.createLiteral("moi", "fI");
+            final Graph g = factory.createGraph();
+            final IRI exampleROOT = factory.createIRI("http://example.com/s1");
+            final IRI greeting = factory.createIRI("http://example.com/greeting");
+            g.add(exampleROOT, greeting, mixedROOT);
+
+            Locale turkish = Locale.forLanguageTag("TR");
+            Locale.setDefault(turkish);
+            // If the below assertion fails, then the Turkish
+            // locale no longer have this peculiarity that
+            // we want to test.
+            Assume.assumeFalse("FI".toLowerCase().equals("fi"));
+
+            // Below is pretty much the same as in
+            // containsLanguageTagsCaseInsensitive()
+            final Literal lower = factory.createLiteral("moi", "fi");
+            final Literal upper = factory.createLiteral("moi", "FI");
+            final Literal mixed = factory.createLiteral("moi", "fI");
+
+            final IRI exampleTR = factory.createIRI("http://example.com/s2");
+            g.add(exampleTR, greeting, upper);
+            assertTrue(g.contains(factory.createTriple(exampleTR, greeting, upper)));
+            assertTrue(g.contains(factory.createTriple(exampleTR, greeting, upperROOT)));
+            assertTrue(g.contains(factory.createTriple(exampleTR, greeting, lower)));
+            assertTrue(g.contains(factory.createTriple(exampleTR, greeting, lowerROOT)));
+            assertTrue(g.contains(factory.createTriple(exampleTR, greeting, mixed)));
+            assertTrue(g.contains(factory.createTriple(exampleTR, greeting, mixedROOT)));
+            assertTrue(g.contains(exampleTR, null, upper));
+            assertTrue(g.contains(exampleTR, null, upperROOT));
+            assertTrue(g.contains(exampleTR, null, lower));
+            assertTrue(g.contains(exampleTR, null, lowerROOT));
+            assertTrue(g.contains(exampleTR, null, mixed));
+            assertTrue(g.contains(exampleTR, null, mixedROOT));
+            g.remove(exampleTR, greeting, mixed);
+            assertFalse(g.contains(exampleTR, null, null));
+
+            // What about the triple we added while in ROOT locale?
+            assertTrue(g.contains(factory.createTriple(exampleROOT, greeting, upper)));
+            assertTrue(g.contains(factory.createTriple(exampleROOT, greeting, lower)));
+            assertTrue(g.contains(factory.createTriple(exampleROOT, greeting, mixed)));
+            assertTrue(g.contains(exampleROOT, null, upper));
+            assertTrue(g.contains(exampleROOT, null, lower));
+            assertTrue(g.contains(exampleROOT, null, mixed));
+            g.remove(exampleROOT, greeting, mixed);
+            assertFalse(g.contains(exampleROOT, null, null));
+
+
+        } finally {
+            Locale.setDefault(defaultLocale);
+        }
+
+    }
+
     private void notEquals(final BlankNodeOrIRI node1, final BlankNodeOrIRI node2) {
         assertFalse(node1.equals(node2));
         // in which case we should be able to assume
@@ -439,7 +534,7 @@ public abstract class AbstractGraphTest {
      * Create a different implementation of BlankNode to be tested with
      * graph.add(a,b,c); (the implementation may or may not then choose to
      * translate such to its own instances)
-     * 
+     *
      * @param name
      * @return
      */
@@ -493,7 +588,7 @@ public abstract class AbstractGraphTest {
      * An attempt to use the Java 8 streams to look up a more complicated query.
      * <p>
      * FYI, the equivalent SPARQL version (untested):
-     * 
+     *
      * <pre>
      *     SELECT ?orgName WHERE {
      *             ?org foaf:name ?orgName .
