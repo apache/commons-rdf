@@ -408,13 +408,6 @@ public abstract class AbstractGraphTest {
         assertTrue(graph.contains(null, null, upper));
         assertTrue(graph.contains(null, null, lower));
         assertTrue(graph.contains(null, null, mixed));
-
-        // Remove should also honour any case
-        graph.remove(example1, null, mixed);
-//        Triple t = graph.stream().findAny().get();
-//        System.out.println(t);
-        // no more greetings of any kind
-        assertFalse(graph.contains(null, greeting, null));
     }
 
     @Test
@@ -463,9 +456,6 @@ public abstract class AbstractGraphTest {
             assertTrue(g.contains(exampleTR, null, lowerROOT));
             assertTrue(g.contains(exampleTR, null, mixed));
             assertTrue(g.contains(exampleTR, null, mixedROOT));
-            g.remove(exampleTR, null, mixed);
-            // No more greetings for exampleTR
-            assertFalse(g.contains(exampleTR, null, null));
 
             // What about the triple we added while in ROOT locale?
             assertTrue(g.contains(factory.createTriple(exampleROOT, greeting, upper)));
@@ -474,15 +464,59 @@ public abstract class AbstractGraphTest {
             assertTrue(g.contains(exampleROOT, null, upper));
             assertTrue(g.contains(exampleROOT, null, lower));
             assertTrue(g.contains(exampleROOT, null, mixed));
-            g.remove(exampleROOT, null, mixed);
-            // No more greetings of any kind
-            assertFalse(g.contains(null, null, null));
-
-
         } finally {
             Locale.setDefault(defaultLocale);
         }
+    }
+    
 
+    @Test
+    public void removeLanguageTagsCaseInsensitive() {
+        // COMMONSRDF-51: Ensure we can remove with any casing
+        // of literal language tag
+        final Literal lower = factory.createLiteral("Hello", "en-gb");
+        final Literal upper = factory.createLiteral("Hello", "EN-GB");
+        final Literal mixed = factory.createLiteral("Hello", "en-GB");
+
+        final IRI example1 = factory.createIRI("http://example.com/s1");
+        final IRI greeting = factory.createIRI("http://example.com/greeting");
+
+        final Graph graph = factory.createGraph();
+        graph.add(example1, greeting, upper);
+
+        // Remove should also honour any case
+        graph.remove(example1, null, mixed);
+        assertFalse(graph.contains(null, greeting, null));
+        
+        graph.add(example1, greeting, lower);
+        graph.remove(example1, null, upper);
+
+        graph.add(factory.createTriple(example1, greeting, mixed));
+        graph.remove(factory.createTriple(example1, greeting, upper));
+    }
+
+    @Test
+    public void streamLanguageTagsCaseInsensitive() {
+        // COMMONSRDF-51: Ensure we can add/contains/remove with any casing
+        // of literal language tag
+        final Literal lower = factory.createLiteral("Hello", "en-gb");
+        final Literal upper = factory.createLiteral("Hello", "EN-GB");
+        final Literal mixed = factory.createLiteral("Hello", "en-GB");
+
+        final IRI example1 = factory.createIRI("http://example.com/s1");
+        final IRI greeting = factory.createIRI("http://example.com/greeting");
+
+        final Graph graph = factory.createGraph();
+        graph.add(example1, greeting, upper);
+
+        // or as patterns
+        assertTrue(graph.stream(null, null, upper).findAny().isPresent());
+        assertTrue(graph.stream(null, null, lower).findAny().isPresent());
+        assertTrue(graph.stream(null, null, mixed).findAny().isPresent());
+        
+        // Check the triples returned equal a new triple
+        Triple t = graph.stream(null, null, lower).findAny().get();
+        assertEquals(t, factory.createTriple(example1, greeting, mixed));
     }
 
     private void notEquals(final BlankNodeOrIRI node1, final BlankNodeOrIRI node2) {
