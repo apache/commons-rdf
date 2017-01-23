@@ -209,8 +209,8 @@ public abstract class AbstractRDFTest {
          * COMPARED (aka .equals and .hashCode()) in lowercase as the language
          * space is lower case.
          */
-        final Literal lower = factory.createLiteral("Hello", "en-gb");
         final Literal upper = factory.createLiteral("Hello", "EN-GB");
+        final Literal lower = factory.createLiteral("Hello", "en-gb");
         final Literal mixed = factory.createLiteral("Hello", "en-GB");
 
         /*
@@ -251,14 +251,14 @@ public abstract class AbstractRDFTest {
         // COMMONSRDF-51: Ensure the Literal is using case insensitive
         // comparison against any literal implementation
         // which may not have done .toLowerString() in their constructor
-        final Literal lower = factory.createLiteral("Hello", "en-gb");
         final Literal upper = factory.createLiteral("Hello", "EN-GB");
+        final Literal lower = factory.createLiteral("Hello", "en-gb");
         final Literal mixed = factory.createLiteral("Hello", "en-GB");
 
         Literal otherLiteral = new Literal() {
             @Override
             public String ntriplesString() {
-                return "Hello@en-GB";
+                return "Hello@eN-Gb";
             }
             @Override
             public String getLexicalForm() {
@@ -266,7 +266,7 @@ public abstract class AbstractRDFTest {
             }
             @Override
             public Optional<String> getLanguageTag() {
-                return Optional.of("en-GB");
+                return Optional.of("eN-Gb");
             }
             @Override
             public IRI getDatatype() {
@@ -294,9 +294,9 @@ public abstract class AbstractRDFTest {
         Locale defaultLocale = Locale.getDefault();
         try {
             Locale.setDefault(Locale.ROOT);
+            final Literal mixedROOT = factory.createLiteral("moi", "fI");
             final Literal lowerROOT = factory.createLiteral("moi", "fi");
             final Literal upperROOT = factory.createLiteral("moi", "FI");
-            final Literal mixedROOT = factory.createLiteral("moi", "fI");
 
             Locale turkish = Locale.forLanguageTag("TR");
             Locale.setDefault(turkish);
@@ -305,9 +305,9 @@ public abstract class AbstractRDFTest {
             // we want to test.
             Assume.assumeFalse("FI".toLowerCase().equals("fi"));
 
+            final Literal mixed = factory.createLiteral("moi", "fI");
             final Literal lower = factory.createLiteral("moi", "fi");
             final Literal upper = factory.createLiteral("moi", "FI");
-            final Literal mixed = factory.createLiteral("moi", "fI");
 
             assertEquals(lower, lower);
             assertEqualsBothWays(lower, upper);
