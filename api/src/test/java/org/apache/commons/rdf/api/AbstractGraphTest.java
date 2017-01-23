@@ -495,6 +495,12 @@ public abstract class AbstractGraphTest {
         graph.remove(factory.createTriple(example1, greeting, upper));
     }
 
+    private static Optional<? extends Triple> closableFindAny(Stream<? extends Triple> stream) {
+        try (Stream<? extends Triple> s = stream) {
+            return s.findAny();
+        }
+    }
+    
     @Test
     public void streamLanguageTagsCaseInsensitive() {
         // COMMONSRDF-51: Ensure we can add/contains/remove with any casing
@@ -510,12 +516,12 @@ public abstract class AbstractGraphTest {
         graph.add(example1, greeting, upper);
 
         // or as patterns
-        assertTrue(graph.stream(null, null, upper).findAny().isPresent());
-        assertTrue(graph.stream(null, null, lower).findAny().isPresent());
-        assertTrue(graph.stream(null, null, mixed).findAny().isPresent());
+        assertTrue(closableFindAny(graph.stream(null, null, upper)).isPresent());
+        assertTrue(closableFindAny(graph.stream(null, null, lower)).isPresent());
+        assertTrue(closableFindAny(graph.stream(null, null, mixed)).isPresent());
         
         // Check the triples returned equal a new triple
-        Triple t = graph.stream(null, null, lower).findAny().get();
+        Triple t = closableFindAny(graph.stream(null, null, lower)).get();
         assertEquals(t, factory.createTriple(example1, greeting, mixed));
     }
 
