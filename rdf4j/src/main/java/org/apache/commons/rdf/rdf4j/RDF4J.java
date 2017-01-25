@@ -552,13 +552,13 @@ public final class RDF4J implements RDF {
     @Override
     public RDF4JBlankNode createBlankNode() {
         final BNode bnode = getValueFactory().createBNode();
-        return (RDF4JBlankNode) asRDFTerm(bnode);
+        return asRDFTerm(bnode);
     }
 
     @Override
     public RDF4JBlankNode createBlankNode(final String name) {
         final BNode bnode = getValueFactory().createBNode(name);
-        return (RDF4JBlankNode) asRDFTerm(bnode);
+        return asRDFTerm(bnode);
     }
 
     /**
@@ -584,13 +584,13 @@ public final class RDF4J implements RDF {
 
     @Override
     public RDF4JIRI createIRI(final String iri) throws IllegalArgumentException {
-        return (RDF4JIRI) asRDFTerm(getValueFactory().createIRI(iri));
+        return asRDFTerm(getValueFactory().createIRI(iri));
     }
 
     @Override
     public RDF4JLiteral createLiteral(final String lexicalForm) throws IllegalArgumentException {
         final org.eclipse.rdf4j.model.Literal lit = getValueFactory().createLiteral(lexicalForm);
-        return (RDF4JLiteral) asRDFTerm(lit);
+        return asRDFTerm(lit);
     }
 
     @Override
@@ -598,14 +598,14 @@ public final class RDF4J implements RDF {
             throws IllegalArgumentException {
         final org.eclipse.rdf4j.model.IRI iri = getValueFactory().createIRI(dataType.getIRIString());
         final org.eclipse.rdf4j.model.Literal lit = getValueFactory().createLiteral(lexicalForm, iri);
-        return (org.apache.commons.rdf.api.Literal) asRDFTerm(lit);
+        return asRDFTerm(lit);
     }
 
     @Override
     public org.apache.commons.rdf.api.Literal createLiteral(final String lexicalForm, final String languageTag)
             throws IllegalArgumentException {
         final org.eclipse.rdf4j.model.Literal lit = getValueFactory().createLiteral(lexicalForm, languageTag);
-        return (org.apache.commons.rdf.api.Literal) asRDFTerm(lit);
+        return asRDFTerm(lit);
     }
 
     @Override
