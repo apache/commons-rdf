@@ -37,6 +37,7 @@ import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.api.TripleLike;
 import org.apache.commons.rdf.rdf4j.impl.InternalRDF4JFactory;
 import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Literal;
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.Resource;
 import org.eclipse.rdf4j.model.Statement;
@@ -230,6 +231,58 @@ public final class RDF4J implements RDF {
      */
     public RDF4JTerm asRDFTerm(final Value value) {
         return asRDFTerm(value, salt);
+    }
+
+    /**
+     *
+     * Adapt a RDF4J
+     * {@link org.eclipse.rdf4j.model.BNode} as a Commons RDF
+     * {@link org.apache.commons.rdf.api.BlankNode}
+     * <p>
+     * For the purpose of {@link BlankNode} equivalence, this method will use an
+     * internal salt UUID that is unique per instance of {@link RDF4J}.
+     * <p>
+     * <strong>NOTE:</strong> If combining RDF4J values from multiple
+     * repositories or models, then their {@link BNode}s may have the same
+     * {@link BNode#getID()}, which with this method would become equivalent
+     * according to {@link BlankNode#equals(Object)} and
+     * {@link BlankNode#uniqueReference()}, unless a separate {@link RDF4J}
+     * instance is used per RDF4J repository/model.
+     *
+     * @param value
+     *            The RDF4J {@link BNode} to convert.
+     * @return A {@link RDF4JBlankNode} that corresponds to the RDF4J BNode
+     */
+    public RDF4JBlankNode asRDFTerm(final BNode value) {
+        return rdf4j.createBlankNodeImpl(value, salt);
+    }
+
+    /**
+     *
+     * Adapt a RDF4J
+     * {@link org.eclipse.rdf4j.model.Literal} as a Commons RDF
+     * {@link org.apache.commons.rdf.api.Literal}
+     * <p>
+     * @param value
+     *            The RDF4J {@link Literal} to convert.
+     * @return A {@link RDF4JLiteral} that corresponds to the RDF4J literal
+     */
+    public RDF4JLiteral asRDFTerm(final Literal value) {
+        return rdf4j.createLiteralImpl(value);
+    }
+
+    /**
+     *
+     * Adapt a RDF4J
+     * {@link org.eclipse.rdf4j.model.IRI} as a Commons RDF
+     * {@link org.apache.commons.rdf.api.IRI}
+     * <p>
+     * @param value
+     *            The RDF4J {@link Value} to convert.
+     * @return A {@link RDF4JIRI} that corresponds to the RDF4J IRI
+     */
+    public RDF4JIRI asRDFTerm(final org.eclipse.rdf4j.model.IRI value) {
+        return rdf4j.createIRIImpl(value);
     }
 
     /**
