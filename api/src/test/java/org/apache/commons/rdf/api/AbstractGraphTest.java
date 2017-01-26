@@ -399,7 +399,8 @@ public abstract class AbstractGraphTest {
 
         final Graph graph = factory.createGraph();
         graph.add(example1, greeting, upper);
-
+        
+        // any kind of Triple should match
         assertTrue(graph.contains(factory.createTriple(example1, greeting, upper)));
         assertTrue(graph.contains(factory.createTriple(example1, greeting, lower)));
         assertTrue(graph.contains(factory.createTriple(example1, greeting, mixed)));
@@ -491,8 +492,10 @@ public abstract class AbstractGraphTest {
         graph.add(example1, greeting, lower);
         graph.remove(example1, null, upper);
 
+        // Check with Triple
         graph.add(factory.createTriple(example1, greeting, mixed));
         graph.remove(factory.createTriple(example1, greeting, upper));
+        assertFalse(graph.contains(null, greeting, null));
     }
 
     private static Optional<? extends Triple> closableFindAny(Stream<? extends Triple> stream) {
