@@ -24,10 +24,12 @@ import java.util.stream.Stream;
 
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.IRI;
+import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.jena.JenaGraph;
 import org.apache.commons.rdf.jena.JenaRDF;
+import org.apache.commons.rdf.jena.JenaTriple;
 import org.apache.jena.atlas.iterator.Iter;
 import org.apache.jena.graph.Node;
 import org.apache.jena.rdf.model.Model;
@@ -93,8 +95,8 @@ class JenaGraphImpl implements JenaGraph {
 
     @Override
     public void remove(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
-        graph.delete(org.apache.jena.graph.Triple.create(toJenaPattern(subject), toJenaPattern(predicate),
-                toJenaPattern(object)));
+        graph.remove(toJenaPattern(subject), toJenaPattern(predicate),
+                toJenaPattern(object));
     }
 
     private Node toJenaPattern(final RDFTerm pattern) {
@@ -106,7 +108,18 @@ class JenaGraphImpl implements JenaGraph {
 
     @Override
     public void remove(final Triple triple) {
-        graph.delete(factory.asJenaTriple(triple));
+        if ((triple.getObject() instanceof Literal) && 
+                ((Literal) triple.getObject()).getLanguageTag().isPresent()) {
+            // COMMONSRDF-51: graph.delete(Triple) would be too restrictive
+            // as it won't delete triples with different lang tag - so 
+            // we'll need to use the pattern matching graph.remove instead()
+            graph.remove(
+                    factory.asJenaNode(triple.getSubject()), 
+                    factory.asJenaNode(triple.getPredicate()),
+                    factory.asJenaNode(triple.getObject()));
+        } else {
+            graph.delete(factory.asJenaTriple(triple));
+        }
     }
 
     @Override
