@@ -159,7 +159,7 @@ public abstract class InternalJenaFactory {
         }
         throw new ConversionException("Unrecognized node type: " + node);
     }
-
+    
     public JenaTriple createTriple(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         return new JenaTripleImpl(subject, predicate, object);
     }

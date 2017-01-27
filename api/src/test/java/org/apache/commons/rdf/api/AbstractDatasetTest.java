@@ -158,8 +158,53 @@ public abstract class AbstractDatasetTest {
             count++;
         }
         assertEquals(dataset.size(), count);
+        
+        // Pattern iteration which should cover multiple graphs.
+        
+        Set<Quad> aliceQuads = new HashSet<>();
+        for (Quad aliceQ : dataset.iterate(null, alice, null, null)) { 
+            aliceQuads.add(aliceQ);
+        }
+        assertTrue(aliceQuads.contains(factory.createQuad(graph1, alice, name, aliceName)));
+        assertTrue(aliceQuads.contains(factory.createQuad(graph1, alice, knows, bob)));
+        // We can't test this by Quad equality, as bnode1 might become mapped by the 
+        // dataset
+        //assertTrue(aliceQuads.contains(factory.createQuad(graph1, alice, member, bnode1)));
+        assertTrue(aliceQuads.contains(factory.createQuad(null, alice, isPrimaryTopicOf, graph1)));
+        assertEquals(4, aliceQuads.size());
+        
+        // Check the isPrimaryTopicOf statements in the default graph
+        int topics = 0;
+        for (Quad topic : dataset.iterate(null, null, isPrimaryTopicOf, null)) {
+            topics++;
+            // COMMONSRDF-55: should not be <urn:x-arq:defaultgraph> or similar
+            assertFalse(topic.getGraphName().isPresent());
+        }
+        assertEquals(2, topics);
     }
 
+    @Test
+    public void streamDefaultGraphNameAlice() throws Exception {
+        // null below would match in ANY graph (including default graph)
+        Optional<? extends Quad> aliceTopic = dataset.stream(null, alice, isPrimaryTopicOf, null).findAny();
+        assertTrue(aliceTopic.isPresent());
+        // COMMONSRDF-55: should not be <urn:x-arq:defaultgraph> or similar
+        assertNull(aliceTopic.get().getGraphName().orElse(null));
+        assertFalse(aliceTopic.get().getGraphName().isPresent());
+    }
+
+
+    @Test
+    public void streamDefaultGraphNameByPattern() throws Exception {
+        // Explicitly select in only the default graph Optional.empty()
+        Optional<? extends Quad> aliceTopic = dataset.stream(Optional.empty(), null, null, null).findAny();
+        assertTrue(aliceTopic.isPresent());
+        // COMMONSRDF-55: should not be <urn:x-arq:defaultgraph> or similar
+        assertNull(aliceTopic.get().getGraphName().orElse(null));
+        assertFalse(aliceTopic.get().getGraphName().isPresent());
+    }
+    
+    
     /**
      * Special quad closing for RDF4J.
      */

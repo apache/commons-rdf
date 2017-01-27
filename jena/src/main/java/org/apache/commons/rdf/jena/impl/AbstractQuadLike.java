@@ -22,12 +22,15 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.apache.commons.rdf.api.BlankNodeOrIRI;
+import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.QuadLike;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.jena.JenaQuad;
 import org.apache.commons.rdf.jena.JenaQuadLike;
 import org.apache.commons.rdf.jena.JenaRDF;
 import org.apache.commons.rdf.jena.JenaTriple;
+import org.apache.jena.graph.Factory;
 import org.apache.jena.graph.Triple;
 import org.apache.jena.sparql.core.Quad;
 
@@ -52,6 +55,22 @@ abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
     private static InternalJenaFactory internalJenaFactory = new InternalJenaFactory() {
     };
 
+    /**
+     * COMMONSRDF-55 - special handling of urn:x-arq:DefaultGraph and friends
+     */
+    private static class DefaultGraphChecker {
+        // Fixed UUID for comparison of defaultGraphNodeGenerated
+        private UUID salt = UUID.fromString("aaa6bf96-ea58-4a55-9485-3733403a1f24");     
+        private RDFTerm defaultGraph = internalJenaFactory.createRDFTerm(Quad.defaultGraphIRI, salt);
+        private RDFTerm defaultGraphNodeGenerated = internalJenaFactory.createRDFTerm(Quad.defaultGraphNodeGenerated, salt);
+        
+        public boolean isNotDefaultGraph(RDFTerm graphName) {
+            return !(graphName.equals(defaultGraph) || graphName.equals(defaultGraphNodeGenerated)); 
+        }
+    }
+    
+    private static DefaultGraphChecker defaultGraphChecker = new DefaultGraphChecker();
+
     final Optional<G> graphName;
     final S subject;
     final P predicate;
@@ -59,11 +78,12 @@ abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
     org.apache.jena.sparql.core.Quad quad = null;
     org.apache.jena.graph.Triple triple = null;
 
+    
     AbstractQuadLike(final S subject, final P predicate, final O object, final Optional<G> graphName) {
         this.subject = Objects.requireNonNull(subject);
         this.predicate = Objects.requireNonNull(predicate);
         this.object = Objects.requireNonNull(object);
-        this.graphName = Objects.requireNonNull(graphName);
+        this.graphName = Objects.requireNonNull(graphName).filter(defaultGraphChecker::isNotDefaultGraph);
     }
 
     AbstractQuadLike(final S subject, final P predicate, final O object) {
@@ -76,7 +96,11 @@ abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
         this.subject = (S) internalJenaFactory.createRDFTerm(quad.getSubject(), salt);
         this.predicate = (P) internalJenaFactory.createRDFTerm(quad.getPredicate(), salt);
         this.object = (O) internalJenaFactory.createRDFTerm(quad.getObject(), salt);
-        this.graphName = Optional.of((G) internalJenaFactory.createRDFTerm(quad.getGraph(), salt));
+        if (quad.isDefaultGraph()) {
+            this.graphName = Optional.empty();
+        } else { 
+            this.graphName = Optional.of((G) internalJenaFactory.createRDFTerm(quad.getGraph(), salt));
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -92,8 +116,11 @@ abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
     public org.apache.jena.sparql.core.Quad asJenaQuad() {
         final JenaRDF factory = new JenaRDF();
         if (quad == null) {
-            quad = org.apache.jena.sparql.core.Quad.create(factory.asJenaNode(graphName.orElse(null)),
-                    factory.asJenaNode(subject), factory.asJenaNode(predicate), factory.asJenaNode(object));
+            quad = org.apache.jena.sparql.core.Quad.create(
+                    graphName.map(factory::asJenaNode).orElse(Quad.defaultGraphIRI),
+                    factory.asJenaNode(subject), 
+                    factory.asJenaNode(predicate), 
+                    factory.asJenaNode(object));
         }
         return quad;
     }
@@ -102,7 +129,9 @@ abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
     public org.apache.jena.graph.Triple asJenaTriple() {
         final JenaRDF factory = new JenaRDF();
         if (triple == null) {
-            triple = org.apache.jena.graph.Triple.create(factory.asJenaNode(subject), factory.asJenaNode(predicate),
+            triple = org.apache.jena.graph.Triple.create(
+                    factory.asJenaNode(subject), 
+                    factory.asJenaNode(predicate),
                     factory.asJenaNode(object));
         }
         return triple;
