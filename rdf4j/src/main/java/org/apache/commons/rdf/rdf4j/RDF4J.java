@@ -37,6 +37,7 @@ import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.api.TripleLike;
 import org.apache.commons.rdf.rdf4j.impl.InternalRDF4JFactory;
 import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.Literal;
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.Resource;
@@ -283,6 +284,25 @@ public final class RDF4J implements RDF {
      */
     public RDF4JIRI asRDFTerm(final org.eclipse.rdf4j.model.IRI value) {
         return rdf4j.createIRIImpl(value);
+    }
+
+    /**
+     *
+     * Adapt a RDF4J
+     * {@link org.eclipse.rdf4j.model.Resource} as a Commons RDF
+     * {@link org.apache.commons.rdf.api.BlankNodeOrIRI}
+     * <p>
+     * @param value
+     *            The RDF4J {@link Value} to convert.
+     * @return A {@link RDF4JBlankNodeOrIRI} that corresponds to the RDF4J Resource
+     */
+    public RDF4JBlankNodeOrIRI asRDFTerm(final org.eclipse.rdf4j.model.Resource value) {
+        if(value instanceof IRI){
+            return asRDFTerm((IRI)value);
+        } else if (value instanceof BNode){
+            return asRDFTerm((BNode)value);
+        }
+        throw new IllegalArgumentException("Value is not a BNode or IRI: " + value.getClass());
     }
 
     /**
