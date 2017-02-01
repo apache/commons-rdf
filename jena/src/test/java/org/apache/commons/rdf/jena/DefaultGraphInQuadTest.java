@@ -22,6 +22,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.apache.commons.rdf.api.IRI;
+import org.apache.commons.rdf.simple.SimpleRDF;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.NodeFactory;
 import org.apache.jena.sparql.core.Quad;
@@ -53,6 +54,42 @@ public class DefaultGraphInQuadTest {
         assertEquals(Quad.defaultGraphIRI,  q.asJenaQuad().getGraph());
         assertFalse(q.getGraphName().isPresent());
     }
+
+    @Test
+    public void createFromForeignDefaultGraph() throws Exception {
+        // What if <urn:x-arq:DefaultGraph> appear in a non-Jena IRI?
+        IRI foreignDefaultGraph = new SimpleRDF().createIRI(Quad.defaultGraphIRI.getURI());
+        JenaQuad q = rdf.createQuad(foreignDefaultGraph, example, example, example);
+        assertTrue(q.asJenaQuad().isDefaultGraph());
+        assertEquals(Quad.defaultGraphIRI,  q.asJenaQuad().getGraph());
+        assertFalse(q.getGraphName().isPresent());
+    }
+    
+
+    @Test
+    public void createFromDefaultGraphNodeGeneratedIRINode() throws Exception {
+        // What if <urn:x-arq:DefaultGraphNode> appear as an IRI instance?
+        IRI foreignDefaultGraph = rdf.createIRI(Quad.defaultGraphNodeGenerated.getURI());
+        JenaQuad q = rdf.createQuad(foreignDefaultGraph, example, example, example);
+        assertTrue(q.asJenaQuad().isDefaultGraph());
+        assertFalse(q.getGraphName().isPresent());
+        // Unfortunately  Quad.defaultGraphNodeGenerated is not preserved
+        // within JenaQuad
+        //assertEquals(Quad.defaultGraphNodeGenerated, q.asJenaQuad().getGraph());
+    }
+
+    @Test
+    public void createFromDefaultGraphNodeGeneratedIRIString() throws Exception {
+        // What if <urn:x-arq:DefaultGraphNode> appear in a non-Jena IRI?
+        IRI foreignDefaultGraph = (IRI) rdf.asRDFTerm((Quad.defaultGraphNodeGenerated));
+        JenaQuad q = rdf.createQuad(foreignDefaultGraph, example, example, example);
+        assertTrue(q.asJenaQuad().isDefaultGraph());
+        assertFalse(q.getGraphName().isPresent());
+        // Unfortunately  Quad.defaultGraphNodeGenerated is not preserved
+        // within JenaQuad
+        assertEquals(Quad.defaultGraphNodeGenerated, q.asJenaQuad().getGraph());
+    }
+
     
     @Test
     public void defaultGraphIRI() throws Exception {
@@ -64,11 +101,13 @@ public class DefaultGraphInQuadTest {
 
     @Test
     public void defaultGraphNodeGenerated() throws Exception {        
-        // defaultGraphNodeGenerated might appear in parser output
+        // <urn:x-arq:DefaultGraphNode> might appear in parser output
         Quad jenaQuad = Quad.create(Quad.defaultGraphNodeGenerated, exampleJena, exampleJena, exampleJena);
         JenaQuad q = rdf.asQuad(jenaQuad);        
         assertFalse(q.getGraphName().isPresent());
         assertTrue(q.asJenaQuad().isDefaultGraph());
+        // Preserves <urn:x-arq:DefaultGraphNode>
+        assertEquals(Quad.defaultGraphNodeGenerated, q.asJenaQuad().getGraph());
     }
 
     @Test

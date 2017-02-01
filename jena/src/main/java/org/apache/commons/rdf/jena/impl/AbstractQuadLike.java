@@ -22,15 +22,12 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.apache.commons.rdf.api.BlankNodeOrIRI;
-import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.QuadLike;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.jena.JenaQuad;
 import org.apache.commons.rdf.jena.JenaQuadLike;
 import org.apache.commons.rdf.jena.JenaRDF;
 import org.apache.commons.rdf.jena.JenaTriple;
-import org.apache.jena.graph.Factory;
 import org.apache.jena.graph.Triple;
 import org.apache.jena.sparql.core.Quad;
 
@@ -57,6 +54,12 @@ abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
 
     /**
      * COMMONSRDF-55 - special handling of urn:x-arq:DefaultGraph and friends
+     * <p>
+     * This can recognize <urn:x-arq:DefaultGraph> and
+     * <urn:x-arq:DefaultGraphNode> from any IRI instance, so they can be
+     * replaced with Optional.empty(). Note that this code does not hardcode the
+     * internal Jena IRIs but uses Jena's constants {@link Quad#defaultGraphIRI}
+     * and {@link Quad#defaultGraphNodeGenerated}.
      */
     private static class DefaultGraphChecker {
         // Fixed UUID for comparison of defaultGraphNodeGenerated
