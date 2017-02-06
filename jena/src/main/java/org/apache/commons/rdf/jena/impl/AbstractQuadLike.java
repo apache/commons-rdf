@@ -27,6 +27,7 @@ import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.jena.JenaQuad;
 import org.apache.commons.rdf.jena.JenaQuadLike;
 import org.apache.commons.rdf.jena.JenaRDF;
+import org.apache.commons.rdf.jena.JenaRDFTerm;
 import org.apache.commons.rdf.jena.JenaTriple;
 import org.apache.jena.graph.Triple;
 import org.apache.jena.sparql.core.Quad;
@@ -67,8 +68,34 @@ abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
         private RDFTerm defaultGraph = internalJenaFactory.createRDFTerm(Quad.defaultGraphIRI, salt);
         private RDFTerm defaultGraphNodeGenerated = internalJenaFactory.createRDFTerm(Quad.defaultGraphNodeGenerated, salt);
         
+        /**
+         * Check if RDFTerm is an IRI that matches the two Jena default graph
+         * constants (Even if they are from another RDF implementation).
+         * <p>
+         * This checker is "softer" than {@link #isNotDefaultGraphJenaNode(RDFTerm)}
+         * 
+         * @param graphName
+         *            potential graph name IRI or BlankNode
+         * @return <code>true</code> if the RDFTerm does not indicate a default
+         *         graph in Jena
+         */
         public boolean isNotDefaultGraph(RDFTerm graphName) {
             return !(graphName.equals(defaultGraph) || graphName.equals(defaultGraphNodeGenerated)); 
+        }
+
+        /**
+         * Check if RDFTerm has an IRI that matches the two Jena default graph
+         * constants (but only if it is an JenaRDFTerm instance)
+         * 
+         * @param graphName
+         *            potential graph name IRI or BlankNode
+         * @return <code>true</code> if the RDFTerm does not indicate a default
+         *         graph in Jena
+         */         
+        public boolean isNotDefaultGraphJenaNode(RDFTerm graphName) {
+            return ! (graphName instanceof JenaRDFTerm) ||
+                    ! Quad.isDefaultGraph(((JenaRDFTerm)graphName).asJenaNode());                      
+             
         }
     }
     
@@ -86,7 +113,8 @@ abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
         this.subject = Objects.requireNonNull(subject);
         this.predicate = Objects.requireNonNull(predicate);
         this.object = Objects.requireNonNull(object);
-        this.graphName = Objects.requireNonNull(graphName).filter(defaultGraphChecker::isNotDefaultGraph);
+        // Enforce 
+        this.graphName = Objects.requireNonNull(graphName).filter(defaultGraphChecker::isNotDefaultGraphJenaNode);
     }
 
     AbstractQuadLike(final S subject, final P predicate, final O object) {
