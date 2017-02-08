@@ -18,6 +18,7 @@
 
 package org.apache.commons.rdf.jena.impl;
 
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -37,6 +38,10 @@ class JenaLiteralImpl extends AbstractJenaRDFTerm implements JenaLiteral {
             throw new IllegalArgumentException("Node is not a literal: " + node);
         }
     }
+    
+    private static String lowerCase(String langTag) { 
+        return langTag.toLowerCase(Locale.ROOT);
+    }
 
     @Override
     public boolean equals(final Object other) {
@@ -50,8 +55,10 @@ class JenaLiteralImpl extends AbstractJenaRDFTerm implements JenaLiteral {
             return false;
         }
         final Literal literal = (Literal) other;
-        return getLexicalForm().equals(literal.getLexicalForm()) && getLanguageTag().equals(literal.getLanguageTag())
-                && getDatatype().equals(literal.getDatatype());
+        return getLexicalForm().equals(literal.getLexicalForm()) &&
+                getDatatype().equals(literal.getDatatype()) &&
+                getLanguageTag().map(JenaLiteralImpl::lowerCase).equals(
+                        literal.getLanguageTag().map(JenaLiteralImpl::lowerCase));
     }
 
     @Override
@@ -75,6 +82,6 @@ class JenaLiteralImpl extends AbstractJenaRDFTerm implements JenaLiteral {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getLexicalForm(), getDatatype(), getLanguageTag());
+        return Objects.hash(getLexicalForm(), getDatatype(), getLanguageTag().map(JenaLiteralImpl::lowerCase));
     }
 }

@@ -117,7 +117,12 @@ class JenaDatasetImpl implements JenaDataset {
 
     @Override
     public void remove(final Quad quad) {
-        graph.delete(factory.asJenaQuad(quad));
+        // COMMONSRDF-51: 
+        graph.deleteAny(
+                toJenaPattern(quad.getGraphName()),
+                toJenaPattern(quad.getSubject()),
+                toJenaPattern(quad.getPredicate()),
+                toJenaPattern(quad.getObject()));
     }
 
     @Override
