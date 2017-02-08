@@ -151,6 +151,18 @@ public final class JenaRDF implements RDF {
         return internalJenaFactory.createTriple(subject, predicate, object);
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * In addition to supporting a <code>graphName</code> of <code>null</code>
+     * for representing a triple in the <em>default graph</em>, this method also
+     * recognize a {@link JenaIRI} which {@link JenaRDFTerm#asJenaNode()}
+     * represent the default graph according to
+     * {@link org.apache.jena.sparql.core.Quad#isDefaultGraph(Node)}, in which
+     * case the returned JenaQuad will have a {@link Quad#getGraphName()} of
+     * {@link Optional#empty()} rather than the provided IRI.
+     * 
+     */
     @Override
     public JenaQuad createQuad(final BlankNodeOrIRI graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object)
             throws IllegalArgumentException, UnsupportedOperationException {
@@ -187,6 +199,14 @@ public final class JenaRDF implements RDF {
      * The <em>generalized quad</em> supports any {@link RDFTerm} as its
      * {@link QuadLike#getSubject()} {@link QuadLike#getPredicate()},
      * {@link QuadLike#getObject()} or {@link QuadLike#getObject()}.
+     * <p>
+     * In addition to supporting a <code>graphName</code> of <code>null</code>
+     * for representing a triple in the <em>default graph</em>, this method also
+     * recognize a {@link JenaIRI} which {@link JenaRDFTerm#asJenaNode()}
+     * represent the default graph according to
+     * {@link org.apache.jena.sparql.core.Quad#isDefaultGraph(Node)}, in which
+     * case the returned JenaQuad will have a {@link Quad#getGraphName()} of
+     * {@link Optional#empty()} rather than the provided IRI.
      * 
      * @see #createQuad(BlankNodeOrIRI, BlankNodeOrIRI, IRI, RDFTerm)
      * @see #createGeneralizedTriple(RDFTerm, RDFTerm, RDFTerm)
@@ -345,6 +365,10 @@ public final class JenaRDF implements RDF {
      * {@link JenaRDF} instance in combination with
      * {@link Node#getBlankNodeId()} for the purpose of its
      * {@link BlankNode#uniqueReference()}.
+     * <p>
+     * If the provided quad {@link org.apache.jena.sparql.core.Quad#isDefaultGraph()},
+     * the returned {@link JenaQuadLike} has a {@link JenaQuadLike#getGraphName()} 
+     * of {@link Optional#empty()}.
      *
      * @see #asQuad(org.apache.jena.sparql.core.Quad)
      * @see #asGeneralizedTriple(org.apache.jena.graph.Triple)
@@ -407,6 +431,10 @@ public final class JenaRDF implements RDF {
      * {@link BlankNode} will use a {@link UUID} salt from this {@link JenaRDF}
      * instance in combination with {@link Node#getBlankNodeId()} for the
      * purpose of its {@link BlankNode#uniqueReference()}.
+     * <p>
+     * If the provided quad {@link org.apache.jena.sparql.core.Quad#isDefaultGraph()},
+     * the returned {@link JenaQuad} has a {@link Quad#getGraphName()} 
+     * of {@link Optional#empty()}.
      * 
      * @param quad
      *            Jena quad
@@ -510,6 +538,10 @@ public final class JenaRDF implements RDF {
      * factory's {@link RDF#createBlankNode(String)} will be used, meaning that
      * care should be taken if reusing an {@link RDF} instance for multiple
      * conversion sessions.
+     * <p>
+     * If the provided quad {@link org.apache.jena.sparql.core.Quad#isDefaultGraph()},
+     * the returned {@link JenaQuadLike} has a {@link JenaQuadLike#getGraphName()} 
+     * of {@link Optional#empty()}.
      * 
      * @see #asQuad(org.apache.jena.sparql.core.Quad)
      * @see #asGeneralizedQuad(org.apache.jena.sparql.core.Quad)
