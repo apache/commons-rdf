@@ -17,9 +17,13 @@
  */
 package org.apache.commons.rdf.jena;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.apache.commons.rdf.api.BlankNode;
+import org.apache.jena.graph.Node;
+import org.apache.jena.graph.NodeFactory;
+import org.apache.jena.graph.Triple;
 import org.junit.Test;
 
 public class GeneralizedRDFTripleTest {
@@ -66,7 +70,16 @@ public class GeneralizedRDFTripleTest {
         assertTrue(t.asJenaTriple().getSubject().isLiteral());
     }
     
-    
-
+    @Test
+    public void asGeneralizedTriple() throws Exception {
+        Node s = NodeFactory.createLiteral("Hello");
+        Node p = NodeFactory.createBlankNode();
+        Node o = NodeFactory.createURI("http://example.com/ex");
+        Triple jt = Triple.create(s, p, o);
+        JenaTripleLike t = jena.asGeneralizedTriple(jt);
+        assertEquals(jena.createLiteral("Hello"), t.getSubject());
+        assertEquals(jena.asRDFTerm(p), t.getPredicate());
+        assertEquals(jena.createIRI("http://example.com/ex"), t.getObject());
+    }
     
 }
