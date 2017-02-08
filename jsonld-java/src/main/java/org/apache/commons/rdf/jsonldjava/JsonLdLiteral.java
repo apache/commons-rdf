@@ -87,17 +87,15 @@ class JsonLdLiteralImpl extends JsonLdTermImpl implements JsonLdLiteral {
 
     @Override
     public boolean equals(final Object obj) {
-        if (obj instanceof JsonLdLiteral) {
-            final JsonLdLiteral other = (JsonLdLiteral) obj;
-            return asJsonLdNode().compareTo(other.asJsonLdNode()) == 0;
-        }
+        // COMMONSRDF-56: Do **not** use 
+        // asJsonLdNode().compareTo(other.asJsonLdNode())
         if (obj instanceof Literal) {
             final Literal other = (Literal) obj;
-            return getLexicalForm().equals(other.getLexicalForm()) && getDatatype().equals(other.getDatatype())
+            return getLexicalForm().equals(other.getLexicalForm()) 
+                    && getDatatype().equals(other.getDatatype())
                     && getLanguageTag().map(JsonLdLiteralImpl::lowerCase)
-                    .equals(other.getLanguageTag().map(JsonLdLiteralImpl::lowerCase));
+                        .equals(other.getLanguageTag().map(JsonLdLiteralImpl::lowerCase));
         }
         return false;
-
     }
 }
