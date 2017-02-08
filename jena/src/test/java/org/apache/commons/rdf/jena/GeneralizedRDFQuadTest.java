@@ -17,11 +17,12 @@
  */
 package org.apache.commons.rdf.jena;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import org.apache.commons.rdf.api.BlankNode;
+import org.apache.commons.rdf.api.RDFTerm;
+import org.apache.jena.graph.Node;
+import org.apache.jena.graph.NodeFactory;
 import org.apache.jena.sparql.core.Quad;
 import org.junit.Test;
 
@@ -92,6 +93,19 @@ public class GeneralizedRDFQuadTest {
         assertTrue(q.asJenaQuad().isDefaultGraph());
     }
 
+    @Test
+    public void asGeneralizedQuad() throws Exception {
+        Node s = NodeFactory.createLiteral("Hello");
+        Node p = NodeFactory.createBlankNode();
+        Node o = NodeFactory.createURI("http://example.com/ex");
+        Node g = Quad.defaultGraphIRI;
+        Quad jq = Quad.create(g, s, p, o);
+        JenaQuadLike<RDFTerm> q = jena.asGeneralizedQuad(jq);
+        assertEquals(jena.createLiteral("Hello"), q.getSubject());
+        assertEquals(jena.asRDFTerm(p), q.getPredicate());
+        assertEquals(jena.createIRI("http://example.com/ex"), q.getObject());
+        assertFalse(q.getGraphName().isPresent());
+    }
     
     @Test
     public void literalGraph() throws Exception {
@@ -107,6 +121,7 @@ public class GeneralizedRDFQuadTest {
         assertEquals(lit, q.getGraphName().get()); // it's a literal!
         assertTrue(q.asJenaQuad().getGraph().isLiteral());
     }
+    
     
     
 }
