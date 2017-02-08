@@ -592,9 +592,9 @@ public abstract class AbstractDatasetTest {
     public void containsLanguageTagsCaseInsensitive() {
         // COMMONSRDF-51: Ensure we can add/contains/remove with any casing
         // of literal language tag
-        final Literal lower = factory.createLiteral("Hello", "en-gb");
-        final Literal upper = factory.createLiteral("Hello", "EN-GB");
-        final Literal mixed = factory.createLiteral("Hello", "en-GB");
+        final Literal lower = factory.createLiteral("Hello there", "en-gb");
+        final Literal upper = factory.createLiteral("Hello there", "EN-GB");
+        final Literal mixed = factory.createLiteral("Hello there", "en-GB");
 
         final IRI example1 = factory.createIRI("http://example.com/s1");
         final IRI greeting = factory.createIRI("http://example.com/greeting");
@@ -676,9 +676,9 @@ public abstract class AbstractDatasetTest {
     public void removeLanguageTagsCaseInsensitive() {
         // COMMONSRDF-51: Ensure we can remove with any casing
         // of literal language tag
-        final Literal lower = factory.createLiteral("Hello", "en-gb");
-        final Literal upper = factory.createLiteral("Hello", "EN-GB");
-        final Literal mixed = factory.createLiteral("Hello", "en-GB");
+        final Literal lower = factory.createLiteral("Howdy", "en-us");
+        final Literal upper = factory.createLiteral("Howdy", "EN-US");
+        final Literal mixed = factory.createLiteral("Howdy", "en-US");
 
         final IRI example1 = factory.createIRI("http://example.com/s1");
         final IRI greeting = factory.createIRI("http://example.com/greeting");
@@ -708,9 +708,9 @@ public abstract class AbstractDatasetTest {
     public void streamLanguageTagsCaseInsensitive() {
         // COMMONSRDF-51: Ensure we can add/contains/remove with any casing
         // of literal language tag
-        final Literal lower = factory.createLiteral("Hello", "en-gb");
-        final Literal upper = factory.createLiteral("Hello", "EN-GB");
-        final Literal mixed = factory.createLiteral("Hello", "en-GB");
+        final Literal lower = factory.createLiteral("Good afternoon", "en-gb");
+        final Literal upper = factory.createLiteral("Good afternoon", "EN-GB");
+        final Literal mixed = factory.createLiteral("Good afternoon", "en-GB");
 
         final IRI example1 = factory.createIRI("http://example.com/s1");
         final IRI greeting = factory.createIRI("http://example.com/greeting");
