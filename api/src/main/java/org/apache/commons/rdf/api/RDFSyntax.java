@@ -184,8 +184,7 @@ public interface RDFSyntax {
      * <code>text/turtle; charset=ascii</code>, only the part of the string to
      * before <code>;</code> is considered.
      * <p>
-     * The list of syntaxes supported is at least those returned by
-     * {@link #w3cSyntaxes()}.
+     * This method support all syntaxes returned by {@link #w3cSyntaxes()}.
      * 
      * @param mediaType
      *            The media type to match
@@ -207,8 +206,7 @@ public interface RDFSyntax {
      * might not be equal to the {@link RDFSyntax#fileExtension} of the returned
      * RDFSyntax.
      * <p>
-     * The list of syntaxes supported is at least those returned by
-     * {@link #w3cSyntaxes()}.
+     * This method support all syntaxes returned by {@link #w3cSyntaxes()}.
      * 
      * @param fileExtension
      *            The fileExtension to match, starting with <code>.</code>
@@ -226,8 +224,7 @@ public interface RDFSyntax {
     /**
      * Return the RDFSyntax with the specified {@link #name()}.
      * <p>
-     * The list of syntaxes supported is at least those returned by
-     * {@link #w3cSyntaxes()}
+     * This method support all syntaxes returned by {@link #w3cSyntaxes()}.
      * 
      * @param name
      *            The name to match, , e.g. <code>"JSONLD"</code>
