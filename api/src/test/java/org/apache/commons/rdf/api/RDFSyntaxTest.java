@@ -116,7 +116,7 @@ public class RDFSyntaxTest {
 
     @Test
     public void valueOf() throws Exception {
-        assertEquals(RDFSyntax.TURTLE, RDFSyntax.byName("TURTLE"));
+        assertEquals(RDFSyntax.TURTLE, RDFSyntax.byName("TURTLE").get());
     }
     
 }
