@@ -106,8 +106,7 @@ public interface RDFSyntax {
     /**
      * A short name of the RDF Syntax e.g. <code>JSONLD</code>.
      * <p>
-     * The name is specific to Commons RDF and carries no particular meaning 
-     * except that it matches the constants like {@link #JSONLD}. 
+     * The name is specific to Commons RDF and carries no particular meaning. 
      * 
      * @return Short name for RDF syntax
      */
@@ -148,7 +147,43 @@ public interface RDFSyntax {
      * Datasets</a>.
      */
     public boolean supportsDataset();
-   
+
+    /**
+     * Return the {@link IRI} that <em>identifies</em> the RDF syntax.
+     * <p>
+     * Note that the identifying IRI is generally distinct from the IRI of the
+     * document that <em>specifies</em> the RDF syntax.
+     * 
+     * @return Identifying IRI, e.g.
+     *         <code>http://www.w3.org/ns/formats/JSON-LD</code>
+     */
+    public IRI iri();
+
+    /**
+     * Compare this RDFSyntax with another object.
+     * <p>
+     * Two {@link RDFSyntax}es are considered equal if their
+     * {@link #mediaType()}s are equal when compared as lower case strings
+     * according to {@link String#toLowerCase(Locale)} with the locale
+     * {@link Locale#ROOT}.
+     * 
+     * @param obj
+     * @return
+     */
+    @Override
+    boolean equals(Object obj);
+    
+    /**
+     * The hash code of an RDFSyntax is equivalent to the hash code 
+     * of the {@link #mediaType()} in lower case according to
+     * {@link String#toLowerCase(Locale)} with the locale
+     * {@link Locale#ROOT}. 
+     * 
+     * @return Hash code of RDFSyntax
+     */
+    @Override
+    int hashCode();
+    
     /**
      * Return the RDF 1.1 serialization syntaxes.
      * <p>
@@ -235,30 +270,6 @@ public interface RDFSyntax {
     public static Optional<RDFSyntax> byName(final String name) {
         return w3cSyntaxes().stream().filter(t -> t.name().equals(name)).findAny();
     }
-    
-    /**
-     * Compare this RDFSyntax with another object.
-     * <p>
-     * Two {@link RDFSyntax}es are considered equal if their
-     * {@link #mediaType()}s are equal when compared as lower case strings
-     * according to {@link String#toLowerCase(Locale)} with the locale
-     * {@link Locale#ROOT}.
-     * 
-     * @param obj
-     * @return
-     */
-    @Override
-    boolean equals(Object obj);
-    
-    /**
-     * The hash code of an RDFSyntax is equivalent to the hash code 
-     * of the {@link #mediaType()} in lower case according to
-     * {@link String#toLowerCase(Locale)} with the locale
-     * {@link Locale#ROOT}. 
-     * 
-     * @return Hash code of RDFSyntax
-     */
-    @Override
-    int hashCode();
+
 
 }

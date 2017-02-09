@@ -41,19 +41,66 @@ import java.util.Set;
  */
 final class W3CRDFSyntax implements RDFSyntax {
 
+    
+    /**
+     * IRI representing a <a href="https://www.w3.org/ns/formats/">W3C RDF
+     * format</a>.
+     */
+    private final static class FormatIRI implements IRI {
+        private static String BASE = "http://www.w3.org/ns/formats/";
+        private final String format;
+    
+        private FormatIRI(final String format) {
+            this.format = format;
+        }
+    
+        @Override
+        public String getIRIString() {
+            return BASE + format;
+        }
+    
+        @Override
+        public String ntriplesString() {
+            return "<" + getIRIString() + ">";
+        }
+    
+        @Override
+        public String toString() {
+            return ntriplesString();
+        }
+    
+        @Override
+        public boolean equals(final Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (obj == null || !(obj instanceof IRI)) {
+                return false;
+            }
+            final IRI other = (IRI) obj;
+            return getIRIString().equals(other.getIRIString());
+        }
+    
+        @Override
+        public int hashCode() {
+            return getIRIString().hashCode();
+        }
+    }
+
+    
     static final RDFSyntax JSONLD, TURTLE, NQUADS, NTRIPLES, RDFA_HTML, RDFA_XHTML, RDFXML, TRIG;
     static final Set<RDFSyntax> syntaxes;
     
     static {
         // Initialize within static block to avoid inserting nulls
-        JSONLD = new W3CRDFSyntax("JSONLD", "JSON-LD 1.0", "application/ld+json", ".jsonld", true);
-        TURTLE = new W3CRDFSyntax("TURTLE", "RDF 1.1 Turtle", "text/turtle", ".ttl", false);
-        NQUADS = new W3CRDFSyntax("NQUADS", "RDF 1.1 N-Quads", "application/n-quads", ".nq", true);
-        NTRIPLES = new W3CRDFSyntax("NTRIPLES", "RDF 1.1 N-Triples", "application/n-triples", ".nt", false);
-        RDFA_HTML = new W3CRDFSyntax("RDFA_HTML", "HTML+RDFa 1.1", "text/html", ".html", false);
-        RDFA_XHTML = new W3CRDFSyntax("RDFA_XHTML", "XHTML+RDFa 1.1", "application/xhtml+xml", ".xhtml", false);
-        RDFXML = new W3CRDFSyntax("RDFXML", "RDF 1.1 XML Syntax", "application/rdf+xml", ".rdf", false);
-        TRIG = new W3CRDFSyntax("TRIG", "RDF 1.1 TriG", "application/trig", ".trig", true);
+        JSONLD = new W3CRDFSyntax("JSON-LD", "JSON-LD 1.0", "application/ld+json", ".jsonld", true);
+        TURTLE = new W3CRDFSyntax("Turtle", "RDF 1.1 Turtle", "text/turtle", ".ttl", false);
+        NQUADS = new W3CRDFSyntax("N-Quads", "RDF 1.1 N-Quads", "application/n-quads", ".nq", true);
+        NTRIPLES = new W3CRDFSyntax("N-Triples", "RDF 1.1 N-Triples", "application/n-triples", ".nt", false);
+        RDFA_HTML = new W3CRDFSyntax("RDFa", "HTML+RDFa 1.1", "text/html", ".html", false);
+        RDFA_XHTML = new W3CRDFSyntax("RDFa", "XHTML+RDFa 1.1", "application/xhtml+xml", ".xhtml", false);
+        RDFXML = new W3CRDFSyntax("RDF_XML", "RDF 1.1 XML Syntax", "application/rdf+xml", ".rdf", false);
+        TRIG = new W3CRDFSyntax("TriG", "RDF 1.1 TriG", "application/trig", ".trig", true);
 
         syntaxes = Collections.unmodifiableSet(new LinkedHashSet<>(
                 Arrays.asList(JSONLD, NQUADS, NTRIPLES, RDFA_HTML, RDFA_XHTML, RDFXML, TRIG, TURTLE)));
@@ -64,10 +111,12 @@ final class W3CRDFSyntax implements RDFSyntax {
     private final String mediaType;
 
     private final String fileExtension;
-
+    
     private final boolean supportsDataset;
 
     private final String name;
+    
+    private final IRI iri;
 
     private W3CRDFSyntax(String name, String title, String mediaType, String fileExtension, boolean supportsDataset) {
         this.name = name;
@@ -75,6 +124,7 @@ final class W3CRDFSyntax implements RDFSyntax {
         this.mediaType = mediaType.toLowerCase(Locale.ROOT);
         this.fileExtension = fileExtension.toLowerCase(Locale.ROOT);
         this.supportsDataset = supportsDataset;
+        this.iri = new FormatIRI(name);
     }
 
     /**
@@ -114,6 +164,11 @@ final class W3CRDFSyntax implements RDFSyntax {
     @Override
     public String name() {
         return name;
+    }
+    
+    @Override
+    public IRI iri() {
+        return iri;
     }
 
     @Override
