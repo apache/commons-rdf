@@ -33,10 +33,6 @@
     <name>Commons RDF impl: Simple</name>
     <description>Simple (if not naive) implementation of Commons RDF API</description>
 
-    <properties>
-      <commons.osgi.symbolicName>org.apache.commons.rdf.simple</commons.osgi.symbolicName>
-    </properties>
-
     <distributionManagement>
       <site>
         <id>commonsrdf-api-site</id>
@@ -59,4 +55,19 @@
         </dependency>
     </dependencies>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <configuration>
+          <instructions>
+            <Bundle-SymbolicName>org.apache.commons.rdf.simple</Bundle-SymbolicName>
+            <Require-Capability>osgi.extender; filter:="(osgi.extender=osgi.serviceloader.registrar)";resolution:=optional</Require-Capability>
+            <Provide-Capability>osgi.serviceloader; osgi.serviceloader=org.apache.commons.rdf.api.RDF</Provide-Capability>
+          </instructions>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

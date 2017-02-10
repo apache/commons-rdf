@@ -17,6 +17,7 @@
  */
 package org.apache.commons.rdf.jsonldjava;
 
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -38,6 +39,10 @@ class JsonLdLiteralImpl extends JsonLdTermImpl implements JsonLdLiteral {
         }
     }
 
+    private static String lowerCase(String langTag) { 
+        return langTag.toLowerCase(Locale.ROOT);
+    }
+    
     @Override
     public String ntriplesString() {
         final StringBuilder sb = new StringBuilder();
@@ -76,23 +81,21 @@ class JsonLdLiteralImpl extends JsonLdTermImpl implements JsonLdLiteral {
 
     @Override
     public int hashCode() {
-        // Should be the same as
-        // Objects.hash(getLexicalForm(), getDatatype(), getLanguageTag());
-        return Objects.hash(node.getValue(), node.getDatatype(), node.getLanguage());
+        return Objects.hash(node.getValue(), node.getDatatype(), 
+                getLanguageTag().map(JsonLdLiteralImpl::lowerCase));
     }
 
     @Override
     public boolean equals(final Object obj) {
-        if (obj instanceof JsonLdLiteral) {
-            final JsonLdLiteral other = (JsonLdLiteral) obj;
-            return asJsonLdNode().compareTo(other.asJsonLdNode()) == 0;
-        }
+        // COMMONSRDF-56: Do **not** use 
+        // asJsonLdNode().compareTo(other.asJsonLdNode())
         if (obj instanceof Literal) {
             final Literal other = (Literal) obj;
-            return getLexicalForm().equals(other.getLexicalForm()) && getDatatype().equals(other.getDatatype())
-                    && getLanguageTag().equals(other.getLanguageTag());
+            return getLexicalForm().equals(other.getLexicalForm()) 
+                    && getDatatype().equals(other.getDatatype())
+                    && getLanguageTag().map(JsonLdLiteralImpl::lowerCase)
+                        .equals(other.getLanguageTag().map(JsonLdLiteralImpl::lowerCase));
         }
         return false;
-
     }
 }

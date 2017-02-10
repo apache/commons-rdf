@@ -37,6 +37,8 @@ import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.api.TripleLike;
 import org.apache.commons.rdf.rdf4j.impl.InternalRDF4JFactory;
 import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Literal;
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.Resource;
 import org.eclipse.rdf4j.model.Statement;
@@ -230,6 +232,77 @@ public final class RDF4J implements RDF {
      */
     public RDF4JTerm asRDFTerm(final Value value) {
         return asRDFTerm(value, salt);
+    }
+
+    /**
+     *
+     * Adapt a RDF4J
+     * {@link org.eclipse.rdf4j.model.BNode} as a Commons RDF
+     * {@link org.apache.commons.rdf.api.BlankNode}
+     * <p>
+     * For the purpose of {@link BlankNode} equivalence, this method will use an
+     * internal salt UUID that is unique per instance of {@link RDF4J}.
+     * <p>
+     * <strong>NOTE:</strong> If combining RDF4J values from multiple
+     * repositories or models, then their {@link BNode}s may have the same
+     * {@link BNode#getID()}, which with this method would become equivalent
+     * according to {@link BlankNode#equals(Object)} and
+     * {@link BlankNode#uniqueReference()}, unless a separate {@link RDF4J}
+     * instance is used per RDF4J repository/model.
+     *
+     * @param value
+     *            The RDF4J {@link BNode} to convert.
+     * @return A {@link RDF4JBlankNode} that corresponds to the RDF4J BNode
+     */
+    public RDF4JBlankNode asRDFTerm(final BNode value) {
+        return rdf4j.createBlankNodeImpl(value, salt);
+    }
+
+    /**
+     *
+     * Adapt a RDF4J
+     * {@link org.eclipse.rdf4j.model.Literal} as a Commons RDF
+     * {@link org.apache.commons.rdf.api.Literal}
+     * <p>
+     * @param value
+     *            The RDF4J {@link Literal} to convert.
+     * @return A {@link RDF4JLiteral} that corresponds to the RDF4J literal
+     */
+    public RDF4JLiteral asRDFTerm(final Literal value) {
+        return rdf4j.createLiteralImpl(value);
+    }
+
+    /**
+     *
+     * Adapt a RDF4J
+     * {@link org.eclipse.rdf4j.model.IRI} as a Commons RDF
+     * {@link org.apache.commons.rdf.api.IRI}
+     * <p>
+     * @param value
+     *            The RDF4J {@link Value} to convert.
+     * @return A {@link RDF4JIRI} that corresponds to the RDF4J IRI
+     */
+    public RDF4JIRI asRDFTerm(final org.eclipse.rdf4j.model.IRI value) {
+        return rdf4j.createIRIImpl(value);
+    }
+
+    /**
+     *
+     * Adapt a RDF4J
+     * {@link org.eclipse.rdf4j.model.Resource} as a Commons RDF
+     * {@link org.apache.commons.rdf.api.BlankNodeOrIRI}
+     * <p>
+     * @param value
+     *            The RDF4J {@link Value} to convert.
+     * @return A {@link RDF4JBlankNodeOrIRI} that corresponds to the RDF4J Resource
+     */
+    public RDF4JBlankNodeOrIRI asRDFTerm(final org.eclipse.rdf4j.model.Resource value) {
+        if(value instanceof IRI){
+            return asRDFTerm((IRI)value);
+        } else if (value instanceof BNode){
+            return asRDFTerm((BNode)value);
+        }
+        throw new IllegalArgumentException("Value is not a BNode or IRI: " + value.getClass());
     }
 
     /**
@@ -499,13 +572,13 @@ public final class RDF4J implements RDF {
     @Override
     public RDF4JBlankNode createBlankNode() {
         final BNode bnode = getValueFactory().createBNode();
-        return (RDF4JBlankNode) asRDFTerm(bnode);
+        return asRDFTerm(bnode);
     }
 
     @Override
     public RDF4JBlankNode createBlankNode(final String name) {
         final BNode bnode = getValueFactory().createBNode(name);
-        return (RDF4JBlankNode) asRDFTerm(bnode);
+        return asRDFTerm(bnode);
     }
 
     /**
@@ -531,13 +604,13 @@ public final class RDF4J implements RDF {
 
     @Override
     public RDF4JIRI createIRI(final String iri) throws IllegalArgumentException {
-        return (RDF4JIRI) asRDFTerm(getValueFactory().createIRI(iri));
+        return asRDFTerm(getValueFactory().createIRI(iri));
     }
 
     @Override
     public RDF4JLiteral createLiteral(final String lexicalForm) throws IllegalArgumentException {
         final org.eclipse.rdf4j.model.Literal lit = getValueFactory().createLiteral(lexicalForm);
-        return (RDF4JLiteral) asRDFTerm(lit);
+        return asRDFTerm(lit);
     }
 
     @Override
@@ -545,14 +618,14 @@ public final class RDF4J implements RDF {
             throws IllegalArgumentException {
         final org.eclipse.rdf4j.model.IRI iri = getValueFactory().createIRI(dataType.getIRIString());
         final org.eclipse.rdf4j.model.Literal lit = getValueFactory().createLiteral(lexicalForm, iri);
-        return (org.apache.commons.rdf.api.Literal) asRDFTerm(lit);
+        return asRDFTerm(lit);
     }
 
     @Override
     public org.apache.commons.rdf.api.Literal createLiteral(final String lexicalForm, final String languageTag)
             throws IllegalArgumentException {
         final org.eclipse.rdf4j.model.Literal lit = getValueFactory().createLiteral(lexicalForm, languageTag);
-        return (org.apache.commons.rdf.api.Literal) asRDFTerm(lit);
+        return asRDFTerm(lit);
     }
 
     @Override

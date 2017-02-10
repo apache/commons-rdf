@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -158,8 +159,53 @@ public abstract class AbstractDatasetTest {
             count++;
         }
         assertEquals(dataset.size(), count);
+        
+        // Pattern iteration which should cover multiple graphs.
+        
+        Set<Quad> aliceQuads = new HashSet<>();
+        for (Quad aliceQ : dataset.iterate(null, alice, null, null)) { 
+            aliceQuads.add(aliceQ);
+        }
+        assertTrue(aliceQuads.contains(factory.createQuad(graph1, alice, name, aliceName)));
+        assertTrue(aliceQuads.contains(factory.createQuad(graph1, alice, knows, bob)));
+        // We can't test this by Quad equality, as bnode1 might become mapped by the 
+        // dataset
+        //assertTrue(aliceQuads.contains(factory.createQuad(graph1, alice, member, bnode1)));
+        assertTrue(aliceQuads.contains(factory.createQuad(null, alice, isPrimaryTopicOf, graph1)));
+        assertEquals(4, aliceQuads.size());
+        
+        // Check the isPrimaryTopicOf statements in the default graph
+        int topics = 0;
+        for (Quad topic : dataset.iterate(null, null, isPrimaryTopicOf, null)) {
+            topics++;
+            // COMMONSRDF-55: should not be <urn:x-arq:defaultgraph> or similar
+            assertFalse(topic.getGraphName().isPresent());
+        }
+        assertEquals(2, topics);
     }
 
+    @Test
+    public void streamDefaultGraphNameAlice() throws Exception {
+        // null below would match in ANY graph (including default graph)
+        Optional<? extends Quad> aliceTopic = dataset.stream(null, alice, isPrimaryTopicOf, null).findAny();
+        assertTrue(aliceTopic.isPresent());
+        // COMMONSRDF-55: should not be <urn:x-arq:defaultgraph> or similar
+        assertNull(aliceTopic.get().getGraphName().orElse(null));
+        assertFalse(aliceTopic.get().getGraphName().isPresent());
+    }
+
+
+    @Test
+    public void streamDefaultGraphNameByPattern() throws Exception {
+        // Explicitly select in only the default graph Optional.empty()
+        Optional<? extends Quad> aliceTopic = dataset.stream(Optional.empty(), null, null, null).findAny();
+        assertTrue(aliceTopic.isPresent());
+        // COMMONSRDF-55: should not be <urn:x-arq:defaultgraph> or similar
+        assertNull(aliceTopic.get().getGraphName().orElse(null));
+        assertFalse(aliceTopic.get().getGraphName().isPresent());
+    }
+    
+    
     /**
      * Special quad closing for RDF4J.
      */
@@ -542,7 +588,145 @@ public abstract class AbstractDatasetTest {
     }
     
 
+    @Test
+    public void containsLanguageTagsCaseInsensitive() {
+        // COMMONSRDF-51: Ensure we can add/contains/remove with any casing
+        // of literal language tag
+        final Literal lower = factory.createLiteral("Hello there", "en-gb");
+        final Literal upper = factory.createLiteral("Hello there", "EN-GB");
+        final Literal mixed = factory.createLiteral("Hello there", "en-GB");
+
+        final IRI example1 = factory.createIRI("http://example.com/s1");
+        final IRI greeting = factory.createIRI("http://example.com/greeting");
+
+        
+        dataset.add(null, example1, greeting, upper);
+        
+        // any kind of Triple should match
+        assertTrue(dataset.contains(factory.createQuad(null, example1, greeting, upper)));
+        assertTrue(dataset.contains(factory.createQuad(null, example1, greeting, lower)));
+        assertTrue(dataset.contains(factory.createQuad(null, example1, greeting, mixed)));
+
+        // or as patterns
+        assertTrue(dataset.contains(null, null, null, upper));
+        assertTrue(dataset.contains(null, null, null, lower));
+        assertTrue(dataset.contains(null, null, null, mixed));
+    }
+
+    @Test
+    public void containsLanguageTagsCaseInsensitiveTurkish() {
+        // COMMONSRDF-51: Special test for Turkish issue where
+        // "i".toLowerCase() != "i"
+        // See also:
+        // https://garygregory.wordpress.com/2015/11/03/java-lowercase-conversion-turkey/
+
+        // This is similar to the test in AbstractRDFTest, but on a graph
+        Locale defaultLocale = Locale.getDefault();
+        try {
+            Locale.setDefault(Locale.ROOT);
+            final Literal lowerROOT = factory.createLiteral("moi", "fi");
+            final Literal upperROOT = factory.createLiteral("moi", "FI");
+            final Literal mixedROOT = factory.createLiteral("moi", "fI");
+            final IRI exampleROOT = factory.createIRI("http://example.com/s1");
+            final IRI greeting = factory.createIRI("http://example.com/greeting");
+            dataset.add(null, exampleROOT, greeting, mixedROOT);
+
+            Locale turkish = Locale.forLanguageTag("TR");
+            Locale.setDefault(turkish);
+            // If the below assertion fails, then the Turkish
+            // locale no longer have this peculiarity that
+            // we want to test.
+            Assume.assumeFalse("FI".toLowerCase().equals("fi"));
+
+            // Below is pretty much the same as in
+            // containsLanguageTagsCaseInsensitive()
+            final Literal lower = factory.createLiteral("moi", "fi");
+            final Literal upper = factory.createLiteral("moi", "FI");
+            final Literal mixed = factory.createLiteral("moi", "fI");
+
+            final IRI exampleTR = factory.createIRI("http://example.com/s2");
+            dataset.add(null, exampleTR, greeting, upper);
+            assertTrue(dataset.contains(factory.createQuad(null, exampleTR, greeting, upper)));
+            assertTrue(dataset.contains(factory.createQuad(null, exampleTR, greeting, upperROOT)));
+            assertTrue(dataset.contains(factory.createQuad(null, exampleTR, greeting, lower)));
+            assertTrue(dataset.contains(factory.createQuad(null, exampleTR, greeting, lowerROOT)));
+            assertTrue(dataset.contains(factory.createQuad(null, exampleTR, greeting, mixed)));
+            assertTrue(dataset.contains(factory.createQuad(null, exampleTR, greeting, mixedROOT)));
+            assertTrue(dataset.contains(null, exampleTR, null, upper));
+            assertTrue(dataset.contains(null, exampleTR, null, upperROOT));
+            assertTrue(dataset.contains(null, exampleTR, null, lower));
+            assertTrue(dataset.contains(null, exampleTR, null, lowerROOT));
+            assertTrue(dataset.contains(null, exampleTR, null, mixed));
+            assertTrue(dataset.contains(null, exampleTR, null, mixedROOT));
+
+            // What about the triple we added while in ROOT locale?
+            assertTrue(dataset.contains(factory.createQuad(null, exampleROOT, greeting, upper)));
+            assertTrue(dataset.contains(factory.createQuad(null, exampleROOT, greeting, lower)));
+            assertTrue(dataset.contains(factory.createQuad(null, exampleROOT, greeting, mixed)));
+            assertTrue(dataset.contains(null, exampleROOT, null, upper));
+            assertTrue(dataset.contains(null, exampleROOT, null, lower));
+            assertTrue(dataset.contains(null, exampleROOT, null, mixed));
+        } finally {
+            Locale.setDefault(defaultLocale);
+        }
+    }
     
+
+    @Test
+    public void removeLanguageTagsCaseInsensitive() {
+        // COMMONSRDF-51: Ensure we can remove with any casing
+        // of literal language tag
+        final Literal lower = factory.createLiteral("Howdy", "en-us");
+        final Literal upper = factory.createLiteral("Howdy", "EN-US");
+        final Literal mixed = factory.createLiteral("Howdy", "en-US");
+
+        final IRI example1 = factory.createIRI("http://example.com/s1");
+        final IRI greeting = factory.createIRI("http://example.com/greeting");
+
+        dataset.add(null, example1, greeting, upper);
+
+        // Remove should also honour any case
+        dataset.remove(null, example1, null, mixed);
+        assertFalse(dataset.contains(null, null, greeting, null));
+        
+        dataset.add(null, example1, greeting, lower);
+        dataset.remove(null, example1, null, upper);
+
+        // Check with Triple
+        dataset.add(factory.createQuad(null, example1, greeting, mixed));
+        dataset.remove(factory.createQuad(null, example1, greeting, upper));
+        assertFalse(dataset.contains(null, null, greeting, null));
+    }
+
+    private static Optional<? extends Quad> closableFindAny(Stream<? extends Quad> stream) {
+        try (Stream<? extends Quad> s = stream) {
+            return s.findAny();
+        }
+    }
+    
+    @Test
+    public void streamLanguageTagsCaseInsensitive() {
+        // COMMONSRDF-51: Ensure we can add/contains/remove with any casing
+        // of literal language tag
+        final Literal lower = factory.createLiteral("Good afternoon", "en-gb");
+        final Literal upper = factory.createLiteral("Good afternoon", "EN-GB");
+        final Literal mixed = factory.createLiteral("Good afternoon", "en-GB");
+
+        final IRI example1 = factory.createIRI("http://example.com/s1");
+        final IRI greeting = factory.createIRI("http://example.com/greeting");
+
+        dataset.add(null, example1, greeting, upper);
+
+        // or as patterns
+        assertTrue(closableFindAny(dataset.stream(null, null, null, upper)).isPresent());
+        assertTrue(closableFindAny(dataset.stream(null, null, null, lower)).isPresent());
+        assertTrue(closableFindAny(dataset.stream(null, null, null, mixed)).isPresent());
+        
+        // Check the quad returned equal a new quad
+        Quad q = closableFindAny(dataset.stream(null, null, null, lower)).get();
+        assertEquals(q, factory.createQuad(null, example1, greeting, mixed));
+    }
+
     /**
      * An attempt to use the Java 8 streams to look up a more complicated query.
      * <p>

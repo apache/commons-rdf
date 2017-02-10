@@ -52,7 +52,7 @@ final class LiteralImpl implements Literal, SimpleRDF.SimpleRDFTerm {
 
     public LiteralImpl(final String literal, final String languageTag) {
         this.lexicalForm = Objects.requireNonNull(literal);
-        this.languageTag = Objects.requireNonNull(languageTag).toLowerCase(Locale.ENGLISH);
+        this.languageTag = Objects.requireNonNull(lowerCase(languageTag));
         if (languageTag.isEmpty()) {
             // TODO: Check against
             // http://www.w3.org/TR/n-triples/#n-triples-grammar
@@ -116,6 +116,10 @@ final class LiteralImpl implements Literal, SimpleRDF.SimpleRDFTerm {
         return Objects.hash(lexicalForm, dataType, languageTag);
     }
 
+    private static String lowerCase(String langTag) { 
+        return langTag.toLowerCase(Locale.ROOT);
+    }
+    
     @Override
     public boolean equals(final Object obj) {
         if (this == obj) {
@@ -126,7 +130,7 @@ final class LiteralImpl implements Literal, SimpleRDF.SimpleRDFTerm {
         }
         final Literal literal = (Literal) obj;
         return getDatatype().equals(literal.getDatatype()) && getLexicalForm().equals(literal.getLexicalForm())
-                && getLanguageTag().equals(literal.getLanguageTag());
+                && getLanguageTag().equals(literal.getLanguageTag().map(LiteralImpl::lowerCase));
     }
 
 }

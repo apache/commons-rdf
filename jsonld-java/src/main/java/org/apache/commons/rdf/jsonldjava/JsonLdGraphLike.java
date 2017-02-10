@@ -204,9 +204,23 @@ abstract class AbstractJsonLdGraphLike<T extends TripleLike> implements JsonLdGr
             if (predicateNode.isPresent() && predicateNode.get().compareTo(q.getPredicate()) != 0) {
                 return false;
             }
-            if (objectNode.isPresent() && objectNode.get().compareTo(q.getObject()) != 0) {
-                return false;
+            if (objectNode.isPresent()) {
+                if (object instanceof Literal && q.getObject().isLiteral()) { 
+                    // Special handling for COMMONSRDF-56, COMMONSRDF-51:
+                    // Less efficient wrapper to a Commons RDF Literal so 
+                    // we can use our RDF 1.1-compliant .equals()
+                    RDFTerm otherObj = factory.asRDFTerm(q.getObject());
+                    if (! (object.equals(otherObj))) {
+                        return false;
+                    }
+                } else {
+                    // JSONLD-Java's .compareTo can handle IRI, BlankNode and type-mismatch
+                    if (objectNode.get().compareTo(q.getObject()) != 0) {
+                        return false;
+                    }
+                }
             }
+            // All patterns checked, must be good!
             return true;
         };
     }

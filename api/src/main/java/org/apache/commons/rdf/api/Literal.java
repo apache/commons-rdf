@@ -18,6 +18,7 @@
 package org.apache.commons.rdf.api;
 
 import java.io.Serializable;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -72,7 +73,13 @@ public interface Literal extends RDFTerm {
      * <a href="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
      * >http://www.w3.org/1999/02/22-rdf-syntax-ns#langString</a>, this method
      * must return {@link Optional#empty()}.
-     *
+     * <p>
+     * The value space of language tags is always in lower case; although 
+     * RDF implementations MAY convert all language tags to lower case,
+     * safe comparisons of language tags should be done using
+     * {@link String#toLowerCase(Locale)} with the locale
+     * {@link Locale#ROOT}. 
+     * <p>
      * Implementation note: If your application requires {@link Serializable}
      * objects, it is best not to store an {@link Optional} in a field. It is
      * recommended to use {@link Optional#ofNullable(Object)} to create the
@@ -80,8 +87,8 @@ public interface Literal extends RDFTerm {
      *
      * @return The {@link Optional} language tag for this literal. If
      *         {@link Optional#isPresent()} returns true, the value returned by
-     *         {@link Optional#get()} must be a non-empty string conforming to
-     *         BCP47.
+     *         {@link Optional#get()} must be a non-empty language tag string
+     *         conforming to BCP47.
      * @see <a href=
      *      "http://www.w3.org/TR/rdf11-concepts/#dfn-language-tag">RDF-1.1
      *      Literal language tag</a>
@@ -89,14 +96,20 @@ public interface Literal extends RDFTerm {
     Optional<String> getLanguageTag();
 
     /**
-     * Check it this Literal is equal to another Literal. <blockquote>
+     * Check it this Literal is equal to another Literal. 
+     * <blockquote>
      * <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-literal-term">Literal
-     * term equality</a>: Two literals are term-equal (the same RDF literal) if
+     * term equality</a>: 
+     * Two literals are term-equal (the same RDF literal) if
      * and only if the two lexical forms, the two datatype IRIs, and the two
      * language tags (if any) compare equal, character by character. Thus, two
      * literals can have the same value without being the same RDF term.
      * </blockquote>
-     *
+     * As the value space for language tags is lower-space, if they are present,
+     * they MUST be compared character by character
+     * using the equivalent of {@link String#toLowerCase(java.util.Locale)} with
+     * the locale {@link Locale#ROOT}.
+     * <p>
      * Implementations MUST also override {@link #hashCode()} so that two equal
      * Literals produce the same hash code.
      *
@@ -114,7 +127,7 @@ public interface Literal extends RDFTerm {
      * The returned hash code MUST be equal to the result of
      * {@link Objects#hash(Object...)} with the arguments
      * {@link #getLexicalForm()}, {@link #getDatatype()},
-     * {@link #getLanguageTag()}.
+     * {@link #getLanguageTag()}<code>.map(s-&gt;s.toLowerString(Locale.ROOT))</code>.
      * <p>
      * This method MUST be implemented in conjunction with
      * {@link #equals(Object)} so that two equal Literals produce the same hash

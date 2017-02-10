@@ -49,7 +49,8 @@
 			<version>${project.version}</version>
 		</dependency>
 		<!-- NOTE: This might be quite version-sensitive (including transitives) 
-			as both rdf4j and jena depend on jsonld -->
+			See the JSONLDParsingTest.
+			 -->
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>commons-rdf-jsonld-java</artifactId>
