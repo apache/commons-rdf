@@ -39,8 +39,7 @@ import java.util.Set;
  *      1.1 Primer</a>
  * @see org.apache.commons.rdf.experimental.RDFParser
  */
-final class W3CRDFSyntax implements RDFSyntax {
-
+class W3CRDFSyntax implements RDFSyntax {
     
     /**
      * IRI representing a <a href="https://www.w3.org/ns/formats/">W3C RDF
@@ -88,7 +87,7 @@ final class W3CRDFSyntax implements RDFSyntax {
     }
 
     
-    static final RDFSyntax JSONLD, TURTLE, NQUADS, NTRIPLES, RDFA_HTML, RDFA_XHTML, RDFXML, TRIG;
+    static final RDFSyntax JSONLD, TURTLE, NQUADS, NTRIPLES, RDFA, RDFXML, TRIG;
     static final Set<RDFSyntax> syntaxes;
     
     static {
@@ -97,13 +96,24 @@ final class W3CRDFSyntax implements RDFSyntax {
         TURTLE = new W3CRDFSyntax("Turtle", "RDF 1.1 Turtle", "text/turtle", ".ttl", false);
         NQUADS = new W3CRDFSyntax("N-Quads", "RDF 1.1 N-Quads", "application/n-quads", ".nq", true);
         NTRIPLES = new W3CRDFSyntax("N-Triples", "RDF 1.1 N-Triples", "application/n-triples", ".nt", false);
-        RDFA_HTML = new W3CRDFSyntax("RDFa", "HTML+RDFa 1.1", "text/html", ".html", false);
-        RDFA_XHTML = new W3CRDFSyntax("RDFa", "XHTML+RDFa 1.1", "application/xhtml+xml", ".xhtml", false);
         RDFXML = new W3CRDFSyntax("RDF_XML", "RDF 1.1 XML Syntax", "application/rdf+xml", ".rdf", false);
-        TRIG = new W3CRDFSyntax("TriG", "RDF 1.1 TriG", "application/trig", ".trig", true);
-
+        TRIG = new W3CRDFSyntax("TriG", "RDF 1.1 TriG", "application/trig", ".trig", true);        
+        RDFA = new W3CRDFSyntax("RDFa", "HTML+RDFa 1.1", "text/html", ".html", false) {
+            private Set<String> types = Collections.unmodifiableSet(new LinkedHashSet<>(
+                    Arrays.asList("text/html", "application/xhtml+xml")));
+            private Set<String> extensions = Collections.unmodifiableSet(new LinkedHashSet<>(
+                            Arrays.asList(".html", ".xhtml")));
+            @Override
+            public Set<String> mediaTypes() {
+                return types;
+            }
+            @Override
+            public Set<String> fileExtensions() {
+                return extensions;
+            }
+        };
         syntaxes = Collections.unmodifiableSet(new LinkedHashSet<>(
-                Arrays.asList(JSONLD, NQUADS, NTRIPLES, RDFA_HTML, RDFA_XHTML, RDFXML, TRIG, TURTLE)));
+                Arrays.asList(JSONLD, NQUADS, NTRIPLES, RDFA, RDFXML, TRIG, TURTLE)));
     }
     
     private final String title;

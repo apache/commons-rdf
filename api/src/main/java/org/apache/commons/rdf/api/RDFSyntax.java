@@ -17,6 +17,7 @@
  */
 package org.apache.commons.rdf.api;
 
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
@@ -72,20 +73,14 @@ public interface RDFSyntax {
     public static RDFSyntax NTRIPLES = W3CRDFSyntax.NTRIPLES;
 
     /**
-     * HTML+RDFa 1.1
+     * HTML+RDFa 1.1 and XHTML+RDFa 1.1 
      * 
      * @see <a href=
      *      "https://www.w3.org/TR/html-rdfa/">https://www.w3.org/TR/html-rdfa/</a>
-     */
-    public static RDFSyntax RDFA_HTML = W3CRDFSyntax.RDFA_HTML;
-
-    /**
-     * XHTML+RDFa 1.1
-     * 
      * @see <a href=
      *      "https://www.w3.org/TR/xhtml-rdfa/">https://www.w3.org/TR/xhtml-rdfa/</a>
      */
-    public static RDFSyntax RDFA_XHTML = W3CRDFSyntax.RDFA_XHTML;
+    public static RDFSyntax RDFA = W3CRDFSyntax.RDFA;
 
     /**
      * RDF 1.1 XML Syntax
@@ -134,6 +129,22 @@ public interface RDFSyntax {
     public String mediaType();
 
     /**
+     * Set of <a href="https://tools.ietf.org/html/rfc2046">IANA media types/a> that
+     * covers this RDF syntax, including any non-official media types. 
+     * <p>
+     * The media type can be used as part of <code>Content-Type</code> and
+     * <code>Accept</code> for <em>content negotiation</em> in the
+     * <a href="https://tools.ietf.org/html/rfc7231#section-3.1.1.1">HTTP
+     * protocol</a>.
+     * <p>
+     * The returned Set MUST include the value {@link #mediaType()}; this is the
+     * behaviour of the default implementation.
+     */
+    default public Set<String> mediaTypes() {
+        return Collections.singleton(mediaType());
+    }
+    
+    /**
      * The <a href="https://tools.ietf.org/html/rfc2046">IANA-registered</a>
      * file extension.
      * <p>
@@ -141,6 +152,18 @@ public interface RDFSyntax {
      */
     public String fileExtension();
 
+    /**
+     * Set of file extensions for this RDF syntax, including any non-official extensions.
+     * <p>
+     * The file extension includes the leading period, e.g. <code>.jsonld</code>
+     * <p>
+     * The returned Set MUST include the value from {@link #fileExtension()}; this is
+     * the behaviour of the default implementation.
+     */
+    default public Set<String> fileExtensions() {
+        return Collections.singleton(fileExtension());
+    }
+    
     /**
      * Indicate if this RDF syntax supports
      * <a href="https://www.w3.org/TR/rdf11-concepts/#section-dataset">RDF
@@ -211,9 +234,9 @@ public interface RDFSyntax {
     /**
      * Return the RDFSyntax with the specified media type.
      * <p>
-     * The <code>mediaType</code> is compared in lower case, therefore it might
-     * not be equal to the {@link RDFSyntax#mediaType} of the returned
-     * RDFSyntax.
+     * The <code>mediaType</code> is compared in lower case to all media types
+     * supported, therefore it might not be equal to the
+     * {@link RDFSyntax#mediaType} of the returned RDFSyntax.
      * <p>
      * If the media type specifies parameters, e.g.
      * <code>text/turtle; charset=ascii</code>, only the part of the string to
@@ -230,16 +253,16 @@ public interface RDFSyntax {
      */
     public static Optional<RDFSyntax> byMediaType(final String mediaType) {
         final String type = mediaType.toLowerCase(Locale.ROOT).split("\\s*;", 2)[0];
-        return w3cSyntaxes().stream().filter(t -> t.mediaType().equals(type))
+        return w3cSyntaxes().stream().filter(t -> t.mediaTypes().contains(type))
                 .findAny();
     }
 
     /**
      * Return the RDFSyntax with the specified file extension.
      * <p>
-     * The <code>fileExtension</code> is compared in lower case, therefore it
-     * might not be equal to the {@link RDFSyntax#fileExtension} of the returned
-     * RDFSyntax.
+     * The <code>fileExtension</code> is compared in lower case to all
+     * extensions supported, therefore it might not be equal to the
+     * {@link RDFSyntax#fileExtension} of the returned RDFSyntax.
      * <p>
      * This method support all syntaxes returned by {@link #w3cSyntaxes()}.
      * 
@@ -252,7 +275,7 @@ public interface RDFSyntax {
      */
     public static Optional<RDFSyntax> byFileExtension(final String fileExtension) {
         final String ext = fileExtension.toLowerCase(Locale.ROOT);        
-        return w3cSyntaxes().stream().filter(t -> t.fileExtension().equals(ext))
+        return w3cSyntaxes().stream().filter(t -> t.fileExtensions().contains(ext))
                 .findAny();
     }
     
