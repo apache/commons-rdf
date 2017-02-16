@@ -25,6 +25,7 @@ import java.nio.file.Path;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 import java.util.function.Consumer;
 
@@ -57,9 +58,6 @@ import org.apache.commons.rdf.simple.SimpleRDF;
  * asynchronous remote execution).
  */
 public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implements RDFParser, Cloneable {
-
-    public static final ThreadGroup threadGroup = new ThreadGroup("Commons RDF parsers");
-    private static final ExecutorService threadpool = Executors.newCachedThreadPool(r -> new Thread(threadGroup, r));
 
     // Basically only used for creating IRIs
     private static RDF internalRdfTermFactory = new SimpleRDF();
@@ -213,6 +211,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     private Consumer<Quad> target;
     private Dataset targetDataset;
     private Graph targetGraph;
+    private ExecutorService threadpool = ForkJoinPool.commonPool();
 
     @SuppressWarnings("unchecked")
     @Override
@@ -531,6 +530,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     @Override
     public Future<ParseResult> parse() throws IOException, IllegalStateException {
         final AbstractRDFParser<T> c = prepareForParsing();
+        
         return threadpool.submit(() -> {
             c.parseSynchronusly();
             return null;
