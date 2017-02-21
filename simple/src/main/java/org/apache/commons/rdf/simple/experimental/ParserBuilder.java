@@ -121,11 +121,6 @@ public final class ParserBuilder implements NeedTargetOrRDF, NeedSourceBased, Sy
     }
 
     @Override
-    public NeedSourceOrBase<Consumer<Quad>> target(Consumer<? super Quad> consumer) {
-        return target(new QuadConsumerTarget(consumer));
-    }
-
-    @Override
     public NeedSourceOrBase<Dataset> target(Dataset dataset) {
         return target(new DatasetTarget(dataset));
     }

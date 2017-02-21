@@ -1,10 +1,7 @@
 package org.apache.commons.rdf.simple.experimental;
 
-import java.util.function.Consumer;
-
 import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.Graph;
-import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDF;
 import org.apache.commons.rdf.api.RDFSyntax;
 import org.apache.commons.rdf.experimental.ParserFactory;
@@ -25,11 +22,6 @@ public class ParserFactoryImpl implements ParserFactory {
     @Override
     public NeedSourceOrBase<Dataset> target(Dataset dataset) {
         return target(new DatasetTarget(dataset));
-    }
-
-    @Override
-    public NeedSourceOrBase<Consumer<Quad>> target(Consumer<? super Quad> consumer) {
-        return target(new QuadConsumerTarget(consumer));
     }
 
     @SuppressWarnings("unchecked")

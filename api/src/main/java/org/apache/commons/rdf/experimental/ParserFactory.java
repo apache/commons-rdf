@@ -101,8 +101,11 @@ public interface ParserFactory extends _NeedTargetOrRDF {
         T source();
     }
 
-    interface Target<T> {
-        T target();
+    @FunctionalInterface
+    interface Target<T> extends Consumer<Quad> {
+        default T target() {
+            return null; // unknown
+        }
     }
 
     NeedTargetOrRDF syntax(RDFSyntax syntax);
@@ -119,8 +122,6 @@ interface _NeedIdentifiedSource<T> {
 }
 
 interface _NeedTarget {
-    NeedSourceOrBase<Consumer<Quad>> target(Consumer<? super Quad> consumer);
-
     NeedSourceOrBase<Dataset> target(Dataset dataset);
 
     NeedSourceOrBase<Graph> target(Graph graph);
