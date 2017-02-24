@@ -1,17 +1,21 @@
-package org.apache.commons.rdf.simple.experimental;
+package org.apache.commons.rdf.simple.io;
 
 import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.RDF;
 import org.apache.commons.rdf.api.RDFSyntax;
-import org.apache.commons.rdf.experimental.ParserFactory;
+import org.apache.commons.rdf.api.io.NeedSourceOrBase;
+import org.apache.commons.rdf.api.io.NeedTargetOrRDF;
+import org.apache.commons.rdf.api.io.OptionalTarget;
+import org.apache.commons.rdf.api.io.ParserFactory;
+import org.apache.commons.rdf.api.io.ParserTarget;
 
 public class ParserFactoryImpl implements ParserFactory {
 
-    private State state;
+    private ParserImplementation impl;
 
     public ParserFactoryImpl(ParserImplementation impl) {
-        this.state = new WithImplementation(impl);
+        this.impl = impl;
     }
     
     @Override
@@ -26,19 +30,23 @@ public class ParserFactoryImpl implements ParserFactory {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> NeedSourceOrBase<T> target(Target<T> target) {
-        return new ParserBuilder(state.withTarget(target));
+    public <T> NeedSourceOrBase<T> target(ParserTarget<T> target) {
+        return new ParserBuilder(mutableState().withTarget(target));
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public OptionalTarget<Dataset> rdf(RDF rdf) {
-        return new ParserBuilder(state.withRDF(rdf));
+        return new ParserBuilder(mutableState().withRDF(rdf));
+    }
+
+    private ParseJob mutableState() {
+        return new MutableParseJob().withImplementation(impl);
     }
 
     @Override
     public NeedTargetOrRDF syntax(RDFSyntax syntax) {
-        return new ParserBuilder(state.withSyntax(syntax));
+        return new ParserBuilder(mutableState().withSyntax(syntax));
     }
 
 }

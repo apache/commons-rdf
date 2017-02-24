@@ -1,4 +1,4 @@
-package org.apache.commons.rdf.simple.experimental;
+package org.apache.commons.rdf.simple.io;
 
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.Collections;
@@ -6,40 +6,44 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.rdf.api.RDF;
 import org.apache.commons.rdf.api.RDFSyntax;
-import org.apache.commons.rdf.experimental.ParserFactory.Option;
-import org.apache.commons.rdf.experimental.ParserFactory.Source;
-import org.apache.commons.rdf.experimental.ParserFactory.Target;
+import org.apache.commons.rdf.api.io.Option;
+import org.apache.commons.rdf.api.io.ParserSource;
+import org.apache.commons.rdf.api.io.ParserTarget;
 import org.apache.commons.rdf.simple.SimpleRDF;
 
 @SuppressWarnings("rawtypes")
-interface State {
+public interface ParseJob {
     ParserImplementation impl();
     RDF rdf();
-    Source source();
-    Target target();
-    RDFSyntax syntax();
+    ParserSource source();
+    ParserTarget target();
+    Optional<RDFSyntax> syntax();
     Stream<Map.Entry<Option, Object>> options();
     Map<Option, Object> optionsAsMap();
-    State withRDF(RDF rdf);
-    State withSource(Source p);
-    State withTarget(Target g);
-    State withSyntax(RDFSyntax s);
-    <O> State withOption(Option<O> o, O v);
-    State withImplementation(ParserImplementation impl);
-    State freeze();
+    ParseJob withRDF(RDF rdf);
+    ParseJob withSource(ParserSource p);
+    ParseJob withTarget(ParserTarget g);
+    ParseJob withSyntax(RDFSyntax s);
+    <O> ParseJob withOption(Option<O> o, O v);
+    ParseJob withImplementation(ParserImplementation impl);
+    ImmutableParseJob freeze();    
+}
+
+interface ImmutableParseJob extends ParseJob {
 }
 
 @SuppressWarnings("rawtypes")
-final class MutableState implements State, Cloneable {
+final class MutableParseJob implements ParseJob, Cloneable {
     private ParserImplementation impl;
     private RDF rdf = new SimpleRDF();
-    private Source source;
-    private Target target;
+    private ParserSource source;
+    private ParserTarget target;
     private RDFSyntax syntax;
     private Map<Option, Object> options = new LinkedHashMap<>();
 
@@ -47,25 +51,24 @@ final class MutableState implements State, Cloneable {
     public ParserImplementation impl() {
         return Objects.requireNonNull(impl);
     }
-    public State freeze() {
-        // options will be cloned inside constructor
-        return new FrozenState(impl, source, syntax, target, rdf, options);
+    public ImmutableParseJob freeze() {
+        return new FrozenParseJob(this);
     }
     @Override
     public RDF rdf() {
         return Objects.requireNonNull(rdf);
     }
     @Override
-    public Source source() {
+    public ParserSource source() {
         return Objects.requireNonNull(source);
     }
     @Override
-    public Target target() {
+    public ParserTarget target() {
         return Objects.requireNonNull(target);
     }
     @Override
-    public RDFSyntax syntax() {
-        return Objects.requireNonNull(syntax);
+    public Optional<RDFSyntax> syntax() {
+        return Optional.ofNullable(syntax);
     }
     @Override
     public Stream<Entry<Option, Object>> options() {
@@ -76,32 +79,32 @@ final class MutableState implements State, Cloneable {
         return Collections.unmodifiableMap(options);
     }
     @Override
-    public State withRDF(RDF rdf) {
+    public ParseJob withRDF(RDF rdf) {
         this.rdf = rdf;
         return this;
     }
     @Override
-    public State withSource(Source s) {
+    public ParseJob withSource(ParserSource s) {
         this.source = s;
         return this;
     }
     @Override
-    public State withTarget(Target t) {
+    public ParseJob withTarget(ParserTarget t) {
         this.target = t;
         return this;
     }
     @Override
-    public State withSyntax(RDFSyntax s) {
+    public ParseJob withSyntax(RDFSyntax s) {
         this.syntax = s;
         return this;
     }
     @Override
-    public <O> State withOption(Option<O> o, O v) {
+    public <O> ParseJob withOption(Option<O> o, O v) {
         options.put(o, v);
         return this;
     }
     @Override
-    public State withImplementation(ParserImplementation impl) {
+    public ParseJob withImplementation(ParserImplementation impl) {
         this.impl = impl;
         return this;
     }
@@ -109,48 +112,48 @@ final class MutableState implements State, Cloneable {
 
 
 @SuppressWarnings("rawtypes")
-abstract class ImmutableState implements State {
+abstract class ImmutableParseJobImpl implements ImmutableParseJob {
     @Override
-    public State withSource(Source src) {
+    public ParseJob withSource(ParserSource src) {
         return new WithSource(src, this);
     }
     @Override
-    public State withSyntax(RDFSyntax s) {
+    public ParseJob withSyntax(RDFSyntax s) {
         return new WithSyntax(s, this);
     }
     @Override
-    public State withTarget(Target t) {
+    public ParseJob withTarget(ParserTarget t) {
         return new WithTarget(t, this);
     }
-    public State withRDF(RDF rdf) {
+    public ParseJob withRDF(RDF rdf) {
         return new WithRDF(rdf, this);
     };
-    public <O> State withOption(Option<O> o, O v) {
+    public <O> ParseJob withOption(Option<O> o, O v) {
         return new WithOption(o, v, this);
     };
     @Override
-    public State withImplementation(ParserImplementation impl) {
+    public ParseJob withImplementation(ParserImplementation impl) {
         return new WithImplementation(impl, this);
     }
     @Override
-    public State freeze() {
+    public ImmutableParseJob freeze() {
         return this;
     }
 }
 
 @SuppressWarnings("rawtypes")
-final class DefaultState extends ImmutableState {
+final class DefaultParseJob extends ImmutableParseJobImpl implements ImmutableParseJob {
     @Override
-    public Source source() {
+    public ParserSource source() {
         throw new IllegalStateException("Source not set");
     }
     @Override
-    public Target target() {
+    public ParserTarget target() {
         throw new IllegalStateException("Target not set");
     }
     @Override
-    public RDFSyntax syntax() {
-        throw new IllegalStateException("Syntax not set");
+    public Optional<RDFSyntax> syntax() {
+        return Optional.empty();
     }
     @Override
     public RDF rdf() {
@@ -171,21 +174,25 @@ final class DefaultState extends ImmutableState {
 }
 
 @SuppressWarnings("rawtypes")
-final class FrozenState extends ImmutableState implements State {
+final class FrozenParseJob extends ImmutableParseJobImpl implements ImmutableParseJob {
     private final ParserImplementation impl;
-    private final Source source;
-    private final RDFSyntax syntax;
-    private final Target target;
+    private final ParserSource source;
+    private final Optional<RDFSyntax> syntax;
+    private final ParserTarget target;
     private final RDF rdf;
     private final Map<Option, Object> options;
 
-    public FrozenState(ParserImplementation impl, Source source, RDFSyntax syntax, Target target, RDF rdf,
+    public FrozenParseJob(ParseJob parseJob) {
+        this(parseJob.impl(), parseJob.source(), parseJob.syntax().orElse(null), 
+               parseJob.target(), parseJob.rdf(), parseJob.optionsAsMap());
+    }
+    public FrozenParseJob(ParserImplementation impl, ParserSource source, RDFSyntax syntax, ParserTarget target, RDF rdf,
             Map<Option, Object> options) {
-        this.impl = impl;
-        this.source = source;
-        this.syntax = syntax;
-        this.target = target;
-        this.rdf = rdf;
+        this.impl = Objects.requireNonNull(impl);
+        this.source =  Objects.requireNonNull(source);
+        this.syntax = Optional.ofNullable(syntax);
+        this.target = Objects.requireNonNull(target);
+        this.rdf = Objects.requireNonNull(rdf);
         // shallow copy of options
         this.options = Collections.unmodifiableMap(new LinkedHashMap<>(options));
     }
@@ -198,15 +205,15 @@ final class FrozenState extends ImmutableState implements State {
         return rdf;
     }
     @Override
-    public Source source() {
+    public ParserSource source() {
         return source;
     }
     @Override
-    public Target target() {
+    public ParserTarget target() {
         return target;
     }
     @Override
-    public RDFSyntax syntax() {
+    public Optional<RDFSyntax> syntax() {
         return syntax;
     }
     @Override
@@ -220,24 +227,24 @@ final class FrozenState extends ImmutableState implements State {
 }
 
 @SuppressWarnings("rawtypes")
-abstract class Inherited extends ImmutableState {
-    private final ImmutableState parent;
+abstract class Inherited extends ImmutableParseJobImpl implements ImmutableParseJob  {
+    private final ImmutableParseJob parent;
     public Inherited() {
-        this(new DefaultState());
+        this(new DefaultParseJob());
     }
-    public Inherited(ImmutableState state) {
-        parent = state;
+    public Inherited(ImmutableParseJob job) {
+        parent = job;
     }
     @Override
-    public Source source() {
+    public ParserSource source() {
         return parent.source();
     }
     @Override
-    public Target target() {
+    public ParserTarget target() {
         return parent.target();
     }
     @Override
-    public RDFSyntax syntax() {
+    public Optional<RDFSyntax> syntax() {
         return parent.syntax();
     }
     @Override
@@ -260,34 +267,34 @@ abstract class Inherited extends ImmutableState {
 
 @SuppressWarnings("rawtypes")
 final class WithSource extends Inherited {
-    private final Source source;
+    private final ParserSource source;
 
-    public WithSource(final Source src) {
+    public WithSource(final ParserSource src) {
         this.source = src;
     }
-    public WithSource(final Source src, final ImmutableState state) {
-        super(state);
+    public WithSource(final ParserSource src, final ImmutableParseJob parent) {
+        super(parent);        
         this.source = src;
     }
     @Override
-    public Source source() {
+    public ParserSource source() {
         return source;
     }
 }
 
 @SuppressWarnings("rawtypes")
 final class WithTarget extends Inherited {
-    private final Target target;
+    private final ParserTarget target;
 
-    public WithTarget(final Target t) {
+    public WithTarget(final ParserTarget t) {
         this.target = t;
     }
-    public WithTarget(final Target t, final ImmutableState state) {
-        super(state);
+    public WithTarget(final ParserTarget t, final ImmutableParseJob parent) {
+        super(parent);
         this.target = t;
     }
     @Override
-    public Target target() {
+    public ParserTarget target() {
         return target;
     }
 }
@@ -297,13 +304,13 @@ final class WithSyntax extends Inherited {
     public WithSyntax(final RDFSyntax s) {
         syntax = s;
     }
-    public WithSyntax(final RDFSyntax s, final ImmutableState state) {
-        super(state);
+    public WithSyntax(final RDFSyntax s, final ImmutableParseJob parent) {
+        super(parent);
         syntax = s;
     }
     @Override
-    public RDFSyntax syntax() {
-        return syntax;
+    public Optional<RDFSyntax> syntax() {
+        return Optional.ofNullable(syntax);
     }
 }
 
@@ -312,8 +319,8 @@ final class WithRDF extends Inherited {
     public WithRDF(final RDF r) {
         rdf = r;
     }
-    public WithRDF(final RDF r, final ImmutableState state) {
-        super(state);
+    public WithRDF(final RDF r, final ImmutableParseJob parent) {
+        super(parent);
         rdf = r;
     }
     @Override
@@ -326,7 +333,8 @@ final class WithRDF extends Inherited {
 final class WithOption extends Inherited {
     private Option<? extends Object> option;
     private Object value;
-    public <O> WithOption(Option<O> o, O v, ImmutableState immutableState) {
+    public <O> WithOption(Option<O> o, O v, ImmutableParseJob parent) {
+        super(parent);
         this.option = o;
         this.value = v;
     }
@@ -345,7 +353,7 @@ final class WithImplementation extends Inherited {
     public WithImplementation(ParserImplementation impl) {
         this.impl = impl;
     }
-    public WithImplementation(ParserImplementation impl, ImmutableState parent) {
+    public WithImplementation(ParserImplementation impl, ImmutableParseJob parent) {
         super(parent);
         this.impl = impl;
     }

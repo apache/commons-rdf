@@ -1,12 +1,10 @@
-package org.apache.commons.rdf.simple.experimental;
-
-import java.util.function.Consumer;
+package org.apache.commons.rdf.simple.io;
 
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.Quad;
-import org.apache.commons.rdf.experimental.ParserFactory.Target;
+import org.apache.commons.rdf.api.io.ParserTarget;
 
-public class GraphTarget implements Target<Graph> {
+public class GraphTarget implements ParserTarget<Graph> {
 
     private Graph graph;
 

@@ -1,10 +1,10 @@
-package org.apache.commons.rdf.simple.experimental;
+package org.apache.commons.rdf.simple.io;
 
 import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.Quad;
-import org.apache.commons.rdf.experimental.ParserFactory.Target;
+import org.apache.commons.rdf.api.io.ParserTarget;
 
-public class DatasetTarget implements Target<Dataset> {
+public class DatasetTarget implements ParserTarget<Dataset> {
 
     private final Dataset dataset;
 

@@ -1,4 +1,4 @@
-package org.apache.commons.rdf.simple.experimental;
+package org.apache.commons.rdf.simple.io;
 
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -6,40 +6,48 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
-import java.util.function.Consumer;
 
 import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
-import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDF;
 import org.apache.commons.rdf.api.RDFSyntax;
-import org.apache.commons.rdf.experimental.ParserFactory.*;
+import org.apache.commons.rdf.api.io.Async;
+import org.apache.commons.rdf.api.io.NeedSourceBased;
+import org.apache.commons.rdf.api.io.NeedSourceOrBase;
+import org.apache.commons.rdf.api.io.NeedTargetOrRDF;
+import org.apache.commons.rdf.api.io.Option;
+import org.apache.commons.rdf.api.io.OptionalTarget;
+import org.apache.commons.rdf.api.io.Parsed;
+import org.apache.commons.rdf.api.io.ParserSource;
+import org.apache.commons.rdf.api.io.ParserTarget;
+import org.apache.commons.rdf.api.io.Sync;
+import org.apache.commons.rdf.api.io.Option.RequiredOption;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public final class ParserBuilder implements NeedTargetOrRDF, NeedSourceBased, Sync, NeedSourceOrBase, OptionalTarget,
-        NeedSourceOrBaseOrSyntax, Async {
+        Async {
 
-    public static enum AsyncOption implements Option<ExecutorService> {
+    public static enum AsyncOption implements RequiredOption<ExecutorService> {
         EXECUTOR_SERVICE
     }
 
-    public static enum BaseOption implements Option<IRI> {
+    public static enum BaseOption implements RequiredOption<IRI> {
         BASE        
     }
     
-    private final State state;
+    private final ParseJob parseJob;
 
     public ParserBuilder() {
-        this.state = new DefaultState();
+        this.parseJob = new DefaultParseJob();
     }
 
     public ParserBuilder(ParserImplementation impl) {
-        this.state = new WithImplementation(impl);
+        this.parseJob = new WithImplementation(impl);
     }
 
-    public ParserBuilder(State state) {
-        this.state = state;
+    public ParserBuilder(ParseJob parseJob) {
+        this.parseJob = parseJob;
     }
 
     @Override
@@ -49,7 +57,7 @@ public final class ParserBuilder implements NeedTargetOrRDF, NeedSourceBased, Sy
 
     @Override
     public Async async(ExecutorService executor) {
-        return newState(state.withOption(AsyncOption.EXECUTOR_SERVICE, executor));
+        return newState(parseJob.withOption(AsyncOption.EXECUTOR_SERVICE, executor));
     }
 
     @Override
@@ -59,28 +67,29 @@ public final class ParserBuilder implements NeedTargetOrRDF, NeedSourceBased, Sy
 
     @Override
     public NeedSourceBased<Dataset> base(String iri) {
-        return base(state.rdf().createIRI(iri));
+        return base(parseJob.rdf().createIRI(iri));
     }
 
+    @Override
     public ParserBuilder build() {
-        return newState(state.freeze());
+        return newState(parseJob.freeze());
     }
 
     @Override
     public ParserBuilder option(Option o, Object v) {
-        return newState(state.withOption(o, v));
+        return newState(parseJob.withOption(o, v));
     }
 
     @Override
     public Parsed parse() {
-        ParserImplementation impl = state.impl();
-        long count = impl.parse(state.source(), state.syntax(), state.target(), state.rdf(), state.optionsAsMap());
-        return new ParsedImpl<>(state.source(), state.target(), count);
+        ParserImplementation impl = parseJob.impl();
+        long count = impl.parse(parseJob.source(), parseJob.syntax().orElse(null), parseJob.target(), parseJob.rdf(), parseJob.optionsAsMap());
+        return new ParsedImpl<>(parseJob.source(), parseJob.target(), count);
     }
 
     @Override
     public Future parseAsync() {
-        Map<Option, Object> options = state.optionsAsMap();
+        Map<Option, Object> options = parseJob.optionsAsMap();
         ExecutorService executor = (ExecutorService) options.getOrDefault(AsyncOption.EXECUTOR_SERVICE,
                 ForkJoinPool.commonPool());
         return executor.submit(this::parse);
@@ -88,7 +97,7 @@ public final class ParserBuilder implements NeedTargetOrRDF, NeedSourceBased, Sy
 
     @Override
     public OptionalTarget rdf(RDF rdf) {
-        return newState(state.withRDF(rdf));
+        return newState(parseJob.withRDF(rdf));
     }
 
     @Override
@@ -107,17 +116,17 @@ public final class ParserBuilder implements NeedTargetOrRDF, NeedSourceBased, Sy
     }
 
     @Override
-    public Sync source(Source source) {
+    public Sync source(ParserSource source) {
         return newState(implicitTarget().withSource(source));
     }
 
     @Override
     public Sync source(String iri) {
-        return source(state.rdf().createIRI(iri));
+        return source(parseJob.rdf().createIRI(iri));
     }
 
     public NeedSourceOrBase syntax(RDFSyntax syntax) {
-        return newState(state.withSyntax(syntax));
+        return newState(parseJob.withSyntax(syntax));
     }
 
     @Override
@@ -131,17 +140,17 @@ public final class ParserBuilder implements NeedTargetOrRDF, NeedSourceBased, Sy
     }
 
     @Override
-    public NeedSourceOrBase target(Target target) {
-        return newState(state.withTarget(target));
+    public NeedSourceOrBase target(ParserTarget target) {
+        return newState(parseJob.withTarget(target));
     }
 
-    private State implicitTarget() {
-        return state.withTarget(new ImplicitDatasetTarget(state.rdf()));
+    private ParseJob implicitTarget() {
+        return parseJob.withTarget(new ImplicitDatasetTarget(parseJob.rdf()));
     }
 
-    private ParserBuilder newState(State newState) {
-        if (this.state == newState) {
-            // probably a MutableState
+    private ParserBuilder newState(ParseJob newState) {
+        if (this.parseJob == newState) {
+            // probably a MutableParseJob
             return this;
         }
         return new ParserBuilder(newState);
