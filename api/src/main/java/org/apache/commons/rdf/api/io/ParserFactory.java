@@ -17,9 +17,11 @@
  */
 package org.apache.commons.rdf.api.io;
 
+import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.RDFSyntax;
+import org.apache.commons.rdf.api.fluentparser.NeedTargetOrRDF;
+import org.apache.commons.rdf.api.fluentparser.OptionalTargetOrSyntax;
 
-public interface ParserFactory extends _NeedTargetOrRDF {
-
+public interface ParserFactory extends  _SupportedSyntaxes, OptionalTargetOrSyntax<Dataset> {
     NeedTargetOrRDF syntax(RDFSyntax syntax);
 }

@@ -15,14 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.commons.rdf.api.io;
+package org.apache.commons.rdf.api.fluentparser;
 
-import java.util.concurrent.Future;
+import org.apache.commons.rdf.api.Dataset;
+import org.apache.commons.rdf.api.Graph;
+import org.apache.commons.rdf.api.io.ParserTarget;
 
-public interface Async<T, S> extends _Buildable {
-    Async<T, S> build();
-    
-    <V> Async<T, S> option(Option<V> option, V value);
+interface _NeedTarget {
+    NeedSourceOrBase<Dataset> target(Dataset dataset);
 
-    Future<Parsed<T, S>> parseAsync();
+    NeedSourceOrBase<Graph> target(Graph graph);
+
+    <T> NeedSourceOrBase<T> target(ParserTarget<T> target);
 }

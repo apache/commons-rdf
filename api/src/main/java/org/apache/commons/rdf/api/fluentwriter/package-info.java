@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -15,12 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.commons.rdf.api.io;
-
-import org.apache.commons.rdf.api.IRI;
-
-interface _OptionalBase<T> {
-    NeedSourceBased<T> base(IRI iri);
-
-    NeedSourceBased<T> base(String iri);
-}
+/**
+ *
+ */
+package org.apache.commons.rdf.api.fluentwriter;

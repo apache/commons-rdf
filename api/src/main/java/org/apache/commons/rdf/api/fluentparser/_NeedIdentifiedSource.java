@@ -15,13 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.commons.rdf.api.io;
+package org.apache.commons.rdf.api.fluentparser;
 
 import java.nio.file.Path;
 
 import javax.xml.transform.Source;
 
 import org.apache.commons.rdf.api.IRI;
+import org.apache.commons.rdf.api.io.ParserSource;
 
 interface _NeedIdentifiedSource<T> {
     Sync<T, IRI> source(IRI iri);

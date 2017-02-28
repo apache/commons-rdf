@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -15,7 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/**
- * 
- */
-package org.apache.commons.rdf.api.io;
+package org.apache.commons.rdf.api.fluentparser;
+
+import java.util.concurrent.Future;
+
+import org.apache.commons.rdf.api.io.Option;
+import org.apache.commons.rdf.api.io.Parsed;
+
+public interface Async<T, S> extends _Buildable {
+    Async<T, S> build();
+    
+    <V> Async<T, S> option(Option<V> option, V value);
+
+    Future<Parsed<T, S>> parseAsync();
+}

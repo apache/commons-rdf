@@ -15,15 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.commons.rdf.api.io;
+package org.apache.commons.rdf.api.fluentparser;
 
-import org.apache.commons.rdf.api.Dataset;
-import org.apache.commons.rdf.api.Graph;
+import org.apache.commons.rdf.api.io.Option;
 
-interface _NeedTarget {
-    NeedSourceOrBase<Dataset> target(Dataset dataset);
-
-    NeedSourceOrBase<Graph> target(Graph graph);
-
-    <T> NeedSourceOrBase<T> target(ParserTarget<T> target);
+interface NeedTarget extends _NeedTarget,_Buildable {
+    NeedTarget build();
+    <V> NeedTarget option(Option<V> option, V value);
 }

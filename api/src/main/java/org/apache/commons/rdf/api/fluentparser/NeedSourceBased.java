@@ -15,11 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.commons.rdf.api.io;
+package org.apache.commons.rdf.api.fluentparser;
 
-import org.apache.commons.rdf.api.Dataset;
-import org.apache.commons.rdf.api.RDF;
+import java.io.InputStream;
 
-interface _OptionalRDF {
-    OptionalTarget<Dataset> rdf(RDF rdf);
+import org.apache.commons.rdf.api.io.Option;
+
+public interface NeedSourceBased<T> extends _NeedIdentifiedSource<T>, _Buildable {
+    NeedSourceBased<T> build();
+    <V> NeedSourceBased<T> option(Option<V> option, V value);
+
+    Sync<T, InputStream> source(InputStream is);
 }

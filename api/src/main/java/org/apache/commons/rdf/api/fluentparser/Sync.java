@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -15,7 +15,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/**
- * 
- */
-package org.apache.commons.rdf.api.io;
+package org.apache.commons.rdf.api.fluentparser;
+
+import java.util.concurrent.ExecutorService;
+
+import org.apache.commons.rdf.api.io.Option;
+import org.apache.commons.rdf.api.io.Parsed;
+
+public interface Sync<T, S> extends _Buildable{
+    Sync<T ,S> build();
+    <V> Sync<T, S> option(Option<V> option, V value);
+
+    Async<T, S> async();
+    Async<T, S> async(ExecutorService executor);
+    Parsed<T, S> parse();
+}

@@ -17,31 +17,9 @@
  */
 package org.apache.commons.rdf.api.io;
 
-import org.apache.commons.rdf.api.io.Option.RequiredOption;
+import org.apache.commons.rdf.api.RDFSyntax;
+import org.apache.commons.rdf.api.fluentwriter.NeedTarget;
 
-interface _Buildable {
-    /**
-     * Return an immutable builder at the current state. The returned builder
-     * can be re-used multiple times in a thread-safe way.
-     * 
-     * @return
-     */
-    _Buildable build();
-    
-    /**
-     * Return a builder with the given option set.
-     * <p>
-     * Note that implementations of {@link ParserFactory} may support different
-     * vendor-specific {@link Option} types, and are free to ignore the set
-     * option (unless it is a {@link RequiredOption}).
-     * <p>
-     * It is undefined if setting multiple values for the same (equal) option
-     * are accumulative or overriding.
-     * 
-     * @param option
-     * @param value
-     * @return
-     */
-    <V> _Buildable option(Option<V> option, V value);
-
+public interface WriterFactory extends _SupportedSyntaxes {
+    NeedTarget syntax(RDFSyntax syntax);
 }

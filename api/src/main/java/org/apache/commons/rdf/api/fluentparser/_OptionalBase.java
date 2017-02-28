@@ -15,9 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.commons.rdf.api.io;
+package org.apache.commons.rdf.api.fluentparser;
 
-interface NeedTarget extends _NeedTarget,_Buildable {
-    NeedTarget build();
-    <V> NeedTarget option(Option<V> option, V value);
+import org.apache.commons.rdf.api.IRI;
+
+interface _OptionalBase<T> {
+    NeedSourceBased<T> base(IRI iri);
+
+    NeedSourceBased<T> base(String iri);
 }

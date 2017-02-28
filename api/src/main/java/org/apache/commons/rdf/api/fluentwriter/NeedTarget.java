@@ -15,9 +15,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.commons.rdf.api.io;
+package org.apache.commons.rdf.api.fluentwriter;
 
-public interface NeedSourceOrBase<T> extends _OptionalBase<T>, _NeedIdentifiedSource<T>, _Buildable {
-    NeedSourceOrBase<T> build();
-    <V> NeedSourceOrBase<T> option(Option<V> option, V value);
+import java.io.OutputStream;
+import java.nio.file.Path;
+
+import org.apache.commons.rdf.api.io.Option;
+import org.apache.commons.rdf.api.io.WriterTarget;
+
+public interface NeedTarget extends _Buildable {
+    @Override
+    NeedTarget build();
+    <V> NeedTarget option(Option<V> option, V value);
+    
+    NeedSource target(Path p);
+    NeedSource target(OutputStream out);
+    NeedSource target(WriterTarget target);
 }

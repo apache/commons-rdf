@@ -15,7 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.commons.rdf.api.io;
+package org.apache.commons.rdf.api.fluentparser;
 
-interface _NeedTargetOrRDF extends _NeedTarget, _OptionalRDF {
+import org.apache.commons.rdf.api.Dataset;
+import org.apache.commons.rdf.api.RDF;
+
+interface _OptionalRDF {
+    OptionalTarget<Dataset> rdf(RDF rdf);
 }

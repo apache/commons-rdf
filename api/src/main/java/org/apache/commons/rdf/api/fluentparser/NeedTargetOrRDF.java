@@ -15,7 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.commons.rdf.api.io;
+package org.apache.commons.rdf.api.fluentparser;
+
+import org.apache.commons.rdf.api.io.Option;
 
 public interface NeedTargetOrRDF extends _NeedTargetOrRDF,_Buildable {
     NeedTargetOrRDF build();

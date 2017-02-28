@@ -19,6 +19,13 @@ package org.apache.commons.rdf.api;
 
 import java.io.Serializable;
 import java.util.Locale;
+import java.util.Optional;
+
+import org.apache.commons.rdf.api.fluentparser.Async;
+import org.apache.commons.rdf.api.fluentparser.OptionalTarget;
+import org.apache.commons.rdf.api.fluentparser.Sync;
+import org.apache.commons.rdf.api.io.ParserBuilder;
+import org.apache.commons.rdf.api.io.ParserFactory;
 
 /**
  * A RDF implementation.
@@ -254,5 +261,64 @@ public interface RDF {
      */
     Quad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
             throws IllegalArgumentException;
+    
+    /**
+     * Get a ParserFactory backed by this RDF instance.
+     * <p>
+     * The returned factory is thread-safe and can be used multiple times,
+     * however the builders it creates are not immutable or reusable, unless
+     * frozen with the {@link OptionalTarget#build()} method or equivalent.
+     * 
+     * @return ParserFactory
+     * @throws UnsupportedOperationException
+     *             If this RDF implementation does not support parsing RDF
+     */
+    public ParserFactory parserFactory() throws UnsupportedOperationException;
+    
+    /**
+     * Build a parser for the given RDF syntax.
+     * <p>
+     * If the RDF syntax is not supported/recognized by this RDF implementation,
+     * return {@link Optional#empty()}, otherwise the returned {@link Optional}
+     * contains an {@link ParserBuilder} fluent instance.
+     * <p>
+     * The returned {@link ParserBuilder} follows a <em>fluent</em> pattern to be
+     * set up before parsing the configured source into the configured target.
+     * As a minimum, one of the
+     * {@link ParserBuilder#source(org.apache.commons.rdf.api.io.ParserSource)}
+     * methods need to be called before calling {@link Sync#parse()} or
+     * {@link Async#parseAsync()}. For instance:
+     * <pre>{@code
+     * 
+     * Parsed<Dataset, IRI> p = rdf.parser(RDFSyntax.JSONLD)
+     *                             .source("http://example.com/data.jsonld")
+     *                             .parse();
+     * Dataset ds = p.target().target();
+     * }</pre>
+     * <p>
+     * The returned {@link ParserBuilder} has an implicit parse target of a
+     * fresh {@link Dataset} created with this {@link RDF} instance, but this
+     * can be overridden with {@link ParserBuilder#target(Dataset)},
+     * {@link ParserBuilder#target(Graph)} or
+     * {@link ParserBuilder#target(org.apache.commons.rdf.api.io.ParserTarget)}.
+     * For instance:
+     * 
+     * <pre>{@code
+     * rdf.parser(RDFSyntax.TURTLE)
+     *    .target(quad ->; System.out.println(quad.getSubject()))  
+     *    .source(Paths.get("/tmp/file.ttl").
+     *    .async().parseAsync();
+     * }</pre>
+     * <p>
+     * Note that the returned {@link ParserBuilder} may be mutable and not
+     * thread-safe, and should only be used for parsing once. A reusable,
+     * immutable builder can be created at any step with
+     * {@link ParserBuilder#build()}.
+     * 
+     * @param syntax RDF Syntax to build a parser for
+     * @return A {@link ParserBuilder}, or {@link Optional#empty()} if the
+     *         syntax is not supported.
+     */
+    public Optional<ParserBuilder> parser(RDFSyntax syntax);
 
 }
