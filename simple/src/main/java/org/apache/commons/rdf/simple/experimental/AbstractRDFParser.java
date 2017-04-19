@@ -507,7 +507,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
             return Optional.empty();
         }
         final String filenameStr = fileName.toString();
-        final int last = filenameStr.lastIndexOf(".");
+        final int last = filenameStr.lastIndexOf('.');
         if (last > -1) {
             return Optional.of(filenameStr.substring(last));
         }
