@@ -237,7 +237,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     }
 
     @Override
-    public T contentType(final RDFSyntax rdfSyntax) throws IllegalArgumentException {
+    public T contentType(final RDFSyntax rdfSyntax) {
         final AbstractRDFParser<T> c = clone();
         c.contentTypeSyntax = Optional.ofNullable(rdfSyntax);
         c.contentType = c.contentTypeSyntax.map(syntax -> syntax.mediaType());
@@ -245,7 +245,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     }
 
     @Override
-    public T contentType(final String contentType) throws IllegalArgumentException {
+    public T contentType(final String contentType) {
         final AbstractRDFParser<T> c = clone();
         c.contentType = Optional.ofNullable(contentType);
         c.contentTypeSyntax = c.contentType.flatMap(RDFSyntax::byMediaType);
@@ -261,7 +261,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     }
 
     @Override
-    public T base(final String base) throws IllegalArgumentException {
+    public T base(final String base) {
         return base(internalRdfTermFactory.createIRI(base));
     }
 
@@ -291,7 +291,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     }
 
     @Override
-    public T source(final String iri) throws IllegalArgumentException {
+    public T source(final String iri) {
         final AbstractRDFParser<T> c = clone();
         c.resetSource();
         c.sourceIri = Optional.ofNullable(iri).map(internalRdfTermFactory::createIRI);
@@ -309,7 +309,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      * @throws IllegalArgumentException
      *             If the IRI is not absolute
      */
-    protected void checkIsAbsolute(final IRI iri) throws IllegalArgumentException {
+    protected void checkIsAbsolute(final IRI iri) {
         if (!URI.create(iri.getIRIString()).isAbsolute()) {
             throw new IllegalArgumentException("IRI is not absolute: " + iri);
         }
