@@ -91,7 +91,6 @@ final class LiteralImpl implements Literal, SimpleRDF.SimpleRDFTerm {
                 replace("\n", "\\n")); // escaped to \n
         sb.append(QUOTE);
 
-        // getLanguageTag().ifPresent(s -> sb.append("@" + s));
         if (getLanguageTag().isPresent()) {
             sb.append("@");
             sb.append(getLanguageTag().get());
