@@ -91,7 +91,7 @@ public class DatasetGraphView implements Graph {
 
     private Optional<BlankNodeOrIRI> unionOrNamedGraph() {
         if (unionGraph) {
-            return null;
+            return Optional.empty();
         }
         return Optional.ofNullable(namedGraph);
     }
