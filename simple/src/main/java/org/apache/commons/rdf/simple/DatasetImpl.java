@@ -141,20 +141,10 @@ final class DatasetImpl implements Dataset {
         final RDFTerm newObject = internallyMap(object);
 
         return getQuads(t -> {
-            if (newGraphName != null && !t.getGraphName().equals(newGraphName)) {
-                // This would check Optional.empty() == Optional.empty()
-                return false;
-            }
-            if (subject != null && !t.getSubject().equals(newSubject)) {
-                return false;
-            }
-            if (predicate != null && !t.getPredicate().equals(newPredicate)) {
-                return false;
-            }
-            if (object != null && !t.getObject().equals(newObject)) {
-                return false;
-            }
-            return true;
+            // This would check Optional.empty() == Optional.empty()
+            return !(newGraphName != null && !t.getGraphName().equals(newGraphName)) && !(subject != null &&
+                    !t.getSubject().equals(newSubject)) && !(predicate != null &&
+                    !t.getPredicate().equals(newPredicate)) && !(object != null && !t.getObject().equals(newObject));
         });
     }
 
