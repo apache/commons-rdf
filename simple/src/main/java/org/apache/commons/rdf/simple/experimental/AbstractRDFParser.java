@@ -240,7 +240,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     public T contentType(final RDFSyntax rdfSyntax) {
         final AbstractRDFParser<T> c = clone();
         c.contentTypeSyntax = Optional.ofNullable(rdfSyntax);
-        c.contentType = c.contentTypeSyntax.map(syntax -> syntax.mediaType());
+        c.contentType = c.contentTypeSyntax.map(RDFSyntax::mediaType);
         return c.asT();
     }
 
@@ -256,7 +256,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     public T base(final IRI base) {
         final AbstractRDFParser<T> c = clone();
         c.base = Optional.ofNullable(base);
-        c.base.ifPresent(i -> checkIsAbsolute(i));
+        c.base.ifPresent(this::checkIsAbsolute);
         return c.asT();
     }
 
@@ -286,7 +286,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
         final AbstractRDFParser<T> c = clone();
         c.resetSource();
         c.sourceIri = Optional.ofNullable(iri);
-        c.sourceIri.ifPresent(i -> checkIsAbsolute(i));
+        c.sourceIri.ifPresent(this::checkIsAbsolute);
         return c.asT();
     }
 
@@ -295,7 +295,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
         final AbstractRDFParser<T> c = clone();
         c.resetSource();
         c.sourceIri = Optional.ofNullable(iri).map(internalRdfTermFactory::createIRI);
-        c.sourceIri.ifPresent(i -> checkIsAbsolute(i));
+        c.sourceIri.ifPresent(this::checkIsAbsolute);
         return source(internalRdfTermFactory.createIRI(iri));
     }
 
