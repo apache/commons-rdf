@@ -40,14 +40,6 @@ public final class Types implements IRI, SimpleRDF.SimpleRDFTerm {
     public static final Types RDF_LANGSTRING = new Types("http://www.w3.org/1999/02/22-rdf-syntax-ns#langString");
 
     /**
-     * <tt>http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral</tt>
-     *
-     * @deprecated Not used in RDF-1.1
-     */
-    @Deprecated
-    public static final Types RDF_PLAINLITERAL = new Types("http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral");
-
-    /**
      * <tt>http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral</tt>
      */
     public static final Types RDF_XMLLITERAL = new Types("http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral");
@@ -243,7 +235,6 @@ public final class Types implements IRI, SimpleRDF.SimpleRDFTerm {
         final Set<IRI> tempTypes = new LinkedHashSet<>();
         tempTypes.add(RDF_HTML);
         tempTypes.add(RDF_LANGSTRING);
-        tempTypes.add(RDF_PLAINLITERAL);
         tempTypes.add(RDF_XMLLITERAL);
         tempTypes.add(XSD_ANYURI);
         tempTypes.add(XSD_BASE64BINARY);
