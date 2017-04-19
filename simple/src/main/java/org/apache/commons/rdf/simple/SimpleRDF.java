@@ -105,8 +105,7 @@ public class SimpleRDF implements RDF {
     }
 
     @Override
-    public Quad createQuad(final BlankNodeOrIRI graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object)
-            throws IllegalArgumentException {
+    public Quad createQuad(final BlankNodeOrIRI graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         return new QuadImpl(graphName, subject, predicate, object);
     }
 }
