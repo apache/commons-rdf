@@ -350,7 +350,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      * @throws IllegalStateException
      *             if base is required, but not set.
      */
-    protected void checkBaseRequired() throws IllegalStateException {
+    protected void checkBaseRequired() {
         if (!base.isPresent() && sourceInputStream.isPresent()
                 && !contentTypeSyntax.filter(t -> t == RDFSyntax.NQUADS || t == RDFSyntax.NTRIPLES).isPresent()) {
             throw new IllegalStateException("base iri required for inputstream source");
