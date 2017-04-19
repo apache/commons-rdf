@@ -130,7 +130,7 @@ final class DatasetImpl implements Dataset {
     public Stream<Quad> stream(final Optional<BlankNodeOrIRI> graphName, final BlankNodeOrIRI subject, final IRI predicate,
             final RDFTerm object) {
         final Optional<BlankNodeOrIRI> newGraphName;
-        if (graphName == null) { 
+        if (!graphName.isPresent()) {
             // Avoid Optional<Optional<BlankNodeOrIRI>> ...
             newGraphName = null;
         } else {
@@ -141,20 +141,10 @@ final class DatasetImpl implements Dataset {
         final RDFTerm newObject = internallyMap(object);
 
         return getQuads(t -> {
-            if (newGraphName != null && !t.getGraphName().equals(newGraphName)) {
-                // This would check Optional.empty() == Optional.empty()
-                return false;
-            }
-            if (subject != null && !t.getSubject().equals(newSubject)) {
-                return false;
-            }
-            if (predicate != null && !t.getPredicate().equals(newPredicate)) {
-                return false;
-            }
-            if (object != null && !t.getObject().equals(newObject)) {
-                return false;
-            }
-            return true;
+            // This would check Optional.empty() == Optional.empty()
+            return !(newGraphName != null && !t.getGraphName().equals(newGraphName)) && !(subject != null &&
+                    !t.getSubject().equals(newSubject)) && !(predicate != null &&
+                    !t.getPredicate().equals(newPredicate)) && !(object != null && !t.getObject().equals(newObject));
         });
     }
 
@@ -189,10 +179,6 @@ final class DatasetImpl implements Dataset {
         } else {
             return s;
         }
-    }
-
-    @Override
-    public void close() {
     }
 
     @Override

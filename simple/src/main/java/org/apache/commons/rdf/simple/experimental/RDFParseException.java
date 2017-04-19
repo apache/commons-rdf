@@ -22,7 +22,7 @@ import org.apache.commons.rdf.experimental.RDFParser;
 
 public class RDFParseException extends Exception {
     private static final long serialVersionUID = 5427752643780702976L;
-    private final RDFParser builder;
+    private final transient RDFParser builder;
 
     public RDFParseException(final RDFParser builder) {
         super();
