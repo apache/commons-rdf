@@ -64,7 +64,6 @@ final class LiteralImpl implements Literal, SimpleRDF.SimpleRDFTerm {
             throw new IllegalArgumentException("Invalid languageTag: " + languageTag, ex);
         }
 
-        // System.out.println(aLocale);
         this.dataType = Types.RDF_LANGSTRING;
     }
 
