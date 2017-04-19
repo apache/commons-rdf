@@ -53,7 +53,7 @@ public class SimpleRDF implements RDF {
     /**
      * Unique salt per instance, for {@link #createBlankNode(String)}
      */
-    private final UUID SALT = UUID.randomUUID();
+    private final UUID salt = UUID.randomUUID();
 
     @Override
     public BlankNode createBlankNode() {
@@ -62,7 +62,7 @@ public class SimpleRDF implements RDF {
 
     @Override
     public BlankNode createBlankNode(final String name) {
-        return new BlankNodeImpl(SALT, name);
+        return new BlankNodeImpl(salt, name);
     }
 
     @Override
