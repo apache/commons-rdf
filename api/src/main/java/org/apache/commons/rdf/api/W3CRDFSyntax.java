@@ -77,7 +77,6 @@ class W3CRDFSyntax implements RDFSyntax {
                 return false;
             }
             final IRI other = (IRI) obj;
-            
             return getIRIString().equals(other.getIRIString());
         }
     
@@ -191,7 +190,7 @@ class W3CRDFSyntax implements RDFSyntax {
             return false;
         }
         RDFSyntax other = (RDFSyntax) obj;
-        return mediaType.equalsIgnoreCase(other.mediaType());
+        return mediaType.equals(other.mediaType().toLowerCase(Locale.ROOT));
     }
 
     @Override
