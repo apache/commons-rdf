@@ -130,7 +130,7 @@ final class DatasetImpl implements Dataset {
     public Stream<Quad> stream(final Optional<BlankNodeOrIRI> graphName, final BlankNodeOrIRI subject, final IRI predicate,
             final RDFTerm object) {
         final Optional<BlankNodeOrIRI> newGraphName;
-        if (graphName == null) { 
+        if (!graphName.isPresent()) {
             // Avoid Optional<Optional<BlankNodeOrIRI>> ...
             newGraphName = null;
         } else {
