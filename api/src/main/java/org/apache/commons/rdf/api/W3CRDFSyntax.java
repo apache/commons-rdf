@@ -190,7 +190,7 @@ class W3CRDFSyntax implements RDFSyntax {
             return false;
         }
         RDFSyntax other = (RDFSyntax) obj;
-        return mediaType.equals(other.mediaType().toLowerCase(Locale.ROOT));
+        return mediaType.equalsIgnoreCase(other.mediaType());
     }
 
     @Override
