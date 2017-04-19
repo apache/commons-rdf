@@ -192,10 +192,6 @@ final class DatasetImpl implements Dataset {
     }
 
     @Override
-    public void close() {
-    }
-
-    @Override
     public Graph getGraph() {
         return getGraph(null).get();
     }
