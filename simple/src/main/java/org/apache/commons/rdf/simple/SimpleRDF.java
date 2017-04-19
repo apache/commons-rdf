@@ -73,7 +73,7 @@ public class SimpleRDF implements RDF {
     }
 
     @Override
-    public Dataset createDataset() throws UnsupportedOperationException {
+    public Dataset createDataset() {
         return new DatasetImpl(this);
     }
 
