@@ -64,6 +64,17 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     // Basically only used for creating IRIs
     private static RDF internalRdfTermFactory = new SimpleRDF();
 
+    private Optional<RDF> rdfTermFactory = Optional.empty();
+    private Optional<RDFSyntax> contentTypeSyntax = Optional.empty();
+    private Optional<String> contentType = Optional.empty();
+    private Optional<IRI> base = Optional.empty();
+    private Optional<InputStream> sourceInputStream = Optional.empty();
+    private Optional<Path> sourceFile = Optional.empty();
+    private Optional<IRI> sourceIri = Optional.empty();
+    private Consumer<Quad> target;
+    private Optional<Dataset> targetDataset;
+    private Optional<Graph> targetGraph;
+
     /**
      * Get the set {@link RDF}, if any.
      * 
@@ -202,17 +213,6 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     public Optional<IRI> getSourceIri() {
         return sourceIri;
     }
-
-    private Optional<RDF> rdfTermFactory = Optional.empty();
-    private Optional<RDFSyntax> contentTypeSyntax = Optional.empty();
-    private Optional<String> contentType = Optional.empty();
-    private Optional<IRI> base = Optional.empty();
-    private Optional<InputStream> sourceInputStream = Optional.empty();
-    private Optional<Path> sourceFile = Optional.empty();
-    private Optional<IRI> sourceIri = Optional.empty();
-    private Consumer<Quad> target;
-    private Optional<Dataset> targetDataset;
-    private Optional<Graph> targetGraph;
 
     @SuppressWarnings("unchecked")
     @Override
