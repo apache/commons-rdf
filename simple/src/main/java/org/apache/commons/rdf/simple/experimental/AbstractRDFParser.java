@@ -61,6 +61,17 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
 	public static final ThreadGroup threadGroup = new ThreadGroup("Commons RDF parsers");
 	private static final ExecutorService threadpool = Executors.newCachedThreadPool(r -> new Thread(threadGroup, r));
 
+	private Optional<RDF> rdfTermFactory = Optional.empty();
+	private Optional<RDFSyntax> contentTypeSyntax = Optional.empty();
+	private Optional<String> contentType = Optional.empty();
+	private Optional<IRI> base = Optional.empty();
+	private Optional<InputStream> sourceInputStream = Optional.empty();
+	private Optional<Path> sourceFile = Optional.empty();
+	private Optional<IRI> sourceIri = Optional.empty();
+	private Consumer<Quad> target;
+	private Optional<Dataset> targetDataset;
+	private Optional<Graph> targetGraph;
+	
 	// Basically only used for creating IRIs
 	private static RDF internalRdfTermFactory = new SimpleRDF();
 
@@ -203,16 +214,6 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
 		return sourceIri;
 	}
 
-	private Optional<RDF> rdfTermFactory = Optional.empty();
-	private Optional<RDFSyntax> contentTypeSyntax = Optional.empty();
-	private Optional<String> contentType = Optional.empty();
-	private Optional<IRI> base = Optional.empty();
-	private Optional<InputStream> sourceInputStream = Optional.empty();
-	private Optional<Path> sourceFile = Optional.empty();
-	private Optional<IRI> sourceIri = Optional.empty();
-	private Consumer<Quad> target;
-	private Optional<Dataset> targetDataset;
-	private Optional<Graph> targetGraph;
 
 	@SuppressWarnings("unchecked")
 	@Override
