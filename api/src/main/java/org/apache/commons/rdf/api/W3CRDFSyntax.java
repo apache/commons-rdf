@@ -46,7 +46,7 @@ class W3CRDFSyntax implements RDFSyntax {
      * format</a>.
      */
     private static final class FormatIRI implements IRI {
-        private static String BASE = "http://www.w3.org/ns/formats/";
+        private static final String BASE = "http://www.w3.org/ns/formats/";
         private final String format;
     
         private FormatIRI(final String format) {
