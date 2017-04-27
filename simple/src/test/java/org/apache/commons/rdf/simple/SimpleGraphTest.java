@@ -37,7 +37,6 @@ public class SimpleGraphTest extends AbstractGraphTest {
     @Test
     public void graphToString() {
         Assume.assumeNotNull(aliceName, companyName);
-        // System.out.println(graph);
         assertTrue(
                 graph.toString().contains("<http://example.com/alice> <http://xmlns.com/foaf/0.1/name> \"Alice\" ."));
         assertTrue(graph.toString().contains(" <http://xmlns.com/foaf/0.1/name> \"A company\" ."));
