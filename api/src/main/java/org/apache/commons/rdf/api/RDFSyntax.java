@@ -25,8 +25,8 @@ import java.util.Set;
 /**
  * An RDF syntax, e.g. as used for parsing and writing RDF.
  * <p>
- * An RDF syntax is uniquely identified by its {@link #mediaType()}, and has a
- * suggested {@link #fileExtension()}.
+ * An RDF syntax is uniquely identified by its {@link #getmediaType()}, and has a
+ * suggested {@link #getfileExtension()}.
  * <p>
  * Some of the RDF syntaxes may {@link #supportsDataset()}, meaning they can
  * represent {@link Quad}s.
@@ -105,7 +105,7 @@ public interface RDFSyntax {
      * 
      * @return Short name for RDF syntax
      */
-    public String name();
+    public String getname();
 
     /**
      * The title of the RDF Syntax.
@@ -115,7 +115,7 @@ public interface RDFSyntax {
      * 
      * @return Title of RDF Syntax
      */
-    public String title();    
+    public String gettitle();    
     
     /**
      * The <a href="https://tools.ietf.org/html/rfc2046">IANA media type</a> for
@@ -126,7 +126,7 @@ public interface RDFSyntax {
      * <a href="https://tools.ietf.org/html/rfc7231#section-3.1.1.1">HTTP
      * protocol</a>.
      */
-    public String mediaType();
+    public String getmediaType();
 
     /**
      * Set of <a href="https://tools.ietf.org/html/rfc2046">IANA media types/a> that
@@ -137,11 +137,11 @@ public interface RDFSyntax {
      * <a href="https://tools.ietf.org/html/rfc7231#section-3.1.1.1">HTTP
      * protocol</a>.
      * <p>
-     * The returned Set MUST include the value {@link #mediaType()}; this is the
+     * The returned Set MUST include the value {@link #getmediaType()}; this is the
      * behaviour of the default implementation.
      */
     public default Set<String> mediaTypes() {
-        return Collections.singleton(mediaType());
+        return Collections.singleton(getmediaType());
     }
     
     /**
@@ -150,18 +150,18 @@ public interface RDFSyntax {
      * <p>
      * The file extension includes the leading period, e.g. <code>.jsonld</code>
      */
-    public String fileExtension();
+    public String getfileExtension();
 
     /**
      * Set of file extensions for this RDF syntax, including any non-official extensions.
      * <p>
      * The file extension includes the leading period, e.g. <code>.jsonld</code>
      * <p>
-     * The returned Set MUST include the value from {@link #fileExtension()}; this is
+     * The returned Set MUST include the value from {@link #getfileExtension()}; this is
      * the behaviour of the default implementation.
      */
     public default Set<String> fileExtensions() {
-        return Collections.singleton(fileExtension());
+        return Collections.singleton(getfileExtension());
     }
     
     /**
@@ -180,13 +180,13 @@ public interface RDFSyntax {
      * @return Identifying IRI, e.g.
      *         <code>http://www.w3.org/ns/formats/JSON-LD</code>
      */
-    public IRI iri();
+    public IRI getiri();
 
     /**
      * Compare this RDFSyntax with another object.
      * <p>
      * Two {@link RDFSyntax}es are considered equal if their
-     * {@link #mediaType()}s are equal when compared as lower case strings
+     * {@link #getmediaType()}s are equal when compared as lower case strings
      * according to {@link String#toLowerCase(Locale)} with the locale
      * {@link Locale#ROOT}.
      * 
@@ -198,7 +198,7 @@ public interface RDFSyntax {
     
     /**
      * The hash code of an RDFSyntax is equivalent to the hash code 
-     * of the {@link #mediaType()} in lower case according to
+     * of the {@link #getmediaType()} in lower case according to
      * {@link String#toLowerCase(Locale)} with the locale
      * {@link Locale#ROOT}. 
      * 
@@ -215,8 +215,8 @@ public interface RDFSyntax {
      * included here, e.g. <a href="http://www.w3.org/TeamSubmission/n3/">N3</a> and
      * <a href="https://en.wikipedia.org/wiki/TriX_%28syntax%29">TriX</a>.
      * <p>
-     * The syntaxes returned only support the {@link #mediaType()}
-     * and {@link #fileExtension()} as defined in the corresponding 
+     * The syntaxes returned only support the {@link #getmediaType()}
+     * and {@link #getfileExtension()} as defined in the corresponding 
      * W3C specification.
      * 
      * @return
@@ -247,7 +247,7 @@ public interface RDFSyntax {
      * @param mediaType
      *            The media type to match
      * @return If {@link Optional#isPresent()}, the {@link RDFSyntax} which has
-     *         a matching {@link RDFSyntax#mediaType()}, otherwise
+     *         a matching {@link RDFSyntax#getmediaType()}, otherwise
      *         {@link Optional#empty()} indicating that no matching syntax was
      *         found.
      */
@@ -269,7 +269,7 @@ public interface RDFSyntax {
      * @param fileExtension
      *            The fileExtension to match, starting with <code>.</code>
      * @return If {@link Optional#isPresent()}, the {@link RDFSyntax} which has
-     *         a matching {@link RDFSyntax#fileExtension()}, otherwise
+     *         a matching {@link RDFSyntax#getfileExtension()}, otherwise
      *         {@link Optional#empty()} indicating that no matching file
      *         extension was found.
      */
@@ -280,18 +280,18 @@ public interface RDFSyntax {
     }
     
     /**
-     * Return the RDFSyntax with the specified {@link #name()}.
+     * Return the RDFSyntax with the specified {@link #getname()}.
      * <p>
      * This method support all syntaxes returned by {@link #w3cSyntaxes()}.
      * 
      * @param name
      *            The name to match, , e.g. <code>"JSONLD"</code>
      * @return If {@link Optional#isPresent()}, the {@link RDFSyntax} which has
-     *         a matching {@link RDFSyntax#name()}, otherwise
+     *         a matching {@link RDFSyntax#getname()}, otherwise
      *         {@link Optional#empty()} indicating that no matching name was found.
      */    
     public static Optional<RDFSyntax> byName(final String name) {
-        return w3cSyntaxes().stream().filter(t -> t.name().equals(name)).findAny();
+        return w3cSyntaxes().stream().filter(t -> t.getname().equals(name)).findAny();
     }
 
 

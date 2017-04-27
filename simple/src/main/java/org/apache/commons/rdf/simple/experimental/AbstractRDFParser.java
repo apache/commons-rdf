@@ -240,7 +240,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
 	public T contentType(final RDFSyntax rdfSyntax) {
 		final AbstractRDFParser<T> c = clone();
 		c.contentTypeSyntax = Optional.ofNullable(rdfSyntax);
-		c.contentType = c.contentTypeSyntax.map(syntax -> syntax.mediaType());
+		c.contentType = c.contentTypeSyntax.map(syntax -> syntax.getmediaType());
 		return c.asT();
 	}
 
