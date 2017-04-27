@@ -90,7 +90,8 @@ final class QuadImpl implements RDF4JQuad {
         if (hashCode != 0) {
             return hashCode;
         }
-        return hashCode = Objects.hash(getSubject(), getPredicate(), getObject(), getGraphName());
+        hashCode = Objects.hash(getSubject(), getPredicate(), getObject(), getGraphName());
+        return hashCode;
     }
 
     @Override
