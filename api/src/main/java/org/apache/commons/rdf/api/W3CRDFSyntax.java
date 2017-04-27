@@ -45,7 +45,7 @@ class W3CRDFSyntax implements RDFSyntax {
      * IRI representing a <a href="https://www.w3.org/ns/formats/">W3C RDF
      * format</a>.
      */
-    private final static class FormatIRI implements IRI {
+    private static final class FormatIRI implements IRI {
         private static String BASE = "http://www.w3.org/ns/formats/";
         private final String format;
     
