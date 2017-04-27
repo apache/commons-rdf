@@ -140,7 +140,7 @@ public interface RDFSyntax {
      * The returned Set MUST include the value {@link #mediaType()}; this is the
      * behaviour of the default implementation.
      */
-    default public Set<String> mediaTypes() {
+    public default Set<String> mediaTypes() {
         return Collections.singleton(mediaType());
     }
     
@@ -160,7 +160,7 @@ public interface RDFSyntax {
      * The returned Set MUST include the value from {@link #fileExtension()}; this is
      * the behaviour of the default implementation.
      */
-    default public Set<String> fileExtensions() {
+    public default Set<String> fileExtensions() {
         return Collections.singleton(fileExtension());
     }
     

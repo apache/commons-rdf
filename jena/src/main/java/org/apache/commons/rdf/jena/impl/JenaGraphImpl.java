@@ -43,7 +43,7 @@ class JenaGraphImpl implements JenaGraph {
 	private final transient JenaRDF factory;
 	private Model model;
 
-	private Object lock = new Object();
+	private final Object lock = new Object();
 
 	JenaGraphImpl(final org.apache.jena.graph.Graph graph, final UUID salt) {
 		this.graph = graph;
