@@ -86,7 +86,7 @@ public class DummyRDFParserBuilder extends AbstractRDFParser<DummyRDFParserBuild
         }
         if (getContentTypeSyntax().isPresent()) {
             t.accept(factory.createQuad(null, parsing, factory.createIRI("http://example.com/contentTypeSyntax"),
-                    factory.createLiteral(getContentTypeSyntax().get().name())));
+                    factory.createLiteral(getContentTypeSyntax().get().getname())));
         }
     }
 

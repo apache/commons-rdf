@@ -64,7 +64,6 @@ final class LiteralImpl implements Literal, SimpleRDF.SimpleRDFTerm {
             throw new IllegalArgumentException("Invalid languageTag: " + languageTag, ex);
         }
 
-        // System.out.println(aLocale);
         this.dataType = Types.RDF_LANGSTRING;
     }
 
@@ -94,7 +93,6 @@ final class LiteralImpl implements Literal, SimpleRDF.SimpleRDFTerm {
                 replace("\n", "\\n")); // escaped to \n
         sb.append(QUOTE);
 
-        // getLanguageTag().ifPresent(s -> sb.append("@" + s));
         if (getLanguageTag().isPresent()) {
             sb.append("@");
             sb.append(getLanguageTag().get());

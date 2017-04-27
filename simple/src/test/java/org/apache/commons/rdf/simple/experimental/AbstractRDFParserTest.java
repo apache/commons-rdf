@@ -163,7 +163,7 @@ public class AbstractRDFParserTest {
         // international characters
         assertEquals("<" + testNt.toUri().toString() + ">", firstPredicate(g, "source"));
         assertEquals("<" + testNt.toUri().toString() + ">", firstPredicate(g, "base"));
-        assertEquals("\"" + RDFSyntax.NTRIPLES.name() + "\"", 
+        assertEquals("\"" + RDFSyntax.NTRIPLES.getname() + "\"", 
                 firstPredicate(g, "contentTypeSyntax"));
         assertEquals("\"application/n-triples\"", firstPredicate(g, "contentType"));
     }
@@ -215,7 +215,7 @@ public class AbstractRDFParserTest {
         // bnode source indicates InputStream
         assertTrue(firstPredicate(g, "source").startsWith("_:"));
         assertEquals("\"application/n-quads\"", firstPredicate(g, "contentType"));
-        assertEquals("\"" + RDFSyntax.NQUADS.name() + "\"", 
+        assertEquals("\"" + RDFSyntax.NQUADS.getname() + "\"", 
                 firstPredicate(g, "contentTypeSyntax"));
     }
 
@@ -246,7 +246,7 @@ public class AbstractRDFParserTest {
         checkGraph(g);
         assertEquals("<http://www.example.net/test.ttl>", firstPredicate(g, "source"));
         assertEquals("<http://www.example.net/test.ttl>", firstPredicate(g, "base"));
-        assertEquals("\"" + RDFSyntax.TURTLE.name() + "\"", 
+        assertEquals("\"" + RDFSyntax.TURTLE.getname() + "\"", 
                 firstPredicate(g, "contentTypeSyntax"));
         assertEquals("\"text/turtle\"", firstPredicate(g, "contentType"));
     }

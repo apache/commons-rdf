@@ -85,13 +85,13 @@ public class RDFSyntaxTest {
 
     @Test
     public void fileExtension() throws Exception {
-        assertEquals(".jsonld", RDFSyntax.JSONLD.fileExtension());
-        assertEquals(".nq", RDFSyntax.NQUADS.fileExtension());
-        assertEquals(".nt", RDFSyntax.NTRIPLES.fileExtension());
-        assertEquals(".html", RDFSyntax.RDFA.fileExtension());
-        assertEquals(".rdf", RDFSyntax.RDFXML.fileExtension());
-        assertEquals(".trig", RDFSyntax.TRIG.fileExtension());
-        assertEquals(".ttl", RDFSyntax.TURTLE.fileExtension());
+        assertEquals(".jsonld", RDFSyntax.JSONLD.getfileExtension());
+        assertEquals(".nq", RDFSyntax.NQUADS.getfileExtension());
+        assertEquals(".nt", RDFSyntax.NTRIPLES.getfileExtension());
+        assertEquals(".html", RDFSyntax.RDFA.getfileExtension());
+        assertEquals(".rdf", RDFSyntax.RDFXML.getfileExtension());
+        assertEquals(".trig", RDFSyntax.TRIG.getfileExtension());
+        assertEquals(".ttl", RDFSyntax.TURTLE.getfileExtension());
     }
 
     @Test
@@ -108,13 +108,13 @@ public class RDFSyntaxTest {
     
     @Test
     public void mediaType() throws Exception {
-        assertEquals("application/ld+json", RDFSyntax.JSONLD.mediaType());
-        assertEquals("application/n-quads", RDFSyntax.NQUADS.mediaType());
-        assertEquals("application/n-triples", RDFSyntax.NTRIPLES.mediaType());
-        assertEquals("text/html", RDFSyntax.RDFA.mediaType());
-        assertEquals("application/rdf+xml", RDFSyntax.RDFXML.mediaType());
-        assertEquals("application/trig", RDFSyntax.TRIG.mediaType());
-        assertEquals("text/turtle", RDFSyntax.TURTLE.mediaType());
+        assertEquals("application/ld+json", RDFSyntax.JSONLD.getmediaType());
+        assertEquals("application/n-quads", RDFSyntax.NQUADS.getmediaType());
+        assertEquals("application/n-triples", RDFSyntax.NTRIPLES.getmediaType());
+        assertEquals("text/html", RDFSyntax.RDFA.getmediaType());
+        assertEquals("application/rdf+xml", RDFSyntax.RDFXML.getmediaType());
+        assertEquals("application/trig", RDFSyntax.TRIG.getmediaType());
+        assertEquals("text/turtle", RDFSyntax.TURTLE.getmediaType());
     }
 
 
@@ -139,7 +139,7 @@ public class RDFSyntaxTest {
     @Test
     public void byName() throws Exception {
         for (RDFSyntax s : RDFSyntax.w3cSyntaxes()) {
-            assertEquals(s, RDFSyntax.byName(s.name()).get());
+            assertEquals(s, RDFSyntax.byName(s.getname()).get());
         }
     }
     

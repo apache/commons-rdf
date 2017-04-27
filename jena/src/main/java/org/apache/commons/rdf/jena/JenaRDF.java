@@ -244,12 +244,12 @@ public final class JenaRDF implements RDF {
      *            The Jena Node to adapt. It's {@link Node#isConcrete()} must be
      *            <code>true</code>.
      * @return Adapted {@link JenaRDFTerm}
-     * @throws ConversionException
+     * @
      *             If the {@link Node} can't be represented as an
      *             {@link RDFTerm}, e.g. if the node is not concrete or
      *             represents a variable in Jena.
      */
-    public JenaRDFTerm asRDFTerm(final Node node) throws ConversionException {
+    public JenaRDFTerm asRDFTerm(final Node node) {
         return internalJenaFactory.createRDFTerm(node, salt());
     }
 
@@ -269,7 +269,7 @@ public final class JenaRDF implements RDF {
      *            The Jena Node to adapt. It's {@link Node#isConcrete()} must be
      *            <code>true</code>.
      * @return Adapted {@link RDFTerm}
-     * @throws ConversionException
+     * @
      *             If the {@link Node} can't be represented as an
      *             {@link RDFTerm}, e.g. if the node is not concrete or
      *             represents a variable in Jena.
@@ -316,11 +316,11 @@ public final class JenaRDF implements RDF {
      * @param triple
      *            Jena {@link org.apache.jena.graph.Triple} to adapt
      * @return Adapted {@link JenaTriple}
-     * @throws ConversionException
+     * @
      *             if any of the triple's nodes are not concrete or the triple
      *             is a generalized triple
      */
-    public JenaTriple asTriple(final org.apache.jena.graph.Triple triple) throws ConversionException {
+    public JenaTriple asTriple(final org.apache.jena.graph.Triple triple)  {
         return internalJenaFactory.createTriple(triple, salt());
     }
 
@@ -345,10 +345,10 @@ public final class JenaRDF implements RDF {
      * @return Adapted {@link TripleLike}. Note that the generalized triple does
      *         <strong>not</strong> implement {@link Triple#equals(Object)} or
      *         {@link Triple#hashCode()}.
-     * @throws ConversionException
+     * @
      *             if any of the triple's nodes are not concrete
      */
-    public JenaTripleLike asGeneralizedTriple(final org.apache.jena.graph.Triple triple) throws ConversionException {
+    public JenaTripleLike asGeneralizedTriple(final org.apache.jena.graph.Triple triple) {
         return internalJenaFactory.createGeneralizedTriple(triple, salt());
     }
 
@@ -378,10 +378,10 @@ public final class JenaRDF implements RDF {
      * @return Adapted {@link QuadLike}. Note that the generalized quad does
      *         <strong>not</strong> implement {@link Quad#equals(Object)} or
      *         {@link Quad#hashCode()}.
-     * @throws ConversionException
+     * @
      *             if any of the quad nodes are not concrete
      */
-    public JenaQuadLike<RDFTerm> asGeneralizedQuad(final org.apache.jena.sparql.core.Quad quad) throws ConversionException {
+    public JenaQuadLike<RDFTerm> asGeneralizedQuad(final org.apache.jena.sparql.core.Quad quad) {
         return internalJenaFactory.createGeneralizedQuad(quad, salt());
     }
 
@@ -402,11 +402,11 @@ public final class JenaRDF implements RDF {
      * @param triple
      *            Jena triple
      * @return Converted triple
-     * @throws ConversionException
+     * @
      *             if any of the triple's nodes are not concrete or the triple
      *             is a generalized triple
      */
-    public static Triple asTriple(final RDF factory, final org.apache.jena.graph.Triple triple) throws ConversionException {
+    public static Triple asTriple(final RDF factory, final org.apache.jena.graph.Triple triple)  {
         if (factory instanceof JenaRDF) {
             // No need to convert, just wrap
             return ((JenaRDF) factory).asTriple(triple);
@@ -552,7 +552,7 @@ public final class JenaRDF implements RDF {
      * @param quad
      *            Jena {@link org.apache.jena.sparql.core.Quad} to adapt
      * @return Converted {@link Quad}
-     * @throws ConversionException
+     * @
      *             if any of the quad's nodes are not concrete or the quad is a
      *             generalized quad
      */
@@ -587,7 +587,7 @@ public final class JenaRDF implements RDF {
      * @return Matched {@link Lang}, otherwise {@link Optional#empty()}
      */
     public Optional<Lang> asJenaLang(final RDFSyntax rdfSyntax) {
-        return Optional.ofNullable(RDFLanguages.contentTypeToLang(rdfSyntax.mediaType()));
+        return Optional.ofNullable(RDFLanguages.contentTypeToLang(rdfSyntax.getmediaType()));
     }
 
     /**
