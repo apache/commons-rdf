@@ -28,39 +28,36 @@ package org.apache.commons.rdf.api;
 @Deprecated
 public interface RDFTermFactory {
 
-    default BlankNode createBlankNode() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("createBlankNode() not supported");
-    }
+	default BlankNode createBlankNode() {
+		throw new UnsupportedOperationException("createBlankNode() not supported");
+	}
 
-    default BlankNode createBlankNode(final String name) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("createBlankNode(String) not supported");
-    }
+	default BlankNode createBlankNode(final String name) {
+		throw new UnsupportedOperationException("createBlankNode(String) not supported");
+	}
 
-    default Graph createGraph() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("createGraph() not supported");
-    }
+	default Graph createGraph() {
+		throw new UnsupportedOperationException("createGraph() not supported");
+	}
 
-    default IRI createIRI(final String iri) throws IllegalArgumentException, UnsupportedOperationException {
-        throw new UnsupportedOperationException("createIRI(String) not supported");
-    }
+	default IRI createIRI(final String iri) {
+		throw new UnsupportedOperationException("createIRI(String) not supported");
+	}
 
-    default Literal createLiteral(final String lexicalForm) throws IllegalArgumentException, UnsupportedOperationException {
-        throw new UnsupportedOperationException("createLiteral(String) not supported");
-    }
+	default Literal createLiteral(final String lexicalForm) {
+		throw new UnsupportedOperationException("createLiteral(String) not supported");
+	}
 
-    default Literal createLiteral(final String lexicalForm, final IRI dataType)
-            throws IllegalArgumentException, UnsupportedOperationException {
-        throw new UnsupportedOperationException("createLiteral(String) not supported");
-    }
+	default Literal createLiteral(final String lexicalForm, final IRI dataType) {
+		throw new UnsupportedOperationException("createLiteral(String) not supported");
+	}
 
-    default Literal createLiteral(final String lexicalForm, final String languageTag)
-            throws IllegalArgumentException, UnsupportedOperationException {
-        throw new UnsupportedOperationException("createLiteral(String,String) not supported");
-    }
+	default Literal createLiteral(final String lexicalForm, final String languageTag) {
+		throw new UnsupportedOperationException("createLiteral(String,String) not supported");
+	}
 
-    default Triple createTriple(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object)
-            throws IllegalArgumentException, UnsupportedOperationException {
-        throw new UnsupportedOperationException("createTriple(BlankNodeOrIRI,IRI,RDFTerm) not supported");
-    }
+	default Triple createTriple(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
+		throw new UnsupportedOperationException("createTriple(BlankNodeOrIRI,IRI,RDFTerm) not supported");
+	}
 
 }

@@ -34,7 +34,7 @@ class JenaTripleImpl extends AbstractQuadLike<BlankNodeOrIRI, IRI, RDFTerm, RDFT
         super(subject, predicate, object);
     }
 
-    JenaTripleImpl(final org.apache.jena.graph.Triple triple, final UUID salt) throws ConversionException {
+    JenaTripleImpl(final org.apache.jena.graph.Triple triple, final UUID salt)  {
         super(triple, salt);
         // Check the conversion
         if (!(subject instanceof BlankNodeOrIRI) || !(predicate instanceof IRI) || !(object instanceof RDFTerm)) {
