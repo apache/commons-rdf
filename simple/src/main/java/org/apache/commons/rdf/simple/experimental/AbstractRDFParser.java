@@ -64,6 +64,17 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     // Basically only used for creating IRIs
     private static RDF internalRdfTermFactory = new SimpleRDF();
 
+    private Optional<RDF> rdfTermFactory = Optional.empty();
+    private Optional<RDFSyntax> contentTypeSyntax = Optional.empty();
+    private Optional<String> contentType = Optional.empty();
+    private Optional<IRI> base = Optional.empty();
+    private Optional<InputStream> sourceInputStream = Optional.empty();
+    private Optional<Path> sourceFile = Optional.empty();
+    private Optional<IRI> sourceIri = Optional.empty();
+    private Consumer<Quad> target;
+    private Optional<Dataset> targetDataset;
+    private Optional<Graph> targetGraph;
+
     /**
      * Get the set {@link RDF}, if any.
      * 
@@ -203,17 +214,6 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
         return sourceIri;
     }
 
-    private Optional<RDF> rdfTermFactory = Optional.empty();
-    private Optional<RDFSyntax> contentTypeSyntax = Optional.empty();
-    private Optional<String> contentType = Optional.empty();
-    private Optional<IRI> base = Optional.empty();
-    private Optional<InputStream> sourceInputStream = Optional.empty();
-    private Optional<Path> sourceFile = Optional.empty();
-    private Optional<IRI> sourceIri = Optional.empty();
-    private Consumer<Quad> target;
-    private Optional<Dataset> targetDataset;
-    private Optional<Graph> targetGraph;
-
     @SuppressWarnings("unchecked")
     @Override
     public T clone() {
@@ -237,15 +237,15 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     }
 
     @Override
-    public T contentType(final RDFSyntax rdfSyntax) throws IllegalArgumentException {
+    public T contentType(final RDFSyntax rdfSyntax) {
         final AbstractRDFParser<T> c = clone();
         c.contentTypeSyntax = Optional.ofNullable(rdfSyntax);
-        c.contentType = c.contentTypeSyntax.map(syntax -> syntax.mediaType());
+        c.contentType = c.contentTypeSyntax.map(RDFSyntax::mediaType);
         return c.asT();
     }
 
     @Override
-    public T contentType(final String contentType) throws IllegalArgumentException {
+    public T contentType(final String contentType) {
         final AbstractRDFParser<T> c = clone();
         c.contentType = Optional.ofNullable(contentType);
         c.contentTypeSyntax = c.contentType.flatMap(RDFSyntax::byMediaType);
@@ -256,12 +256,12 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     public T base(final IRI base) {
         final AbstractRDFParser<T> c = clone();
         c.base = Optional.ofNullable(base);
-        c.base.ifPresent(i -> checkIsAbsolute(i));
+        c.base.ifPresent(this::checkIsAbsolute);
         return c.asT();
     }
 
     @Override
-    public T base(final String base) throws IllegalArgumentException {
+    public T base(final String base) {
         return base(internalRdfTermFactory.createIRI(base));
     }
 
@@ -286,16 +286,16 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
         final AbstractRDFParser<T> c = clone();
         c.resetSource();
         c.sourceIri = Optional.ofNullable(iri);
-        c.sourceIri.ifPresent(i -> checkIsAbsolute(i));
+        c.sourceIri.ifPresent(this::checkIsAbsolute);
         return c.asT();
     }
 
     @Override
-    public T source(final String iri) throws IllegalArgumentException {
+    public T source(final String iri) {
         final AbstractRDFParser<T> c = clone();
         c.resetSource();
         c.sourceIri = Optional.ofNullable(iri).map(internalRdfTermFactory::createIRI);
-        c.sourceIri.ifPresent(i -> checkIsAbsolute(i));
+        c.sourceIri.ifPresent(this::checkIsAbsolute);
         return source(internalRdfTermFactory.createIRI(iri));
     }
 
@@ -309,7 +309,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      * @throws IllegalArgumentException
      *             If the IRI is not absolute
      */
-    protected void checkIsAbsolute(final IRI iri) throws IllegalArgumentException {
+    protected void checkIsAbsolute(final IRI iri) {
         if (!URI.create(iri.getIRIString()).isAbsolute()) {
             throw new IllegalArgumentException("IRI is not absolute: " + iri);
         }
@@ -350,7 +350,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      * @throws IllegalStateException
      *             if base is required, but not set.
      */
-    protected void checkBaseRequired() throws IllegalStateException {
+    protected void checkBaseRequired() {
         if (!base.isPresent() && sourceInputStream.isPresent()
                 && !contentTypeSyntax.filter(t -> t == RDFSyntax.NQUADS || t == RDFSyntax.NTRIPLES).isPresent()) {
             throw new IllegalStateException("base iri required for inputstream source");
@@ -507,7 +507,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
             return Optional.empty();
         }
         final String filenameStr = fileName.toString();
-        final int last = filenameStr.lastIndexOf(".");
+        final int last = filenameStr.lastIndexOf('.');
         if (last > -1) {
             return Optional.of(filenameStr.substring(last));
         }

@@ -29,7 +29,7 @@ import org.apache.commons.rdf.api.Triple;
 /**
  * A Simple implementation of {@link RDFTermFactory}
  * <p>
- * This class is <strong>deprecated</strong>, use instead {@link SimpleRDF}.
+ * @deprecated use {@link SimpleRDF} instead.
  */
 @Deprecated
 public class SimpleRDFTermFactory implements RDFTermFactory {

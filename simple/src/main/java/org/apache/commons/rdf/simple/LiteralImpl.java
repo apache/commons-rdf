@@ -54,8 +54,6 @@ final class LiteralImpl implements Literal, SimpleRDF.SimpleRDFTerm {
         this.lexicalForm = Objects.requireNonNull(literal);
         this.languageTag = Objects.requireNonNull(lowerCase(languageTag));
         if (languageTag.isEmpty()) {
-            // TODO: Check against
-            // http://www.w3.org/TR/n-triples/#n-triples-grammar
             throw new IllegalArgumentException("Language tag can't be null");
         }
         try {
@@ -64,7 +62,6 @@ final class LiteralImpl implements Literal, SimpleRDF.SimpleRDFTerm {
             throw new IllegalArgumentException("Invalid languageTag: " + languageTag, ex);
         }
 
-        // System.out.println(aLocale);
         this.dataType = Types.RDF_LANGSTRING;
     }
 
@@ -94,7 +91,6 @@ final class LiteralImpl implements Literal, SimpleRDF.SimpleRDFTerm {
                 replace("\n", "\\n")); // escaped to \n
         sb.append(QUOTE);
 
-        // getLanguageTag().ifPresent(s -> sb.append("@" + s));
         if (getLanguageTag().isPresent()) {
             sb.append("@");
             sb.append(getLanguageTag().get());
