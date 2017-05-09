@@ -22,7 +22,7 @@ import java.util.Objects;
 /**
  * An <a href= "http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-triple" >RDF-1.1
  * Triple</a>, as defined by
- * <a href= "http://www.w3.org/TR/rdf11-concepts/" >RDF-1.1 Concepts and
+ * <a href= "http://www.w3.org/TR/rdf11-concepts/#section-triples" >RDF-1.1 Concepts and
  * Abstract Syntax</a>, a W3C Recommendation published on 25 February 2014.
  * <p>
  * A <code>Triple</code> object in Commons RDF is considered
