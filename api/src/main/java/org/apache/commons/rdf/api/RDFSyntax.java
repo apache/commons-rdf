@@ -125,11 +125,13 @@ public interface RDFSyntax {
      * <code>Accept</code> for <em>content negotiation</em> in the
      * <a href="https://tools.ietf.org/html/rfc7231#section-3.1.1.1">HTTP
      * protocol</a>.
+     *
+     * @return The registered media type of the RDF Syntax
      */
     public String mediaType();
 
     /**
-     * Set of <a href="https://tools.ietf.org/html/rfc2046">IANA media types/a> that
+     * Set of <a href="https://tools.ietf.org/html/rfc2046">IANA media types</a> that
      * covers this RDF syntax, including any non-official media types. 
      * <p>
      * The media type can be used as part of <code>Content-Type</code> and
@@ -139,6 +141,8 @@ public interface RDFSyntax {
      * <p>
      * The returned Set MUST include the value {@link #mediaType()}; this is the
      * behaviour of the default implementation.
+     *
+     * @return The media types corresponding to the RDF Syntax
      */
     default public Set<String> mediaTypes() {
         return Collections.singleton(mediaType());
@@ -149,6 +153,8 @@ public interface RDFSyntax {
      * file extension.
      * <p>
      * The file extension includes the leading period, e.g. <code>.jsonld</code>
+     *
+     * @return The registered file extension of the RDF Syntax
      */
     public String fileExtension();
 
@@ -159,6 +165,8 @@ public interface RDFSyntax {
      * <p>
      * The returned Set MUST include the value from {@link #fileExtension()}; this is
      * the behaviour of the default implementation.
+     *
+     * @return The file extensions corresponding to the RDF Syntax
      */
     default public Set<String> fileExtensions() {
         return Collections.singleton(fileExtension());
@@ -168,6 +176,8 @@ public interface RDFSyntax {
      * Indicate if this RDF syntax supports
      * <a href="https://www.w3.org/TR/rdf11-concepts/#section-dataset">RDF
      * Datasets</a>.
+     *
+     * @return true if this RDF Syntax supports datasets; false otherwise
      */
     public boolean supportsDataset();
 
@@ -190,8 +200,8 @@ public interface RDFSyntax {
      * according to {@link String#toLowerCase(Locale)} with the locale
      * {@link Locale#ROOT}.
      * 
-     * @param obj
-     * @return
+     * @param obj the object with which to compare
+     * @return true if this object is the same as the obj argument; false otherwise
      */
     @Override
     boolean equals(Object obj);
