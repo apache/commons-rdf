@@ -23,10 +23,11 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * A RDF-1.1 Literal, as defined by
+ * An <a href= "https://www.w3.org/TR/rdf11-concepts/#dfn-literal"
+ * >RDF-1.1 Literal</a>, as defined by
  * <a href= "http://www.w3.org/TR/rdf11-concepts/#section-Graph-Literal"
  * >RDF-1.1 Concepts and Abstract Syntax</a>, a W3C Recommendation published on
- * 25 February 2014
+ * 25 February 2014.
  * 
  * @see RDF#createLiteral(String)
  * @see RDF#createLiteral(String, IRI)
