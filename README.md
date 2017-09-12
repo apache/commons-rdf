@@ -102,6 +102,9 @@ Building has been tested with [Apache Maven 3.2](http://maven.apache.org/downloa
     [INFO] Final Memory: 22M/309M
     [INFO] ------------------------------------------------------------------------
 
+If you experience issues building on Mac OSX, please use the following command
+
+    mvn clean install -Dcommons.japicmp.breakBuildOnBinaryIncompatibleModifications=false -Djava.io.tmpdir=/path/to/some/directory
 
 To then use this build from your project, add to Maven (update `<version>` to match the Maven output):
 
