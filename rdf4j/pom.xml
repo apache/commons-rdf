@@ -47,6 +47,7 @@
 						<Export-Package>org.apache.commons.rdf.rdf4j</Export-Package>
 						<Private-Package>org.apache.commons.rdf.rdf4j.impl</Private-Package>
 						<Bundle-SymbolicName>org.apache.commons.rdf.rdf4j</Bundle-SymbolicName>
+						<Automatic-Module-Name>org.apache.commons.rdf.rdf4j</Automatic-Module-Name>
 						<Require-Capability>osgi.extender; filter:="(osgi.extender=osgi.serviceloader.registrar)";resolution:=optional</Require-Capability>
 						<Provide-Capability>osgi.serviceloader; osgi.serviceloader=org.apache.commons.rdf.api.RDF</Provide-Capability>
 					</instructions>
