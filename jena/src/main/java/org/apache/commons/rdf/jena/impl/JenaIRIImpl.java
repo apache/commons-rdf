@@ -28,7 +28,7 @@ class JenaIRIImpl extends AbstractJenaRDFTerm implements JenaIRI {
     JenaIRIImpl(final Node node) {
         super(node);
         if (!node.isURI()) {
-            throw new IllegalArgumentException("Node is not a blank node: " + node);
+            throw new IllegalArgumentException("Node is not an IRI node: " + node);
         }
 
     }
