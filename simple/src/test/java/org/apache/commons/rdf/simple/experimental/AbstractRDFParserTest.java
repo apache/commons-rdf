@@ -21,6 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeNotNull;
 import static org.apache.commons.rdf.api.RDFSyntax.*;
 
 import java.io.ByteArrayInputStream;
@@ -56,14 +57,24 @@ public class AbstractRDFParserTest {
     private Path testTtl;
     private Path testXml;
 
+	private Path symlink;
+    
     @Before
     public void createTempFile() throws IOException {
         testNt = Files.createTempFile("test", ".nt");
         testTtl = Files.createTempFile("test", ".ttl");
         testXml = Files.createTempFile("test", ".xml");
-
         // No need to populate the files as the dummy parser
         // doesn't actually read anything
+        
+        // If supported, we'll make a symbolic link
+        Path symlinks = Files.createTempDirectory("symlinked");
+        try { 
+        	symlink = Files.createSymbolicLink(
+        				symlinks.resolve("linked.ttl"), testNt);
+        } catch (IOException|UnsupportedOperationException ex) {
+        	symlink = null;
+        }
     }
 
     @After
@@ -117,13 +128,26 @@ public class AbstractRDFParserTest {
         // includes
         // international characters
         assertEquals("<" + testNt.toUri().toString() + ">", firstPredicate(g, "source"));
-        // Should be set to the file path
-        assertEquals("<" + testNt.toUri().toString() + ">", firstPredicate(g, "base"));
+        // Should be set to the file path - after following symlinks
+        assertEquals("<" + testNt.toRealPath().toUri().toString() + ">", firstPredicate(g, "base"));
 
         // Should NOT have guessed the content type
         assertNull(firstPredicate(g, "contentType"));
         assertNull(firstPredicate(g, "contentTypeSyntax"));
     }
+
+    @Test
+    public void parseFileSymlink() throws Exception {
+    	// This test will typically not work in Windows
+    	// which requires system privileges to create symlinks 
+    	assumeNotNull(symlink);
+        final Graph g = factory.createGraph();
+        final RDFParser parser = dummyParser.source(symlink).target(g);
+        parser.parse().get(5, TimeUnit.SECONDS);
+        checkGraph(g);
+        assertEquals("<" + symlink.toUri().toString() + ">", firstPredicate(g, "source"));
+        assertEquals("<" + testNt.toRealPath().toUri().toString() + ">", firstPredicate(g, "base"));
+    }    
 
     @Test
     public void parseNoSource() throws Exception {
@@ -162,7 +186,8 @@ public class AbstractRDFParserTest {
         // includes
         // international characters
         assertEquals("<" + testNt.toUri().toString() + ">", firstPredicate(g, "source"));
-        assertEquals("<" + testNt.toUri().toString() + ">", firstPredicate(g, "base"));
+        // Should be set to the file path - after following symlinks
+        assertEquals("<" + testNt.toRealPath().toUri().toString() + ">", firstPredicate(g, "base"));
         assertEquals("\"" + RDFSyntax.NTRIPLES.name() + "\"", 
                 firstPredicate(g, "contentTypeSyntax"));
         assertEquals("\"application/n-triples\"", firstPredicate(g, "contentType"));
