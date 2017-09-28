@@ -52,6 +52,17 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+              <groupId>org.apache.felix</groupId>
+              <artifactId>maven-bundle-plugin</artifactId>
+              <configuration>
+                <instructions>
+                  <Bundle-SymbolicName>org.apache.commons.rdf.api</Bundle-SymbolicName>
+                  <Automatic-Module-Name>org.apache.commons.rdf.api</Automatic-Module-Name>
+                </instructions>
+              </configuration>
+            </plugin>
         </plugins>
     </build>
 

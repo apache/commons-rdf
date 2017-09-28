@@ -101,6 +101,7 @@
         <configuration>
           <instructions>
             <Bundle-SymbolicName>org.apache.commons.rdf.jena</Bundle-SymbolicName>
+            <Automatic-Module-Name>org.apache.commons.rdf.jena</Automatic-Module-Name>
             <Require-Capability>osgi.extender; filter:="(osgi.extender=osgi.serviceloader.registrar)";resolution:=optional</Require-Capability>
             <Provide-Capability>osgi.serviceloader; osgi.serviceloader=org.apache.commons.rdf.api.RDF</Provide-Capability>
           </instructions>
