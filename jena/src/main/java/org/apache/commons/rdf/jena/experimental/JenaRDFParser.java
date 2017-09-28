@@ -33,7 +33,7 @@ import org.apache.commons.rdf.jena.JenaRDF;
 import org.apache.commons.rdf.simple.experimental.AbstractRDFParser;
 import org.apache.jena.graph.Graph;
 import org.apache.jena.riot.Lang;
-import org.apache.jena.riot.RDFDataMgr;
+import org.apache.jena.riot.RDFParser;
 import org.apache.jena.riot.system.StreamRDF;
 import org.apache.jena.riot.system.StreamRDFLib;
 
@@ -89,13 +89,13 @@ public class JenaRDFParser extends AbstractRDFParser<JenaRDFParser> {
         final String baseStr = getBase().map(IRI::getIRIString).orElse(null);
 
         if (getSourceIri().isPresent()) {
-            RDFDataMgr.parse(dest, getSourceIri().get().toString(), baseStr, lang, null);
+        	    RDFParser.source(getSourceIri().get().toString()).base(baseStr).lang(lang).parse(dest);
         } else if (getSourceFile().isPresent()) {
             try (InputStream s = Files.newInputStream(getSourceFile().get())) {
-                RDFDataMgr.parse(dest, s, baseStr, lang, null);
+            	    RDFParser.source(s).base(baseStr).lang(lang).parse(dest);
             }
         } else {
-            RDFDataMgr.parse(dest, getSourceInputStream().get(), baseStr, lang, null);
+            RDFParser.source(getSourceInputStream().get()).base(baseStr).lang(lang).parse(dest);
         }
     }
 
