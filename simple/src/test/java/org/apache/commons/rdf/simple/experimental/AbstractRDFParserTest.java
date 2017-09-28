@@ -24,10 +24,13 @@ import static org.junit.Assert.assertTrue;
 import static org.apache.commons.rdf.api.RDFSyntax.*;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.rdf.api.Graph;
@@ -114,16 +117,30 @@ public class AbstractRDFParserTest {
         parser.parse().get(5, TimeUnit.SECONDS);
         checkGraph(g);
         // FIXME: this could potentially break if the equivalent of /tmp
-        // includes
-        // international characters
-        assertEquals("<" + testNt.toUri().toString() + ">", firstPredicate(g, "source"));
-        // Should be set to the file path
-        assertEquals("<" + testNt.toUri().toString() + ">", firstPredicate(g, "base"));
-
+        // includes international characters
+        assertEquals("<" + testNt.toUri() + ">", firstPredicate(g, "source"));
+        compareBases(g);
         // Should NOT have guessed the content type
         assertNull(firstPredicate(g, "contentType"));
         assertNull(firstPredicate(g, "contentTypeSyntax"));
     }
+    
+	/**
+	 * The base of a parsed file should be semantically equal to the file path. We
+	 * must insert Path::toRealPath because some systems (Mac OS X) get to tmp dirs
+	 * via symlinks, and we compare via URI::getPath because a filesystem may also
+	 * insert leading slashes.
+	 * 
+	 * @param g The parsed graph being tested
+	 * @throws IOException
+	 */
+	private void compareBases(Graph g) throws IOException {
+		String baseUri = firstPredicate(g, "base");
+		Path basePath = Paths.get(baseUri.substring(1, baseUri.length() - 1));
+		URI expectedBasePath = testNt.toRealPath().toUri();
+		URI realBasePath = URI.create(basePath.toString());
+		assertEquals(expectedBasePath.getPath(), realBasePath.getPath());
+	}
 
     @Test
     public void parseNoSource() throws Exception {
@@ -159,10 +176,9 @@ public class AbstractRDFParserTest {
         parser.parse().get(5, TimeUnit.SECONDS);
         checkGraph(g);
         // FIXME: this could potentially break if the equivalent of /tmp
-        // includes
-        // international characters
+        // includes international characters
         assertEquals("<" + testNt.toUri().toString() + ">", firstPredicate(g, "source"));
-        assertEquals("<" + testNt.toUri().toString() + ">", firstPredicate(g, "base"));
+        compareBases(g);
         assertEquals("\"" + RDFSyntax.NTRIPLES.name() + "\"", 
                 firstPredicate(g, "contentTypeSyntax"));
         assertEquals("\"application/n-triples\"", firstPredicate(g, "contentType"));

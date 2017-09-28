@@ -74,7 +74,6 @@
         <!-- Test dependencies -->
         <slf4j.version>1.7.20</slf4j.version>
         <junit.version>4.12</junit.version>
-        <skipAPICompatCheck>false</skipAPICompatCheck>
     </properties>
 
     <scm>
@@ -462,7 +461,6 @@
              site" still works (but without japicmp report) -->
             <ignoreMissingNewVersion>true</ignoreMissingNewVersion>
           </parameter>
-          <skip>${skipAPICompatCheck}</skip>
         </configuration>
           </plugin>
 
@@ -581,6 +579,16 @@
     </reporting>
 
     <profiles>
+        <profile>
+            <id>ignore-japicmp</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <!-- COMMONSRDF-62 : JAPICMP does not handle 0.x release boundaries as defined in Semantic Versioning -->
+                <commons.japicmp.breakBuildOnBinaryIncompatibleModifications>false</commons.japicmp.breakBuildOnBinaryIncompatibleModifications>
+            </properties>
+        </profile>
         <profile>
             <id>release</id>
         <!-- extends the release profile from commons -->
