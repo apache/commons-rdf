@@ -49,7 +49,7 @@
         <commons.jira.id>COMMONSRDF</commons.jira.id>
         <commons.jira.pid>12316620</commons.jira.pid>
         <commons.site.path>rdf</commons.site.path>
-	<commons.scmPubUrl>https://svn.apache.org/repos/infra/websites/production/commons/content/proper/commons-rdf/</commons.scmPubUrl>
+	    <commons.scmPubUrl>https://svn.apache.org/repos/infra/websites/production/commons/content/proper/commons-rdf/</commons.scmPubUrl>
     <!--
         <commons.scmPubCheckoutDirectory>${project.build.directory}/site-content</commons.scmPubCheckoutDirectory>
         -->
