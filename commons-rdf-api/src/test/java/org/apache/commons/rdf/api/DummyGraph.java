@@ -78,8 +78,7 @@ class DummyGraph implements Graph {
         filteredStreamCalled = true;
         if (contains(subject, predicate, object)) {
             return Stream.of(new DummyTriple());
-        } else {
-            return Stream.empty();
         }
+        return Stream.empty();
     }
 }

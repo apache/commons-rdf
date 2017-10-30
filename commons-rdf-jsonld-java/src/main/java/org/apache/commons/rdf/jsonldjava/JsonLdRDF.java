@@ -280,12 +280,11 @@ public final class JsonLdRDF implements RDF {
                 // One of ours (but possibly not a JsonLdBlankNode) -
                 // we can use the suffix directly
                 return ref.replace(bnodePrefix, "");
-            } else {
-                // Map to unique bnode identifier, e.g.
-                // _:0dbd92ee-ab1a-45e7-bba2-7ade54f87ec5
-                final UUID uuid = UUID.nameUUIDFromBytes(ref.getBytes(StandardCharsets.UTF_8));
-                return "_:" + uuid;
             }
+            // Map to unique bnode identifier, e.g.
+            // _:0dbd92ee-ab1a-45e7-bba2-7ade54f87ec5
+            final UUID uuid = UUID.nameUUIDFromBytes(ref.getBytes(StandardCharsets.UTF_8));
+            return "_:" + uuid;
         } else {
             throw new IllegalArgumentException("Expected a BlankNode or IRI, not: " + blankNodeOrIRI);
         }
@@ -303,9 +302,8 @@ public final class JsonLdRDF implements RDF {
             // TODO: Our own JsonLdLiteral
             if (node.getLanguage() != null) {
                 return createLiteral(node.getValue(), node.getLanguage());
-            } else {
-                return createLiteral(node.getValue(), createIRI(node.getDatatype()));
             }
+            return createLiteral(node.getValue(), createIRI(node.getDatatype()));
         } else {
             throw new IllegalArgumentException("Node is neither IRI, BlankNode nor Literal: " + node);
         }

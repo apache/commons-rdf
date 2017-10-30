@@ -100,11 +100,10 @@ final class ModelGraphImpl implements RDF4JGraph {
         final int size = model.size();
         if (size < Integer.MAX_VALUE) {
             return size;
-        } else {
-            // TODO: Check if this can really happen with RDF4J models
-            // Collection.size() can't help us, we'll have to count
-            return model.parallelStream().count();
         }
+        // TODO: Check if this can really happen with RDF4J models
+        // Collection.size() can't help us, we'll have to count
+        return model.parallelStream().count();
     }
 
     @Override

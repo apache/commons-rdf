@@ -98,9 +98,8 @@ final class DatasetImpl implements Dataset {
             final Literal literal = (Literal) object;
             if (literal.getLanguageTag().isPresent()) {
                 return factory.createLiteral(literal.getLexicalForm(), literal.getLanguageTag().get());
-            } else {
-                return factory.createLiteral(literal.getLexicalForm(), (IRI) internallyMap(literal.getDatatype()));
             }
+            return factory.createLiteral(literal.getLexicalForm(), (IRI) internallyMap(literal.getDatatype()));
         } else {
             throw new IllegalArgumentException("Not a BlankNode, IRI or Literal: " + object);
         }
@@ -186,9 +185,8 @@ final class DatasetImpl implements Dataset {
         final String s = stream().limit(TO_STRING_MAX).map(Object::toString).collect(Collectors.joining("\n"));
         if (size() > TO_STRING_MAX) {
             return s + "\n# ... +" + (size() - TO_STRING_MAX) + " more";
-        } else {
-            return s;
         }
+        return s;
     }
 
     @Override

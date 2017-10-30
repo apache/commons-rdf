@@ -84,9 +84,8 @@ class DummyDataset implements Dataset {
         filteredStreamCalled = true;
         if (contains(graphName, subject, predicate, object)) {
             return Stream.of(new DummyQuad());
-        } else {
-            return Stream.empty();
         }
+        return Stream.empty();
     }
 
     @Override
@@ -98,9 +97,8 @@ class DummyDataset implements Dataset {
     public Optional<Graph> getGraph(final BlankNodeOrIRI graphName) {
         if (graphName == null) {
             return Optional.of(getGraph());
-        } else {
-            return Optional.empty();
         }
+        return Optional.empty();
     }
 
     @Override

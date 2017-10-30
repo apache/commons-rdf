@@ -80,9 +80,8 @@ final class BlankNodeImpl extends AbstractRDFTerm<BNode> implements RDF4JBlankNo
     public String ntriplesString() {
         if (isValidBlankNodeLabel(value.getID())) {
             return "_:" + value.getID();
-        } else {
-            return "_:" + UUID.nameUUIDFromBytes(value.getID().getBytes(StandardCharsets.UTF_8));
         }
+        return "_:" + UUID.nameUUIDFromBytes(value.getID().getBytes(StandardCharsets.UTF_8));
     }
 
     @Override

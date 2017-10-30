@@ -79,9 +79,8 @@ final class GraphImpl implements Graph {
             final Literal literal = (Literal) object;
             if (literal.getLanguageTag().isPresent()) {
                 return factory.createLiteral(literal.getLexicalForm(), literal.getLanguageTag().get());
-            } else {
-                return factory.createLiteral(literal.getLexicalForm(), (IRI) internallyMap(literal.getDatatype()));
             }
+            return factory.createLiteral(literal.getLexicalForm(), (IRI) internallyMap(literal.getDatatype()));
         } else {
             throw new IllegalArgumentException("RDFTerm was neither a BlankNode, IRI nor Literal: " + object);
         }
@@ -96,9 +95,8 @@ final class GraphImpl implements Graph {
         if (newSubject == triple.getSubject() && newPredicate == triple.getPredicate()
                 && newObject == triple.getObject()) {
             return triple;
-        } else {
-            return factory.createTriple(newSubject, newPredicate, newObject);
         }
+        return factory.createTriple(newSubject, newPredicate, newObject);
     }
 
     @Override
@@ -171,9 +169,8 @@ final class GraphImpl implements Graph {
         final String s = stream().limit(TO_STRING_MAX).map(Object::toString).collect(Collectors.joining("\n"));
         if (size() > TO_STRING_MAX) {
             return s + "\n# ... +" + (size() - TO_STRING_MAX) + " more";
-        } else {
-            return s;
         }
+        return s;
     }
 
 }

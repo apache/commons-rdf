@@ -91,10 +91,9 @@ class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> implements
             try (RepositoryConnection conn = getRepositoryConnection()) {
                 return conn.size();
             }
-        } else {
-            try (Stream<RDF4JTriple> stream = stream()) {
-                return stream.count();
-            }
+        }
+        try (Stream<RDF4JTriple> stream = stream()) {
+            return stream.count();
         }
     }
 
