@@ -15,11 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.apache.commons.rdf.jena;
 
+import static org.junit.Assert.assertEquals;
+
 import org.apache.commons.rdf.api.AbstractDatasetTest;
+import org.apache.commons.rdf.api.IRI;
+import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.api.RDF;
+import org.apache.commons.rdf.simple.Types;
+import org.junit.Test;
 
 public class DatasetJenaTest extends AbstractDatasetTest {
 
@@ -28,4 +33,18 @@ public class DatasetJenaTest extends AbstractDatasetTest {
         return new JenaRDF();
     }
 
+    @Test
+    public void datasetImplToStringTest() {
+        RDF rdf = createFactory();
+        JenaDataset jena = (JenaDataset) rdf.createDataset();
+        final IRI graph = rdf.createIRI("http://example.com/");
+        final IRI s = rdf.createIRI("http://example.com/s");
+        final IRI p = rdf.createIRI("http://example.com/p");
+        final Literal literal123 = rdf.createLiteral("123", Types.XSD_INTEGER);
+        jena.add(graph, s, p, literal123);
+        String out = jena.toString();
+        assertEquals("<http://example.com/s> <http://example.com/p> \"123\"^^<http://www"
+                + ".w3.org/2001/XMLSchema#integer> <http://example.com/> .\n", out);
+        assertEquals(10L, dataset.size());
+    }
 }
