@@ -55,8 +55,7 @@
         -->
         <commons.javadoc.java.link>https://docs.oracle.com/javase/8/docs/api/</commons.javadoc.java.link>
         
-        <!-- upgrade from 0.8.0 for Java 8 support -->
-        <commons.japicmp.version>0.9.1</commons.japicmp.version>
+        <commons.japicmp.version>0.11.0</commons.japicmp.version>
         
         
 	<!--  NOTE: jsonldjava is also used by rdf4j and jena, check the version 
