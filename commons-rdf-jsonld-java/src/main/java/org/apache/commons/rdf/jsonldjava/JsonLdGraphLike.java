@@ -209,7 +209,7 @@ abstract class AbstractJsonLdGraphLike<T extends TripleLike> implements JsonLdGr
                     // Special handling for COMMONSRDF-56, COMMONSRDF-51:
                     // Less efficient wrapper to a Commons RDF Literal so
                     // we can use our RDF 1.1-compliant .equals()
-                    RDFTerm otherObj = factory.asRDFTerm(q.getObject());
+                    final RDFTerm otherObj = factory.asRDFTerm(q.getObject());
                     if (! (object.equals(otherObj))) {
                         return false;
                     }

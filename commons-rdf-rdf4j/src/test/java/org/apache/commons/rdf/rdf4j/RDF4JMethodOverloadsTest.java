@@ -33,7 +33,7 @@ public class RDF4JMethodOverloadsTest {
 
     @Test
     public void testAsRDFTermOverloads() {
-        RDF4J rdf4J = new RDF4J();
+        final RDF4J rdf4J = new RDF4J();
 
         final ValueFactory valueFactory = SimpleValueFactory.getInstance();
 

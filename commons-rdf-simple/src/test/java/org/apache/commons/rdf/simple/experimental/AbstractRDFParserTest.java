@@ -66,7 +66,7 @@ public class AbstractRDFParserTest {
         // doesn't actually read anything
 
         // If supported, we'll make a symbolic link
-        Path symlinks = Files.createTempDirectory("symlinked");
+        final Path symlinks = Files.createTempDirectory("symlinked");
         try {
         	symlink = Files.createSymbolicLink(
         				symlinks.resolve("linked.ttl"), testNt);

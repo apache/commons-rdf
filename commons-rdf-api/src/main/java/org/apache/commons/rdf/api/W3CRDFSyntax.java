@@ -128,7 +128,7 @@ class W3CRDFSyntax implements RDFSyntax {
 
     private final IRI iri;
 
-    private W3CRDFSyntax(String name, String title, String mediaType, String fileExtension, boolean supportsDataset) {
+    private W3CRDFSyntax(final String name, final String title, final String mediaType, final String fileExtension, final boolean supportsDataset) {
         this.name = name;
         this.title = title;
         this.mediaType = mediaType.toLowerCase(Locale.ROOT);
@@ -182,14 +182,14 @@ class W3CRDFSyntax implements RDFSyntax {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (obj == this) {
             return true;
         }
         if (!(obj instanceof RDFSyntax)) {
             return false;
         }
-        RDFSyntax other = (RDFSyntax) obj;
+        final RDFSyntax other = (RDFSyntax) obj;
         return mediaType.equals(other.mediaType().toLowerCase(Locale.ROOT));
     }
 

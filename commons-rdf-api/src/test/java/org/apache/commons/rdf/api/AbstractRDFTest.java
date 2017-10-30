@@ -195,7 +195,7 @@ public abstract class AbstractRDFTest {
     }
 
 
-    private void assertEqualsBothWays(Object a, Object b) {
+    private void assertEqualsBothWays(final Object a, final Object b) {
         assertEquals(a, b);
         assertEquals(b, a);
         // hashCode must match as well
@@ -255,7 +255,7 @@ public abstract class AbstractRDFTest {
         final Literal lower = factory.createLiteral("Hello", "en-gb");
         final Literal mixed = factory.createLiteral("Hello", "en-GB");
 
-        Literal otherLiteral = new Literal() {
+        final Literal otherLiteral = new Literal() {
             @Override
             public String ntriplesString() {
                 return "Hello@eN-Gb";
@@ -273,7 +273,7 @@ public abstract class AbstractRDFTest {
                 return factory.createIRI("http://www.w3.org/1999/02/22-rdf-syntax-ns#langString");
             }
             @Override
-            public boolean equals(Object obj) {
+            public boolean equals(final Object obj) {
                 throw new RuntimeException("Wrong way comparison of literal");
             }
         };
@@ -291,14 +291,14 @@ public abstract class AbstractRDFTest {
         // "i".toLowerCase() != "i"
         // See also:
         // https://garygregory.wordpress.com/2015/11/03/java-lowercase-conversion-turkey/
-        Locale defaultLocale = Locale.getDefault();
+        final Locale defaultLocale = Locale.getDefault();
         try {
             Locale.setDefault(Locale.ROOT);
             final Literal mixedROOT = factory.createLiteral("moi", "fI");
             final Literal lowerROOT = factory.createLiteral("moi", "fi");
             final Literal upperROOT = factory.createLiteral("moi", "FI");
 
-            Locale turkish = Locale.forLanguageTag("TR");
+            final Locale turkish = Locale.forLanguageTag("TR");
             Locale.setDefault(turkish);
             // If the below assertion fails, then the Turkish
             // locale no longer have this peculiarity that

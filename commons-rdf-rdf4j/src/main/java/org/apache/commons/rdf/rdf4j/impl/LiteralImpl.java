@@ -33,7 +33,7 @@ final class LiteralImpl extends AbstractRDFTerm<org.eclipse.rdf4j.model.Literal>
         super(literal);
     }
 
-    private static String lowerCase(String langTag) {
+    private static String lowerCase(final String langTag) {
         return langTag.toLowerCase(Locale.ROOT);
     }
 

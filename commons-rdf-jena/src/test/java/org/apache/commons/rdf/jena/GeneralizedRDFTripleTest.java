@@ -32,11 +32,11 @@ public class GeneralizedRDFTripleTest {
 
     @Test
     public void bnodeProperty() throws Exception {
-        BlankNode b1 = jena.createBlankNode("b1");
-        JenaIRI ex1 = jena.createIRI("http://example.com/ex1");
-        JenaIRI ex2 = jena.createIRI("http://example.com/ex2");
+        final BlankNode b1 = jena.createBlankNode("b1");
+        final JenaIRI ex1 = jena.createIRI("http://example.com/ex1");
+        final JenaIRI ex2 = jena.createIRI("http://example.com/ex2");
 
-        JenaGeneralizedTripleLike t = jena.createGeneralizedTriple(ex1, b1, ex2);
+        final JenaGeneralizedTripleLike t = jena.createGeneralizedTriple(ex1, b1, ex2);
         assertEquals(ex1, t.getSubject());
         assertEquals(ex2, t.getObject());
         assertEquals(b1, t.getPredicate()); // it's a bnode!
@@ -45,11 +45,11 @@ public class GeneralizedRDFTripleTest {
 
     @Test
     public void literalPredicate() throws Exception {
-        JenaIRI ex1 = jena.createIRI("http://example.com/ex1");
-        JenaIRI ex2 = jena.createIRI("http://example.com/ex2");
-        JenaLiteral lit = jena.createLiteral("Hello");
+        final JenaIRI ex1 = jena.createIRI("http://example.com/ex1");
+        final JenaIRI ex2 = jena.createIRI("http://example.com/ex2");
+        final JenaLiteral lit = jena.createLiteral("Hello");
 
-        JenaGeneralizedTripleLike t = jena.createGeneralizedTriple(ex1, lit, ex2);
+        final JenaGeneralizedTripleLike t = jena.createGeneralizedTriple(ex1, lit, ex2);
         assertEquals(ex1, t.getSubject());
         assertEquals(ex2, t.getObject());
         assertEquals(lit, t.getPredicate()); // it's a literal!
@@ -59,11 +59,11 @@ public class GeneralizedRDFTripleTest {
 
     @Test
     public void literalSubject() throws Exception {
-        JenaIRI ex1 = jena.createIRI("http://example.com/ex1");
-        JenaIRI ex2 = jena.createIRI("http://example.com/ex2");
-        JenaLiteral lit = jena.createLiteral("Hello");
+        final JenaIRI ex1 = jena.createIRI("http://example.com/ex1");
+        final JenaIRI ex2 = jena.createIRI("http://example.com/ex2");
+        final JenaLiteral lit = jena.createLiteral("Hello");
 
-        JenaGeneralizedTripleLike t = jena.createGeneralizedTriple(lit, ex1, ex2);
+        final JenaGeneralizedTripleLike t = jena.createGeneralizedTriple(lit, ex1, ex2);
         assertEquals(lit, t.getSubject()); // it's a literal!
         assertEquals(ex1, t.getPredicate());
         assertEquals(ex2, t.getObject());
@@ -72,11 +72,11 @@ public class GeneralizedRDFTripleTest {
 
     @Test
     public void asGeneralizedTriple() throws Exception {
-        Node s = NodeFactory.createLiteral("Hello");
-        Node p = NodeFactory.createBlankNode();
-        Node o = NodeFactory.createURI("http://example.com/ex");
-        Triple jt = Triple.create(s, p, o);
-        JenaTripleLike t = jena.asGeneralizedTriple(jt);
+        final Node s = NodeFactory.createLiteral("Hello");
+        final Node p = NodeFactory.createBlankNode();
+        final Node o = NodeFactory.createURI("http://example.com/ex");
+        final Triple jt = Triple.create(s, p, o);
+        final JenaTripleLike t = jena.asGeneralizedTriple(jt);
         assertEquals(jena.createLiteral("Hello"), t.getSubject());
         assertEquals(jena.asRDFTerm(p), t.getPredicate());
         assertEquals(jena.createIRI("http://example.com/ex"), t.getObject());

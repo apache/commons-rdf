@@ -39,7 +39,7 @@ class JenaLiteralImpl extends AbstractJenaRDFTerm implements JenaLiteral {
         }
     }
 
-    private static String lowerCase(String langTag) {
+    private static String lowerCase(final String langTag) {
         return langTag.toLowerCase(Locale.ROOT);
     }
 

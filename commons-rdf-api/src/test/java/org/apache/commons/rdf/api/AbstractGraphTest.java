@@ -419,7 +419,7 @@ public abstract class AbstractGraphTest {
         // https://garygregory.wordpress.com/2015/11/03/java-lowercase-conversion-turkey/
 
         // This is similar to the test in AbstractRDFTest, but on a graph
-        Locale defaultLocale = Locale.getDefault();
+        final Locale defaultLocale = Locale.getDefault();
         try {
             Locale.setDefault(Locale.ROOT);
             final Literal lowerROOT = factory.createLiteral("moi", "fi");
@@ -430,7 +430,7 @@ public abstract class AbstractGraphTest {
             final IRI greeting = factory.createIRI("http://example.com/greeting");
             g.add(exampleROOT, greeting, mixedROOT);
 
-            Locale turkish = Locale.forLanguageTag("TR");
+            final Locale turkish = Locale.forLanguageTag("TR");
             Locale.setDefault(turkish);
             // If the below assertion fails, then the Turkish
             // locale no longer have this peculiarity that
@@ -498,7 +498,7 @@ public abstract class AbstractGraphTest {
         assertFalse(graph.contains(null, greeting, null));
     }
 
-    private static Optional<? extends Triple> closableFindAny(Stream<? extends Triple> stream) {
+    private static Optional<? extends Triple> closableFindAny(final Stream<? extends Triple> stream) {
         try (Stream<? extends Triple> s = stream) {
             return s.findAny();
         }
@@ -524,7 +524,7 @@ public abstract class AbstractGraphTest {
         assertTrue(closableFindAny(graph.stream(null, null, mixed)).isPresent());
 
         // Check the triples returned equal a new triple
-        Triple t = closableFindAny(graph.stream(null, null, lower)).get();
+        final Triple t = closableFindAny(graph.stream(null, null, lower)).get();
         assertEquals(t, factory.createTriple(example1, greeting, mixed));
     }
 

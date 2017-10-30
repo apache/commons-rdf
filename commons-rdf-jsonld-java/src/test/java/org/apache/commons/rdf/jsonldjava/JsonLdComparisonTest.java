@@ -33,47 +33,47 @@ public class JsonLdComparisonTest {
 
     @Test
     public void literalEqual() throws Exception {
-        JsonLdLiteral lit1 = rdf.createLiteral("Hello");
-        JsonLdLiteral lit2 = rdf.createLiteral("Hello");
-        JsonLdLiteral lit3 = rdf.createLiteral("Hello", Types.XSD_STRING);
+        final JsonLdLiteral lit1 = rdf.createLiteral("Hello");
+        final JsonLdLiteral lit2 = rdf.createLiteral("Hello");
+        final JsonLdLiteral lit3 = rdf.createLiteral("Hello", Types.XSD_STRING);
         assertEquals(lit1, lit2);
         assertEquals(lit1, lit3);
     }
 
     @Test
     public void literalNotEqual() throws Exception {
-        JsonLdLiteral lit1 = rdf.createLiteral("Hello");
-        JsonLdLiteral lit2 = rdf.createLiteral("Hello there");
+        final JsonLdLiteral lit1 = rdf.createLiteral("Hello");
+        final JsonLdLiteral lit2 = rdf.createLiteral("Hello there");
         assertNotEquals(lit1, lit2);
     }
 
     @Test
     public void literalEqualLang() throws Exception {
-        JsonLdLiteral lit1 = rdf.createLiteral("Allo Allo", "fr");
-        JsonLdLiteral lit2 = rdf.createLiteral("Allo Allo", "fr");
+        final JsonLdLiteral lit1 = rdf.createLiteral("Allo Allo", "fr");
+        final JsonLdLiteral lit2 = rdf.createLiteral("Allo Allo", "fr");
         assertEquals(lit1, lit2);
     }
 
     @Test
     public void literalNotEqualLang() throws Exception {
-        JsonLdLiteral lit1 = rdf.createLiteral("Hello", "en");
-        JsonLdLiteral lit2 = rdf.createLiteral("Hello", "en-us");
+        final JsonLdLiteral lit1 = rdf.createLiteral("Hello", "en");
+        final JsonLdLiteral lit2 = rdf.createLiteral("Hello", "en-us");
         assertNotEquals(lit1, lit2);
     }
 
     @Test
     public void literalEqualType() throws Exception {
-        JsonLdLiteral lit1 = rdf.createLiteral("1", Types.XSD_INTEGER);
-        JsonLdLiteral lit2 = rdf.createLiteral("1", Types.XSD_INTEGER);
+        final JsonLdLiteral lit1 = rdf.createLiteral("1", Types.XSD_INTEGER);
+        final JsonLdLiteral lit2 = rdf.createLiteral("1", Types.XSD_INTEGER);
         assertEquals(lit1, lit2);
     }
 
 
     @Test
     public void literalNotEqualType() throws Exception {
-        JsonLdLiteral lit1 = rdf.createLiteral("1", Types.XSD_INTEGER);
-        JsonLdLiteral lit2 = rdf.createLiteral("2", Types.XSD_INTEGER);
-        JsonLdLiteral lit3 = rdf.createLiteral("1", Types.XSD_STRING);
+        final JsonLdLiteral lit1 = rdf.createLiteral("1", Types.XSD_INTEGER);
+        final JsonLdLiteral lit2 = rdf.createLiteral("2", Types.XSD_INTEGER);
+        final JsonLdLiteral lit3 = rdf.createLiteral("1", Types.XSD_STRING);
 
         assertNotEquals(lit1, lit2);
         assertNotEquals(lit1, lit3);
@@ -82,10 +82,10 @@ public class JsonLdComparisonTest {
 
     @Test
     public void grahContains() throws Exception {
-        JsonLdGraph graph = rdf.createGraph();
-        JsonLdIRI s = rdf.createIRI("http://example.com/s");
-        JsonLdIRI p = rdf.createIRI("http://example.com/p");
-        JsonLdLiteral lit1 = rdf.createLiteral("Hello");
+        final JsonLdGraph graph = rdf.createGraph();
+        final JsonLdIRI s = rdf.createIRI("http://example.com/s");
+        final JsonLdIRI p = rdf.createIRI("http://example.com/p");
+        final JsonLdLiteral lit1 = rdf.createLiteral("Hello");
 
         graph.add(s, p, lit1);
         assertTrue(graph.contains(s, p, rdf.createLiteral("Hello")));
@@ -97,10 +97,10 @@ public class JsonLdComparisonTest {
 
     @Test
     public void datasetContains() throws Exception {
-        JsonLdDataset dataset = rdf.createDataset();
-        JsonLdIRI s = rdf.createIRI("http://example.com/s");
-        JsonLdIRI p = rdf.createIRI("http://example.com/p");
-        JsonLdLiteral lit1 = rdf.createLiteral("Hello");
+        final JsonLdDataset dataset = rdf.createDataset();
+        final JsonLdIRI s = rdf.createIRI("http://example.com/s");
+        final JsonLdIRI p = rdf.createIRI("http://example.com/p");
+        final JsonLdLiteral lit1 = rdf.createLiteral("Hello");
 
         dataset.add(null, s, p, lit1);
         assertTrue(dataset.contains(Optional.empty(), s, p, rdf.createLiteral("Hello")));
@@ -112,10 +112,10 @@ public class JsonLdComparisonTest {
 
     @Test
     public void datasetRemove() throws Exception {
-        JsonLdDataset dataset = rdf.createDataset();
-        JsonLdIRI s = rdf.createIRI("http://example.com/s");
-        JsonLdIRI p = rdf.createIRI("http://example.com/p");
-        JsonLdLiteral lit1 = rdf.createLiteral("Hello");
+        final JsonLdDataset dataset = rdf.createDataset();
+        final JsonLdIRI s = rdf.createIRI("http://example.com/s");
+        final JsonLdIRI p = rdf.createIRI("http://example.com/p");
+        final JsonLdLiteral lit1 = rdf.createLiteral("Hello");
 
         dataset.add(null, s, p, lit1);
         assertTrue(dataset.contains(Optional.empty(), s, p, lit1));
@@ -127,11 +127,11 @@ public class JsonLdComparisonTest {
 
     @Test
     public void datasetStream() throws Exception {
-        JsonLdDataset dataset = rdf.createDataset();
-        JsonLdIRI s = rdf.createIRI("http://example.com/s");
-        JsonLdIRI p = rdf.createIRI("http://example.com/p");
-        JsonLdLiteral lit1 = rdf.createLiteral("Hello");
-        JsonLdLiteral lit2 = rdf.createLiteral("Other");
+        final JsonLdDataset dataset = rdf.createDataset();
+        final JsonLdIRI s = rdf.createIRI("http://example.com/s");
+        final JsonLdIRI p = rdf.createIRI("http://example.com/p");
+        final JsonLdLiteral lit1 = rdf.createLiteral("Hello");
+        final JsonLdLiteral lit2 = rdf.createLiteral("Other");
 
         dataset.add(null, s, p, lit1);
         assertTrue(dataset.stream(Optional.empty(), s, p, lit1).findAny().isPresent());

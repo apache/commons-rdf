@@ -116,7 +116,7 @@ final class LiteralImpl implements Literal, SimpleRDF.SimpleRDFTerm {
         return Objects.hash(lexicalForm, dataType, languageTag);
     }
 
-    private static String lowerCase(String langTag) {
+    private static String lowerCase(final String langTag) {
         return langTag.toLowerCase(Locale.ROOT);
     }
 

@@ -32,12 +32,12 @@ public class GeneralizedRDFQuadTest {
 
     @Test
     public void bnodeProperty() throws Exception {
-        BlankNode b1 = jena.createBlankNode("b1");
-        JenaIRI ex1 = jena.createIRI("http://example.com/ex1");
-        JenaIRI ex2 = jena.createIRI("http://example.com/ex2");
-        JenaIRI ex3 = jena.createIRI("http://example.com/ex3");
+        final BlankNode b1 = jena.createBlankNode("b1");
+        final JenaIRI ex1 = jena.createIRI("http://example.com/ex1");
+        final JenaIRI ex2 = jena.createIRI("http://example.com/ex2");
+        final JenaIRI ex3 = jena.createIRI("http://example.com/ex3");
 
-        JenaGeneralizedQuadLike q = jena.createGeneralizedQuad(ex1, b1, ex2, ex3);
+        final JenaGeneralizedQuadLike q = jena.createGeneralizedQuad(ex1, b1, ex2, ex3);
         assertEquals(ex1, q.getSubject());
         assertEquals(ex2, q.getObject());
         assertEquals(b1, q.getPredicate()); // it's a bnode!
@@ -47,12 +47,12 @@ public class GeneralizedRDFQuadTest {
 
     @Test
     public void literalPredicate() throws Exception {
-        JenaIRI ex1 = jena.createIRI("http://example.com/ex1");
-        JenaIRI ex2 = jena.createIRI("http://example.com/ex2");
-        JenaIRI ex3 = jena.createIRI("http://example.com/ex3");
-        JenaLiteral lit = jena.createLiteral("Hello");
+        final JenaIRI ex1 = jena.createIRI("http://example.com/ex1");
+        final JenaIRI ex2 = jena.createIRI("http://example.com/ex2");
+        final JenaIRI ex3 = jena.createIRI("http://example.com/ex3");
+        final JenaLiteral lit = jena.createLiteral("Hello");
 
-        JenaGeneralizedQuadLike q = jena.createGeneralizedQuad(ex1, lit, ex2, ex3);
+        final JenaGeneralizedQuadLike q = jena.createGeneralizedQuad(ex1, lit, ex2, ex3);
         assertEquals(ex1, q.getSubject());
         assertEquals(ex2, q.getObject());
         assertEquals(lit, q.getPredicate()); // it's a literal!
@@ -63,12 +63,12 @@ public class GeneralizedRDFQuadTest {
 
     @Test
     public void literalSubject() throws Exception {
-        JenaIRI ex1 = jena.createIRI("http://example.com/ex1");
-        JenaIRI ex2 = jena.createIRI("http://example.com/ex2");
-        JenaIRI ex3 = jena.createIRI("http://example.com/ex3");
-        JenaLiteral lit = jena.createLiteral("Hello");
+        final JenaIRI ex1 = jena.createIRI("http://example.com/ex1");
+        final JenaIRI ex2 = jena.createIRI("http://example.com/ex2");
+        final JenaIRI ex3 = jena.createIRI("http://example.com/ex3");
+        final JenaLiteral lit = jena.createLiteral("Hello");
 
-        JenaGeneralizedQuadLike q = jena.createGeneralizedQuad(lit, ex1, ex2, ex3);
+        final JenaGeneralizedQuadLike q = jena.createGeneralizedQuad(lit, ex1, ex2, ex3);
         assertEquals(lit, q.getSubject()); // it's a literal!
         assertEquals(ex1, q.getPredicate());
         assertEquals(ex2, q.getObject());
@@ -78,13 +78,13 @@ public class GeneralizedRDFQuadTest {
 
     @Test
     public void literalSubjectDefaultGraphGen() throws Exception {
-        JenaIRI ex1 = jena.createIRI("http://example.com/ex1");
-        JenaIRI ex2 = jena.createIRI("http://example.com/ex2");
+        final JenaIRI ex1 = jena.createIRI("http://example.com/ex1");
+        final JenaIRI ex2 = jena.createIRI("http://example.com/ex2");
         // No need to cast to JenaIRI
-        JenaRDFTerm defG = jena.asRDFTerm(Quad.defaultGraphNodeGenerated);
-        JenaLiteral lit = jena.createLiteral("Hello");
+        final JenaRDFTerm defG = jena.asRDFTerm(Quad.defaultGraphNodeGenerated);
+        final JenaLiteral lit = jena.createLiteral("Hello");
 
-        JenaGeneralizedQuadLike q = jena.createGeneralizedQuad(lit, ex1, ex2, defG);
+        final JenaGeneralizedQuadLike q = jena.createGeneralizedQuad(lit, ex1, ex2, defG);
         assertEquals(lit, q.getSubject()); // it's a literal!
         assertEquals(ex1, q.getPredicate());
         assertEquals(ex2, q.getObject());
@@ -95,12 +95,12 @@ public class GeneralizedRDFQuadTest {
 
     @Test
     public void asGeneralizedQuad() throws Exception {
-        Node s = NodeFactory.createLiteral("Hello");
-        Node p = NodeFactory.createBlankNode();
-        Node o = NodeFactory.createURI("http://example.com/ex");
-        Node g = Quad.defaultGraphIRI;
-        Quad jq = Quad.create(g, s, p, o);
-        JenaQuadLike<RDFTerm> q = jena.asGeneralizedQuad(jq);
+        final Node s = NodeFactory.createLiteral("Hello");
+        final Node p = NodeFactory.createBlankNode();
+        final Node o = NodeFactory.createURI("http://example.com/ex");
+        final Node g = Quad.defaultGraphIRI;
+        final Quad jq = Quad.create(g, s, p, o);
+        final JenaQuadLike<RDFTerm> q = jena.asGeneralizedQuad(jq);
         assertEquals(jena.createLiteral("Hello"), q.getSubject());
         assertEquals(jena.asRDFTerm(p), q.getPredicate());
         assertEquals(jena.createIRI("http://example.com/ex"), q.getObject());
@@ -109,12 +109,12 @@ public class GeneralizedRDFQuadTest {
 
     @Test
     public void literalGraph() throws Exception {
-        JenaIRI ex1 = jena.createIRI("http://example.com/ex1");
-        JenaIRI ex2 = jena.createIRI("http://example.com/ex2");
-        JenaIRI ex3 = jena.createIRI("http://example.com/ex3");
-        JenaLiteral lit = jena.createLiteral("Hello");
+        final JenaIRI ex1 = jena.createIRI("http://example.com/ex1");
+        final JenaIRI ex2 = jena.createIRI("http://example.com/ex2");
+        final JenaIRI ex3 = jena.createIRI("http://example.com/ex3");
+        final JenaLiteral lit = jena.createLiteral("Hello");
 
-        JenaGeneralizedQuadLike q = jena.createGeneralizedQuad(ex1, ex2, ex3, lit);
+        final JenaGeneralizedQuadLike q = jena.createGeneralizedQuad(ex1, ex2, ex3, lit);
         assertEquals(ex1, q.getSubject());
         assertEquals(ex2, q.getPredicate());
         assertEquals(ex3, q.getObject());

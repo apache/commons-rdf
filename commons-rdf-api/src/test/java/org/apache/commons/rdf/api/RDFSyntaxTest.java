@@ -138,7 +138,7 @@ public class RDFSyntaxTest {
 
     @Test
     public void byName() throws Exception {
-        for (RDFSyntax s : RDFSyntax.w3cSyntaxes()) {
+        for (final RDFSyntax s : RDFSyntax.w3cSyntaxes()) {
             assertEquals(s, RDFSyntax.byName(s.name()).get());
         }
     }

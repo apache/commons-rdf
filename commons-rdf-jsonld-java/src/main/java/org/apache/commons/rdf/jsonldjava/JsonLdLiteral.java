@@ -39,7 +39,7 @@ class JsonLdLiteralImpl extends JsonLdTermImpl implements JsonLdLiteral {
         }
     }
 
-    private static String lowerCase(String langTag) {
+    private static String lowerCase(final String langTag) {
         return langTag.toLowerCase(Locale.ROOT);
     }
 

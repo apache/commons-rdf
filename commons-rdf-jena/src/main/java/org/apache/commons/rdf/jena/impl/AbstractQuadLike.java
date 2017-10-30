@@ -79,7 +79,7 @@ abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
          * @return <code>true</code> if the RDFTerm does not indicate a default
          *         graph in Jena
          */
-        public boolean isNotDefaultGraph(RDFTerm graphName) {
+        public boolean isNotDefaultGraph(final RDFTerm graphName) {
             return !(graphName.equals(defaultGraph) || graphName.equals(defaultGraphNodeGenerated));
         }
 
@@ -92,7 +92,7 @@ abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
          * @return <code>true</code> if the RDFTerm does not indicate a default
          *         graph in Jena
          */
-        public boolean isNotDefaultGraphJenaNode(RDFTerm graphName) {
+        public boolean isNotDefaultGraphJenaNode(final RDFTerm graphName) {
             return ! (graphName instanceof JenaRDFTerm) ||
                     ! Quad.isDefaultGraph(((JenaRDFTerm)graphName).asJenaNode());
 
