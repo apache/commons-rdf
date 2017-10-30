@@ -19,7 +19,6 @@ package org.apache.commons.rdf.integrationtests;
 
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
@@ -41,8 +40,6 @@ import org.eclipse.rdf4j.rio.Rio;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.github.jsonldjava.core.JsonLdError;
 import com.github.jsonldjava.core.JsonLdOptions;
 import com.github.jsonldjava.core.JsonLdProcessor;
 import com.github.jsonldjava.core.RDFDataset;
@@ -114,10 +111,11 @@ public class JSONLDParsingTest {
         jenaParse(aliceCached);
     }
 
-    private void jenaParse(final URL url) {
-        final JenaDataset dataset = new JenaRDF().createDataset();
-        RDFDataMgr.read(dataset.asJenaDatasetGraph(), url.toExternalForm());
-        checkGraph(dataset.getGraph());
+    private void jenaParse(final URL url) throws Exception {
+        try (final JenaDataset dataset = new JenaRDF().createDataset()) {
+            RDFDataMgr.read(dataset.asJenaDatasetGraph(), url.toExternalForm());
+            checkGraph(dataset.getGraph());
+        }
     }
 
     @Test
@@ -132,13 +130,14 @@ public class JSONLDParsingTest {
         rdf4jParse(aliceCached);
     }
 
-    private void rdf4jParse(final URL url) throws IOException {
+    private void rdf4jParse(final URL url) throws Exception {
         Model model;
         try (InputStream in = url.openStream()) {
             model = Rio.parse(in, url.toExternalForm(), RDFFormat.JSONLD);
         }
-        final RDF4JGraph graph = new RDF4J().asGraph(model);
-        checkGraph(graph);
+        try (final RDF4JGraph graph = new RDF4J().asGraph(model)) {
+            checkGraph(graph);
+        }
     }
 
     @Test
@@ -153,12 +152,13 @@ public class JSONLDParsingTest {
         jsonldParse(aliceCached);
     }
 
-    private void jsonldParse(final URL url) throws JsonParseException, IOException, JsonLdError {
+    private void jsonldParse(final URL url) throws Exception {
         final Object aliceJson = JsonUtils.fromURL(url, JsonUtils.getDefaultHttpClient());
         final JsonLdOptions options = new JsonLdOptions();
         options.setBase(url.toExternalForm());
         final RDFDataset ds = (RDFDataset) JsonLdProcessor.toRDF(aliceJson);
-        final JsonLdGraph graph = new JsonLdRDF().asGraph(ds);
-        checkGraph(graph);
+        try (final JsonLdGraph graph = new JsonLdRDF().asGraph(ds)) {
+            checkGraph(graph);
+        }
     }
 }

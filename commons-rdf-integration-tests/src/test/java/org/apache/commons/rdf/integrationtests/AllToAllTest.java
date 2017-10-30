@@ -78,41 +78,42 @@ public class AllToAllTest {
      */
     @Test
     public void addTermsFromOtherFactory() throws Exception {
-        final Graph g = graphFactory.createGraph();
-        final BlankNode s = nodeFactory.createBlankNode();
-        final IRI p = nodeFactory.createIRI("http://example.com/p");
-        final Literal o = nodeFactory.createLiteral("Hello");
+        try (final Graph g = graphFactory.createGraph()) {
+            final BlankNode s = nodeFactory.createBlankNode();
+            final IRI p = nodeFactory.createIRI("http://example.com/p");
+            final Literal o = nodeFactory.createLiteral("Hello");
 
-        g.add(s, p, o);
+            g.add(s, p, o);
 
-        // blankNode should still work with g.contains()
-        assertTrue(g.contains(s, p, o));
-        final Triple t1 = g.stream().findAny().get();
+            // blankNode should still work with g.contains()
+            assertTrue(g.contains(s, p, o));
+            final Triple t1 = g.stream().findAny().get();
 
-        // Can't make assumptions about BlankNode equality - it might
-        // have been mapped to a different BlankNode.uniqueReference()
-        // assertEquals(s, t.getSubject());
+            // Can't make assumptions about BlankNode equality - it might
+            // have been mapped to a different BlankNode.uniqueReference()
+            // assertEquals(s, t.getSubject());
 
-        assertEquals(p, t1.getPredicate());
-        assertEquals(o, t1.getObject());
+            assertEquals(p, t1.getPredicate());
+            assertEquals(o, t1.getObject());
 
-        final IRI s2 = nodeFactory.createIRI("http://example.com/s2");
-        g.add(s2, p, s);
-        assertTrue(g.contains(s2, p, s));
+            final IRI s2 = nodeFactory.createIRI("http://example.com/s2");
+            g.add(s2, p, s);
+            assertTrue(g.contains(s2, p, s));
 
-        // This should be mapped to the same BlankNode
-        // (even if it has a different identifier), e.g.
-        // we should be able to do:
+            // This should be mapped to the same BlankNode
+            // (even if it has a different identifier), e.g.
+            // we should be able to do:
 
-        final Triple t2 = g.stream(s2, p, null).findAny().get();
+            final Triple t2 = g.stream(s2, p, null).findAny().get();
 
-        final BlankNode bnode = (BlankNode) t2.getObject();
-        // And that (possibly adapted) BlankNode object should
-        // match the subject of t1 statement
-        assertEquals(bnode, t1.getSubject());
-        // And can be used as a key:
-        final Triple t3 = g.stream(bnode, p, null).findAny().get();
-        assertEquals(t1, t3);
+            final BlankNode bnode = (BlankNode) t2.getObject();
+            // And that (possibly adapted) BlankNode object should
+            // match the subject of t1 statement
+            assertEquals(bnode, t1.getSubject());
+            // And can be used as a key:
+            final Triple t3 = g.stream(bnode, p, null).findAny().get();
+            assertEquals(t1, t3);
+        }
     }
 
     /**
@@ -125,47 +126,48 @@ public class AllToAllTest {
      */
     @Test
     public void addTriplesFromOtherFactory() throws Exception {
-        final Graph g = graphFactory.createGraph();
-        final BlankNode s = nodeFactory.createBlankNode();
-        final IRI p = nodeFactory.createIRI("http://example.com/p");
-        final Literal o = nodeFactory.createLiteral("Hello");
+        try (final Graph g = graphFactory.createGraph()) {
+            final BlankNode s = nodeFactory.createBlankNode();
+            final IRI p = nodeFactory.createIRI("http://example.com/p");
+            final Literal o = nodeFactory.createLiteral("Hello");
 
-        final Triple srcT1 = nodeFactory.createTriple(s, p, o);
-        // This should work even with BlankNode as they are from the same
-        // factory
-        assertEquals(s, srcT1.getSubject());
-        assertEquals(p, srcT1.getPredicate());
-        assertEquals(o, srcT1.getObject());
-        g.add(srcT1);
+            final Triple srcT1 = nodeFactory.createTriple(s, p, o);
+            // This should work even with BlankNode as they are from the same
+            // factory
+            assertEquals(s, srcT1.getSubject());
+            assertEquals(p, srcT1.getPredicate());
+            assertEquals(o, srcT1.getObject());
+            g.add(srcT1);
 
-        // what about the blankNode within?
-        assertTrue(g.contains(srcT1));
-        final Triple t1 = g.stream().findAny().get();
+            // what about the blankNode within?
+            assertTrue(g.contains(srcT1));
+            final Triple t1 = g.stream().findAny().get();
 
-        // Can't make assumptions about BlankNode equality - it might
-        // have been mapped to a different BlankNode.uniqueReference()
-        // assertEquals(srcT1, t1);
-        // assertEquals(s, t1.getSubject());
-        assertEquals(p, t1.getPredicate());
-        assertEquals(o, t1.getObject());
+            // Can't make assumptions about BlankNode equality - it might
+            // have been mapped to a different BlankNode.uniqueReference()
+            // assertEquals(srcT1, t1);
+            // assertEquals(s, t1.getSubject());
+            assertEquals(p, t1.getPredicate());
+            assertEquals(o, t1.getObject());
 
-        final IRI s2 = nodeFactory.createIRI("http://example.com/s2");
-        final Triple srcT2 = nodeFactory.createTriple(s2, p, s);
-        g.add(srcT2);
-        assertTrue(g.contains(srcT2));
+            final IRI s2 = nodeFactory.createIRI("http://example.com/s2");
+            final Triple srcT2 = nodeFactory.createTriple(s2, p, s);
+            g.add(srcT2);
+            assertTrue(g.contains(srcT2));
 
-        // This should be mapped to the same BlankNode
-        // (even if it has a different identifier), e.g.
-        // we should be able to do:
+            // This should be mapped to the same BlankNode
+            // (even if it has a different identifier), e.g.
+            // we should be able to do:
 
-        final Triple t2 = g.stream(s2, p, null).findAny().get();
+            final Triple t2 = g.stream(s2, p, null).findAny().get();
 
-        final BlankNode bnode = (BlankNode) t2.getObject();
-        // And that (possibly adapted) BlankNode object should
-        // match the subject of t1 statement
-        assertEquals(bnode, t1.getSubject());
-        // And can be used as a key:
-        final Triple t3 = g.stream(bnode, p, null).findAny().get();
-        assertEquals(t1, t3);
+            final BlankNode bnode = (BlankNode) t2.getObject();
+            // And that (possibly adapted) BlankNode object should
+            // match the subject of t1 statement
+            assertEquals(bnode, t1.getSubject());
+            // And can be used as a key:
+            final Triple t3 = g.stream(bnode, p, null).findAny().get();
+            assertEquals(t1, t3);
+        }
     }
 }

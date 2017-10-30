@@ -115,16 +115,16 @@ public abstract class AbstractRDFTest {
     }
 
     @Test
-    public void testCreateGraph() {
-        final Graph graph = factory.createGraph();
+    public void testCreateGraph() throws Exception {
+        try (final Graph graph = factory.createGraph(); final Graph graph2 = factory.createGraph()) {
 
-        assertEquals("Graph was not empty", 0, graph.size());
-        graph.add(factory.createBlankNode(), factory.createIRI("http://example.com/"), factory.createBlankNode());
+            assertEquals("Graph was not empty", 0, graph.size());
+            graph.add(factory.createBlankNode(), factory.createIRI("http://example.com/"), factory.createBlankNode());
 
-        final Graph graph2 = factory.createGraph();
-        assertNotSame(graph, graph2);
-        assertEquals("Graph was empty after adding", 1, graph.size());
-        assertEquals("New graph was not empty", 0, graph2.size());
+            assertNotSame(graph, graph2);
+            assertEquals("Graph was empty after adding", 1, graph.size());
+            assertEquals("New graph was not empty", 0, graph2.size());
+        }
     }
 
     @Test
