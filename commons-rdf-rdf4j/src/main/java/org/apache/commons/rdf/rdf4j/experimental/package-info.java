@@ -24,7 +24,7 @@
  * When a class has stabilized, it will move to the
  * {@link org.apache.commons.rdf.rdf4j} package.
  * <ul>
- * <li>{@link RDF4JParser} - an RDF4J-backed implementations of
+ * <li>{@link org.apache.commons.rdf.rdf4j.experimental.RDF4JParser} - an RDF4J-backed implementations of
  * {@link org.apache.commons.rdf.experimental.RDFParser}.</li>
  * </ul>
  */
