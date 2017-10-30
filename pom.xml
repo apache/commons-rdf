@@ -590,14 +590,16 @@
         </profile>
         <profile>
             <id>release</id>
-        <!-- extends the release profile from commons -->
+            <properties>
+                <!-- COMMONSRDF-62 : JAPICMP does not handle 0.x release boundaries as defined in Semantic Versioning -->
+                <commons.japicmp.breakBuildOnBinaryIncompatibleModifications>false</commons.japicmp.breakBuildOnBinaryIncompatibleModifications>
+            </properties>
+            <!-- extends the release profile from commons -->
             <build>
-            <!--
-                <finalName>apache-commons-rdf-${project.version}</finalName>
--->
+                <!-- <finalName>apache-commons-rdf-${project.version}</finalName> -->
                 <plugins>
                     <plugin>
-                <!-- Avoid making *.asc.asc -->
+                        <!-- Avoid making *.asc.asc -->
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
                         <configuration>
