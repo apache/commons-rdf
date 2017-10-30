@@ -118,33 +118,35 @@ public class AbstractRDFParserTest {
 
     @Test
     public void parseFile() throws Exception {
-        final Graph g = factory.createGraph();
-        final RDFParser parser = dummyParser.source(testNt).target(g);
-        parser.parse().get(5, TimeUnit.SECONDS);
-        checkGraph(g);
-        // FIXME: this could potentially break if the equivalent of /tmp
-        // includes
-        // international characters
-        assertEquals("<" + testNt.toUri().toString() + ">", firstPredicate(g, "source"));
-        // Should be set to the file path - after following symlinks
-        assertEquals("<" + testNt.toRealPath().toUri().toString() + ">", firstPredicate(g, "base"));
+        try (final Graph g = factory.createGraph()) {
+            final RDFParser parser = dummyParser.source(testNt).target(g);
+            parser.parse().get(5, TimeUnit.SECONDS);
+            checkGraph(g);
+            // FIXME: this could potentially break if the equivalent of /tmp
+            // includes
+            // international characters
+            assertEquals("<" + testNt.toUri().toString() + ">", firstPredicate(g, "source"));
+            // Should be set to the file path - after following symlinks
+            assertEquals("<" + testNt.toRealPath().toUri().toString() + ">", firstPredicate(g, "base"));
 
-        // Should NOT have guessed the content type
-        assertNull(firstPredicate(g, "contentType"));
-        assertNull(firstPredicate(g, "contentTypeSyntax"));
+            // Should NOT have guessed the content type
+            assertNull(firstPredicate(g, "contentType"));
+            assertNull(firstPredicate(g, "contentTypeSyntax"));
+        }
     }
 
     @Test
     public void parseFileSymlink() throws Exception {
-    	// This test will typically not work in Windows
-    	// which requires system privileges to create symlinks
-    	assumeNotNull(symlink);
-        final Graph g = factory.createGraph();
-        final RDFParser parser = dummyParser.source(symlink).target(g);
-        parser.parse().get(5, TimeUnit.SECONDS);
-        checkGraph(g);
-        assertEquals("<" + symlink.toUri().toString() + ">", firstPredicate(g, "source"));
-        assertEquals("<" + testNt.toRealPath().toUri().toString() + ">", firstPredicate(g, "base"));
+        // This test will typically not work in Windows
+        // which requires system privileges to create symlinks
+        assumeNotNull(symlink);
+        try (final Graph g = factory.createGraph()) {
+            final RDFParser parser = dummyParser.source(symlink).target(g);
+            parser.parse().get(5, TimeUnit.SECONDS);
+            checkGraph(g);
+            assertEquals("<" + symlink.toUri().toString() + ">", firstPredicate(g, "source"));
+            assertEquals("<" + testNt.toRealPath().toUri().toString() + ">", firstPredicate(g, "base"));
+        }
     }
 
     @Test
@@ -176,19 +178,19 @@ public class AbstractRDFParserTest {
 
     @Test
     public void parseFileContentType() throws Exception {
-        final Graph g = factory.createGraph();
-        final RDFParser parser = dummyParser.source(testNt).contentType(RDFSyntax.NTRIPLES).target(g);
-        parser.parse().get(5, TimeUnit.SECONDS);
-        checkGraph(g);
-        // FIXME: this could potentially break if the equivalent of /tmp
-        // includes
-        // international characters
-        assertEquals("<" + testNt.toUri().toString() + ">", firstPredicate(g, "source"));
-        // Should be set to the file path - after following symlinks
-        assertEquals("<" + testNt.toRealPath().toUri().toString() + ">", firstPredicate(g, "base"));
-        assertEquals("\"" + RDFSyntax.NTRIPLES.name() + "\"",
-                firstPredicate(g, "contentTypeSyntax"));
-        assertEquals("\"application/n-triples\"", firstPredicate(g, "contentType"));
+        try (final Graph g = factory.createGraph()) {
+            final RDFParser parser = dummyParser.source(testNt).contentType(RDFSyntax.NTRIPLES).target(g);
+            parser.parse().get(5, TimeUnit.SECONDS);
+            checkGraph(g);
+            // FIXME: this could potentially break if the equivalent of /tmp
+            // includes
+            // international characters
+            assertEquals("<" + testNt.toUri().toString() + ">", firstPredicate(g, "source"));
+            // Should be set to the file path - after following symlinks
+            assertEquals("<" + testNt.toRealPath().toUri().toString() + ">", firstPredicate(g, "base"));
+            assertEquals("\"" + RDFSyntax.NTRIPLES.name() + "\"", firstPredicate(g, "contentTypeSyntax"));
+            assertEquals("\"application/n-triples\"", firstPredicate(g, "contentType"));
+        }
     }
 
     private String firstPredicate(final Graph g, final String pred) {
@@ -214,64 +216,65 @@ public class AbstractRDFParserTest {
     public void parseInputStreamWithBase() throws Exception {
         final InputStream inputStream = new ByteArrayInputStream(new byte[0]);
         final IRI base = dummyParser.createRDFTermFactory().createIRI("http://www.example.org/test.rdf");
-        final Graph g = factory.createGraph();
-        final RDFParser parser = dummyParser.source(inputStream).base(base).target(g);
-        parser.parse().get(5, TimeUnit.SECONDS);
-        checkGraph(g);
-        assertEquals("<http://www.example.org/test.rdf>", firstPredicate(g, "base"));
-        // in our particular debug output,
-        // bnode source indicates InputStream
-        assertTrue(firstPredicate(g, "source").startsWith("_:"));
-        assertNull(firstPredicate(g, "contentType"));
-        assertNull(firstPredicate(g, "contentTypeSyntax"));
+        try (final Graph g = factory.createGraph()) {
+            final RDFParser parser = dummyParser.source(inputStream).base(base).target(g);
+            parser.parse().get(5, TimeUnit.SECONDS);
+            checkGraph(g);
+            assertEquals("<http://www.example.org/test.rdf>", firstPredicate(g, "base"));
+            // in our particular debug output,
+            // bnode source indicates InputStream
+            assertTrue(firstPredicate(g, "source").startsWith("_:"));
+            assertNull(firstPredicate(g, "contentType"));
+            assertNull(firstPredicate(g, "contentTypeSyntax"));
+        }
     }
 
     @Test
     public void parseInputStreamWithNQuads() throws Exception {
         final InputStream inputStream = new ByteArrayInputStream(new byte[0]);
-        final Graph g = factory.createGraph();
-        final RDFParser parser = dummyParser.source(inputStream).contentType(RDFSyntax.NQUADS).target(g);
-        parser.parse().get(5, TimeUnit.SECONDS);
-        checkGraph(g);
-        assertNull(firstPredicate(g, "base"));
-        // in our particular debug output,
-        // bnode source indicates InputStream
-        assertTrue(firstPredicate(g, "source").startsWith("_:"));
-        assertEquals("\"application/n-quads\"", firstPredicate(g, "contentType"));
-        assertEquals("\"" + RDFSyntax.NQUADS.name() + "\"",
-                firstPredicate(g, "contentTypeSyntax"));
+        try (final Graph g = factory.createGraph()) {
+            final RDFParser parser = dummyParser.source(inputStream).contentType(RDFSyntax.NQUADS).target(g);
+            parser.parse().get(5, TimeUnit.SECONDS);
+            checkGraph(g);
+            assertNull(firstPredicate(g, "base"));
+            // in our particular debug output,
+            // bnode source indicates InputStream
+            assertTrue(firstPredicate(g, "source").startsWith("_:"));
+            assertEquals("\"application/n-quads\"", firstPredicate(g, "contentType"));
+            assertEquals("\"" + RDFSyntax.NQUADS.name() + "\"", firstPredicate(g, "contentTypeSyntax"));
+        }
     }
 
     @Test
     public void parseIRI() throws Exception {
         final IRI iri = dummyParser.createRDFTermFactory().createIRI("http://www.example.net/test.ttl");
-        final Graph g = factory.createGraph();
-        final RDFParser parser = dummyParser.source(iri).target(g);
-        parser.parse().get(5, TimeUnit.SECONDS);
-        checkGraph(g);
-        assertEquals("<http://www.example.net/test.ttl>", firstPredicate(g, "source"));
-        // No base - assuming the above IRI is always
-        // the base would break server-supplied base from
-        // any HTTP Location redirects and Content-Location header
-        assertNull(firstPredicate(g, "base"));
-        // ".ttl" in IRI string does not imply any content type
-        assertNull(firstPredicate(g, "contentType"));
-        assertNull(firstPredicate(g, "contentTypeSyntax"));
-
+        try (final Graph g = factory.createGraph()) {
+            final RDFParser parser = dummyParser.source(iri).target(g);
+            parser.parse().get(5, TimeUnit.SECONDS);
+            checkGraph(g);
+            assertEquals("<http://www.example.net/test.ttl>", firstPredicate(g, "source"));
+            // No base - assuming the above IRI is always
+            // the base would break server-supplied base from
+            // any HTTP Location redirects and Content-Location header
+            assertNull(firstPredicate(g, "base"));
+            // ".ttl" in IRI string does not imply any content type
+            assertNull(firstPredicate(g, "contentType"));
+            assertNull(firstPredicate(g, "contentTypeSyntax"));
+        }
     }
 
     @Test
     public void parseIRIBaseContentType() throws Exception {
         final IRI iri = dummyParser.createRDFTermFactory().createIRI("http://www.example.net/test.ttl");
-        final Graph g = factory.createGraph();
-        final RDFParser parser = dummyParser.source(iri).base(iri).contentType(RDFSyntax.TURTLE).target(g);
-        parser.parse().get(5, TimeUnit.SECONDS);
-        checkGraph(g);
-        assertEquals("<http://www.example.net/test.ttl>", firstPredicate(g, "source"));
-        assertEquals("<http://www.example.net/test.ttl>", firstPredicate(g, "base"));
-        assertEquals("\"" + RDFSyntax.TURTLE.name() + "\"",
-                firstPredicate(g, "contentTypeSyntax"));
-        assertEquals("\"text/turtle\"", firstPredicate(g, "contentType"));
+        try (final Graph g = factory.createGraph()) {
+            final RDFParser parser = dummyParser.source(iri).base(iri).contentType(RDFSyntax.TURTLE).target(g);
+            parser.parse().get(5, TimeUnit.SECONDS);
+            checkGraph(g);
+            assertEquals("<http://www.example.net/test.ttl>", firstPredicate(g, "source"));
+            assertEquals("<http://www.example.net/test.ttl>", firstPredicate(g, "base"));
+            assertEquals("\"" + RDFSyntax.TURTLE.name() + "\"", firstPredicate(g, "contentTypeSyntax"));
+            assertEquals("\"text/turtle\"", firstPredicate(g, "contentType"));
+        }
     }
 
 }
