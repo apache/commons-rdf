@@ -316,15 +316,11 @@ public abstract class AbstractGraphTest {
     }
 
     @Test
-    public void addBlankNodesFromMultipleGraphs() {
+    public void addBlankNodesFromMultipleGraphs() throws Exception {
 
-        try {
-            // Create two separate Graph instances
-            final Graph g1 = createGraph1();
-            final Graph g2 = createGraph2();
-
-            // and add them to a new Graph g3
-            final Graph g3 = factory.createGraph();
+        // Create two separate Graph instances
+        // and add them to a new Graph g3
+        try (final Graph g1 = createGraph1(); final Graph g2 = createGraph2(); final Graph g3 = factory.createGraph()) {
             addAllTriples(g1, g3);
             addAllTriples(g2, g3);
 
@@ -387,7 +383,7 @@ public abstract class AbstractGraphTest {
     }
 
     @Test
-    public void containsLanguageTagsCaseInsensitive() {
+    public void containsLanguageTagsCaseInsensitive() throws Exception {
         // COMMONSRDF-51: Ensure we can add/contains/remove with any casing
         // of literal language tag
         final Literal lower = factory.createLiteral("Hello", "en-gb");
@@ -397,22 +393,23 @@ public abstract class AbstractGraphTest {
         final IRI example1 = factory.createIRI("http://example.com/s1");
         final IRI greeting = factory.createIRI("http://example.com/greeting");
 
-        final Graph graph = factory.createGraph();
-        graph.add(example1, greeting, upper);
+        try (final Graph graph = factory.createGraph()) {
+            graph.add(example1, greeting, upper);
 
-        // any kind of Triple should match
-        assertTrue(graph.contains(factory.createTriple(example1, greeting, upper)));
-        assertTrue(graph.contains(factory.createTriple(example1, greeting, lower)));
-        assertTrue(graph.contains(factory.createTriple(example1, greeting, mixed)));
+            // any kind of Triple should match
+            assertTrue(graph.contains(factory.createTriple(example1, greeting, upper)));
+            assertTrue(graph.contains(factory.createTriple(example1, greeting, lower)));
+            assertTrue(graph.contains(factory.createTriple(example1, greeting, mixed)));
 
-        // or as patterns
-        assertTrue(graph.contains(null, null, upper));
-        assertTrue(graph.contains(null, null, lower));
-        assertTrue(graph.contains(null, null, mixed));
+            // or as patterns
+            assertTrue(graph.contains(null, null, upper));
+            assertTrue(graph.contains(null, null, lower));
+            assertTrue(graph.contains(null, null, mixed));
+        }
     }
 
     @Test
-    public void containsLanguageTagsCaseInsensitiveTurkish() {
+    public void containsLanguageTagsCaseInsensitiveTurkish() throws Exception {
         // COMMONSRDF-51: Special test for Turkish issue where
         // "i".toLowerCase() != "i"
         // See also:
@@ -420,12 +417,11 @@ public abstract class AbstractGraphTest {
 
         // This is similar to the test in AbstractRDFTest, but on a graph
         final Locale defaultLocale = Locale.getDefault();
-        try {
+        try (final Graph g = factory.createGraph()) {
             Locale.setDefault(Locale.ROOT);
             final Literal lowerROOT = factory.createLiteral("moi", "fi");
             final Literal upperROOT = factory.createLiteral("moi", "FI");
             final Literal mixedROOT = factory.createLiteral("moi", "fI");
-            final Graph g = factory.createGraph();
             final IRI exampleROOT = factory.createIRI("http://example.com/s1");
             final IRI greeting = factory.createIRI("http://example.com/greeting");
             g.add(exampleROOT, greeting, mixedROOT);
@@ -472,7 +468,7 @@ public abstract class AbstractGraphTest {
 
 
     @Test
-    public void removeLanguageTagsCaseInsensitive() {
+    public void removeLanguageTagsCaseInsensitive() throws Exception {
         // COMMONSRDF-51: Ensure we can remove with any casing
         // of literal language tag
         final Literal lower = factory.createLiteral("Hello", "en-gb");
@@ -482,20 +478,21 @@ public abstract class AbstractGraphTest {
         final IRI example1 = factory.createIRI("http://example.com/s1");
         final IRI greeting = factory.createIRI("http://example.com/greeting");
 
-        final Graph graph = factory.createGraph();
-        graph.add(example1, greeting, upper);
+        try (final Graph graph = factory.createGraph()) {
+            graph.add(example1, greeting, upper);
 
-        // Remove should also honour any case
-        graph.remove(example1, null, mixed);
-        assertFalse(graph.contains(null, greeting, null));
+            // Remove should also honour any case
+            graph.remove(example1, null, mixed);
+            assertFalse(graph.contains(null, greeting, null));
 
-        graph.add(example1, greeting, lower);
-        graph.remove(example1, null, upper);
+            graph.add(example1, greeting, lower);
+            graph.remove(example1, null, upper);
 
-        // Check with Triple
-        graph.add(factory.createTriple(example1, greeting, mixed));
-        graph.remove(factory.createTriple(example1, greeting, upper));
-        assertFalse(graph.contains(null, greeting, null));
+            // Check with Triple
+            graph.add(factory.createTriple(example1, greeting, mixed));
+            graph.remove(factory.createTriple(example1, greeting, upper));
+            assertFalse(graph.contains(null, greeting, null));
+        }
     }
 
     private static Optional<? extends Triple> closableFindAny(final Stream<? extends Triple> stream) {
@@ -505,7 +502,7 @@ public abstract class AbstractGraphTest {
     }
 
     @Test
-    public void streamLanguageTagsCaseInsensitive() {
+    public void streamLanguageTagsCaseInsensitive() throws Exception {
         // COMMONSRDF-51: Ensure we can add/contains/remove with any casing
         // of literal language tag
         final Literal lower = factory.createLiteral("Hello", "en-gb");
@@ -515,17 +512,18 @@ public abstract class AbstractGraphTest {
         final IRI example1 = factory.createIRI("http://example.com/s1");
         final IRI greeting = factory.createIRI("http://example.com/greeting");
 
-        final Graph graph = factory.createGraph();
-        graph.add(example1, greeting, upper);
+        try (final Graph graph = factory.createGraph()) {
+            graph.add(example1, greeting, upper);
 
-        // or as patterns
-        assertTrue(closableFindAny(graph.stream(null, null, upper)).isPresent());
-        assertTrue(closableFindAny(graph.stream(null, null, lower)).isPresent());
-        assertTrue(closableFindAny(graph.stream(null, null, mixed)).isPresent());
+            // or as patterns
+            assertTrue(closableFindAny(graph.stream(null, null, upper)).isPresent());
+            assertTrue(closableFindAny(graph.stream(null, null, lower)).isPresent());
+            assertTrue(closableFindAny(graph.stream(null, null, mixed)).isPresent());
 
-        // Check the triples returned equal a new triple
-        final Triple t = closableFindAny(graph.stream(null, null, lower)).get();
-        assertEquals(t, factory.createTriple(example1, greeting, mixed));
+            // Check the triples returned equal a new triple
+            final Triple t = closableFindAny(graph.stream(null, null, lower)).get();
+            assertEquals(t, factory.createTriple(example1, greeting, mixed));
+        }
     }
 
     private void notEquals(final BlankNodeOrIRI node1, final BlankNodeOrIRI node2) {

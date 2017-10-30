@@ -344,13 +344,12 @@ public abstract class AbstractDatasetTest {
     }
 
     @Test
-    public void addBlankNodesFromMultipleDatasets() {
-            // Create two separate Dataset instances
-            final Dataset g1 = createDataset1();
-            final Dataset g2 = createDataset2();
+    public void addBlankNodesFromMultipleDatasets() throws Exception {
+        // Create two separate Dataset instances
+        try (final Dataset g1 = createDataset1();
+                final Dataset g2 = createDataset2();
+                final Dataset g3 = factory.createDataset()) {
 
-            // and add them to a new Dataset g3
-            final Dataset g3 = factory.createDataset();
             addAllQuads(g1, g3);
             addAllQuads(g2, g3);
 
@@ -408,6 +407,7 @@ public abstract class AbstractDatasetTest {
             // and these don't have any children (as far as we know)
             assertFalse(g3.contains(null, b2Bob, hasChild, null));
             assertFalse(g3.contains(null, b1Charlie, hasChild, null));
+        }
     }
 
     private void notEquals(final BlankNodeOrIRI node1, final BlankNodeOrIRI node2) {
@@ -537,37 +537,40 @@ public abstract class AbstractDatasetTest {
 
     @Test
     public void getGraph() throws Exception {
-        final Graph defaultGraph = dataset.getGraph();
-        // TODO: Can we assume the default graph was empty before our new triples?
-        assertEquals(2, defaultGraph.size());
-        assertTrue(defaultGraph.contains(alice, isPrimaryTopicOf, graph1));
-        // NOTE: graph2 is a BlankNode
-        assertTrue(defaultGraph.contains(bob, isPrimaryTopicOf, null));
+        try (final Graph defaultGraph = dataset.getGraph()) {
+            // TODO: Can we assume the default graph was empty before our new triples?
+            assertEquals(2, defaultGraph.size());
+            assertTrue(defaultGraph.contains(alice, isPrimaryTopicOf, graph1));
+            // NOTE: graph2 is a BlankNode
+            assertTrue(defaultGraph.contains(bob, isPrimaryTopicOf, null));
+        }
     }
 
 
     @Test
     public void getGraphNull() throws Exception {
         // Default graph should be present
-        final Graph defaultGraph = dataset.getGraph(null).get();
-        // TODO: Can we assume the default graph was empty before our new triples?
-        assertEquals(2, defaultGraph.size());
-        assertTrue(defaultGraph.contains(alice, isPrimaryTopicOf, graph1));
-        // NOTE: wildcard as graph2 is a (potentially mapped) BlankNode
-        assertTrue(defaultGraph.contains(bob, isPrimaryTopicOf, null));
+        try (final Graph defaultGraph = dataset.getGraph(null).get()) {
+            // TODO: Can we assume the default graph was empty before our new triples?
+            assertEquals(2, defaultGraph.size());
+            assertTrue(defaultGraph.contains(alice, isPrimaryTopicOf, graph1));
+            // NOTE: wildcard as graph2 is a (potentially mapped) BlankNode
+            assertTrue(defaultGraph.contains(bob, isPrimaryTopicOf, null));
+        }
     }
 
 
     @Test
     public void getGraph1() throws Exception {
         // graph1 should be present
-        final Graph g1 = dataset.getGraph(graph1).get();
-        assertEquals(4, g1.size());
+        try (final Graph g1 = dataset.getGraph(graph1).get()) {
+            assertEquals(4, g1.size());
 
-        assertTrue(g1.contains(alice, name, aliceName));
-        assertTrue(g1.contains(alice, knows, bob));
-        assertTrue(g1.contains(alice, member, null));
-        assertTrue(g1.contains(null, name, secretClubName));
+            assertTrue(g1.contains(alice, name, aliceName));
+            assertTrue(g1.contains(alice, knows, bob));
+            assertTrue(g1.contains(alice, member, null));
+            assertTrue(g1.contains(null, name, secretClubName));
+        }
     }
 
     @Test
@@ -577,16 +580,16 @@ public abstract class AbstractDatasetTest {
         final BlankNodeOrIRI graph2Name = (BlankNodeOrIRI) dataset.stream(Optional.empty(), bob, isPrimaryTopicOf, null)
                 .map(Quad::getObject).findAny().get();
 
-        final Graph g2 = dataset.getGraph(graph2Name).get();
-        assertEquals(4, g2.size());
-        final Triple bobNameTriple = bobNameQuad.asTriple();
-        assertTrue(g2.contains(bobNameTriple));
-        assertTrue(g2.contains(bob, member, bnode1));
-        assertTrue(g2.contains(bob, member, bnode2));
-        assertFalse(g2.contains(bnode1, name, secretClubName));
-        assertTrue(g2.contains(bnode2, name, companyName));
+        try (final Graph g2 = dataset.getGraph(graph2Name).get()) {
+            assertEquals(4, g2.size());
+            final Triple bobNameTriple = bobNameQuad.asTriple();
+            assertTrue(g2.contains(bobNameTriple));
+            assertTrue(g2.contains(bob, member, bnode1));
+            assertTrue(g2.contains(bob, member, bnode2));
+            assertFalse(g2.contains(bnode1, name, secretClubName));
+            assertTrue(g2.contains(bnode2, name, companyName));
+        }
     }
-
 
     @Test
     public void containsLanguageTagsCaseInsensitive() {
