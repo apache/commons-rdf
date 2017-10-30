@@ -59,7 +59,7 @@ final class JsonLdBlankNodeImpl extends JsonLdTermImpl implements JsonLdBlankNod
     public int hashCode() {
         return uniqueReference().hashCode();
     }
-    
+
     @Override
     public String toString() {
         return ntriplesString() + " [" + uniqueReference() + "]";

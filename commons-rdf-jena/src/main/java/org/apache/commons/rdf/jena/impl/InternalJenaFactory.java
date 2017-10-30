@@ -55,16 +55,16 @@ import org.apache.jena.system.JenaSystem;
  * For the purpose of blank node identity, some of these methods require a
  * {@link UUID} to use as a salt. See {@link BlankNode#uniqueReference()} for
  * details.
- * 
+ *
  */
 public abstract class InternalJenaFactory {
 
-    static { 
+    static {
         // http://jena.apache.org/documentation/notes/system-initialization.html
         JenaSystem.init();
     }
-    
-    
+
+
     public JenaBlankNode createBlankNode(final String id, final UUID salt) {
         return new JenaBlankNodeImpl(NodeFactory.createBlankNode(id), salt);
     }
@@ -159,7 +159,7 @@ public abstract class InternalJenaFactory {
         }
         throw new ConversionException("Unrecognized node type: " + node);
     }
-    
+
     public JenaTriple createTriple(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         return new JenaTripleImpl(subject, predicate, object);
     }

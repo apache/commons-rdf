@@ -97,7 +97,7 @@ import org.eclipse.rdf4j.sail.memory.MemoryStore;
  * {@link #asDataset(Repository, Option...)} and
  * {@link #asGraph(Repository, Option...)} therefore uses a unique {@link RDF4J}
  * internally.
- * 
+ *
  * @see RDF
  *
  */
@@ -128,7 +128,7 @@ public final class RDF4J implements RDF {
 
     /**
      * Construct an {@link RDF4J}.
-     * 
+     *
      */
     public RDF4J() {
         this(SimpleValueFactory.getInstance(), UUID.randomUUID());
@@ -140,7 +140,7 @@ public final class RDF4J implements RDF {
      * This constructor is intended for use with the value factory from
      * {@link Repository#getValueFactory()} when using Repository-based graphs
      * and datasets.
-     * 
+     *
      * @param valueFactory
      *            The RDF4J {@link ValueFactory} to use
      */
@@ -153,7 +153,7 @@ public final class RDF4J implements RDF {
      * <p>
      * This constructor may be used if reproducible
      * {@link BlankNode#uniqueReference()} in {@link BlankNode} is desirable.
-     * 
+     *
      * @param salt
      *            An {@link UUID} salt to be used by any created
      *            {@link BlankNode}s for the purpose of
@@ -168,7 +168,7 @@ public final class RDF4J implements RDF {
      * <p>
      * This constructor may be used if reproducible
      * {@link BlankNode#uniqueReference()} in {@link BlankNode} is desirable.
-     * 
+     *
      * @param valueFactory
      *            The RDF4J {@link ValueFactory} to use
      * @param salt
@@ -588,7 +588,7 @@ public final class RDF4J implements RDF {
      * requires the use of try-with-resources to close underlying
      * {@link RepositoryConnection}s, including {@link RDF4JDataset#iterate()},
      * {@link RDF4JDataset#stream()} and {@link RDF4JDataset#getGraphNames()}.
-     * 
+     *
      */
     @Override
     public RDF4JDataset createDataset() {

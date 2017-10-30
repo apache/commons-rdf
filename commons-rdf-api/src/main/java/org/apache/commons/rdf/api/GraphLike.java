@@ -35,11 +35,11 @@ import java.util.stream.Stream;
  * semantics, the behaviour of methods like {@link #contains(TripleLike)} and
  * {@link #remove(TripleLike)} is undefined for arguments that are not object
  * identical to previously added or returned {@link TripleLike} statements.
- * 
+ *
  * @param <T>
  *            A {@link TripleLike} type used by the graph methods, typically
  *            {@link Triple} or {@link Quad}
- * 
+ *
  * @since 0.3.0-incubating
  * @see Graph
  * @see Dataset
@@ -49,7 +49,7 @@ public interface GraphLike<T extends TripleLike> {
 
     /**
      * Add a statement.
-     * 
+     *
      * @param statement
      *            The TripleLike statement to add
      */
@@ -57,7 +57,7 @@ public interface GraphLike<T extends TripleLike> {
 
     /**
      * Check if statement is contained.
-     * 
+     *
      * @param statement
      *            The {@link TripleLike} statement to check
      * @return True if the statement is contained
@@ -66,7 +66,7 @@ public interface GraphLike<T extends TripleLike> {
 
     /**
      * Add a statement.
-     * 
+     *
      * @param statement
      *            The TripleLike statement to add
      */
@@ -79,21 +79,21 @@ public interface GraphLike<T extends TripleLike> {
 
     /**
      * Number of statements.
-     * 
+     *
      * @return Number of statements
      */
     long size();
 
     /**
      * Return a Stream of contained statements.
-     * 
+     *
      * @return A {@link Stream} of {@link TripleLike} statements.
      */
     Stream<? extends T> stream();
 
     /**
      * Iterate over contained statements.
-     * 
+     *
      * @return An {@link Iterable} of {@link TripleLike} statements.
      * @throws IllegalStateException
      *             if the {@link Iterable} has been reused

@@ -28,7 +28,7 @@ import org.eclipse.rdf4j.model.Statement;
  * <p>
  * This is backed by a {@link Statement} retrievable with
  * {@link #asStatement()}.
- * 
+ *
  * @see RDF4JTriple
  * @see RDF4JQuad
  */
@@ -36,7 +36,7 @@ public interface RDF4JTripleLike extends TripleLike {
 
     /**
      * Return the corresponding RDF4J {@link Statement}.
-     * 
+     *
      * @return The corresponding RDF4J Statement.
      */
     public Statement asStatement();

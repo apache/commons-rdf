@@ -26,7 +26,7 @@ import java.util.stream.Stream;
  * Graph</a>, a set of RDF triples, as defined by
  * <a href="http://www.w3.org/TR/rdf11-concepts/" >RDF-1.1 Concepts and Abstract
  * Syntax</a>, a W3C Recommendation published on 25 February 2014.
- * 
+ *
  * @see RDF#createGraph()
  */
 public interface Graph extends AutoCloseable, GraphLike<Triple> {
@@ -144,7 +144,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      * <p>
      * Implementations may throw {@link ConcurrentModificationException} from
      * Stream methods if they detect a conflict while the Stream is active.
-     * 
+     *
      * @since 0.3.0-incubating
      * @return A {@link Stream} over all of the triples in the graph
      */
@@ -164,7 +164,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      * Implementations may throw {@link ConcurrentModificationException} from
      * Stream methods if they detect a conflict while the Stream is active.
      * <p>
-     * 
+     *
      * @since 0.3.0-incubating
      * @param subject
      *            The triple subject (null is a wildcard)
@@ -179,7 +179,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
     /**
      * This method is deprecated, use the equivalent method {@link #stream()}
      * instead.
-     * 
+     *
      * @return A {@link Stream} over all triples.
      */
     @Deprecated
@@ -190,7 +190,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
     /**
      * This method is deprecated, use the equivalent method
      * {@link #stream(BlankNodeOrIRI, IRI, RDFTerm)} instead.
-     * 
+     *
      * @param subject
      *            The triple subject (null is a wildcard)
      * @param predicate
@@ -208,13 +208,13 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      * Get an Iterable for iterating over all triples in the graph.
      * <p>
      * This method is meant to be used with a Java for-each loop, e.g.:
-     * 
+     *
      * <pre>
      * for (Triple t : graph.iterate()) {
      *     System.out.println(t);
      * }
      * </pre>
-     * 
+     *
      * The behaviour of the iterator is not specified if {@link #add(Triple)},
      * {@link #remove(Triple)} or {@link #clear()}, are called on the
      * {@link Graph} before it terminates. It is undefined if the returned
@@ -250,7 +250,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      * the pattern.
      * <p>
      * This method is meant to be used with a Java for-each loop, e.g.:
-     * 
+     *
      * <pre>
      * IRI alice = factory.createIRI("http://example.com/alice");
      * IRI knows = factory.createIRI("http://xmlns.com/foaf/0.1/");

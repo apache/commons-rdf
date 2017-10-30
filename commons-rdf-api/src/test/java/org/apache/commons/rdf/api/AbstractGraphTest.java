@@ -399,7 +399,7 @@ public abstract class AbstractGraphTest {
 
         final Graph graph = factory.createGraph();
         graph.add(example1, greeting, upper);
-        
+
         // any kind of Triple should match
         assertTrue(graph.contains(factory.createTriple(example1, greeting, upper)));
         assertTrue(graph.contains(factory.createTriple(example1, greeting, lower)));
@@ -469,7 +469,7 @@ public abstract class AbstractGraphTest {
             Locale.setDefault(defaultLocale);
         }
     }
-    
+
 
     @Test
     public void removeLanguageTagsCaseInsensitive() {
@@ -488,7 +488,7 @@ public abstract class AbstractGraphTest {
         // Remove should also honour any case
         graph.remove(example1, null, mixed);
         assertFalse(graph.contains(null, greeting, null));
-        
+
         graph.add(example1, greeting, lower);
         graph.remove(example1, null, upper);
 
@@ -503,7 +503,7 @@ public abstract class AbstractGraphTest {
             return s.findAny();
         }
     }
-    
+
     @Test
     public void streamLanguageTagsCaseInsensitive() {
         // COMMONSRDF-51: Ensure we can add/contains/remove with any casing
@@ -522,7 +522,7 @@ public abstract class AbstractGraphTest {
         assertTrue(closableFindAny(graph.stream(null, null, upper)).isPresent());
         assertTrue(closableFindAny(graph.stream(null, null, lower)).isPresent());
         assertTrue(closableFindAny(graph.stream(null, null, mixed)).isPresent());
-        
+
         // Check the triples returned equal a new triple
         Triple t = closableFindAny(graph.stream(null, null, lower)).get();
         assertEquals(t, factory.createTriple(example1, greeting, mixed));

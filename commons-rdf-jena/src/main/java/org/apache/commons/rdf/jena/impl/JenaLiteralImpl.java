@@ -38,8 +38,8 @@ class JenaLiteralImpl extends AbstractJenaRDFTerm implements JenaLiteral {
             throw new IllegalArgumentException("Node is not a literal: " + node);
         }
     }
-    
-    private static String lowerCase(String langTag) { 
+
+    private static String lowerCase(String langTag) {
         return langTag.toLowerCase(Locale.ROOT);
     }
 

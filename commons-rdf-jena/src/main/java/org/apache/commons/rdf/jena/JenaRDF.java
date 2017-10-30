@@ -69,7 +69,7 @@ import org.apache.jena.sparql.graph.GraphFactory;
  * {@link #salt()} for subsequent use with {@link JenaRDF#JenaRDF(UUID)} - note
  * that such consistency is only guaranteed within the same minor version of
  * Commons RDF.
- * 
+ *
  * @see RDF
  */
 public final class JenaRDF implements RDF {
@@ -96,7 +96,7 @@ public final class JenaRDF implements RDF {
      * purposes of {@link BlankNode} identity, and should only be used in cases
      * where predictable and consistent {@link BlankNode#uniqueReference()} are
      * important.
-     * 
+     *
      * @param salt
      *            {@link UUID} to use as salt for {@link BlankNode} equality
      */
@@ -161,7 +161,7 @@ public final class JenaRDF implements RDF {
      * {@link org.apache.jena.sparql.core.Quad#isDefaultGraph(Node)}, in which
      * case the returned JenaQuad will have a {@link Quad#getGraphName()} of
      * {@link Optional#empty()} rather than the provided IRI.
-     * 
+     *
      */
     @Override
     public JenaQuad createQuad(final BlankNodeOrIRI graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object)
@@ -178,7 +178,7 @@ public final class JenaRDF implements RDF {
      *
      * @see #createTriple(BlankNodeOrIRI, IRI, RDFTerm)
      * @see #createGeneralizedQuad(RDFTerm, RDFTerm, RDFTerm, RDFTerm)
-     * 
+     *
      * @param subject
      *            The subject of the statement
      * @param predicate
@@ -207,10 +207,10 @@ public final class JenaRDF implements RDF {
      * {@link org.apache.jena.sparql.core.Quad#isDefaultGraph(Node)}, in which
      * case the returned JenaQuad will have a {@link Quad#getGraphName()} of
      * {@link Optional#empty()} rather than the provided IRI.
-     * 
+     *
      * @see #createQuad(BlankNodeOrIRI, BlankNodeOrIRI, IRI, RDFTerm)
      * @see #createGeneralizedTriple(RDFTerm, RDFTerm, RDFTerm)
-     * 
+     *
      * @param subject
      *            The subject of the statement
      * @param predicate
@@ -237,9 +237,9 @@ public final class JenaRDF implements RDF {
      * will use a {@link UUID} salt from this {@link JenaRDF} instance in
      * combination with {@link Node#getBlankNodeId()} for the purpose of its
      * {@link BlankNode#uniqueReference()}.
-     * 
+     *
      * @see #asRDFTerm(RDF, Node)
-     * 
+     *
      * @param node
      *            The Jena Node to adapt. It's {@link Node#isConcrete()} must be
      *            <code>true</code>.
@@ -260,9 +260,9 @@ public final class JenaRDF implements RDF {
      * {@link RDF#createBlankNode(String)} will be used, meaning that care
      * should be taken if reusing an {@link RDF} instance for multiple
      * conversion sessions.
-     * 
+     *
      * @see #asRDFTerm(Node)
-     * 
+     *
      * @param factory
      *            {@link RDF} to use for creating {@link RDFTerm}.
      * @param node
@@ -312,7 +312,7 @@ public final class JenaRDF implements RDF {
      * purpose of its {@link BlankNode#uniqueReference()}.
      *
      * @see #asTriple(RDF, org.apache.jena.graph.Triple)
-     * 
+     *
      * @param triple
      *            Jena {@link org.apache.jena.graph.Triple} to adapt
      * @return Adapted {@link JenaTriple}
@@ -339,7 +339,7 @@ public final class JenaRDF implements RDF {
      * {@link BlankNode#uniqueReference()}.
      *
      * @see #asTriple(RDF, org.apache.jena.graph.Triple)
-     * 
+     *
      * @param triple
      *            Jena triple
      * @return Adapted {@link TripleLike}. Note that the generalized triple does
@@ -367,12 +367,12 @@ public final class JenaRDF implements RDF {
      * {@link BlankNode#uniqueReference()}.
      * <p>
      * If the provided quad {@link org.apache.jena.sparql.core.Quad#isDefaultGraph()},
-     * the returned {@link JenaQuadLike} has a {@link JenaQuadLike#getGraphName()} 
+     * the returned {@link JenaQuadLike} has a {@link JenaQuadLike#getGraphName()}
      * of {@link Optional#empty()}.
      *
      * @see #asQuad(org.apache.jena.sparql.core.Quad)
      * @see #asGeneralizedTriple(org.apache.jena.graph.Triple)
-     * 
+     *
      * @param quad
      *            Jena quad
      * @return Adapted {@link QuadLike}. Note that the generalized quad does
@@ -393,7 +393,7 @@ public final class JenaRDF implements RDF {
      * factory's {@link RDF#createBlankNode(String)} will be used, meaning that
      * care should be taken if reusing an {@link RDF} instance for multiple
      * conversion sessions.
-     * 
+     *
      * @see #asTriple(org.apache.jena.graph.Triple)
      *
      * @param factory
@@ -433,9 +433,9 @@ public final class JenaRDF implements RDF {
      * purpose of its {@link BlankNode#uniqueReference()}.
      * <p>
      * If the provided quad {@link org.apache.jena.sparql.core.Quad#isDefaultGraph()},
-     * the returned {@link JenaQuad} has a {@link Quad#getGraphName()} 
+     * the returned {@link JenaQuad} has a {@link Quad#getGraphName()}
      * of {@link Optional#empty()}.
-     * 
+     *
      * @param quad
      *            Jena quad
      * @return Adapted quad
@@ -456,7 +456,7 @@ public final class JenaRDF implements RDF {
      * {@link BlankNode} will use a {@link UUID} salt from this {@link JenaRDF}
      * instance in combination with {@link Node#getBlankNodeId()} for the
      * purpose of its {@link BlankNode#uniqueReference()}.
-     * 
+     *
      * @param graph
      *            Jena {@link org.apache.jena.graph.Graph} to adapt
      * @return Adapted {@link JenaGraph}
@@ -477,7 +477,7 @@ public final class JenaRDF implements RDF {
      * {@link BlankNode} will use a {@link UUID} salt from this {@link JenaRDF}
      * instance in combination with {@link Node#getBlankNodeId()} for the
      * purpose of its {@link BlankNode#uniqueReference()}.
-     * 
+     *
      * @param model
      *            Jena {@link org.apache.jena.rdf.model.Model} to adapt
      * @return Adapted {@link JenaGraph}
@@ -499,7 +499,7 @@ public final class JenaRDF implements RDF {
      * {@link JenaRDF} instance in combination with
      * {@link Node#getBlankNodeId()} for the purpose of its
      * {@link BlankNode#uniqueReference()}.
-     * 
+     *
      * @param datasetGraph
      *            Jena {@link DatasetGraph} to adapt
      * @return Adapted {@link JenaDataset}
@@ -521,7 +521,7 @@ public final class JenaRDF implements RDF {
      * {@link JenaRDF} instance in combination with
      * {@link Node#getBlankNodeId()} for the purpose of its
      * {@link BlankNode#uniqueReference()}.
-     * 
+     *
      * @param datasetGraph
      *            Jena {@link org.apache.jena.query.Dataset} to adapt
      * @return Adapted {@link JenaDataset}
@@ -540,9 +540,9 @@ public final class JenaRDF implements RDF {
      * conversion sessions.
      * <p>
      * If the provided quad {@link org.apache.jena.sparql.core.Quad#isDefaultGraph()},
-     * the returned {@link JenaQuadLike} has a {@link JenaQuadLike#getGraphName()} 
+     * the returned {@link JenaQuadLike} has a {@link JenaQuadLike#getGraphName()}
      * of {@link Optional#empty()}.
-     * 
+     *
      * @see #asQuad(org.apache.jena.sparql.core.Quad)
      * @see #asGeneralizedQuad(org.apache.jena.sparql.core.Quad)
      *
@@ -570,7 +570,7 @@ public final class JenaRDF implements RDF {
 
     /**
      * Return {@link RDFSyntax} corresponding to a Jena {@link Lang}.
-     * 
+     *
      * @param lang
      *            {@link Lang} to convert
      * @return Matched {@link RDFSyntax}, otherwise {@link Optional#empty()}
@@ -581,7 +581,7 @@ public final class JenaRDF implements RDF {
 
     /**
      * Return Jena {@link Lang} corresponding to a {@link RDFSyntax}.
-     * 
+     *
      * @param rdfSyntax
      *            {@link RDFSyntax} to convert
      * @return Matched {@link Lang}, otherwise {@link Optional#empty()}
@@ -596,7 +596,7 @@ public final class JenaRDF implements RDF {
      * <p>
      * The returned {@link StreamRDF} can be used for instance with Jena's
      * {@link RDFDataMgr#parse(StreamRDF, String)}.
-     * 
+     *
      * @param factory
      *            {@link RDF} to use for creating {@link RDFTerm}s and
      *            {@link Quad}s.
@@ -624,7 +624,7 @@ public final class JenaRDF implements RDF {
      * <p>
      * The returned {@link StreamRDF} can be used for instance with Jena's
      * {@link RDFDataMgr#parse(StreamRDF, String)}.
-     * 
+     *
      * @param generalizedConsumer
      *            A {@link Consumer} of generalized {@link TripleLike}s
      * @return A {@link StreamRDF} that will stream generalized triples to the
@@ -649,7 +649,7 @@ public final class JenaRDF implements RDF {
      * <p>
      * The returned {@link StreamRDF} can be used for instance with Jena's
      * {@link RDFDataMgr#parse(StreamRDF, String)}.
-     * 
+     *
      * @param generalizedConsumer
      *            A {@link Consumer} of generalized {@link QuadLike}s
      * @return A {@link StreamRDF} that will stream generalized quads to the
@@ -668,7 +668,7 @@ public final class JenaRDF implements RDF {
      * Convert a CommonsRDF Graph to a Jena Graph. If the Graph was from Jena
      * originally, return that original object else create a copy using Jena
      * objects.
-     * 
+     *
      * @param graph
      *            Commons RDF {@link Graph} to convert
      * @return Converted Jena {@link org.apache.jena.graph.Graph}
@@ -686,7 +686,7 @@ public final class JenaRDF implements RDF {
      * Convert a CommonsRDF RDFTerm to a Jena Node. If the RDFTerm was from Jena
      * originally, return that original object, else create a copy using Jena
      * objects.
-     * 
+     *
      * @param term
      *            Commons RDF {@link RDFTerm} to convert
      * @return Converted Jena {@link Node}
@@ -726,7 +726,7 @@ public final class JenaRDF implements RDF {
      * <p>
      * If the triple was from Jena originally, return that original object, else
      * create a copy using Jena objects.
-     * 
+     *
      * @param triple
      *            Commons RDF {@link Triple} to convert
      * @return Converted Jena {@link org.apache.jena.graph.Triple}
@@ -735,7 +735,7 @@ public final class JenaRDF implements RDF {
         if (triple instanceof JenaTriple) {
             return ((JenaTriple) triple).asJenaTriple();
         }
-        return org.apache.jena.graph.Triple.create(asJenaNode(triple.getSubject()), 
+        return org.apache.jena.graph.Triple.create(asJenaNode(triple.getSubject()),
                 asJenaNode(triple.getPredicate()),
                 asJenaNode(triple.getObject()));
     }
@@ -757,7 +757,7 @@ public final class JenaRDF implements RDF {
         }
         return org.apache.jena.sparql.core.Quad.create(
                 asJenaNode(quad.getGraphName().orElse(null)),
-                asJenaNode(quad.getSubject()), 
+                asJenaNode(quad.getSubject()),
                 asJenaNode(quad.getPredicate()),
                 asJenaNode(quad.getObject()));
     }
@@ -789,7 +789,7 @@ public final class JenaRDF implements RDF {
      * <p>
      * This salt can be used with the constructor {@link JenaRDF#JenaRDF(UUID)}
      * if consistent or reproducible {@link BlankNode}s are desirable.
-     * 
+     *
      * @return The {@link UUID} used as salt
      */
     public UUID salt() {

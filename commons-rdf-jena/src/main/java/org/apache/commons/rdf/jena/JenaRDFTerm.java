@@ -25,7 +25,7 @@ import org.apache.jena.graph.Node;
  * A Jena-backed {@link RDFTerm}.
  * <p>
  * The underlying Jena {@link Node} can be retrieved with {@link #asJenaNode()}.
- * 
+ *
  * @see JenaIRI
  * @see JenaLiteral
  * @see JenaBlankNode

@@ -116,10 +116,10 @@ final class LiteralImpl implements Literal, SimpleRDF.SimpleRDFTerm {
         return Objects.hash(lexicalForm, dataType, languageTag);
     }
 
-    private static String lowerCase(String langTag) { 
+    private static String lowerCase(String langTag) {
         return langTag.toLowerCase(Locale.ROOT);
     }
-    
+
     @Override
     public boolean equals(final Object obj) {
         if (this == obj) {

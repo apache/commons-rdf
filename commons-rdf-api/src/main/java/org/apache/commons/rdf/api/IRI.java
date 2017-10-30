@@ -22,7 +22,7 @@ package org.apache.commons.rdf.api;
  * as defined by <a href= "http://www.w3.org/TR/rdf11-concepts/#section-IRIs" >RDF-1.1
  * Concepts and Abstract Syntax</a>, a W3C Recommendation published on 25
  * February 2014.
- * 
+ *
  * @see RDF#createIRI(String)
  */
 public interface IRI extends BlankNodeOrIRI {

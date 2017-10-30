@@ -52,7 +52,7 @@ public interface JsonLdGraphLike<T extends TripleLike> extends GraphLike<T> {
      * <p>
      * Changes in the JSONLD-Java dataset is reflected in this class and vice
      * versa.
-     * 
+     *
      * @return The underlying JSONLD-JAva RDFDataset
      */
     public RDFDataset getRdfDataSet();
@@ -157,8 +157,8 @@ abstract class AbstractJsonLdGraphLike<T extends TripleLike> implements JsonLdGr
     /**
      * Convert JsonLd Quad to a Commons RDF {@link Triple} or
      * {@link org.apache.commons.rdf.api.Quad}
-     * 
-     * 
+     *
+     *
      * @see JsonLdRDF#asTriple(Quad)
      * @see JsonLdRDF#asQuad(Quad)
      * @param jsonldQuad
@@ -205,9 +205,9 @@ abstract class AbstractJsonLdGraphLike<T extends TripleLike> implements JsonLdGr
                 return false;
             }
             if (objectNode.isPresent()) {
-                if (object instanceof Literal && q.getObject().isLiteral()) { 
+                if (object instanceof Literal && q.getObject().isLiteral()) {
                     // Special handling for COMMONSRDF-56, COMMONSRDF-51:
-                    // Less efficient wrapper to a Commons RDF Literal so 
+                    // Less efficient wrapper to a Commons RDF Literal so
                     // we can use our RDF 1.1-compliant .equals()
                     RDFTerm otherObj = factory.asRDFTerm(q.getObject());
                     if (! (object.equals(otherObj))) {

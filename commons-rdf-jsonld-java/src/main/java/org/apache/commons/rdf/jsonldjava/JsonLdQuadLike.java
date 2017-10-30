@@ -72,7 +72,7 @@ class JsonLdQuadLikeImpl<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm
     public Quad asJsonLdQuad() {
         return quad;
     }
-    
+
     @Override
     public String toString() {
         return quad.toString();

@@ -31,7 +31,7 @@ import org.apache.commons.rdf.api.RDFTerm;
  * Note that unlike {@link Quad}, this type does not have fixed semantics for
  * {@link Object#equals(Object)} or {@link Object#hashCode()} beyond object
  * identity.
- * 
+ *
  * @see JenaGeneralizedTripleLike
  */
 public interface JenaGeneralizedQuadLike extends JenaQuadLike<RDFTerm> {

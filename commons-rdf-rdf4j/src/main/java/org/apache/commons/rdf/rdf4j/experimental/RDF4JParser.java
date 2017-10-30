@@ -173,7 +173,7 @@ public class RDF4JParser extends AbstractRDFParser<RDF4JParser> {
      * returned config is reflected in this instance of the parser. To avoid
      * mutation, create a new {@link ParserConfig} and set
      * {@link #setParserConfig(ParserConfig)}.
-     * 
+     *
      * @return The RDF4J {@link ParserConfig}
      */
     public ParserConfig getParserConfig() {
@@ -182,7 +182,7 @@ public class RDF4JParser extends AbstractRDFParser<RDF4JParser> {
 
     /**
      * Set an RDF4J {@link ParserConfig} to use
-     * 
+     *
      * @param parserConfig
      *            Parser configuration
      */

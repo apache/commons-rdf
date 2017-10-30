@@ -35,7 +35,7 @@ public interface JenaDataset extends org.apache.commons.rdf.api.Dataset {
      * <p>
      * Changes to the Jena <em>dataset graph</em> are reflected in the Commons
      * RDF dataset and vice versa.
-     * 
+     *
      * @return A Jena {@link DatasetGraph}
      */
     public DatasetGraph asJenaDatasetGraph();
@@ -48,7 +48,7 @@ public interface JenaDataset extends org.apache.commons.rdf.api.Dataset {
      * <p>
      * Changes in the union graph are reflected in the Commons RDF dataset and
      * vice versa. Triples added to the graph are added to the default graph.
-     * 
+     *
      * @return A union {@link Graph}
      */
     public JenaGraph getUnionGraph();

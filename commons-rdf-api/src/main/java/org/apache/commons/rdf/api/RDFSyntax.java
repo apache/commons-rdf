@@ -31,25 +31,25 @@ import java.util.Set;
  * Some of the RDF syntaxes may {@link #supportsDataset()}, meaning they can
  * represent {@link Quad}s.
  * <p>
- * An enumeration of the official RDF 1.1 syntaxes is available in 
+ * An enumeration of the official RDF 1.1 syntaxes is available in
  * {@link W3CRDFSyntax} - for convenience they are also accessible
  * as constants here, e.g. <code>RDFSyntax.JSONLD</code>.
- * 
+ *
  */
 public interface RDFSyntax {
 
     /**
      * JSON-LD 1.0
-     * 
+     *
      * @see <a href=
      *      "https://www.w3.org/TR/json-ld/">https://www.w3.org/TR/json-ld/</a>
-     * 
+     *
      */
     public static RDFSyntax JSONLD = W3CRDFSyntax.JSONLD;
 
     /**
      * RDF 1.1 Turtle
-     * 
+     *
      * @see <a href=
      *      "https://www.w3.org/TR/turtle/">https://www.w3.org/TR/turtle/</a>
      *
@@ -58,7 +58,7 @@ public interface RDFSyntax {
 
     /**
      * RDF 1.1 N-Quads
-     * 
+     *
      * @see <a href=
      *      "https://www.w3.org/TR/n-quads/">https://www.w3.org/TR/n-quads/</a>
      */
@@ -66,15 +66,15 @@ public interface RDFSyntax {
 
     /**
      * RDF 1.1 N-Triples
-     * 
+     *
      * @see <a href=
      *      "https://www.w3.org/TR/n-triples/">https://www.w3.org/TR/n-triples/</a>
      */
     public static RDFSyntax NTRIPLES = W3CRDFSyntax.NTRIPLES;
 
     /**
-     * HTML+RDFa 1.1 and XHTML+RDFa 1.1 
-     * 
+     * HTML+RDFa 1.1 and XHTML+RDFa 1.1
+     *
      * @see <a href=
      *      "https://www.w3.org/TR/html-rdfa/">https://www.w3.org/TR/html-rdfa/</a>
      * @see <a href=
@@ -84,7 +84,7 @@ public interface RDFSyntax {
 
     /**
      * RDF 1.1 XML Syntax
-     * 
+     *
      * @see <a href=
      *      "https://www.w3.org/TR/rdf-syntax-grammar/">https://www.w3.org/TR/rdf-syntax-grammar/</a>
      */
@@ -92,17 +92,17 @@ public interface RDFSyntax {
 
     /**
      * RDF 1.1 TriG
-     * 
+     *
      * @see <a href=
      *      "https://www.w3.org/TR/trig/">https://www.w3.org/TR/trig/</a>
      */
     public static RDFSyntax TRIG = W3CRDFSyntax.TRIG;
-    
+
     /**
      * A short name of the RDF Syntax e.g. <code>JSONLD</code>.
      * <p>
-     * The name is specific to Commons RDF and carries no particular meaning. 
-     * 
+     * The name is specific to Commons RDF and carries no particular meaning.
+     *
      * @return Short name for RDF syntax
      */
     public String name();
@@ -110,13 +110,13 @@ public interface RDFSyntax {
     /**
      * The title of the RDF Syntax.
      * <p>
-     * This is generally the title of the corresponding standard, 
+     * This is generally the title of the corresponding standard,
      * e.g. <em>RDF 1.1 Turtle</em>.
-     * 
+     *
      * @return Title of RDF Syntax
      */
-    public String title();    
-    
+    public String title();
+
     /**
      * The <a href="https://tools.ietf.org/html/rfc2046">IANA media type</a> for
      * the RDF syntax.
@@ -132,7 +132,7 @@ public interface RDFSyntax {
 
     /**
      * Set of <a href="https://tools.ietf.org/html/rfc2046">IANA media types</a> that
-     * covers this RDF syntax, including any non-official media types. 
+     * covers this RDF syntax, including any non-official media types.
      * <p>
      * The media type can be used as part of <code>Content-Type</code> and
      * <code>Accept</code> for <em>content negotiation</em> in the
@@ -147,7 +147,7 @@ public interface RDFSyntax {
     default public Set<String> mediaTypes() {
         return Collections.singleton(mediaType());
     }
-    
+
     /**
      * The <a href="https://tools.ietf.org/html/rfc2046">IANA-registered</a>
      * file extension.
@@ -171,7 +171,7 @@ public interface RDFSyntax {
     default public Set<String> fileExtensions() {
         return Collections.singleton(fileExtension());
     }
-    
+
     /**
      * Indicate if this RDF syntax supports
      * <a href="https://www.w3.org/TR/rdf11-concepts/#section-dataset">RDF
@@ -186,7 +186,7 @@ public interface RDFSyntax {
      * <p>
      * Note that the identifying IRI is generally distinct from the IRI of the
      * document that <em>specifies</em> the RDF syntax.
-     * 
+     *
      * @return Identifying IRI, e.g.
      *         <code>http://www.w3.org/ns/formats/JSON-LD</code>
      */
@@ -199,24 +199,24 @@ public interface RDFSyntax {
      * {@link #mediaType()}s are equal when compared as lower case strings
      * according to {@link String#toLowerCase(Locale)} with the locale
      * {@link Locale#ROOT}.
-     * 
+     *
      * @param obj the object with which to compare
      * @return true if this object is the same as the obj argument; false otherwise
      */
     @Override
     boolean equals(Object obj);
-    
+
     /**
-     * The hash code of an RDFSyntax is equivalent to the hash code 
+     * The hash code of an RDFSyntax is equivalent to the hash code
      * of the {@link #mediaType()} in lower case according to
      * {@link String#toLowerCase(Locale)} with the locale
-     * {@link Locale#ROOT}. 
-     * 
+     * {@link Locale#ROOT}.
+     *
      * @return Hash code of RDFSyntax
      */
     @Override
     int hashCode();
-    
+
     /**
      * Return the RDF 1.1 serialization syntaxes.
      * <p>
@@ -226,12 +226,12 @@ public interface RDFSyntax {
      * <a href="https://en.wikipedia.org/wiki/TriX_%28syntax%29">TriX</a>.
      * <p>
      * The syntaxes returned only support the {@link #mediaType()}
-     * and {@link #fileExtension()} as defined in the corresponding 
+     * and {@link #fileExtension()} as defined in the corresponding
      * W3C specification.
-     * 
+     *
      * @return
      *      A set of the official RDF 1.1 {@link RDFSyntax}es.
-     * 
+     *
      * @see <a href="https://www.w3.org/TR/rdf11-primer/#section-graph-syntax">RDF
      *      1.1 Primer</a>
      * @see org.apache.commons.rdf.experimental.RDFParser
@@ -253,7 +253,7 @@ public interface RDFSyntax {
      * before <code>;</code> is considered.
      * <p>
      * This method support all syntaxes returned by {@link #w3cSyntaxes()}.
-     * 
+     *
      * @param mediaType
      *            The media type to match
      * @return If {@link Optional#isPresent()}, the {@link RDFSyntax} which has
@@ -275,7 +275,7 @@ public interface RDFSyntax {
      * {@link RDFSyntax#fileExtension} of the returned RDFSyntax.
      * <p>
      * This method support all syntaxes returned by {@link #w3cSyntaxes()}.
-     * 
+     *
      * @param fileExtension
      *            The fileExtension to match, starting with <code>.</code>
      * @return If {@link Optional#isPresent()}, the {@link RDFSyntax} which has
@@ -284,22 +284,22 @@ public interface RDFSyntax {
      *         extension was found.
      */
     public static Optional<RDFSyntax> byFileExtension(final String fileExtension) {
-        final String ext = fileExtension.toLowerCase(Locale.ROOT);        
+        final String ext = fileExtension.toLowerCase(Locale.ROOT);
         return w3cSyntaxes().stream().filter(t -> t.fileExtensions().contains(ext))
                 .findAny();
     }
-    
+
     /**
      * Return the RDFSyntax with the specified {@link #name()}.
      * <p>
      * This method support all syntaxes returned by {@link #w3cSyntaxes()}.
-     * 
+     *
      * @param name
      *            The name to match, , e.g. <code>"JSONLD"</code>
      * @return If {@link Optional#isPresent()}, the {@link RDFSyntax} which has
      *         a matching {@link RDFSyntax#name()}, otherwise
      *         {@link Optional#empty()} indicating that no matching name was found.
-     */    
+     */
     public static Optional<RDFSyntax> byName(final String name) {
         return w3cSyntaxes().stream().filter(t -> t.name().equals(name)).findAny();
     }

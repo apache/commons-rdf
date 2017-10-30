@@ -40,7 +40,7 @@
  * be most efficient if used with {@link RDF4JParser#target(Dataset)} and an
  * adapted {@link RDF4JDataset}, or {@link RDF4JParser#target(Graph)} and a an
  * adapted {@link RDF4JGraph}
- * 
+ *
  *
  */
 package org.apache.commons.rdf.rdf4j;

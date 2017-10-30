@@ -78,7 +78,7 @@ public class DummyGraphTest {
                 graph.stream(new DummyIRI(1), new DummyIRI(2), new DummyIRI(3)).findAny().get());
         assertFalse(graph.stream(new DummyIRI(0), new DummyIRI(0), new DummyIRI(0)).findAny().isPresent());
     }
-    
-    
+
+
 
 }

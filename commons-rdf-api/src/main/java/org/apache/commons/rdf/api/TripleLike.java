@@ -31,8 +31,8 @@ package org.apache.commons.rdf.api;
  * Implementations should specialise which specific {@link RDFTerm} types they
  * return by overriding {@link #getSubject()}, {@link #getPredicate()} and
  * {@link #getObject()}.
- * 
- * 
+ *
+ *
  * @since 0.3.0-incubating
  * @see Triple
  * @see Quad

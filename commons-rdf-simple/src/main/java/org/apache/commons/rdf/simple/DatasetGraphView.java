@@ -33,14 +33,14 @@ import org.apache.commons.rdf.api.Triple;
  * A {@link Graph} view on a {@link Dataset}.
  * <p>
  * This view is backed by a {@link Dataset}, and can be constructed in two ways:
- * 
+ *
  * <dl>
  * <dt>{@link #DatasetGraphView(Dataset)}</dt>
  * <dd>Expose a <em>union graph</em> view of the Dataset, where all the
  * {@link Quad}s of the Dataset is represented as a {@link Triple}. Adding
  * triples will add them to the <em>default graph</em>, while removing triples
  * will remove from all graphs.</dd>
- * 
+ *
  * <dt>{@link #DatasetGraphView(Dataset, BlankNodeOrIRI)}</dt>
  * <dd>Expose a particular graph of the Dataset, either named by an {@link IRI},
  * a {@link BlankNode}, or <code>null</code> for the <em>default

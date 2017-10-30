@@ -21,7 +21,7 @@ import org.apache.commons.rdf.api.Triple;
 
 /**
  * Marker interface for RDF4J implementations of Triple.
- * 
+ *
  * @see RDF4J#createTriple(org.apache.commons.rdf.api.BlankNodeOrIRI,
  *      org.apache.commons.rdf.api.IRI, org.apache.commons.rdf.api.RDFTerm)
  */

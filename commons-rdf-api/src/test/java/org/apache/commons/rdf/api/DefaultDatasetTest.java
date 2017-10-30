@@ -24,14 +24,14 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 public class DefaultDatasetTest {
-    
+
     DummyDataset dataset = new DummyDataset();
-    
+
     @Test
     public void close() throws Exception {
         dataset.close(); // no-op
     }
-    
+
     @Test
     public void defaultIterate() throws Exception {
         assertFalse(dataset.streamCalled);
@@ -42,7 +42,7 @@ public class DefaultDatasetTest {
         assertTrue(dataset.streamCalled);
         assertFalse(dataset.filteredStreamCalled);
     }
-    
+
     @Test
     public void defaultFilteredIterate() throws Exception {
         assertFalse(dataset.streamCalled);
@@ -53,6 +53,6 @@ public class DefaultDatasetTest {
         assertTrue(dataset.filteredStreamCalled);
         assertFalse(dataset.streamCalled);
     }
-    
+
 }
 

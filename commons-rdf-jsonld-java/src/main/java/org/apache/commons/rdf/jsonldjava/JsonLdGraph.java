@@ -32,7 +32,7 @@ import com.github.jsonldjava.core.RDFDataset;
 
 /**
  * A {@link Graph} view of a JsonLd {@link RDFDataset}.
- * 
+ *
  */
 public interface JsonLdGraph extends JsonLdGraphLike<Triple>, Graph {
 }

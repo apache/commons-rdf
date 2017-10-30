@@ -66,7 +66,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
 
     /**
      * Get the set {@link RDF}, if any.
-     * 
+     *
      * @return The {@link RDF} to use, or {@link Optional#empty()} if it has not
      *         been set
      */
@@ -79,7 +79,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      * <p>
      * If this is {@link Optional#isPresent()}, then {@link #getContentType()}
      * contains the value of {@link RDFSyntax#mediaType}.
-     * 
+     *
      * @return The {@link RDFSyntax} of the content type, or
      *         {@link Optional#empty()} if it has not been set
      */
@@ -94,7 +94,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      * {@link RDFSyntax#byMediaType(String)}, then the corresponding
      * {@link RDFSyntax} is set on {@link #getContentType()}, otherwise that is
      * {@link Optional#empty()}.
-     * 
+     *
      * @return The Content-Type IANA media type, e.g. <code>text/turtle</code>,
      *         or {@link Optional#empty()} if it has not been set
      */
@@ -107,10 +107,10 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      * <p>
      * From the call to {@link #parseSynchronusly()}, this will be a
      * non-<code>null</code> value (as a target is a required setting).
-     * 
+     *
      * @return The target consumer of {@link Quad}s, or <code>null</code> if it
      *         has not yet been set.
-     * 
+     *
      */
     public Consumer<Quad> getTarget() {
         return target;
@@ -126,7 +126,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      * <p>
      * If this value is present, then {@link #getTargetGraph()} MUST be
      * {@link Optional#empty()}.
-     * 
+     *
      * @return The target Dataset, or {@link Optional#empty()} if another kind
      *         of target has been set.
      */
@@ -144,7 +144,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      * <p>
      * If this value is present, then {@link #getTargetDataset()} MUST be
      * {@link Optional#empty()}.
-     * 
+     *
      * @return The target Graph, or {@link Optional#empty()} if another kind of
      *         target has been set.
      */
@@ -154,7 +154,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
 
     /**
      * Get the set base {@link IRI}, if present.
-     * 
+     *
      * @return The base {@link IRI}, or {@link Optional#empty()} if it has not
      *         been set
      */
@@ -167,7 +167,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      * <p>
      * If this is {@link Optional#isPresent()}, then {@link #getSourceFile()}
      * and {@link #getSourceIri()} are {@link Optional#empty()}.
-     * 
+     *
      * @return The source {@link InputStream}, or {@link Optional#empty()} if it
      *         has not been set
      */
@@ -195,7 +195,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      * If this is {@link Optional#isPresent()}, then
      * {@link #getSourceInputStream()} and {@link #getSourceInputStream()} are
      * {@link Optional#empty()}.
-     * 
+     *
      * @return The source {@link IRI}, or {@link Optional#empty()} if it has not
      *         been set
      */
@@ -303,7 +303,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      * Check if an iri is absolute.
      * <p>
      * Used by {@link #source(String)} and {@link #base(String)}.
-     * 
+     *
      * @param iri
      *            IRI to check
      * @throws IllegalArgumentException
@@ -322,7 +322,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      * <p>
      * Subclasses might override this method, e.g. to support other source
      * combinations, or to check if the sourceIri is resolvable.
-     * 
+     *
      * @throws IOException
      *             If a source file can't be read
      */
@@ -346,7 +346,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
 
     /**
      * Check if base is required.
-     * 
+     *
      * @throws IllegalStateException
      *             if base is required, but not set.
      */
@@ -362,7 +362,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      * <p>
      * Subclasses should override this and call <code>super.resetSource()</code>
      * if they need to reset any additional source* fields.
-     * 
+     *
      */
     protected void resetSource() {
         sourceInputStream = Optional.empty();
@@ -378,7 +378,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      * <p>
      * Subclasses should override this and call <code>super.resetTarget()</code>
      * if they need to reset any additional target* fields.
-     * 
+     *
      */
     protected void resetTarget() {
         targetDataset = Optional.empty();
@@ -394,7 +394,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      * <p>
      * {@link #checkBaseRequired()} is called to verify if {@link #getBase()} is
      * required.
-     * 
+     *
      * @throws IOException
      *             If the source could not be read
      * @throws RDFParseException
@@ -412,7 +412,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      * If the {@link #getSourceFile()} is present, but the {@link #getBase()} is
      * not present, the base will be set to the <code>file:///</code> IRI for
      * the Path's real path (e.g. resolving any symbolic links).
-     * 
+     *
      * @return A completed and checked clone of this RDFParser
      * @throws IOException
      *             If the source was not accessible (e.g. a file was not found)
@@ -464,7 +464,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     /**
      * Subclasses can override this method to check compatibility with the
      * contentType setting.
-     * 
+     *
      * @throws IllegalStateException
      *             if the {@link #getContentType()} or
      *             {@link #getContentTypeSyntax()} is not compatible or invalid
@@ -477,7 +477,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      * <p>
      * This method can be used by subclasses if {@link #getContentType()} is not
      * present and {@link #getSourceFile()} is set.
-     * 
+     *
      * @param path
      *            Path which extension should be checked
      * @return The {@link RDFSyntax} which has a matching
@@ -495,7 +495,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      * <p>
      * Note that this only returns the last extension, e.g. the file extension
      * for <code>archive.tar.gz</code> would be <code>.gz</code>
-     * 
+     *
      * @param path
      *            Path which filename might contain an extension
      * @return File extension (including the leading <code>.</code>, or
@@ -523,7 +523,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      * As parsed blank nodes might be made with
      * {@link RDF#createBlankNode(String)}, each call to this method SHOULD
      * return a new RDF instance.
-     * 
+     *
      * @return A new {@link RDF}
      */
     protected RDF createRDFTermFactory() {

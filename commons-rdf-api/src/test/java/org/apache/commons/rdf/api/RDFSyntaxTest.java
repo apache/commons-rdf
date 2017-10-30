@@ -105,7 +105,7 @@ public class RDFSyntaxTest {
         assertTrue(RDFSyntax.TRIG.fileExtensions().contains(".trig"));
         assertTrue(RDFSyntax.TURTLE.fileExtensions().contains(".ttl"));
     }
-    
+
     @Test
     public void mediaType() throws Exception {
         assertEquals("application/ld+json", RDFSyntax.JSONLD.mediaType());
@@ -129,7 +129,7 @@ public class RDFSyntaxTest {
         assertTrue(RDFSyntax.TRIG.mediaTypes().contains("application/trig"));
         assertTrue(RDFSyntax.TURTLE.mediaTypes().contains("text/turtle"));
     }
-    
+
     @Test
     public void string() throws Exception {
         assertEquals("JSON-LD 1.0", RDFSyntax.JSONLD.toString());
@@ -142,5 +142,5 @@ public class RDFSyntaxTest {
             assertEquals(s, RDFSyntax.byName(s.name()).get());
         }
     }
-    
+
 }

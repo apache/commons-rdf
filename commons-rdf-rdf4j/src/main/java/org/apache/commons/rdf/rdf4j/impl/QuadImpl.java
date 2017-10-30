@@ -54,7 +54,7 @@ final class QuadImpl implements RDF4JQuad {
         if (obj instanceof Quad) {
             final Quad quad = (Quad) obj;
             return getGraphName().equals(quad.getGraphName()) &&
-                    getSubject().equals(quad.getSubject()) && 
+                    getSubject().equals(quad.getSubject()) &&
                     getPredicate().equals(quad.getPredicate()) &&
                     getObject().equals(quad.getObject());
         }

@@ -28,7 +28,7 @@ import java.util.Optional;
  * <a href= "http://www.w3.org/TR/rdf11-concepts/#section-Graph-Literal"
  * >RDF-1.1 Concepts and Abstract Syntax</a>, a W3C Recommendation published on
  * 25 February 2014.
- * 
+ *
  * @see RDF#createLiteral(String)
  * @see RDF#createLiteral(String, IRI)
  * @see RDF#createLiteral(String, String)
@@ -75,11 +75,11 @@ public interface Literal extends RDFTerm {
      * >http://www.w3.org/1999/02/22-rdf-syntax-ns#langString</a>, this method
      * must return {@link Optional#empty()}.
      * <p>
-     * The value space of language tags is always in lower case; although 
+     * The value space of language tags is always in lower case; although
      * RDF implementations MAY convert all language tags to lower case,
      * safe comparisons of language tags should be done using
      * {@link String#toLowerCase(Locale)} with the locale
-     * {@link Locale#ROOT}. 
+     * {@link Locale#ROOT}.
      * <p>
      * Implementation note: If your application requires {@link Serializable}
      * objects, it is best not to store an {@link Optional} in a field. It is
@@ -97,10 +97,10 @@ public interface Literal extends RDFTerm {
     Optional<String> getLanguageTag();
 
     /**
-     * Check it this Literal is equal to another Literal. 
+     * Check it this Literal is equal to another Literal.
      * <blockquote>
      * <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-literal-term">Literal
-     * term equality</a>: 
+     * term equality</a>:
      * Two literals are term-equal (the same RDF literal) if
      * and only if the two lexical forms, the two datatype IRIs, and the two
      * language tags (if any) compare equal, character by character. Thus, two

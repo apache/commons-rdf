@@ -36,7 +36,7 @@ class DummyTriple implements Triple {
     }
 
     private static List<RDFTerm> tripleList(final Triple q) {
-         return Arrays.asList(             
+         return Arrays.asList(
              q.getSubject(),
              q.getPredicate(),
              q.getObject());
@@ -49,9 +49,9 @@ class DummyTriple implements Triple {
         }
         return tripleList(this).equals(tripleList((Triple) obj));
     }
-    
+
     @Override
-    public int hashCode() {           
+    public int hashCode() {
         return Objects.hash(getSubject(), getPredicate(), getObject());
     }
 }

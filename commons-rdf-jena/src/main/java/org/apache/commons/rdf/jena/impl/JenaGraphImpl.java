@@ -99,7 +99,7 @@ class JenaGraphImpl implements JenaGraph {
     }
 
     private Node toJenaPattern(final RDFTerm pattern) {
-        if (pattern == null) { 
+        if (pattern == null) {
             return Node.ANY;
         }
         return factory.asJenaNode(pattern);
@@ -107,13 +107,13 @@ class JenaGraphImpl implements JenaGraph {
 
     @Override
     public void remove(final Triple triple) {
-        if ((triple.getObject() instanceof Literal) && 
+        if ((triple.getObject() instanceof Literal) &&
                 ((Literal) triple.getObject()).getLanguageTag().isPresent()) {
             // COMMONSRDF-51: graph.delete(Triple) would be too restrictive
-            // as it won't delete triples with different lang tag - so 
+            // as it won't delete triples with different lang tag - so
             // we'll need to use the pattern matching graph.remove instead()
             graph.remove(
-                    factory.asJenaNode(triple.getSubject()), 
+                    factory.asJenaNode(triple.getSubject()),
                     factory.asJenaNode(triple.getPredicate()),
                     factory.asJenaNode(triple.getObject()));
         } else {

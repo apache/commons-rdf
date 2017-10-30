@@ -28,9 +28,9 @@ import org.junit.Test;
  * COMMONSRDF-56: Test Literal comparisons with JSONLD-Java
  */
 public class JsonLdComparisonTest {
-    
+
     JsonLdRDF rdf = new JsonLdRDF();
-    
+
     @Test
     public void literalEqual() throws Exception {
         JsonLdLiteral lit1 = rdf.createLiteral("Hello");
@@ -53,7 +53,7 @@ public class JsonLdComparisonTest {
         JsonLdLiteral lit2 = rdf.createLiteral("Allo Allo", "fr");
         assertEquals(lit1, lit2);
     }
-    
+
     @Test
     public void literalNotEqualLang() throws Exception {
         JsonLdLiteral lit1 = rdf.createLiteral("Hello", "en");
@@ -68,7 +68,7 @@ public class JsonLdComparisonTest {
         assertEquals(lit1, lit2);
     }
 
-    
+
     @Test
     public void literalNotEqualType() throws Exception {
         JsonLdLiteral lit1 = rdf.createLiteral("1", Types.XSD_INTEGER);
@@ -86,7 +86,7 @@ public class JsonLdComparisonTest {
         JsonLdIRI s = rdf.createIRI("http://example.com/s");
         JsonLdIRI p = rdf.createIRI("http://example.com/p");
         JsonLdLiteral lit1 = rdf.createLiteral("Hello");
-        
+
         graph.add(s, p, lit1);
         assertTrue(graph.contains(s, p, rdf.createLiteral("Hello")));
         assertTrue(graph.contains(s, p, rdf.createLiteral("Hello", Types.XSD_STRING)));
@@ -94,14 +94,14 @@ public class JsonLdComparisonTest {
         assertFalse(graph.contains(s, p, rdf.createLiteral("Hello", "en")));
         assertFalse(graph.contains(s, p, rdf.createLiteral("Other")));
     }
-    
+
     @Test
     public void datasetContains() throws Exception {
         JsonLdDataset dataset = rdf.createDataset();
         JsonLdIRI s = rdf.createIRI("http://example.com/s");
         JsonLdIRI p = rdf.createIRI("http://example.com/p");
         JsonLdLiteral lit1 = rdf.createLiteral("Hello");
-        
+
         dataset.add(null, s, p, lit1);
         assertTrue(dataset.contains(Optional.empty(), s, p, rdf.createLiteral("Hello")));
         assertTrue(dataset.contains(Optional.empty(), s, p, rdf.createLiteral("Hello", Types.XSD_STRING)));
@@ -109,14 +109,14 @@ public class JsonLdComparisonTest {
         assertFalse(dataset.contains(Optional.empty(), s, p, rdf.createLiteral("Hello", "en")));
         assertFalse(dataset.contains(Optional.empty(), s, p, rdf.createLiteral("Other")));
     }
-    
+
     @Test
     public void datasetRemove() throws Exception {
         JsonLdDataset dataset = rdf.createDataset();
         JsonLdIRI s = rdf.createIRI("http://example.com/s");
         JsonLdIRI p = rdf.createIRI("http://example.com/p");
         JsonLdLiteral lit1 = rdf.createLiteral("Hello");
-        
+
         dataset.add(null, s, p, lit1);
         assertTrue(dataset.contains(Optional.empty(), s, p, lit1));
         dataset.remove(null, null, null, rdf.createLiteral("Other")); // should NOT match
@@ -132,10 +132,10 @@ public class JsonLdComparisonTest {
         JsonLdIRI p = rdf.createIRI("http://example.com/p");
         JsonLdLiteral lit1 = rdf.createLiteral("Hello");
         JsonLdLiteral lit2 = rdf.createLiteral("Other");
-        
+
         dataset.add(null, s, p, lit1);
-        assertTrue(dataset.stream(Optional.empty(), s, p, lit1).findAny().isPresent());        
-        assertFalse(dataset.stream(Optional.empty(), s, p, lit2).findAny().isPresent());        
+        assertTrue(dataset.stream(Optional.empty(), s, p, lit1).findAny().isPresent());
+        assertFalse(dataset.stream(Optional.empty(), s, p, lit2).findAny().isPresent());
     }
-    
+
 }

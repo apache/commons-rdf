@@ -83,7 +83,7 @@ public class DummyDatasetTest {
     public void getGraph() throws Exception {
         assertTrue(dataset.getGraph() instanceof DummyGraph);
     }
-    
+
     @Test
     public void getGraphNull() throws Exception {
         assertTrue(dataset.getGraph(null).get() instanceof DummyGraph);
@@ -93,7 +93,7 @@ public class DummyDatasetTest {
     public void getGraphNamed() throws Exception {
         assertFalse(dataset.getGraph(new DummyIRI(0)).isPresent());
     }
-    
+
     @Test
     public void getGraphNames() throws Exception {
         assertFalse(dataset.getGraphNames().findAny().isPresent());

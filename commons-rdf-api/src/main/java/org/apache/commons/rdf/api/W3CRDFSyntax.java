@@ -33,14 +33,14 @@ import java.util.Set;
  * <p>
  * This class is package-protected, its static constants are exposed through
  * {@link RDFSyntax}.
- * 
+ *
  * @see RDFSyntax#w3cSyntaxes()
  * @see <a href="https://www.w3.org/TR/rdf11-primer/#section-graph-syntax">RDF
  *      1.1 Primer</a>
  * @see org.apache.commons.rdf.experimental.RDFParser
  */
 class W3CRDFSyntax implements RDFSyntax {
-    
+
     /**
      * IRI representing a <a href="https://www.w3.org/ns/formats/">W3C RDF
      * format</a>.
@@ -48,26 +48,26 @@ class W3CRDFSyntax implements RDFSyntax {
     private final static class FormatIRI implements IRI {
         private static String BASE = "http://www.w3.org/ns/formats/";
         private final String format;
-    
+
         private FormatIRI(final String format) {
             this.format = format;
         }
-    
+
         @Override
         public String getIRIString() {
             return BASE + format;
         }
-    
+
         @Override
         public String ntriplesString() {
             return "<" + getIRIString() + ">";
         }
-    
+
         @Override
         public String toString() {
             return ntriplesString();
         }
-    
+
         @Override
         public boolean equals(final Object obj) {
             if (this == obj) {
@@ -79,17 +79,17 @@ class W3CRDFSyntax implements RDFSyntax {
             final IRI other = (IRI) obj;
             return getIRIString().equals(other.getIRIString());
         }
-    
+
         @Override
         public int hashCode() {
             return getIRIString().hashCode();
         }
     }
 
-    
+
     static final RDFSyntax JSONLD, TURTLE, NQUADS, NTRIPLES, RDFA, RDFXML, TRIG;
     static final Set<RDFSyntax> syntaxes;
-    
+
     static {
         // Initialize within static block to avoid inserting nulls
         JSONLD = new W3CRDFSyntax("JSON-LD", "JSON-LD 1.0", "application/ld+json", ".jsonld", true);
@@ -97,7 +97,7 @@ class W3CRDFSyntax implements RDFSyntax {
         NQUADS = new W3CRDFSyntax("N-Quads", "RDF 1.1 N-Quads", "application/n-quads", ".nq", true);
         NTRIPLES = new W3CRDFSyntax("N-Triples", "RDF 1.1 N-Triples", "application/n-triples", ".nt", false);
         RDFXML = new W3CRDFSyntax("RDF_XML", "RDF 1.1 XML Syntax", "application/rdf+xml", ".rdf", false);
-        TRIG = new W3CRDFSyntax("TriG", "RDF 1.1 TriG", "application/trig", ".trig", true);        
+        TRIG = new W3CRDFSyntax("TriG", "RDF 1.1 TriG", "application/trig", ".trig", true);
         RDFA = new W3CRDFSyntax("RDFa", "HTML+RDFa 1.1", "text/html", ".html", false) {
             private Set<String> types = Collections.unmodifiableSet(new LinkedHashSet<>(
                     Arrays.asList("text/html", "application/xhtml+xml")));
@@ -115,17 +115,17 @@ class W3CRDFSyntax implements RDFSyntax {
         syntaxes = Collections.unmodifiableSet(new LinkedHashSet<>(
                 Arrays.asList(JSONLD, NQUADS, NTRIPLES, RDFA, RDFXML, TRIG, TURTLE)));
     }
-    
+
     private final String title;
 
     private final String mediaType;
 
     private final String fileExtension;
-    
+
     private final boolean supportsDataset;
 
     private final String name;
-    
+
     private final IRI iri;
 
     private W3CRDFSyntax(String name, String title, String mediaType, String fileExtension, boolean supportsDataset) {
@@ -140,9 +140,9 @@ class W3CRDFSyntax implements RDFSyntax {
     /**
      * {@inheritDoc}
      * <p>
-     * {@link W3CRDFSyntax} always defines media type in lower case, so 
+     * {@link W3CRDFSyntax} always defines media type in lower case, so
      * {@link String#toLowerCase(Locale)} need not be called.
-     * 
+     *
      */
     @Override
     public String mediaType() {
@@ -154,7 +154,7 @@ class W3CRDFSyntax implements RDFSyntax {
      * <p>
      * {@link W3CRDFSyntax} always defines file extensions in lower case, so
      * {@link String#toLowerCase(Locale)} need not be called.
-     * 
+     *
      */
     @Override
     public String fileExtension() {
@@ -175,7 +175,7 @@ class W3CRDFSyntax implements RDFSyntax {
     public String name() {
         return name;
     }
-    
+
     @Override
     public IRI iri() {
         return iri;

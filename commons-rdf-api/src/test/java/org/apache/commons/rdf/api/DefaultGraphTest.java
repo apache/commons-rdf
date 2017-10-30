@@ -22,22 +22,22 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class DefaultGraphTest {
-    
+
     DummyGraph graph = new DummyGraph();
-    
+
     @Test
     public void close() throws Exception {
         graph.close(); // no-op
     }
-    
+
     @SuppressWarnings("deprecation")
     @Test
     public void defaultGetTriples() throws Exception {
         assertFalse(graph.streamCalled);
         assertFalse(graph.filteredStreamCalled);
-        assertEquals(1L, graph.getTriples().count());        
+        assertEquals(1L, graph.getTriples().count());
         assertTrue(graph.streamCalled);
-        assertFalse(graph.filteredStreamCalled);        
+        assertFalse(graph.filteredStreamCalled);
     }
 
     @SuppressWarnings("deprecation")
@@ -51,7 +51,7 @@ public class DefaultGraphTest {
         // Ensure arguments are passed on to graph.stream(s,p,o);
         assertEquals(0L, graph.getTriples(new DummyIRI(0),null,null).count());
     }
-    
+
     @Test
     public void defaultIterate() throws Exception {
         assertFalse(graph.streamCalled);
@@ -62,7 +62,7 @@ public class DefaultGraphTest {
         assertTrue(graph.streamCalled);
         assertFalse(graph.filteredStreamCalled);
     }
-    
+
     @Test
     public void defaultFilteredIterate() throws Exception {
         assertFalse(graph.streamCalled);
@@ -73,6 +73,6 @@ public class DefaultGraphTest {
         assertTrue(graph.filteredStreamCalled);
         assertFalse(graph.streamCalled);
     }
-    
+
 }
 

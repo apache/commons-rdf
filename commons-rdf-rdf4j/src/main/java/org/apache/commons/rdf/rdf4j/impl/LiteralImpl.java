@@ -33,10 +33,10 @@ final class LiteralImpl extends AbstractRDFTerm<org.eclipse.rdf4j.model.Literal>
         super(literal);
     }
 
-    private static String lowerCase(String langTag) { 
+    private static String lowerCase(String langTag) {
         return langTag.toLowerCase(Locale.ROOT);
     }
-    
+
     @Override
     public boolean equals(final Object obj) {
         if (obj == this) {
@@ -44,7 +44,7 @@ final class LiteralImpl extends AbstractRDFTerm<org.eclipse.rdf4j.model.Literal>
         }
         if (obj instanceof org.apache.commons.rdf.api.Literal) {
             final org.apache.commons.rdf.api.Literal other = (org.apache.commons.rdf.api.Literal) obj;
-            return getLexicalForm().equals(other.getLexicalForm()) && 
+            return getLexicalForm().equals(other.getLexicalForm()) &&
                     getDatatype().equals(other.getDatatype()) &&
                     getLanguageTag().map(LiteralImpl::lowerCase).equals(
                             other.getLanguageTag().map(LiteralImpl::lowerCase));
@@ -69,7 +69,7 @@ final class LiteralImpl extends AbstractRDFTerm<org.eclipse.rdf4j.model.Literal>
 
     @Override
     public int hashCode() {
-        return Objects.hash(value.getLabel(), value.getDatatype(), 
+        return Objects.hash(value.getLabel(), value.getDatatype(),
                 getLanguageTag().map(LiteralImpl::lowerCase));
     }
 

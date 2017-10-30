@@ -68,7 +68,7 @@ import com.github.jsonldjava.utils.JsonUtils;
  * ensures that the versions of HTTPClient is compatible with JSONLD-Java
  * (however it does not check that it is compatible with Jena and
  * RDF4J's external fetching of RDF documents).
- * 
+ *
  */
 public class JSONLDParsingTest {
 
@@ -84,7 +84,7 @@ public class JSONLDParsingTest {
 
     /**
      * Pre-test that src/test/resources files are on the classpath
-     * 
+     *
      */
     @Before
     public void checkTestResources() throws Exception {
@@ -109,7 +109,7 @@ public class JSONLDParsingTest {
 
     @Test
     public void jenaParseCached() throws Exception {
-        // Check if HTTPClient cache is used from 
+        // Check if HTTPClient cache is used from
         // jarcache.json
         jenaParse(aliceCached);
     }
@@ -127,7 +127,7 @@ public class JSONLDParsingTest {
 
     @Test
     public void rdf4jParseCached() throws Exception {
-        // Check if HTTPClient cache is used from 
+        // Check if HTTPClient cache is used from
         // jarcache.json
         rdf4jParse(aliceCached);
     }
@@ -148,7 +148,7 @@ public class JSONLDParsingTest {
 
     @Test
     public void jsonldParseCached() throws Exception {
-        // Check if HTTPClient cache is used from 
+        // Check if HTTPClient cache is used from
         // jarcache.json
         jsonldParse(aliceCached);
     }

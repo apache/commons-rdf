@@ -38,15 +38,15 @@ public class DummyTripleTest {
     public void getObject() throws Exception {
         assertEquals(3, ((DummyIRI) triple.getObject()).i);
     }
-    
+
     @Test
     public void equals() throws Exception {
         assertEquals(triple, new DummyTriple());
     }
-    
+
     @Test
     public void testHashCode() {
-        final int expected = Objects.hash(triple.getSubject(), triple.getPredicate(), triple.getObject()); 
+        final int expected = Objects.hash(triple.getSubject(), triple.getPredicate(), triple.getObject());
         assertEquals(expected, triple.hashCode());
     }
 }

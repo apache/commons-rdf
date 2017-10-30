@@ -39,10 +39,10 @@ class JsonLdLiteralImpl extends JsonLdTermImpl implements JsonLdLiteral {
         }
     }
 
-    private static String lowerCase(String langTag) { 
+    private static String lowerCase(String langTag) {
         return langTag.toLowerCase(Locale.ROOT);
     }
-    
+
     @Override
     public String ntriplesString() {
         final StringBuilder sb = new StringBuilder();
@@ -81,17 +81,17 @@ class JsonLdLiteralImpl extends JsonLdTermImpl implements JsonLdLiteral {
 
     @Override
     public int hashCode() {
-        return Objects.hash(node.getValue(), node.getDatatype(), 
+        return Objects.hash(node.getValue(), node.getDatatype(),
                 getLanguageTag().map(JsonLdLiteralImpl::lowerCase));
     }
 
     @Override
     public boolean equals(final Object obj) {
-        // COMMONSRDF-56: Do **not** use 
+        // COMMONSRDF-56: Do **not** use
         // asJsonLdNode().compareTo(other.asJsonLdNode())
         if (obj instanceof Literal) {
             final Literal other = (Literal) obj;
-            return getLexicalForm().equals(other.getLexicalForm()) 
+            return getLexicalForm().equals(other.getLexicalForm())
                     && getDatatype().equals(other.getDatatype())
                     && getLanguageTag().map(JsonLdLiteralImpl::lowerCase)
                         .equals(other.getLanguageTag().map(JsonLdLiteralImpl::lowerCase));

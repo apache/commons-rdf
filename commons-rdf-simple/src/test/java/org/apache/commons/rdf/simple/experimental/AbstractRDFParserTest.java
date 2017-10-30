@@ -56,7 +56,7 @@ public class AbstractRDFParserTest {
     private Path testXml;
 
 	private Path symlink;
-    
+
     @Before
     public void createTempFile() throws IOException {
         testNt = Files.createTempFile("test", ".nt");
@@ -64,10 +64,10 @@ public class AbstractRDFParserTest {
         testXml = Files.createTempFile("test", ".xml");
         // No need to populate the files as the dummy parser
         // doesn't actually read anything
-        
+
         // If supported, we'll make a symbolic link
         Path symlinks = Files.createTempDirectory("symlinked");
-        try { 
+        try {
         	symlink = Files.createSymbolicLink(
         				symlinks.resolve("linked.ttl"), testNt);
         } catch (IOException|UnsupportedOperationException ex) {
@@ -137,7 +137,7 @@ public class AbstractRDFParserTest {
     @Test
     public void parseFileSymlink() throws Exception {
     	// This test will typically not work in Windows
-    	// which requires system privileges to create symlinks 
+    	// which requires system privileges to create symlinks
     	assumeNotNull(symlink);
         final Graph g = factory.createGraph();
         final RDFParser parser = dummyParser.source(symlink).target(g);
@@ -145,7 +145,7 @@ public class AbstractRDFParserTest {
         checkGraph(g);
         assertEquals("<" + symlink.toUri().toString() + ">", firstPredicate(g, "source"));
         assertEquals("<" + testNt.toRealPath().toUri().toString() + ">", firstPredicate(g, "base"));
-    }    
+    }
 
     @Test
     public void parseNoSource() throws Exception {
@@ -186,7 +186,7 @@ public class AbstractRDFParserTest {
         assertEquals("<" + testNt.toUri().toString() + ">", firstPredicate(g, "source"));
         // Should be set to the file path - after following symlinks
         assertEquals("<" + testNt.toRealPath().toUri().toString() + ">", firstPredicate(g, "base"));
-        assertEquals("\"" + RDFSyntax.NTRIPLES.name() + "\"", 
+        assertEquals("\"" + RDFSyntax.NTRIPLES.name() + "\"",
                 firstPredicate(g, "contentTypeSyntax"));
         assertEquals("\"application/n-triples\"", firstPredicate(g, "contentType"));
     }
@@ -238,7 +238,7 @@ public class AbstractRDFParserTest {
         // bnode source indicates InputStream
         assertTrue(firstPredicate(g, "source").startsWith("_:"));
         assertEquals("\"application/n-quads\"", firstPredicate(g, "contentType"));
-        assertEquals("\"" + RDFSyntax.NQUADS.name() + "\"", 
+        assertEquals("\"" + RDFSyntax.NQUADS.name() + "\"",
                 firstPredicate(g, "contentTypeSyntax"));
     }
 
@@ -269,7 +269,7 @@ public class AbstractRDFParserTest {
         checkGraph(g);
         assertEquals("<http://www.example.net/test.ttl>", firstPredicate(g, "source"));
         assertEquals("<http://www.example.net/test.ttl>", firstPredicate(g, "base"));
-        assertEquals("\"" + RDFSyntax.TURTLE.name() + "\"", 
+        assertEquals("\"" + RDFSyntax.TURTLE.name() + "\"",
                 firstPredicate(g, "contentTypeSyntax"));
         assertEquals("\"text/turtle\"", firstPredicate(g, "contentType"));
     }

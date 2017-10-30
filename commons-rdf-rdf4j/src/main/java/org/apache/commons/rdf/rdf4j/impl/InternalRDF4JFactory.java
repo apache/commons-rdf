@@ -51,14 +51,14 @@ import org.eclipse.rdf4j.repository.Repository;
  * {@link org.apache.commons.rdf.rdf4j} and
  * {@link org.apache.commons.rdf.rdf4j.impl} by exposing the package-public
  * constructors.
- * 
+ *
  * @see RDF4J
  */
 public abstract class InternalRDF4JFactory {
 
     /**
      * Construct a {@link RDF4JBlankNode} from a RDF4J {@link BNode}.
-     * 
+     *
      * @param bNode
      *            RDF4J {@link BNode} to adapt
      * @param salt
@@ -72,7 +72,7 @@ public abstract class InternalRDF4JFactory {
 
     /**
      * Construct a {@link RDF4JIRI} from a RDF4J {@link IRI}.
-     * 
+     *
      * @param iri
      *            RDF4J {@link IRI} to adapt
      * @return Adapted {@link RDF4JIRI}
@@ -83,7 +83,7 @@ public abstract class InternalRDF4JFactory {
 
     /**
      * Construct a {@link RDF4JLiteral} from a RDF4J {@link Literal}.
-     * 
+     *
      * @param literal
      *            RDF4J {@link Literal}
      * @return Adapted {@link RDF4JLiteral}
@@ -96,7 +96,7 @@ public abstract class InternalRDF4JFactory {
      * Construct a {@link RDF4JGraph} from a RDF4J {@link Model}.
      * <p>
      * Changes in the graph will be reflected in the model, and vice versa.
-     * 
+     *
      * @param model
      *            RDF4J {@link Model} to adapt
      * @param rdf4jTermFactory
@@ -109,7 +109,7 @@ public abstract class InternalRDF4JFactory {
 
     /**
      * Construct a {@link RDF4JQuad} from a RDF4J {@link Statement}.
-     * 
+     *
      * @param statement
      *            RDF4J {@link Statement} to adapt
      * @param salt
@@ -125,7 +125,7 @@ public abstract class InternalRDF4JFactory {
      * <p>
      * Changes in the dataset will be reflected in the repsitory, and vice
      * versa.
-     * 
+     *
      * @param repository
      *            RDF4J {@link Repository} to adapt
      * @param handleInitAndShutdown
@@ -134,7 +134,7 @@ public abstract class InternalRDF4JFactory {
      *            {@link RDF4JDataset#close()}.
      * @param includeInferred
      *            If true, any inferred quads are included in the dataset
-     * 
+     *
      * @return Adapted {@link RDF4JDataset}
      */
     public RDF4JDataset createRepositoryDatasetImpl(final Repository repository, final boolean handleInitAndShutdown,
@@ -146,7 +146,7 @@ public abstract class InternalRDF4JFactory {
      * Construct a {@link RDF4JGraph} from a RDF4J {@link Model}.
      * <p>
      * Changes in the graph will be reflected in the model, and vice versa.
-     * 
+     *
      * @param repository
      *            RDF4J {@link Repository} to adapt
      * @param handleInitAndShutdown
@@ -170,7 +170,7 @@ public abstract class InternalRDF4JFactory {
 
     /**
      * Construct a {@link RDF4JTriple} from a RDF4J {@link Statement}.
-     * 
+     *
      * @param statement
      *            RDF4J {@link Statement} to adapt
      * @param salt

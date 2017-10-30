@@ -29,7 +29,7 @@ import org.apache.commons.rdf.rdf4j.RDF4J.Option;
 
 /**
  * Marker interface for RDF4J implementations of Dataset.
- * 
+ *
  * @see RDF4J#createDataset()
  * @see RDF4J#asDataset(org.eclipse.rdf4j.repository.Repository, Option...)
  */
@@ -43,7 +43,7 @@ public interface RDF4JDataset extends Dataset, RDF4JGraphLike<Quad> {
      * {@link Stream#close()}.
      * <p>
      * This can generally achieved using a try-with-resources block, e.g.:
-     * 
+     *
      * <pre>
      * int subjects;
      * try (Stream&lt;RDF4JQuad&gt; s : graph.stream()) {
@@ -62,7 +62,7 @@ public interface RDF4JDataset extends Dataset, RDF4JGraphLike<Quad> {
      * {@link Stream#close()}.
      * <p>
      * This can generally achieved using a try-with-resources block, e.g.:
-     * 
+     *
      * <pre>
      * int subjects;
      * try (Stream&lt;RDF4JQuad&gt; s : graph.stream()) {
@@ -81,7 +81,7 @@ public interface RDF4JDataset extends Dataset, RDF4JGraphLike<Quad> {
      * {@link Stream#close()}.
      * <p>
      * This can generally achieved using a try-with-resources block, e.g.:
-     * 
+     *
      * <pre>
      * int graphs;
      * try (Stream&lt;BlankNodeOrIRI&gt; s : graph.stream()) {
@@ -100,7 +100,7 @@ public interface RDF4JDataset extends Dataset, RDF4JGraphLike<Quad> {
      * {@link ClosableIterable#close()}.
      * <p>
      * This can generally achieved using a try-with-resources block, e.g.:
-     * 
+     *
      * <pre>
      * try (ClosableIterable&lt;Quad&gt; s : graph.iterate()) {
      *   for (Quad q : quads) {
@@ -108,7 +108,7 @@ public interface RDF4JDataset extends Dataset, RDF4JGraphLike<Quad> {
      *   }
      * }
      * </pre>
-     * 
+     *
      * If you don't use a try-with-resources block, the iterator will attempt to
      * close the ClosableIterable when reaching the end of the iteration.
      */
@@ -123,7 +123,7 @@ public interface RDF4JDataset extends Dataset, RDF4JGraphLike<Quad> {
      * {@link ClosableIterable#close()}.
      * <p>
      * This can generally achieved using a try-with-resources block, e.g.:
-     * 
+     *
      * <pre>
      * try (ClosableIterable&lt;Quad&gt; s : graph.iterate(g,s,p,o)) {
      *   for (Quad q : quads) {
@@ -131,7 +131,7 @@ public interface RDF4JDataset extends Dataset, RDF4JGraphLike<Quad> {
      *   }
      * }
      * </pre>
-     * 
+     *
      * If you don't use a try-with-resources block, the iterator will attempt to
      * close the ClosableIterable when reaching the end of the iteration.
      */

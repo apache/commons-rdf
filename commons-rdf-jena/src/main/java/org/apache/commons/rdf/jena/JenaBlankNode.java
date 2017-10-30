@@ -25,7 +25,7 @@ import org.apache.jena.graph.Node;
  * A Jena-backed {@link BlankNode}.
  * <p>
  * The underlying Jena {@link Node} can be accessed from {@link #asJenaNode()}.
- * 
+ *
  * @see Node#isBlank()
  */
 public interface JenaBlankNode extends JenaRDFTerm, BlankNode {

@@ -55,9 +55,9 @@ class DummyQuad implements Quad {
         }
         return quadList(this).equals(quadList((Quad) obj));
     }
-    
+
     @Override
-    public int hashCode() {           
+    public int hashCode() {
         return Objects.hash(getSubject(), getPredicate(), getObject(), getGraphName());
     }
 }

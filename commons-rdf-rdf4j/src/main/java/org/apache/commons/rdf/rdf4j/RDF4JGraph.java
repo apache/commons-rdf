@@ -32,7 +32,7 @@ import org.apache.commons.rdf.rdf4j.RDF4J.Option;
 
 /**
  * Marker interface for RDF4J implementations of Graph.
- * 
+ *
  * @see RDF4J#createGraph()
  * @see RDF4J#asGraph(Model)
  * @see RDF4J#asGraph(Repository, Option...)
@@ -79,7 +79,7 @@ public interface RDF4JGraph extends Graph, RDF4JGraphLike<Triple> {
      * {@link Stream#close()}.
      * <p>
      * This can generally achieved using a try-with-resources block, e.g.:
-     * 
+     *
      * <pre>
      * int subjects;
      * try (Stream&lt;RDF4JTriple&gt; s : graph.stream()) {
@@ -98,7 +98,7 @@ public interface RDF4JGraph extends Graph, RDF4JGraphLike<Triple> {
      * {@link Stream#close()}.
      * <p>
      * This can generally achieved using a try-with-resources block, e.g.:
-     * 
+     *
      * <pre>
      * int subjects;
      * try (Stream&lt;RDF4JTriple&gt; s : graph.stream(s,p,o)) {
@@ -117,7 +117,7 @@ public interface RDF4JGraph extends Graph, RDF4JGraphLike<Triple> {
      * {@link ClosableIterable#close()}.
      * <p>
      * This can generally achieved using a try-with-resources block, e.g.:
-     * 
+     *
      * <pre>
      * try (ClosableIterable&lt;Triple&gt; s : graph.iterate()) {
      *   for (Triple t : triples) {
@@ -125,7 +125,7 @@ public interface RDF4JGraph extends Graph, RDF4JGraphLike<Triple> {
      *   }
      * }
      * </pre>
-     * 
+     *
      * If you don't use a try-with-resources block, the iterator will attempt to
      * close the ClosableIterable when reaching the end of the iteration.
      */
@@ -140,7 +140,7 @@ public interface RDF4JGraph extends Graph, RDF4JGraphLike<Triple> {
      * {@link ClosableIterable#close()}.
      * <p>
      * This can generally achieved using a try-with-resources block, e.g.:
-     * 
+     *
      * <pre>
      * try (ClosableIterable&lt;Triple&gt; s : graph.iterate(s,p,o)) {
      *   for (Triple t : triples) {
@@ -148,7 +148,7 @@ public interface RDF4JGraph extends Graph, RDF4JGraphLike<Triple> {
      *   }
      * }
      * </pre>
-     * 
+     *
      * If you don't use a try-with-resources block, the iterator will attempt to
      * close the ClosableIterable when reaching the end of the iteration.
      */

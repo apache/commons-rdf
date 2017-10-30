@@ -43,15 +43,15 @@ public class DummyQuadTest {
     public void getObject() throws Exception {
         assertEquals(3, ((DummyIRI) quad.getObject()).i);
     }
-    
+
     @Test
     public void equals() throws Exception {
         assertEquals(quad, new DummyQuad());
     }
-    
+
     @Test
     public void testHashCode() {
-        final int expected = Objects.hash(quad.getSubject(), quad.getPredicate(), quad.getObject(), quad.getGraphName()); 
+        final int expected = Objects.hash(quad.getSubject(), quad.getPredicate(), quad.getObject(), quad.getGraphName());
         assertEquals(expected, quad.hashCode());
     }
 }

@@ -56,7 +56,7 @@ public final class JsonLdRDF implements RDF {
      * <p>
      * Changes to the Commons RDF {@link Dataset} are reflected in the JsonLd
      * {@link RDFDataset} and vice versa.
-     * 
+     *
      * @see #asGraph(RDFDataset)
      * @param rdfDataSet
      *            JsonLd {@link RDFDataset} to adapt
@@ -75,7 +75,7 @@ public final class JsonLdRDF implements RDF {
      * <p>
      * Changes to the Commons RDF {@link Graph} are reflected in the JsonLd
      * {@link RDFDataset} and vice versa.
-     * 
+     *
      * @see #asDataset(RDFDataset)
      * @see #asUnionGraph(RDFDataset)
      * @param rdfDataSet
@@ -123,7 +123,7 @@ public final class JsonLdRDF implements RDF {
     /**
      * Adapt a Commons RDF {@link org.apache.commons.rdf.api.Quad} as a JsonLd
      * {@link com.github.jsonldjava.core.RDFDataset.Quad}.
-     * 
+     *
      * @param quad
      *            Commons RDF {@link org.apache.commons.rdf.api.Quad} to adapt
      * @return Adapted JsonLd {@link com.github.jsonldjava.core.RDFDataset.Quad}
@@ -136,7 +136,7 @@ public final class JsonLdRDF implements RDF {
     /**
      * Adapt a Commons RDF {@link Triple} as a JsonLd
      * {@link com.github.jsonldjava.core.RDFDataset.Quad}.
-     * 
+     *
      * @param triple
      *            Commons RDF {@link Triple} to adapt
      * @return Adapted JsonLd {@link com.github.jsonldjava.core.RDFDataset.Quad}
@@ -151,7 +151,7 @@ public final class JsonLdRDF implements RDF {
      * <p>
      * The underlying JsonLd quad can be retrieved with
      * {@link JsonLdQuad#asJsonLdQuad()}.
-     * 
+     *
      * @param quad
      *            A JsonLd {@link com.github.jsonldjava.core.RDFDataset.Quad} to
      *            adapt
@@ -166,7 +166,7 @@ public final class JsonLdRDF implements RDF {
      * <p>
      * The underlying node can be retrieved with
      * {@link JsonLdTerm#asJsonLdNode()}.
-     * 
+     *
      * @param node
      *            A JsonLd {@link Node} to adapt
      * @return Adapted {@link JsonLdTerm}
@@ -181,7 +181,7 @@ public final class JsonLdRDF implements RDF {
      * <p>
      * The underlying JsonLd quad can be retrieved with
      * {@link JsonLdTriple#asJsonLdQuad()}.
-     * 
+     *
      * @param quad
      *            A JsonLd {@link com.github.jsonldjava.core.RDFDataset.Quad} to
      *            adapt
@@ -204,7 +204,7 @@ public final class JsonLdRDF implements RDF {
      * {@link RDFDataset} and vice versa. Triples removed from the graph are
      * removed from <strong>all</strong> graphs, while triples added are added
      * to the <em>default graph</em>.
-     * 
+     *
      * @param rdfDataSet
      *            JsonLd {@link RDFDataset} to adapt
      * @return Adapted {@link Dataset}

@@ -22,7 +22,7 @@ package org.apache.commons.rdf.api;
  * <p>
  * This interface is <strong>deprecated</strong> in favour of the richer
  * {@link RDF}.
- * 
+ *
  * @see RDF
  */
 @Deprecated

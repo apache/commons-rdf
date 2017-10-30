@@ -33,7 +33,7 @@ import org.eclipse.rdf4j.repository.Repository;
  * <p>
  * At least one of {@link #asModel()} or {@link #asRepository()} will always be
  * {@link Optional#isPresent()}.
- * 
+ *
  * @see RDF4JDataset
  * @see RDF4JGraph
  */
@@ -46,7 +46,7 @@ public interface RDF4JGraphLike<T extends TripleLike> extends GraphLike<T>, Auto
      * Model.
      * <p>
      * Changes to the Model are reflected in both directions.
-     * 
+     *
      * @return The corresponding RDF4J Model.
      */
     public Optional<Model> asModel();
@@ -58,7 +58,7 @@ public interface RDF4JGraphLike<T extends TripleLike> extends GraphLike<T>, Auto
      * Repository.
      * <p>
      * Changes to the Repository are reflected in both directions.
-     * 
+     *
      * @return The corresponding RDF4J Repository.
      */
     public Optional<Repository> asRepository();

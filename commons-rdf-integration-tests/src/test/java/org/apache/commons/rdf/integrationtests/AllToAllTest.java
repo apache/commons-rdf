@@ -119,7 +119,7 @@ public class AllToAllTest {
      * This is a variation of {@link #addTermsFromOtherFactory()}, but here
      * {@link Triple} is created in the "foreign" nodeFactory before adding to
      * the graph.
-     * 
+     *
      * @throws Exception
      *             Just in case..
      */

@@ -45,7 +45,7 @@ import org.junit.Test;
  * <p>
  * This test uses try-with-resources blocks for calls to {@link Dataset#stream()}
  * and {@link Dataset#iterate()}.
- * 
+ *
  * @see Dataset
  * @see RDF
  */
@@ -70,10 +70,10 @@ public abstract class AbstractDatasetTest {
     private BlankNode graph2;
 
     /**
-     * 
+     *
      * This method must be overridden by the implementing test to provide a
      * factory for the test to create {@link Dataset}, {@link IRI} etc.
-     * 
+     *
      * @return {@link RDF} instance to be tested.
      */
     protected abstract RDF createFactory();
@@ -86,7 +86,7 @@ public abstract class AbstractDatasetTest {
 
         graph1 = factory.createIRI("http://example.com/graph1");
         graph2 = factory.createBlankNode();
-        
+
         alice = factory.createIRI("http://example.com/alice");
         bob = factory.createIRI("http://example.com/bob");
         name = factory.createIRI("http://xmlns.com/foaf/0.1/name");
@@ -113,13 +113,13 @@ public abstract class AbstractDatasetTest {
         // NOTE: bnode1 used in both graph1 and graph2
         dataset.add(graph1, bnode1, name, secretClubName);
         dataset.add(graph2, bnode2, name, companyName);
-        
-        // default graph describes graph1 and graph2        
+
+        // default graph describes graph1 and graph2
         isPrimaryTopicOf = factory.createIRI("http://xmlns.com/foaf/0.1/isPrimaryTopicOf");
         dataset.add(null, alice, isPrimaryTopicOf, graph1);
         dataset.add(null, bob, isPrimaryTopicOf, graph2);
-        
-        
+
+
     }
 
     @Test
@@ -135,10 +135,10 @@ public abstract class AbstractDatasetTest {
             quads.add(t);
         }
         assertEquals(dataset.size(), quads.size());
-        
+
         //assertTrue(quads.contains(bobNameQuad));
-        // java.util.List won't do any BlankNode mapping, so 
-        // instead bobNameQuad of let's check for an IRI-centric quad 
+        // java.util.List won't do any BlankNode mapping, so
+        // instead bobNameQuad of let's check for an IRI-centric quad
         final Quad q = factory.createQuad(graph1, alice, name, aliceName);
         quads.contains(q);
 
@@ -159,21 +159,21 @@ public abstract class AbstractDatasetTest {
             count++;
         }
         assertEquals(dataset.size(), count);
-        
+
         // Pattern iteration which should cover multiple graphs.
-        
+
         Set<Quad> aliceQuads = new HashSet<>();
-        for (Quad aliceQ : dataset.iterate(null, alice, null, null)) { 
+        for (Quad aliceQ : dataset.iterate(null, alice, null, null)) {
             aliceQuads.add(aliceQ);
         }
         assertTrue(aliceQuads.contains(factory.createQuad(graph1, alice, name, aliceName)));
         assertTrue(aliceQuads.contains(factory.createQuad(graph1, alice, knows, bob)));
-        // We can't test this by Quad equality, as bnode1 might become mapped by the 
+        // We can't test this by Quad equality, as bnode1 might become mapped by the
         // dataset
         //assertTrue(aliceQuads.contains(factory.createQuad(graph1, alice, member, bnode1)));
         assertTrue(aliceQuads.contains(factory.createQuad(null, alice, isPrimaryTopicOf, graph1)));
         assertEquals(4, aliceQuads.size());
-        
+
         // Check the isPrimaryTopicOf statements in the default graph
         int topics = 0;
         for (Quad topic : dataset.iterate(null, null, isPrimaryTopicOf, null)) {
@@ -204,8 +204,8 @@ public abstract class AbstractDatasetTest {
         assertNull(aliceTopic.get().getGraphName().orElse(null));
         assertFalse(aliceTopic.get().getGraphName().isPresent());
     }
-    
-    
+
+
     /**
      * Special quad closing for RDF4J.
      */
@@ -464,14 +464,14 @@ public abstract class AbstractDatasetTest {
      * Create a different implementation of BlankNode to be tested with
      * dataset.add(a,b,c); (the implementation may or may not then choose to
      * translate such to its own instances)
-     * 
+     *
      * @param name
      * @return
      */
     private BlankNode createOwnBlankNode(final String name, final String uuid) {
         return new BlankNode() {
             @Override
-            public String ntriplesString() {                
+            public String ntriplesString() {
                 return "_: " + name;
             }
 
@@ -513,28 +513,28 @@ public abstract class AbstractDatasetTest {
         g2.add(b2, b2, hasChild, b1);
         return g2;
     }
-    
+
     /**
      * Ensure {@link Dataset#getGraphNames()} contains our two graphs.
-     * 
+     *
      * @throws Exception
      *             If test fails
      */
     @Test
     public void getGraphNames() throws Exception {
-        final Set<BlankNodeOrIRI> names = dataset.getGraphNames().collect(Collectors.toSet());        
+        final Set<BlankNodeOrIRI> names = dataset.getGraphNames().collect(Collectors.toSet());
         assertTrue("Can't find graph name " + graph1, names.contains(graph1));
         assertTrue("Found no quads in graph1", dataset.contains(Optional.of(graph1), null, null, null));
-        
+
         final Optional<BlankNodeOrIRI> graphName2 = dataset.getGraphNames().filter(BlankNode.class::isInstance).findAny();
-        assertTrue("Could not find graph2-like BlankNode", graphName2.isPresent()); 
+        assertTrue("Could not find graph2-like BlankNode", graphName2.isPresent());
         assertTrue("Found no quads in graph2", dataset.contains(graphName2, null, null, null));
 
         // Some implementations like Virtuoso might have additional internal graphs,
         // so we can't assume this:
         //assertEquals(2, names.size());
     }
-    
+
     @Test
     public void getGraph() throws Exception {
         final Graph defaultGraph = dataset.getGraph();
@@ -556,14 +556,14 @@ public abstract class AbstractDatasetTest {
         // NOTE: wildcard as graph2 is a (potentially mapped) BlankNode
         assertTrue(defaultGraph.contains(bob, isPrimaryTopicOf, null));
     }
-    
+
 
     @Test
     public void getGraph1() throws Exception {
         // graph1 should be present
         final Graph g1 = dataset.getGraph(graph1).get();
         assertEquals(4, g1.size());
-        
+
         assertTrue(g1.contains(alice, name, aliceName));
         assertTrue(g1.contains(alice, knows, bob));
         assertTrue(g1.contains(alice, member, null));
@@ -576,7 +576,7 @@ public abstract class AbstractDatasetTest {
         // We'll look up the potentially mapped graph2 blanknode
         final BlankNodeOrIRI graph2Name = (BlankNodeOrIRI) dataset.stream(Optional.empty(), bob, isPrimaryTopicOf, null)
                 .map(Quad::getObject).findAny().get();
-        
+
         final Graph g2 = dataset.getGraph(graph2Name).get();
         assertEquals(4, g2.size());
         final Triple bobNameTriple = bobNameQuad.asTriple();
@@ -586,7 +586,7 @@ public abstract class AbstractDatasetTest {
         assertFalse(g2.contains(bnode1, name, secretClubName));
         assertTrue(g2.contains(bnode2, name, companyName));
     }
-    
+
 
     @Test
     public void containsLanguageTagsCaseInsensitive() {
@@ -599,9 +599,9 @@ public abstract class AbstractDatasetTest {
         final IRI example1 = factory.createIRI("http://example.com/s1");
         final IRI greeting = factory.createIRI("http://example.com/greeting");
 
-        
+
         dataset.add(null, example1, greeting, upper);
-        
+
         // any kind of Triple should match
         assertTrue(dataset.contains(factory.createQuad(null, example1, greeting, upper)));
         assertTrue(dataset.contains(factory.createQuad(null, example1, greeting, lower)));
@@ -670,7 +670,7 @@ public abstract class AbstractDatasetTest {
             Locale.setDefault(defaultLocale);
         }
     }
-    
+
 
     @Test
     public void removeLanguageTagsCaseInsensitive() {
@@ -688,7 +688,7 @@ public abstract class AbstractDatasetTest {
         // Remove should also honour any case
         dataset.remove(null, example1, null, mixed);
         assertFalse(dataset.contains(null, null, greeting, null));
-        
+
         dataset.add(null, example1, greeting, lower);
         dataset.remove(null, example1, null, upper);
 
@@ -703,7 +703,7 @@ public abstract class AbstractDatasetTest {
             return s.findAny();
         }
     }
-    
+
     @Test
     public void streamLanguageTagsCaseInsensitive() {
         // COMMONSRDF-51: Ensure we can add/contains/remove with any casing
@@ -721,7 +721,7 @@ public abstract class AbstractDatasetTest {
         assertTrue(closableFindAny(dataset.stream(null, null, null, upper)).isPresent());
         assertTrue(closableFindAny(dataset.stream(null, null, null, lower)).isPresent());
         assertTrue(closableFindAny(dataset.stream(null, null, null, mixed)).isPresent());
-        
+
         // Check the quad returned equal a new quad
         Quad q = closableFindAny(dataset.stream(null, null, null, lower)).get();
         assertEquals(q, factory.createQuad(null, example1, greeting, mixed));
@@ -731,7 +731,7 @@ public abstract class AbstractDatasetTest {
      * An attempt to use the Java 8 streams to look up a more complicated query.
      * <p>
      * FYI, the equivalent SPARQL version (untested):
-     * 
+     *
      * <pre>
      *     SELECT ?orgName WHERE {
      *             ?org foaf:name ?orgName .

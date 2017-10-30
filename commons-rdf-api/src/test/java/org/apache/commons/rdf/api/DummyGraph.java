@@ -21,10 +21,10 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 class DummyGraph implements Graph {
-    
+
     boolean streamCalled = false;
     boolean filteredStreamCalled;
-    
+
     @Override
     public void add(final Triple triple) {
         if (! contains(triple)) {
@@ -33,7 +33,7 @@ class DummyGraph implements Graph {
     }
     @Override
     public void add(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
-        if (! contains(subject, predicate, object)) { 
+        if (! contains(subject, predicate, object)) {
             throw new IllegalStateException("DummyGraph can't be modified");
         }
     }
@@ -43,8 +43,8 @@ class DummyGraph implements Graph {
     }
     @Override
     public boolean contains(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
-        return (subject == null || subject.equals(new DummyIRI(1))) && 
-                (predicate == null || predicate.equals(new DummyIRI(2))) && 
+        return (subject == null || subject.equals(new DummyIRI(1))) &&
+                (predicate == null || predicate.equals(new DummyIRI(2))) &&
                 (object == null || object.equals(new DummyIRI(3)));
     }
     @Override
@@ -76,7 +76,7 @@ class DummyGraph implements Graph {
     @Override
     public Stream<? extends Triple> stream(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         filteredStreamCalled = true;
-        if (contains(subject, predicate, object)) { 
+        if (contains(subject, predicate, object)) {
             return Stream.of(new DummyTriple());
         } else {
             return Stream.empty();

@@ -27,7 +27,7 @@ import org.junit.Test;
 public class DefaultRDFTermFactoryTest {
     // All methods in RDFTermFactory has a default implementation
     RDFTermFactory factory = new RDFTermFactory() {};
-    
+
     @Test(expected=UnsupportedOperationException.class)
     public void createBlankNode() throws Exception {
         factory.createBlankNode();

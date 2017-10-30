@@ -90,7 +90,7 @@ final class BlankNodeImpl extends AbstractRDFTerm<BNode> implements RDF4JBlankNo
         final UUID uuid = new UUID(saltUUIDmost, saltUUIDleast);
         return "urn:uuid:" + uuid + "#" + value.getID();
     }
-    
+
     @Override
     public String toString() {
         return ntriplesString() + " [" + uniqueReference() + "]";

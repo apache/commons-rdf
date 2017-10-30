@@ -29,13 +29,13 @@ import org.junit.Test;
 public class GeneralizedRDFTripleTest {
 
     private JenaRDF jena = new JenaRDF();
-    
+
     @Test
     public void bnodeProperty() throws Exception {
         BlankNode b1 = jena.createBlankNode("b1");
         JenaIRI ex1 = jena.createIRI("http://example.com/ex1");
         JenaIRI ex2 = jena.createIRI("http://example.com/ex2");
-        
+
         JenaGeneralizedTripleLike t = jena.createGeneralizedTriple(ex1, b1, ex2);
         assertEquals(ex1, t.getSubject());
         assertEquals(ex2, t.getObject());
@@ -48,7 +48,7 @@ public class GeneralizedRDFTripleTest {
         JenaIRI ex1 = jena.createIRI("http://example.com/ex1");
         JenaIRI ex2 = jena.createIRI("http://example.com/ex2");
         JenaLiteral lit = jena.createLiteral("Hello");
-        
+
         JenaGeneralizedTripleLike t = jena.createGeneralizedTriple(ex1, lit, ex2);
         assertEquals(ex1, t.getSubject());
         assertEquals(ex2, t.getObject());
@@ -62,14 +62,14 @@ public class GeneralizedRDFTripleTest {
         JenaIRI ex1 = jena.createIRI("http://example.com/ex1");
         JenaIRI ex2 = jena.createIRI("http://example.com/ex2");
         JenaLiteral lit = jena.createLiteral("Hello");
-        
+
         JenaGeneralizedTripleLike t = jena.createGeneralizedTriple(lit, ex1, ex2);
         assertEquals(lit, t.getSubject()); // it's a literal!
         assertEquals(ex1, t.getPredicate());
         assertEquals(ex2, t.getObject());
         assertTrue(t.asJenaTriple().getSubject().isLiteral());
     }
-    
+
     @Test
     public void asGeneralizedTriple() throws Exception {
         Node s = NodeFactory.createLiteral("Hello");
@@ -81,5 +81,5 @@ public class GeneralizedRDFTripleTest {
         assertEquals(jena.asRDFTerm(p), t.getPredicate());
         assertEquals(jena.createIRI("http://example.com/ex"), t.getObject());
     }
-    
+
 }

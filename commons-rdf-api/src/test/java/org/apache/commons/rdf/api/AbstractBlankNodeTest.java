@@ -32,7 +32,7 @@ public abstract class AbstractBlankNodeTest {
      * {@link BlankNode} to be tested.
      * <p>
      * Each call to this method must provide a new, unique BlankNode.
-     * 
+     *
      * @return {@link RDF} instance to be tested.
      */
     protected abstract BlankNode getBlankNode();

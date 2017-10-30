@@ -32,16 +32,16 @@ public class DefaultQuadTest {
         assertNotEquals(t,  q);
         assertEquals(t, new DummyTriple());
         assertEquals(t, new DummyQuad().asTriple());
-        
+
         // FIXME: This would not catch if asTriple() accidentally mixed up s/p/o
         // as they are here all the same
         assertEquals(new DummyIRI(1), t.getSubject());
         assertEquals(new DummyIRI(2), t.getPredicate());
         assertEquals(new DummyIRI(3), t.getObject());
-        
-        
-        
+
+
+
         assertEquals(Objects.hash(q.getSubject(), q.getPredicate(), q.getObject()), t.hashCode());
     }
-    
+
 }

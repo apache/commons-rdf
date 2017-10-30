@@ -27,18 +27,18 @@ import org.apache.jena.graph.Triple;
  * This is a marker interface common to its specializations {@link JenaTriple},
  * {@link JenaGeneralizedTripleLike}, {@link JenaQuad} and
  * {@link JenaGeneralizedQuadLike}.
- * 
+ *
  * @see JenaTriple
  * @see JenaGeneralizedTripleLike
  * @see JenaQuad
  * @see JenaGeneralizedQuadLike
- * 
+ *
  */
 public interface JenaTripleLike extends org.apache.commons.rdf.api.TripleLike {
 
     /**
      * Return the adapted Jena triple
-     * 
+     *
      * @return Adapted Jena {@link Triple}.
      */
     Triple asJenaTriple();

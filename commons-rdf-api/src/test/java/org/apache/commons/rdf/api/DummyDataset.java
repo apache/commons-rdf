@@ -22,34 +22,34 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 class DummyDataset implements Dataset {
-    
+
     boolean streamCalled = false;
     boolean filteredStreamCalled;
-    
+
     @Override
     public void add(final Quad Quad) {
         if (! contains(Quad)) {
             throw new IllegalStateException("DummyDataset can't be modified");
         }
     }
-    
+
     @Override
     public void add(final BlankNodeOrIRI graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
-        if (! contains(Optional.ofNullable(graphName), subject, predicate, object)) { 
+        if (! contains(Optional.ofNullable(graphName), subject, predicate, object)) {
             throw new IllegalStateException("DummyDataset can't be modified");
         }
     }
-    
+
     @Override
     public boolean contains(final Quad Quad) {
         return Quad.equals(new DummyQuad());
     }
-    
+
     @Override
-    public boolean contains(final Optional<BlankNodeOrIRI> graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {        
+    public boolean contains(final Optional<BlankNodeOrIRI> graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         return (graphName == null || ! graphName.isPresent()) &&
-                (subject == null || subject.equals(new DummyIRI(1))) && 
-                (predicate == null || predicate.equals(new DummyIRI(2))) && 
+                (subject == null || subject.equals(new DummyIRI(1))) &&
+                (predicate == null || predicate.equals(new DummyIRI(2))) &&
                 (object == null || object.equals(new DummyIRI(3)));
     }
     @Override
@@ -82,7 +82,7 @@ class DummyDataset implements Dataset {
     public Stream<? extends Quad> stream(final Optional<BlankNodeOrIRI> graphName, final BlankNodeOrIRI subject, final IRI predicate,
             final RDFTerm object) {
         filteredStreamCalled = true;
-        if (contains(graphName, subject, predicate, object)) { 
+        if (contains(graphName, subject, predicate, object)) {
             return Stream.of(new DummyQuad());
         } else {
             return Stream.empty();
@@ -96,7 +96,7 @@ class DummyDataset implements Dataset {
 
     @Override
     public Optional<Graph> getGraph(final BlankNodeOrIRI graphName) {
-        if (graphName == null) { 
+        if (graphName == null) {
             return Optional.of(getGraph());
         } else {
             return Optional.empty();

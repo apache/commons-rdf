@@ -74,7 +74,7 @@ import org.apache.commons.rdf.api.Triple;
  * <p>
  * Example usage:
  * </p>
- * 
+ *
  * <pre>
  * Graph g1 = rDFTermFactory.createGraph();
  * new ExampleRDFParserBuilder().source(Paths.get("/tmp/graph.ttl")).contentType(RDFSyntax.TURTLE).target(g1).parse()
@@ -104,7 +104,7 @@ public interface RDFParser {
      * the same label, as the parser may use the
      * {@link RDF#createBlankNode(String)} method from the parsed blank node
      * labels.
-     * 
+     *
      * @see #target(Graph)
      * @param rdfTermFactory
      *            {@link RDF} to use for generating RDFTerms.
@@ -125,7 +125,7 @@ public interface RDFParser {
      * <p>
      * This method will override any contentType set with
      * {@link #contentType(String)}.
-     * 
+     *
      * @see #contentType(String)
      * @param rdfSyntax
      *            An {@link RDFSyntax} to parse the source according to, e.g.
@@ -148,7 +148,7 @@ public interface RDFParser {
      * <p>
      * This method will override any contentType set with
      * {@link #contentType(RDFSyntax)}.
-     * 
+     *
      * @see #contentType(RDFSyntax)
      * @param contentType
      *            A content-type string, e.g. <code>application/ld+json</code>
@@ -183,7 +183,7 @@ public interface RDFParser {
      * The default implementation of this method calls {@link #target(Consumer)}
      * with a {@link Consumer} that does {@link Graph#add(Triple)} with
      * {@link Quad#asTriple()} if the quad is in the default graph.
-     * 
+     *
      * @param graph
      *            The {@link Graph} to add triples to.
      * @return An {@link RDFParser} that will insert triples into the specified
@@ -213,7 +213,7 @@ public interface RDFParser {
      * <p>
      * The default implementation of this method calls {@link #target(Consumer)}
      * with a {@link Consumer} that does {@link Dataset#add(Quad)}.
-     * 
+     *
      * @param dataset
      *            The {@link Dataset} to add quads to.
      * @return An {@link RDFParser} that will insert triples into the specified
@@ -246,14 +246,14 @@ public interface RDFParser {
      * {@link RDFParser#parse()} call.
      * <p>
      * This method is typically called with a functional consumer, for example:
-     * 
+     *
      * <pre>
      * {@code
      * List<Quad> quads = new ArrayList<Quad>;
      * parserBuilder.target(quads::add).parse();
      * }
      * </pre>
-     * 
+     *
      * @param consumer
      *            A {@link Consumer} of {@link Quad}s
      * @return An {@link RDFParser} that will call the consumer for into the
@@ -331,7 +331,7 @@ public interface RDFParser {
      * <p>
      * This method will override any source set with {@link #source(IRI)},
      * {@link #source(Path)} or {@link #source(String)}.
-     * 
+     *
      * @param inputStream
      *            An InputStream to consume
      * @return An {@link RDFParser} that will use the specified source.
@@ -357,7 +357,7 @@ public interface RDFParser {
      * <p>
      * This method will override any source set with {@link #source(IRI)},
      * {@link #source(InputStream)} or {@link #source(String)}.
-     * 
+     *
      * @param file
      *            A Path for a file to parse
      * @return An {@link RDFParser} that will use the specified source.
@@ -389,7 +389,7 @@ public interface RDFParser {
      * <p>
      * This method will override any source set with {@link #source(Path)},
      * {@link #source(InputStream)} or {@link #source(String)}.
-     * 
+     *
      * @param iri
      *            An IRI to retrieve and parse
      * @return An {@link RDFParser} that will use the specified source.
@@ -421,13 +421,13 @@ public interface RDFParser {
      * <p>
      * This method will override any source set with {@link #source(Path)},
      * {@link #source(InputStream)} or {@link #source(IRI)}.
-     * 
+     *
      * @param iri
      *            An IRI to retrieve and parse
      * @return An {@link RDFParser} that will use the specified source.
      * @throws IllegalArgumentException
      *             If the base is not a valid absolute IRI string
-     * 
+     *
      */
     RDFParser source(String iri) throws IllegalArgumentException;
 
@@ -467,7 +467,7 @@ public interface RDFParser {
      * {@link java.util.concurrent.ExecutionException#getCause()} in the
      * {@link java.util.concurrent.ExecutionException} thrown on
      * {@link Future#get()}.
-     * 
+     *
      * @return A Future that will return the populated {@link Graph} when the
      *         parsing has finished.
      * @throws IOException

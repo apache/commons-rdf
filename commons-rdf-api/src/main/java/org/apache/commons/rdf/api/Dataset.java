@@ -27,7 +27,7 @@ import java.util.stream.Stream;
  * 1.1 Dataset</a>, a set of RDF quads, as defined by
  * <a href="http://www.w3.org/TR/rdf11-concepts/#section-rdf-dataset">RDF-1.1 Concepts and Abstract
  * Syntax</a>, a W3C Recommendation published on 25 February 2014.
- * 
+ *
  * @since 0.3.0-incubating
  * @see RDF#createDataset()
  */
@@ -114,7 +114,7 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
      * this Dataset.
      * <p>
      * The returned graph MAY be empty.
-     * 
+     *
      * @see #getGraph(BlankNodeOrIRI)
      * @return The default graph of this Dataset
      */
@@ -133,7 +133,7 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
      * <p>
      * It is unspecified if requesting an unknown or empty graph will return
      * {@link Optional#empty()} or create a new empty {@link Graph}.
-     * 
+     *
      * @see #getGraph()
      * @see #getGraphNames()
      * @param graphName
@@ -162,7 +162,7 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
      * which is not named, and thus is not represented in the returned Stream.
      * The default graph is accessible via {@link #getGraph()} or by using
      * {@link Optional#empty()} in the Quad access methods).
-     * 
+     *
      * @return A {@link Stream} of the graph names of this Dataset.
      */
     Stream<BlankNodeOrIRI> getGraphNames();
@@ -259,13 +259,13 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
      * Get an Iterable for iterating over all quads in the dataset.
      * <p>
      * This method is meant to be used with a Java for-each loop, e.g.:
-     * 
+     *
      * <pre>
      * for (Quad t : dataset.iterate()) {
      *     System.out.println(t);
      * }
      * </pre>
-     * 
+     *
      * The behaviour of the iterator is not specified if {@link #add(Quad)},
      * {@link #remove(Quad)} or {@link #clear()}, are called on the
      * {@link Dataset} before it terminates. It is undefined if the returned
@@ -301,7 +301,7 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
      * the pattern.
      * <p>
      * This method is meant to be used with a Java for-each loop, e.g.:
-     * 
+     *
      * <pre>
      * IRI alice = factory.createIRI("http://example.com/alice");
      * IRI knows = factory.createIRI("http://xmlns.com/foaf/0.1/");
