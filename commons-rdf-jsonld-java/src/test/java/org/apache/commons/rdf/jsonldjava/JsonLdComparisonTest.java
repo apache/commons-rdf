@@ -82,60 +82,65 @@ public class JsonLdComparisonTest {
 
     @Test
     public void grahContains() throws Exception {
-        final JsonLdGraph graph = rdf.createGraph();
-        final JsonLdIRI s = rdf.createIRI("http://example.com/s");
-        final JsonLdIRI p = rdf.createIRI("http://example.com/p");
-        final JsonLdLiteral lit1 = rdf.createLiteral("Hello");
+        try (final JsonLdGraph graph = rdf.createGraph()) {
+            final JsonLdIRI s = rdf.createIRI("http://example.com/s");
+            final JsonLdIRI p = rdf.createIRI("http://example.com/p");
+            final JsonLdLiteral lit1 = rdf.createLiteral("Hello");
 
-        graph.add(s, p, lit1);
-        assertTrue(graph.contains(s, p, rdf.createLiteral("Hello")));
-        assertTrue(graph.contains(s, p, rdf.createLiteral("Hello", Types.XSD_STRING)));
-        assertFalse(graph.contains(s, p, rdf.createLiteral("Hello", Types.XSD_NORMALIZEDSTRING)));
-        assertFalse(graph.contains(s, p, rdf.createLiteral("Hello", "en")));
-        assertFalse(graph.contains(s, p, rdf.createLiteral("Other")));
+            graph.add(s, p, lit1);
+            assertTrue(graph.contains(s, p, rdf.createLiteral("Hello")));
+            assertTrue(graph.contains(s, p, rdf.createLiteral("Hello", Types.XSD_STRING)));
+            assertFalse(graph.contains(s, p, rdf.createLiteral("Hello", Types.XSD_NORMALIZEDSTRING)));
+            assertFalse(graph.contains(s, p, rdf.createLiteral("Hello", "en")));
+            assertFalse(graph.contains(s, p, rdf.createLiteral("Other")));
+        }
     }
 
     @Test
     public void datasetContains() throws Exception {
-        final JsonLdDataset dataset = rdf.createDataset();
-        final JsonLdIRI s = rdf.createIRI("http://example.com/s");
-        final JsonLdIRI p = rdf.createIRI("http://example.com/p");
-        final JsonLdLiteral lit1 = rdf.createLiteral("Hello");
+        try (final JsonLdDataset dataset = rdf.createDataset()) {
+            final JsonLdIRI s = rdf.createIRI("http://example.com/s");
+            final JsonLdIRI p = rdf.createIRI("http://example.com/p");
+            final JsonLdLiteral lit1 = rdf.createLiteral("Hello");
 
-        dataset.add(null, s, p, lit1);
-        assertTrue(dataset.contains(Optional.empty(), s, p, rdf.createLiteral("Hello")));
-        assertTrue(dataset.contains(Optional.empty(), s, p, rdf.createLiteral("Hello", Types.XSD_STRING)));
-        assertFalse(dataset.contains(Optional.empty(), s, p, rdf.createLiteral("Hello", Types.XSD_NORMALIZEDSTRING)));
-        assertFalse(dataset.contains(Optional.empty(), s, p, rdf.createLiteral("Hello", "en")));
-        assertFalse(dataset.contains(Optional.empty(), s, p, rdf.createLiteral("Other")));
+            dataset.add(null, s, p, lit1);
+            assertTrue(dataset.contains(Optional.empty(), s, p, rdf.createLiteral("Hello")));
+            assertTrue(dataset.contains(Optional.empty(), s, p, rdf.createLiteral("Hello", Types.XSD_STRING)));
+            assertFalse(
+                    dataset.contains(Optional.empty(), s, p, rdf.createLiteral("Hello", Types.XSD_NORMALIZEDSTRING)));
+            assertFalse(dataset.contains(Optional.empty(), s, p, rdf.createLiteral("Hello", "en")));
+            assertFalse(dataset.contains(Optional.empty(), s, p, rdf.createLiteral("Other")));
+        }
     }
 
     @Test
     public void datasetRemove() throws Exception {
-        final JsonLdDataset dataset = rdf.createDataset();
-        final JsonLdIRI s = rdf.createIRI("http://example.com/s");
-        final JsonLdIRI p = rdf.createIRI("http://example.com/p");
-        final JsonLdLiteral lit1 = rdf.createLiteral("Hello");
+        try (final JsonLdDataset dataset = rdf.createDataset()) {
+            final JsonLdIRI s = rdf.createIRI("http://example.com/s");
+            final JsonLdIRI p = rdf.createIRI("http://example.com/p");
+            final JsonLdLiteral lit1 = rdf.createLiteral("Hello");
 
-        dataset.add(null, s, p, lit1);
-        assertTrue(dataset.contains(Optional.empty(), s, p, lit1));
-        dataset.remove(null, null, null, rdf.createLiteral("Other")); // should NOT match
-        assertTrue(dataset.contains(Optional.empty(), s, p, lit1));
-        dataset.remove(null, null, null, rdf.createLiteral("Hello", Types.XSD_STRING)); // SHOULD  match
-        assertFalse(dataset.contains(Optional.empty(), s, p, lit1));
+            dataset.add(null, s, p, lit1);
+            assertTrue(dataset.contains(Optional.empty(), s, p, lit1));
+            dataset.remove(null, null, null, rdf.createLiteral("Other")); // should NOT match
+            assertTrue(dataset.contains(Optional.empty(), s, p, lit1));
+            dataset.remove(null, null, null, rdf.createLiteral("Hello", Types.XSD_STRING)); // SHOULD match
+            assertFalse(dataset.contains(Optional.empty(), s, p, lit1));
+        }
     }
 
     @Test
     public void datasetStream() throws Exception {
-        final JsonLdDataset dataset = rdf.createDataset();
-        final JsonLdIRI s = rdf.createIRI("http://example.com/s");
-        final JsonLdIRI p = rdf.createIRI("http://example.com/p");
-        final JsonLdLiteral lit1 = rdf.createLiteral("Hello");
-        final JsonLdLiteral lit2 = rdf.createLiteral("Other");
+        try (final JsonLdDataset dataset = rdf.createDataset()) {
+            final JsonLdIRI s = rdf.createIRI("http://example.com/s");
+            final JsonLdIRI p = rdf.createIRI("http://example.com/p");
+            final JsonLdLiteral lit1 = rdf.createLiteral("Hello");
+            final JsonLdLiteral lit2 = rdf.createLiteral("Other");
 
-        dataset.add(null, s, p, lit1);
-        assertTrue(dataset.stream(Optional.empty(), s, p, lit1).findAny().isPresent());
-        assertFalse(dataset.stream(Optional.empty(), s, p, lit2).findAny().isPresent());
+            dataset.add(null, s, p, lit1);
+            assertTrue(dataset.stream(Optional.empty(), s, p, lit1).findAny().isPresent());
+            assertFalse(dataset.stream(Optional.empty(), s, p, lit2).findAny().isPresent());
+        }
     }
 
 }

@@ -55,9 +55,10 @@ public class JsonLdParserBuilderTest {
         final URL url = getClass().getResource(TEST_JSONLD);
         assertNotNull("Test resource not found: " + TEST_JSONLD, url);
         final IRI iri = factory.createIRI(url.toString());
-        final Graph g = factory.createGraph();
-        new JsonLdParser().contentType(RDFSyntax.JSONLD).source(iri).target(g).parse().get(10, TimeUnit.SECONDS);
-        checkGraph(g);
+        try (final Graph g = factory.createGraph()) {
+            new JsonLdParser().contentType(RDFSyntax.JSONLD).source(iri).target(g).parse().get(10, TimeUnit.SECONDS);
+            checkGraph(g);
+        }
     }
 
     @Test
@@ -68,20 +69,22 @@ public class JsonLdParserBuilderTest {
             assertNotNull("Test resource not found: " + TEST_JSONLD, is);
             Files.copy(is, path, StandardCopyOption.REPLACE_EXISTING);
         }
-        final Graph g = factory.createGraph();
-        new JsonLdParser().contentType(RDFSyntax.JSONLD).source(path).target(g).parse().get(10, TimeUnit.SECONDS);
-        checkGraph(g);
+        try (final Graph g = factory.createGraph()) {
+            new JsonLdParser().contentType(RDFSyntax.JSONLD).source(path).target(g).parse().get(10, TimeUnit.SECONDS);
+            checkGraph(g);
+        }
     }
 
     @Test
     public void parseByStream() throws Exception {
-        final Graph g = factory.createGraph();
-        try (InputStream is = getClass().getResourceAsStream(TEST_JSONLD)) {
-            assertNotNull("Test resource not found: " + TEST_JSONLD, is);
-            new JsonLdParser().base("http://example.com/base/").contentType(RDFSyntax.JSONLD).source(is).target(g)
-                    .parse().get(10, TimeUnit.SECONDS);
+        try (final Graph g = factory.createGraph()) {
+            try (InputStream is = getClass().getResourceAsStream(TEST_JSONLD)) {
+                assertNotNull("Test resource not found: " + TEST_JSONLD, is);
+                new JsonLdParser().base("http://example.com/base/").contentType(RDFSyntax.JSONLD).source(is).target(g)
+                        .parse().get(10, TimeUnit.SECONDS);
+            }
+            checkGraph(g);
         }
-        checkGraph(g);
     }
 
     private void checkGraph(final Graph g) {
