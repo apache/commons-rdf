@@ -24,7 +24,7 @@
  * When a class has stabilized, it will move to the
  * {@link org.apache.commons.rdf.simple} package.
  * <ul>
- * <li>{@link AbstractRDFParser} - an abstract helper class for implementations
+ * <li>{@link org.apache.commons.rdf.simple.experimental.AbstractRDFParser} - an abstract helper class for implementations
  * of {@link org.apache.commons.rdf.experimental.RDFParser}.</li>
  * </ul>
  */
