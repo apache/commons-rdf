@@ -99,9 +99,9 @@ class W3CRDFSyntax implements RDFSyntax {
         RDFXML = new W3CRDFSyntax("RDF_XML", "RDF 1.1 XML Syntax", "application/rdf+xml", ".rdf", false);
         TRIG = new W3CRDFSyntax("TriG", "RDF 1.1 TriG", "application/trig", ".trig", true);
         RDFA = new W3CRDFSyntax("RDFa", "HTML+RDFa 1.1", "text/html", ".html", false) {
-            private Set<String> types = Collections.unmodifiableSet(new LinkedHashSet<>(
+            private final Set<String> types = Collections.unmodifiableSet(new LinkedHashSet<>(
                     Arrays.asList("text/html", "application/xhtml+xml")));
-            private Set<String> extensions = Collections.unmodifiableSet(new LinkedHashSet<>(
+            private final Set<String> extensions = Collections.unmodifiableSet(new LinkedHashSet<>(
                             Arrays.asList(".html", ".xhtml")));
             @Override
             public Set<String> mediaTypes() {

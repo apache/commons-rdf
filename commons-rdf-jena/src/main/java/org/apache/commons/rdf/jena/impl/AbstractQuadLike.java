@@ -64,9 +64,9 @@ abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
      */
     private static class DefaultGraphChecker {
         // Fixed UUID for comparison of defaultGraphNodeGenerated
-        private UUID salt = UUID.fromString("aaa6bf96-ea58-4a55-9485-3733403a1f24");
-        private RDFTerm defaultGraph = internalJenaFactory.createRDFTerm(Quad.defaultGraphIRI, salt);
-        private RDFTerm defaultGraphNodeGenerated = internalJenaFactory.createRDFTerm(Quad.defaultGraphNodeGenerated, salt);
+        private final UUID salt = UUID.fromString("aaa6bf96-ea58-4a55-9485-3733403a1f24");
+        private final RDFTerm defaultGraph = internalJenaFactory.createRDFTerm(Quad.defaultGraphIRI, salt);
+        private final RDFTerm defaultGraphNodeGenerated = internalJenaFactory.createRDFTerm(Quad.defaultGraphNodeGenerated, salt);
 
         /**
          * Check if RDFTerm is an IRI that matches the two Jena default graph

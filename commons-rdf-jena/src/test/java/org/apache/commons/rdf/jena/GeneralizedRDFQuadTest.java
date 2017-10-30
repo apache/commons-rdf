@@ -28,7 +28,7 @@ import org.junit.Test;
 
 public class GeneralizedRDFQuadTest {
 
-    private JenaRDF jena = new JenaRDF();
+    private final JenaRDF jena = new JenaRDF();
 
     @Test
     public void bnodeProperty() throws Exception {
