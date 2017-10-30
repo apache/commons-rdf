@@ -65,59 +65,60 @@ public class TestJenaGraphToCommonsRDFGraph {
         final JenaRDF factory = new JenaRDF();
 
         // "graph" is a CommonsRDF graph
-        final Graph graph = factory.asGraph(jGraph);
+        try (final Graph graph = factory.asGraph(jGraph)) {
 
-        // The below check expected statements from D.ttl
+            // The below check expected statements from D.ttl
 
-        final JenaIRI p = factory.createIRI("http://example.com/p");
-        final JenaIRI s = factory.createIRI("http://example.com/s");
-        final JenaLiteral literal123 = factory.createLiteral("123", Types.XSD_INTEGER);
-        assertTrue(graph.contains(s, p, literal123));
+            final JenaIRI p = factory.createIRI("http://example.com/p");
+            final JenaIRI s = factory.createIRI("http://example.com/s");
+            final JenaLiteral literal123 = factory.createLiteral("123", Types.XSD_INTEGER);
+            assertTrue(graph.contains(s, p, literal123));
 
-        final JenaIRI p1 = factory.createIRI("http://example.com/p1");
-        // Let's look up the BlankNode
-        final BlankNodeOrIRI bnode1 = graph.stream(null, p1, null).findFirst().map(Triple::getSubject).get();
-        assertTrue(bnode1 instanceof BlankNode);
+            final JenaIRI p1 = factory.createIRI("http://example.com/p1");
+            // Let's look up the BlankNode
+            final BlankNodeOrIRI bnode1 = graph.stream(null, p1, null).findFirst().map(Triple::getSubject).get();
+            assertTrue(bnode1 instanceof BlankNode);
 
-        // Verify we can use BlankNode in query again
-        final RDFTerm obj = graph.stream(bnode1, p1, null).findFirst().map(Triple::getObject).get();
+            // Verify we can use BlankNode in query again
+            final RDFTerm obj = graph.stream(bnode1, p1, null).findFirst().map(Triple::getObject).get();
 
-        // Let's look up also that nested blank node
-        assertTrue(obj instanceof BlankNode);
-        final BlankNode bnode2 = (BlankNode) obj;
+            // Let's look up also that nested blank node
+            assertTrue(obj instanceof BlankNode);
+            final BlankNode bnode2 = (BlankNode) obj;
 
-        final JenaIRI q = factory.createIRI("http://example.com/q");
-        final JenaLiteral literalR = factory.createLiteral("r", "en");
-        assertTrue(graph.contains(bnode2, q, literalR));
+            final JenaIRI q = factory.createIRI("http://example.com/q");
+            final JenaLiteral literalR = factory.createLiteral("r", "en");
+            assertTrue(graph.contains(bnode2, q, literalR));
 
-        // Can we add the same triple again as s/p/o
-        // without affecting graph size?
-        // Just to be evil we add a blanknode-iri-blanknode statement
-        assertEquals(3, graph.size());
-        graph.add(bnode1, p1, bnode2);
-        assertEquals(3, graph.size());
+            // Can we add the same triple again as s/p/o
+            // without affecting graph size?
+            // Just to be evil we add a blanknode-iri-blanknode statement
+            assertEquals(3, graph.size());
+            graph.add(bnode1, p1, bnode2);
+            assertEquals(3, graph.size());
 
-        // Add the same Triple again
-        graph.stream(bnode2, null, null).findFirst().ifPresent(graph::add);
-        assertEquals(3, graph.size());
+            // Add the same Triple again
+            graph.stream(bnode2, null, null).findFirst().ifPresent(graph::add);
+            assertEquals(3, graph.size());
 
-        // Add to CommonsRDF Graph
-        final JenaIRI s2 = factory.createIRI("http://example/s2");
-        final JenaIRI p2 = factory.createIRI("http://example/p2");
-        final JenaLiteral foo = factory.createLiteral("foo");
-        graph.add(s2, p2, foo);
-        assertEquals(4, graph.size());
-        assertTrue(graph.contains(s2, p2, foo));
+            // Add to CommonsRDF Graph
+            final JenaIRI s2 = factory.createIRI("http://example/s2");
+            final JenaIRI p2 = factory.createIRI("http://example/p2");
+            final JenaLiteral foo = factory.createLiteral("foo");
+            graph.add(s2, p2, foo);
+            assertEquals(4, graph.size());
+            assertTrue(graph.contains(s2, p2, foo));
 
-        // Verify the corresponding Jena Nodes are in Jena graph
-        assertTrue(jGraph.contains(s2.asJenaNode(), p2.asJenaNode(), foo.asJenaNode()));
+            // Verify the corresponding Jena Nodes are in Jena graph
+            assertTrue(jGraph.contains(s2.asJenaNode(), p2.asJenaNode(), foo.asJenaNode()));
 
-        if (DEBUG) {
-            System.out.println("==== Write CommonsRDF graph\n");
-            graph.stream().forEach(System.out::println);
-            // And its in the Jena graph
-            System.out.println("\n==== Write Jena graph directly\n");
-            RDFDataMgr.write(System.out, jGraph, Lang.TTL);
+            if (DEBUG) {
+                System.out.println("==== Write CommonsRDF graph\n");
+                graph.stream().forEach(System.out::println);
+                // And its in the Jena graph
+                System.out.println("\n==== Write Jena graph directly\n");
+                RDFDataMgr.write(System.out, jGraph, Lang.TTL);
+            }
         }
     }
 }
