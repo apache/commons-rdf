@@ -92,7 +92,7 @@ public class DefaultGraphInQuadTest {
     @Test
     public void createFromDefaultGraphNodeGeneratedIRIString() throws Exception {
         // What if <urn:x-arq:DefaultGraphNode> appear in a non-Jena IRI?
-        IRI foreignDefaultGraph = (IRI) simpleRDF.createIRI(Quad.defaultGraphNodeGenerated.getURI());
+        IRI foreignDefaultGraph = simpleRDF.createIRI(Quad.defaultGraphNodeGenerated.getURI());
         JenaQuad q = rdf.createQuad(foreignDefaultGraph, example, example, example);
         // We'll expect JenaRDF to preserve the graph IRI as-is        
         assertTrue(q.asJenaQuad().isDefaultGraph()); 

@@ -186,7 +186,7 @@ class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> implements
     public Set<RDF4JBlankNodeOrIRI> getContextMask() {
         final Set<RDF4JBlankNodeOrIRI> mask = new HashSet<>();
         for (final Resource s : contextMask) {
-            mask.add((RDF4JBlankNodeOrIRI) rdf4jTermFactory.asRDFTerm(s));
+            mask.add(rdf4jTermFactory.asRDFTerm(s));
         }
         return Collections.unmodifiableSet(mask);
     }
