@@ -238,12 +238,12 @@
     </contributors>
 
     <modules>
-        <module>api</module>
-        <module>simple</module>
-        <module>rdf4j</module>
-        <module>jena</module>
-        <module>jsonld-java</module>
-        <module>integration-tests</module>
+        <module>commons-rdf-api</module>
+        <module>commons-rdf-simple</module>
+        <module>commons-rdf-rdf4j</module>
+        <module>commons-rdf-jena</module>
+        <module>commons-rdf-jsonld-java</module>
+        <module>commons-rdf-integration-tests</module>
     </modules>
 
     <!--  
