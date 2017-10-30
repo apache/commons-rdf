@@ -32,7 +32,7 @@ import java.util.stream.Stream;
 public interface Graph extends AutoCloseable, GraphLike<Triple> {
 
     /**
-     * Add a triple to the graph, possibly mapping any of the components of the
+     * Adds a triple to the graph, possibly mapping any of the components of the
      * Triple to those supported by this Graph.
      *
      * @param triple
@@ -42,7 +42,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
     void add(Triple triple);
 
     /**
-     * Add a triple to the graph, possibly mapping any of the components to
+     * Adds a triple to the graph, possibly mapping any of the components to
      * those supported by this Graph.
      *
      * @param subject
@@ -55,7 +55,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
     void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
 
     /**
-     * Check if graph contains triple.
+     * Checks if graph contains triple.
      *
      * @param triple
      *            The triple to check.
@@ -65,7 +65,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
     boolean contains(Triple triple);
 
     /**
-     * Check if graph contains a pattern of triples.
+     * Checks if graph contains a pattern of triples.
      *
      * @param subject
      *            The triple subject (null is a wildcard)
@@ -79,7 +79,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
     boolean contains(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
 
     /**
-     * Close the graph, relinquishing any underlying resources.
+     * Closes the graph, relinquishing any underlying resources.
      * <p>
      * For example, this would close any open file and network streams and free
      * database locks held by the Graph implementation.
@@ -95,7 +95,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
     }
 
     /**
-     * Remove a concrete triple from the graph.
+     * Removes a concrete triple from the graph.
      *
      * @param triple
      *            triple to remove
@@ -104,7 +104,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
     void remove(Triple triple);
 
     /**
-     * Remove a concrete pattern of triples from the graph.
+     * Removes a concrete pattern of triples from the graph.
      *
      * @param subject
      *            The triple subject (null is a wildcard)
@@ -116,7 +116,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
     void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
 
     /**
-     * Clear the graph, removing all triples.
+     * Clears the graph, removing all triples.
      */
     @Override
     void clear();
@@ -133,7 +133,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
     long size();
 
     /**
-     * Get all triples contained by the graph.<br>
+     * Gets all triples contained by the graph.<br>
      * <p>
      * The iteration does not contain any duplicate triples, as determined by
      * the {@link Triple#equals(Object)} method for each {@link Triple}.
@@ -152,7 +152,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
     Stream<? extends Triple> stream();
 
     /**
-     * Get all triples contained by the graph matched with the pattern.
+     * Gets all triples contained by the graph matched with the pattern.
      * <p>
      * The iteration does not contain any duplicate triples, as determined by
      * the {@link Triple#equals(Object)} method for each {@link Triple}.
@@ -205,7 +205,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
     }
 
     /**
-     * Get an Iterable for iterating over all triples in the graph.
+     * Gets an Iterable for iterating over all triples in the graph.
      * <p>
      * This method is meant to be used with a Java for-each loop, e.g.:
      *
@@ -246,7 +246,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
     }
 
     /**
-     * Get an Iterable for iterating over the triples in the graph that match
+     * Gets an Iterable for iterating over the triples in the graph that match
      * the pattern.
      * <p>
      * This method is meant to be used with a Java for-each loop, e.g.:
