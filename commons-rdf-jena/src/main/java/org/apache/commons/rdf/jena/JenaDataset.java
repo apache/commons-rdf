@@ -28,7 +28,7 @@ import org.apache.jena.sparql.core.DatasetGraph;
  * The underlying Jena {@link DatasetGraph} can be accessed with
  * {@link #asJenaDatasetGraph()}.
  */
-public interface JenaDataset extends org.apache.commons.rdf.api.Dataset {
+public interface JenaDataset extends Dataset {
 
     /**
      * Return the underlying Jena {@link DatasetGraph}.
@@ -38,7 +38,7 @@ public interface JenaDataset extends org.apache.commons.rdf.api.Dataset {
      *
      * @return A Jena {@link DatasetGraph}
      */
-    public DatasetGraph asJenaDatasetGraph();
+    DatasetGraph asJenaDatasetGraph();
 
     /**
      * Return a union graph view of this dataset.
@@ -51,6 +51,6 @@ public interface JenaDataset extends org.apache.commons.rdf.api.Dataset {
      *
      * @return A union {@link Graph}
      */
-    public JenaGraph getUnionGraph();
+    JenaGraph getUnionGraph();
 
 }

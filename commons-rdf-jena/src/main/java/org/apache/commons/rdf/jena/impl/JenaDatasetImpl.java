@@ -43,45 +43,45 @@ import org.apache.jena.sparql.core.GraphView;
 
 class JenaDatasetImpl implements JenaDataset {
 
-    private final DatasetGraph graph;
+    private final DatasetGraph datasetGraph;
     private final UUID salt;
     private final JenaRDF factory;
 
-    JenaDatasetImpl(final DatasetGraph graph, final UUID salt) {
-        this.graph = graph;
+    JenaDatasetImpl(final DatasetGraph datasetGraph, final UUID salt) {
+        this.datasetGraph = datasetGraph;
         this.salt = salt;
         this.factory = new JenaRDF(salt);
     }
 
     @Override
     public void add(final BlankNodeOrIRI graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
-        graph.add(org.apache.jena.sparql.core.Quad.create(factory.asJenaNode(graphName), factory.asJenaNode(subject),
+        datasetGraph.add(org.apache.jena.sparql.core.Quad.create(factory.asJenaNode(graphName), factory.asJenaNode(subject),
                 factory.asJenaNode(predicate), factory.asJenaNode(object)));
     }
 
     @Override
     public void add(final Quad quad) {
-        graph.add(factory.asJenaQuad(quad));
+        datasetGraph.add(factory.asJenaQuad(quad));
     }
 
     @Override
     public DatasetGraph asJenaDatasetGraph() {
-        return graph;
+        return datasetGraph;
     }
 
     @Override
     public void clear() {
-        graph.clear();
+        datasetGraph.clear();
     }
 
     @Override
     public void close() {
-        graph.close();
+        datasetGraph.close();
     }
 
     @Override
     public boolean contains(final Optional<BlankNodeOrIRI> graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
-        return graph.contains(toJenaPattern(graphName), toJenaPattern(subject), toJenaPattern(predicate),
+        return datasetGraph.contains(toJenaPattern(graphName), toJenaPattern(subject), toJenaPattern(predicate),
                 toJenaPattern(object));
     }
 
@@ -93,7 +93,7 @@ class JenaDatasetImpl implements JenaDataset {
         if (graphName == null) {
             return ANY;
         }
-        // null: default graph
+        // null: default datasetGraph
         return factory.asJenaNode(graphName.orElse(null));
     }
 
@@ -106,19 +106,19 @@ class JenaDatasetImpl implements JenaDataset {
 
     @Override
     public boolean contains(final Quad quad) {
-        return graph.contains(factory.asJenaQuad(quad));
+        return datasetGraph.contains(factory.asJenaQuad(quad));
     }
 
     @Override
     public void remove(final Optional<BlankNodeOrIRI> graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
-        graph.deleteAny(toJenaPattern(graphName), toJenaPattern(subject),
+        datasetGraph.deleteAny(toJenaPattern(graphName), toJenaPattern(subject),
                 toJenaPattern(predicate), toJenaPattern(object));
     }
 
     @Override
     public void remove(final Quad quad) {
         // COMMONSRDF-51:
-        graph.deleteAny(
+        datasetGraph.deleteAny(
                 toJenaPattern(quad.getGraphName()),
                 toJenaPattern(quad.getSubject()),
                 toJenaPattern(quad.getPredicate()),
@@ -127,60 +127,60 @@ class JenaDatasetImpl implements JenaDataset {
 
     @Override
     public long size() {
-        final long quads = Iter.asStream(graph.listGraphNodes())
-                .map(graph::getGraph)
+        final long quads = Iter.asStream(datasetGraph.listGraphNodes())
+                .map(datasetGraph::getGraph)
                 .collect(Collectors.summingLong(org.apache.jena.graph.Graph::size));
-        return quads + graph.getDefaultGraph().size();
+        return quads + datasetGraph.getDefaultGraph().size();
     }
 
     @Override
     public Stream<? extends Quad> stream() {
         final JenaRDF factory = new JenaRDF(salt);
-        return Iter.asStream(graph.find(ANY, ANY, ANY, ANY), true).map(factory::asQuad);
+        return Iter.asStream(datasetGraph.find(ANY, ANY, ANY, ANY), true).map(factory::asQuad);
     }
 
     @Override
     public Stream<? extends Quad> stream(final Optional<BlankNodeOrIRI> g, final BlankNodeOrIRI s, final IRI p, final RDFTerm o) {
         final JenaRDF factory = new JenaRDF(salt);
-        return Iter.asStream(graph.find(toJenaPattern(g), toJenaPattern(s), toJenaPattern(p), toJenaPattern(o)), true)
+        return Iter.asStream(datasetGraph.find(toJenaPattern(g), toJenaPattern(s), toJenaPattern(p), toJenaPattern(o)), true)
                 .map(factory::asQuad);
     }
 
     @Override
     public String toString() {
         final StringWriter sw = new StringWriter();
-        RDFDataMgr.write(sw, graph, Lang.NT);
+        RDFDataMgr.write(sw, datasetGraph, Lang.NT);
         return sw.toString();
     }
 
     @Override
     public Graph getGraph() {
-        final GraphView g = GraphView.createDefaultGraph(graph);
+        final GraphView g = GraphView.createDefaultGraph(datasetGraph);
         return new JenaGraphImpl(g, salt);
     }
 
     @Override
     public JenaGraph getUnionGraph() {
-        final GraphView gv = GraphView.createUnionGraph(graph);
+        final GraphView gv = GraphView.createUnionGraph(datasetGraph);
         return new JenaGraphImpl(gv, salt);
     }
 
     @Override
     public Optional<Graph> getGraph(final BlankNodeOrIRI graphName) {
-        final GraphView gv = GraphView.createNamedGraph(graph, factory.asJenaNode(graphName));
+        final GraphView gv = GraphView.createNamedGraph(datasetGraph, factory.asJenaNode(graphName));
         return Optional.of(new JenaGraphImpl(gv, salt));
     }
 
     @Override
     public Stream<BlankNodeOrIRI> getGraphNames() {
         final JenaRDF factory = new JenaRDF(salt);
-        return Iter.asStream(graph.listGraphNodes()).map(node -> (BlankNodeOrIRI) factory.asRDFTerm(node));
+        return Iter.asStream(datasetGraph.listGraphNodes()).map(node -> (BlankNodeOrIRI) factory.asRDFTerm(node));
     }
 
     @Override
     public Iterable<Quad> iterate() {
         final JenaRDF factory = new JenaRDF(salt);
-        return Iter.asStream(graph.find(), false).map(q -> (Quad) factory.asQuad(q))::iterator;
+        return Iter.asStream(datasetGraph.find(), false).map(q -> (Quad) factory.asQuad(q))::iterator;
     }
 
 }
