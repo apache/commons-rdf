@@ -50,7 +50,7 @@
         <commons.jira.pid>12316620</commons.jira.pid>
         <commons.site.path>rdf</commons.site.path>
 	    <commons.scmPubUrl>https://svn.apache.org/repos/infra/websites/production/commons/content/proper/commons-rdf/</commons.scmPubUrl>
-    <!--
+        <!--
         <commons.scmPubCheckoutDirectory>${project.build.directory}/site-content</commons.scmPubCheckoutDirectory>
         -->
         <commons.javadoc.java.link>https://docs.oracle.com/javase/8/docs/api/</commons.javadoc.java.link>
@@ -58,20 +58,19 @@
         <commons.japicmp.version>0.11.0</commons.japicmp.version>
         
         
-	<!--  NOTE: jsonldjava is also used by rdf4j and jena, check the version 
-	      is cross-compatible -->
-        <jsonldjava.version>0.9.0</jsonldjava.version>
+	    <!--  NOTE: jsonldjava is also used by rdf4j and jena, check the version
+	          is cross-compatible -->
+        <jsonldjava.version>0.11.1</jsonldjava.version>
         <rdf4j.version>2.2.2</rdf4j.version>
         <jena.version>3.4.0</jena.version>
         <!--  NOTE: dexx and xerces versions should match 
         the versions marked as <optional> in jena-osgi pom
          -->
-        <dexx.collection.version>0.6</dexx.collection.version>
+        <dexx.collection.version>0.7</dexx.collection.version>
         <servicemix.xerces.version>2.11.0_1</servicemix.xerces.version>
 
-
         <!-- Test dependencies -->
-        <slf4j.version>1.7.20</slf4j.version>
+        <slf4j.version>1.7.25</slf4j.version>
         <junit.version>4.12</junit.version>
         <skipAPICompatCheck>false</skipAPICompatCheck>
     </properties>
@@ -245,6 +244,21 @@
         <module>commons-rdf-integration-tests</module>
     </modules>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <!--  
     Common dependencies across modules. 
     Keep this list small and only <scope>test</scope> !
@@ -253,15 +267,12 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <!-- System.err logging for Jena, JSONLD-Java, RDF4J
-            -->
+            <!-- System.err logging for Jena, JSONLD-Java, RDF4J -->
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>${slf4j.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -623,6 +634,5 @@
       </site>
       <downloadUrl>${project.url}download.html</downloadUrl>
     </distributionManagement>
-
 
 </project>

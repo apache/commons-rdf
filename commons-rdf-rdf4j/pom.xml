@@ -126,7 +126,6 @@
 		rdf4j-rio-trix: unofficial standard 
 		-->
 
-
 		<!-- There are multiple RDF4J sail/repository implementations, we use the 
 			below from RDF4JFactory. -->
 		<dependency>
@@ -144,7 +143,6 @@
 			<scope>test</scope>
 		</dependency>
 
-
 		<dependency>
 			<groupId>${project.parent.groupId}</groupId>
 			<artifactId>commons-rdf-api</artifactId>
@@ -153,8 +151,6 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
-
 
 	<!-- Ensure consistent rdf4j versions across the board -->
 	<dependencyManagement>
