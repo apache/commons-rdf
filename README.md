@@ -165,9 +165,9 @@ and simple usage (e.g. output from an independent RDF parser).
 ## Testing
 
 The abstract classes
-[AbstractGraphTest](api/src/test/java/org/apache/commons/rdf/api/AbstractGraphTest.java),
-[AbstractDatasetTest](api/src/test/java/org/apache/commons/rdf/api/AbstractDatasetTest.java),
-[AbstractBlankNodeTest](api/src/test/java/org/apache/commons/rdf/api/AbstractBlankNodeTest.java) and
+[AbstractGraphTest](commons-rdf-api/src/test/java/org/apache/commons/rdf/api/AbstractGraphTest.java),
+[AbstractDatasetTest](commons-rdf-api/src/test/java/org/apache/commons/rdf/api/AbstractDatasetTest.java),
+[AbstractBlankNodeTest](commons-rdf-api/src/test/java/org/apache/commons/rdf/api/AbstractBlankNodeTest.java) and
 [AbstractRDFTest](api/src/test/java/org/apache/commons/rdf/api/AbstractRDFTest.java)
 can be realised as JUnit tests by implementations in order to verify that they
 pass the minimal requirements of this API.
@@ -194,7 +194,7 @@ The extensions of each Test class need to provide a
 that can create the corresponding implementations of a `Graph`, `IRI`, etc.
 
 For an example, see 
-[SimpleGraphTest](simple/src/test/java/org/apache/commons/rdf/simple/SimpleGraphTest.java).
+[SimpleGraphTest](commons-rdf-simple/src/test/java/org/apache/commons/rdf/simple/SimpleGraphTest.java).
 
 
 
