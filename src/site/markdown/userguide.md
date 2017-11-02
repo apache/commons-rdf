@@ -21,7 +21,7 @@
 # User Guide
 
 This page shows some examples of a client using the Commons RDF API.
-It was last updated for version `0.3.0-incubating` of the
+It was last updated for version `0.5.0` of the
 Commons RDF [API](apidocs/).
 
 * [Introduction](#Introduction)
@@ -89,7 +89,7 @@ add the following dependency to your `pom.xml`:
     <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-rdf-api</artifactId>
-        <version>0.3.0-incubating</version>
+        <version>0.5.0</version>
     </dependency>
 </dependencies>
 ```
@@ -133,7 +133,7 @@ _simple_ implementation, add to your `<dependencies>`:
     <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-rdf-simple</artifactId>
-        <version>0.3.0-incubating</version>
+        <version>0.5.0</version>
     </dependency>
 ```
 

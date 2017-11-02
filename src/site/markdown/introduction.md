@@ -86,9 +86,9 @@ to share your project or to use newer versions of Commons RDF.
 
 This tutorial assumes a classic Java project with local `.jar` files (say in your project's `lib/` folder), so download and add to your project's class path:
 
-* [commons-rdf-api-0.3.0-incubating.jar](https://repo.maven.apache.org/maven2/org/apache/commons/commons-rdf-api/0.3.0-incubating/commons-rdf-api-0.3.0-incubating.jar)
-([signature](https://repo.maven.apache.org/maven2/org/apache/commons/commons-rdf-api/0.3.0-incubating/commons-rdf-api-0.3.0-incubating.jar.asc))
-* [commons-rdf-simple-0.3.0-incubating.jar](https://repo.maven.apache.org/maven2/org/apache/commons/commons-rdf-simple/0.3.0-incubating/commons-rdf-simple-0.3.0-incubating.jar) ([signature](https://repo.maven.apache.org/maven2/org/apache/commons/commons-rdf-simple/0.3.0-incubating/commons-rdf-simple-0.3.0-incubating.jar.asc))
+* [commons-rdf-api-0.5.0.jar](https://repo.maven.apache.org/maven2/org/apache/commons/commons-rdf-api/0.5.0/commons-rdf-api-0.5.0.jar)
+([signature](https://repo.maven.apache.org/maven2/org/apache/commons/commons-rdf-api/0.5.0/commons-rdf-api-0.5.0.jar.asc))
+* [commons-rdf-simple-0.5.0.jar](https://repo.maven.apache.org/maven2/org/apache/commons/commons-rdf-simple/0.5.0/commons-rdf-simple-0.5.0.jar) ([signature](https://repo.maven.apache.org/maven2/org/apache/commons/commons-rdf-simple/0.5.0/commons-rdf-simple-0.5.0.jar.asc))
 
 _Tip: If you prefer you can [verify the  signatures](https://www.apache.org/info/verification.html) using the Apache Commons [KEYS](https://www.apache.org/dist/commons/KEYS)._
 

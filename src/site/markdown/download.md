@@ -39,7 +39,7 @@ To use Commons RDF with [Maven](https://maven.apache.org/), add to your `pom.xml
   <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-rdf-api</artifactId>
-      <version>0.3.0-incubating</version>
+      <version>0.5.0</version>
   </dependency>
 
   <!-- and at least one of the implementations: -->
@@ -47,22 +47,22 @@ To use Commons RDF with [Maven](https://maven.apache.org/), add to your `pom.xml
   <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-rdf-simple</artifactId>
-      <version>0.3.0-incubating</version>
+      <version>0.5.0</version>
   </dependency>
   <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-rdf-jsonld-java</artifactId>
-      <version>0.3.0-incubating</version>
+      <version>0.5.0</version>
   </dependency>
   <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-rdf-jena</artifactId>
-      <version>0.3.0-incubating</version>
+      <version>0.5.0</version>
   </dependency>
   <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-rdf-rdf4j</artifactId>
-      <version>0.3.0-incubating</version>
+      <version>0.5.0</version>
   </dependency>
 
 </dependencies>
@@ -85,20 +85,16 @@ you may also be interested in the [source code repository](source-repository.htm
 which is also [mirrored to GitHub](http://github.com/apache/commons-rdf).
 
 
-### 0.3.0-incubating
+### 0.5.0
 
-**Apache Commons RDF 0.3.0-incubating** was published on 2016-11-15, and is available for download
+**Apache Commons RDF 0.5.0** was published on 2017-11-XX, and is available for download
 from official mirrors of the
-ASF Distribution Directory [incubator/commonsrdf](https://www.apache.org/dyn/closer.lua/incubator/commonsrdf/0.3.0-incubating/):
+ASF Distribution Directory [incubator/commonsrdf](https://www.apache.org/dyn/closer.lua/incubator/commonsrdf/0.5.0/):
 
-* [apache-commons-rdf-0.3.0-incubating-src.zip](https://www.apache.org/dyn/closer.lua/incubator/commonsrdf/0.3.0-incubating/apache-commons-rdf-0.3.0-incubating-src.zip)
-  ([asc](https://www.apache.org/dist/incubator/commonsrdf/0.3.0-incubating/apache-commons-rdf-0.3.0-incubating-src.zip.asc),
-  [md5](https://www.apache.org/dist/incubator/commonsrdf/0.3.0-incubating/apache-commons-rdf-0.3.0-incubating-src.zip.md5),
-  [sha1](https://www.apache.org/dist/incubator/commonsrdf/0.3.0-incubating/apache-commons-rdf-0.3.0-incubating-src.zip.sha1))
-* [apache-commons-rdf-0.3.0-incubating-src.tar.gz](https://www.apache.org/dyn/closer.lua/incubator/commonsrdf/0.3.0-incubating/apache-commons-rdf-0.3.0-incubating-src.zip)
-  ([asc](https://www.apache.org/dist/incubator/commonsrdf/0.3.0-incubating/apache-commons-rdf-0.3.0-incubating-src.tar.gz.asc),
-  [md5](https://www.apache.org/dist/incubator/commonsrdf/0.3.0-incubating/apache-commons-rdf-0.3.0-incubating-src.tar.gz.md5),
-  [sha1](https://www.apache.org/dist/incubator/commonsrdf/0.3.0-incubating/apache-commons-rdf-0.3.0-incubating-src.tar.gz.sha1))
+* [apache-commons-rdf-0.5.0-src.zip](https://www.apache.org/dyn/closer.lua/incubator/commonsrdf/0.5.0/apache-commons-rdf-0.5.0-src.zip)
+  ([asc](https://www.apache.org/dist/incubator/commonsrdf/0.5.0/apache-commons-rdf-0.5.0-src.zip.asc),
+  [md5](https://www.apache.org/dist/incubator/commonsrdf/0.5.0/apache-commons-rdf-0.5.0-src.zip.md5),
+  [sha1](https://www.apache.org/dist/incubator/commonsrdf/0.5.0/apache-commons-rdf-0.5.0-src.zip.sha1))
 
 After downloading the files, [check the signatures](https://www.apache.org/info/verification.html) 
 using the following [KEYS](https://www.apache.org/dist/incubator/commonsrdf/KEYS)
