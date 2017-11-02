@@ -149,7 +149,7 @@ class JenaDatasetImpl implements JenaDataset {
     @Override
     public String toString() {
         final StringWriter sw = new StringWriter();
-        RDFDataMgr.write(sw, datasetGraph, Lang.NT);
+        RDFDataMgr.write(sw, datasetGraph, Lang.NQUADS);
         return sw.toString();
     }
 
