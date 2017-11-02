@@ -71,7 +71,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      *         been set
      */
     public Optional<RDF> getRdfTermFactory() {
-        return rdfTermFactory;
+        return Optional.ofNullable(rdfTermFactory);
     }
 
     /**
@@ -84,7 +84,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      *         {@link Optional#empty()} if it has not been set
      */
     public Optional<RDFSyntax> getContentTypeSyntax() {
-        return contentTypeSyntax;
+        return Optional.ofNullable(contentTypeSyntax);
     }
 
     /**
@@ -99,7 +99,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      *         or {@link Optional#empty()} if it has not been set
      */
     public final Optional<String> getContentType() {
-        return contentType;
+        return Optional.ofNullable(contentType);
     }
 
     /**
@@ -131,7 +131,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      *         of target has been set.
      */
     public Optional<Dataset> getTargetDataset() {
-        return targetDataset;
+        return Optional.ofNullable(targetDataset);
     }
 
     /**
@@ -149,7 +149,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      *         target has been set.
      */
     public Optional<Graph> getTargetGraph() {
-        return targetGraph;
+        return Optional.ofNullable(targetGraph);
     }
 
     /**
@@ -159,7 +159,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      *         been set
      */
     public Optional<IRI> getBase() {
-        return base;
+        return Optional.ofNullable(base);
     }
 
     /**
@@ -172,7 +172,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      *         has not been set
      */
     public Optional<InputStream> getSourceInputStream() {
-        return sourceInputStream;
+        return Optional.ofNullable(sourceInputStream);
     }
 
     /**
@@ -186,7 +186,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      *         not been set
      */
     public Optional<Path> getSourceFile() {
-        return sourceFile;
+        return Optional.ofNullable(sourceFile);
     }
 
     /**
@@ -200,19 +200,19 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      *         been set
      */
     public Optional<IRI> getSourceIri() {
-        return sourceIri;
+        return Optional.ofNullable(sourceIri);
     }
 
-    private Optional<RDF> rdfTermFactory = Optional.empty();
-    private Optional<RDFSyntax> contentTypeSyntax = Optional.empty();
-    private Optional<String> contentType = Optional.empty();
-    private Optional<IRI> base = Optional.empty();
-    private Optional<InputStream> sourceInputStream = Optional.empty();
-    private Optional<Path> sourceFile = Optional.empty();
-    private Optional<IRI> sourceIri = Optional.empty();
+    private RDF rdfTermFactory = null;
+    private RDFSyntax contentTypeSyntax = null;
+    private String contentType = null;
+    private IRI base = null;
+    private InputStream sourceInputStream = null;
+    private Path sourceFile = null;
+    private IRI sourceIri = null;
     private Consumer<Quad> target;
-    private Optional<Dataset> targetDataset;
-    private Optional<Graph> targetGraph;
+    private Dataset targetDataset;
+    private Graph targetGraph;
 
     @SuppressWarnings("unchecked")
     @Override
@@ -232,31 +232,31 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     @Override
     public T rdfTermFactory(final RDF rdfTermFactory) {
         final AbstractRDFParser<T> c = clone();
-        c.rdfTermFactory = Optional.ofNullable(rdfTermFactory);
+        c.rdfTermFactory = rdfTermFactory;
         return c.asT();
     }
 
     @Override
     public T contentType(final RDFSyntax rdfSyntax) throws IllegalArgumentException {
         final AbstractRDFParser<T> c = clone();
-        c.contentTypeSyntax = Optional.ofNullable(rdfSyntax);
-        c.contentType = c.contentTypeSyntax.map(syntax -> syntax.mediaType());
+        c.contentTypeSyntax = rdfSyntax;
+        c.contentType = c.getContentTypeSyntax().map(RDFSyntax::mediaType).orElse(null);
         return c.asT();
     }
 
     @Override
     public T contentType(final String contentType) throws IllegalArgumentException {
         final AbstractRDFParser<T> c = clone();
-        c.contentType = Optional.ofNullable(contentType);
-        c.contentTypeSyntax = c.contentType.flatMap(RDFSyntax::byMediaType);
+        c.contentType = contentType;
+        c.contentTypeSyntax = c.getContentType().flatMap(RDFSyntax::byMediaType).orElse(null);
         return c.asT();
     }
 
     @Override
     public T base(final IRI base) {
         final AbstractRDFParser<T> c = clone();
-        c.base = Optional.ofNullable(base);
-        c.base.ifPresent(i -> checkIsAbsolute(i));
+        c.base = base;
+        c.getBase().ifPresent(this::checkIsAbsolute);
         return c.asT();
     }
 
@@ -269,7 +269,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     public T source(final InputStream inputStream) {
         final AbstractRDFParser<T> c = clone();
         c.resetSource();
-        c.sourceInputStream = Optional.ofNullable(inputStream);
+        c.sourceInputStream = inputStream;
         return c.asT();
     }
 
@@ -277,7 +277,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     public T source(final Path file) {
         final AbstractRDFParser<T> c = clone();
         c.resetSource();
-        c.sourceFile = Optional.ofNullable(file);
+        c.sourceFile = file;
         return c.asT();
     }
 
@@ -285,8 +285,8 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     public T source(final IRI iri) {
         final AbstractRDFParser<T> c = clone();
         c.resetSource();
-        c.sourceIri = Optional.ofNullable(iri);
-        c.sourceIri.ifPresent(i -> checkIsAbsolute(i));
+        c.sourceIri = iri;
+        c.getSourceIri().ifPresent(this::checkIsAbsolute);
         return c.asT();
     }
 
@@ -294,8 +294,8 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     public T source(final String iri) throws IllegalArgumentException {
         final AbstractRDFParser<T> c = clone();
         c.resetSource();
-        c.sourceIri = Optional.ofNullable(iri).map(internalRdfTermFactory::createIRI);
-        c.sourceIri.ifPresent(i -> checkIsAbsolute(i));
+        c.sourceIri = internalRdfTermFactory.createIRI(iri);
+        c.getSourceIri().ifPresent(this::checkIsAbsolute);
         return source(internalRdfTermFactory.createIRI(iri));
     }
 
@@ -327,19 +327,19 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      *             If a source file can't be read
      */
     protected void checkSource() throws IOException {
-        if (!sourceFile.isPresent() && !sourceInputStream.isPresent() && !sourceIri.isPresent()) {
+        if (!getSourceFile().isPresent() && !getSourceInputStream().isPresent() && !getSourceIri().isPresent()) {
             throw new IllegalStateException("No source has been set");
         }
-        if (sourceIri.isPresent() && sourceInputStream.isPresent()) {
+        if (getSourceIri().isPresent() && getSourceInputStream().isPresent()) {
             throw new IllegalStateException("Both sourceIri and sourceInputStream have been set");
         }
-        if (sourceIri.isPresent() && sourceFile.isPresent()) {
+        if (getSourceIri().isPresent() && getSourceFile().isPresent()) {
             throw new IllegalStateException("Both sourceIri and sourceFile have been set");
         }
-        if (sourceInputStream.isPresent() && sourceFile.isPresent()) {
+        if (getSourceInputStream().isPresent() && getSourceFile().isPresent()) {
             throw new IllegalStateException("Both sourceInputStream and sourceFile have been set");
         }
-        if (sourceFile.isPresent() && !sourceFile.filter(Files::isReadable).isPresent()) {
+        if (getSourceFile().isPresent() && !getSourceFile().filter(Files::isReadable).isPresent()) {
             throw new IOException("Can't read file: " + sourceFile);
         }
     }
@@ -351,8 +351,8 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      *             if base is required, but not set.
      */
     protected void checkBaseRequired() throws IllegalStateException {
-        if (!base.isPresent() && sourceInputStream.isPresent()
-                && !contentTypeSyntax.filter(t -> t == RDFSyntax.NQUADS || t == RDFSyntax.NTRIPLES).isPresent()) {
+        if (!getBase().isPresent() && getSourceInputStream().isPresent()
+                && !getContentTypeSyntax().filter(t -> t == RDFSyntax.NQUADS || t == RDFSyntax.NTRIPLES).isPresent()) {
             throw new IllegalStateException("base iri required for inputstream source");
         }
     }
@@ -365,9 +365,9 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      *
      */
     protected void resetSource() {
-        sourceInputStream = Optional.empty();
-        sourceIri = Optional.empty();
-        sourceFile = Optional.empty();
+        sourceInputStream = null;
+        sourceIri = null;
+        sourceFile = null;
     }
 
     /**
@@ -381,8 +381,8 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      *
      */
     protected void resetTarget() {
-        targetDataset = Optional.empty();
-        targetGraph = Optional.empty();
+        targetDataset = null;
+        targetGraph = null;
     }
 
     /**
@@ -431,14 +431,12 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
         final AbstractRDFParser<T> c = clone();
 
         // Use a fresh SimpleRDF for each parse
-        if (!c.rdfTermFactory.isPresent()) {
-            c.rdfTermFactory = Optional.of(createRDFTermFactory());
-        }
+        c.rdfTermFactory = c.getRdfTermFactory().orElse(createRDFTermFactory());
         // sourceFile, but no base? Let's follow any symlinks and use
         // the file:/// URI
-        if (c.sourceFile.isPresent() && !c.base.isPresent()) {
-            final URI baseUri = c.sourceFile.get().toRealPath().toUri();
-            c.base = Optional.of(internalRdfTermFactory.createIRI(baseUri.toString()));
+        if (c.getSourceFile().isPresent() && !c.getBase().isPresent()) {
+            final URI baseUri = c.getSourceFile().get().toRealPath().toUri();
+            c.base = internalRdfTermFactory.createIRI(baseUri.toString());
         }
 
         return c.asT();
@@ -454,7 +452,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
         if (target == null) {
             throw new IllegalStateException("target has not been set");
         }
-        if (targetGraph.isPresent() && targetDataset.isPresent()) {
+        if (getTargetGraph().isPresent() && getTargetDataset().isPresent()) {
             // This should not happen as each target(..) method resets the
             // optionals
             throw new IllegalStateException("targetGraph and targetDataset can't both be set");
@@ -553,7 +551,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
         final
         AbstractRDFParser<T> c = (AbstractRDFParser) RDFParser.super.target(dataset);
         c.resetTarget();
-        c.targetDataset = Optional.of(dataset);
+        c.targetDataset = dataset;
         return c.asT();
     }
 
@@ -564,7 +562,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
                                                        // .clone()
         AbstractRDFParser<T> c = (AbstractRDFParser) RDFParser.super.target(graph);
         c.resetTarget();
-        c.targetGraph = Optional.of(graph);
+        c.targetGraph = graph;
         return c.asT();
     }
 
