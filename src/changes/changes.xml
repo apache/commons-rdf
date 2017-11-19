@@ -62,9 +62,6 @@
         <action type="add" issue="COMMONSRDF-65">
             Upgrade to Jena 3.4.0, RDF4J 2.2.2
         </action>
-        <action type="add" issue="COMMONSRDF-68">
-            Support changes.xml 
-        </action>
         <action type="add" issue="COMMONSRDF-70">
             Upgrade Jena version to 3.5.0
         </action>
