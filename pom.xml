@@ -28,7 +28,7 @@
     </parent>
 
     <artifactId>commons-rdf-parent</artifactId>
-    <version>0.6.0-SNAPSHOT</version>
+    <version>0.5.0</version>
     <packaging>pom</packaging>
 
     <name>Commons RDF</name>
@@ -79,7 +79,7 @@
         <url>https://git-wip-us.apache.org/repos/asf/commons-rdf.git</url>
         <connection>scm:git:https://git-wip-us.apache.org/repos/asf/commons-rdf.git</connection>
         <developerConnection>scm:git:https://git-wip-us.apache.org/repos/asf/commons-rdf.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>0.5.0</tag>
     </scm>
 
     <issueManagement>
