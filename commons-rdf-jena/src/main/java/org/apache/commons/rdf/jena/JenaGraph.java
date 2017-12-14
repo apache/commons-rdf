@@ -38,7 +38,7 @@ public interface JenaGraph extends org.apache.commons.rdf.api.Graph {
      *
      * @return A Jena {@link org.apache.jena.graph.Graph}
      */
-    public org.apache.jena.graph.Graph asJenaGraph();
+    org.apache.jena.graph.Graph asJenaGraph();
 
     /**
      * Return the graph as a Jena {@link Model}.
@@ -52,5 +52,5 @@ public interface JenaGraph extends org.apache.commons.rdf.api.Graph {
      *
      * @return A Jena {@link Model}
      */
-    public Model asJenaModel();
+    Model asJenaModel();
 }

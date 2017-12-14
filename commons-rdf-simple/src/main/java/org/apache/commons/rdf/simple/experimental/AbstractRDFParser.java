@@ -17,6 +17,8 @@
  */
 package org.apache.commons.rdf.simple.experimental;
 
+import static java.util.concurrent.Executors.newCachedThreadPool;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -24,8 +26,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 import org.apache.commons.rdf.api.Dataset;
@@ -58,8 +60,12 @@ import org.apache.commons.rdf.simple.SimpleRDF;
  */
 public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implements RDFParser, Cloneable {
 
-    public static final ThreadGroup threadGroup = new ThreadGroup("Commons RDF parsers");
-    private static final ExecutorService threadpool = Executors.newCachedThreadPool(r -> new Thread(threadGroup, r));
+    public static final AtomicInteger threadCount = new AtomicInteger();
+    private static Thread newThread(Runnable r) {
+        return new Thread(r, "Commons RDF Parser " + threadCount.getAndIncrement());
+    }
+
+    private static final ExecutorService threadpool = newCachedThreadPool(AbstractRDFParser::newThread);
 
     // Basically only used for creating IRIs
     private static RDF internalRdfTermFactory = new SimpleRDF();

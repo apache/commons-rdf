@@ -47,6 +47,7 @@ import org.apache.jena.sparql.core.Quad;
  *      RDFTerm)
  *
  */
+@SuppressWarnings("PMD.UnnecessaryFullyQualifiedName") // we use fully-qualified names for clarity
 abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm, G extends RDFTerm>
         implements JenaQuadLike<G> {
 

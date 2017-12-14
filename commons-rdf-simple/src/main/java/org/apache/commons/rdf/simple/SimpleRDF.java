@@ -47,7 +47,7 @@ public class SimpleRDF implements RDF {
      * This method is package protected to avoid any third-party subclasses.
      *
      */
-    static interface SimpleRDFTerm extends RDFTerm {
+    interface SimpleRDFTerm extends RDFTerm {
     }
 
     /**
