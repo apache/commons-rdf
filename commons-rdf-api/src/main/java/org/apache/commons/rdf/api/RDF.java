@@ -56,7 +56,7 @@ public interface RDF {
      *
      * @return A new, unique {@link BlankNode}
      */
-    public BlankNode createBlankNode();
+    BlankNode createBlankNode();
 
     /**
      * Create a blank node based on the given name.
@@ -81,7 +81,7 @@ public interface RDF {
      *            node in the context of this {@link RDF}.
      * @return A BlankNode for the given name
      */
-    public BlankNode createBlankNode(String name);
+    BlankNode createBlankNode(String name);
 
     /**
      * Create a new graph.
@@ -91,7 +91,7 @@ public interface RDF {
      *
      * @return A new Graph
      */
-    public Graph createGraph();
+    Graph createGraph();
 
     /**
      * Create a new dataset.
@@ -101,7 +101,7 @@ public interface RDF {
      *
      * @return A new Dataset
      */
-    public Dataset createDataset();
+    Dataset createDataset();
 
     /**
      * Create an IRI from a (possibly escaped) String.
@@ -117,7 +117,7 @@ public interface RDF {
      *             If the provided string is not acceptable, e.g. does not
      *             conform to the RFC3987 syntax.
      */
-    public IRI createIRI(String iri) throws IllegalArgumentException;
+    IRI createIRI(String iri) throws IllegalArgumentException;
 
     /**
      * Create a simple literal.
@@ -138,7 +138,7 @@ public interface RDF {
      *             If the provided lexicalForm is not acceptable, e.g. because
      *             it is too large for an underlying storage.
      */
-    public Literal createLiteral(String lexicalForm) throws IllegalArgumentException;
+    Literal createLiteral(String lexicalForm) throws IllegalArgumentException;
 
     /**
      * Create a literal with the specified data type.
@@ -170,7 +170,7 @@ public interface RDF {
      *             If any of the provided arguments are not acceptable, e.g.
      *             because the provided dataType is not permitted.
      */
-    public Literal createLiteral(String lexicalForm, IRI dataType) throws IllegalArgumentException;
+    Literal createLiteral(String lexicalForm, IRI dataType) throws IllegalArgumentException;
 
     /**
      * Create a language-tagged literal.
@@ -204,7 +204,7 @@ public interface RDF {
      *             If the provided values are not acceptable, e.g. because the
      *             languageTag was syntactically invalid.
      */
-    public Literal createLiteral(String lexicalForm, String languageTag) throws IllegalArgumentException;
+    Literal createLiteral(String lexicalForm, String languageTag) throws IllegalArgumentException;
 
     /**
      * Create a triple.
@@ -226,7 +226,7 @@ public interface RDF {
      *             because a Literal has a lexicalForm that is too large for an
      *             underlying storage.
      */
-    public Triple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) throws IllegalArgumentException;
+    Triple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) throws IllegalArgumentException;
 
     /**
      * Create a quad.
@@ -252,7 +252,7 @@ public interface RDF {
      *             because a Literal has a lexicalForm that is too large for an
      *             underlying storage.
      */
-    public Quad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
+    Quad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
             throws IllegalArgumentException;
 
 }

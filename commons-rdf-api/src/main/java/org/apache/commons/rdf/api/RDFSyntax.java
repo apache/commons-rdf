@@ -45,7 +45,7 @@ public interface RDFSyntax {
      *      "https://www.w3.org/TR/json-ld/">https://www.w3.org/TR/json-ld/</a>
      *
      */
-    public static RDFSyntax JSONLD = W3CRDFSyntax.JSONLD;
+    static RDFSyntax JSONLD = W3CRDFSyntax.JSONLD;
 
     /**
      * RDF 1.1 Turtle
@@ -54,7 +54,7 @@ public interface RDFSyntax {
      *      "https://www.w3.org/TR/turtle/">https://www.w3.org/TR/turtle/</a>
      *
      */
-    public static RDFSyntax TURTLE = W3CRDFSyntax.TURTLE;
+    static RDFSyntax TURTLE = W3CRDFSyntax.TURTLE;
 
     /**
      * RDF 1.1 N-Quads
@@ -62,7 +62,7 @@ public interface RDFSyntax {
      * @see <a href=
      *      "https://www.w3.org/TR/n-quads/">https://www.w3.org/TR/n-quads/</a>
      */
-    public static RDFSyntax NQUADS = W3CRDFSyntax.NQUADS;
+    static RDFSyntax NQUADS = W3CRDFSyntax.NQUADS;
 
     /**
      * RDF 1.1 N-Triples
@@ -70,7 +70,7 @@ public interface RDFSyntax {
      * @see <a href=
      *      "https://www.w3.org/TR/n-triples/">https://www.w3.org/TR/n-triples/</a>
      */
-    public static RDFSyntax NTRIPLES = W3CRDFSyntax.NTRIPLES;
+    static RDFSyntax NTRIPLES = W3CRDFSyntax.NTRIPLES;
 
     /**
      * HTML+RDFa 1.1 and XHTML+RDFa 1.1
@@ -80,7 +80,7 @@ public interface RDFSyntax {
      * @see <a href=
      *      "https://www.w3.org/TR/xhtml-rdfa/">https://www.w3.org/TR/xhtml-rdfa/</a>
      */
-    public static RDFSyntax RDFA = W3CRDFSyntax.RDFA;
+    static RDFSyntax RDFA = W3CRDFSyntax.RDFA;
 
     /**
      * RDF 1.1 XML Syntax
@@ -88,7 +88,7 @@ public interface RDFSyntax {
      * @see <a href=
      *      "https://www.w3.org/TR/rdf-syntax-grammar/">https://www.w3.org/TR/rdf-syntax-grammar/</a>
      */
-    public static RDFSyntax RDFXML = W3CRDFSyntax.RDFXML;
+    static RDFSyntax RDFXML = W3CRDFSyntax.RDFXML;
 
     /**
      * RDF 1.1 TriG
@@ -96,7 +96,7 @@ public interface RDFSyntax {
      * @see <a href=
      *      "https://www.w3.org/TR/trig/">https://www.w3.org/TR/trig/</a>
      */
-    public static RDFSyntax TRIG = W3CRDFSyntax.TRIG;
+    static RDFSyntax TRIG = W3CRDFSyntax.TRIG;
 
     /**
      * A short name of the RDF Syntax e.g. <code>JSONLD</code>.
@@ -105,7 +105,7 @@ public interface RDFSyntax {
      *
      * @return Short name for RDF syntax
      */
-    public String name();
+    String name();
 
     /**
      * The title of the RDF Syntax.
@@ -115,7 +115,7 @@ public interface RDFSyntax {
      *
      * @return Title of RDF Syntax
      */
-    public String title();
+    String title();
 
     /**
      * The <a href="https://tools.ietf.org/html/rfc2046">IANA media type</a> for
@@ -128,7 +128,7 @@ public interface RDFSyntax {
      *
      * @return The registered media type of the RDF Syntax
      */
-    public String mediaType();
+    String mediaType();
 
     /**
      * Set of <a href="https://tools.ietf.org/html/rfc2046">IANA media types</a> that
@@ -144,7 +144,7 @@ public interface RDFSyntax {
      *
      * @return The media types corresponding to the RDF Syntax
      */
-    default public Set<String> mediaTypes() {
+    default Set<String> mediaTypes() {
         return Collections.singleton(mediaType());
     }
 
@@ -156,7 +156,7 @@ public interface RDFSyntax {
      *
      * @return The registered file extension of the RDF Syntax
      */
-    public String fileExtension();
+    String fileExtension();
 
     /**
      * Set of file extensions for this RDF syntax, including any non-official extensions.
@@ -168,7 +168,7 @@ public interface RDFSyntax {
      *
      * @return The file extensions corresponding to the RDF Syntax
      */
-    default public Set<String> fileExtensions() {
+    default Set<String> fileExtensions() {
         return Collections.singleton(fileExtension());
     }
 
@@ -179,7 +179,7 @@ public interface RDFSyntax {
      *
      * @return true if this RDF Syntax supports datasets; false otherwise
      */
-    public boolean supportsDataset();
+    boolean supportsDataset();
 
     /**
      * Return the {@link IRI} that <em>identifies</em> the RDF syntax.
@@ -190,7 +190,7 @@ public interface RDFSyntax {
      * @return Identifying IRI, e.g.
      *         <code>http://www.w3.org/ns/formats/JSON-LD</code>
      */
-    public IRI iri();
+    IRI iri();
 
     /**
      * Compare this RDFSyntax with another object.
@@ -237,7 +237,7 @@ public interface RDFSyntax {
      * @see org.apache.commons.rdf.experimental.RDFParser
      */
 
-    public static Set<RDFSyntax> w3cSyntaxes() {
+    static Set<RDFSyntax> w3cSyntaxes() {
         return W3CRDFSyntax.syntaxes;
     }
 
@@ -261,7 +261,7 @@ public interface RDFSyntax {
      *         {@link Optional#empty()} indicating that no matching syntax was
      *         found.
      */
-    public static Optional<RDFSyntax> byMediaType(final String mediaType) {
+    static Optional<RDFSyntax> byMediaType(final String mediaType) {
         final String type = mediaType.toLowerCase(Locale.ROOT).split("\\s*;", 2)[0];
         return w3cSyntaxes().stream().filter(t -> t.mediaTypes().contains(type))
                 .findAny();
@@ -283,7 +283,7 @@ public interface RDFSyntax {
      *         {@link Optional#empty()} indicating that no matching file
      *         extension was found.
      */
-    public static Optional<RDFSyntax> byFileExtension(final String fileExtension) {
+    static Optional<RDFSyntax> byFileExtension(final String fileExtension) {
         final String ext = fileExtension.toLowerCase(Locale.ROOT);
         return w3cSyntaxes().stream().filter(t -> t.fileExtensions().contains(ext))
                 .findAny();
@@ -300,7 +300,7 @@ public interface RDFSyntax {
      *         a matching {@link RDFSyntax#name()}, otherwise
      *         {@link Optional#empty()} indicating that no matching name was found.
      */
-    public static Optional<RDFSyntax> byName(final String name) {
+    static Optional<RDFSyntax> byName(final String name) {
         return w3cSyntaxes().stream().filter(t -> t.name().equals(name)).findAny();
     }
 

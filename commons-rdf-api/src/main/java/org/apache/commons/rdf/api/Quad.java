@@ -217,7 +217,7 @@ public interface Quad extends QuadLike<BlankNodeOrIRI> {
      * @see Object#equals(Object)
      */
     @Override
-    public boolean equals(Object other);
+    boolean equals(Object other);
 
     /**
      * Calculate a hash code for this Quad.
@@ -235,6 +235,6 @@ public interface Quad extends QuadLike<BlankNodeOrIRI> {
      * @see Objects#hash(Object...)
      */
     @Override
-    public int hashCode();
+    int hashCode();
 
 }

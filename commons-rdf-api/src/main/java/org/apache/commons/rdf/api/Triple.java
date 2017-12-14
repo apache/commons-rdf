@@ -106,7 +106,7 @@ public interface Triple extends TripleLike {
      * @see Object#equals(Object)
      */
     @Override
-    public boolean equals(Object other);
+    boolean equals(Object other);
 
     /**
      * Calculate a hash code for this Triple.
@@ -124,6 +124,6 @@ public interface Triple extends TripleLike {
      * @see Objects#hash(Object...)
      */
     @Override
-    public int hashCode();
+    int hashCode();
 
 }
