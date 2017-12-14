@@ -32,6 +32,6 @@ import org.eclipse.rdf4j.model.BNode;
 public interface RDF4JBlankNode extends RDF4JBlankNodeOrIRI, BlankNode {
 
     @Override
-    public BNode asValue();
+    BNode asValue();
 
 }

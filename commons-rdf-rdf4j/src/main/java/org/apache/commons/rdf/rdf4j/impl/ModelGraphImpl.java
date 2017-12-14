@@ -37,6 +37,7 @@ import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.Resource;
 import org.eclipse.rdf4j.repository.Repository;
 
+@SuppressWarnings("PMD.UnnecessaryFullyQualifiedName") // we use fully-qualified names for clarity
 final class ModelGraphImpl implements RDF4JGraph {
 
     private final Model model;
