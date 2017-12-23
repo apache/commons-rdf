@@ -91,14 +91,14 @@ which is also [mirrored to GitHub](http://github.com/apache/commons-rdf).
 from official mirrors of the
 ASF Distribution Directory [incubator/commonsrdf](https://www.apache.org/dyn/closer.lua/incubator/commonsrdf/0.5.0/):
 
-* [apache-commons-rdf-0.5.0-src.zip](https://www.apache.org/dyn/closer.lua/incubator/commonsrdf/0.5.0/apache-commons-rdf-0.5.0-src.zip)
-  ([asc](https://www.apache.org/dist/incubator/commonsrdf/0.5.0/apache-commons-rdf-0.5.0-src.zip.asc),
-  [md5](https://www.apache.org/dist/incubator/commonsrdf/0.5.0/apache-commons-rdf-0.5.0-src.zip.md5),
-  [sha1](https://www.apache.org/dist/incubator/commonsrdf/0.5.0/apache-commons-rdf-0.5.0-src.zip.sha1))
+* [apache-commons-rdf-0.5.0-src.zip](https://www.apache.org/dyn/closer.lua/commons/rdf/source/apache-commons-rdf-0.5.0-source-release.zip)
+  ([asc](https://www.apache.org/dyn/closer.lua/commons/rdf/source/apache-commons-rdf-0.5.0-source-release.zip.asc),
+  [md5](https://www.apache.org/dyn/closer.lua/commons/rdf/source/apache-commons-rdf-0.5.0-source-release.zip.md5),
+  [sha1](https://www.apache.org/dyn/closer.lua/commons/rdf/source/apache-commons-rdf-0.5.0-source-release.zip.sha1))
 
 After downloading the files, [check the signatures](https://www.apache.org/info/verification.html) 
-using the following [KEYS](https://www.apache.org/dist/incubator/commonsrdf/KEYS)
-file. The [changelog](https://s.apache.org/rdf-0.3.0)
+using the following [KEYS](https://www.apache.org/dist/commons/KEYS)
+file. The [changelog](http://apache.forsale.plus/commons/rdf/RELEASE-NOTES.txt)
 is available from the [Apache Commons RDF Jira](https://issues.apache.org/jira/browse/COMMONSRDF).
 
 ### Previous Releases
