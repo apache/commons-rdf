@@ -1,11 +1,11 @@
 # Apache Commons RDF
 
-## 1.0.0-SNAPSHOT
+## 0.6.0-SNAPSHOT
 
 See https://issues.apache.org/jira/browse/COMMONSRDF/
 for issues fixed since the last release.
 
-## 0.5.0 (2017-11)
+## 0.5.0 (2017-12-23)
 
 This is the first release after graduation. Although there are not API changes
 nor big improvements, it updates different core aspects and dependencies.
