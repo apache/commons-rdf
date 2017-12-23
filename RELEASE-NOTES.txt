@@ -5,6 +5,25 @@
 See https://issues.apache.org/jira/browse/COMMONSRDF/
 for issues fixed since the last release.
 
+## 0.5.0 (2017-11)
+
+This is the first release after graduation. Although there are not API changes
+nor big improvements, it updates different core aspects and dependencies.
+
+* [COMMONSRDF-47] - RDFSyntax should be interface, not enum
+* [COMMONSRDF-51] - RDF-1.1 specifies that language tags need to be compared using lower-case
+* [COMMONSRDF-52] - Duplicate Bundle-SymbolicName values across all components
+* [COMMONSRDF-55] - Stream of Jena quads use wrong IRI for default graph
+* [COMMONSRDF-57] - Use newer dependency Jena/RDF4J/JSONLD Java
+* [COMMONSRDF-62] - japicmp-maven-plugin breaking build because there is at least one incompatibility
+* [COMMONSRDF-63] - AbstractRDFParserTest.parseFile and parseFileContentType broken under Mac OS X
+* [COMMONSRDF-66] - JenaDatasetImpl.toString() throws RIOT exception
+* [COMMONSRDF-53] - Add ServiceLoader support in OSGi
+* [COMMONSRDF-54] - overloaded versions of RDF4J#asRDFTerm(org.eclipse.rdf4j.model.Value)
+* [COMMONSRDF-59] - Fix javadocs warnings
+* [COMMONSRDF-64] - Add Automatic-Module-Name to bundle manifest
+* [COMMONSRDF-65] - Upgrade to Jena 3.4.0, RDF4J 2.2.2
+* [COMMONSRDF-70] - Upgrade Jena version to 3.5.0
 
 ## 0.3.0-incubating (2016-11)
 

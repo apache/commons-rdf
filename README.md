@@ -81,9 +81,9 @@ Building has been tested with [Apache Maven 3.2](http://maven.apache.org/downloa
     [INFO] Using the builder org.apache.maven.lifecycle.internal.builder.singlethreaded.SingleThreadedBuilder with a thread count of 1
     [INFO]                                                                         
     [INFO] ------------------------------------------------------------------------
-    [INFO] Building Commons RDF 0.0.3-SNAPSHOT
+    [INFO] Building Commons RDF 0.5.0
         ....
-    [INFO] Installing /home/johndoe/src/commons-rdf/commons-rdf-api/target/commons-rdf-api-0.0.3-SNAPSHOT-javadoc.jar to /home/johndoe/.m2/repository/org/apache/commons/commons-rdf/commons-rdf-api/0.0.3-SNAPSHOT/commons-rdf-api-0.0.3-SNAPSHOT-javadoc.jar
+    [INFO] Installing /home/johndoe/src/commons-rdf/commons-rdf-api/target/commons-rdf-api-0.5.0-javadoc.jar to /home/johndoe/.m2/repository/org/apache/commons/commons-rdf/commons-rdf-api/0.5.0/commons-rdf-api-0.5.0-javadoc.jar
     [INFO] ------------------------------------------------------------------------
     [INFO] Reactor Summary:
     [INFO] 
@@ -108,7 +108,7 @@ To then use this build from your project, add to Maven (update `<version>` to ma
     <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-rdf-api</artifactId>
-        <version>0.3.0-incubating</version>
+        <version>0.5.0</version>
     </dependency>
 
 .. and an equivalent `<dependency>` for the 
@@ -184,7 +184,7 @@ classifier for the commons-rdf-api module, for example (for Maven):
     <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-rdf-api</artifactId>
-        <version>0.3.0-incubating</version>
+        <version>0.5.0</version>
         <classifier>tests</classifier>
         <scope>test</scope>
     </dependency>

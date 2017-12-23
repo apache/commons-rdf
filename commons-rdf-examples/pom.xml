@@ -34,6 +34,7 @@
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <commons.rdf.version>0.5.0</commons.rdf.version> <!-- update to latest version -->
     </properties>
 
     <build>
@@ -57,14 +58,12 @@
     	<dependency>
     		<groupId>org.apache.commons</groupId>
     		<artifactId>commons-rdf-api</artifactId>
-        <!-- update to latest version -->
-    		<version>0.3.0</version>
+    		<version>${commons.rdf.version}</version>
     	</dependency>
     	<dependency>
     		<groupId>org.apache.commons</groupId>
     		<artifactId>commons-rdf-simple</artifactId>
-        <!-- update to latest version -->
-    		<version>0.3.0</version>
+    		<version>${commons.rdf.version}</version>
     	</dependency>
     	<dependency>
     		<groupId>junit</groupId>
@@ -75,7 +74,7 @@
     </dependencies>
 
     <repositories>
-      <!-- Only needed if testing  release of commons-rdf -->
+        <!-- Only needed if testing  release of commons-rdf -->
     	<repository>
     		<id>apache.snapshots</id>
     		<name>Apache Snapshot Repository</name>

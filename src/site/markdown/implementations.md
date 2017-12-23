@@ -61,7 +61,7 @@ usage (e.g. prototyping and creating graph fragments).
 <dependency>
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-rdf-simple</artifactId>
-    <version>0.3.0-incubating</version>
+    <version>0.5.0</version>
 </dependency>
 ```
 
@@ -85,7 +85,7 @@ Graph graph = rdf.createGraph();
 <dependency>
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-rdf-jena</artifactId>
-    <version>0.3.0-incubating</version>
+    <version>0.5.0</version>
 </dependency>
 ```
 
@@ -124,7 +124,7 @@ The generalized triples/quads can be accessed as [org.apache.jena.graph.Triple](
 <dependency>
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-rdf-rdf4j</artifactId>
-    <version>0.3.0-incubating</version>
+    <version>0.5.0</version>
 </dependency>
 ```
 
@@ -187,7 +187,7 @@ This is primarily intended to support [JSON-LD](http://json-ld.org/) parsing and
 <dependency>
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-rdf-jsonld</artifactId>
-    <version>0.3.0-incubating</version>
+    <version>0.5.0</version>
 </dependency>
 ```
 
