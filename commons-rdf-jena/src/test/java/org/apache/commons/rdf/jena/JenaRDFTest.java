@@ -17,14 +17,64 @@
  */
 package org.apache.commons.rdf.jena;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+
 import org.apache.commons.rdf.api.AbstractRDFTest;
-import org.apache.commons.rdf.api.RDF;
+import org.apache.commons.rdf.api.BlankNode;
+import org.apache.commons.rdf.api.Dataset;
+import org.apache.commons.rdf.api.IRI;
+import org.apache.commons.rdf.api.Quad;
+import org.apache.commons.rdf.simple.SimpleRDF;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.Property;
+import org.apache.jena.rdf.model.RDFNode;
+import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.Statement;
+import org.apache.jena.sparql.core.DatasetGraph;
+import org.apache.jena.sparql.core.DatasetGraphFactory;
+import org.junit.Test;
 
 public class JenaRDFTest extends AbstractRDFTest {
 
     @Override
-    public RDF createFactory() {
+    public JenaRDF createFactory() {
         return new JenaRDF();
+    }
+
+    @Test
+    public void roundTripDatasetGraphShouldMaintainIdentity() {
+        DatasetGraph dsg = DatasetGraphFactory.create();
+        JenaDataset dataset = createFactory().asDataset(dsg);
+        DatasetGraph roundTrippedDSG = createFactory().asJenaDatasetGraph(dataset);
+        assertSame("Should have gotten the same DatasetGraph object from a round trip!", dsg, roundTrippedDSG);
+    }
+
+    @Test
+    public void testSimpleDatasetConversion() {
+        SimpleRDF factory = new SimpleRDF();
+        Dataset ds = factory.createDataset();
+        final BlankNode subject = factory.createBlankNode("b1");
+        final IRI predicate = factory.createIRI("http://example.com/pred");
+        final IRI object = factory.createIRI("http://example.com/obj");
+        final IRI graph = factory.createIRI("http://example.com/graph");
+        final Quad quad = factory.createQuad(graph, subject, predicate, object);
+        ds.add(quad);
+        JenaRDF jenaFactory = createFactory();
+        org.apache.jena.query.Dataset jenaDS = jenaFactory.asJenaDataset(ds);
+        assertEquals("Should have found one named graph!", 1, jenaDS.asDatasetGraph().size());
+        Model namedModel = jenaDS.getNamedModel(graph.getIRIString());
+        assertEquals("Should have found one triple in named graph!", 1, namedModel.size());
+        Statement statement = namedModel.listStatements().next();
+        Resource jenaSubject = statement.getSubject();
+        Property jenaPredicate = statement.getPredicate();
+        RDFNode jenaObject = statement.getObject();
+        assertTrue(jenaSubject.isAnon());
+        assertTrue(jenaObject.isResource());
+        assertEquals(subject.ntriplesString(), "_:" + jenaSubject.getId().getLabelString());
+        assertEquals(predicate.getIRIString(), jenaPredicate.getURI());
+        assertEquals(object.getIRIString(), jenaObject.asResource().getURI());
     }
 
 }

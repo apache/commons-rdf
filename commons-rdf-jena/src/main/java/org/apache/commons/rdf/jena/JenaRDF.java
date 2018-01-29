@@ -39,12 +39,14 @@ import org.apache.jena.datatypes.RDFDatatype;
 import org.apache.jena.datatypes.xsd.XSDDatatype;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.NodeFactory;
+import org.apache.jena.query.DatasetFactory;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFLanguages;
 import org.apache.jena.riot.system.StreamRDF;
 import org.apache.jena.riot.system.StreamRDFBase;
 import org.apache.jena.sparql.core.DatasetGraph;
+import org.apache.jena.sparql.core.DatasetGraphFactory;
 import org.apache.jena.sparql.graph.GraphFactory;
 
 /**
@@ -662,6 +664,39 @@ public final class JenaRDF implements RDF {
                 generalizedConsumer.accept(asGeneralizedQuad(quad));
             }
         };
+    }
+
+    /**
+     * Convert a CommonsRDF Dataset to a Jena Dataset. If the Dataset was from Jena
+     * originally, return that original object wrapped else create a copy using Jena
+     * objects.
+     *
+     * @param dataset
+     *            Commons RDF {@link Dataset} to convert
+     * @return Converted Jena {@link org.apache.jena.query.Dataset}
+     */
+    public org.apache.jena.query.Dataset asJenaDataset(final Dataset dataset) {
+        return DatasetFactory.wrap(asJenaDatasetGraph(dataset));
+    }
+
+    /**
+     * Convert a CommonsRDF Dataset to a Jena DatasetGraph. If the Dataset was from Jena
+     * originally, return that original object's underlying DatasetGraph else create a
+     * copy using Jena objects.
+     *
+     * @param dataset
+     *            Commons RDF {@link Dataset} to convert
+     * @return Converted Jena {@link org.apache.jena.sparql.core.DatasetGraph}
+     */
+    public DatasetGraph asJenaDatasetGraph(final Dataset dataset) {
+        final DatasetGraph dsg;
+        if (dataset instanceof JenaDataset)
+            dsg = ((JenaDataset) dataset).asJenaDatasetGraph();
+        else {
+            dsg = DatasetGraphFactory.createGeneral();
+            dataset.stream().map(this::asJenaQuad).forEach(dsg::add);
+        }
+        return dsg;
     }
 
     /**
