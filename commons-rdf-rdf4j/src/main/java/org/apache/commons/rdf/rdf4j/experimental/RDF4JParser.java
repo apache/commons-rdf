@@ -66,8 +66,7 @@ public class RDF4JParser extends AbstractRDFParser<RDF4JParser> {
         }
 
         @Override
-        public void handleStatement(final org.eclipse.rdf4j.model.Statement st)
-                throws org.eclipse.rdf4j.rio.RDFHandlerException {
+        public void handleStatement(final org.eclipse.rdf4j.model.Statement st) throws RDFHandlerException {
             // TODO: if getRdfTermFactory() is a non-rdf4j factory, should
             // we use factory.createQuad() instead?
             // Unsure what is the promise of setting getRdfTermFactory() --
@@ -91,8 +90,7 @@ public class RDF4JParser extends AbstractRDFParser<RDF4JParser> {
         }
 
         @Override
-        public void handleStatement(final org.eclipse.rdf4j.model.Statement st)
-                throws org.eclipse.rdf4j.rio.RDFHandlerException {
+        public void handleStatement(final org.eclipse.rdf4j.model.Statement st) throws RDFHandlerException {
             model.add(st);
         }
 

@@ -28,7 +28,6 @@ import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.Triple;
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.repository.Repository;
-import org.apache.commons.rdf.rdf4j.RDF4J.Option;
 
 /**
  * Marker interface for RDF4J implementations of Graph.
@@ -69,7 +68,7 @@ public interface RDF4JGraph extends Graph, RDF4JGraphLike<Triple> {
      * @return The context mask as a set of {@link BlankNodeOrIRI} graph names,
      *         which may contain the value <code>null</code>.
      */
-    public Set<RDF4JBlankNodeOrIRI> getContextMask();
+    Set<RDF4JBlankNodeOrIRI> getContextMask();
 
     /**
      * {@inheritDoc}

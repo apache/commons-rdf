@@ -35,5 +35,5 @@ public interface RDF4JTerm extends RDFTerm {
      * @return The wrapped {@link Value} (e.g. a {@link Literal}, {@link IRI} or
      *         {@link BNode}.
      */
-    public Value asValue();
+    Value asValue();
 }

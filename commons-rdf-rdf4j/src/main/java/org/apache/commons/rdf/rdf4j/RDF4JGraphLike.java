@@ -49,7 +49,7 @@ public interface RDF4JGraphLike<T extends TripleLike> extends GraphLike<T>, Auto
      *
      * @return The corresponding RDF4J Model.
      */
-    public Optional<Model> asModel();
+    Optional<Model> asModel();
 
     /**
      * Return the corresponding RDF4J {@link Repository}, if present.
@@ -61,6 +61,6 @@ public interface RDF4JGraphLike<T extends TripleLike> extends GraphLike<T>, Auto
      *
      * @return The corresponding RDF4J Repository.
      */
-    public Optional<Repository> asRepository();
+    Optional<Repository> asRepository();
 
 }

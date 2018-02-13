@@ -28,7 +28,6 @@ import org.apache.commons.rdf.rdf4j.RDF4JLiteral;
 import org.apache.commons.rdf.rdf4j.RDF4JQuad;
 import org.apache.commons.rdf.rdf4j.RDF4JTerm;
 import org.apache.commons.rdf.rdf4j.RDF4J;
-import org.apache.commons.rdf.rdf4j.RDF4J.Option;
 import org.apache.commons.rdf.rdf4j.RDF4JTriple;
 import org.eclipse.rdf4j.model.BNode;
 import org.eclipse.rdf4j.model.IRI;

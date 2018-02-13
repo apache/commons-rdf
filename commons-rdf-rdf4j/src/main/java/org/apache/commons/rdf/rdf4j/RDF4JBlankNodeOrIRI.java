@@ -32,6 +32,6 @@ import org.eclipse.rdf4j.model.Resource;
 public interface RDF4JBlankNodeOrIRI extends RDF4JTerm, BlankNodeOrIRI {
 
     @Override
-    public Resource asValue();
+    Resource asValue();
 
 }

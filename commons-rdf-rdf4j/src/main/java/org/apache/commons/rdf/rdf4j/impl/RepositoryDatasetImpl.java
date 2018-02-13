@@ -170,7 +170,7 @@ class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> implements
             }
         }
         // Make sure the RepositoryConnection is closed
-        return stream.onClose(conn::close);
+        return stream == null ? null : stream.onClose(conn::close);
 
     }
 

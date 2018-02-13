@@ -39,5 +39,5 @@ public interface RDF4JTripleLike extends TripleLike {
      *
      * @return The corresponding RDF4J Statement.
      */
-    public Statement asStatement();
+    Statement asStatement();
 }

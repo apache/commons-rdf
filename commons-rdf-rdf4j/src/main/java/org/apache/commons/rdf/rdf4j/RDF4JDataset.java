@@ -25,7 +25,6 @@ import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFTerm;
-import org.apache.commons.rdf.rdf4j.RDF4J.Option;
 
 /**
  * Marker interface for RDF4J implementations of Dataset.
