@@ -87,7 +87,7 @@ which is also [mirrored to GitHub](http://github.com/apache/commons-rdf).
 
 ### 0.5.0
 
-**Apache Commons RDF 0.5.0** was published on 2017-11-XX, and is available for download
+**Apache Commons RDF 0.5.0** was published on 2017-12-23, and is available for download
 from official mirrors of the
 ASF Distribution Directory [incubator/commonsrdf](https://www.apache.org/dyn/closer.lua/incubator/commonsrdf/0.5.0/):
 
