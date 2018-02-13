@@ -57,7 +57,7 @@ public interface IRI extends BlankNodeOrIRI {
      * @see Object#equals(Object)
      */
     @Override
-    public boolean equals(Object other);
+    boolean equals(Object other);
 
     /**
      * Calculate a hash code for this IRI.
@@ -73,5 +73,5 @@ public interface IRI extends BlankNodeOrIRI {
      * @see Object#hashCode()
      */
     @Override
-    public int hashCode();
+    int hashCode();
 }

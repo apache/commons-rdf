@@ -120,7 +120,7 @@ public interface Literal extends RDFTerm {
      * @see Object#equals(Object)
      */
     @Override
-    public boolean equals(Object other);
+    boolean equals(Object other);
 
     /**
      * Calculate a hash code for this Literal.
@@ -139,6 +139,6 @@ public interface Literal extends RDFTerm {
      * @see Objects#hash(Object...)
      */
     @Override
-    public int hashCode();
+    int hashCode();
 
 }

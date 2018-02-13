@@ -90,7 +90,7 @@ public interface RDFParser {
      * This is a marker interface that may be subclassed to include parser
      * details, e.g. warning messages or triple counts.
      */
-    public interface ParseResult {
+    interface ParseResult {
     }
 
     /**

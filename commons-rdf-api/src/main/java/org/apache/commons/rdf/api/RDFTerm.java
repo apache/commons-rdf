@@ -83,7 +83,7 @@ public interface RDFTerm {
 	 * @return true if other is a RDFTerm and is equal to this
 	 */
     @Override
-    public boolean equals(Object other);
+    boolean equals(Object other);
 
 	/**
 	 * Calculate a hash code for this RDFTerm.
@@ -102,6 +102,6 @@ public interface RDFTerm {
 	 * @return a hash code value for this RDFTerm.
 	 */
     @Override
-    public int hashCode();
+    int hashCode();
 
 }
