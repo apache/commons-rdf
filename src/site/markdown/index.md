@@ -23,11 +23,8 @@
 <div class="alert alert-info" role="alert">
   <p>
     <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-    2016-11-28:
-    Commons RDF has <strong>graduated</strong> from the
-    Apache Incubator and is 
-    now a component of the 
-    <a class="alert-link" href="https://commons.apache.org/">Apache Commons</a> project.
+    2017-12-23:
+    <a href="download.html">Commons RDF 0.5.0</a> released.
   </p>
 </div>
 
