@@ -4,7 +4,7 @@ import java.util.Set;
 
 import org.apache.commons.rdf.api.RDFSyntax;
 
-interface _SupportedSyntaxes {
+interface _SupportedSyntaxes<T> {
     /**
      * Get set of syntaxes supported by this factory.
      * <p>
@@ -24,5 +24,5 @@ interface _SupportedSyntaxes {
      * @param syntax RDFSyntax
      * @return Builder that uses specified syntax
      */
-    Object syntax(RDFSyntax syntax);
+    T syntax(RDFSyntax syntax);
 }

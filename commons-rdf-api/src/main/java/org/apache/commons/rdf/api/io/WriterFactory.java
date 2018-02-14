@@ -17,9 +17,7 @@
  */
 package org.apache.commons.rdf.api.io;
 
-import org.apache.commons.rdf.api.RDFSyntax;
 import org.apache.commons.rdf.api.fluentwriter.NeedTarget;
 
-public interface WriterFactory extends _SupportedSyntaxes {
-    NeedTarget syntax(RDFSyntax syntax);
+public interface WriterFactory extends _SupportedSyntaxes<NeedTarget> {
 }

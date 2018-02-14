@@ -19,13 +19,9 @@ package org.apache.commons.rdf.api.fluentparser;
 
 import java.util.concurrent.Future;
 
-import org.apache.commons.rdf.api.io.Option;
 import org.apache.commons.rdf.api.io.Parsed;
 
-public interface Async<T, S> extends _Buildable {
-    Async<T, S> build();
-    
-    <V> Async<T, S> option(Option<V> option, V value);
+public interface Async<T, S> extends _Buildable<Async<T,S>> {
 
     Future<Parsed<T, S>> parseAsync();
 }

@@ -19,8 +19,6 @@ package org.apache.commons.rdf.api.fluentparser;
 
 import java.nio.file.Path;
 
-import javax.xml.transform.Source;
-
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.io.ParserSource;
 
