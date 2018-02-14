@@ -551,7 +551,7 @@
              <plugin>
                  <groupId>org.apache.maven.plugins</groupId>
                  <artifactId>maven-checkstyle-plugin</artifactId>
-                 <version>${checkstyle.plugin.version}</version>
+                 <version>3.0.0</version>
                  <configuration>
                      <configLocation>${project.basedir}/src/conf/checkstyle.xml</configLocation>
                      <!-- Needed to define config_loc -->
@@ -568,7 +568,7 @@
              </plugin>
             <plugin>
                 <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.8</version>
+                <version>3.9.0</version>
                 <configuration>
                     <targetJdk>${maven.compiler.target}</targetJdk>
                     <linkXref>true</linkXref>
