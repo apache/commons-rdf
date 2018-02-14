@@ -21,7 +21,7 @@ public class PathSource implements ParserSource<Path> {
     }
 
     @Override
-    public Path source() {
+    public Path src() {
         return source;
     }
 

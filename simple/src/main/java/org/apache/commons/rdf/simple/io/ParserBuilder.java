@@ -12,16 +12,16 @@ import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDF;
 import org.apache.commons.rdf.api.RDFSyntax;
-import org.apache.commons.rdf.api.io.Async;
-import org.apache.commons.rdf.api.io.NeedSourceBased;
-import org.apache.commons.rdf.api.io.NeedSourceOrBase;
-import org.apache.commons.rdf.api.io.NeedTargetOrRDF;
+import org.apache.commons.rdf.api.fluentparser.Async;
+import org.apache.commons.rdf.api.fluentparser.NeedSourceBased;
+import org.apache.commons.rdf.api.fluentparser.NeedSourceOrBase;
+import org.apache.commons.rdf.api.fluentparser.NeedTargetOrRDF;
+import org.apache.commons.rdf.api.fluentparser.OptionalTarget;
+import org.apache.commons.rdf.api.fluentparser.Sync;
 import org.apache.commons.rdf.api.io.Option;
-import org.apache.commons.rdf.api.io.OptionalTarget;
 import org.apache.commons.rdf.api.io.Parsed;
 import org.apache.commons.rdf.api.io.ParserSource;
 import org.apache.commons.rdf.api.io.ParserTarget;
-import org.apache.commons.rdf.api.io.Sync;
 import org.apache.commons.rdf.api.io.Option.RequiredOption;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -62,6 +62,7 @@ public final class ParserBuilder implements NeedTargetOrRDF, NeedSourceBased, Sy
 
     @Override
     public NeedSourceBased<Dataset> base(IRI iri) {
+        // FIXME: Only do implicitTarget if target() can't be retrieved
         return newState(implicitTarget().withOption(BaseOption.BASE, iri));
     }
 

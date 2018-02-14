@@ -20,7 +20,7 @@ public class GraphTarget implements ParserTarget<Graph> {
     }
     
     @Override
-    public Graph target() {
+    public Graph dest() {
         return graph;
     }
 

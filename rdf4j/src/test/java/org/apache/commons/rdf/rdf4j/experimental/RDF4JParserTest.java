@@ -46,7 +46,7 @@ public class RDF4JParserTest {
         IRI exampleLicense = rdf.createIRI("http://example.com/LICENSE");
 
         Dataset ds = new RDF4JParserFactory().syntax(RDFSyntax.JSONLD).rdf(rdf).base(base)
-                .source(getClass().getResourceAsStream("/example-rdf/example.jsonld")).parse().target().target();
+                .source(getClass().getResourceAsStream("/example-rdf/example.jsonld")).parse().dest().dest();
 
         // default graph
         try (Stream<? extends Quad> s = ds.stream()) {

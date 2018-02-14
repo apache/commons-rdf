@@ -15,7 +15,7 @@ public class InputStreamSource implements ParserSource<InputStream> {
     }
 
     @Override
-    public InputStream source() {
+    public InputStream src() {
         return source;
     }
     

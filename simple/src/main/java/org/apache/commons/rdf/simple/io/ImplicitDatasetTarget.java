@@ -16,7 +16,7 @@ public class ImplicitDatasetTarget implements ParserTarget<Dataset> {
     }
     
     @Override
-    public Dataset target() {
+    public Dataset dest() {
         if (target == null) {
             synchronized (this) {
                 // Make sure we only make it once
@@ -30,6 +30,6 @@ public class ImplicitDatasetTarget implements ParserTarget<Dataset> {
 
     @Override
     public void accept(Quad t) {
-        target().add(t);        
+        dest().add(t);        
     }
 }

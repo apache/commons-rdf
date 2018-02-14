@@ -20,7 +20,7 @@ package org.apache.commons.rdf.api.io;
 public interface Parsed<T, S> {
     long count();
 
-    ParserSource<S> source();
+    ParserSource<S> from();
 
-    ParserTarget<T> target();
+    ParserTarget<T> into();
 }

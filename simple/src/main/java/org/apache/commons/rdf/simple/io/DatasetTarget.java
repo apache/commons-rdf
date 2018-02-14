@@ -18,7 +18,7 @@ public class DatasetTarget implements ParserTarget<Dataset> {
     }
     
     @Override
-    public Dataset target() {
+    public Dataset dest() {
         return dataset;
     }
 

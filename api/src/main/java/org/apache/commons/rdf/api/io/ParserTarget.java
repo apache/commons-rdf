@@ -26,7 +26,7 @@ import org.apache.commons.rdf.api.Quad;
  */
 @FunctionalInterface
 public interface ParserTarget<T> extends Consumer<Quad> {
-    default T target() {
+    default T dest() {
         return null;// unknown
     }
 }

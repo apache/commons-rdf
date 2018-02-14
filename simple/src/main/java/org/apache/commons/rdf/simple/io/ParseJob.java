@@ -52,7 +52,7 @@ final class MutableParseJob implements ParseJob, Cloneable {
         return Objects.requireNonNull(impl);
     }
     public ImmutableParseJob freeze() {
-        return new FrozenParseJob(this);
+        return new FrozenParseJob(impl, source, syntax, target, rdf, options);
     }
     @Override
     public RDF rdf() {
@@ -182,18 +182,16 @@ final class FrozenParseJob extends ImmutableParseJobImpl implements ImmutablePar
     private final RDF rdf;
     private final Map<Option, Object> options;
 
-    public FrozenParseJob(ParseJob parseJob) {
-        this(parseJob.impl(), parseJob.source(), parseJob.syntax().orElse(null), 
-               parseJob.target(), parseJob.rdf(), parseJob.optionsAsMap());
-    }
-    public FrozenParseJob(ParserImplementation impl, ParserSource source, RDFSyntax syntax, ParserTarget target, RDF rdf,
-            Map<Option, Object> options) {
+    public FrozenParseJob(ParserImplementation impl, ParserSource source, RDFSyntax syntax, 
+                             ParserTarget target, RDF rdf, Map<Option, Object> options) {
         this.impl = Objects.requireNonNull(impl);
-        this.source =  Objects.requireNonNull(source);
+        // null -> Optional.empty() 
         this.syntax = Optional.ofNullable(syntax);
-        this.target = Objects.requireNonNull(target);
-        this.rdf = Objects.requireNonNull(rdf);
-        // shallow copy of options
+        // fields may be null (not yet set)
+        this.source =  source;
+        this.target = target;
+        this.rdf = rdf;
+        // shallow copy of options (can't be null)
         this.options = Collections.unmodifiableMap(new LinkedHashMap<>(options));
     }
     @Override
@@ -206,11 +204,11 @@ final class FrozenParseJob extends ImmutableParseJobImpl implements ImmutablePar
     }
     @Override
     public ParserSource source() {
-        return source;
+        return Objects.requireNonNull(source, "source not set");
     }
     @Override
     public ParserTarget target() {
-        return target;
+        return Objects.requireNonNull(target, "target not set");
     }
     @Override
     public Optional<RDFSyntax> syntax() {

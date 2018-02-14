@@ -27,7 +27,7 @@ import org.apache.commons.rdf.api.IRI;
  *
  */
 public interface ParserSource<S> {
-    S source();   
+    S src();   
     InputStream inputStream() throws IOException;
     Optional<IRI> iri();
 }

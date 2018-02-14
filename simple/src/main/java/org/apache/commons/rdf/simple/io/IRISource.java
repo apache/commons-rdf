@@ -18,7 +18,7 @@ public final class IRISource implements ParserSource<IRI> {
     }
 
     @Override
-    public IRI source() {
+    public IRI src() {
         return source;
     }
 

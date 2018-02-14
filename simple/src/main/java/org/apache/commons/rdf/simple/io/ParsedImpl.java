@@ -22,12 +22,12 @@ public class ParsedImpl<T,S> implements Parsed<T, S> {
     }
     
     @Override
-    public ParserSource<S> source() {
+    public ParserSource<S> from() {
         return source;
     }
 
     @Override
-    public ParserTarget<T> target() {
+    public ParserTarget<T> into() {
         return target;
     }
 
