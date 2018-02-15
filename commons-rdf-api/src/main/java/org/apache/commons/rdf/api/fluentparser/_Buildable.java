@@ -21,14 +21,14 @@ import org.apache.commons.rdf.api.io.Option;
 import org.apache.commons.rdf.api.io.Option.RequiredOption;
 import org.apache.commons.rdf.api.io.ParserFactory;
 
-interface _Buildable<Self extends _Buildable<Self>> {
+interface _Buildable {
     /**
      * Return an immutable builder at the current state. The returned builder
      * can be re-used multiple times in a thread-safe way.
      * 
      * @return An immutable builder
      */
-	Self build();
+	_Buildable build();
     
     /**
      * Return a builder with the given option set.
@@ -45,6 +45,6 @@ interface _Buildable<Self extends _Buildable<Self>> {
      * @param value Value to set for option
      * @return A builder with the given option set
      */
-    <V> Self option(Option<V> option, V value);
+    <V> _Buildable option(Option<V> option, V value);
 
 }

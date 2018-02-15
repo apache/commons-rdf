@@ -17,5 +17,9 @@
  */
 package org.apache.commons.rdf.api.fluentparser;
 
-public interface NeedSourceOrBase<T> extends _NeedSourceOrBase<T>, _Buildable<NeedSourceOrBase<T>> {
+import org.apache.commons.rdf.api.io.Option;
+
+public interface NeedSourceOrBase<T> extends _NeedSourceOrBase<T> {
+	NeedSourceOrBase<T> build();	
+	<V> NeedSourceOrBase<T> option(Option<V> option, V value);
 }

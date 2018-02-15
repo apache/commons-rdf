@@ -17,5 +17,10 @@
  */
 package org.apache.commons.rdf.api.fluentparser;
 
-public interface OptionalTarget<T> extends _OptionalTarget<T>,_Buildable<OptionalTarget<T>> {
+import org.apache.commons.rdf.api.io.Option;
+
+public interface OptionalTarget<T> extends _OptionalTarget<T>,_Buildable {
+	OptionalTarget<T> build();	
+	<V> OptionalTarget<T> option(Option<V> option, V value);
+
 }

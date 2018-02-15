@@ -19,7 +19,11 @@ package org.apache.commons.rdf.api.fluentparser;
 
 import java.io.InputStream;
 
-public interface NeedSourceBased<T> extends _NeedIdentifiedSource<T>, _Buildable<NeedSourceBased<T>> {
+import org.apache.commons.rdf.api.io.Option;
 
+public interface NeedSourceBased<T> extends _NeedIdentifiedSource<T>, _Buildable {
+	
+	NeedSourceBased<T> build();	
+	<V> NeedSourceBased<T> option(Option<V> option, V value);
     Sync<T, InputStream> source(InputStream is);
 }

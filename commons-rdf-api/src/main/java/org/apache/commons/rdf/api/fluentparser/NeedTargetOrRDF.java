@@ -17,5 +17,10 @@
  */
 package org.apache.commons.rdf.api.fluentparser;
 
-public interface NeedTargetOrRDF extends _NeedTargetOrRDF,_Buildable<NeedTargetOrRDF> {
+import org.apache.commons.rdf.api.io.Option;
+
+public interface NeedTargetOrRDF extends _NeedTargetOrRDF,_Buildable {
+	NeedTargetOrRDF build();	
+	<V> NeedTargetOrRDF option(Option<V> option, V value);
+
 }
