@@ -20,12 +20,13 @@ package org.apache.commons.rdf.api;
 import java.io.Serializable;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.concurrent.Future;
 
 import org.apache.commons.rdf.api.fluentparser.Async;
-import org.apache.commons.rdf.api.fluentparser.OptionalTarget;
 import org.apache.commons.rdf.api.fluentparser.Sync;
+import org.apache.commons.rdf.api.io.Parsed;
+import org.apache.commons.rdf.api.io.Parser;
 import org.apache.commons.rdf.api.io.ParserBuilder;
-import org.apache.commons.rdf.api.io.ParserFactory;
 
 /**
  * A RDF implementation.
@@ -263,24 +264,7 @@ public interface RDF {
             throws IllegalArgumentException;
     
     /**
-     * Get a ParserFactory backed by this RDF instance.
-     * <p>
-     * The returned factory is thread-safe and can be used multiple times,
-     * however the builders it creates are not immutable or reusable, unless
-     * frozen with the {@link _Buildable#build()} method or equivalent.
-     * 
-     * @return {@link ParserFactory} which can be used 
-     * @throws UnsupportedOperationException
-     *             If this RDF implementation does not support parsing RDF
-     */
-    public ParserFactory parserFactory() throws UnsupportedOperationException;
-    
-    /**
-     * Build a configured parser for the given RDF syntax.
-     * <p>
-     * If the RDF syntax is not supported/recognized by this RDF implementation,
-     * return {@link Optional#empty()}, otherwise the returned {@link Optional}
-     * contains an {@link ParserBuilder} fluent instance.
+     * Get a ParserBuilder backed by this RDF instance.
      * <p>
      * The returned {@link ParserBuilder} follows a <em>fluent</em> pattern to be
      * set up before parsing the configured source into the configured target.
@@ -290,7 +274,8 @@ public interface RDF {
      * {@link Async#parseAsync()} on the returned instance. For instance:
      * <pre>{@code
      * 
-     * Parsed<Dataset, IRI> p = rdf.parser(RDFSyntax.JSONLD)
+     * Parsed<Dataset, IRI> p = rdf.parserBuilder()
+     * 							   .syntax(RDFSyntax.JSONLD)
      *                             .source("http://example.com/data.jsonld")
      *                             .parse();
      * Dataset ds = p.target().target();
@@ -304,21 +289,42 @@ public interface RDF {
      * For instance:
      * 
      * <pre>{@code
-     * rdf.parser(RDFSyntax.TURTLE)
-     *    .target(quad ->; System.out.println(quad.getSubject()))  
+     * rdf.parserBuilder()
+     *    .syntax(RDFSyntax.TURTLE)
+     *    .target(quad -> System.out.println(quad.getSubject()))  
      *    .source(Paths.get("/tmp/file.ttl").
      *    .async().parseAsync();
      * }</pre>
+     * The above shows how parsing can be performed asynchronously, returning
+     * immediately a {@link Future} eventually returning a {@link Parsed} status.
      * <p>
      * Note that the returned {@link ParserBuilder} may be mutable and not
      * thread-safe, and should only be used for parsing once. A reusable,
      * immutable builder can be created at any step with
      * {@link _Builder#build()}.
      * 
-     * @param syntax RDF Syntax to build a parser for
-     * @return A {@link ParserBuilder}, or {@link Optional#empty()} if the
+     * @return {@link ParserBuilder} supported by this RDF implementation 
+     * @throws UnsupportedOperationException
+     *             If this RDF implementation does not support parsing RDF
+     */
+    public ParserBuilder parserBuilder() throws UnsupportedOperationException;
+    
+    /**
+     * Return a parser for the given RDF syntax.
+     * <p>
+     * If the syntax is not supported/recognised by this RDF implementation,
+     * return {@link Optional#empty()}, otherwise return an {@link Optional}
+     * containing an {@link Parser} for that syntax.
+     * <p>
+     * If the provided syntax is <code>null</code>, 
+     * return a generic {@link Parser} that can detect the syntax 
+     * (e.g. from Content-Type headers or file extension), or 
+     * {@link Optional#empty()} if this feature is not supported.
+     * 
+     * @param syntax RDF Syntax to parse, or <code>null</code> for any/unknown syntax.
+     * @return A {@link Parser}, or {@link Optional#empty()} if the
      *         syntax is not supported.
      */
-    public Optional<ParserBuilder> parser(RDFSyntax syntax);
+    public Optional<Parser> parser(RDFSyntax syntax);
 
 }

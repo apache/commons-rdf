@@ -36,19 +36,15 @@ import org.apache.commons.rdf.api.fluentparser.OptionalTarget;
 import org.apache.commons.rdf.api.fluentparser.Sync;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
-public final class AbstractParserFactory implements 
-Cloneable, 
-Serializable, 
-NeedTargetOrRDF, 
-NeedTargetOrRDFOrSyntax, 
-NeedSourceOrBase,
-NeedSourceBased, 
-OptionalTarget, 
-Sync, 
-Async {
+public final class AbstractParserFactory implements Cloneable, Serializable, NeedTargetOrRDF, NeedTargetOrRDFOrSyntax,
+		NeedSourceOrBase, NeedSourceBased, OptionalTarget, Sync, Async {
 
 	private static final long serialVersionUID = 1L;
 
+	public AbstractParserFactory(RDF rdf) {
+		
+	}
+	
 	@Override
 	public AbstractParserFactory clone() {
 		try {
@@ -65,21 +61,9 @@ Async {
 
 	@Override
 	public NeedTargetOrRDF syntax(RDFSyntax syntax) {
-		return mutate(config::withSyntax, syntax);
-	}
-
-	@FunctionalInterface
-	private interface WithValue<V> {
-		ParserConfig withValue(V value); 
-	}
-	
-	private AbstractParserFactory mutate(WithValue<V> valueFunc, V value) {
-		if (mutable) {
-			return valueFunc.withValue(value);
-		} else {
-			mutable().mutate(valueFunc, value);
-		}
-		
+		AbstractParserFactory c = mutable();
+		c.config.withSyntax(syntax);
+		return c;
 	}
 
 	private AbstractParserFactory mutable(boolean mutable) {
@@ -120,21 +104,21 @@ Async {
 	@Override
 	public <T> NeedSourceOrBase<T> target(ParserTarget<T> target) {
 		AbstractParserFactory c = mutable();
-		c.config.target = target;
+		c.config.withTarget(target);
 		return c;
 	}
 
 	@Override
 	public NeedSourceBased base(IRI iri) {
 		AbstractParserFactory c = mutable();
-		c.config.base = iri;
+		c.config.withBase(iri);
 		return c;
 	}
 
 	@Override
 	public NeedSourceBased base(String iri) {
 		AbstractParserFactory c = mutable();
-		c.config.base = new IRIImpl(iri);
+		c.config.withBase(new IRIImpl(iri));
 		return c;
 	}
 
@@ -150,15 +134,15 @@ Async {
 	@Override
 	public OptionalTarget<Dataset> rdf(RDF rdf) {
 		AbstractParserFactory c = mutable();
-		c.config.rdf = rdf;
+		c.config.withRDF(rdf);
 		return c;
 	}
 
 	@Override
 	public Sync source(ParserSource source) {
 		AbstractParserFactory c = mutable();
-		c.config.source = source;
-		return c;		
+		c.config.withSource(source);
+		return c;
 	}
 
 	@Override
@@ -169,8 +153,8 @@ Async {
 	@Override
 	public AbstractParserFactory option(Option option, Object value) {
 		AbstractParserFactory c = mutable();
-		c.config.options.put(option, value);
-		return c;		
+		c.config.withOption(option, value);
+		return c;
 	}
 
 	@Override

@@ -16,8 +16,6 @@
  */
 package org.apache.commons.rdf.api.io;
 
-import org.apache.commons.rdf.api.io.AbstractParserFactory.ParserConfig;
-
 public interface Parser {
 
 	Parsed parse(ParserConfig config);

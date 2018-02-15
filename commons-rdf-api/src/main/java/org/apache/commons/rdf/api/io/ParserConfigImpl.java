@@ -30,13 +30,15 @@ public final class ParserConfigImpl implements Cloneable, Serializable, ParserCo
 	private RDF rdf = null;
 	private RDFSyntax syntax = null;
 	private IRI base = null;
+	@SuppressWarnings("rawtypes")
 	private ParserSource source = null;
+	@SuppressWarnings("rawtypes")
 	private ParserTarget target = null;
-	private final  Map<Option, Object> options = new HashMap<>();
+	private final Map<Option, Object> options = new HashMap<>();
 
 	public ParserConfigImpl() {
 	}
-	
+
 	public ParserConfigImpl(ParserConfig old) {
 		rdf = old.rdf().orElse(null);
 		syntax = old.syntax().orElse(null);
@@ -81,10 +83,35 @@ public final class ParserConfigImpl implements Cloneable, Serializable, ParserCo
 		return options;
 	}
 
-	ParserConfig withSyntax(RDFSyntax syntax) {		
+	public ParserConfig withSyntax(RDFSyntax syntax) {
 		this.syntax = syntax;
 		return this;
 	}
-	
-	
+
+	@SuppressWarnings("rawtypes")
+	public ParserConfig withSource(ParserSource source) {
+		this.source = source;
+		return this;
+	}
+
+	public ParserConfig withTarget(ParserTarget target) {
+		this.target = target;
+		return this;
+	}
+
+	public ParserConfig withRDF(RDF rdf) {
+		this.rdf = rdf;
+		return this;
+	}
+
+	public ParserConfig withBase(IRI base) {
+		this.base = base;
+		return this;
+	}
+
+	public <V> ParserConfig withOption(Option<V> o, V v) {
+		this.options.put(o, v);
+		return this;
+	}
+
 }

@@ -19,7 +19,6 @@ package org.apache.commons.rdf.api.fluentparser;
 
 import org.apache.commons.rdf.api.io.Option;
 import org.apache.commons.rdf.api.io.Option.RequiredOption;
-import org.apache.commons.rdf.api.io.ParserFactory;
 
 interface _Buildable {
     /**
@@ -33,7 +32,7 @@ interface _Buildable {
     /**
      * Return a builder with the given option set.
      * <p>
-     * Note that implementations of {@link ParserFactory} may support different
+     * Note that implementations of {@link Parser} may support different
      * vendor-specific {@link Option} types, and are free to ignore the set
      * option (unless it is a {@link RequiredOption}).
      * <p>
