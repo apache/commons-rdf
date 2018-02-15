@@ -16,15 +16,9 @@
  */
 package org.apache.commons.rdf.api.io;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
@@ -66,170 +60,26 @@ Async {
 		}
 	}
 
-	static final class InputParserSource implements ParserSource {
-		private final InputStream is;
-
-		private InputParserSource(InputStream is) {
-			this.is = is;
-		}
-
-		@Override
-		public Object src() {
-			return is;
-		}
-
-		@Override
-		public InputStream inputStream() throws IOException {
-			return is;
-		}
-
-		@Override
-		public Optional iri() {
-			return Optional.empty();
-		}
-	}
-
-	private final class PathParserSource implements ParserSource<Path> {
-		private final Path path;
-
-		private PathParserSource(Path path) {
-			this.path = path;
-		}
-
-		@Override
-		public Path src() {
-			return path;
-		}
-
-		@Override
-		public InputStream inputStream() throws IOException {
-			return Files.newInputStream(path);
-		}
-
-		@Override
-		public Optional<IRI> iri() {
-			final String uri = path.toUri().toString();
-			return Optional.of(new IRIImpl(uri));
-		}
-	}
-
-	private final class IRIParserSource implements ParserSource<IRI> {
-		private final IRI iri;
-
-		private IRIParserSource(IRI iri) {
-			this.iri = iri;
-		}
-
-		@Override
-		public IRI src() {
-			return iri;
-		}
-
-		@Override
-		public InputStream inputStream() throws IOException {
-			return new URL(iri.getIRIString()).openStream();
-		}
-
-		@Override
-		public Optional<IRI> iri() {
-			return Optional.of(iri);
-		}
-	}
-
-	private final class IRIImpl implements IRI {
-		private final String uri;
-
-		private IRIImpl(String uri) {
-			this.uri = uri;
-		}
-
-		@Override
-		public String ntriplesString() {
-			return "<" + uri + ">";
-		}
-
-		@Override
-		public String getIRIString() {
-			return uri;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			return (obj instanceof IRI) && ((IRI) obj).getIRIString().equals(uri);
-		}
-
-		@Override
-		public int hashCode() {
-			return uri.hashCode();
-		}
-	}
-
-	public static final class ParserConfigImpl implements Cloneable, Serializable, ParserConfig {
-		private static final long serialVersionUID = 1L;
-		private RDF rdf = null;
-		private RDFSyntax syntax = null;
-		private IRI base = null;
-		private ParserSource source = null;
-		private ParserTarget target = null;
-		final private  Map<Option, Object> options = new HashMap<>();
-
-		public ParserConfigImpl() {
-		}
-		
-		public ParserConfigImpl(ParserConfig old) {
-			rdf = old.rdf().orElse(null);
-			syntax = old.syntax().orElse(null);
-			base = old.base().orElse(null);
-			source = old.source().orElse(null);
-			target = old.target().orElse(null);
-			options.putAll(old.options());
-		}
-
-		@Override
-		protected Object clone() {
-			return new ParserConfigImpl(this);
-		}
-
-		@Override
-		public Optional<ParserSource> source() {
-			return Optional.of(source);
-		}
-
-		@Override
-		public Optional<IRI> base() {
-			return Optional.of(base);
-		}
-
-		@Override
-		public Optional<ParserTarget> target() {
-			return Optional.of(target);
-		}
-
-		@Override
-		public Optional<RDFSyntax> syntax() {
-			return Optional.of(syntax);
-		}
-
-		@Override
-		public Optional<RDF> rdf() {
-			return Optional.of(rdf);
-		}
-
-		@Override
-		public Map<Option, Object> options() {
-			return options;
-		}
-		
-		
-	}
 	private boolean mutable = false;
 	private ParserConfigImpl config = new ParserConfigImpl();
 
 	@Override
 	public NeedTargetOrRDF syntax(RDFSyntax syntax) {
-		AbstractParserFactory c = mutable();
-		c.config.syntax = syntax;
-		return c;
+		return mutate(config::withSyntax, syntax);
+	}
+
+	@FunctionalInterface
+	private interface WithValue<V> {
+		ParserConfig withValue(V value); 
+	}
+	
+	private AbstractParserFactory mutate(WithValue<V> valueFunc, V value) {
+		if (mutable) {
+			return valueFunc.withValue(value);
+		} else {
+			mutable().mutate(valueFunc, value);
+		}
+		
 	}
 
 	private AbstractParserFactory mutable(boolean mutable) {
