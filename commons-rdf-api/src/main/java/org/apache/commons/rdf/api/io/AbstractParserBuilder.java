@@ -48,11 +48,11 @@ public final class AbstractParserBuilder implements Cloneable, Serializable, Nee
     private static final ExecutorService DEFAULT_EXECUTOR = Executors.newCachedThreadPool(r -> new Thread(THEAD_GROUP, r));
 	
 	public AbstractParserBuilder(RDF rdf) {
-		config.withRDF(rdf);
+		this.config = new ParserConfigImpl(rdf);
 	}
 	
 	@Override
-	public AbstractParserBuilder clone() {
+	public AbstractParserBuilder clone() {		
 		try {
 			AbstractParserBuilder c = (AbstractParserBuilder) super.clone();
 			c.config = (ParserConfigImpl) config.clone();
@@ -63,7 +63,7 @@ public final class AbstractParserBuilder implements Cloneable, Serializable, Nee
 	}
 
 	private boolean mutable = false;
-	private ParserConfigImpl config = new ParserConfigImpl();
+	private ParserConfigImpl config;
 	private ExecutorService executor = DEFAULT_EXECUTOR;
 
 	@Override

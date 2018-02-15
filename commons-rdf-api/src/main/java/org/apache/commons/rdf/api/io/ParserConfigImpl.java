@@ -38,7 +38,8 @@ public final class ParserConfigImpl implements Cloneable, Serializable, ParserCo
 	private final Map<Option, Object> options = new HashMap<>();
 	private ExecutorService executor;
 
-	public ParserConfigImpl() {
+	public ParserConfigImpl(RDF rdf) {
+		this.rdf = rdf;
 	}
 
 	public ParserConfigImpl(ParserConfig old) {
