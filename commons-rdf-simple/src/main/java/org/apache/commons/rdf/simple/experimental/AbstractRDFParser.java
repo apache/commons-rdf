@@ -58,7 +58,7 @@ import org.apache.commons.rdf.simple.SimpleRDF;
  * asynchronous remote execution).
  */
 public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implements RDFParser, Cloneable {
-
+	
     // Basically only used for creating IRIs
     private static RDF internalRdfTermFactory = new SimpleRDF();
 

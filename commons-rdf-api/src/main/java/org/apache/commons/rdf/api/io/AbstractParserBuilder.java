@@ -19,7 +19,9 @@ package org.apache.commons.rdf.api.io;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import org.apache.commons.rdf.api.Dataset;
@@ -41,8 +43,12 @@ public final class AbstractParserBuilder implements Cloneable, Serializable, Nee
 
 	private static final long serialVersionUID = 1L;
 
+
+    private static final ThreadGroup THEAD_GROUP = new ThreadGroup("Commons RDF parsers");
+    private static final ExecutorService DEFAULT_EXECUTOR = Executors.newCachedThreadPool(r -> new Thread(THEAD_GROUP, r));
+	
 	public AbstractParserBuilder(RDF rdf) {
-		
+		config.withRDF(rdf);
 	}
 	
 	@Override
@@ -58,6 +64,7 @@ public final class AbstractParserBuilder implements Cloneable, Serializable, Nee
 
 	private boolean mutable = false;
 	private ParserConfigImpl config = new ParserConfigImpl();
+	private ExecutorService executor = DEFAULT_EXECUTOR;
 
 	@Override
 	public NeedTargetOrRDF syntax(RDFSyntax syntax) {
@@ -158,31 +165,50 @@ public final class AbstractParserBuilder implements Cloneable, Serializable, Nee
 	}
 
 	@Override
-	public Future parseAsync() {
-		// TODO Auto-generated method stub
-		return null;
+	public Future<Parsed> parseAsync() {
+		// Ensure immutable
+		AbstractParserBuilder frozen = mutable(false);
+		Parser parser = getParserOrFail(frozen.config);		
+		return frozen.executor.submit(() -> parser.parse(frozen.config));
 	}
 
 	@Override
 	public Async async() {
-		// TODO Auto-generated method stub
-		return null;
+		AbstractParserBuilder c = mutable();
+		c.executor = DEFAULT_EXECUTOR;
+		return c;
 	}
 
 	@Override
 	public Async async(ExecutorService executor) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Parsed parse() {
-		return null;
+		AbstractParserBuilder c = mutable();
+		c.executor = executor;
+		return c;
 	}
 
 	@Override
 	public Sync source(InputStream is) {
 		return source(new InputParserSource(is));
+	}
+
+	@Override
+	public Parsed parse() {
+		// ensure immutable copy of config
+		ParserConfigImpl c = mutable(false).config;
+		Parser parser = getParserOrFail(c);
+		return parser.parse(c);
+	}
+
+	private Parser getParserOrFail(ParserConfigImpl c) {
+		if (! c.rdf().isPresent()) {
+			throw new IllegalStateException("ParserState has no RDF instance configured");
+		}
+		Optional<Parser> parser = c.rdf().get().parser(c.syntax().orElse(null));
+		if (! parser.isPresent()) { 
+			throw new IllegalStateException("Unsupported RDF syntax " 
+					+ c.syntax().map(t -> t.name() ).orElse("(guess)"));
+		}
+		return parser.get();
 	}
 
 }
