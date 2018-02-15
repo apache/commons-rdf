@@ -36,23 +36,23 @@ import org.apache.commons.rdf.api.fluentparser.OptionalTarget;
 import org.apache.commons.rdf.api.fluentparser.Sync;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
-public final class AbstractParserFactory implements Cloneable, Serializable, NeedTargetOrRDF, NeedTargetOrRDFOrSyntax,
+public final class AbstractParserBuilder implements Cloneable, Serializable, NeedTargetOrRDF, NeedTargetOrRDFOrSyntax,
 		NeedSourceOrBase, NeedSourceBased, OptionalTarget, Sync, Async {
 
 	private static final long serialVersionUID = 1L;
 
-	public AbstractParserFactory(RDF rdf) {
+	public AbstractParserBuilder(RDF rdf) {
 		
 	}
 	
 	@Override
-	public AbstractParserFactory clone() {
+	public AbstractParserBuilder clone() {
 		try {
-			AbstractParserFactory c = (AbstractParserFactory) super.clone();
+			AbstractParserBuilder c = (AbstractParserBuilder) super.clone();
 			c.config = (ParserConfigImpl) config.clone();
 			return c;
 		} catch (CloneNotSupportedException e) {
-			throw new IllegalStateException("AbstractParserFactory was not Cloneable", e);
+			throw new IllegalStateException("AbstractParserBuilder was not Cloneable", e);
 		}
 	}
 
@@ -61,27 +61,27 @@ public final class AbstractParserFactory implements Cloneable, Serializable, Nee
 
 	@Override
 	public NeedTargetOrRDF syntax(RDFSyntax syntax) {
-		AbstractParserFactory c = mutable();
+		AbstractParserBuilder c = mutable();
 		c.config.withSyntax(syntax);
 		return c;
 	}
 
-	private AbstractParserFactory mutable(boolean mutable) {
+	private AbstractParserBuilder mutable(boolean mutable) {
 		if (this.mutable == mutable) {
 			return this;
 		} else {
-			AbstractParserFactory c = clone();
+			AbstractParserBuilder c = clone();
 			c.mutable = mutable;
 			return c;
 		}
 	}
 
-	private AbstractParserFactory mutable() {
+	private AbstractParserBuilder mutable() {
 		return mutable(true);
 	}
 
 	@Override
-	public AbstractParserFactory build() {
+	public AbstractParserBuilder build() {
 		return mutable(false);
 	}
 
@@ -103,21 +103,21 @@ public final class AbstractParserFactory implements Cloneable, Serializable, Nee
 
 	@Override
 	public <T> NeedSourceOrBase<T> target(ParserTarget<T> target) {
-		AbstractParserFactory c = mutable();
+		AbstractParserBuilder c = mutable();
 		c.config.withTarget(target);
 		return c;
 	}
 
 	@Override
 	public NeedSourceBased base(IRI iri) {
-		AbstractParserFactory c = mutable();
+		AbstractParserBuilder c = mutable();
 		c.config.withBase(iri);
 		return c;
 	}
 
 	@Override
 	public NeedSourceBased base(String iri) {
-		AbstractParserFactory c = mutable();
+		AbstractParserBuilder c = mutable();
 		c.config.withBase(new IRIImpl(iri));
 		return c;
 	}
@@ -133,14 +133,14 @@ public final class AbstractParserFactory implements Cloneable, Serializable, Nee
 
 	@Override
 	public OptionalTarget<Dataset> rdf(RDF rdf) {
-		AbstractParserFactory c = mutable();
+		AbstractParserBuilder c = mutable();
 		c.config.withRDF(rdf);
 		return c;
 	}
 
 	@Override
 	public Sync source(ParserSource source) {
-		AbstractParserFactory c = mutable();
+		AbstractParserBuilder c = mutable();
 		c.config.withSource(source);
 		return c;
 	}
@@ -151,8 +151,8 @@ public final class AbstractParserFactory implements Cloneable, Serializable, Nee
 	}
 
 	@Override
-	public AbstractParserFactory option(Option option, Object value) {
-		AbstractParserFactory c = mutable();
+	public AbstractParserBuilder option(Option option, Object value) {
+		AbstractParserBuilder c = mutable();
 		c.config.withOption(option, value);
 		return c;
 	}

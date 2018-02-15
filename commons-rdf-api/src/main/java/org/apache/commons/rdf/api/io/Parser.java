@@ -18,6 +18,7 @@ package org.apache.commons.rdf.api.io;
 
 public interface Parser {
 
+	@SuppressWarnings("rawtypes")
 	Parsed parse(ParserConfig config);
 
 }
