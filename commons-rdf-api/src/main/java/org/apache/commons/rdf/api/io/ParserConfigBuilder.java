@@ -17,9 +17,9 @@
 package org.apache.commons.rdf.api.io;
 
 import java.io.InputStream;
-import java.io.Serializable;
 import java.nio.file.Path;
 import java.util.Optional;
+import java.util.concurrent.Future;
 
 import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.Graph;
@@ -36,10 +36,8 @@ import org.apache.commons.rdf.api.fluentparser.Sync;
 import org.apache.commons.rdf.api.io.ParserConfig.ImmutableParserConfig;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
-public final class ParserConfigBuilder implements Serializable, NeedTargetOrRDF, NeedTargetOrRDFOrSyntax,
+public final class ParserConfigBuilder implements NeedTargetOrRDF, NeedTargetOrRDFOrSyntax,
 		NeedSourceOrBase, NeedSourceBased, OptionalTarget, Sync, Async {
-
-	private static final long serialVersionUID = 1L;
 
 	public ParserConfigBuilder(ParserConfig mutated) {
 		this.config = mutated;
@@ -134,7 +132,7 @@ public final class ParserConfigBuilder implements Serializable, NeedTargetOrRDF,
 		Parser parser = getParserOrFail(c);
 		return parser.parse(c);
 	}
-
+	
 	private static Parser getParserOrFail(ImmutableParserConfig c) {
 		if (! c.rdf().isPresent()) {
 			throw new IllegalStateException("ParserState has no RDF instance configured");
@@ -145,6 +143,23 @@ public final class ParserConfigBuilder implements Serializable, NeedTargetOrRDF,
 					+ c.syntax().map(t -> t.name() ).orElse("(guess)"));
 		}
 		return parser.get();
+	}
+
+	@Override
+	public Future parseAsync() {
+		ImmutableParserConfig c = config.asImmutableConfig();
+		Parser parser = getParserOrFail(c);
+		return parser.parseAsync(c);		
+	}
+
+	@Override
+	public Async async() {
+		return this;
+	}
+
+	@Override
+	public ParserConfigBuilder build() {
+		return mutate(config.asImmutableConfig());
 	}
 
 }

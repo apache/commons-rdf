@@ -17,8 +17,6 @@
  */
 package org.apache.commons.rdf.api.fluentparser;
 
-import java.util.concurrent.ExecutorService;
-
 import org.apache.commons.rdf.api.io.Option;
 import org.apache.commons.rdf.api.io.Parsed;
 
@@ -26,9 +24,7 @@ public interface Sync<T, S> extends _Buildable {
 	
 	Sync<T, S> build();	
 	<V> Sync<T, S> option(Option<V> option, V value);
-
 	
     Async<T, S> async();
-    Async<T, S> async(ExecutorService executor);
     Parsed<T, S> parse();
 }

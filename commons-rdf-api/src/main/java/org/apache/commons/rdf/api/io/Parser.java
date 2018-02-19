@@ -16,9 +16,39 @@
  */
 package org.apache.commons.rdf.api.io;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 public interface Parser {
 
 	@SuppressWarnings("rawtypes")
 	Parsed parse(ParserConfig config);
 
+	@SuppressWarnings("rawtypes")
+	default Future<Parsed> parseAsync(ParserConfig config) {
+		return new DefaultAsyncParser(this, config).submit();
+	}
+
+	class DefaultAsyncParser {
+		private static final ThreadGroup THEAD_GROUP = new ThreadGroup("Commons RDF async parser");
+		private static final ExecutorService DEFAULT_EXECUTOR = Executors
+				.newCachedThreadPool(r -> new Thread(THEAD_GROUP, r));
+		
+		private final Parser syncParser;
+		private final ParserConfig config;
+
+		DefaultAsyncParser(Parser parser, ParserConfig config) {
+			this.syncParser = parser;
+			this.config = config.asImmutableConfig();
+		}
+		
+		Parsed parse() {
+			return syncParser.parse(config);			
+		}
+
+		Future<Parsed> submit() {
+			return DEFAULT_EXECUTOR.submit(this::parse);
+		}
+	}
 }
