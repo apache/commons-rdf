@@ -63,18 +63,13 @@ public final class ParserConfigBuilder implements NeedTargetOrRDF, NeedTargetOrR
 
 	@Override
 	public NeedSourceOrBase target(Dataset dataset) {
-		return target(dataset::add);
+		return target(ParserTarget.toDataset(dataset));
 
 	}
 
 	@Override
 	public NeedSourceOrBase<Graph> target(Graph graph) {
-		return target(q -> {
-			if (q.getGraphName().isPresent()) {
-				// Only add if q is in default graph
-				graph.add(q.asTriple());
-			}
-		});
+		return target(ParserTarget.toGraph(graph));
 	}
 
 	@Override
@@ -94,11 +89,11 @@ public final class ParserConfigBuilder implements NeedTargetOrRDF, NeedTargetOrR
 
 	@Override
 	public Sync source(final IRI iri) {
-		return source(new IRIParserSource(iri));
+		return source(ParserSource.fromIRI(iri));
 	}
 
 	public Sync source(Path path) {
-		return source(new PathParserSource(path));
+		return source(ParserSource.fromPath(path));
 	}
 
 	@Override
@@ -123,7 +118,7 @@ public final class ParserConfigBuilder implements NeedTargetOrRDF, NeedTargetOrR
 
 	@Override
 	public Sync source(InputStream is) {
-		return source(new InputParserSource(is));
+		return source(ParserSource.fromInputStream(is));
 	}
 
 	@Override

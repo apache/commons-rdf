@@ -17,16 +17,84 @@
  */
 package org.apache.commons.rdf.api.io;
 
+import java.util.Optional;
 import java.util.function.Consumer;
 
+import org.apache.commons.rdf.api.Dataset;
+import org.apache.commons.rdf.api.Graph;
+import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Quad;
 
-/**
- *
- */
 @FunctionalInterface
 public interface ParserTarget<T> extends Consumer<Quad> {
-    default T dest() {
-        return null;// unknown
-    }
+
+	default T dest() {
+		return null;// unknown
+	}
+
+	static ParserTarget<Dataset> toDataset(final Dataset ds) {
+		return new DatasetParserTarget(ds);
+	}
+
+	static ParserTarget<Graph> toGraph(final Graph graph) {
+		return new GraphParserTarget(graph, null);
+	}
+
+	static ParserTarget<Graph> toGraph(final Graph graph, IRI matchGraphName) {
+		return new GraphParserTarget(graph, matchGraphName);
+	}
+
+	static ParserTarget<Graph> toUnionGraph(final Graph graph) {
+		return q -> graph.add(q.asTriple());
+	}
+}
+
+class GraphParserTarget implements ParserTarget<Graph> {
+
+	private final boolean anyGraphName;
+	private final Graph graph;
+	private final IRI matchGraphName;
+
+	GraphParserTarget(Graph graph) {
+		this.graph = graph;
+		this.matchGraphName = null;
+		this.anyGraphName = true;
+	}
+
+	GraphParserTarget(Graph graph, IRI matchGraphName) {
+		this.graph = graph;
+		this.matchGraphName = matchGraphName;
+		this.anyGraphName = false;
+	}
+
+	@Override
+	public Graph dest() {
+		return graph;
+	}
+
+	@Override
+	public void accept(Quad q) {
+		if (anyGraphName || q.getGraphName().equals(Optional.ofNullable(matchGraphName))) {
+			graph.add(q.asTriple());
+		}
+	}
+}
+
+class DatasetParserTarget implements ParserTarget<Dataset> {
+
+	private final Dataset dataset;
+
+	public DatasetParserTarget(Dataset dataset) {
+		this.dataset = dataset;
+	}
+
+	@Override
+	public Dataset dest() {
+		return dataset;
+	}
+
+	@Override
+	public void accept(Quad q) {
+		dataset.add(q);
+	}
 }

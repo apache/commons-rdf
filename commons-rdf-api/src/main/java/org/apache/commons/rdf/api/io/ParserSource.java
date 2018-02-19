@@ -19,6 +19,9 @@ package org.apache.commons.rdf.api.io;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Optional;
 
 import org.apache.commons.rdf.api.IRI;
@@ -27,7 +30,92 @@ import org.apache.commons.rdf.api.IRI;
  *
  */
 public interface ParserSource<S> {
-    S src();   
-    InputStream inputStream() throws IOException;
-    Optional<IRI> iri();
+	S src();
+
+	InputStream inputStream() throws IOException;
+
+	Optional<IRI> iri();
+
+	static ParserSource<IRI> fromIRI(IRI iri) {
+		return new IRIParserSource(iri);
+	}
+
+	static ParserSource<Path> fromPath(Path path) {
+		return new PathParserSource(path);
+	}
+
+	static ParserSource<InputStream> fromInputStream(InputStream is) {
+		return new InputParserSource(is);
+	}
+
+}
+
+final class IRIParserSource implements ParserSource<IRI> {
+	private final IRI iri;
+
+	IRIParserSource(IRI iri) {
+		this.iri = iri;
+	}
+
+	@Override
+	public IRI src() {
+		return iri;
+	}
+
+	@Override
+	public InputStream inputStream() throws IOException {
+		return new URL(iri.getIRIString()).openStream();
+	}
+
+	@Override
+	public Optional<IRI> iri() {
+		return Optional.of(iri);
+	}
+}
+
+final class PathParserSource implements ParserSource<Path> {
+	private final Path path;
+
+	PathParserSource(Path path) {
+		this.path = path;
+	}
+
+	@Override
+	public Path src() {
+		return path;
+	}
+
+	@Override
+	public InputStream inputStream() throws IOException {
+		return Files.newInputStream(path);
+	}
+
+	@Override
+	public Optional<IRI> iri() {
+		final String uri = path.toUri().toString();
+		return Optional.of(new IRIImpl(uri));
+	}
+}
+
+final class InputParserSource implements ParserSource<InputStream> {
+	private final InputStream is;
+
+	InputParserSource(InputStream is) {
+		this.is = is;
+	}
+
+	@Override
+	public InputStream src() {
+		return is;
+	}
+
+	@Override
+	public InputStream inputStream() throws IOException {
+		return is;
+	}
+
+	@Override
+	public Optional<IRI> iri() {
+		return Optional.empty();
+	}
 }

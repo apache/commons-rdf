@@ -14,31 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.commons.rdf.api.io;
+package org.apache.commons.rdf.api.fluentparser;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Optional;
+import static org.junit.Assert.*;
 
-final class InputParserSource implements ParserSource {
-	private final InputStream is;
+import org.junit.Test;
 
-	InputParserSource(InputStream is) {
-		this.is = is;
-	}
-
-	@Override
-	public Object src() {
-		return is;
-	}
-
-	@Override
-	public InputStream inputStream() throws IOException {
-		return is;
-	}
-
-	@Override
-	public Optional iri() {
-		return Optional.empty();
+public class TestParseConfig {
+	@Test
+	public void immutable() throws Exception {
+		
 	}
 }
