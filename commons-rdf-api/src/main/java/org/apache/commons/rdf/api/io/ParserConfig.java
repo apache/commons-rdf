@@ -62,9 +62,9 @@ interface ParserConfig {
 		}
 	}
 	
-	default ParserConfig asImmutableConfig() {
+	default ImmutableParserConfig asImmutableConfig() {
 		if (this instanceof ImmutableParserConfig) {
-			return this;
+			return (ImmutableParserConfig) this;
 		} else {
 			return new SnapshotParserConfig(this);
 		}

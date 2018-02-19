@@ -20,9 +20,6 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.nio.file.Path;
 import java.util.Optional;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.Graph;
@@ -36,60 +33,34 @@ import org.apache.commons.rdf.api.fluentparser.NeedTargetOrRDF;
 import org.apache.commons.rdf.api.fluentparser.NeedTargetOrRDFOrSyntax;
 import org.apache.commons.rdf.api.fluentparser.OptionalTarget;
 import org.apache.commons.rdf.api.fluentparser.Sync;
+import org.apache.commons.rdf.api.io.ParserConfig.ImmutableParserConfig;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
-public final class AbstractParserBuilder implements Cloneable, Serializable, NeedTargetOrRDF, NeedTargetOrRDFOrSyntax,
+public final class ParserConfigBuilder implements Serializable, NeedTargetOrRDF, NeedTargetOrRDFOrSyntax,
 		NeedSourceOrBase, NeedSourceBased, OptionalTarget, Sync, Async {
 
 	private static final long serialVersionUID = 1L;
 
-
-    private static final ThreadGroup THEAD_GROUP = new ThreadGroup("Commons RDF parsers");
-    private static final ExecutorService DEFAULT_EXECUTOR = Executors.newCachedThreadPool(r -> new Thread(THEAD_GROUP, r));
-	
-	public AbstractParserBuilder(RDF rdf) {
-		this.config = ParserConfig.mutable().withRDF(rdf);
-	}
-	
-	@Override
-	public AbstractParserBuilder clone() {		
-		try {
-			AbstractParserBuilder c = (AbstractParserBuilder) super.clone();
-			c.config = (MutableParserConfig) config.clone();
-			return c;
-		} catch (CloneNotSupportedException e) {
-			throw new IllegalStateException("AbstractParserBuilder was not Cloneable", e);
-		}
-	}
-
-	private boolean mutable = false;
-	private ParserConfig config;
-	private ExecutorService executor = DEFAULT_EXECUTOR;
-
-	@Override
-	public NeedTargetOrRDF syntax(RDFSyntax syntax) {
-		AbstractParserBuilder c = mutable();
-		c.config.withSyntax(syntax);
-		return c;
-	}
-
-	private AbstractParserBuilder mutable(boolean mutable) {
-		if (this.mutable == mutable) {
+	public ParserConfigBuilder(ParserConfig mutated) {
+		this.config = mutated;
+	}	
+	private final ParserConfig config;
+	private ParserConfigBuilder mutate(ParserConfig mutated) {
+		if (mutated == config) {
+			// We're mutable (or nothing changed)
 			return this;
 		} else {
-			AbstractParserBuilder c = clone();
-			c.mutable = mutable;
-			return c;
+			return new ParserConfigBuilder(mutated);
 		}
 	}
-
-	private AbstractParserBuilder mutable() {
-		return mutable(true);
+	
+	@Override
+	public NeedTargetOrRDF syntax(RDFSyntax syntax) {
+		return mutate(config.withSyntax(syntax));
 	}
 
-	@Override
-	public AbstractParserBuilder build() {
-		return mutable(false);
+	public ParserConfig buildConfig() {
+		return config.asImmutableConfig();
 	}
 
 	@Override
@@ -110,23 +81,17 @@ public final class AbstractParserBuilder implements Cloneable, Serializable, Nee
 
 	@Override
 	public <T> NeedSourceOrBase<T> target(ParserTarget<T> target) {
-		AbstractParserBuilder c = mutable();
-		c.config.withTarget(target);
-		return c;
+		return mutate(config.withTarget(target));
 	}
 
 	@Override
 	public NeedSourceBased base(IRI iri) {
-		AbstractParserBuilder c = mutable();
-		c.config.withBase(iri);
-		return c;
+		return mutate(config.withBase(iri));
 	}
 
 	@Override
-	public NeedSourceBased base(String iri) {
-		AbstractParserBuilder c = mutable();
-		c.config.withBase(new IRIImpl(iri));
-		return c;
+	public NeedSourceBased base(String iriStr) {
+		return base(new IRIImpl(iriStr));
 	}
 
 	@Override
@@ -140,16 +105,12 @@ public final class AbstractParserBuilder implements Cloneable, Serializable, Nee
 
 	@Override
 	public OptionalTarget<Dataset> rdf(RDF rdf) {
-		AbstractParserBuilder c = mutable();
-		c.config.withRDF(rdf);
-		return c;
+		return mutate(config.withRDF(rdf));
 	}
 
 	@Override
 	public Sync source(ParserSource source) {
-		AbstractParserBuilder c = mutable();
-		c.config.withSource(source);
-		return c;
+		return mutate(config.withSource(source));
 	}
 
 	@Override
@@ -158,32 +119,8 @@ public final class AbstractParserBuilder implements Cloneable, Serializable, Nee
 	}
 
 	@Override
-	public AbstractParserBuilder option(Option option, Object value) {
-		AbstractParserBuilder c = mutable();
-		c.config.withOption(option, value);
-		return c;
-	}
-
-	@Override
-	public Future<Parsed> parseAsync() {
-		// Ensure immutable
-		AbstractParserBuilder frozen = mutable(false);
-		Parser parser = getParserOrFail(frozen.config);		
-		return frozen.executor.submit(() -> parser.parse(frozen.config));
-	}
-
-	@Override
-	public Async async() {
-		AbstractParserBuilder c = mutable();
-		c.executor = DEFAULT_EXECUTOR;
-		return c;
-	}
-
-	@Override
-	public Async async(ExecutorService executor) {
-		AbstractParserBuilder c = mutable();
-		c.executor = executor;
-		return c;
+	public ParserConfigBuilder option(Option option, Object value) {
+		return mutate(config.withOption(option, value));
 	}
 
 	@Override
@@ -193,13 +130,12 @@ public final class AbstractParserBuilder implements Cloneable, Serializable, Nee
 
 	@Override
 	public Parsed parse() {
-		// ensure immutable copy of config
-		MutableParserConfig c = mutable(false).config;
+		ImmutableParserConfig c = config.asImmutableConfig();
 		Parser parser = getParserOrFail(c);
 		return parser.parse(c);
 	}
 
-	private Parser getParserOrFail(MutableParserConfig c) {
+	private static Parser getParserOrFail(ImmutableParserConfig c) {
 		if (! c.rdf().isPresent()) {
 			throw new IllegalStateException("ParserState has no RDF instance configured");
 		}
