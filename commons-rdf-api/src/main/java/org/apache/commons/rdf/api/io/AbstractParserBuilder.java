@@ -48,14 +48,14 @@ public final class AbstractParserBuilder implements Cloneable, Serializable, Nee
     private static final ExecutorService DEFAULT_EXECUTOR = Executors.newCachedThreadPool(r -> new Thread(THEAD_GROUP, r));
 	
 	public AbstractParserBuilder(RDF rdf) {
-		this.config = new ParserConfigImpl(rdf);
+		this.config = ParserConfig.mutable().withRDF(rdf);
 	}
 	
 	@Override
 	public AbstractParserBuilder clone() {		
 		try {
 			AbstractParserBuilder c = (AbstractParserBuilder) super.clone();
-			c.config = (ParserConfigImpl) config.clone();
+			c.config = (MutableParserConfig) config.clone();
 			return c;
 		} catch (CloneNotSupportedException e) {
 			throw new IllegalStateException("AbstractParserBuilder was not Cloneable", e);
@@ -63,7 +63,7 @@ public final class AbstractParserBuilder implements Cloneable, Serializable, Nee
 	}
 
 	private boolean mutable = false;
-	private ParserConfigImpl config;
+	private ParserConfig config;
 	private ExecutorService executor = DEFAULT_EXECUTOR;
 
 	@Override
@@ -194,12 +194,12 @@ public final class AbstractParserBuilder implements Cloneable, Serializable, Nee
 	@Override
 	public Parsed parse() {
 		// ensure immutable copy of config
-		ParserConfigImpl c = mutable(false).config;
+		MutableParserConfig c = mutable(false).config;
 		Parser parser = getParserOrFail(c);
 		return parser.parse(c);
 	}
 
-	private Parser getParserOrFail(ParserConfigImpl c) {
+	private Parser getParserOrFail(MutableParserConfig c) {
 		if (! c.rdf().isPresent()) {
 			throw new IllegalStateException("ParserState has no RDF instance configured");
 		}

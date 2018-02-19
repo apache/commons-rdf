@@ -26,7 +26,7 @@ import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDF;
 import org.apache.commons.rdf.api.RDFSyntax;
 
-public final class ParserConfigImpl implements Cloneable, Serializable, ParserConfig {
+final class MutableParserConfig implements Cloneable, Serializable, ParserConfig {
 	private static final long serialVersionUID = 1L;
 	private RDF rdf = null;
 	private RDFSyntax syntax = null;
@@ -38,11 +38,10 @@ public final class ParserConfigImpl implements Cloneable, Serializable, ParserCo
 	private final Map<Option, Object> options = new HashMap<>();
 	private ExecutorService executor;
 
-	public ParserConfigImpl(RDF rdf) {
-		this.rdf = rdf;
+	public MutableParserConfig() {
 	}
 
-	public ParserConfigImpl(ParserConfig old) {
+	public MutableParserConfig(ParserConfig old) {
 		rdf = old.rdf().orElse(null);
 		syntax = old.syntax().orElse(null);
 		base = old.base().orElse(null);
@@ -53,7 +52,7 @@ public final class ParserConfigImpl implements Cloneable, Serializable, ParserCo
 
 	@Override
 	protected Object clone() {
-		return new ParserConfigImpl(this);
+		return new MutableParserConfig(this);
 	}
 
 	@Override

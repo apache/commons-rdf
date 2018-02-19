@@ -16,33 +16,14 @@
  */
 package org.apache.commons.rdf.api.io;
 
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
-import org.apache.commons.rdf.api.fluentparser.Async;
+import org.apache.commons.rdf.api.IRI;
+import org.apache.commons.rdf.api.RDF;
+import org.apache.commons.rdf.api.RDFSyntax;
+import org.apache.commons.rdf.api.io.ParserConfig.ImmutableParserConfig;
 
-public class AsyncImpl implements Async {
-
-    public static final ThreadGroup threadGroup = new ThreadGroup("Commons RDF parsers");
-    private static final ExecutorService threadpool = Executors.newCachedThreadPool(r -> new Thread(threadGroup, r));
-	
-	@Override
-	public Async build() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Async option(Option option, Object value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Future parseAsync() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-}

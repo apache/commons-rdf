@@ -16,14 +16,17 @@
  */
 package org.apache.commons.rdf.api.io;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.Optional;
 
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDF;
 import org.apache.commons.rdf.api.RDFSyntax;
+import org.apache.commons.rdf.api.io.NullParserConfig.SnapshotParserConfig;
 
-public interface ParserConfig {
+@SuppressWarnings("rawtypes")
+interface ParserConfig {
 	Optional<ParserSource> source();
 	Optional<IRI> base();
 	Optional<ParserTarget> target();
@@ -31,4 +34,42 @@ public interface ParserConfig {
 	Optional<RDF> rdf();
 	Map<Option, Object> options();
 	
+	ParserConfig withSyntax(RDFSyntax syntax);
+
+	ParserConfig withSource(ParserSource source);
+
+	ParserConfig withTarget(ParserTarget target);
+
+	ParserConfig withRDF(RDF rdf);
+
+	ParserConfig withBase(IRI base);
+
+	<V> ParserConfig withOption(Option<V> o, V v);	
+	
+	static ParserConfig immutable() {
+		return new NullParserConfig();
+	}
+
+	static ParserConfig mutable() {
+		return new MutableParserConfig();
+	}
+	
+	default ParserConfig asMutableConfig() {
+		if (this instanceof MutableParserConfig) {
+			return this;
+		} else {
+			return new MutableParserConfig(this);
+		}
+	}
+	
+	default ParserConfig asImmutableConfig() {
+		if (this instanceof ImmutableParserConfig) {
+			return this;
+		} else {
+			return new SnapshotParserConfig(this);
+		}
+	}
+	
+	interface ImmutableParserConfig extends ParserConfig, Serializable {} 
+
 }
