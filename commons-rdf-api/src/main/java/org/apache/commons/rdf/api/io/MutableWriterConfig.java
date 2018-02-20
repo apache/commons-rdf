@@ -24,7 +24,7 @@ import java.util.Optional;
 import org.apache.commons.rdf.api.RDF;
 import org.apache.commons.rdf.api.RDFSyntax;
 
-final class MutableWriterConfig implements Cloneable, Serializable, WriterConfig {
+final class MutableWriterConfig implements Serializable, WriterConfig {
 	private static final long serialVersionUID = 1L;
 	private RDF rdf = null;
 	private RDFSyntax syntax = null;
@@ -42,11 +42,6 @@ final class MutableWriterConfig implements Cloneable, Serializable, WriterConfig
 		source = old.source().orElse(null);
 		target = old.target().orElse(null);
 		options.putAll(old.options());
-	}
-
-	@Override
-	protected Object clone() {
-		return new MutableWriterConfig(this);
 	}
 
 	@Override

@@ -25,7 +25,7 @@ import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDF;
 import org.apache.commons.rdf.api.RDFSyntax;
 
-final class MutableParserConfig implements Cloneable, Serializable, ParserConfig {
+final class MutableParserConfig implements Serializable, ParserConfig {
 	private static final long serialVersionUID = 1L;
 	private RDF rdf = null;
 	private RDFSyntax syntax = null;
@@ -46,11 +46,6 @@ final class MutableParserConfig implements Cloneable, Serializable, ParserConfig
 		source = old.source().orElse(null);
 		target = old.target().orElse(null);
 		options.putAll(old.options());
-	}
-
-	@Override
-	protected Object clone() {
-		return new MutableParserConfig(this);
 	}
 
 	@Override
