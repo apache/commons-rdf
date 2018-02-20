@@ -17,7 +17,6 @@
  */
 package org.apache.commons.rdf.simple;
 
-import java.util.Optional;
 import java.util.UUID;
 
 import org.apache.commons.rdf.api.BlankNode;
@@ -27,12 +26,10 @@ import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.api.Quad;
-import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.RDF;
-import org.apache.commons.rdf.api.RDFSyntax;
+import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.api.io.ParserBuilder;
-import org.apache.commons.rdf.api.io.ParserFactory;
 
 /**
  * Simple RDF implementation.
@@ -114,13 +111,9 @@ public class SimpleRDF implements RDF {
         return new QuadImpl(graphName, subject, predicate, object);
     }
 
-	@Override
-	public ParserFactory parserFactory() throws UnsupportedOperationException {
-		throw new UnsupportedOperationException("SimpleRDF does not support parsing");
-	}
-
-	@Override
-	public Optional<ParserBuilder> parser(RDFSyntax syntax) {
-		return Optional.empty();
-	}
+    @Override
+    public ParserBuilder<Dataset> parserBuilder() throws UnsupportedOperationException {
+    	throw new UnsupportedOperationException("SimpleRDF does not support parsing");
+    }
+    
 }

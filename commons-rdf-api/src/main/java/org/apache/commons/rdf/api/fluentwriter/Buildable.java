@@ -19,6 +19,7 @@ package org.apache.commons.rdf.api.fluentwriter;
 
 import org.apache.commons.rdf.api.io.Option;
 import org.apache.commons.rdf.api.io.Option.RequiredOption;
+import org.apache.commons.rdf.api.io.Writer;
 
 public interface Buildable {
     /**
