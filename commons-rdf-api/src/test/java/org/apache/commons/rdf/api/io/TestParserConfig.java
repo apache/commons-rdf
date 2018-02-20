@@ -14,11 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.commons.rdf.api.fluentparser;
+package org.apache.commons.rdf.api.io;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
@@ -221,5 +222,35 @@ public class TestParserConfig {
 		
 	}
 	
+	@Test
+	public void immutableOverrides() throws Exception {
+		// Test that we can override
+		ParserConfig a = ParserConfig.immutable().withRDF(rdf)
+				.withBase(base).withSource(source).withSyntax(syntax)
+				.withTarget(target).withOption(option, optionV);
+		ParserConfig nulled = a.withRDF(null).withBase(null)
+				.withSource(null).withSyntax(null)
+				.withTarget(null).withOption(option, null);
+		assertFalse(nulled.rdf().isPresent());
+		assertFalse(nulled.base().isPresent());
+		assertFalse(nulled.source().isPresent());
+		assertFalse(nulled.syntax().isPresent());
+		assertFalse(nulled.target().isPresent());
+		assertNull(nulled.options().get(option));
+		assertFalse(nulled.options().containsKey(option));
+		assertTrue(nulled.options().isEmpty());
+		
+		// And then we can fill it again
+		ParserConfig filled = nulled.withRDF(rdf).withBase(base)
+				.withSource(source).withSyntax(syntax)
+				.withTarget(target).withOption(option, optionV);
+		assertSame(rdf, filled.rdf().get());
+		assertSame(base, filled.base().get());
+		assertSame(source, filled.source().get());
+		assertSame(syntax, filled.syntax().get());
+		assertSame(target, filled.target().get());
+		assertEquals(optionV, filled.options().get(option));
+		
+	}
 	
 }
