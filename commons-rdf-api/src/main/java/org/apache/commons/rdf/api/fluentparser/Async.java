@@ -24,7 +24,7 @@ import org.apache.commons.rdf.api.io.Parsed;
 
 public interface Async<T, S> extends Buildable {
 
-	Async<T, S> build();	
+	Async<T, S> immutable();	
 	<V> Async<T,S> option(Option<V> option, V value);
 	
     Future<Parsed<T, S>> parseAsync();

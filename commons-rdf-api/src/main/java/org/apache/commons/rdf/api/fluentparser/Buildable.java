@@ -17,9 +17,12 @@
  */
 package org.apache.commons.rdf.api.fluentparser;
 
+import org.apache.commons.rdf.api.RDF;
 import org.apache.commons.rdf.api.io.Option;
 import org.apache.commons.rdf.api.io.Option.RequiredOption;
 import org.apache.commons.rdf.api.io.Parser;
+import org.apache.commons.rdf.api.io.ParserConfig;
+import org.apache.commons.rdf.api.io.ParserConfig.ImmutableParserConfig;
 
 public interface Buildable {
     /**
@@ -28,8 +31,22 @@ public interface Buildable {
      * 
      * @return An immutable builder
      */
-	Buildable build();
-    
+	Buildable immutable();
+	
+	/**
+	 * Build the (potentially partial) parser config.
+	 * <p>
+	 * The parser configuration can be further modified, e.g.
+	 * {@link ParserConfig#withOption(Option, Object)} or used with a {@link Parser}
+	 * as retrieved from {@link RDF#parser(org.apache.commons.rdf.api.RDFSyntax)}.
+	 * <p>
+	 * The returned {@link ParserConfig} is immutable and is not affected by any
+	 * further modifications to this builder.
+	 * 
+	 * @return An Immutable {@link ParserConfig} as configured by the current builder. 
+	 */
+	ImmutableParserConfig build();
+    	
     /**
      * Return a builder with the given option set.
      * <p>

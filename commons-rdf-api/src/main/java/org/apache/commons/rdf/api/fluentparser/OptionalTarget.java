@@ -20,7 +20,7 @@ package org.apache.commons.rdf.api.fluentparser;
 import org.apache.commons.rdf.api.io.Option;
 
 public interface OptionalTarget<T> extends _OptionalTarget<T>,Buildable {
-	OptionalTarget<T> build();	
+	OptionalTarget<T> immutable();	
 	<V> OptionalTarget<T> option(Option<V> option, V value);
 
 }

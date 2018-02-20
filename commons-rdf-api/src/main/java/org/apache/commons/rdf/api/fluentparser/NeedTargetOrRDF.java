@@ -24,7 +24,7 @@ import org.apache.commons.rdf.api.io.Option;
 import org.apache.commons.rdf.api.io.ParserTarget;
 
 public interface NeedTargetOrRDF extends _NeedTargetOrRDF,Buildable {
-	NeedTargetOrRDF build();	
+	NeedTargetOrRDF immutable();	
 	<V> NeedTargetOrRDF option(Option<V> option, V value);
 }
 interface _NeedTargetOrRDF extends _NeedTarget {

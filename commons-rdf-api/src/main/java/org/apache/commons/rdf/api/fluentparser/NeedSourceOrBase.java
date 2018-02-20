@@ -21,7 +21,7 @@ import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.io.Option;
 
 public interface NeedSourceOrBase<T> extends _NeedSourceOrBase<T> {
-	NeedSourceOrBase<T> build();	
+	NeedSourceOrBase<T> immutable();	
 	<V> NeedSourceOrBase<T> option(Option<V> option, V value);
 }
 interface _NeedSourceOrBase<T> extends _NeedIdentifiedSource<T> {

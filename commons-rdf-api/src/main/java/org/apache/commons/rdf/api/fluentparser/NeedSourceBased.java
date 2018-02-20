@@ -26,7 +26,7 @@ import org.apache.commons.rdf.api.io.ParserSource;
 
 public interface NeedSourceBased<T> extends _NeedIdentifiedSource<T>, Buildable {
 	
-	NeedSourceBased<T> build();	
+	NeedSourceBased<T> immutable();	
 	<V> NeedSourceBased<T> option(Option<V> option, V value);
     Sync<T, InputStream> source(InputStream is);
 }

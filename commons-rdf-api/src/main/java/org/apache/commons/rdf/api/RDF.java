@@ -306,7 +306,7 @@ public interface RDF {
      * Note that the returned {@link ParserBuilder} may be mutable and not
      * thread-safe, and should only be used for parsing once. A reusable,
      * immutable builder can be created at any step with
-     * {@link Buildable#build()}.
+     * {@link Buildable#immutable()}.
      * 
      * @return {@link ParserBuilder} supported by this RDF implementation 
      * @throws UnsupportedOperationException

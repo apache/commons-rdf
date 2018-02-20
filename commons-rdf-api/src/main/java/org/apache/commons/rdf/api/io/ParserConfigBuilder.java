@@ -51,7 +51,7 @@ public final class ParserConfigBuilder implements ParserBuilder, NeedTargetOrRDF
 		}
 	}
 	
-	public ParserConfig buildConfig() {
+	public ImmutableParserConfig build() {
 		return config.asImmutableConfig();
 	}
 
@@ -147,7 +147,7 @@ public final class ParserConfigBuilder implements ParserBuilder, NeedTargetOrRDF
 	}
 
 	@Override
-	public ParserConfigBuilder build() {
+	public ParserConfigBuilder immutable() {
 		return mutate(config.asImmutableConfig());
 	}
 
