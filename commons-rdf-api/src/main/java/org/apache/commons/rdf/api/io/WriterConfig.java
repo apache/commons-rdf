@@ -22,7 +22,7 @@ import java.util.Optional;
 
 import org.apache.commons.rdf.api.RDF;
 import org.apache.commons.rdf.api.RDFSyntax;
-import org.apache.commons.rdf.api.io.NullWriterConfig.SnapshotWriterConfig;
+import org.apache.commons.rdf.api.io.ImmutableWriterConfigImpl.SnapshotWriterConfig;
 
 @SuppressWarnings("rawtypes")
 public interface WriterConfig {
@@ -39,8 +39,8 @@ public interface WriterConfig {
 
 	<V> WriterConfig withOption(Option<V> o, V v);	
 	
-	static WriterConfig immutable() {
-		return new NullWriterConfig();
+	static ImmutableWriterConfig immutable() {
+		return new ImmutableWriterConfigImpl();
 	}
 
 	static WriterConfig mutable() {		

@@ -23,7 +23,7 @@ import java.util.Optional;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDF;
 import org.apache.commons.rdf.api.RDFSyntax;
-import org.apache.commons.rdf.api.io.NullParserConfig.SnapshotParserConfig;
+import org.apache.commons.rdf.api.io.ImmutableParserConfigImpl.SnapshotParserConfig;
 
 @SuppressWarnings("rawtypes")
 public interface ParserConfig {
@@ -46,8 +46,8 @@ public interface ParserConfig {
 
 	<V> ParserConfig withOption(Option<V> o, V v);	
 	
-	static ParserConfig immutable() {
-		return new NullParserConfig();
+	static ImmutableParserConfig immutable() {
+		return new ImmutableParserConfigImpl();
 	}
 
 	static ParserConfig mutable() {

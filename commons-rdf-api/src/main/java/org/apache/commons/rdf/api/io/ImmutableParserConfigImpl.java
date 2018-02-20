@@ -30,7 +30,7 @@ import org.apache.commons.rdf.api.RDF;
 import org.apache.commons.rdf.api.RDFSyntax;
 import org.apache.commons.rdf.api.io.ParserConfig.ImmutableParserConfig;
 
-class NullParserConfig implements ImmutableParserConfig, Serializable {
+class ImmutableParserConfigImpl implements ImmutableParserConfig, Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -195,7 +195,7 @@ class NullParserConfig implements ImmutableParserConfig, Serializable {
 		}
 	}
 
-	abstract static class WithParent extends NullParserConfig implements ImmutableParserConfig {
+	abstract static class WithParent extends ImmutableParserConfigImpl implements ImmutableParserConfig {
 		private final ImmutableParserConfig parent;
 
 		/**
@@ -251,7 +251,7 @@ class NullParserConfig implements ImmutableParserConfig, Serializable {
 	}
 
 	@SuppressWarnings("rawtypes")
-	final static class SnapshotParserConfig extends NullParserConfig {
+	final static class SnapshotParserConfig extends ImmutableParserConfigImpl {
 		private static final long serialVersionUID = 1L;
 		private final RDF rdf;
 		private final RDFSyntax syntax;

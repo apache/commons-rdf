@@ -28,7 +28,7 @@ import org.apache.commons.rdf.api.RDF;
 import org.apache.commons.rdf.api.RDFSyntax;
 import org.apache.commons.rdf.api.io.WriterConfig.ImmutableWriterConfig;
 
-class NullWriterConfig implements ImmutableWriterConfig, Serializable {
+class ImmutableWriterConfigImpl implements ImmutableWriterConfig, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -83,7 +83,7 @@ class NullWriterConfig implements ImmutableWriterConfig, Serializable {
 		return new WithOption(this, o, v);
 	}
 
-	static class WithParent extends NullWriterConfig implements ImmutableWriterConfig {
+	static class WithParent extends ImmutableWriterConfigImpl implements ImmutableWriterConfig {
 		private final ImmutableWriterConfig parent;
 
 		WithParent(ImmutableWriterConfig parent) {
@@ -194,7 +194,7 @@ class NullWriterConfig implements ImmutableWriterConfig, Serializable {
 	}
 	
 	@SuppressWarnings("rawtypes")
-	final static class SnapshotWriterConfig extends NullWriterConfig {
+	final static class SnapshotWriterConfig extends ImmutableWriterConfigImpl {
 		private static final long serialVersionUID = 1L;
 		private final RDF rdf;
 		private final RDFSyntax syntax;
