@@ -80,7 +80,7 @@ public class JSONLDParsingTest {
     URL aliceEmbedded = getClass().getResource("/alice-embedded.jsonld");
 
     /**
-     * Pre-test that src/test/resources files are on the classpath
+     * Pre-test that source/test/resources files are on the classpath
      *
      */
     @Before
