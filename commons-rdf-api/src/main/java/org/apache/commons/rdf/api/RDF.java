@@ -28,6 +28,9 @@ import org.apache.commons.rdf.api.fluentparser.Sync;
 import org.apache.commons.rdf.api.io.Parsed;
 import org.apache.commons.rdf.api.io.Parser;
 import org.apache.commons.rdf.api.io.ParserBuilder;
+import org.apache.commons.rdf.api.io.ParserConfig;
+import org.apache.commons.rdf.api.io.ParserConfigBuilder;
+import org.apache.commons.rdf.api.io.ParserTarget;
 import org.apache.commons.rdf.api.io.Writer;
 
 /**
@@ -309,7 +312,11 @@ public interface RDF {
      * @throws UnsupportedOperationException
      *             If this RDF implementation does not support parsing RDF
      */
-    public ParserBuilder<Dataset> parserBuilder() throws UnsupportedOperationException;
+    @SuppressWarnings("unchecked")
+	default public ParserBuilder<Dataset> parserBuilder() throws UnsupportedOperationException {
+		return new ParserConfigBuilder(
+				ParserConfig.mutable().withRDF(this).withTarget(ParserTarget.toDataset(createDataset())));
+    }
     
     /**
      * Return a parser for the given RDF syntax.
@@ -327,7 +334,9 @@ public interface RDF {
      * @return A {@link Parser}, or {@link Optional#empty()} if the
      *         syntax is not supported.
      */
-    public Optional<Parser> parser(RDFSyntax syntax);
+    default public Optional<Parser> parser(RDFSyntax syntax) {
+    	return Optional.empty();
+    }
 
     /**
      * Return a writer for the given RDF syntax.
@@ -344,5 +353,7 @@ public interface RDF {
      * @return A {@link Writer}, or {@link Optional#empty()} if the
      *         syntax is not supported.
      */
-    public Optional<Writer> writer(RDFSyntax syntax);    
+    default public Optional<Writer> writer(RDFSyntax syntax) {
+    	return Optional.empty();
+    }
 }
