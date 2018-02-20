@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.ExecutorService;
 
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDF;
@@ -34,6 +33,7 @@ class ImmutableParserConfigImpl implements ImmutableParserConfig, Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Optional<ParserSource> source() {
 		return Optional.empty();
@@ -44,6 +44,7 @@ class ImmutableParserConfigImpl implements ImmutableParserConfig, Serializable {
 		return Optional.empty();
 	}
 
+	@SuppressWarnings("rawtypes")	
 	@Override
 	public Optional<ParserTarget> target() {
 		return Optional.empty();
@@ -59,6 +60,7 @@ class ImmutableParserConfigImpl implements ImmutableParserConfig, Serializable {
 		return Optional.empty();
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Map<Option, Object> options() {
 		// Always a fresh map, so that our children can
