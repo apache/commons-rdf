@@ -16,6 +16,7 @@
  */
 package org.apache.commons.rdf.api.io;
 
+import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
@@ -23,7 +24,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 
-import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDF;
 import org.apache.commons.rdf.api.RDFSyntax;
 import org.apache.commons.rdf.api.io.WriterConfig.ImmutableWriterConfig;
@@ -86,6 +86,20 @@ class ImmutableWriterConfigImpl implements ImmutableWriterConfig, Serializable {
 	static class WithParent extends ImmutableWriterConfigImpl implements ImmutableWriterConfig {
 		private final ImmutableWriterConfig parent;
 
+		/**
+		 * Override which object to use by Serializable, avoiding
+		 * serialization of the whole WithParent tree. 
+		 * 
+		 * This method is protected so it will be invoked for all subclasses of
+		 * WithParent.
+		 * 
+		 * @return a {@link SnapshotWriterConfig}
+		 * @throws ObjectStreamException
+		 */
+		protected Object writeReplace() throws ObjectStreamException {
+			return new SnapshotWriterConfig(this);
+		}		
+		
 		WithParent(ImmutableWriterConfig parent) {
 			this.parent = parent;
 		}
@@ -110,6 +124,7 @@ class ImmutableWriterConfigImpl implements ImmutableWriterConfig, Serializable {
 			return parent.rdf();
 		}
 
+		@SuppressWarnings("rawtypes")
 		@Override
 		public Map<Option, Object> options() {
 			return parent.options();
@@ -172,6 +187,7 @@ class ImmutableWriterConfigImpl implements ImmutableWriterConfig, Serializable {
 
 	}	
 
+	@SuppressWarnings("rawtypes")
 	static class WithOption extends WithParent implements WriterConfig {
 		private Option o;
 		private Object v;
