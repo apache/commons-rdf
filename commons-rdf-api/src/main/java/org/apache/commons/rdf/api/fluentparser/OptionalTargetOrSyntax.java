@@ -16,5 +16,9 @@
  * limitations under the License.
  */
 package org.apache.commons.rdf.api.fluentparser;
-public interface OptionalTargetOrSyntax<T> extends _OptionalTarget<T>, _NeedSyntax {   
+
+import org.apache.commons.rdf.api.RDFSyntax;
+
+public interface OptionalTargetOrSyntax<T> extends _OptionalTarget<T> {
+	NeedTargetOrRDF syntax(RDFSyntax syntax);
 }

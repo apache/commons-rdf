@@ -18,12 +18,24 @@
 package org.apache.commons.rdf.api.fluentparser;
 
 import java.io.InputStream;
+import java.nio.file.Path;
 
+import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.io.Option;
+import org.apache.commons.rdf.api.io.ParserSource;
 
-public interface NeedSourceBased<T> extends _NeedIdentifiedSource<T>, _Buildable {
+public interface NeedSourceBased<T> extends _NeedIdentifiedSource<T>, Buildable {
 	
 	NeedSourceBased<T> build();	
 	<V> NeedSourceBased<T> option(Option<V> option, V value);
     Sync<T, InputStream> source(InputStream is);
+}
+interface _NeedIdentifiedSource<T> {
+    Sync<T, IRI> source(IRI iri);
+
+    Sync<T, Path> source(Path path);
+
+    <S> Sync<T, S> source(ParserSource<S> source);
+
+    Sync<T, IRI> source(String iri);
 }

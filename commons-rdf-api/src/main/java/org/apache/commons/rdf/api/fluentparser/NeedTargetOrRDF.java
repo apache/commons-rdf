@@ -17,10 +17,24 @@
  */
 package org.apache.commons.rdf.api.fluentparser;
 
+import org.apache.commons.rdf.api.Dataset;
+import org.apache.commons.rdf.api.Graph;
+import org.apache.commons.rdf.api.RDF;
 import org.apache.commons.rdf.api.io.Option;
+import org.apache.commons.rdf.api.io.ParserTarget;
 
-public interface NeedTargetOrRDF extends _NeedTargetOrRDF,_Buildable {
+public interface NeedTargetOrRDF extends _NeedTargetOrRDF,Buildable {
 	NeedTargetOrRDF build();	
 	<V> NeedTargetOrRDF option(Option<V> option, V value);
+}
+interface _NeedTargetOrRDF extends _NeedTarget {
+    OptionalTarget<Dataset> rdf(RDF rdf);
+}
 
+interface _NeedTarget {
+    NeedSourceOrBase<Dataset> target(Dataset dataset);
+
+    NeedSourceOrBase<Graph> target(Graph graph);
+
+    <T> NeedSourceOrBase<T> target(ParserTarget<T> target);
 }

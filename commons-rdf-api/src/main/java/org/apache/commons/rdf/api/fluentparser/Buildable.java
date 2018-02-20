@@ -20,14 +20,14 @@ package org.apache.commons.rdf.api.fluentparser;
 import org.apache.commons.rdf.api.io.Option;
 import org.apache.commons.rdf.api.io.Option.RequiredOption;
 
-interface _Buildable {
+public interface Buildable {
     /**
      * Return an immutable builder at the current state. The returned builder
      * can be re-used multiple times in a thread-safe way.
      * 
      * @return An immutable builder
      */
-	_Buildable build();
+	Buildable build();
     
     /**
      * Return a builder with the given option set.
@@ -44,6 +44,6 @@ interface _Buildable {
      * @param value Value to set for option
      * @return A builder with the given option set
      */
-    <V> _Buildable option(Option<V> option, V value);
+    <V> Buildable option(Option<V> option, V value);
 
 }

@@ -20,7 +20,7 @@ package org.apache.commons.rdf.api.fluentparser;
 import org.apache.commons.rdf.api.io.Option;
 import org.apache.commons.rdf.api.io.Parsed;
 
-public interface Sync<T, S> extends _Buildable {
+public interface Sync<T, S> extends Buildable {
 	
 	Sync<T, S> build();	
 	<V> Sync<T, S> option(Option<V> option, V value);
