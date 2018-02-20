@@ -276,27 +276,27 @@ class NullParserConfig implements ImmutableParserConfig, Serializable {
 
 		@Override
 		public Optional<ParserSource> source() {
-			return Optional.of(source);
+			return Optional.ofNullable(source);
 		}
 
 		@Override
 		public Optional<IRI> base() {
-			return Optional.of(base);
+			return Optional.ofNullable(base);
 		}
 
 		@Override
 		public Optional<ParserTarget> target() {
-			return Optional.of(target);
+			return Optional.ofNullable(target);
 		}
 
 		@Override
 		public Optional<RDFSyntax> syntax() {
-			return Optional.of(syntax);
+			return Optional.ofNullable(syntax);
 		}
 
 		@Override
 		public Optional<RDF> rdf() {
-			return Optional.of(rdf);
+			return Optional.ofNullable(rdf);
 		}
 
 		@Override
