@@ -23,6 +23,7 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 
 import org.apache.commons.rdf.api.fluentparser.Async;
+import org.apache.commons.rdf.api.fluentparser.Buildable;
 import org.apache.commons.rdf.api.fluentparser.Sync;
 import org.apache.commons.rdf.api.io.Parsed;
 import org.apache.commons.rdf.api.io.Parser;
@@ -301,13 +302,13 @@ public interface RDF {
      * Note that the returned {@link ParserBuilder} may be mutable and not
      * thread-safe, and should only be used for parsing once. A reusable,
      * immutable builder can be created at any step with
-     * {@link _Builder#build()}.
+     * {@link Buildable#build()}.
      * 
      * @return {@link ParserBuilder} supported by this RDF implementation 
      * @throws UnsupportedOperationException
      *             If this RDF implementation does not support parsing RDF
      */
-    public ParserBuilder parserBuilder() throws UnsupportedOperationException;
+    public ParserBuilder<Dataset> parserBuilder() throws UnsupportedOperationException;
     
     /**
      * Return a parser for the given RDF syntax.
