@@ -30,13 +30,12 @@ import org.apache.commons.rdf.api.fluentparser.Async;
 import org.apache.commons.rdf.api.fluentparser.NeedSourceBased;
 import org.apache.commons.rdf.api.fluentparser.NeedSourceOrBase;
 import org.apache.commons.rdf.api.fluentparser.NeedTargetOrRDF;
-import org.apache.commons.rdf.api.fluentparser.NeedTargetOrRDFOrSyntax;
 import org.apache.commons.rdf.api.fluentparser.OptionalTarget;
 import org.apache.commons.rdf.api.fluentparser.Sync;
 import org.apache.commons.rdf.api.io.ParserConfig.ImmutableParserConfig;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
-public final class ParserConfigBuilder implements NeedTargetOrRDF, NeedTargetOrRDFOrSyntax,
+public final class ParserConfigBuilder implements ParserBuilder, NeedTargetOrRDF, 
 		NeedSourceOrBase, NeedSourceBased, OptionalTarget, Sync, Async {
 
 	public ParserConfigBuilder(ParserConfig mutated) {
@@ -52,11 +51,6 @@ public final class ParserConfigBuilder implements NeedTargetOrRDF, NeedTargetOrR
 		}
 	}
 	
-	@Override
-	public NeedTargetOrRDF syntax(RDFSyntax syntax) {
-		return mutate(config.withSyntax(syntax));
-	}
-
 	public ParserConfig buildConfig() {
 		return config.asImmutableConfig();
 	}
@@ -78,12 +72,12 @@ public final class ParserConfigBuilder implements NeedTargetOrRDF, NeedTargetOrR
 	}
 
 	@Override
-	public NeedSourceBased base(IRI iri) {
+	public ParserConfigBuilder base(IRI iri) {
 		return mutate(config.withBase(iri));
 	}
 
 	@Override
-	public NeedSourceBased base(String iriStr) {
+	public ParserConfigBuilder base(String iriStr) {
 		return base(new IRIImpl(iriStr));
 	}
 
@@ -155,6 +149,11 @@ public final class ParserConfigBuilder implements NeedTargetOrRDF, NeedTargetOrR
 	@Override
 	public ParserConfigBuilder build() {
 		return mutate(config.asImmutableConfig());
+	}
+
+	@Override
+	public NeedTargetOrRDF syntax(RDFSyntax syntax) {
+		return mutate(config.withSyntax(syntax));
 	}
 
 }

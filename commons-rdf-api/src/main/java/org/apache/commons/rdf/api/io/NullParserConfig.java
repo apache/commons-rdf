@@ -61,7 +61,9 @@ class NullParserConfig implements ImmutableParserConfig, Serializable {
 
 	@Override
 	public Map<Option, Object> options() {
-		return Collections.emptyMap();
+		// Always a fresh map, so that our children can
+		// mutate it on the fly
+		return new HashMap<>();
 	}
 
 	@Override
@@ -93,28 +95,35 @@ class NullParserConfig implements ImmutableParserConfig, Serializable {
 
 	@Override
 	public <V> ParserConfig withOption(Option<V> o, V v) {
-		return new WithOptional(this, o, v);
+		return new WithOption(this, o, v);
 	}
 
 	@SuppressWarnings("rawtypes")
-	final class WithOptional extends WithParent {
+	private static final class WithOption extends WithParent {
 
-		private final Map<Option, Object> options;
+		private Option o;
+		private Object v;
 
-		public <V> WithOptional(final ImmutableParserConfig parent, final Option<V> o, V v) {
+		public <V> WithOption(final ImmutableParserConfig parent, final Option<V> o, V v) {
 			super(parent);
-			this.options = new HashMap<>(parent.options());
-			options.put(o, v);
+			this.o = o;
+			this.v = v;
 		}
 
 		@Override
 		public Map<Option, Object> options() {
+			// Add to parent options
+			Map options = super.options();
+			if (v == null) {
+				options.remove(o);
+			} else {
+				options.put(o, v);
+			}
 			return options;
 		}
-
 	}
 
-	final class WithBase extends WithParent {
+	private static final class WithBase extends WithParent {
 		private final IRI base;
 
 		WithBase(final ImmutableParserConfig parent, final IRI base) {
@@ -124,11 +133,11 @@ class NullParserConfig implements ImmutableParserConfig, Serializable {
 
 		@Override
 		public Optional<IRI> base() {
-			return Optional.of(base);
+			return Optional.ofNullable(base);
 		}
 	}
 
-	final class WithRDF extends WithParent {
+	private static final class WithRDF extends WithParent {
 		private final RDF rdf;
 
 		WithRDF(final ImmutableParserConfig parent, final RDF rdf) {
@@ -138,12 +147,12 @@ class NullParserConfig implements ImmutableParserConfig, Serializable {
 
 		@Override
 		public Optional<RDF> rdf() {
-			return Optional.of(rdf);
+			return Optional.ofNullable(rdf);
 		}
 	}
 
 	@SuppressWarnings("rawtypes")
-	final class WithTarget extends WithParent {
+	private static final class WithTarget extends WithParent {
 		private final ParserTarget target;
 
 		WithTarget(final ImmutableParserConfig parent, final ParserTarget target) {
@@ -153,12 +162,12 @@ class NullParserConfig implements ImmutableParserConfig, Serializable {
 
 		@Override
 		public Optional<ParserTarget> target() {
-			return Optional.of(target);
+			return Optional.ofNullable(target);
 		}
 	}
 
 	@SuppressWarnings("rawtypes")
-	public class WithSource extends WithParent {
+	private static final class WithSource extends WithParent {
 		private final ParserSource source;
 
 		WithSource(ImmutableParserConfig parent, ParserSource source) {
@@ -168,11 +177,11 @@ class NullParserConfig implements ImmutableParserConfig, Serializable {
 
 		@Override
 		public Optional<ParserSource> source() {
-			return Optional.of(source);
+			return Optional.ofNullable(source);
 		}
 	}
 
-	static class WithSyntax extends WithParent {
+	private static final class WithSyntax extends WithParent {
 		private final RDFSyntax syntax;
 
 		WithSyntax(ImmutableParserConfig parent, RDFSyntax syntax) {
@@ -182,7 +191,7 @@ class NullParserConfig implements ImmutableParserConfig, Serializable {
 
 		@Override
 		public Optional<RDFSyntax> syntax() {
-			return Optional.of(syntax);
+			return Optional.ofNullable(syntax);
 		}
 	}
 
@@ -249,7 +258,7 @@ class NullParserConfig implements ImmutableParserConfig, Serializable {
 		private final IRI base;
 		private final ParserSource source;
 		private final ParserTarget target;
-		private final Map<Option, Object> options = new HashMap<>();
+		private final Map<Option, Object> options;
 		private final ExecutorService executor;
 
 		SnapshotParserConfig(ParserConfig old) {
@@ -270,7 +279,8 @@ class NullParserConfig implements ImmutableParserConfig, Serializable {
 			this.base = base;
 			this.source = source;
 			this.target = target;
-			this.options.putAll(options);
+			// We'll make a copy
+			this.options = Collections.unmodifiableMap(new HashMap<Option, Object>(options));
 			this.executor = executor;				
 		}
 
@@ -301,7 +311,8 @@ class NullParserConfig implements ImmutableParserConfig, Serializable {
 
 		@Override
 		public Map<Option, Object> options() {
-			return options;
+			// return a mutable copy so our children can build on it
+			return new HashMap<Option,Object>(options);
 		}
 	}	
 }
