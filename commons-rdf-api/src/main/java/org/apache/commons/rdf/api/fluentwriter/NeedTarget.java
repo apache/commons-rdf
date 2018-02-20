@@ -23,7 +23,7 @@ import java.nio.file.Path;
 import org.apache.commons.rdf.api.io.Option;
 import org.apache.commons.rdf.api.io.WriterTarget;
 
-public interface NeedTarget extends _Buildable {
+public interface NeedTarget extends Buildable {
     @Override
     NeedTarget build();
     <V> NeedTarget option(Option<V> option, V value);

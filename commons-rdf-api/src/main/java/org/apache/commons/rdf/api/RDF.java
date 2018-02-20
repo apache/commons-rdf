@@ -28,6 +28,7 @@ import org.apache.commons.rdf.api.fluentparser.Sync;
 import org.apache.commons.rdf.api.io.Parsed;
 import org.apache.commons.rdf.api.io.Parser;
 import org.apache.commons.rdf.api.io.ParserBuilder;
+import org.apache.commons.rdf.api.io.Writer;
 
 /**
  * A RDF implementation.
@@ -328,4 +329,20 @@ public interface RDF {
      */
     public Optional<Parser> parser(RDFSyntax syntax);
 
+    /**
+     * Return a writer for the given RDF syntax.
+     * <p>
+     * If the syntax is not supported/recognised by this RDF implementation,
+     * return {@link Optional#empty()}, otherwise return an {@link Optional}
+     * containing an {@link Writer} for that syntax.
+     * <p>
+     * If the provided syntax is <code>null</code>, 
+     * return a generic {@link Writer} that can detect the syntax 
+     * (e.g. from WriterConfig), or {@link Optional#empty()} if this feature is not supported.
+     * 
+     * @param syntax RDF Syntax to write, or <code>null</code> for syntax to be configured later.
+     * @return A {@link Writer}, or {@link Optional#empty()} if the
+     *         syntax is not supported.
+     */
+    public Optional<Writer> writer(RDFSyntax syntax);    
 }

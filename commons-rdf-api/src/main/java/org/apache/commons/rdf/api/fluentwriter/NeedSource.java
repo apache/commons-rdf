@@ -8,7 +8,7 @@ import org.apache.commons.rdf.api.TripleLike;
 import org.apache.commons.rdf.api.io.Option;
 import org.apache.commons.rdf.api.io.WriterSource;
 
-public interface NeedSource extends _Buildable {
+public interface NeedSource extends Buildable {
     
     NeedSource build();    
     <V> NeedSource option(Option<V> option, V value);
