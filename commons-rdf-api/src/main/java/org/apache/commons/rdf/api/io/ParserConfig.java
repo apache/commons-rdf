@@ -26,7 +26,7 @@ import org.apache.commons.rdf.api.RDFSyntax;
 import org.apache.commons.rdf.api.io.NullParserConfig.SnapshotParserConfig;
 
 @SuppressWarnings("rawtypes")
-interface ParserConfig {
+public interface ParserConfig {
 	Optional<ParserSource> source();
 	Optional<IRI> base();
 	Optional<ParserTarget> target();
