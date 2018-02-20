@@ -259,7 +259,6 @@ class NullParserConfig implements ImmutableParserConfig, Serializable {
 		private final ParserSource source;
 		private final ParserTarget target;
 		private final Map<Option, Object> options;
-		private final ExecutorService executor;
 
 		SnapshotParserConfig(ParserConfig old) {
 			this(
@@ -268,12 +267,10 @@ class NullParserConfig implements ImmutableParserConfig, Serializable {
 				old.base().orElse(null),
 				old.source().orElse(null),
 				old.target().orElse(null),
-				old.options(),
-				null);
+				old.options());
 		}
 		
-		SnapshotParserConfig(RDF rdf, RDFSyntax syntax, IRI base, ParserSource source, ParserTarget target, Map<Option, Object> options, 
-				ExecutorService executor) {
+		SnapshotParserConfig(RDF rdf, RDFSyntax syntax, IRI base, ParserSource source, ParserTarget target, Map<Option, Object> options) {
 			this.rdf = rdf;
 			this.syntax = syntax;
 			this.base = base;
@@ -281,7 +278,6 @@ class NullParserConfig implements ImmutableParserConfig, Serializable {
 			this.target = target;
 			// We'll make a copy
 			this.options = Collections.unmodifiableMap(new HashMap<Option, Object>(options));
-			this.executor = executor;				
 		}
 
 		@Override

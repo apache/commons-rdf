@@ -36,7 +36,6 @@ final class MutableParserConfig implements Cloneable, Serializable, ParserConfig
 	@SuppressWarnings("rawtypes")
 	private ParserTarget target = null;
 	private final Map<Option, Object> options = new HashMap<>();
-	private ExecutorService executor;
 
 	public MutableParserConfig() {
 	}
