@@ -73,6 +73,9 @@
         <!-- Test dependencies -->
         <slf4j.version>1.7.25</slf4j.version>
         <junit.version>4.12</junit.version>
+        <!-- temporarily downgraded mockito as 2.15.0 fails with 
+           NoClassDefFound net.bytebuddy.dynamic.loading.ClassLoadingStrategy -->
+        <mockito.version>2.13.0</mockito.version>
         <skipAPICompatCheck>false</skipAPICompatCheck>
     </properties>
 
@@ -252,6 +255,11 @@
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
             </dependency>
+	    	<dependency>
+	    		<groupId>org.mockito</groupId>
+	    		<artifactId>mockito-core</artifactId>
+	    		<version>${mockito.version}</version>
+	    	</dependency>            
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-simple</artifactId>
@@ -276,6 +284,11 @@
             <artifactId>slf4j-simple</artifactId>
             <scope>test</scope>
         </dependency>
+    	<dependency>
+    		<groupId>org.mockito</groupId>
+    		<artifactId>mockito-core</artifactId>
+			<scope>test</scope>
+		</dependency>
     </dependencies>
 
     <build>
