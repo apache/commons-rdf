@@ -835,6 +835,9 @@ public final class JenaRDF implements RDF {
     
     @Override
     public Optional<Parser> parser(RDFSyntax syntax) {
+    	if (syntax != null && ! asJenaLang(syntax).isPresent()) {
+    		return Optional.empty();
+    	}    	
     	return Optional.of(new JenaParser(syntax));
     }
 
