@@ -34,7 +34,9 @@ import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.RDF;
 import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.api.TripleLike;
+import org.apache.commons.rdf.api.io.Parser;
 import org.apache.commons.rdf.jena.impl.InternalJenaFactory;
+import org.apache.commons.rdf.jena.impl.JenaParser;
 import org.apache.jena.datatypes.RDFDatatype;
 import org.apache.jena.datatypes.xsd.XSDDatatype;
 import org.apache.jena.graph.Node;
@@ -829,6 +831,11 @@ public final class JenaRDF implements RDF {
      */
     public UUID salt() {
         return salt;
+    }
+    
+    @Override
+    public Optional<Parser> parser(RDFSyntax syntax) {
+    	return Optional.of(new JenaParser(syntax));
     }
 
 }
