@@ -69,34 +69,34 @@ class ImmutableParserConfigImpl implements ImmutableParserConfig, Serializable {
 	}
 
 	@Override
-	public ParserConfig withSyntax(RDFSyntax syntax) {
+	public ImmutableParserConfig withSyntax(RDFSyntax syntax) {
 		return new WithSyntax(this, syntax);
 	}
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public ParserConfig withSource(ParserSource source) {
+	public ImmutableParserConfig withSource(ParserSource source) {
 		return new WithSource(this, source);
 	}
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public ParserConfig withTarget(ParserTarget target) {
+	public ImmutableParserConfig withTarget(ParserTarget target) {
 		return new WithTarget(this, target);
 	}
 
 	@Override
-	public ParserConfig withRDF(RDF rdf) {
+	public ImmutableParserConfig withRDF(RDF rdf) {
 		return new WithRDF(this, rdf);
 	}
 
 	@Override
-	public ParserConfig withBase(IRI base) {
+	public ImmutableParserConfig withBase(IRI base) {
 		return new WithBase(this, base);
 	}
 
 	@Override
-	public <V> ParserConfig withOption(Option<V> o, V v) {
+	public <V> ImmutableParserConfig withOption(Option<V> o, V v) {
 		return new WithOption(this, o, v);
 	}
 
@@ -115,7 +115,7 @@ class ImmutableParserConfigImpl implements ImmutableParserConfig, Serializable {
 		@Override
 		public Map<Option, Object> options() {
 			// Add to parent options
-			Map options = super.options();
+			Map<Option, Object> options = super.options();
 			if (v == null) {
 				options.remove(o);
 			} else {

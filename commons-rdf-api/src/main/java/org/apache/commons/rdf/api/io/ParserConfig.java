@@ -70,6 +70,20 @@ public interface ParserConfig {
 		}
 	}
 	
-	interface ImmutableParserConfig extends ParserConfig, Serializable {} 
+	interface ImmutableParserConfig extends ParserConfig, Serializable {
+		ImmutableParserConfig withSyntax(RDFSyntax syntax);
+
+		ImmutableParserConfig withSource(ParserSource source);
+
+		ImmutableParserConfig withTarget(ParserTarget target);
+
+		ImmutableParserConfig withRDF(RDF rdf);
+
+		ImmutableParserConfig withBase(IRI base);
+
+		<V> ImmutableParserConfig withOption(Option<V> o, V v);	
+		
+		
+	} 
 
 }
