@@ -50,6 +50,7 @@
 			<groupId>${project.parent.groupId}</groupId>
 			<artifactId>commons-rdf-simple</artifactId>
 			<version>${project.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<!-- Uncomment below and disable jena-osgi to access the regular non-osgi 
 			 Jena dependencies (e.g. for debugging) -->
