@@ -17,10 +17,36 @@
  */
 package org.apache.commons.rdf.api.io;
 
-public interface Parsed<T, S> {
-    long count();
+public interface Parsed<S, T> {
 
-    ParserSource<S> from();
+	ParserSource<S> from();
 
-    ParserTarget<T> into();
+	ParserTarget<T> into();
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static <S, T> Parsed<S, T> from(
+			final ParserSource<S> from, 
+			final ParserTarget<T> into) {
+		return new ParsedImpl(from, into);
+	}
+}
+
+class ParsedImpl<S, T> implements Parsed<S, T> {
+	private ParserSource<S> from;
+	private ParserTarget<T> into;
+
+	ParsedImpl(final ParserSource<S> from, final ParserTarget<T> into) {
+		this.from = from;
+		this.into = into;
+	}
+
+	@Override
+	public ParserSource<S> from() {
+		return from;
+	}
+
+	@Override
+	public ParserTarget<T> into() {
+		return into;
+	}
 }
