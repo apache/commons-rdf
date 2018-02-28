@@ -17,6 +17,8 @@
  */
 package org.apache.commons.rdf.api.fluentparser;
 
+import java.io.IOException;
+
 import org.apache.commons.rdf.api.io.Option;
 import org.apache.commons.rdf.api.io.Parsed;
 
@@ -26,5 +28,5 @@ public interface Sync<T, S> extends Buildable {
 	<V> Sync<T, S> option(Option<V> option, V value);
 	
     Async<T, S> async();
-    Parsed<T, S> parse();
+    Parsed<T, S> parse() throws IOException;
 }

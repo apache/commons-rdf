@@ -16,6 +16,7 @@
  */
 package org.apache.commons.rdf.api.io;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.Optional;
@@ -116,7 +117,7 @@ public final class ParserConfigBuilder implements ParserBuilder, NeedTargetOrRDF
 	}
 
 	@Override
-	public Parsed parse() {
+	public Parsed parse() throws IOException {
 		ImmutableParserConfig c = config.asImmutableConfig();
 		Parser parser = getParserOrFail(c);
 		return parser.parse(c);

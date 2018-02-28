@@ -16,6 +16,7 @@
  */
 package org.apache.commons.rdf.api.io;
 
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -23,7 +24,7 @@ import java.util.concurrent.Future;
 public interface Parser {
 
 	@SuppressWarnings("rawtypes")
-	Parsed parse(ParserConfig config);
+	Parsed parse(ParserConfig config) throws IOException;
 
 	@SuppressWarnings("rawtypes")
 	default Future<Parsed> parseAsync(ParserConfig config) {
@@ -43,7 +44,7 @@ public interface Parser {
 			this.config = config.asImmutableConfig();
 		}
 		
-		Parsed parse() {
+		Parsed parse() throws IOException {
 			return syncParser.parse(config);			
 		}
 
