@@ -123,7 +123,7 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
     /**
      * Get a named graph in this dataset.
      * <p>
-     * The {@link Triple}s of the named graph are equivalent to the the Quads of
+     * The {@link Triple}s of the named graph are equivalent to the Quads of
      * this Dataset which has the {@link Quad#getGraphName()} equal to the
      * provided <code>graphName</code>, or equal to {@link Optional#empty()} if
      * the provided <code>graphName</code> is <code>null</code>.
