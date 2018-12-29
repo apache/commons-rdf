@@ -71,11 +71,11 @@
 			<version>${jena.version}</version>
 		</dependency>
 
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-compress</artifactId>
-            <version>${commons.compress.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-compress</artifactId>
+			<version>${commons.compress.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>${project.parent.groupId}</groupId>
