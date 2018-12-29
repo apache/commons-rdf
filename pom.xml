@@ -63,12 +63,8 @@
 	          is cross-compatible -->
         <jsonldjava.version>0.11.1</jsonldjava.version>
         <rdf4j.version>2.2.2</rdf4j.version>
-        <jena.version>3.5.0</jena.version>
-        <!--  NOTE: dexx and xerces versions should match 
-        the versions marked as <optional> in jena-osgi pom
-         -->
-        <dexx.collection.version>0.7</dexx.collection.version>
-        <servicemix.xerces.version>2.11.0_1</servicemix.xerces.version>
+        <jena.version>3.9.0</jena.version>
+        <commons.compress.version>1.18</commons.compress.version>
 
         <!-- Test dependencies -->
         <slf4j.version>1.7.25</slf4j.version>

@@ -71,18 +71,11 @@
 			<version>${jena.version}</version>
 		</dependency>
 
-		<!-- Additional bundles needed by jena-osgi -->
-		<dependency>
-			<groupId>org.apache.servicemix.bundles</groupId>
-			<artifactId>org.apache.servicemix.bundles.xerces</artifactId>
-			<version>${servicemix.xerces.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.github.andrewoma.dexx</groupId>
-			<artifactId>collection</artifactId>
-			<version>${dexx.collection.version}</version>
-		</dependency>
-
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-compress</artifactId>
+            <version>${commons.compress.version}</version>
+        </dependency>
 
 		<dependency>
 			<groupId>${project.parent.groupId}</groupId>
