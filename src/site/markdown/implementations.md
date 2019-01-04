@@ -104,7 +104,7 @@ Objects created with  [JenaRDF](apidocs/org/apache/commons/rdf/jena/JenaRDF.html
 
 #### Jena and OSGi
 
-If using `commons-rdf-jena` as an OSGi bundle, then you should use it together with the corresponding [`jena-osgi`](https://github.com/apache/jena/tree/master/apache-jena-osgi) artifact and exclude the  `apache-jena-libs` dependency. With Maven:
+If using `commons-rdf-jena` as an OSGi bundle, then you should use it together with the corresponding [`jena-osgi`](https://github.com/apache/jena/tree/master/apache-jena-osgi) artifact and exclude the `jena-arq` dependency. With Maven:
 
 ```xml
 <dependency>
@@ -114,7 +114,7 @@ If using `commons-rdf-jena` as an OSGi bundle, then you should use it together w
     <exclusions>
         <exclusion>
             <groupId>org.apache.jena</groupId>
-            <artifactId>apache-jena-libs</artifactId>
+            <artifactId>jena-arq</artifactId>
         <exclusion>
     </exclusions>
 </dependency>
@@ -125,7 +125,9 @@ If using `commons-rdf-jena` as an OSGi bundle, then you should use it together w
 </dependency>
 ```
 
-This should ensure you get the Jena OSGi bundle repackaging, rather than the regular JARs like `jena-arq`. 
+Make sure to exclude any other Jena dependencies (possibly in conflicting versions from transitive dependencies), as `jena-osgi` repackages them all into a single OSGi bundle. 
+
+<!-- TODO: Document how to do above with Karaf and jena-osgi-features -->
 
 
 #### Generalized RDF
