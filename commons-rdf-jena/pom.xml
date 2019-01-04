@@ -51,24 +51,26 @@
 			<artifactId>commons-rdf-simple</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<!-- Uncomment below and disable jena-osgi to access the regular non-osgi 
-			 Jena dependencies (e.g. for debugging) -->
-		<!-- 
-	
+		<!-- Note: For convenience of most Maven/Jena users
+                     we'll keep this 'regular' dependency, but if
+                     if using in OSGi context, add exclusion of apache-jena-libs
+                     and use only jena-osgi from below. 
+                -->
 		<dependency>
 			<groupId>org.apache.jena</groupId>
 			<artifactId>apache-jena-libs</artifactId>
 			<version>${jena.version}</version>
 			<type>pom</type>
-			<scope>optional</scope>
 		</dependency>
-				--> 
 
-		<!-- As commons-rdf-jena is an OSGi bundle, we'll use the Jena OSGi bundle -->
+		<!-- As commons-rdf-jena is an OSGi bundle, we'll use the Jena OSGi bundle 
+                     to calculate our OSGi package dependencies.
+                -->
 		<dependency>
 			<groupId>org.apache.jena</groupId>
 			<artifactId>jena-osgi</artifactId>
 			<version>${jena.version}</version>
+			<scope>optional</scope>
 		</dependency>
 
 		<dependency>
