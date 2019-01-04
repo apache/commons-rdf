@@ -114,7 +114,7 @@ If using `commons-rdf-jena` as an OSGi bundle, then you should use it together w
     <exclusions>
         <exclusion>
             <groupId>org.apache.jena</groupId>
-			<artifactId>apache-jena-libs</artifactId>
+            <artifactId>apache-jena-libs</artifactId>
         <exclusion>
     </exclusions>
 </dependency>
