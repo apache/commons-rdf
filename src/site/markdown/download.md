@@ -92,9 +92,8 @@ from official mirrors of the
 ASF Distribution Directory [incubator/commonsrdf](https://www.apache.org/dyn/closer.lua/incubator/commonsrdf/0.5.0/):
 
 * [apache-commons-rdf-0.5.0-src.zip](https://www.apache.org/dyn/closer.lua/commons/rdf/source/apache-commons-rdf-0.5.0-source-release.zip)
-  ([asc](https://www.apache.org/dyn/closer.lua/commons/rdf/source/apache-commons-rdf-0.5.0-source-release.zip.asc),
-  [md5](https://www.apache.org/dyn/closer.lua/commons/rdf/source/apache-commons-rdf-0.5.0-source-release.zip.md5),
-  [sha1](https://www.apache.org/dyn/closer.lua/commons/rdf/source/apache-commons-rdf-0.5.0-source-release.zip.sha1))
+  ([asc](https://www.apache.org/dist/commons/rdf/source/apache-commons-rdf-0.5.0-source-release.zip.asc),
+  [sha256](https://www.apache.org/dist/commons/rdf/source/apache-commons-rdf-0.5.0-source-release.zip.sha256))
 
 After downloading the files, [check the signatures](https://www.apache.org/info/verification.html) 
 using the following [KEYS](https://www.apache.org/dist/commons/KEYS)
