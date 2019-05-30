@@ -495,7 +495,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      * for <code>archive.tar.gz</code> would be <code>.gz</code>
      *
      * @param path
-     *            Path which filename might contain an extension
+     *            Path which file name might contain an extension
      * @return File extension (including the leading <code>.</code>, or
      *         {@link Optional#empty()} if the path has no extension
      */
