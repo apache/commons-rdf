@@ -1281,4 +1281,4 @@ browsed in
 within the
 [examples](https://github.com/apache/commons-rdf/tree/master/examples)
 folder of the
-Commons RDF [source code repository](source-repository.html).
+Commons RDF [source code repository](scm.html).

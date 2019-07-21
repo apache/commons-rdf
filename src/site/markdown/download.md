@@ -81,7 +81,7 @@ details on each of the bindings.
 Here you can find all source releases published of Apache Commons RDF.
 
 For the latest developments
-you may also be interested in the [source code repository](source-repository.html),
+you may also be interested in the [source code repository](scm.html),
 which is also [mirrored to GitHub](http://github.com/apache/commons-rdf).
 
 
