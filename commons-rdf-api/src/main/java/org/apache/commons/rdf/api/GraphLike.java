@@ -32,7 +32,7 @@ import java.util.stream.Stream;
  * {@link RDFTerm} instances from different implementations.
  * <p>
  * As {@link TripleLike} do not have a specific {@link Object#equals(Object)}
- * semantics, the behaviour of methods like {@link #contains(TripleLike)} and
+ * semantics, the behavior of methods like {@link #contains(TripleLike)} and
  * {@link #remove(TripleLike)} is undefined for arguments that are not object
  * identical to previously added or returned {@link TripleLike} statements.
  *

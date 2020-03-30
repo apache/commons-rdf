@@ -84,7 +84,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      * For example, this would close any open file and network streams and free
      * database locks held by the Graph implementation.
      * <p>
-     * The behaviour of the other Graph methods are undefined after closing the
+     * The behavior of the other Graph methods are undefined after closing the
      * graph.
      * <p>
      * Implementations might not need {@link #close()}, hence the default
@@ -138,7 +138,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      * The iteration does not contain any duplicate triples, as determined by
      * the {@link Triple#equals(Object)} method for each {@link Triple}.
      * <p>
-     * The behaviour of the {@link Stream} is not specified if
+     * The behavior of the {@link Stream} is not specified if
      * {@link #add(Triple)}, {@link #remove(Triple)} or {@link #clear()} are
      * called on the {@link Graph} before it terminates.
      * <p>
@@ -157,7 +157,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      * The iteration does not contain any duplicate triples, as determined by
      * the {@link Triple#equals(Object)} method for each {@link Triple}.
      * <p>
-     * The behaviour of the {@link Stream} is not specified if
+     * The behavior of the {@link Stream} is not specified if
      * {@link #add(Triple)}, {@link #remove(Triple)} or {@link #clear()} are
      * called on the {@link Graph} before it terminates.
      * <p>
@@ -215,7 +215,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      * }
      * </pre>
      *
-     * The behaviour of the iterator is not specified if {@link #add(Triple)},
+     * The behavior of the iterator is not specified if {@link #add(Triple)},
      * {@link #remove(Triple)} or {@link #clear()}, are called on the
      * {@link Graph} before it terminates. It is undefined if the returned
      * {@link Iterator} supports the {@link Iterator#remove()} method.
@@ -259,7 +259,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      * }
      * </pre>
      * <p>
-     * The behaviour of the iterator is not specified if {@link #add(Triple)},
+     * The behavior of the iterator is not specified if {@link #add(Triple)},
      * {@link #remove(Triple)} or {@link #clear()}, are called on the
      * {@link Graph} before it terminates. It is undefined if the returned
      * {@link Iterator} supports the {@link Iterator#remove()} method.

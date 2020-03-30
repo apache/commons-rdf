@@ -16,7 +16,7 @@ incompatibility issue between these toolkits. This library does not pretend to
 be a generic API wrapping those libraries, but is a 
 [set of common Java interfaces](https://commons.apache.org/proper/commons-rdf/apidocs/index.html?org/apache/commons/rdf/api/package-summary.html)
 for the RDF 1.1 concepts, e.g. `IRI`, `BlankNode`, `Graph`,
-accompanied with unit test cases for their expected behaviour, and a `simple`
+accompanied with unit test cases for their expected behavior, and a `simple`
 implementation, which main purpose is to clarify the tests and interfaces.
 
 In particular, Commons RDF aims to provide a type-safe, non-general API that

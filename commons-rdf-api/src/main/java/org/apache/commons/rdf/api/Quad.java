@@ -30,10 +30,10 @@ import java.util.Optional;
  * <p>
  * A <code>Quad</code> object in Commons RDF is considered
  * <strong>immutable</strong>, that is, over its life time it will have
- * consistent behaviour for its {@link #equals(Object)}, and the instances
+ * consistent behavior for its {@link #equals(Object)}, and the instances
  * returned from {@link #getGraphName()}, {@link #getSubject()},
  * {@link #getPredicate()}, {@link #getObject()} and {@link #asTriple()} will
- * have consistent {@link Object#equals(Object)} behaviour.
+ * have consistent {@link Object#equals(Object)} behavior.
  * <p>
  * Note that <code>Quad</code> methods are not required to return object
  * identical (<code>==</code>) instances as long as they are equivalent

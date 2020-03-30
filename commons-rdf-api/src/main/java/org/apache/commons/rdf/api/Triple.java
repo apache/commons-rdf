@@ -27,10 +27,10 @@ import java.util.Objects;
  * <p>
  * A <code>Triple</code> object in Commons RDF is considered
  * <strong>immutable</strong>, that is, over its life time it will have
- * consistent behaviour for its {@link #equals(Object)}, and the {@link RDFTerm}
+ * consistent behavior for its {@link #equals(Object)}, and the {@link RDFTerm}
  * instances returned from {@link #getSubject()}, {@link #getPredicate()} and
  * {@link #getObject()} will have consistent {@link RDFTerm#equals(Object)}
- * behaviour.
+ * behavior.
  * <p>
  * Note that <code>Triple</code> methods are not required to return object
  * identical (<code>==</code>) instances as long as they are equivalent

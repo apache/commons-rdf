@@ -209,7 +209,7 @@ System.out.println(aliceKnowsBob.getObject().ntriplesString());
 
 _**Tip**: Instances from `SimpleRDF` can be printed directly, as
 `System.out` would use their `.toString()`,
-but for consistent behaviour across implementations we use `.ntriplesString()` above._
+but for consistent behavior across implementations we use `.ntriplesString()` above._
 
 With `SimpleRDF` we can also print the `Triple` for debugging:
 
@@ -621,7 +621,7 @@ and does not need to be preserved.
 
 Note that it needs to be the same `RDF` instance to recreate
 the same _"someone"_ `BlankNode`.  This is a Commons RDF-specific
-behaviour to improve cross-graph compatibility, other RDF frameworks may save
+behavior to improve cross-graph compatibility, other RDF frameworks may save
 the blank node using the provided label as-is with a `_:` prefix,
 which in some cases could cause collisions (but perhaps more readable output).
 

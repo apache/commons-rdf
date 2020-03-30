@@ -1174,7 +1174,7 @@ methods like [iterate](apidocs/org/apache/commons/rdf/api/Graph.html#iterate--)
 and [stream](apidocs/org/apache/commons/rdf/api/Graph.html#stream-org.apache.commons.rdf.api.BlankNodeOrIRI-org.apache.commons.rdf.api.IRI-org.apache.commons.rdf.api.RDFTerm-)
 might throw a
 [ConcurrentModificationException](http://docs.oracle.com/javase/8/docs/api/java/util/ConcurrentModificationException.html)
-if it detects a thread concurrency modification, although this behaviour is not guaranteed.
+if it detects a thread concurrency modification, although this behavior is not guaranteed.
 Implementations of Commons RDF may specify more specific thread-safety considerations.
 
 If an implementation does not specify any thread-safety support, then all

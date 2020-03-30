@@ -25,10 +25,10 @@ package org.apache.commons.rdf.api;
  * <p>
  * A {@link RDFTerm} object in Commons RDF is considered
  * <strong>immutable</strong>, that is, over its life time it will have
- * consistent behaviour for its {@link #equals(Object)} and {@link #hashCode()},
+ * consistent behavior for its {@link #equals(Object)} and {@link #hashCode()},
  * and objects returned from its getter methods (e.g. {@link IRI#getIRIString()}
  * and {@link Literal#getLanguageTag()}) will have consistent
- * {@link #equals(Object)} behaviour.
+ * {@link #equals(Object)} behavior.
  * <p>
  * Note that methods in <code>RDFTerm</code> and its Commons RDF specialisations
  * {@link IRI}, {@link BlankNode} and {@link Literal} are not required to return

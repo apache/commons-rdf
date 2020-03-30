@@ -93,7 +93,7 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
      * For example, this would close any open file and network streams and free
      * database locks held by the dataset implementation.
      * <p>
-     * The behaviour of the other dataset methods are undefined after closing
+     * The behavior of the other dataset methods are undefined after closing
      * the dataset.
      * <p>
      * Implementations might not need {@link #close()}, hence the default
@@ -215,7 +215,7 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
      * The iteration does not contain any duplicate quads, as determined by the
      * {@link Quad#equals(Object)} method for each {@link Quad}.
      * <p>
-     * The behaviour of the {@link Stream} is not specified if
+     * The behavior of the {@link Stream} is not specified if
      * {@link #add(Quad)}, {@link #remove(Quad)} or {@link #clear()} are called
      * on the {@link Dataset} before it terminates.
      * <p>
@@ -233,7 +233,7 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
      * The iteration does not contain any duplicate quads, as determined by the
      * {@link Quad#equals(Object)} method for each {@link Quad}.
      * <p>
-     * The behaviour of the {@link Stream} is not specified if
+     * The behavior of the {@link Stream} is not specified if
      * {@link #add(Quad)}, {@link #remove(Quad)} or {@link #clear()} are called
      * on the {@link Dataset} before it terminates.
      * <p>
@@ -266,7 +266,7 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
      * }
      * </pre>
      *
-     * The behaviour of the iterator is not specified if {@link #add(Quad)},
+     * The behavior of the iterator is not specified if {@link #add(Quad)},
      * {@link #remove(Quad)} or {@link #clear()}, are called on the
      * {@link Dataset} before it terminates. It is undefined if the returned
      * {@link Iterator} supports the {@link Iterator#remove()} method.
@@ -311,7 +311,7 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
      * }
      * </pre>
      * <p>
-     * The behaviour of the iterator is not specified if {@link #add(Quad)},
+     * The behavior of the iterator is not specified if {@link #add(Quad)},
      * {@link #remove(Quad)} or {@link #clear()}, are called on the
      * {@link Dataset} before it terminates. It is undefined if the returned
      * {@link Iterator} supports the {@link Iterator#remove()} method.

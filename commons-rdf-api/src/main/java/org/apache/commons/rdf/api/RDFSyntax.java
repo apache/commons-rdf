@@ -140,7 +140,7 @@ public interface RDFSyntax {
      * protocol</a>.
      * <p>
      * The returned Set MUST include the value {@link #mediaType()}; this is the
-     * behaviour of the default implementation.
+     * behavior of the default implementation.
      *
      * @return The media types corresponding to the RDF Syntax
      */
@@ -164,7 +164,7 @@ public interface RDFSyntax {
      * The file extension includes the leading period, e.g. <code>.jsonld</code>
      * <p>
      * The returned Set MUST include the value from {@link #fileExtension()}; this is
-     * the behaviour of the default implementation.
+     * the behavior of the default implementation.
      *
      * @return The file extensions corresponding to the RDF Syntax
      */
