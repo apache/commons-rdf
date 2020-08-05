@@ -26,5 +26,5 @@ notifications:
     - notifications@commons.apache.org
 
 after_success:
-  - mvn clean test coveralls:report
+  - mvn -V --no-transfer-progress clean test coveralls:report
  
