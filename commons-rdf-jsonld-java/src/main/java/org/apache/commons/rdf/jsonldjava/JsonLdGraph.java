@@ -58,7 +58,7 @@ class JsonLdGraphImpl extends AbstractJsonLdGraphLike<Triple> implements JsonLdG
 
     @Override
     public void clear() {
-        filteredGraphs(graphName).forEach(l -> l.clear());
+        filteredGraphs(graphName).forEach(List::clear);
     }
 
     @Override

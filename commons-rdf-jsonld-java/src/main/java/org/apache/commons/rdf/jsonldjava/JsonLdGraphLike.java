@@ -129,7 +129,7 @@ abstract class AbstractJsonLdGraphLike<T extends TripleLike> implements JsonLdGr
 
     @Override
     public void clear() {
-        filteredGraphs(null).forEach(s -> s.clear());
+        filteredGraphs(null).forEach(List::clear);
         // In theory we could use
         // rdfDataSet.clear();
         // but then we would need to also do
