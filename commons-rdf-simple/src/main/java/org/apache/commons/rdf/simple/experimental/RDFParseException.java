@@ -25,7 +25,6 @@ public class RDFParseException extends Exception {
     private final RDFParser builder;
 
     public RDFParseException(final RDFParser builder) {
-        super();
         this.builder = builder;
     }
 
