@@ -100,11 +100,7 @@ final class BlankNodeImpl implements BlankNode, SimpleRDFTerm {
             return false;
         }
         final BlankNodeImpl other = (BlankNodeImpl) obj;
-        if (uniqueReference == null) {
-            if (other.uniqueReference != null) {
-                return false;
-            }
-        } else if (!uniqueReference.equals(other.uniqueReference)) {
+        if (!Objects.equals(uniqueReference, other.uniqueReference)) {
             return false;
         }
         return true;
