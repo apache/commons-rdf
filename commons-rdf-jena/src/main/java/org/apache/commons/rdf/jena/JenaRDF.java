@@ -690,9 +690,9 @@ public final class JenaRDF implements RDF {
      */
     public DatasetGraph asJenaDatasetGraph(final Dataset dataset) {
         final DatasetGraph dsg;
-        if (dataset instanceof JenaDataset)
+        if (dataset instanceof JenaDataset) {
             dsg = ((JenaDataset) dataset).asJenaDatasetGraph();
-        else {
+        } else {
             dsg = DatasetGraphFactory.createGeneral();
             dataset.stream().map(this::asJenaQuad).forEach(dsg::add);
         }
