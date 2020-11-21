@@ -27,6 +27,6 @@ public interface JsonLdTripleLike extends TripleLike {
      *
      * @return The JsonLD {@link com.github.jsonldjava.core.RDFDataset.Quad}
      */
-    public com.github.jsonldjava.core.RDFDataset.Quad asJsonLdQuad();
+    com.github.jsonldjava.core.RDFDataset.Quad asJsonLdQuad();
 
 }

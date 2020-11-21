@@ -39,5 +39,5 @@ public interface JenaQuadLike<G extends RDFTerm> extends JenaTripleLike, QuadLik
      *
      * @return Adapted Jena {@link Quad}.
      */
-    public Quad asJenaQuad();
+    Quad asJenaQuad();
 }

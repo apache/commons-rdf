@@ -55,7 +55,7 @@ public interface JsonLdGraphLike<T extends TripleLike> extends GraphLike<T> {
      *
      * @return The underlying JSONLD-JAva RDFDataset
      */
-    public RDFDataset getRdfDataSet();
+    RDFDataset getRdfDataSet();
 }
 
 abstract class AbstractJsonLdGraphLike<T extends TripleLike> implements JsonLdGraphLike<T> {

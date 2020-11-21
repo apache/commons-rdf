@@ -45,7 +45,7 @@ public interface RDFSyntax {
      *      "https://www.w3.org/TR/json-ld/">https://www.w3.org/TR/json-ld/</a>
      *
      */
-    static RDFSyntax JSONLD = W3CRDFSyntax.JSONLD;
+    RDFSyntax JSONLD = W3CRDFSyntax.JSONLD;
 
     /**
      * RDF 1.1 Turtle
@@ -54,7 +54,7 @@ public interface RDFSyntax {
      *      "https://www.w3.org/TR/turtle/">https://www.w3.org/TR/turtle/</a>
      *
      */
-    static RDFSyntax TURTLE = W3CRDFSyntax.TURTLE;
+    RDFSyntax TURTLE = W3CRDFSyntax.TURTLE;
 
     /**
      * RDF 1.1 N-Quads
@@ -62,7 +62,7 @@ public interface RDFSyntax {
      * @see <a href=
      *      "https://www.w3.org/TR/n-quads/">https://www.w3.org/TR/n-quads/</a>
      */
-    static RDFSyntax NQUADS = W3CRDFSyntax.NQUADS;
+    RDFSyntax NQUADS = W3CRDFSyntax.NQUADS;
 
     /**
      * RDF 1.1 N-Triples
@@ -70,7 +70,7 @@ public interface RDFSyntax {
      * @see <a href=
      *      "https://www.w3.org/TR/n-triples/">https://www.w3.org/TR/n-triples/</a>
      */
-    static RDFSyntax NTRIPLES = W3CRDFSyntax.NTRIPLES;
+    RDFSyntax NTRIPLES = W3CRDFSyntax.NTRIPLES;
 
     /**
      * HTML+RDFa 1.1 and XHTML+RDFa 1.1
@@ -80,7 +80,7 @@ public interface RDFSyntax {
      * @see <a href=
      *      "https://www.w3.org/TR/xhtml-rdfa/">https://www.w3.org/TR/xhtml-rdfa/</a>
      */
-    static RDFSyntax RDFA = W3CRDFSyntax.RDFA;
+    RDFSyntax RDFA = W3CRDFSyntax.RDFA;
 
     /**
      * RDF 1.1 XML Syntax
@@ -88,7 +88,7 @@ public interface RDFSyntax {
      * @see <a href=
      *      "https://www.w3.org/TR/rdf-syntax-grammar/">https://www.w3.org/TR/rdf-syntax-grammar/</a>
      */
-    static RDFSyntax RDFXML = W3CRDFSyntax.RDFXML;
+    RDFSyntax RDFXML = W3CRDFSyntax.RDFXML;
 
     /**
      * RDF 1.1 TriG
@@ -96,7 +96,7 @@ public interface RDFSyntax {
      * @see <a href=
      *      "https://www.w3.org/TR/trig/">https://www.w3.org/TR/trig/</a>
      */
-    static RDFSyntax TRIG = W3CRDFSyntax.TRIG;
+    RDFSyntax TRIG = W3CRDFSyntax.TRIG;
 
     /**
      * A short name of the RDF Syntax e.g. <code>JSONLD</code>.
