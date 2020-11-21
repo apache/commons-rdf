@@ -45,31 +45,31 @@ public class JenaRDFTest extends AbstractRDFTest {
 
     @Test
     public void roundTripDatasetGraphShouldMaintainIdentity() {
-        DatasetGraph dsg = DatasetGraphFactory.create();
-        JenaDataset dataset = createFactory().asDataset(dsg);
-        DatasetGraph roundTrippedDSG = createFactory().asJenaDatasetGraph(dataset);
+        final DatasetGraph dsg = DatasetGraphFactory.create();
+        final JenaDataset dataset = createFactory().asDataset(dsg);
+        final DatasetGraph roundTrippedDSG = createFactory().asJenaDatasetGraph(dataset);
         assertSame("Should have gotten the same DatasetGraph object from a round trip!", dsg, roundTrippedDSG);
     }
 
     @Test
     public void testSimpleDatasetConversion() {
-        SimpleRDF factory = new SimpleRDF();
-        Dataset ds = factory.createDataset();
+        final SimpleRDF factory = new SimpleRDF();
+        final Dataset ds = factory.createDataset();
         final BlankNode subject = factory.createBlankNode("b1");
         final IRI predicate = factory.createIRI("http://example.com/pred");
         final IRI object = factory.createIRI("http://example.com/obj");
         final IRI graph = factory.createIRI("http://example.com/graph");
         final Quad quad = factory.createQuad(graph, subject, predicate, object);
         ds.add(quad);
-        JenaRDF jenaFactory = createFactory();
-        org.apache.jena.query.Dataset jenaDS = jenaFactory.asJenaDataset(ds);
+        final JenaRDF jenaFactory = createFactory();
+        final org.apache.jena.query.Dataset jenaDS = jenaFactory.asJenaDataset(ds);
         assertEquals("Should have found one named graph!", 1, jenaDS.asDatasetGraph().size());
-        Model namedModel = jenaDS.getNamedModel(graph.getIRIString());
+        final Model namedModel = jenaDS.getNamedModel(graph.getIRIString());
         assertEquals("Should have found one triple in named graph!", 1, namedModel.size());
-        Statement statement = namedModel.listStatements().next();
-        Resource jenaSubject = statement.getSubject();
-        Property jenaPredicate = statement.getPredicate();
-        RDFNode jenaObject = statement.getObject();
+        final Statement statement = namedModel.listStatements().next();
+        final Resource jenaSubject = statement.getSubject();
+        final Property jenaPredicate = statement.getPredicate();
+        final RDFNode jenaObject = statement.getObject();
         assertTrue(jenaSubject.isAnon());
         assertTrue(jenaObject.isResource());
         assertEquals(subject.ntriplesString(), "_:" + jenaSubject.getId().getLabelString());
