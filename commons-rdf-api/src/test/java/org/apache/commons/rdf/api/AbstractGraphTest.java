@@ -481,7 +481,7 @@ public abstract class AbstractGraphTest {
         try (final Graph graph = factory.createGraph()) {
             graph.add(example1, greeting, upper);
 
-            // Remove should also honour any case
+            // Remove should also honor any case
             graph.remove(example1, null, mixed);
             assertFalse(graph.contains(null, greeting, null));
 

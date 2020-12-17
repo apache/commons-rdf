@@ -688,7 +688,7 @@ public abstract class AbstractDatasetTest {
 
         dataset.add(null, example1, greeting, upper);
 
-        // Remove should also honour any case
+        // Remove should also honor any case
         dataset.remove(null, example1, null, mixed);
         assertFalse(dataset.contains(null, null, greeting, null));
 
