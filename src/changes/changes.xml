@@ -22,6 +22,11 @@
   </properties>
 
   <body>
+    <release version="0.6.0" date="20YY-MM-DD" description="Minor feature and bug fix release.">
+        <action dev="ggregory" type="update" due-to="Gary Gregory">
+            Update commons.japicmp.version 0.11.0 -> 0.14.4.
+        </action>
+    </release>
     <release version="0.5.0" date="2017-11-19" description="Minor feature and bug fix release.">
         <action type="fix" issue="COMMONSRDF-47">
             RDFSyntax should be interface, not enum
