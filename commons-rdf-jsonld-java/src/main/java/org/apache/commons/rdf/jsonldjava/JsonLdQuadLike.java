@@ -33,7 +33,7 @@ class JsonLdQuadLikeImpl<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm
 
     // Note: We always pass the blankNodePrefix and don't rely on the internal
     // blankNodePrefix in this static factory
-    private static JsonLdRDF rdfTermFactory = new JsonLdRDF();
+    private static final JsonLdRDF rdfTermFactory = new JsonLdRDF();
 
     private final Quad quad;
     private final String blankNodePrefix;

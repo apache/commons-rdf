@@ -42,15 +42,15 @@ import org.apache.jena.sparql.core.Quad;
  *
  * @see JenaTripleImpl
  * @see JenaQuadImpl
- * @see internalJenaFactory#createGeneralizedTriple(RDFTerm, RDFTerm, RDFTerm)
- * @see internalJenaFactory#createGeneralizedQuad(RDFTerm, RDFTerm, RDFTerm,
+ * @see #internalJenaFactory#createGeneralizedTriple(RDFTerm, RDFTerm, RDFTerm)
+ * @see #internalJenaFactory#createGeneralizedQuad(RDFTerm, RDFTerm, RDFTerm,
  *      RDFTerm)
  *
  */
 abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm, G extends RDFTerm>
         implements JenaQuadLike<G> {
 
-    private static InternalJenaFactory internalJenaFactory = new InternalJenaFactory() {
+    private static final InternalJenaFactory internalJenaFactory = new InternalJenaFactory() {
     };
 
     /**
@@ -99,7 +99,7 @@ abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
         }
     }
 
-    private static DefaultGraphChecker defaultGraphChecker = new DefaultGraphChecker();
+    private static final DefaultGraphChecker defaultGraphChecker = new DefaultGraphChecker();
 
     final Optional<G> graphName;
     final S subject;

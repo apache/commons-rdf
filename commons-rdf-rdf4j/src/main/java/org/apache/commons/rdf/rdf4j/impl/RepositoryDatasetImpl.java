@@ -114,7 +114,7 @@ class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> implements
     }
 
     private Resource[] asContexts(final Optional<BlankNodeOrIRI> graphName) {
-        Resource[] contexts;
+        final Resource[] contexts;
         if (graphName == null) {
             // no contexts == any contexts
             contexts = new Resource[0];

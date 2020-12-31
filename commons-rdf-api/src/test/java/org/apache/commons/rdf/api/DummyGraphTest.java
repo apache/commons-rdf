@@ -22,7 +22,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class DummyGraphTest {
-    Graph graph = new DummyGraph();
+    final Graph graph = new DummyGraph();
 
     @Test
     public void add() throws Exception {

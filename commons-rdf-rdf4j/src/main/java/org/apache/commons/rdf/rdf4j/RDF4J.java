@@ -107,7 +107,7 @@ public final class RDF4J implements RDF {
     /**
      * InternalRDF4JFactory is deliberately abstract
      */
-    private static InternalRDF4JFactory rdf4j = new InternalRDF4JFactory() {
+    private static final InternalRDF4JFactory rdf4j = new InternalRDF4JFactory() {
     };
 
     public enum Option {

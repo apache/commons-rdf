@@ -68,7 +68,7 @@ public class JsonLdParser extends AbstractRDFParser<JsonLdParser> {
     private static URL asURL(final IRI iri) throws IllegalStateException {
         try {
             return new URI(iri.getIRIString()).toURL();
-        } catch (MalformedURLException | URISyntaxException e) {
+        } catch (final MalformedURLException | URISyntaxException e) {
             throw new IllegalStateException("Invalid URL: " + iri.getIRIString());
         }
     }
@@ -90,7 +90,7 @@ public class JsonLdParser extends AbstractRDFParser<JsonLdParser> {
         // should be forwarded
 
         // TODO: Modify JsonLdProcessor to accept the target RDFDataset
-        RDFDataset rdfDataset;
+        final RDFDataset rdfDataset;
         try {
             rdfDataset = (RDFDataset) JsonLdProcessor.toRDF(json, options);
         } catch (final JsonLdError e) {
@@ -150,7 +150,7 @@ public class JsonLdParser extends AbstractRDFParser<JsonLdParser> {
             return JsonUtils.fromURL(asURL(getSourceIri().get()), JsonUtils.getDefaultHttpClient());
         }
         if (getSourceFile().isPresent()) {
-            try (InputStream inputStream = Files.newInputStream(getSourceFile().get())) {
+            try (final InputStream inputStream = Files.newInputStream(getSourceFile().get())) {
                 return JsonUtils.fromInputStream(inputStream);
             }
         }

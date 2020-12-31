@@ -24,7 +24,7 @@ import java.util.Objects;
 import org.junit.Test;
 
 public class DummyTripleTest {
-    Triple triple = new DummyTriple();
+    final Triple triple = new DummyTriple();
 
     @Test
     public void getSubject() throws Exception {

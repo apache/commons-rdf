@@ -35,7 +35,7 @@ public class MemoryGraphTest extends AbstractGraphTest {
 
     public static final class MemoryStoreRDF implements RDF {
 
-        RDF4J rdf4jFactory = new RDF4J(new MemValueFactory());
+        final RDF4J rdf4jFactory = new RDF4J(new MemValueFactory());
 
         @Override
         public RDF4JBlankNode createBlankNode() {

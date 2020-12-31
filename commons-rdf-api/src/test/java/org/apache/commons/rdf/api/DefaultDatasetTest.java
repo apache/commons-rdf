@@ -25,7 +25,7 @@ import org.junit.Test;
 
 public class DefaultDatasetTest {
 
-    DummyDataset dataset = new DummyDataset();
+    final DummyDataset dataset = new DummyDataset();
 
     @Test
     public void close() throws Exception {

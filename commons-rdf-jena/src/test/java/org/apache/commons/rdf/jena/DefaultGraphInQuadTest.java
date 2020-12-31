@@ -34,10 +34,10 @@ import org.junit.Test;
  */
 public class DefaultGraphInQuadTest {
 
-    JenaRDF rdf = new JenaRDF();
-    SimpleRDF simpleRDF = new SimpleRDF();
-    IRI example = rdf.createIRI("http://example.com/");
-    Node exampleJena = NodeFactory.createURI("http://example.com/");
+    final JenaRDF rdf = new JenaRDF();
+    final SimpleRDF simpleRDF = new SimpleRDF();
+    final IRI example = rdf.createIRI("http://example.com/");
+    final Node exampleJena = NodeFactory.createURI("http://example.com/");
 
     @Test
     public void createFromNull() throws Exception {

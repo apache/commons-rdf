@@ -199,7 +199,7 @@ public class AbstractRDFParserTest {
     }
 
     @Rule
-    public ExpectedException thrown = ExpectedException.none();
+    public final ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void parseInputStreamFailsIfBaseMissing() throws Exception {
