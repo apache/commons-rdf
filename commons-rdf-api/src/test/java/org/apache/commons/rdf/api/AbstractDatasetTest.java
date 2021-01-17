@@ -129,7 +129,7 @@ public abstract class AbstractDatasetTest {
 
     @Test
     public void iterate() throws Exception {
-        Assume.assumeTrue(dataset.size() > 0);
+        Assume.assumeFalse(dataset.isEmpty());
         final List<Quad> quads = new ArrayList<>();
         for (final Quad t : dataset.iterate()) {
             quads.add(t);

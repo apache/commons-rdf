@@ -168,6 +168,15 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
     Stream<BlankNodeOrIRI> getGraphNames();
 
     /**
+     * Tests if this is empty.
+     * 
+     * @return true if this is empty.
+     */
+    default boolean isEmpty() {
+        return size() == 0;
+    }
+
+    /**
      * Remove a concrete quad from the dataset.
      *
      * @param quad
@@ -351,4 +360,5 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
             final RDFTerm object) throws ConcurrentModificationException, IllegalStateException {
         return ((Stream<Quad>) stream(graphName, subject, predicate, object))::iterator;
     }
+
 }

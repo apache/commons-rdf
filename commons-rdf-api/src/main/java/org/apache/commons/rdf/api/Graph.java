@@ -205,6 +205,15 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
     }
 
     /**
+     * Tests if this is empty.
+     * 
+     * @return true if this is empty.
+     */
+    default boolean isEmpty() {
+        return size() == 0;
+    }
+
+    /**
      * Gets an Iterable for iterating over all triples in the graph.
      * <p>
      * This method is meant to be used with a Java for-each loop, e.g.:
@@ -295,4 +304,5 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
             throws ConcurrentModificationException, IllegalStateException {
         return ((Stream<Triple>) stream(subject, predicate, object))::iterator;
     }
+
 }

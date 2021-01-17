@@ -135,7 +135,7 @@ public abstract class AbstractGraphTest {
 
     @Test
     public void size() throws Exception {
-        assertTrue(graph.size() > 0);
+        assertFalse(graph.isEmpty());
         Assume.assumeNotNull(bnode1, bnode2, aliceName, bobName, secretClubName, companyName, bobNameTriple);
         // Can only reliably predict size if we could create all triples
         assertEquals(8, graph.size());
@@ -144,7 +144,7 @@ public abstract class AbstractGraphTest {
     @Test
     public void iterate() throws Exception {
 
-        Assume.assumeTrue(graph.size() > 0);
+        Assume.assumeFalse(graph.isEmpty());
 
         final List<Triple> triples = new ArrayList<>();
         for (final Triple t : graph.iterate()) {

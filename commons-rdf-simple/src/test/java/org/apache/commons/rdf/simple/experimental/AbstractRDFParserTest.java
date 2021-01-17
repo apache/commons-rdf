@@ -89,12 +89,12 @@ public class AbstractRDFParserTest {
         assertFalse(AbstractRDFParser.guessRDFSyntax(testXml).isPresent());
     }
 
-    private void checkGraph(final Graph g) throws Exception {
-        assertTrue(g.size() > 0);
+    private void checkGraph(final Graph graph) throws Exception {
+        assertFalse(graph.isEmpty());
         final IRI greeting = factory.createIRI("http://example.com/greeting");
         // Should only have parsed once!
-        assertEquals(1, g.stream(null, greeting, null).count());
-        final Triple triple = g.stream(null, greeting, null).findAny().get();
+        assertEquals(1, graph.stream(null, greeting, null).count());
+        final Triple triple = graph.stream(null, greeting, null).findAny().get();
         assertTrue(triple.getSubject() instanceof IRI);
         final IRI parsing = (IRI) triple.getSubject();
         assertTrue(parsing.getIRIString().startsWith("urn:uuid:"));
@@ -108,12 +108,12 @@ public class AbstractRDFParserTest {
         assertEquals(Types.XSD_STRING, literal.getDatatype());
 
         // Check uniqueness of properties that are always present
-        assertEquals(1, g.stream(null, factory.createIRI("http://example.com/source"), null).count());
+        assertEquals(1, graph.stream(null, factory.createIRI("http://example.com/source"), null).count());
 
         // Check optional properties that are unique
-        assertTrue(2 > g.stream(null, factory.createIRI("http://example.com/base"), null).count());
-        assertTrue(2 > g.stream(null, factory.createIRI("http://example.com/contentType"), null).count());
-        assertTrue(2 > g.stream(null, factory.createIRI("http://example.com/contentTypeSyntax"), null).count());
+        assertTrue(2 > graph.stream(null, factory.createIRI("http://example.com/base"), null).count());
+        assertTrue(2 > graph.stream(null, factory.createIRI("http://example.com/contentType"), null).count());
+        assertTrue(2 > graph.stream(null, factory.createIRI("http://example.com/contentTypeSyntax"), null).count());
     }
 
     @Test
