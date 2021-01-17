@@ -107,7 +107,7 @@ public final class RDF4J implements RDF {
     /**
      * InternalRDF4JFactory is deliberately abstract
      */
-    private static InternalRDF4JFactory rdf4j = new InternalRDF4JFactory() {
+    private static final InternalRDF4JFactory RDF4J = new InternalRDF4JFactory() {
     };
 
     public enum Option {
@@ -200,7 +200,7 @@ public final class RDF4J implements RDF {
      * @return A {@link RDF4JQuad} that is equivalent to the statement
      */
     public RDF4JQuad asQuad(final Statement statement) {
-        return rdf4j.createQuadImpl(statement, salt);
+        return RDF4J.createQuadImpl(statement, salt);
     }
 
     /**
@@ -256,7 +256,7 @@ public final class RDF4J implements RDF {
      * @return A {@link RDF4JBlankNode} that corresponds to the RDF4J BNode
      */
     public RDF4JBlankNode asRDFTerm(final BNode value) {
-        return rdf4j.createBlankNodeImpl(value, salt);
+        return RDF4J.createBlankNodeImpl(value, salt);
     }
 
     /**
@@ -270,7 +270,7 @@ public final class RDF4J implements RDF {
      * @return A {@link RDF4JLiteral} that corresponds to the RDF4J literal
      */
     public RDF4JLiteral asRDFTerm(final Literal value) {
-        return rdf4j.createLiteralImpl(value);
+        return RDF4J.createLiteralImpl(value);
     }
 
     /**
@@ -284,7 +284,7 @@ public final class RDF4J implements RDF {
      * @return A {@link RDF4JIRI} that corresponds to the RDF4J IRI
      */
     public RDF4JIRI asRDFTerm(final org.eclipse.rdf4j.model.IRI value) {
-        return rdf4j.createIRIImpl(value);
+        return RDF4J.createIRIImpl(value);
     }
 
     /**
@@ -331,13 +331,13 @@ public final class RDF4J implements RDF {
      */
     public static RDF4JTerm asRDFTerm(final Value value, final UUID salt) {
         if (value instanceof BNode) {
-            return rdf4j.createBlankNodeImpl((BNode) value, salt);
+            return RDF4J.createBlankNodeImpl((BNode) value, salt);
         }
         if (value instanceof org.eclipse.rdf4j.model.Literal) {
-            return rdf4j.createLiteralImpl((org.eclipse.rdf4j.model.Literal) value);
+            return RDF4J.createLiteralImpl((org.eclipse.rdf4j.model.Literal) value);
         }
         if (value instanceof org.eclipse.rdf4j.model.IRI) {
-            return rdf4j.createIRIImpl((org.eclipse.rdf4j.model.IRI) value);
+            return RDF4J.createIRIImpl((org.eclipse.rdf4j.model.IRI) value);
         }
         throw new IllegalArgumentException("Value is not a BNode, Literal or IRI: " + value.getClass());
     }
@@ -360,7 +360,7 @@ public final class RDF4J implements RDF {
      */
     public RDF4JDataset asDataset(final Repository repository, final Option... options) {
         final EnumSet<Option> opts = optionSet(options);
-        return rdf4j.createRepositoryDatasetImpl(repository, opts.contains(Option.handleInitAndShutdown),
+        return RDF4J.createRepositoryDatasetImpl(repository, opts.contains(Option.handleInitAndShutdown),
                 opts.contains(Option.includeInferred));
     }
 
@@ -374,7 +374,7 @@ public final class RDF4J implements RDF {
      * @return Adapted {@link Graph}.
      */
     public RDF4JGraph asGraph(final Model model) {
-        return rdf4j.createModelGraphImpl(model, this);
+        return RDF4J.createModelGraphImpl(model, this);
     }
 
     /**
@@ -398,7 +398,7 @@ public final class RDF4J implements RDF {
      */
     public RDF4JGraph asGraph(final Repository repository, final Option... options) {
         final EnumSet<Option> opts = optionSet(options);
-        return rdf4j.createRepositoryGraphImpl(repository, opts.contains(Option.handleInitAndShutdown),
+        return RDF4J.createRepositoryGraphImpl(repository, opts.contains(Option.handleInitAndShutdown),
                 opts.contains(Option.includeInferred), new Resource[] { null }); // default
                                                                                  // graph
     }
@@ -418,7 +418,7 @@ public final class RDF4J implements RDF {
      */
     public RDF4JGraph asGraphUnion(final Repository repository, final Option... options) {
         final EnumSet<Option> opts = optionSet(options);
-        return rdf4j.createRepositoryGraphImpl(repository, opts.contains(Option.handleInitAndShutdown),
+        return RDF4J.createRepositoryGraphImpl(repository, opts.contains(Option.handleInitAndShutdown),
                 opts.contains(Option.includeInferred), new Resource[] {}); // union
                                                                            // graph
 
@@ -453,7 +453,7 @@ public final class RDF4J implements RDF {
         final EnumSet<Option> opts = optionSet(option);
         /** NOTE: asValue() deliberately CAN handle <code>null</code> */
         final Resource[] resources = contexts.stream().map(g -> (Resource) asValue(g)).toArray(Resource[]::new);
-        return rdf4j.createRepositoryGraphImpl(Objects.requireNonNull(repository),
+        return RDF4J.createRepositoryGraphImpl(Objects.requireNonNull(repository),
                 opts.contains(Option.handleInitAndShutdown), opts.contains(Option.includeInferred), resources);
     }
 
@@ -510,7 +510,7 @@ public final class RDF4J implements RDF {
      * @return A {@link RDF4JTriple} that is equivalent to the statement
      */
     public RDF4JTriple asTriple(final Statement statement) {
-        return rdf4j.createTripleImpl(statement, salt);
+        return RDF4J.createTripleImpl(statement, salt);
     }
 
     /**
@@ -595,7 +595,7 @@ public final class RDF4J implements RDF {
     public RDF4JDataset createDataset() {
         final Sail sail = new MemoryStore();
         final Repository repository = new SailRepository(sail);
-        return rdf4j.createRepositoryDatasetImpl(repository, true, false);
+        return RDF4J.createRepositoryDatasetImpl(repository, true, false);
     }
 
     @Override

@@ -29,7 +29,7 @@ import org.apache.jena.graph.Node;
 
 class JenaLiteralImpl extends AbstractJenaRDFTerm implements JenaLiteral {
 
-    private static InternalJenaFactory internalJenaFactory = new InternalJenaFactory() {
+    private static final InternalJenaFactory INTERNAL_JENA_FACTORY = new InternalJenaFactory() {
     };
 
     JenaLiteralImpl(final Node node) {
@@ -63,7 +63,7 @@ class JenaLiteralImpl extends AbstractJenaRDFTerm implements JenaLiteral {
 
     @Override
     public IRI getDatatype() {
-        return internalJenaFactory.createIRI(asJenaNode().getLiteralDatatype().getURI());
+        return INTERNAL_JENA_FACTORY.createIRI(asJenaNode().getLiteralDatatype().getURI());
     }
 
     @Override

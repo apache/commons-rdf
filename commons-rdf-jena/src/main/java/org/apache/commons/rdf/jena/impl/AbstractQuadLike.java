@@ -50,7 +50,7 @@ import org.apache.jena.sparql.core.Quad;
 abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm, G extends RDFTerm>
         implements JenaQuadLike<G> {
 
-    private static InternalJenaFactory internalJenaFactory = new InternalJenaFactory() {
+    private static final InternalJenaFactory INTERNAL_JENA_FACTORY = new InternalJenaFactory() {
     };
 
     /**
@@ -65,8 +65,8 @@ abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
     private static class DefaultGraphChecker {
         // Fixed UUID for comparison of defaultGraphNodeGenerated
         private final UUID salt = UUID.fromString("aaa6bf96-ea58-4a55-9485-3733403a1f24");
-        private final RDFTerm defaultGraph = internalJenaFactory.createRDFTerm(Quad.defaultGraphIRI, salt);
-        private final RDFTerm defaultGraphNodeGenerated = internalJenaFactory.createRDFTerm(Quad.defaultGraphNodeGenerated, salt);
+        private final RDFTerm defaultGraph = INTERNAL_JENA_FACTORY.createRDFTerm(Quad.defaultGraphIRI, salt);
+        private final RDFTerm defaultGraphNodeGenerated = INTERNAL_JENA_FACTORY.createRDFTerm(Quad.defaultGraphNodeGenerated, salt);
 
         /**
          * Check if RDFTerm is an IRI that matches the two Jena default graph
@@ -99,7 +99,7 @@ abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
         }
     }
 
-    private static DefaultGraphChecker defaultGraphChecker = new DefaultGraphChecker();
+    private static final DefaultGraphChecker DEFAULT_GRAPH_CHECKER = new DefaultGraphChecker();
 
     final Optional<G> graphName;
     final S subject;
@@ -114,7 +114,7 @@ abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
         this.predicate = Objects.requireNonNull(predicate);
         this.object = Objects.requireNonNull(object);
         // Enforce
-        this.graphName = Objects.requireNonNull(graphName).filter(defaultGraphChecker::isNotDefaultGraphJenaNode);
+        this.graphName = Objects.requireNonNull(graphName).filter(DEFAULT_GRAPH_CHECKER::isNotDefaultGraphJenaNode);
     }
 
     AbstractQuadLike(final S subject, final P predicate, final O object) {
@@ -124,22 +124,22 @@ abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
     @SuppressWarnings("unchecked")
     AbstractQuadLike(final org.apache.jena.sparql.core.Quad quad, final UUID salt) {
         this.quad = Objects.requireNonNull(quad);
-        this.subject = (S) internalJenaFactory.createRDFTerm(quad.getSubject(), salt);
-        this.predicate = (P) internalJenaFactory.createRDFTerm(quad.getPredicate(), salt);
-        this.object = (O) internalJenaFactory.createRDFTerm(quad.getObject(), salt);
+        this.subject = (S) INTERNAL_JENA_FACTORY.createRDFTerm(quad.getSubject(), salt);
+        this.predicate = (P) INTERNAL_JENA_FACTORY.createRDFTerm(quad.getPredicate(), salt);
+        this.object = (O) INTERNAL_JENA_FACTORY.createRDFTerm(quad.getObject(), salt);
         if (quad.isDefaultGraph()) {
             this.graphName = Optional.empty();
         } else {
-            this.graphName = Optional.of((G) internalJenaFactory.createRDFTerm(quad.getGraph(), salt));
+            this.graphName = Optional.of((G) INTERNAL_JENA_FACTORY.createRDFTerm(quad.getGraph(), salt));
         }
     }
 
     @SuppressWarnings("unchecked")
     AbstractQuadLike(final org.apache.jena.graph.Triple triple, final UUID salt) {
         this.triple = Objects.requireNonNull(triple);
-        this.subject = (S) internalJenaFactory.createRDFTerm(triple.getSubject(), salt);
-        this.predicate = (P) internalJenaFactory.createRDFTerm(triple.getPredicate(), salt);
-        this.object = (O) internalJenaFactory.createRDFTerm(triple.getObject(), salt);
+        this.subject = (S) INTERNAL_JENA_FACTORY.createRDFTerm(triple.getSubject(), salt);
+        this.predicate = (P) INTERNAL_JENA_FACTORY.createRDFTerm(triple.getPredicate(), salt);
+        this.object = (O) INTERNAL_JENA_FACTORY.createRDFTerm(triple.getObject(), salt);
         this.graphName = Optional.empty();
     }
 

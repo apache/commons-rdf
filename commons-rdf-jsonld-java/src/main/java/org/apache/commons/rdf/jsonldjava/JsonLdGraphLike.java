@@ -63,7 +63,7 @@ abstract class AbstractJsonLdGraphLike<T extends TripleLike> implements JsonLdGr
     /**
      * Used by {@link #bnodePrefix()} to get a unique UUID per JVM run
      */
-    private static UUID SALT = UUID.randomUUID();
+    private static final UUID SALT = UUID.randomUUID();
 
     /**
      * Prefix to use in blank node identifiers
