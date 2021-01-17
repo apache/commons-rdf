@@ -29,7 +29,7 @@ import org.junit.Test;
  */
 public class JsonLdComparisonTest {
 
-    JsonLdRDF rdf = new JsonLdRDF();
+    final JsonLdRDF rdf = new JsonLdRDF();
 
     @Test
     public void literalEqual() throws Exception {

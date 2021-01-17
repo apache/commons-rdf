@@ -62,7 +62,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     private static final ExecutorService threadpool = Executors.newCachedThreadPool(r -> new Thread(threadGroup, r));
 
     // Basically only used for creating IRIs
-    private static RDF internalRdfTermFactory = new SimpleRDF();
+    private static final RDF internalRdfTermFactory = new SimpleRDF();
 
     /**
      * Get the set {@link RDF}, if any.

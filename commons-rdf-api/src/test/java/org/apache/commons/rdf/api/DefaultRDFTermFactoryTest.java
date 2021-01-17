@@ -26,7 +26,7 @@ import org.junit.Test;
 @SuppressWarnings("deprecation")
 public class DefaultRDFTermFactoryTest {
     // All methods in RDFTermFactory has a default implementation
-    RDFTermFactory factory = new RDFTermFactory() {};
+    final RDFTermFactory factory = new RDFTermFactory() {};
 
     @Test(expected=UnsupportedOperationException.class)
     public void createBlankNode() throws Exception {

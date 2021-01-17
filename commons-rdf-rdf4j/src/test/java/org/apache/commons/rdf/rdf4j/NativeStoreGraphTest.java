@@ -52,7 +52,7 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
 
     public final class NativeStoreRDF implements RDF {
 
-        RDF4J rdf4jFactory = new RDF4J(getRepository().getValueFactory());
+        final RDF4J rdf4jFactory = new RDF4J(getRepository().getValueFactory());
 
         @Override
         public RDF4JGraph createGraph() {
@@ -113,7 +113,7 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
     }
 
     @Rule
-    public TemporaryFolder tempDir = new TemporaryFolder();
+    public final TemporaryFolder tempDir = new TemporaryFolder();
 
     private SailRepository repository;
 

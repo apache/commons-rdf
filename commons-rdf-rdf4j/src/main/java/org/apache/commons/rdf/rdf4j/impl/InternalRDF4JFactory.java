@@ -44,7 +44,7 @@ import org.eclipse.rdf4j.repository.Repository;
  * internal use by Commons RDF and may change in any minor update. Use instead
  * {@link RDF4J} methods like {@link RDF4J#createBlankNode()},
  * {@link RDF4J#asRDFTerm(org.eclipse.rdf4j.model.Value)} and
- * {@link RDF4J#asGraph(Repository, Option...)}
+ * {@link RDF4J#asGraph(Repository, RDF4J.Option...)}
  * <p>
  * This class exists as a <code>public</code> bridge between the packages
  * {@link org.apache.commons.rdf.rdf4j} and

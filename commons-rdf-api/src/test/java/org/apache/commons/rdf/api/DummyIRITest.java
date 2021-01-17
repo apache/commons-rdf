@@ -22,7 +22,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class DummyIRITest {
-    DummyIRI iri = new DummyIRI(1337);
+    final DummyIRI iri = new DummyIRI(1337);
 
     @Test
     public void i() throws Exception {

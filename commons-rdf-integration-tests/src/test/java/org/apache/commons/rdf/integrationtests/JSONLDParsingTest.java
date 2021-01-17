@@ -69,15 +69,15 @@ import com.github.jsonldjava.utils.JsonUtils;
  */
 public class JSONLDParsingTest {
 
-    static RDF rdf = new SimpleRDF();
-    static IRI alice = rdf.createIRI("http://example.com/Alice");
-    static IRI name = rdf.createIRI("http://schema.org/name");
-    static IRI type = rdf.createIRI("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
-    static IRI person = rdf.createIRI("http://schema.org/Person");
-    static Literal aliceWLand = rdf.createLiteral("Alice W. Land");
+    static final RDF rdf = new SimpleRDF();
+    static final IRI alice = rdf.createIRI("http://example.com/Alice");
+    static final IRI name = rdf.createIRI("http://schema.org/name");
+    static final IRI type = rdf.createIRI("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
+    static final IRI person = rdf.createIRI("http://schema.org/Person");
+    static final Literal aliceWLand = rdf.createLiteral("Alice W. Land");
 
-    URL aliceCached = getClass().getResource("/alice-cached.jsonld");
-    URL aliceEmbedded = getClass().getResource("/alice-embedded.jsonld");
+    final URL aliceCached = getClass().getResource("/alice-cached.jsonld");
+    final URL aliceEmbedded = getClass().getResource("/alice-embedded.jsonld");
 
     /**
      * Pre-test that src/test/resources files are on the classpath

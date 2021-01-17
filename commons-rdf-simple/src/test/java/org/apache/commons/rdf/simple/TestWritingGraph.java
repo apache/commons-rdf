@@ -49,7 +49,7 @@ public class TestWritingGraph {
     /**
      * Run tests with -Dkeepfiles=true to inspect /tmp files *
      */
-    private static boolean KEEP_FILES = Boolean.getBoolean("keepfiles");
+    private static final boolean KEEP_FILES = Boolean.getBoolean("keepfiles");
 
     private static Graph graph;
 

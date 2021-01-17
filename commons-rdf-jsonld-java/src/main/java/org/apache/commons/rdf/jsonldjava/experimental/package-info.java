@@ -24,7 +24,7 @@
  * When a class has stabilized, it will move to the
  * {@link org.apache.commons.rdf.jsonldjava} package.
  * <ul>
- * <li>{@link JsonLdParser} - an JSONLD-Java-backed implementations of
+ * <li>{@link org.apache.commons.rdf.jsonldjava.experimental.JsonLdParser} - an JSONLD-Java-backed implementations of
  * {@link org.apache.commons.rdf.experimental.RDFParser}.</li>
  * </ul>
  */

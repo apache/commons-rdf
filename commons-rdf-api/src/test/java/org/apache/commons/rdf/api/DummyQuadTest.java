@@ -24,7 +24,7 @@ import java.util.Objects;
 import org.junit.Test;
 
 public class DummyQuadTest {
-    Quad quad = new DummyQuad();
+    final Quad quad = new DummyQuad();
 
     @Test
     public void getGraphName() throws Exception {

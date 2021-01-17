@@ -26,7 +26,7 @@ import org.apache.commons.rdf.jena.impl.InternalJenaFactory;
 
 public class TestBlankNodeJena extends AbstractBlankNodeTest {
 
-    InternalJenaFactory internalJenaFactory = new InternalJenaFactory() {
+    final InternalJenaFactory internalJenaFactory = new InternalJenaFactory() {
     };
 
     /**

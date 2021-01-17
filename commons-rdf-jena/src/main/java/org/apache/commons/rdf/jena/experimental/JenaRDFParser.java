@@ -70,7 +70,7 @@ public class JenaRDFParser extends AbstractRDFParser<JenaRDFParser> {
 
     @Override
     protected void parseSynchronusly() throws IOException {
-        StreamRDF dest;
+        final StreamRDF dest;
         final JenaRDF jenaRDF = getJenaFactory();
         if (getTargetGraph().isPresent() && getTargetGraph().get() instanceof JenaGraph) {
             final Graph jenaGraph = ((JenaGraph) getTargetGraph().get()).asJenaGraph();

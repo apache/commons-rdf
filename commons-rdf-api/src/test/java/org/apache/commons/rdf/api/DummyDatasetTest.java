@@ -22,7 +22,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class DummyDatasetTest {
-    Dataset dataset = new DummyDataset();
+    final Dataset dataset = new DummyDataset();
 
     @Test
     public void add() throws Exception {

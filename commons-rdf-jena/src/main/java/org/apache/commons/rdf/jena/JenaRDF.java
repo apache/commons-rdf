@@ -76,7 +76,7 @@ import org.apache.jena.sparql.graph.GraphFactory;
  */
 public final class JenaRDF implements RDF {
 
-    private static InternalJenaFactory internalJenaFactory = new InternalJenaFactory() {
+    private static final InternalJenaFactory internalJenaFactory = new InternalJenaFactory() {
     };
 
     private final UUID salt;

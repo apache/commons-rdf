@@ -23,7 +23,7 @@ import org.junit.Test;
 
 public class DefaultGraphTest {
 
-    DummyGraph graph = new DummyGraph();
+    final DummyGraph graph = new DummyGraph();
 
     @Test
     public void close() throws Exception {

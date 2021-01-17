@@ -39,16 +39,16 @@ import org.junit.Test;
 public class JsonLdParserBuilderTest {
     private static final String TEST_JSONLD = "/test.jsonld";
 
-    static JsonLdRDF factory = new JsonLdRDF();
-    IRI test = factory.createIRI("http://example.com/test");
-    IRI Type = factory.createIRI("http://example.com/Type");
-    IRI type = factory.createIRI("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
-    IRI pred1 = factory.createIRI("http://example.com/pred1");
-    IRI pred2 = factory.createIRI("http://example.com/pred2");
-    IRI pred3 = factory.createIRI("http://example.com/pred3");
-    IRI pred4 = factory.createIRI("http://example.com/pred4");
-    IRI other = factory.createIRI("http://example.com/other");
-    IRI graph = factory.createIRI("http://example.com/graph");
+    static final JsonLdRDF factory = new JsonLdRDF();
+    final IRI test = factory.createIRI("http://example.com/test");
+    final IRI Type = factory.createIRI("http://example.com/Type");
+    final IRI type = factory.createIRI("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
+    final IRI pred1 = factory.createIRI("http://example.com/pred1");
+    final IRI pred2 = factory.createIRI("http://example.com/pred2");
+    final IRI pred3 = factory.createIRI("http://example.com/pred3");
+    final IRI pred4 = factory.createIRI("http://example.com/pred4");
+    final IRI other = factory.createIRI("http://example.com/other");
+    final IRI graph = factory.createIRI("http://example.com/graph");
 
     @Test
     public void parseByUrl() throws Exception {
