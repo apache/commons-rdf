@@ -206,7 +206,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
 
     /**
      * Tests if this is empty.
-     * 
+     *
      * @return true if this is empty.
      */
     default boolean isEmpty() {

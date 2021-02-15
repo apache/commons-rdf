@@ -169,7 +169,7 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
 
     /**
      * Tests if this is empty.
-     * 
+     *
      * @return true if this is empty.
      */
     default boolean isEmpty() {
