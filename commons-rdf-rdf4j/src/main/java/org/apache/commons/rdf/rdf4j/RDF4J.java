@@ -419,9 +419,7 @@ public final class RDF4J implements RDF {
     public RDF4JGraph asGraphUnion(final Repository repository, final Option... options) {
         final EnumSet<Option> opts = optionSet(options);
         return RDF4J.createRepositoryGraphImpl(repository, opts.contains(Option.handleInitAndShutdown),
-                opts.contains(Option.includeInferred), new Resource[] {}); // union
-                                                                           // graph
-
+                opts.contains(Option.includeInferred)); // union graph
     }
 
     /**
