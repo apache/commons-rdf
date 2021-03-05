@@ -273,21 +273,21 @@ public final class JsonLdRDF implements RDF {
         }
         if (blankNodeOrIRI instanceof IRI) {
             return ((IRI) blankNodeOrIRI).getIRIString();
-        } else if (blankNodeOrIRI instanceof BlankNode) {
-            final BlankNode blankNode = (BlankNode) blankNodeOrIRI;
-            final String ref = blankNode.uniqueReference();
-            if (ref.startsWith(bnodePrefix)) {
-                // One of ours (but possibly not a JsonLdBlankNode) -
-                // we can use the suffix directly
-                return ref.replace(bnodePrefix, "");
-            }
-            // Map to unique bnode identifier, e.g.
-            // _:0dbd92ee-ab1a-45e7-bba2-7ade54f87ec5
-            final UUID uuid = UUID.nameUUIDFromBytes(ref.getBytes(StandardCharsets.UTF_8));
-            return "_:" + uuid;
-        } else {
+        }
+        if (!(blankNodeOrIRI instanceof BlankNode)) {
             throw new IllegalArgumentException("Expected a BlankNode or IRI, not: " + blankNodeOrIRI);
         }
+        final BlankNode blankNode = (BlankNode) blankNodeOrIRI;
+        final String ref = blankNode.uniqueReference();
+        if (ref.startsWith(bnodePrefix)) {
+            // One of ours (but possibly not a JsonLdBlankNode) -
+            // we can use the suffix directly
+            return ref.replace(bnodePrefix, "");
+        }
+        // Map to unique bnode identifier, e.g.
+        // _:0dbd92ee-ab1a-45e7-bba2-7ade54f87ec5
+        final UUID uuid = UUID.nameUUIDFromBytes(ref.getBytes(StandardCharsets.UTF_8));
+        return "_:" + uuid;
     }
 
     JsonLdTerm asRDFTerm(final Node node, final String blankNodePrefix) {
@@ -296,17 +296,18 @@ public final class JsonLdRDF implements RDF {
         }
         if (node.isIRI()) {
             return new JsonLdIRIImpl(node);
-        } else if (node.isBlankNode()) {
+        }
+        if (node.isBlankNode()) {
             return new JsonLdBlankNodeImpl(node, blankNodePrefix);
-        } else if (node.isLiteral()) {
-            // TODO: Our own JsonLdLiteral
-            if (node.getLanguage() != null) {
-                return createLiteral(node.getValue(), node.getLanguage());
-            }
-            return createLiteral(node.getValue(), createIRI(node.getDatatype()));
-        } else {
+        }
+        if (!node.isLiteral()) {
             throw new IllegalArgumentException("Node is neither IRI, BlankNode nor Literal: " + node);
         }
+        // TODO: Our own JsonLdLiteral
+        if (node.getLanguage() != null) {
+            return createLiteral(node.getValue(), node.getLanguage());
+        }
+        return createLiteral(node.getValue(), createIRI(node.getDatatype()));
     }
 
     RDFDataset.Quad createJsonLdQuad(final BlankNodeOrIRI graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {

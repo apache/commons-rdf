@@ -91,18 +91,19 @@ final class DatasetImpl implements Dataset {
             // equivalent object, based on the code in the package private
             // BlankNodeImpl class
             return factory.createBlankNode(blankNode.uniqueReference());
-        } else if (object instanceof IRI && !(object instanceof IRIImpl)) {
+        }
+        if (object instanceof IRI && !(object instanceof IRIImpl)) {
             final IRI iri = (IRI) object;
             return factory.createIRI(iri.getIRIString());
-        } else if (object instanceof Literal && !(object instanceof LiteralImpl)) {
-            final Literal literal = (Literal) object;
-            if (literal.getLanguageTag().isPresent()) {
-                return factory.createLiteral(literal.getLexicalForm(), literal.getLanguageTag().get());
-            }
-            return factory.createLiteral(literal.getLexicalForm(), (IRI) internallyMap(literal.getDatatype()));
-        } else {
+        }
+        if (!(object instanceof Literal) || (object instanceof LiteralImpl)) {
             throw new IllegalArgumentException("Not a BlankNode, IRI or Literal: " + object);
         }
+        final Literal literal = (Literal) object;
+        if (literal.getLanguageTag().isPresent()) {
+            return factory.createLiteral(literal.getLexicalForm(), literal.getLanguageTag().get());
+        }
+        return factory.createLiteral(literal.getLexicalForm(), (IRI) internallyMap(literal.getDatatype()));
     }
 
     @Override

@@ -72,18 +72,19 @@ final class GraphImpl implements Graph {
             // equivalent object, based on the code in the package private
             // BlankNodeImpl class
             return factory.createBlankNode(blankNode.uniqueReference());
-        } else if (object instanceof IRI) {
+        }
+        if (object instanceof IRI) {
             final IRI iri = (IRI) object;
             return factory.createIRI(iri.getIRIString());
-        } else if (object instanceof Literal) {
-            final Literal literal = (Literal) object;
-            if (literal.getLanguageTag().isPresent()) {
-                return factory.createLiteral(literal.getLexicalForm(), literal.getLanguageTag().get());
-            }
-            return factory.createLiteral(literal.getLexicalForm(), (IRI) internallyMap(literal.getDatatype()));
-        } else {
+        }
+        if (!(object instanceof Literal)) {
             throw new IllegalArgumentException("RDFTerm was neither a BlankNode, IRI nor Literal: " + object);
         }
+        final Literal literal = (Literal) object;
+        if (literal.getLanguageTag().isPresent()) {
+            return factory.createLiteral(literal.getLexicalForm(), literal.getLanguageTag().get());
+        }
+        return factory.createLiteral(literal.getLexicalForm(), (IRI) internallyMap(literal.getDatatype()));
     }
 
     private Triple internallyMap(final Triple triple) {
