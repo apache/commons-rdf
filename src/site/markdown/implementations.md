@@ -102,6 +102,34 @@ Objects created with  [JenaRDF](apidocs/org/apache/commons/rdf/jena/JenaRDF.html
 
 `JenaRDF` includes additional methods for converting from/to Apache Jena and Commons RDF, like [asRDFTerm(Node)](apidocs/org/apache/commons/rdf/jena/JenaRDF.html#asRDFTerm-org.apache.jena.graph.Node-) and [asJenaNode(RDFTerm)](apidocs/org/apache/commons/rdf/jena/JenaRDF.html#asJenaNode-org.apache.commons.rdf.api.RDFTerm-).
 
+#### Jena and OSGi
+
+If using `commons-rdf-jena` as an OSGi bundle, then you should use it together with the corresponding [`jena-osgi`](https://github.com/apache/jena/tree/master/apache-jena-osgi) artifact and exclude the `jena-arq` dependency. With Maven:
+
+```xml
+<dependency>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-rdf-jena</artifactId>
+    <version>0.5.0</version>
+    <exclusions>
+        <exclusion>
+            <groupId>org.apache.jena</groupId>
+            <artifactId>jena-arq</artifactId>
+        <exclusion>
+    </exclusions>
+</dependency>
+<dependency>
+    <groupId>org.apache.jena</groupId>
+    <artifactId>jena-osgi</artifactId>
+    <version>3.9.0</version>
+</dependency>
+```
+
+Make sure to exclude any other Jena dependencies (possibly in conflicting versions from transitive dependencies), as `jena-osgi` repackages them all into a single OSGi bundle. 
+
+<!-- TODO: Document how to do above with Karaf and jena-osgi-features -->
+
+
 #### Generalized RDF
 
 Apache Jena can support [generalized RDF](https://www.w3.org/TR/rdf11-concepts/#section-generalized-rdf), e.g.:
