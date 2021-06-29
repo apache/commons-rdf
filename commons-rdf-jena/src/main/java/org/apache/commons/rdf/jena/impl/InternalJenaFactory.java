@@ -151,11 +151,13 @@ public abstract class InternalJenaFactory {
         }
         if (node.equals(Node.ANY)) {
             // NOTE: JenaAny no longer supported by Commons RDF
-            // return JenaAnyImpl.Singleton.instance;
+            //TODO remove this check or handle JenaAny
+            throw new ConversionException("Unrecognized node type: " + node);
         }
         if (node.isVariable()) {
             // NOTE: JenaVariable no longer supported by Commons RDF
-            // return new JenaVariableImpl(node);
+            //TODO remove this check or handle JenaVariable
+            throw new ConversionException("Unrecognized node type: " + node);
         }
         throw new ConversionException("Unrecognized node type: " + node);
     }

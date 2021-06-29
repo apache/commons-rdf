@@ -41,7 +41,7 @@ class JenaGraphImpl implements JenaGraph {
     private final org.apache.jena.graph.Graph graph;
     private final UUID salt;
     private final transient JenaRDF factory;
-    private Model model;
+    private volatile Model model;
 
     JenaGraphImpl(final org.apache.jena.graph.Graph graph, final UUID salt) {
         this.graph = graph;
@@ -107,7 +107,7 @@ class JenaGraphImpl implements JenaGraph {
 
     @Override
     public void remove(final Triple triple) {
-        if ((triple.getObject() instanceof Literal) &&
+        if (triple.getObject() instanceof Literal &&
                 ((Literal) triple.getObject()).getLanguageTag().isPresent()) {
             // COMMONSRDF-51: graph.delete(Triple) would be too restrictive
             // as it won't delete triples with different lang tag - so
@@ -154,17 +154,19 @@ class JenaGraphImpl implements JenaGraph {
 
     @Override
     public Model asJenaModel() {
-        if (model == null) {
+        // use a local holder to avoid accessing the volatile field model more than needed
+        Model check = model;
+        if (check == null) {
             synchronized (this) {
                 // As Model can be used for locks, we should make sure we don't
-                // make
-                // more than one model
-                if (model == null) {
-                    model = ModelFactory.createModelForGraph(graph);
+                // make more than one model
+                check = model;
+                if (check == null) {
+                    model = check = ModelFactory.createModelForGraph(graph);
                 }
             }
         }
-        return model;
+        return check;
     }
 
 }
