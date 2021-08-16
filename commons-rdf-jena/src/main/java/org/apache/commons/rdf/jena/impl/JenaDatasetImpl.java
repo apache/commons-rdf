@@ -128,8 +128,7 @@ class JenaDatasetImpl implements JenaDataset {
     @Override
     public long size() {
         final long quads = Iter.asStream(datasetGraph.listGraphNodes())
-                .map(datasetGraph::getGraph)
-                .collect(Collectors.summingLong(org.apache.jena.graph.Graph::size));
+                .map(datasetGraph::getGraph).mapToLong(org.apache.jena.graph.Graph::size).sum();
         return quads + datasetGraph.getDefaultGraph().size();
     }
 
