@@ -42,8 +42,8 @@ import org.apache.jena.sparql.core.Quad;
  *
  * @see JenaTripleImpl
  * @see JenaQuadImpl
- * @see internalJenaFactory#createGeneralizedTriple(RDFTerm, RDFTerm, RDFTerm)
- * @see internalJenaFactory#createGeneralizedQuad(RDFTerm, RDFTerm, RDFTerm,
+ * @see #internalJenaFactory#createGeneralizedTriple(RDFTerm, RDFTerm, RDFTerm)
+ * @see #internalJenaFactory#createGeneralizedQuad(RDFTerm, RDFTerm, RDFTerm,
  *      RDFTerm)
  *
  */

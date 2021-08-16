@@ -34,8 +34,8 @@ import org.eclipse.rdf4j.repository.Repository;
  *
  * @see RDF4J#createGraph()
  * @see RDF4J#asGraph(Model)
- * @see RDF4J#asGraph(Repository, Option...)
- * @see RDF4J#asGraphUnion(Repository, Option...)
+ * @see RDF4J#asGraph(Repository, RDF4J.Option...)
+ * @see RDF4J#asGraphUnion(Repository, RDF4J.Option...)
  * @see RDF4JDataset#getGraph()
  * @see RDF4JDataset#getGraph(BlankNodeOrIRI)
  */
@@ -63,7 +63,7 @@ public interface RDF4JGraph extends Graph, RDF4JGraphLike<Triple> {
      * Note that the context mask itself cannot be <code>null</code>.
      * <p>
      * The returned set is an immutable copy; to specify a different mask, use
-     * {@link RDF4J#asGraph(Repository, Set, Option...)}
+     * {@link RDF4J#asGraph(Repository, RDF4J.Option...)}
      *
      * @return The context mask as a set of {@link BlankNodeOrIRI} graph names,
      *         which may contain the value <code>null</code>.
