@@ -57,7 +57,7 @@
         -->
         <commons.javadoc.java.link>https://docs.oracle.com/javase/8/docs/api/</commons.javadoc.java.link>
         
-        <commons.japicmp.version>0.15.4</commons.japicmp.version>
+        <commons.japicmp.version>0.15.7</commons.japicmp.version>
         
         
 	    <!--  NOTE: jsonldjava is also used by rdf4j and jena, check the version
