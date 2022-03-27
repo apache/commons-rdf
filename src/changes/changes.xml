@@ -39,6 +39,9 @@
         <action type="update" dev="ggregory" due-to="Gary Gregory">
             Bump JAXB Glassfish runtime 2.3.0 to 2.3.6.
         </action>
+        <action type="update" dev="ggregory" due-to="Gary Gregory">
+            Bump actions/cache from 2.1.4 to 3 #77.
+        </action>
     </release>
     <release version="0.5.0" date="2017-11-19" description="Minor feature and bug fix release.">
         <action type="fix" issue="COMMONSRDF-47">
