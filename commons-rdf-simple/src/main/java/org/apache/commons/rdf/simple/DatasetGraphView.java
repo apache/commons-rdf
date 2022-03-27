@@ -56,12 +56,21 @@ public class DatasetGraphView implements Graph {
     private final BlankNodeOrIRI namedGraph;
     private final Dataset dataset;
 
+    /**
+     * Constructs a new instance.
+     * @param dataset TODO
+     */
     public DatasetGraphView(final Dataset dataset) {
         this.dataset = dataset;
         this.namedGraph = null;
         this.unionGraph = true;
     }
 
+    /**
+     * Constructs a new instance.
+     * @param dataset TODO
+     * @param namedGraph TODO
+     */
     public DatasetGraphView(final Dataset dataset, final BlankNodeOrIRI namedGraph) {
         this.dataset = dataset;
         this.namedGraph = namedGraph;

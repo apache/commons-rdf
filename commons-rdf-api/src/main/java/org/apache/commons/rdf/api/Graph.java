@@ -83,12 +83,15 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      * <p>
      * For example, this would close any open file and network streams and free
      * database locks held by the Graph implementation.
+     * </p>
      * <p>
      * The behavior of the other Graph methods are undefined after closing the
      * graph.
+     * </p>
      * <p>
      * Implementations might not need {@link #close()}, hence the default
      * implementation does nothing.
+     * </p>
      */
     @Override
     default void close() throws Exception {
@@ -126,6 +129,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      * <p>
      * The count of a set does not include duplicates, consistent with the
      * {@link Triple#equals(Object)} equals method for each {@link Triple}.
+     * </p>
      *
      * @return The number of triples in the graph
      */
@@ -137,13 +141,16 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      * <p>
      * The iteration does not contain any duplicate triples, as determined by
      * the {@link Triple#equals(Object)} method for each {@link Triple}.
+     * </p>
      * <p>
      * The behavior of the {@link Stream} is not specified if
      * {@link #add(Triple)}, {@link #remove(Triple)} or {@link #clear()} are
      * called on the {@link Graph} before it terminates.
+     * </p>
      * <p>
      * Implementations may throw {@link ConcurrentModificationException} from
      * Stream methods if they detect a conflict while the Stream is active.
+     * </p>
      *
      * @since 0.3.0-incubating
      * @return A {@link Stream} over all of the triples in the graph
@@ -156,14 +163,16 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      * <p>
      * The iteration does not contain any duplicate triples, as determined by
      * the {@link Triple#equals(Object)} method for each {@link Triple}.
+     * </p>
      * <p>
      * The behavior of the {@link Stream} is not specified if
      * {@link #add(Triple)}, {@link #remove(Triple)} or {@link #clear()} are
      * called on the {@link Graph} before it terminates.
+     * </p>
      * <p>
      * Implementations may throw {@link ConcurrentModificationException} from
      * Stream methods if they detect a conflict while the Stream is active.
-     * <p>
+     * </p>
      *
      * @since 0.3.0-incubating
      * @param subject
@@ -217,17 +226,19 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      * Gets an Iterable for iterating over all triples in the graph.
      * <p>
      * This method is meant to be used with a Java for-each loop, e.g.:
-     *
+     * </p>
      * <pre>
      * for (Triple t : graph.iterate()) {
      *     System.out.println(t);
      * }
      * </pre>
      *
+     * <p>
      * The behavior of the iterator is not specified if {@link #add(Triple)},
      * {@link #remove(Triple)} or {@link #clear()}, are called on the
      * {@link Graph} before it terminates. It is undefined if the returned
      * {@link Iterator} supports the {@link Iterator#remove()} method.
+     * </p>
      * <p>
      * Implementations may throw {@link ConcurrentModificationException} from
      * Iterator methods if they detect a concurrency conflict while the Iterator
@@ -236,9 +247,11 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      * The {@link Iterable#iterator()} must only be called once, that is the
      * Iterable must only be iterated over once. A {@link IllegalStateException}
      * may be thrown on attempt to reuse the Iterable.
+     * </p>
      * <p>
      * The default implementation of this method will call {@link #stream()} to return
      * its {@link Stream#iterator()}.
+     * </p>
      *
      * @return A {@link Iterable} that returns {@link Iterator} over all of the
      *         triples in the graph
@@ -259,7 +272,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      * the pattern.
      * <p>
      * This method is meant to be used with a Java for-each loop, e.g.:
-     *
+     * </p>
      * <pre>
      * IRI alice = factory.createIRI("http://example.com/alice");
      * IRI knows = factory.createIRI("http://xmlns.com/foaf/0.1/");
@@ -272,18 +285,22 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      * {@link #remove(Triple)} or {@link #clear()}, are called on the
      * {@link Graph} before it terminates. It is undefined if the returned
      * {@link Iterator} supports the {@link Iterator#remove()} method.
+     * </p>
      * <p>
      * Implementations may throw {@link ConcurrentModificationException} from
      * Iterator methods if they detect a concurrency conflict while the Iterator
      * is active.
+     * </p>
      * <p>
      * The {@link Iterable#iterator()} must only be called once, that is the
      * Iterable must only be iterated over once. A {@link IllegalStateException}
      * may be thrown on attempt to reuse the Iterable.
+     * </p>
      * <p>
      * The default implementation of this method will call
      * {@link #stream(BlankNodeOrIRI, IRI, RDFTerm)} to return its
      * {@link Stream#iterator()}.
+     * </p>
      *
      * @param subject
      *            The triple subject (null is a wildcard)

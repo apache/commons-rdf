@@ -28,36 +28,70 @@ package org.apache.commons.rdf.api;
 @Deprecated
 public interface RDFTermFactory {
 
+    /**
+     * @return By default, throws UnsupportedOperationException
+     */
     default BlankNode createBlankNode() throws UnsupportedOperationException {
         throw new UnsupportedOperationException("createBlankNode() not supported");
     }
 
+    /**
+     * @param name TODO
+     * @return By default, throws UnsupportedOperationException
+     */
     default BlankNode createBlankNode(final String name) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("createBlankNode(String) not supported");
     }
 
+    /**
+     * @return By default, throws UnsupportedOperationException
+     */
     default Graph createGraph() throws UnsupportedOperationException {
         throw new UnsupportedOperationException("createGraph() not supported");
     }
 
+    /**
+     * @param iri TODO
+     * @return TODO
+     */
     default IRI createIRI(final String iri) throws IllegalArgumentException, UnsupportedOperationException {
         throw new UnsupportedOperationException("createIRI(String) not supported");
     }
 
+    /**
+     * @param lexicalForm TODO
+     * @return TODO
+     */
     default Literal createLiteral(final String lexicalForm) throws IllegalArgumentException, UnsupportedOperationException {
         throw new UnsupportedOperationException("createLiteral(String) not supported");
     }
 
+    /**
+     * @param lexicalForm TODO
+     * @param dataType TODO
+     * @return TODO
+     */
     default Literal createLiteral(final String lexicalForm, final IRI dataType)
             throws IllegalArgumentException, UnsupportedOperationException {
         throw new UnsupportedOperationException("createLiteral(String) not supported");
     }
 
+    /**
+     * @param lexicalForm TODO
+     * @param languageTag TODO
+     * @return TODO
+     */
     default Literal createLiteral(final String lexicalForm, final String languageTag)
             throws IllegalArgumentException, UnsupportedOperationException {
         throw new UnsupportedOperationException("createLiteral(String,String) not supported");
     }
 
+    /**
+     * @param subject TODO
+     * @param predicate TODO
+     * @param object TODO
+     * @return TODO
+     */
     default Triple createTriple(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object)
             throws IllegalArgumentException, UnsupportedOperationException {
         throw new UnsupportedOperationException("createTriple(BlankNodeOrIRI,IRI,RDFTerm) not supported");

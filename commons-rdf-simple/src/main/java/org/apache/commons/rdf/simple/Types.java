@@ -30,17 +30,17 @@ import java.util.Set;
 public final class Types implements IRI, SimpleRDF.SimpleRDFTerm {
 
     /**
-     * <tt>http://www.w3.org/1999/02/22-rdf-syntax-ns#HTML</tt>
+     * {@code http://www.w3.org/1999/02/22-rdf-syntax-ns#HTML}
      */
     public static final Types RDF_HTML = new Types("http://www.w3.org/1999/02/22-rdf-syntax-ns#HTML");
 
     /**
-     * <tt>http://www.w3.org/1999/02/22-rdf-syntax-ns#langString</tt>
+     * {@code http://www.w3.org/1999/02/22-rdf-syntax-ns#langString}
      */
     public static final Types RDF_LANGSTRING = new Types("http://www.w3.org/1999/02/22-rdf-syntax-ns#langString");
 
     /**
-     * <tt>http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral</tt>
+     * {@code http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral}
      *
      * @deprecated Not used in RDF-1.1
      */
@@ -48,192 +48,192 @@ public final class Types implements IRI, SimpleRDF.SimpleRDFTerm {
     public static final Types RDF_PLAINLITERAL = new Types("http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral");
 
     /**
-     * <tt>http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral</tt>
+     * {@code http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral}
      */
     public static final Types RDF_XMLLITERAL = new Types("http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#anyURI</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#anyURI}
      */
     public static final Types XSD_ANYURI = new Types("http://www.w3.org/2001/XMLSchema#anyURI");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#base64Binary</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#base64Binary}
      */
     public static final Types XSD_BASE64BINARY = new Types("http://www.w3.org/2001/XMLSchema#base64Binary");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#boolean</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#boolean}
      */
     public static final Types XSD_BOOLEAN = new Types("http://www.w3.org/2001/XMLSchema#boolean");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#byte</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#byte}
      */
     public static final Types XSD_BYTE = new Types("http://www.w3.org/2001/XMLSchema#byte");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#date</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#date}
      */
     public static final Types XSD_DATE = new Types("http://www.w3.org/2001/XMLSchema#date");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#dateTime</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#dateTime}
      */
     public static final Types XSD_DATETIME = new Types("http://www.w3.org/2001/XMLSchema#dateTime");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#dayTimeDuration</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#dayTimeDuration}
      */
     public static final Types XSD_DAYTIMEDURATION = new Types("http://www.w3.org/2001/XMLSchema#dayTimeDuration");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#decimal</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#decimal}
      */
     public static final Types XSD_DECIMAL = new Types("http://www.w3.org/2001/XMLSchema#decimal");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#double</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#double}
      */
     public static final Types XSD_DOUBLE = new Types("http://www.w3.org/2001/XMLSchema#double");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#duration</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#duration}
      */
     public static final Types XSD_DURATION = new Types("http://www.w3.org/2001/XMLSchema#duration");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#float</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#float}
      */
     public static final Types XSD_FLOAT = new Types("http://www.w3.org/2001/XMLSchema#float");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#gDay</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#gDay}
      */
     public static final Types XSD_GDAY = new Types("http://www.w3.org/2001/XMLSchema#gDay");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#gMonth</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#gMonth}
      */
     public static final Types XSD_GMONTH = new Types("http://www.w3.org/2001/XMLSchema#gMonth");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#gMonthDay</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#gMonthDay}
      */
     public static final Types XSD_GMONTHDAY = new Types("http://www.w3.org/2001/XMLSchema#gMonthDay");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#gYear</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#gYear}
      */
     public static final Types XSD_GYEAR = new Types("http://www.w3.org/2001/XMLSchema#gYear");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#gYearMonth</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#gYearMonth}
      */
     public static final Types XSD_GYEARMONTH = new Types("http://www.w3.org/2001/XMLSchema#gYearMonth");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#hexBinary</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#hexBinary}
      */
     public static final Types XSD_HEXBINARY = new Types("http://www.w3.org/2001/XMLSchema#hexBinary");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#int</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#int}
      */
     public static final Types XSD_INT = new Types("http://www.w3.org/2001/XMLSchema#int");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#integer</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#integer}
      */
     public static final Types XSD_INTEGER = new Types("http://www.w3.org/2001/XMLSchema#integer");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#language</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#language}
      */
     public static final Types XSD_LANGUAGE = new Types("http://www.w3.org/2001/XMLSchema#language");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#long</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#long}
      */
     public static final Types XSD_LONG = new Types("http://www.w3.org/2001/XMLSchema#long");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#Name</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#Name}
      */
     public static final Types XSD_NAME = new Types("http://www.w3.org/2001/XMLSchema#Name");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#NCName</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#NCName}
      */
     public static final Types XSD_NCNAME = new Types("http://www.w3.org/2001/XMLSchema#NCName");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#negativeInteger</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#negativeInteger}
      */
     public static final Types XSD_NEGATIVEINTEGER = new Types("http://www.w3.org/2001/XMLSchema#negativeInteger");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#NMTOKEN</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#NMTOKEN}
      */
     public static final Types XSD_NMTOKEN = new Types("http://www.w3.org/2001/XMLSchema#NMTOKEN");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#nonNegativeInteger</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#nonNegativeInteger}
      */
     public static final Types XSD_NONNEGATIVEINTEGER = new Types("http://www.w3.org/2001/XMLSchema#nonNegativeInteger");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#nonPositiveInteger</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#nonPositiveInteger}
      */
     public static final Types XSD_NONPOSITIVEINTEGER = new Types("http://www.w3.org/2001/XMLSchema#nonPositiveInteger");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#normalizedString</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#normalizedString}
      */
     public static final Types XSD_NORMALIZEDSTRING = new Types("http://www.w3.org/2001/XMLSchema#normalizedString");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#positiveInteger</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#positiveInteger}
      */
     public static final Types XSD_POSITIVEINTEGER = new Types("http://www.w3.org/2001/XMLSchema#positiveInteger");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#short</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#short}
      */
     public static final Types XSD_SHORT = new Types("http://www.w3.org/2001/XMLSchema#short");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#string</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#string}
      */
     public static final Types XSD_STRING = new Types("http://www.w3.org/2001/XMLSchema#string");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#time</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#time}
      */
     public static final Types XSD_TIME = new Types("http://www.w3.org/2001/XMLSchema#time");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#token</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#token}
      */
     public static final Types XSD_TOKEN = new Types("http://www.w3.org/2001/XMLSchema#token");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#unsignedByte</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#unsignedByte}
      */
     public static final Types XSD_UNSIGNEDBYTE = new Types("http://www.w3.org/2001/XMLSchema#unsignedByte");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#unsignedInt</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#unsignedInt}
      */
     public static final Types XSD_UNSIGNEDINT = new Types("http://www.w3.org/2001/XMLSchema#unsignedInt");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#unsignedLong</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#unsignedLong}
      */
     public static final Types XSD_UNSIGNEDLONG = new Types("http://www.w3.org/2001/XMLSchema#unsignedLong");
 
     /**
-     * <tt>http://www.w3.org/2001/XMLSchema#unsignedShort</tt>
+     * {@code http://www.w3.org/2001/XMLSchema#unsignedShort}
      */
     public static final Types XSD_UNSIGNEDSHORT = new Types("http://www.w3.org/2001/XMLSchema#unsignedShort");
 

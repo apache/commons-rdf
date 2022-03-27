@@ -58,6 +58,9 @@ import org.apache.commons.rdf.simple.SimpleRDF;
  */
 public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implements RDFParser, Cloneable {
 
+    /**
+     * Commons RDF thread group.
+     */
     public static final ThreadGroup threadGroup = new ThreadGroup("Commons RDF parsers");
     private static final ExecutorService threadpool = Executors.newCachedThreadPool(r -> new Thread(threadGroup, r));
 
@@ -224,6 +227,10 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
         }
     }
 
+    /**
+     * Returns this.
+     * @return this.
+     */
     @SuppressWarnings("unchecked")
     protected T asT() {
         return (T) this;

@@ -336,7 +336,7 @@
                     <link>${commons.javadoc.java.link}</link>
                     <link>https://jena.apache.org/documentation/javadoc/jena/</link>
                     <link>https://jena.apache.org/documentation/javadoc/arq/</link>
-                    <link>http://docs.rdf4j.org/javadoc/2.2/</link>
+                    <link>https://rdf4j.org/javadoc/2.5.4//</link>
                     </links>
                 </configuration>
             </plugin>
