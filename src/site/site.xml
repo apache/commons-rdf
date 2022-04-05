@@ -61,7 +61,7 @@
     </menu>
     <menu name="Tools">
       <item name="Mailing Lists"        href="/mail-lists.html" />
-      <item name="Source (Git)"         href="https://git-wip-us.apache.org/repos/asf/commons-rdf.git" />
+      <item name="Source (Git)"         href="https://gitbox.apache.org/repos/asf/commons-rdf.git" />
       <item name="Source (GitHub mirror)" href="https://github.com/apache/commons-rdf/" />
       <item name="Issues (Jira)"        href="https://issues.apache.org/jira/browse/COMMONSRDF" />
     </menu>

@@ -42,7 +42,7 @@ at no charge.
 ### CD20
 _The project's code is easily discoverable and publicly accessible._
 
-Menu on https://commonsrdf.incubator.apache.org/ links to [Source (git)](https://git-wip-us.apache.org/repos/asf/incubator-commonsrdf.git),
+Menu on https://commonsrdf.incubator.apache.org/ links to [Source (git)](https://gitbox.apache.org/repos/asf/incubator-commonsrdf.git),
 [Source (GitHub mirror)](https://github.com/apache/incubator-commonsrdf/), as well as
 source releases under [Download](https://commonsrdf.incubator.apache.org/download.html)
 
@@ -61,8 +61,8 @@ and
 ### CD40
 _The full history of the project's code is available via a source code control system, in a way that allows any released version to be recreated._
 
-Full history in [git.apache.org](https://git-wip-us.apache.org/repos/asf?p=incubator-commonsrdf.git). Each release has a
-corresponding [tag](https://git-wip-us.apache.org/repos/asf?p=incubator-commonsrdf.git;a=tags)
+Full history in [git.apache.org](https://gitbox.apache.org/repos/asf?p=incubator-commonsrdf.git). Each release has a
+corresponding [tag](https://gitbox.apache.org/repos/asf?p=incubator-commonsrdf.git;a=tags)
 
 The git commits includes pre-Apache history imported from https://github.com/commons-rdf/commons-rdf through software grant.
 
