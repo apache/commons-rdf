@@ -62,7 +62,7 @@
         
 	    <!--  NOTE: jsonldjava is also used by rdf4j and jena, check the version
 	          is cross-compatible -->
-        <jsonldjava.version>0.11.1</jsonldjava.version>
+        <jsonldjava.version>0.13.4</jsonldjava.version>
         <rdf4j.version>3.7.6</rdf4j.version>
         <jena.version>3.5.0</jena.version>
         <!--  NOTE: dexx and xerces versions should match 
