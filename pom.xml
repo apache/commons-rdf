@@ -557,7 +557,7 @@
              <plugin>
                  <groupId>org.apache.maven.plugins</groupId>
                  <artifactId>maven-checkstyle-plugin</artifactId>
-                 <version>3.0.0</version>
+                 <version>3.1.2</version>
                  <configuration>
                      <configLocation>${project.basedir}/src/conf/checkstyle.xml</configLocation>
                      <!-- Needed to define config_loc -->
