@@ -27,23 +27,23 @@
             Fix Java 17 build.
         </action>
         <!-- UPDATE -->
-        <action dev="ggregory" type="update" due-to="Gary Gregory">
-            Bump commons.japicmp.version 0.11.0 -> 0.15.7.
+        <action type="update" dev="ggregory" due-to="Gary Gregory">
+            Bump actions/cache from 2.1.4 to 3.0.3 #77.
+        </action>
+        <action type="update" dev="ggregory" due-to="Gary Gregory">
+            Bump actions/checkout from 2 to 3 #76.
         </action>
         <action type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">
             Bump actions/setup-java from 1.4.0 to 3 #81.
+        </action>
+        <action dev="ggregory" type="update" due-to="Gary Gregory">
+            Bump commons.japicmp.version 0.11.0 -> 0.15.7.
         </action>
         <action type="update" dev="ggregory" due-to="Gary Gregory">
             Bump JAXB API from 2.3.0 to 2.3.1.
         </action>
         <action type="update" dev="ggregory" due-to="Gary Gregory">
             Bump JAXB Glassfish runtime 2.3.0 to 2.3.6.
-        </action>
-        <action type="update" dev="ggregory" due-to="Gary Gregory">
-            Bump actions/cache from 2.1.4 to 3.0.2 #77.
-        </action>
-        <action type="update" dev="ggregory" due-to="Gary Gregory">
-            Bump actions/checkout from 2 to 3 #76.
         </action>
         <action type="update" dev="ggregory" due-to="Gary Gregory">
             Bump maven-pmd-plugin from 3.12.0 to 3.16.0 #75.
