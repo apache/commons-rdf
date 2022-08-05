@@ -28,7 +28,7 @@
         </action>
         <!-- UPDATE -->
         <action type="update" dev="ggregory" due-to="Gary Gregory">
-            Bump actions/cache from 2.1.4 to 3.0.5 #77.
+            Bump actions/cache from 2.1.4 to 3.0.6 #77.
         </action>
         <action type="update" dev="ggregory" due-to="Gary Gregory">
             Bump actions/checkout from 2 to 3 #76.
