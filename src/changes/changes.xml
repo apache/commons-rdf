@@ -54,6 +54,9 @@
         <action type="update" dev="ggregory" due-to="Dependabot">
             Bump jsonld-java from 0.11.1 to 0.13.4 #73.
         </action>
+        <action type="update" dev="ggregory" due-to="Gary Gregory">
+            Bump jacoco-maven-plugin from 0.8.7 to 0.8.8.
+        </action>
     </release>
     <release version="0.5.0" date="2017-11-19" description="Minor feature and bug fix release.">
         <action type="fix" issue="COMMONSRDF-47">
