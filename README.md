@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/apache/commons-rdf.svg?branch=master)](https://travis-ci.org/apache/commons-rdf)
 
-[![Coverage Status](https://coveralls.io/repos/apache/commons-rdf/badge.svg?branch=master&service=github)](https://coveralls.io/github/apache/commons-rdf?branch=master)
+[![Coverage Status](https://codecov.io/gh/apache/commons-rdf/branch/master/graph/badge.svg?branch=master&service=github)](https://coveralls.io/github/apache/commons-rdf?branch=master)
 
 [Commons RDF](https://commons.apache.org/proper/commons-rdf/) aims to provide a common
 library for [RDF 1.1](http://www.w3.org/TR/rdf11-concepts/) with implementations
