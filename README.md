@@ -3,7 +3,6 @@
 [![GitHub Actions Status](https://github.com/apache/commons-rdf/workflows/Java%20CI/badge.svg)](https://github.com/apache/commons-rdf/actions)
 [![Coverage Status](https://codecov.io/gh/apache/commons-rdf/branch/master/graph/badge.svg?branch=master&service=github)]
 
-(https://coveralls.io/github/apache/commons-rdf?branch=master)
 [Commons RDF](https://commons.apache.org/proper/commons-rdf/) aims to provide a common
 library for [RDF 1.1](http://www.w3.org/TR/rdf11-concepts/) with implementations
 for common Java RDF frameworks like [RDF4J](http://rdf4j.org/), [Apache
