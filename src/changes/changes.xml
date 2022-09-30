@@ -57,6 +57,9 @@
         <action type="update" dev="ggregory" due-to="Gary Gregory">
             Bump jacoco-maven-plugin from 0.8.7 to 0.8.8.
         </action>
+        <action type="update" dev="ggregory" due-to="Dependabot">
+            Bump maven-checkstyle-plugin from 3.0.0 to 3.2.0 #89.
+        </action>
     </release>
     <release version="0.5.0" date="2017-11-19" description="Minor feature and bug fix release.">
         <action type="fix" issue="COMMONSRDF-47">
