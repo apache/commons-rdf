@@ -34,7 +34,7 @@
             Bump actions/checkout from 2 to 3.0.2 #76.
         </action>
         <action type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">
-            Bump actions/setup-java from 1.4.0 to 3 #81.
+            Bump actions/setup-java from 1.4.0 to 3.5.1 #81.
         </action>
         <action dev="ggregory" type="update" due-to="Gary Gregory">
             Bump commons.japicmp.version from 0.11.0 to 0.16.0.
