@@ -23,18 +23,22 @@
 
   <body>
     <release version="0.6.0" date="20YY-MM-DD" description="Minor feature and bug fix release.">
+        <!-- FIX -->
         <action dev="ggregory" type="fix" due-to="Gary Gregory">
             Fix Java 17 build.
         </action>
         <!-- UPDATE -->
         <action type="update" dev="ggregory" due-to="Gary Gregory">
-            Bump actions/cache from 2.1.4 to 3.0.8 #77.
+            Bump actions/cache from 2.1.4 to 3.0.11 #77, #97.
         </action>
         <action type="update" dev="ggregory" due-to="Gary Gregory">
-            Bump actions/checkout from 2 to 3.0.2 #76.
+            Bump actions/checkout from 2 to 3.1.0 #76, #95.
         </action>
         <action type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">
-            Bump actions/setup-java from 1.4.0 to 3.5.1 #81.
+            Bump actions/setup-java from 1.4.0 to 3.6.0 #81, #99.
+        </action>
+        <action type="update" dev="ggregory" due-to="Dependabot">
+            Bump actions/upload-artifact from 3.1.0 to 3.1.1 #100.
         </action>
         <action dev="ggregory" type="update" due-to="Gary Gregory">
             Bump commons.japicmp.version from 0.11.0 to 0.16.0.
@@ -59,6 +63,9 @@
         </action>
         <action type="update" dev="ggregory" due-to="Dependabot">
             Bump maven-checkstyle-plugin from 3.0.0 to 3.2.0 #89.
+        </action>
+        <action type="update" dev="ggregory" due-to="Dependabot">
+            Bump junit from 4.12 to 4.13.1 in /commons-rdf-examples #82.
         </action>
     </release>
     <release version="0.5.0" date="2017-11-19" description="Minor feature and bug fix release.">
