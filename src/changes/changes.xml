@@ -40,8 +40,8 @@
         <action type="update" dev="ggregory" due-to="Dependabot">
             Bump actions/upload-artifact from 3.1.0 to 3.1.1 #100.
         </action>
-        <action dev="ggregory" type="update" due-to="Gary Gregory">
-            Bump commons.japicmp.version from 0.11.0 to 0.16.0.
+        <action dev="ggregory" type="update" due-to="Gary Gregory, Dependabot">
+            Bump commons.japicmp.version from 0.11.0 to 0.17.1, #111.
         </action>
         <action type="update" dev="ggregory" due-to="Gary Gregory">
             Bump JAXB API from 2.3.0 to 2.3.1.
