@@ -76,7 +76,7 @@ import org.eclipse.rdf4j.sail.memory.MemoryStore;
  * to a Commons RDF {@link Triple}, and equivalent {@link #asQuad(Statement)} to
  * convert a {@link Quad}.
  * <p>
- * To convert any {@link Triple} or {@link Quad} to to RDF4J {@link Statement},
+ * To convert any {@link Triple} or {@link Quad} to RDF4J {@link Statement},
  * use {@link #asStatement(TripleLike)}. This recognises previously converted
  * {@link RDF4JTriple}s and {@link RDF4JQuad}s without re-converting their
  * {@link RDF4JTripleLike#asStatement()}.

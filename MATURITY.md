@@ -168,7 +168,7 @@ to the hashes in the vote emails and in Maven Central.
 _Convenience binaries can be distributed alongside source code but they are not Apache Releases -- they are just a convenience provided with no guarantee._
 
 Convenience binaries are deployed to [Maven Central](https://repo1.maven.org/maven2/org/apache/commons/) under the `org.apache.commons` group ID, which include
-the [source release](https://repo1.maven.org/maven2/org/apache/commons/commons-rdf-parent/0.3.0-incubating/) corresponding to the
+the [source release](https://repo1.maven.org/maven2/org/apache/commons/commons-rdf-parent/0.3.0-incubating/) corresponding to
 the dist files. (see [RE30](#RE30) )
 
 

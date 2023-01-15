@@ -59,7 +59,7 @@ which may be included in Commons RDF, specifically:
 * [Dataset](apidocs/index.html?org/apache/commons/rdf/api/Dataset.html): a dataset,
   of RDF quads (or if you like, a set of named graphs).
 * [Quad](apidocs/index.html?org/apache/commons/rdf/api/Quad.html): a
-  RDF quad with with `getGraphName()`, `getSubject()`, `getPredicate()`, `getObject()`.
+  RDF quad with `getGraphName()`, `getSubject()`, `getPredicate()`, `getObject()`.
 * [RDFTerm](apidocs/index.html?org/apache/commons/rdf/api/RDFTerm.html): any RDF 1.1
   Term which can be part of a Triple or Quad.
   IRIs, literals and blank nodes are collectively known as RDF terms.
@@ -109,7 +109,7 @@ the above equality semantics and bridge the graph/quad duality:
   common super-interface of `Graph` and `Dataset`.
 
 
-See the the [user guide](userguide.html) for examples of how to interact with these interfaces.
+See the [user guide](userguide.html) for examples of how to interact with these interfaces.
 
 ## Modules
 

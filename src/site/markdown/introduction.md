@@ -638,7 +638,7 @@ which it often is not worth maintaining identifiers for.
 It is common on the semantic web to use the
 [open world assumption](http://wiki.opensemanticframework.org/index.php/Overview_of_the_Open_World_Assumption) -
 if it is not stated as a _triple_ in your graph, then you don't know if
-something is is true or false,
+something is true or false,
 for instance if `<Alice> <plays> <Football> .`  
 
 Note that the open world assumption applies both to `IRI`s and `BlankNode`s,

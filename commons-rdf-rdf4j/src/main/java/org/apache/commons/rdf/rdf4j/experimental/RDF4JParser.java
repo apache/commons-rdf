@@ -148,7 +148,7 @@ public class RDF4JParser extends AbstractRDFParser<RDF4JParser> {
         } else if (getSourceIri().isPresent()) {
             try {
                 // TODO: Handle international IRIs properly
-                // (Unicode support for for hostname, path and query)
+                // (Unicode support for hostname, path and query)
                 final URL url = new URL(getSourceIri().get().getIRIString());
                 // TODO: This probably does not support https:// -> http://
                 // redirections
