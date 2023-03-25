@@ -44,7 +44,6 @@ import org.apache.commons.rdf.simple.experimental.RDFParseException;
  *   &lt;urn:uuid:b7ac3fcc-4d86-4d28-8358-a1cd094974a6&gt; &lt;http://example.com/base&gt; &lt;http://www.example.org/&gt; .
  *   &lt;urn:uuid:b7ac3fcc-4d86-4d28-8358-a1cd094974a6&gt; &lt;http://example.com/sourceFile&gt; "/tmp/file.ttl" .
  * </pre>
- *
  */
 public class DummyRDFParserBuilder extends AbstractRDFParser<DummyRDFParserBuilder> {
 
