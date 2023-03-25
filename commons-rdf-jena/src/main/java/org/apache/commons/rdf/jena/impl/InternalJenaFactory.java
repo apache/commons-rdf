@@ -55,7 +55,6 @@ import org.apache.jena.system.JenaSystem;
  * For the purpose of blank node identity, some of these methods require a
  * {@link UUID} to use as a salt. See {@link BlankNode#uniqueReference()} for
  * details.
- *
  */
 public abstract class InternalJenaFactory {
 

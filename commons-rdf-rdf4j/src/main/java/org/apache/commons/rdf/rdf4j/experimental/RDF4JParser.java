@@ -54,7 +54,6 @@ import org.eclipse.rdf4j.rio.helpers.AbstractRDFHandler;
  * {@link RDFSyntax#RDFXML}, {@link RDFSyntax#TRIG} and {@link RDFSyntax#TURTLE}
  * - additional syntaxes can be supported by including the corresponding
  * <em>rdf4j-rio-*</em> module on the classpath.
- *
  */
 public class RDF4JParser extends AbstractRDFParser<RDF4JParser> {
 

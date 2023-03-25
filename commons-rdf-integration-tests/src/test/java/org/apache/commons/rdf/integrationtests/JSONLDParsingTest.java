@@ -65,7 +65,6 @@ import com.github.jsonldjava.utils.JsonUtils;
  * ensures that the versions of HTTPClient is compatible with JSONLD-Java
  * (however it does not check that it is compatible with Jena and
  * RDF4J's external fetching of RDF documents).
- *
  */
 public class JSONLDParsingTest {
 

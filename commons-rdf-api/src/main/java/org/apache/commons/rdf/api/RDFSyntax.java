@@ -34,7 +34,6 @@ import java.util.Set;
  * An enumeration of the official RDF 1.1 syntaxes is available in
  * {@link W3CRDFSyntax} - for convenience they are also accessible
  * as constants here, e.g. <code>RDFSyntax.JSONLD</code>.
- *
  */
 public interface RDFSyntax {
 

@@ -33,6 +33,5 @@
  * <p>
  * The {@link org.apache.commons.rdf.simple.Types} class provide constant
  * {@link org.apache.commons.rdf.api.IRI}s of the common RDF XML datatypes.
- *
  */
 package org.apache.commons.rdf.simple;

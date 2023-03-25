@@ -25,7 +25,6 @@ import org.eclipse.rdf4j.model.Value;
 
 /**
  * Marker interface for RDF4J implementations of RDFTerm.
- *
  */
 public interface RDF4JTerm extends RDFTerm {
 

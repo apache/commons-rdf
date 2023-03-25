@@ -46,7 +46,6 @@ import org.junit.rules.Timeout;
  * TIP: If the {@link #shutdownAndDelete()} take about 20 seconds this is a hint
  * that a {@link RepositoryConnection} or {@link RepositoryResult} was not
  * closed correctly.
- *
  */
 public class NativeStoreGraphTest extends AbstractGraphTest {
 

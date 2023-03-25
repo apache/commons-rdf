@@ -27,7 +27,6 @@ import org.eclipse.rdf4j.model.Resource;
  * <p>
  * The underlying RDF4J {@link org.eclipse.rdf4j.model.Resource} instance can be
  * retrieved with {@link #asValue()}.
- *
  */
 public interface RDF4JBlankNodeOrIRI extends RDF4JTerm, BlankNodeOrIRI {
 

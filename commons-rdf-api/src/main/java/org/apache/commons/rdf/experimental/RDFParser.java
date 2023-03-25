@@ -80,7 +80,6 @@ import org.apache.commons.rdf.api.Triple;
  * new ExampleRDFParserBuilder().source(Paths.get("/tmp/graph.ttl")).contentType(RDFSyntax.TURTLE).target(g1).parse()
  *         .get(30, TimeUnit.Seconds);
  * </pre>
- *
  */
 public interface RDFParser {
 

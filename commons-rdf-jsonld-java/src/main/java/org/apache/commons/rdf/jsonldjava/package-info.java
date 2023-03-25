@@ -22,6 +22,5 @@
  * @see org.apache.commons.rdf.jsonldjava.JsonLdGraph
  * @see org.apache.commons.rdf.jsonldjava.JsonLdUnionGraph
  * @see org.apache.commons.rdf.jsonldjava.JsonLdDataset
- *
  */
 package org.apache.commons.rdf.jsonldjava;

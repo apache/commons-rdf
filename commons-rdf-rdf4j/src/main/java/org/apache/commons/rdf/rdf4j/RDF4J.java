@@ -99,7 +99,6 @@ import org.eclipse.rdf4j.sail.memory.MemoryStore;
  * internally.
  *
  * @see RDF
- *
  */
 @SuppressWarnings("PMD.UnnecessaryFullyQualifiedName") // we use fully-qualified names for clarity
 public final class RDF4J implements RDF {
