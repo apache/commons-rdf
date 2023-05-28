@@ -61,7 +61,7 @@ public interface JsonLdGraphLike<T extends TripleLike> extends GraphLike<T> {
 abstract class AbstractJsonLdGraphLike<T extends TripleLike> implements JsonLdGraphLike<T> {
 
     /**
-     * Used by {@link #bnodePrefix()} to get a unique UUID per JVM run
+     * Used by {@link #bnodePrefix} to get a unique UUID per JVM run
      */
     private static final UUID SALT = UUID.randomUUID();
 
@@ -159,8 +159,8 @@ abstract class AbstractJsonLdGraphLike<T extends TripleLike> implements JsonLdGr
      * {@link org.apache.commons.rdf.api.Quad}
      *
      *
-     * @see JsonLdRDF#asTriple(Quad)
-     * @see JsonLdRDF#asQuad(Quad)
+     * @see JsonLdRDF#asTriple(RDFDataset.Quad)
+     * @see JsonLdRDF#asQuad(RDFDataset.Quad)
      * @param jsonldQuad
      *            jsonld quad to convert
      * @return converted {@link TripleLike}
