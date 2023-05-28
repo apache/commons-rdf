@@ -210,14 +210,10 @@ abstract class AbstractJsonLdGraphLike<T extends TripleLike> implements JsonLdGr
                     // Less efficient wrapper to a Commons RDF Literal so
                     // we can use our RDF 1.1-compliant .equals()
                     final RDFTerm otherObj = factory.asRDFTerm(q.getObject());
-                    if (! (object.equals(otherObj))) {
-                        return false;
-                    }
+                    return object.equals(otherObj);
                 } else {
                     // JSONLD-Java's .compareTo can handle IRI, BlankNode and type-mismatch
-                    if (objectNode.get().compareTo(q.getObject()) != 0) {
-                        return false;
-                    }
+                    return objectNode.get().compareTo(q.getObject()) == 0;
                 }
             }
             // All patterns checked, must be good!
