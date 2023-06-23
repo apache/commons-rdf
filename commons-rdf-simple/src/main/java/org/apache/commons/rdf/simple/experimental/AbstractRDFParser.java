@@ -223,7 +223,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
         try {
             return (T) super.clone();
         } catch (final CloneNotSupportedException e) {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 
