@@ -274,7 +274,7 @@ public abstract class AbstractRDFTest {
             }
             @Override
             public boolean equals(final Object obj) {
-                throw new RuntimeException("Wrong way comparison of literal");
+                throw new UnsupportedOperationException("Wrong way comparison of literal");
             }
         };
 
