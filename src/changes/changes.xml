@@ -29,6 +29,9 @@
         <action dev="ggregory" type="fix" due-to="Gary Gregory">
             Fix Java 17 build.
         </action>
+        <action type="fix" dev="ggregory" due-to="step-security-bot, Gary Gregory">
+            [StepSecurity] ci: Harden GitHub Actions #137.
+        </action>
         <!-- UPDATE -->
         <action type="update" dev="ggregory" due-to="Gary Gregory">
             Bump actions/cache from 2.1.4 to 3.0.11 #77, #97.
