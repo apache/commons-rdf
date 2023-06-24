@@ -18,18 +18,18 @@
 package org.apache.commons.rdf.rdf4j;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.util.Collections;
 import java.util.Set;
 
+import org.apache.commons.io.function.Uncheck;
 import org.apache.commons.rdf.api.AbstractGraphTest;
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.api.Quad;
-import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.RDF;
+import org.apache.commons.rdf.api.RDFTerm;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryResult;
 import org.eclipse.rdf4j.repository.sail.SailRepository;
@@ -124,11 +124,7 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
 
     public synchronized SailRepository getRepository() {
         if (repository == null) {
-            try {
-                createRepository();
-            } catch (final IOException e) {
-                throw new UncheckedIOException(e);
-            }
+            Uncheck.run(() -> createRepository());
         }
         return repository;
     }
