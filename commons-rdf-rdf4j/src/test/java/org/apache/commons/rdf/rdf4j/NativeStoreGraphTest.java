@@ -124,7 +124,7 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
 
     public synchronized SailRepository getRepository() {
         if (repository == null) {
-            Uncheck.run(() -> createRepository());
+            Uncheck.run(this::createRepository);
         }
         return repository;
     }
