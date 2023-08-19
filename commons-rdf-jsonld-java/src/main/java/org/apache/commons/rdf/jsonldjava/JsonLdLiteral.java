@@ -30,7 +30,7 @@ import com.github.jsonldjava.core.RDFDataset.Node;
 public interface JsonLdLiteral extends JsonLdTerm, Literal {
 }
 
-class JsonLdLiteralImpl extends JsonLdTermImpl implements JsonLdLiteral {
+class JsonLdLiteralImpl extends AbstractJsonLdTermImpl implements JsonLdLiteral {
 
     JsonLdLiteralImpl(final Node node) {
         super(node);

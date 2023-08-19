@@ -25,7 +25,7 @@ import com.github.jsonldjava.core.RDFDataset.Node;
 public interface JsonLdIRI extends JsonLdTerm, IRI {
 }
 
-final class JsonLdIRIImpl extends JsonLdTermImpl implements JsonLdIRI {
+final class JsonLdIRIImpl extends AbstractJsonLdTermImpl implements JsonLdIRI {
 
     JsonLdIRIImpl(final Node node) {
         super(node);

@@ -24,7 +24,7 @@ import com.github.jsonldjava.core.RDFDataset.Node;
 public interface JsonLdBlankNode extends JsonLdTerm, BlankNode {
 }
 
-final class JsonLdBlankNodeImpl extends JsonLdTermImpl implements JsonLdBlankNode {
+final class JsonLdBlankNodeImpl extends AbstractJsonLdTermImpl implements JsonLdBlankNode {
     private final String blankNodePrefix;
 
     JsonLdBlankNodeImpl(final Node node, final String blankNodePrefix) {
