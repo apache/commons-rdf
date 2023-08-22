@@ -297,11 +297,11 @@ public final class RDF4J implements RDF {
      * @return A {@link RDF4JBlankNodeOrIRI} that corresponds to the RDF4J Resource
      */
     public RDF4JBlankNodeOrIRI asRDFTerm(final org.eclipse.rdf4j.model.Resource value) {
-        if(value instanceof IRI){
-            return asRDFTerm((IRI)value);
+        if (value instanceof IRI) {
+            return asRDFTerm((IRI) value);
         }
-        if (value instanceof BNode){
-            return asRDFTerm((BNode)value);
+        if (value instanceof BNode) {
+            return asRDFTerm((BNode) value);
         }
         throw new IllegalArgumentException("Value is not a BNode or IRI: " + value.getClass());
     }
