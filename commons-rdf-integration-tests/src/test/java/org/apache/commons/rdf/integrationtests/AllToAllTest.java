@@ -48,8 +48,8 @@ public class AllToAllTest {
     private final RDF graphFactory;
 
     public AllToAllTest(final Class<? extends RDF> from, final Class<? extends RDF> to)
-            throws InstantiationException, IllegalAccessException {
-        this.nodeFactory = from.newInstance();
+            throws ReflectiveOperationException {
+        this.nodeFactory = from.getConstructor().newInstance();
         this.graphFactory = to.newInstance();
     }
 
