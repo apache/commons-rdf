@@ -42,7 +42,3 @@
  * adapted {@link org.apache.commons.rdf.rdf4j.RDF4JGraph}
  */
 package org.apache.commons.rdf.rdf4j;
-
-// Imports for Javadoc, do not remove
-import org.apache.commons.rdf.api.Dataset;
-import org.apache.commons.rdf.api.Graph;

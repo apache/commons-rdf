@@ -20,6 +20,7 @@ package org.apache.commons.rdf.rdf4j.impl;
 import java.util.UUID;
 
 import org.apache.commons.rdf.api.BlankNode;
+import org.apache.commons.rdf.rdf4j.RDF4J;
 import org.apache.commons.rdf.rdf4j.RDF4JBlankNode;
 import org.apache.commons.rdf.rdf4j.RDF4JDataset;
 import org.apache.commons.rdf.rdf4j.RDF4JGraph;
@@ -27,7 +28,6 @@ import org.apache.commons.rdf.rdf4j.RDF4JIRI;
 import org.apache.commons.rdf.rdf4j.RDF4JLiteral;
 import org.apache.commons.rdf.rdf4j.RDF4JQuad;
 import org.apache.commons.rdf.rdf4j.RDF4JTerm;
-import org.apache.commons.rdf.rdf4j.RDF4J;
 import org.apache.commons.rdf.rdf4j.RDF4JTriple;
 import org.eclipse.rdf4j.model.BNode;
 import org.eclipse.rdf4j.model.IRI;

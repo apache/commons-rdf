@@ -17,14 +17,14 @@
  */
 package org.apache.commons.rdf.simple;
 
+import java.util.Objects;
+import java.util.Optional;
+
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Quad;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.Triple;
-
-import java.util.Objects;
-import java.util.Optional;
 
 /**
  * A simple implementation of Quad.

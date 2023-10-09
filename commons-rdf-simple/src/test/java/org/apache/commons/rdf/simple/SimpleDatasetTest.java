@@ -17,7 +17,7 @@
  */
 package org.apache.commons.rdf.simple;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import org.apache.commons.rdf.api.AbstractDatasetTest;
 import org.apache.commons.rdf.api.RDF;

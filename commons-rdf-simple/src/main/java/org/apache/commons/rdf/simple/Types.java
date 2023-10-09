@@ -17,12 +17,12 @@
  */
 package org.apache.commons.rdf.simple;
 
-import org.apache.commons.rdf.api.IRI;
-
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Set;
+
+import org.apache.commons.rdf.api.IRI;
 
 /**
  * Types from the RDF and XML Schema vocabularies.

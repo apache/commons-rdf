@@ -17,7 +17,9 @@
  */
 package org.apache.commons.rdf.jena;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.apache.commons.rdf.api.BlankNode;
 import org.apache.commons.rdf.api.RDFTerm;

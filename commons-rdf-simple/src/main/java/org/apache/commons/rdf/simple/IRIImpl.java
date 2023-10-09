@@ -17,9 +17,9 @@
  */
 package org.apache.commons.rdf.simple;
 
-import org.apache.commons.rdf.api.IRI;
-
 import java.net.URI;
+
+import org.apache.commons.rdf.api.IRI;
 
 /**
  * A simple implementation of IRI.

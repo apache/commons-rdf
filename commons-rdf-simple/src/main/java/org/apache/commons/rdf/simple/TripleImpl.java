@@ -17,12 +17,12 @@
  */
 package org.apache.commons.rdf.simple;
 
+import java.util.Objects;
+
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.api.Triple;
-
-import java.util.Objects;
 
 /**
  * A simple implementation of Triple.

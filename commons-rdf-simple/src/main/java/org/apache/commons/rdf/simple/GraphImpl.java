@@ -17,14 +17,20 @@
  */
 package org.apache.commons.rdf.simple;
 
-import org.apache.commons.rdf.api.*;
-import org.apache.commons.rdf.simple.SimpleRDF.SimpleRDFTerm;
-
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.apache.commons.rdf.api.BlankNode;
+import org.apache.commons.rdf.api.BlankNodeOrIRI;
+import org.apache.commons.rdf.api.Graph;
+import org.apache.commons.rdf.api.IRI;
+import org.apache.commons.rdf.api.Literal;
+import org.apache.commons.rdf.api.RDFTerm;
+import org.apache.commons.rdf.api.Triple;
+import org.apache.commons.rdf.simple.SimpleRDF.SimpleRDFTerm;
 
 /**
  * A simple, memory-based implementation of Graph.

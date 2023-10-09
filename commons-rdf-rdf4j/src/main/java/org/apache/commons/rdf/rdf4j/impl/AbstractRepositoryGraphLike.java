@@ -21,8 +21,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.apache.commons.rdf.api.TripleLike;
-import org.apache.commons.rdf.rdf4j.RDF4JGraphLike;
 import org.apache.commons.rdf.rdf4j.RDF4J;
+import org.apache.commons.rdf.rdf4j.RDF4JGraphLike;
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.Statement;
 import org.eclipse.rdf4j.repository.Repository;
