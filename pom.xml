@@ -24,7 +24,7 @@
     <parent>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-parent</artifactId>
-        <version>58</version>
+        <version>64</version>
     </parent>
 
     <artifactId>commons-rdf-parent</artifactId>
@@ -72,6 +72,7 @@
         <slf4j.version>1.7.26</slf4j.version>
         <junit.version>4.13.2</junit.version>
         <skipAPICompatCheck>false</skipAPICompatCheck>
+        <moditect.skip>true</moditect.skip>
     </properties>
 
     <scm>
