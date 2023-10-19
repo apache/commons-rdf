@@ -135,12 +135,12 @@ public class RDF4JParser extends AbstractRDFParser<RDF4JParser> {
             // we'll always do it with our own input stream
             //
             // That means we may have to guess format by extensions:
-            final Optional<RDFFormat> formatByFilename = getSourceFile().map(Path::getFileName).map(Path::toString)
+            final Optional<RDFFormat> formatByFileName = getSourceFile().map(Path::getFileName).map(Path::toString)
                     .flatMap(Rio::getParserFormatForFileName);
             // TODO: for the excited.. what about the extension after following
             // symlinks?
 
-            final RDFFormat format = formatByMimeType.orElse(formatByFilename.orElse(null));
+            final RDFFormat format = formatByMimeType.orElse(formatByFileName.orElse(null));
             try (InputStream in = Files.newInputStream(getSourceFile().get())) {
                 loader.load(in, base, format, rdfHandler);
             }
