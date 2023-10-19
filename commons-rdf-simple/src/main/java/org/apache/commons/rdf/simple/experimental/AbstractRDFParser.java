@@ -511,10 +511,10 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
         if (fileName == null) {
             return Optional.empty();
         }
-        final String filenameStr = fileName.toString();
-        final int last = filenameStr.lastIndexOf(".");
+        final String fileNameStr = fileName.toString();
+        final int last = fileNameStr.lastIndexOf(".");
         if (last > -1) {
-            return Optional.of(filenameStr.substring(last));
+            return Optional.of(fileNameStr.substring(last));
         }
         return Optional.empty();
     }
