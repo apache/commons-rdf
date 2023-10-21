@@ -1,6 +1,6 @@
 # Apache Commons RDF
 
-[![GitHub Actions Status](https://github.com/apache/commons-rdf/workflows/Java%20CI/badge.svg)](https://github.com/apache/commons-rdf/actions)
+[![Java CI](https://github.com/apache/commons-rdf/actions/workflows/maven.yml/badge.svg)](https://github.com/apache/commons-rdf/actions/workflows/maven.yml)
 [![Coverage Status](https://codecov.io/gh/apache/commons-rdf/branch/master/graph/badge.svg?branch=master&service=github)]
 
 [Commons RDF](https://commons.apache.org/proper/commons-rdf/) aims to provide a common
