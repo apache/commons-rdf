@@ -206,13 +206,13 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
         return Optional.ofNullable(sourceIri);
     }
 
-    private RDF rdfTermFactory = null;
-    private RDFSyntax contentTypeSyntax = null;
-    private String contentType = null;
-    private IRI base = null;
-    private InputStream sourceInputStream = null;
-    private Path sourceFile = null;
-    private IRI sourceIri = null;
+    private RDF rdfTermFactory;
+    private RDFSyntax contentTypeSyntax;
+    private String contentType;
+    private IRI base;
+    private InputStream sourceInputStream;
+    private Path sourceFile;
+    private IRI sourceIri;
     private Consumer<Quad> target;
     private Dataset targetDataset;
     private Graph targetGraph;
