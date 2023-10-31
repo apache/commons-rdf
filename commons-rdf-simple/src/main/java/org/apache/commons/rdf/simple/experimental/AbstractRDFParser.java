@@ -68,7 +68,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     private static final RDF internalRdfTermFactory = new SimpleRDF();
 
     /**
-     * Get the set {@link RDF}, if any.
+     * Gets the set {@link RDF}, if any.
      *
      * @return The {@link RDF} to use, or {@link Optional#empty()} if it has not
      *         been set
@@ -78,7 +78,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     }
 
     /**
-     * Get the set content-type {@link RDFSyntax}, if any.
+     * Gets the set content-type {@link RDFSyntax}, if any.
      * <p>
      * If this is {@link Optional#isPresent()}, then {@link #getContentType()}
      * contains the value of {@link RDFSyntax#mediaType}.
@@ -91,7 +91,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     }
 
     /**
-     * Get the set content-type String, if any.
+     * Gets the set content-type String, if any.
      * <p>
      * If this is {@link Optional#isPresent()} and is recognized by
      * {@link RDFSyntax#byMediaType(String)}, then the corresponding
@@ -106,7 +106,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     }
 
     /**
-     * Get the target to consume parsed Quads.
+     * Gets the target to consume parsed Quads.
      * <p>
      * From the call to {@link #parseSynchronusly()}, this will be a
      * non-<code>null</code> value (as a target is a required setting).
@@ -120,7 +120,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     }
 
     /**
-     * Get the target dataset as set by {@link #target(Dataset)}.
+     * Gets the target dataset as set by {@link #target(Dataset)}.
      * <p>
      * The return value is {@link Optional#isPresent()} if and only if
      * {@link #target(Dataset)} has been set, meaning that the implementation
@@ -138,7 +138,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     }
 
     /**
-     * Get the target graph as set by {@link #target(Graph)}.
+     * Gets the target graph as set by {@link #target(Graph)}.
      * <p>
      * The return value is {@link Optional#isPresent()} if and only if
      * {@link #target(Graph)} has been set, meaning that the implementation may
@@ -156,7 +156,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     }
 
     /**
-     * Get the set base {@link IRI}, if present.
+     * Gets the set base {@link IRI}, if present.
      *
      * @return The base {@link IRI}, or {@link Optional#empty()} if it has not
      *         been set
@@ -166,7 +166,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     }
 
     /**
-     * Get the set source {@link InputStream}.
+     * Gets the set source {@link InputStream}.
      * <p>
      * If this is {@link Optional#isPresent()}, then {@link #getSourceFile()}
      * and {@link #getSourceIri()} are {@link Optional#empty()}.
@@ -179,7 +179,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     }
 
     /**
-     * Get the set source {@link Path}.
+     * Gets the set source {@link Path}.
      * <p>
      * If this is {@link Optional#isPresent()}, then
      * {@link #getSourceInputStream()} and {@link #getSourceIri()} are
@@ -193,7 +193,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     }
 
     /**
-     * Get the set source {@link Path}.
+     * Gets the set source {@link Path}.
      * <p>
      * If this is {@link Optional#isPresent()}, then
      * {@link #getSourceInputStream()} and {@link #getSourceInputStream()} are

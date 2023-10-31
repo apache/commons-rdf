@@ -317,7 +317,7 @@ public final class Types implements IRI, SimpleRDF.SimpleRDFTerm {
     }
 
     /**
-     * Get an immutable set of the IRIs used by the RDF-1.1 specification to
+     * Gets an immutable set of the IRIs used by the RDF-1.1 specification to
      * define types, from the RDF and XML Schema vocabularies.
      *
      * @return A {@link Set} containing all of the IRIs in this collection.
@@ -327,7 +327,7 @@ public final class Types implements IRI, SimpleRDF.SimpleRDFTerm {
     }
 
     /**
-     * Get the IRI from this collection if it is present, or return
+     * Gets the IRI from this collection if it is present, or return
      * {@link Optional#empty()} otherwise.
      *
      * @param nextIRI

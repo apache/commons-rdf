@@ -104,7 +104,7 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
     }
 
     /**
-     * Get the default graph of this dataset.
+     * Gets the default graph of this dataset.
      * <p>
      * The {@link Triple}s of the default graph are equivalent to the
      * {@link Quad}s in this Dataset which has the {@link Quad#getGraphName()}
@@ -121,7 +121,7 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
     Graph getGraph();
 
     /**
-     * Get a named graph in this dataset.
+     * Gets a named graph in this dataset.
      * <p>
      * The {@link Triple}s of the named graph are equivalent to the Quads of
      * this Dataset which has the {@link Quad#getGraphName()} equal to the
@@ -145,7 +145,7 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
     Optional<Graph> getGraph(BlankNodeOrIRI graphName);
 
     /**
-     * Get the graph names in this Dataset.
+     * Gets the graph names in this Dataset.
      * <p>
      * The set of returned graph names is equivalent to the set of unique
      * {@link Quad#getGraphName()} of all the {@link #stream()} of this dataset
@@ -219,7 +219,7 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
     long size();
 
     /**
-     * Get all quads contained by the dataset.<br>
+     * Gets all quads contained by the dataset.<br>
      * <p>
      * The iteration does not contain any duplicate quads, as determined by the
      * {@link Quad#equals(Object)} method for each {@link Quad}.
@@ -237,7 +237,7 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
     Stream<? extends Quad> stream();
 
     /**
-     * Get all quads contained by the dataset matched with the pattern.
+     * Gets all quads contained by the dataset matched with the pattern.
      * <p>
      * The iteration does not contain any duplicate quads, as determined by the
      * {@link Quad#equals(Object)} method for each {@link Quad}.
@@ -265,7 +265,7 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
             RDFTerm object);
 
     /**
-     * Get an Iterable for iterating over all quads in the dataset.
+     * Gets an Iterable for iterating over all quads in the dataset.
      * <p>
      * This method is meant to be used with a Java for-each loop, e.g.:
      *
@@ -306,7 +306,7 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
     }
 
     /**
-     * Get an Iterable for iterating over the quads in the dataset that match
+     * Gets an Iterable for iterating over the quads in the dataset that match
      * the pattern.
      * <p>
      * This method is meant to be used with a Java for-each loop, e.g.:
