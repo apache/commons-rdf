@@ -178,7 +178,7 @@ public class RDF4JParser extends AbstractRDFParser<RDF4JParser> {
     }
 
     /**
-     * Set an RDF4J {@link ParserConfig} to use
+     * Sets an RDF4J {@link ParserConfig} to use
      *
      * @param parserConfig
      *            Parser configuration

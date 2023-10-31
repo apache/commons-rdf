@@ -130,7 +130,7 @@ public interface RDFSyntax {
     String mediaType();
 
     /**
-     * Set of <a href="https://tools.ietf.org/html/rfc2046">IANA media types</a> that
+     * Sets of <a href="https://tools.ietf.org/html/rfc2046">IANA media types</a> that
      * covers this RDF syntax, including any non-official media types.
      * <p>
      * The media type can be used as part of <code>Content-Type</code> and
@@ -158,7 +158,7 @@ public interface RDFSyntax {
     String fileExtension();
 
     /**
-     * Set of file extensions for this RDF syntax, including any non-official extensions.
+     * Sets of file extensions for this RDF syntax, including any non-official extensions.
      * <p>
      * The file extension includes the leading period, e.g. <code>.jsonld</code>
      * <p>
