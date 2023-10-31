@@ -77,12 +77,12 @@ import org.eclipse.rdf4j.sail.memory.MemoryStore;
  * convert a {@link Quad}.
  * <p>
  * To convert any {@link Triple} or {@link Quad} to RDF4J {@link Statement},
- * use {@link #asStatement(TripleLike)}. This recognises previously converted
+ * use {@link #asStatement(TripleLike)}. This recognizes previously converted
  * {@link RDF4JTriple}s and {@link RDF4JQuad}s without re-converting their
  * {@link RDF4JTripleLike#asStatement()}.
  * <p>
  * Likewise, {@link #asValue(RDFTerm)} can be used to convert any Commons RDF
- * {@link RDFTerm} to a corresponding RDF4J {@link Value}. This recognises
+ * {@link RDFTerm} to a corresponding RDF4J {@link Value}. This recognizes
  * previously converted {@link RDF4JTerm}s without re-converting their
  * {@link RDF4JTerm#asValue()}.
  * <p>
