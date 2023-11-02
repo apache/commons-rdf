@@ -114,7 +114,7 @@ add this [snapshot repository](https://github.com/apache/commons-rdf#snapshot-re
 </repositories>
 ```
 
-As Commons RDF requires Java 8 or later, you will also need:
+As Commons RDF requires Java 8 or above, you will also need:
 
 ```xml
 <properties>
