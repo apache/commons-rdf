@@ -53,21 +53,6 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
 
         RDF4J rdf4jFactory = new RDF4J(getRepository().getValueFactory());
 
-        @Override
-        public RDF4JGraph createGraph() {
-            // We re-use the repository connection, but use a different context
-            // every time
-            final Set<RDF4JBlankNode> context = Collections.singleton(rdf4jFactory.createBlankNode());
-            return rdf4jFactory.asGraph(getRepository(), context);
-        }
-
-        @Override
-        public Dataset createDataset() {
-            throw new UnsupportedOperationException("Can't create more than one Dataset in this test");
-            // ...as the below would re-use the same repository:
-            // return rdf4jFactory.asRDFTermDataset(getRepository());
-        }
-
         // Delegate methods
         @Override
         public RDF4JBlankNode createBlankNode() {
@@ -77,6 +62,21 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
         @Override
         public RDF4JBlankNode createBlankNode(final String name) {
             return rdf4jFactory.createBlankNode(name);
+        }
+
+        @Override
+        public Dataset createDataset() {
+            throw new UnsupportedOperationException("Can't create more than one Dataset in this test");
+            // ...as the below would re-use the same repository:
+            // return rdf4jFactory.asRDFTermDataset(getRepository());
+        }
+
+        @Override
+        public RDF4JGraph createGraph() {
+            // We re-use the repository connection, but use a different context
+            // every time
+            final Set<RDF4JBlankNode> context = Collections.singleton(rdf4jFactory.createBlankNode());
+            return rdf4jFactory.asGraph(getRepository(), context);
         }
 
         @Override
@@ -100,14 +100,14 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
         }
 
         @Override
-        public RDF4JTriple createTriple(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
-            return rdf4jFactory.createTriple(subject, predicate, object);
-        }
-
-        @Override
         public Quad createQuad(final BlankNodeOrIRI graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object)
                 throws IllegalArgumentException {
             return rdf4jFactory.createQuad(graphName, subject, predicate, object);
+        }
+
+        @Override
+        public RDF4JTriple createTriple(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
+            return rdf4jFactory.createTriple(subject, predicate, object);
         }
     }
 
@@ -115,6 +115,18 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
     public TemporaryFolder tempDir = new TemporaryFolder();
 
     private SailRepository repository;
+
+    @Rule
+    /**
+     * A timeout of more than 15 seconds pr test indicates typically that
+     * shutdownAndDelete failed.
+     */
+    public Timeout globalTimeout = Timeout.seconds(15);
+
+    @Override
+    public RDF createFactory() {
+        return new NativeStoreRDF();
+    }
 
     public void createRepository() throws IOException {
         final Sail sail = new NativeStore(tempDir.newFolder());
@@ -127,28 +139,6 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
             Uncheck.run(this::createRepository);
         }
         return repository;
-    }
-
-    @Rule
-    /**
-     * A timeout of more than 15 seconds pr test indicates typically that
-     * shutdownAndDelete failed.
-     */
-    public Timeout globalTimeout = Timeout.seconds(15);
-
-    @After
-    public void shutdownAndDelete() {
-        // must shutdown before we delete
-        if (repository != null) {
-            System.out.print("Shutting down rdf4j repository " + repository + "...");
-            // NOTE:
-            // If this takes about 20 seconds it means the code forgot to close
-            // a
-            // RepositoryConnection or RespositoryResult
-            // e.g. missing a try-with-resources block
-            repository.shutDown();
-            System.out.println("OK");
-        }
     }
 
     // private static void deleteAll(Path dir) throws IOException {
@@ -169,9 +159,19 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
     // });
     // }
 
-    @Override
-    public RDF createFactory() {
-        return new NativeStoreRDF();
+    @After
+    public void shutdownAndDelete() {
+        // must shutdown before we delete
+        if (repository != null) {
+            System.out.print("Shutting down rdf4j repository " + repository + "...");
+            // NOTE:
+            // If this takes about 20 seconds it means the code forgot to close
+            // a
+            // RepositoryConnection or RespositoryResult
+            // e.g. missing a try-with-resources block
+            repository.shutDown();
+            System.out.println("OK");
+        }
     }
 
 }

@@ -50,15 +50,23 @@ public class JsonLdParserBuilderTest {
     IRI other = factory.createIRI("http://example.com/other");
     IRI graph = factory.createIRI("http://example.com/graph");
 
-    @Test
-    public void testParseByUrl() throws Exception {
-        final URL url = getClass().getResource(TEST_JSONLD);
-        assertNotNull("Test resource not found: " + TEST_JSONLD, url);
-        final IRI iri = factory.createIRI(url.toString());
-        try (final Graph g = factory.createGraph()) {
-            new JsonLdParser().contentType(RDFSyntax.JSONLD).source(iri).target(g).parse().get(10, TimeUnit.SECONDS);
-            checkGraph(g);
-        }
+    private void checkGraph(final Graph g) {
+        assertTrue(g.contains(test, type, Type));
+        // Should not include statements from the named graph
+
+        assertEquals(1, g.stream(test, pred1, null).count());
+        assertEquals(1, g.stream(test, pred2, null).count());
+
+        assertEquals("Hello", ((Literal) g.stream(test, pred1, null).findFirst().get().getObject()).getLexicalForm());
+        assertTrue(g.contains(test, pred2, other));
+
+        assertEquals("1337", ((Literal) g.stream(test, pred3, null).findFirst().get().getObject()).getLexicalForm());
+        assertEquals(Types.XSD_INTEGER,
+                ((Literal) g.stream(test, pred3, null).findFirst().get().getObject()).getDatatype());
+
+        // While the named graph 'graph' is not included, the relationship
+        // to that @id is included.
+        assertTrue(g.contains(test, pred4, graph));
     }
 
     @Test
@@ -87,22 +95,14 @@ public class JsonLdParserBuilderTest {
         }
     }
 
-    private void checkGraph(final Graph g) {
-        assertTrue(g.contains(test, type, Type));
-        // Should not include statements from the named graph
-
-        assertEquals(1, g.stream(test, pred1, null).count());
-        assertEquals(1, g.stream(test, pred2, null).count());
-
-        assertEquals("Hello", ((Literal) g.stream(test, pred1, null).findFirst().get().getObject()).getLexicalForm());
-        assertTrue(g.contains(test, pred2, other));
-
-        assertEquals("1337", ((Literal) g.stream(test, pred3, null).findFirst().get().getObject()).getLexicalForm());
-        assertEquals(Types.XSD_INTEGER,
-                ((Literal) g.stream(test, pred3, null).findFirst().get().getObject()).getDatatype());
-
-        // While the named graph 'graph' is not included, the relationship
-        // to that @id is included.
-        assertTrue(g.contains(test, pred4, graph));
+    @Test
+    public void testParseByUrl() throws Exception {
+        final URL url = getClass().getResource(TEST_JSONLD);
+        assertNotNull("Test resource not found: " + TEST_JSONLD, url);
+        final IRI iri = factory.createIRI(url.toString());
+        try (final Graph g = factory.createGraph()) {
+            new JsonLdParser().contentType(RDFSyntax.JSONLD).source(iri).target(g).parse().get(10, TimeUnit.SECONDS);
+            checkGraph(g);
+        }
     }
 }

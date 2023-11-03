@@ -26,20 +26,20 @@ class DummyGraph implements Graph {
     boolean filteredStreamCalled;
 
     @Override
-    public void add(final Triple triple) {
-        if (! contains(triple)) {
-            throw new IllegalStateException("DummyGraph can't be modified");
-        }
-    }
-    @Override
     public void add(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         if (! contains(subject, predicate, object)) {
             throw new IllegalStateException("DummyGraph can't be modified");
         }
     }
     @Override
-    public boolean contains(final Triple triple) {
-        return triple.equals(new DummyTriple());
+    public void add(final Triple triple) {
+        if (! contains(triple)) {
+            throw new IllegalStateException("DummyGraph can't be modified");
+        }
+    }
+    @Override
+    public void clear() {
+        throw new IllegalStateException("DummyGraph can't be modified");
     }
     @Override
     public boolean contains(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
@@ -48,10 +48,8 @@ class DummyGraph implements Graph {
                 (object == null || object.equals(new DummyIRI(3)));
     }
     @Override
-    public void remove(final Triple triple) {
-        if (contains(triple)) {
-            throw new IllegalStateException("DummyGraph can't be modified");
-        }
+    public boolean contains(final Triple triple) {
+        return triple.equals(new DummyTriple());
     }
     @Override
     public void remove(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
@@ -60,8 +58,10 @@ class DummyGraph implements Graph {
         }
     }
     @Override
-    public void clear() {
-        throw new IllegalStateException("DummyGraph can't be modified");
+    public void remove(final Triple triple) {
+        if (contains(triple)) {
+            throw new IllegalStateException("DummyGraph can't be modified");
+        }
     }
     @Override
     public long size() {

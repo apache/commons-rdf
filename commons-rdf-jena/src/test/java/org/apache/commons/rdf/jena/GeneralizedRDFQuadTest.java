@@ -33,6 +33,20 @@ public class GeneralizedRDFQuadTest {
     private final JenaRDF jena = new JenaRDF();
 
     @Test
+    public void testAsGeneralizedQuad() throws Exception {
+        final Node s = NodeFactory.createLiteral("Hello");
+        final Node p = NodeFactory.createBlankNode();
+        final Node o = NodeFactory.createURI("http://example.com/ex");
+        final Node g = Quad.defaultGraphIRI;
+        final Quad jq = Quad.create(g, s, p, o);
+        final JenaQuadLike<RDFTerm> q = jena.asGeneralizedQuad(jq);
+        assertEquals(jena.createLiteral("Hello"), q.getSubject());
+        assertEquals(jena.asRDFTerm(p), q.getPredicate());
+        assertEquals(jena.createIRI("http://example.com/ex"), q.getObject());
+        assertFalse(q.getGraphName().isPresent());
+    }
+
+    @Test
     public void testBnodeProperty() throws Exception {
         final BlankNode b1 = jena.createBlankNode("b1");
         final JenaIRI ex1 = jena.createIRI("http://example.com/ex1");
@@ -45,6 +59,22 @@ public class GeneralizedRDFQuadTest {
         assertEquals(b1, q.getPredicate()); // it's a bnode!
         assertEquals(ex3, q.getGraphName().get());
         assertTrue(q.asJenaQuad().getPredicate().isBlank());
+    }
+
+
+    @Test
+    public void testLiteralGraph() throws Exception {
+        final JenaIRI ex1 = jena.createIRI("http://example.com/ex1");
+        final JenaIRI ex2 = jena.createIRI("http://example.com/ex2");
+        final JenaIRI ex3 = jena.createIRI("http://example.com/ex3");
+        final JenaLiteral lit = jena.createLiteral("Hello");
+
+        final JenaGeneralizedQuadLike q = jena.createGeneralizedQuad(ex1, ex2, ex3, lit);
+        assertEquals(ex1, q.getSubject());
+        assertEquals(ex2, q.getPredicate());
+        assertEquals(ex3, q.getObject());
+        assertEquals(lit, q.getGraphName().get()); // it's a literal!
+        assertTrue(q.asJenaQuad().getGraph().isLiteral());
     }
 
     @Test
@@ -61,7 +91,6 @@ public class GeneralizedRDFQuadTest {
         assertEquals(ex3, q.getGraphName().get());
         assertTrue(q.asJenaQuad().getPredicate().isLiteral());
     }
-
 
     @Test
     public void testLiteralSubject() throws Exception {
@@ -93,35 +122,6 @@ public class GeneralizedRDFQuadTest {
         assertTrue(q.asJenaQuad().getSubject().isLiteral());
         assertFalse(q.getGraphName().isPresent());
         assertTrue(q.asJenaQuad().isDefaultGraph());
-    }
-
-    @Test
-    public void testAsGeneralizedQuad() throws Exception {
-        final Node s = NodeFactory.createLiteral("Hello");
-        final Node p = NodeFactory.createBlankNode();
-        final Node o = NodeFactory.createURI("http://example.com/ex");
-        final Node g = Quad.defaultGraphIRI;
-        final Quad jq = Quad.create(g, s, p, o);
-        final JenaQuadLike<RDFTerm> q = jena.asGeneralizedQuad(jq);
-        assertEquals(jena.createLiteral("Hello"), q.getSubject());
-        assertEquals(jena.asRDFTerm(p), q.getPredicate());
-        assertEquals(jena.createIRI("http://example.com/ex"), q.getObject());
-        assertFalse(q.getGraphName().isPresent());
-    }
-
-    @Test
-    public void testLiteralGraph() throws Exception {
-        final JenaIRI ex1 = jena.createIRI("http://example.com/ex1");
-        final JenaIRI ex2 = jena.createIRI("http://example.com/ex2");
-        final JenaIRI ex3 = jena.createIRI("http://example.com/ex3");
-        final JenaLiteral lit = jena.createLiteral("Hello");
-
-        final JenaGeneralizedQuadLike q = jena.createGeneralizedQuad(ex1, ex2, ex3, lit);
-        assertEquals(ex1, q.getSubject());
-        assertEquals(ex2, q.getPredicate());
-        assertEquals(ex3, q.getObject());
-        assertEquals(lit, q.getGraphName().get()); // it's a literal!
-        assertTrue(q.asJenaQuad().getGraph().isLiteral());
     }
 
 

@@ -26,6 +26,16 @@ import org.junit.Test;
 public class DummyGraphTest {
     Graph graph = new DummyGraph();
 
+    @Test(expected = IllegalStateException.class)
+    public void clearNotSupported() throws Exception {
+        graph.clear();
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void remove() throws Exception {
+        graph.remove(new DummyTriple());
+    }
+
     @Test
     public void testAdd() throws Exception {
         graph.add(new DummyTriple());
@@ -46,16 +56,6 @@ public class DummyGraphTest {
         assertTrue(graph.contains(null, null, null));
         assertTrue(graph.contains(new DummyIRI(1), new DummyIRI(2), new DummyIRI(3)));
         assertFalse(graph.contains(new DummyIRI(0), new DummyIRI(0), new DummyIRI(0)));
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void clearNotSupported() throws Exception {
-        graph.clear();
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void remove() throws Exception {
-        graph.remove(new DummyTriple());
     }
 
     @Test

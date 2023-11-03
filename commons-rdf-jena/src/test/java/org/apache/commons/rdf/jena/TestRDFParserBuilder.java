@@ -39,17 +39,17 @@ public class TestRDFParserBuilder {
 
     private Path turtleFile;
 
-    @Before
-    public void preparePath() throws IOException {
-        turtleFile = Files.createTempFile("commonsrdf", "test.ttl");
-        Files.copy(getClass().getResourceAsStream("/D.ttl"), turtleFile, StandardCopyOption.REPLACE_EXISTING);
-    }
-
     @After
     public void deletePath() throws IOException {
         if (turtleFile != null) {
             Files.deleteIfExists(turtleFile);
         }
+    }
+
+    @Before
+    public void preparePath() throws IOException {
+        turtleFile = Files.createTempFile("commonsrdf", "test.ttl");
+        Files.copy(getClass().getResourceAsStream("/D.ttl"), turtleFile, StandardCopyOption.REPLACE_EXISTING);
     }
 
     @Test

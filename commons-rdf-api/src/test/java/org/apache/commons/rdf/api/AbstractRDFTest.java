@@ -43,6 +43,13 @@ public abstract class AbstractRDFTest {
 
     private RDF factory;
 
+    private void assertEqualsBothWays(final Object a, final Object b) {
+        assertEquals(a, b);
+        assertEquals(b, a);
+        // hashCode must match as well
+        assertEquals(a.hashCode(), b.hashCode());
+    }
+
     /**
      *
      * This method must be overridden by the implementing test to provide a
@@ -67,17 +74,17 @@ public abstract class AbstractRDFTest {
     }
 
     @Test
+    public void testCreateBlankNodeIdentifier() throws Exception {
+        factory.createBlankNode("example1");
+    }
+
+    @Test
     public void testCreateBlankNodeIdentifierEmpty() throws Exception {
         try {
             factory.createBlankNode("");
         } catch (final IllegalArgumentException e) {
             // Expected exception
         }
-    }
-
-    @Test
-    public void testCreateBlankNodeIdentifier() throws Exception {
-        factory.createBlankNode("example1");
     }
 
     @Test
@@ -187,23 +194,6 @@ public abstract class AbstractRDFTest {
         assertEquals("\"Example\"@en", example.ntriplesString());
     }
 
-    @Test
-    public void testCreateLiteralLangISO693_3() throws Exception {
-        // see https://issues.apache.org/jira/browse/JENA-827
-        final Literal vls = factory.createLiteral("Herbert Van de Sompel", "vls"); // JENA-827
-
-        assertEquals("vls", vls.getLanguageTag().get());
-        assertEquals("http://www.w3.org/1999/02/22-rdf-syntax-ns#langString", vls.getDatatype().getIRIString());
-        assertEquals("\"Herbert Van de Sompel\"@vls", vls.ntriplesString());
-    }
-
-
-    private void assertEqualsBothWays(final Object a, final Object b) {
-        assertEquals(a, b);
-        assertEquals(b, a);
-        // hashCode must match as well
-        assertEquals(a.hashCode(), b.hashCode());
-    }
 
     @Test
     public void testCreateLiteralLangCaseInsensitive() throws Exception {
@@ -247,45 +237,6 @@ public abstract class AbstractRDFTest {
         assertEquals(mixed, mixed);
         // Note that assertEqualsBothWays also checks
         // that .hashCode() matches
-    }
-
-    @Test
-    public void testCreateLiteralLangCaseInsensitiveOther() throws Exception {
-        // COMMONSRDF-51: Ensure the Literal is using case insensitive
-        // comparison against any literal implementation
-        // which may not have done .toLowerString() in their constructor
-        final Literal upper = factory.createLiteral("Hello", "EN-GB");
-        final Literal lower = factory.createLiteral("Hello", "en-gb");
-        final Literal mixed = factory.createLiteral("Hello", "en-GB");
-
-        final Literal otherLiteral = new Literal() {
-            @Override
-            public String ntriplesString() {
-                return "Hello@eN-Gb";
-            }
-            @Override
-            public String getLexicalForm() {
-                return "Hello";
-            }
-            @Override
-            public Optional<String> getLanguageTag() {
-                return Optional.of("eN-Gb");
-            }
-            @Override
-            public IRI getDatatype() {
-                return factory.createIRI("http://www.w3.org/1999/02/22-rdf-syntax-ns#langString");
-            }
-            @Override
-            public boolean equals(final Object obj) {
-                throw new UnsupportedOperationException("Wrong way comparison of literal");
-            }
-        };
-
-        // NOTE: Our fake Literal can't do .equals() or .hashCode(),
-        // so don't check the wrong way around!
-        assertEquals(mixed, otherLiteral);
-        assertEquals(lower, otherLiteral);
-        assertEquals(upper, otherLiteral);
     }
 
     @Test
@@ -338,6 +289,55 @@ public abstract class AbstractRDFTest {
         } finally {
             Locale.setDefault(defaultLocale);
         }
+    }
+
+    @Test
+    public void testCreateLiteralLangCaseInsensitiveOther() throws Exception {
+        // COMMONSRDF-51: Ensure the Literal is using case insensitive
+        // comparison against any literal implementation
+        // which may not have done .toLowerString() in their constructor
+        final Literal upper = factory.createLiteral("Hello", "EN-GB");
+        final Literal lower = factory.createLiteral("Hello", "en-gb");
+        final Literal mixed = factory.createLiteral("Hello", "en-GB");
+
+        final Literal otherLiteral = new Literal() {
+            @Override
+            public boolean equals(final Object obj) {
+                throw new UnsupportedOperationException("Wrong way comparison of literal");
+            }
+            @Override
+            public IRI getDatatype() {
+                return factory.createIRI("http://www.w3.org/1999/02/22-rdf-syntax-ns#langString");
+            }
+            @Override
+            public Optional<String> getLanguageTag() {
+                return Optional.of("eN-Gb");
+            }
+            @Override
+            public String getLexicalForm() {
+                return "Hello";
+            }
+            @Override
+            public String ntriplesString() {
+                return "Hello@eN-Gb";
+            }
+        };
+
+        // NOTE: Our fake Literal can't do .equals() or .hashCode(),
+        // so don't check the wrong way around!
+        assertEquals(mixed, otherLiteral);
+        assertEquals(lower, otherLiteral);
+        assertEquals(upper, otherLiteral);
+    }
+
+    @Test
+    public void testCreateLiteralLangISO693_3() throws Exception {
+        // see https://issues.apache.org/jira/browse/JENA-827
+        final Literal vls = factory.createLiteral("Herbert Van de Sompel", "vls"); // JENA-827
+
+        assertEquals("vls", vls.getLanguageTag().get());
+        assertEquals("http://www.w3.org/1999/02/22-rdf-syntax-ns#langString", vls.getDatatype().getIRIString());
+        assertEquals("\"Herbert Van de Sompel\"@vls", vls.ntriplesString());
     }
 
     @Test
@@ -394,41 +394,6 @@ public abstract class AbstractRDFTest {
     }
 
     @Test
-    public void testPossiblyInvalidBlankNode() throws Exception {
-        BlankNode withColon;
-        try {
-            withColon = factory.createBlankNode("with:colon");
-        } catch (final IllegalArgumentException ex) {
-            // Good!
-            return;
-        }
-        // Factory allows :colon, which is OK as long as it's not causing an
-        // invalid ntriplesString
-        assertFalse(withColon.ntriplesString().contains("with:colon"));
-
-        // and creating it twice gets the same ntriplesString
-        assertEquals(withColon.ntriplesString(), factory.createBlankNode("with:colon").ntriplesString());
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testInvalidIRI() throws Exception {
-        factory.createIRI("<no_brackets>");
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testInvalidLiteralLang() throws Exception {
-        factory.createLiteral("Example", "with space");
-    }
-
-    @Test(expected = Exception.class)
-    public void testInvalidTriplePredicate() {
-        final BlankNode subject = factory.createBlankNode("b1");
-        final BlankNode predicate = factory.createBlankNode("b2");
-        final BlankNode object = factory.createBlankNode("b3");
-        factory.createTriple(subject, (IRI) predicate, object);
-    }
-
-    @Test
     public void testHashCodeBlankNode() throws Exception {
         final BlankNode bnode1 = factory.createBlankNode();
         assertEquals(bnode1.uniqueReference().hashCode(), bnode1.hashCode());
@@ -452,6 +417,41 @@ public abstract class AbstractRDFTest {
         final IRI iri = factory.createIRI("http://example.com/");
         final Triple triple = factory.createTriple(iri, iri, iri);
         assertEquals(Objects.hash(iri, iri, iri), triple.hashCode());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testInvalidIRI() throws Exception {
+        factory.createIRI("<no_brackets>");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testInvalidLiteralLang() throws Exception {
+        factory.createLiteral("Example", "with space");
+    }
+
+    @Test(expected = Exception.class)
+    public void testInvalidTriplePredicate() {
+        final BlankNode subject = factory.createBlankNode("b1");
+        final BlankNode predicate = factory.createBlankNode("b2");
+        final BlankNode object = factory.createBlankNode("b3");
+        factory.createTriple(subject, (IRI) predicate, object);
+    }
+
+    @Test
+    public void testPossiblyInvalidBlankNode() throws Exception {
+        BlankNode withColon;
+        try {
+            withColon = factory.createBlankNode("with:colon");
+        } catch (final IllegalArgumentException ex) {
+            // Good!
+            return;
+        }
+        // Factory allows :colon, which is OK as long as it's not causing an
+        // invalid ntriplesString
+        assertFalse(withColon.ntriplesString().contains("with:colon"));
+
+        // and creating it twice gets the same ntriplesString
+        assertEquals(withColon.ntriplesString(), factory.createBlankNode("with:colon").ntriplesString());
     }
 
 }

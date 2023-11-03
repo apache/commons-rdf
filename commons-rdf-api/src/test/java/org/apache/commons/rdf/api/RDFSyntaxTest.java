@@ -85,6 +85,13 @@ public class RDFSyntaxTest {
     }
 
     @Test
+    public void testByName() throws Exception {
+        for (final RDFSyntax s : RDFSyntax.w3cSyntaxes()) {
+            assertEquals(s, RDFSyntax.byName(s.name()).get());
+        }
+    }
+
+    @Test
     public void testFileExtension() throws Exception {
         assertEquals(".jsonld", RDFSyntax.JSONLD.fileExtension());
         assertEquals(".nq", RDFSyntax.NQUADS.fileExtension());
@@ -107,6 +114,7 @@ public class RDFSyntaxTest {
         assertTrue(RDFSyntax.TURTLE.fileExtensions().contains(".ttl"));
     }
 
+
     @Test
     public void testMediaType() throws Exception {
         assertEquals("application/ld+json", RDFSyntax.JSONLD.mediaType());
@@ -117,7 +125,6 @@ public class RDFSyntaxTest {
         assertEquals("application/trig", RDFSyntax.TRIG.mediaType());
         assertEquals("text/turtle", RDFSyntax.TURTLE.mediaType());
     }
-
 
     @Test
     public void testMediaTypes() throws Exception {
@@ -135,13 +142,6 @@ public class RDFSyntaxTest {
     public void testString() throws Exception {
         assertEquals("JSON-LD 1.0", RDFSyntax.JSONLD.toString());
         assertEquals("RDF 1.1 Turtle", RDFSyntax.TURTLE.toString());
-    }
-
-    @Test
-    public void testByName() throws Exception {
-        for (final RDFSyntax s : RDFSyntax.w3cSyntaxes()) {
-            assertEquals(s, RDFSyntax.byName(s.name()).get());
-        }
     }
 
 }

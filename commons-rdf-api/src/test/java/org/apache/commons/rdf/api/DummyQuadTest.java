@@ -28,26 +28,26 @@ public class DummyQuadTest {
     Quad quad = new DummyQuad();
 
     @Test
-    public void testGetGraphName() throws Exception {
-        assertFalse(quad.getGraphName().isPresent());
+    public void testEquals() throws Exception {
+        assertEquals(quad, new DummyQuad());
     }
 
     @Test
-    public void testGetSubject() throws Exception {
-        assertEquals(1, ((DummyIRI) quad.getSubject()).i);
-    }
-    @Test
-    public void testGetPredicate() throws Exception {
-        assertEquals(2, ((DummyIRI) quad.getPredicate()).i);
+    public void testGetGraphName() throws Exception {
+        assertFalse(quad.getGraphName().isPresent());
     }
     @Test
     public void testGetObject() throws Exception {
         assertEquals(3, ((DummyIRI) quad.getObject()).i);
     }
+    @Test
+    public void testGetPredicate() throws Exception {
+        assertEquals(2, ((DummyIRI) quad.getPredicate()).i);
+    }
 
     @Test
-    public void testEquals() throws Exception {
-        assertEquals(quad, new DummyQuad());
+    public void testGetSubject() throws Exception {
+        assertEquals(1, ((DummyIRI) quad.getSubject()).i);
     }
 
     @Test

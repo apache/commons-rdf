@@ -31,6 +31,18 @@ public class GeneralizedRDFTripleTest {
     private final JenaRDF jena = new JenaRDF();
 
     @Test
+    public void testAsGeneralizedTriple() throws Exception {
+        final Node s = NodeFactory.createLiteral("Hello");
+        final Node p = NodeFactory.createBlankNode();
+        final Node o = NodeFactory.createURI("http://example.com/ex");
+        final Triple jt = Triple.create(s, p, o);
+        final JenaTripleLike t = jena.asGeneralizedTriple(jt);
+        assertEquals(jena.createLiteral("Hello"), t.getSubject());
+        assertEquals(jena.asRDFTerm(p), t.getPredicate());
+        assertEquals(jena.createIRI("http://example.com/ex"), t.getObject());
+    }
+
+    @Test
     public void testBnodeProperty() throws Exception {
         final BlankNode b1 = jena.createBlankNode("b1");
         final JenaIRI ex1 = jena.createIRI("http://example.com/ex1");
@@ -42,6 +54,7 @@ public class GeneralizedRDFTripleTest {
         assertEquals(b1, t.getPredicate()); // it's a bnode!
         assertTrue(t.asJenaTriple().getPredicate().isBlank());
     }
+
 
     @Test
     public void testLiteralPredicate() throws Exception {
@@ -56,7 +69,6 @@ public class GeneralizedRDFTripleTest {
         assertTrue(t.asJenaTriple().getPredicate().isLiteral());
     }
 
-
     @Test
     public void testLiteralSubject() throws Exception {
         final JenaIRI ex1 = jena.createIRI("http://example.com/ex1");
@@ -68,18 +80,6 @@ public class GeneralizedRDFTripleTest {
         assertEquals(ex1, t.getPredicate());
         assertEquals(ex2, t.getObject());
         assertTrue(t.asJenaTriple().getSubject().isLiteral());
-    }
-
-    @Test
-    public void testAsGeneralizedTriple() throws Exception {
-        final Node s = NodeFactory.createLiteral("Hello");
-        final Node p = NodeFactory.createBlankNode();
-        final Node o = NodeFactory.createURI("http://example.com/ex");
-        final Triple jt = Triple.create(s, p, o);
-        final JenaTripleLike t = jena.asGeneralizedTriple(jt);
-        assertEquals(jena.createLiteral("Hello"), t.getSubject());
-        assertEquals(jena.asRDFTerm(p), t.getPredicate());
-        assertEquals(jena.createIRI("http://example.com/ex"), t.getObject());
     }
 
 }

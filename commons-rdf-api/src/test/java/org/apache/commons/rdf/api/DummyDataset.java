@@ -27,13 +27,6 @@ class DummyDataset implements Dataset {
     boolean filteredStreamCalled;
 
     @Override
-    public void add(final Quad Quad) {
-        if (! contains(Quad)) {
-            throw new IllegalStateException("DummyDataset can't be modified");
-        }
-    }
-
-    @Override
     public void add(final BlankNodeOrIRI graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         if (! contains(Optional.ofNullable(graphName), subject, predicate, object)) {
             throw new IllegalStateException("DummyDataset can't be modified");
@@ -41,8 +34,15 @@ class DummyDataset implements Dataset {
     }
 
     @Override
-    public boolean contains(final Quad Quad) {
-        return Quad.equals(new DummyQuad());
+    public void add(final Quad Quad) {
+        if (! contains(Quad)) {
+            throw new IllegalStateException("DummyDataset can't be modified");
+        }
+    }
+
+    @Override
+    public void clear() {
+        throw new IllegalStateException("DummyDataset can't be modified");
     }
 
     @Override
@@ -53,10 +53,23 @@ class DummyDataset implements Dataset {
                 (object == null || object.equals(new DummyIRI(3)));
     }
     @Override
-    public void remove(final Quad Quad) {
-        if (contains(Quad)) {
-            throw new IllegalStateException("DummyDataset can't be modified");
+    public boolean contains(final Quad Quad) {
+        return Quad.equals(new DummyQuad());
+    }
+    @Override
+    public Graph getGraph() {
+        return new DummyGraph();
+    }
+    @Override
+    public Optional<Graph> getGraph(final BlankNodeOrIRI graphName) {
+        if (graphName == null) {
+            return Optional.of(getGraph());
         }
+        return Optional.empty();
+    }
+    @Override
+    public Stream<BlankNodeOrIRI> getGraphNames() {
+        return Stream.empty();
     }
     @Override
     public void remove(final Optional<BlankNodeOrIRI> graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
@@ -64,14 +77,19 @@ class DummyDataset implements Dataset {
             throw new IllegalStateException("DummyDataset can't be modified");
         }
     }
+
     @Override
-    public void clear() {
-        throw new IllegalStateException("DummyDataset can't be modified");
+    public void remove(final Quad Quad) {
+        if (contains(Quad)) {
+            throw new IllegalStateException("DummyDataset can't be modified");
+        }
     }
+
     @Override
     public long size() {
         return 1;
     }
+
     @Override
     public Stream<? extends Quad> stream() {
         streamCalled = true;
@@ -85,24 +103,6 @@ class DummyDataset implements Dataset {
         if (contains(graphName, subject, predicate, object)) {
             return Stream.of(new DummyQuad());
         }
-        return Stream.empty();
-    }
-
-    @Override
-    public Graph getGraph() {
-        return new DummyGraph();
-    }
-
-    @Override
-    public Optional<Graph> getGraph(final BlankNodeOrIRI graphName) {
-        if (graphName == null) {
-            return Optional.of(getGraph());
-        }
-        return Optional.empty();
-    }
-
-    @Override
-    public Stream<BlankNodeOrIRI> getGraphNames() {
         return Stream.empty();
     }
 }

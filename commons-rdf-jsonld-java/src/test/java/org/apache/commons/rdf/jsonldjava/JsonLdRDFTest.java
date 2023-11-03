@@ -29,19 +29,19 @@ public class JsonLdRDFTest extends AbstractRDFTest {
         return new JsonLdRDF();
     }
 
+    @Ignore("JSONLD-Java does not validate IRIs")
+    @Test
+    @Override
+    public void testInvalidIRI() throws Exception {
+        super.testInvalidIRI();
+    }
+
     // TODO: Add support for checking for invalid lang/iri/blanknode IDs
     @Ignore("JSONLD-Java does not validate lang strings")
     @Test
     @Override
     public void testInvalidLiteralLang() throws Exception {
         super.testInvalidLiteralLang();
-    }
-
-    @Ignore("JSONLD-Java does not validate IRIs")
-    @Test
-    @Override
-    public void testInvalidIRI() throws Exception {
-        super.testInvalidIRI();
     }
 
     @Ignore("JSONLD-Java does not validate blanknode identifiers")

@@ -22,32 +22,32 @@ import java.util.List;
 import java.util.Objects;
 
 class DummyTriple implements Triple {
-    @Override
-    public BlankNodeOrIRI getSubject() {
-        return new DummyIRI(1);
-    }
-    @Override
-    public IRI getPredicate() {
-        return new DummyIRI(2);
-    }
-    @Override
-    public RDFTerm getObject() {
-        return new DummyIRI(3);
-    }
-
     private static List<RDFTerm> tripleList(final Triple q) {
          return Arrays.asList(
              q.getSubject(),
              q.getPredicate(),
              q.getObject());
     }
-
     @Override
     public boolean equals(final Object obj) {
         if (!(obj instanceof Triple)) {
             return false;
         }
         return tripleList(this).equals(tripleList((Triple) obj));
+    }
+    @Override
+    public RDFTerm getObject() {
+        return new DummyIRI(3);
+    }
+
+    @Override
+    public IRI getPredicate() {
+        return new DummyIRI(2);
+    }
+
+    @Override
+    public BlankNodeOrIRI getSubject() {
+        return new DummyIRI(1);
     }
 
     @Override

@@ -44,15 +44,6 @@ import org.junit.runners.Parameterized.Parameters;
 @RunWith(Parameterized.class)
 public class AllToAllTest {
 
-    private final RDF nodeFactory;
-    private final RDF graphFactory;
-
-    public AllToAllTest(final Class<? extends RDF> from, final Class<? extends RDF> to)
-            throws ReflectiveOperationException {
-        this.nodeFactory = from.getConstructor().newInstance();
-        this.graphFactory = to.newInstance();
-    }
-
     @SuppressWarnings("rawtypes")
     @Parameters(name = "{index}: {0}->{1}")
     public static Collection<Object[]> data() {
@@ -66,6 +57,15 @@ public class AllToAllTest {
             }
         }
         return allToAll;
+    }
+    private final RDF nodeFactory;
+
+    private final RDF graphFactory;
+
+    public AllToAllTest(final Class<? extends RDF> from, final Class<? extends RDF> to)
+            throws ReflectiveOperationException {
+        this.nodeFactory = from.getConstructor().newInstance();
+        this.graphFactory = to.newInstance();
     }
 
     /**

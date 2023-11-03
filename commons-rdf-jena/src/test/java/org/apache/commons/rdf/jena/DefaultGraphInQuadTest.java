@@ -40,14 +40,6 @@ public class DefaultGraphInQuadTest {
     Node exampleJena = NodeFactory.createURI("http://example.com/");
 
     @Test
-    public void testCreateFromNull() throws Exception {
-        final JenaQuad q = rdf.createQuad(null, example, example, example);
-        assertFalse(q.getGraphName().isPresent());
-        assertTrue(q.asJenaQuad().isDefaultGraph());
-        assertEquals(Quad.defaultGraphIRI,  q.asJenaQuad().getGraph());
-    }
-
-    @Test
     public void testCreateFromDefaultGraphIRI() throws Exception {
         final JenaIRI defaultGraph = (JenaIRI) rdf.asRDFTerm(Quad.defaultGraphIRI);
         final JenaQuad q = rdf.createQuad(defaultGraph, example, example, example);
@@ -59,22 +51,6 @@ public class DefaultGraphInQuadTest {
         // thus we can't require
         //assertEquals(defaultGraph, q.getGraphName().get());
     }
-
-    @Test
-    public void testCreateFromForeignDefaultGraph() throws Exception {
-        // What if <urn:x-arq:DefaultGraph> appear in a non-Jena IRI?
-        final IRI foreignDefaultGraph = simpleRDF.createIRI(Quad.defaultGraphIRI.getURI());
-        final JenaQuad q = rdf.createQuad(foreignDefaultGraph, example, example, example);
-        // As the IRI was NOT a JenaIRI we preserve it as-is,
-        // rather than replacing it with Optional.empty()
-        assertTrue(q.asJenaQuad().isDefaultGraph());
-        assertTrue(q.getGraphName().isPresent()); // INCONSISTENT with above
-        assertEquals(Quad.defaultGraphIRI,  q.asJenaQuad().getGraph());
-        assertEquals(foreignDefaultGraph, q.getGraphName().get());
-        // Note that adding such a quad to a Dataset would still "convert" it to
-        // Optional.empty()
-    }
-
 
     @Test
     public void testCreateFromDefaultGraphNodeGeneratedIRINode() throws Exception {
@@ -100,6 +76,30 @@ public class DefaultGraphInQuadTest {
         // Now Quad.defaultGraphNodeGenerated is preserved at both ends
         assertEquals(Quad.defaultGraphNodeGenerated,  q.asJenaQuad().getGraph());
         assertEquals(foreignDefaultGraph, q.getGraphName().get());
+    }
+
+
+    @Test
+    public void testCreateFromForeignDefaultGraph() throws Exception {
+        // What if <urn:x-arq:DefaultGraph> appear in a non-Jena IRI?
+        final IRI foreignDefaultGraph = simpleRDF.createIRI(Quad.defaultGraphIRI.getURI());
+        final JenaQuad q = rdf.createQuad(foreignDefaultGraph, example, example, example);
+        // As the IRI was NOT a JenaIRI we preserve it as-is,
+        // rather than replacing it with Optional.empty()
+        assertTrue(q.asJenaQuad().isDefaultGraph());
+        assertTrue(q.getGraphName().isPresent()); // INCONSISTENT with above
+        assertEquals(Quad.defaultGraphIRI,  q.asJenaQuad().getGraph());
+        assertEquals(foreignDefaultGraph, q.getGraphName().get());
+        // Note that adding such a quad to a Dataset would still "convert" it to
+        // Optional.empty()
+    }
+
+    @Test
+    public void testCreateFromNull() throws Exception {
+        final JenaQuad q = rdf.createQuad(null, example, example, example);
+        assertFalse(q.getGraphName().isPresent());
+        assertTrue(q.asJenaQuad().isDefaultGraph());
+        assertEquals(Quad.defaultGraphIRI,  q.asJenaQuad().getGraph());
     }
 
 

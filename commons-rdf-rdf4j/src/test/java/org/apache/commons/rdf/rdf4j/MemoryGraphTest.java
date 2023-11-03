@@ -53,6 +53,14 @@ public class MemoryGraphTest extends AbstractGraphTest {
         }
 
         @Override
+        public RDF4JGraph createGraph() {
+            final Sail sail = new MemoryStore();
+            final Repository repository = new SailRepository(sail);
+            repository.initialize();
+            return rdf4jFactory.asGraph(repository);
+        }
+
+        @Override
         public RDF4JIRI createIRI(final String iri) throws IllegalArgumentException, UnsupportedOperationException {
             return rdf4jFactory.createIRI(iri);
         }
@@ -73,21 +81,13 @@ public class MemoryGraphTest extends AbstractGraphTest {
         }
 
         @Override
-        public RDF4JTriple createTriple(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
-            return rdf4jFactory.createTriple(subject, predicate, object);
-        }
-
-        @Override
         public Quad createQuad(final BlankNodeOrIRI graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
             return rdf4jFactory.createQuad(graphName, subject, predicate, object);
         }
 
         @Override
-        public RDF4JGraph createGraph() {
-            final Sail sail = new MemoryStore();
-            final Repository repository = new SailRepository(sail);
-            repository.initialize();
-            return rdf4jFactory.asGraph(repository);
+        public RDF4JTriple createTriple(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
+            return rdf4jFactory.createTriple(subject, predicate, object);
         }
     }
 

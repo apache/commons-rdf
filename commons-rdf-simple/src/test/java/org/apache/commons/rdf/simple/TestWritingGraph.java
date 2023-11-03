@@ -85,9 +85,9 @@ public class TestWritingGraph {
         graph = null;
     }
 
-    @Test
-    public void testCreateGraphTiming() throws Exception {
-        createGraph();
+    public static String tripleAsString(final Triple t) {
+        return t.getSubject().ntriplesString() + " " + t.getPredicate().ntriplesString() + " "
+                + t.getObject().ntriplesString() + " .";
     }
 
     @Test
@@ -99,9 +99,9 @@ public class TestWritingGraph {
         assertEquals(count, TRIPLES);
     }
 
-    public static String tripleAsString(final Triple t) {
-        return t.getSubject().ntriplesString() + " " + t.getPredicate().ntriplesString() + " "
-                + t.getObject().ntriplesString() + " .";
+    @Test
+    public void testCreateGraphTiming() throws Exception {
+        createGraph();
     }
 
     @Test

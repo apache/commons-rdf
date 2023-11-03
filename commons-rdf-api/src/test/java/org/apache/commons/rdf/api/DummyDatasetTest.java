@@ -26,6 +26,16 @@ import org.junit.Test;
 public class DummyDatasetTest {
     Dataset dataset = new DummyDataset();
 
+    @Test(expected = IllegalStateException.class)
+    public void clearNotSupported() throws Exception {
+        dataset.clear();
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void remove() throws Exception {
+        dataset.remove(new DummyQuad());
+    }
+
     @Test
     public void testAdd() throws Exception {
         dataset.add(new DummyQuad());
@@ -48,14 +58,24 @@ public class DummyDatasetTest {
         assertFalse(dataset.contains(null, new DummyIRI(0), new DummyIRI(0), new DummyIRI(0)));
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void clearNotSupported() throws Exception {
-        dataset.clear();
+    @Test
+    public void testGetGraph() throws Exception {
+        assertTrue(dataset.getGraph() instanceof DummyGraph);
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void remove() throws Exception {
-        dataset.remove(new DummyQuad());
+    @Test
+    public void testGetGraphNamed() throws Exception {
+        assertFalse(dataset.getGraph(new DummyIRI(0)).isPresent());
+    }
+
+    @Test
+    public void testGetGraphNames() throws Exception {
+        assertFalse(dataset.getGraphNames().findAny().isPresent());
+    }
+
+    @Test
+    public void testGetGraphNull() throws Exception {
+        assertTrue(dataset.getGraph(null).get() instanceof DummyGraph);
     }
 
     @Test
@@ -79,25 +99,5 @@ public class DummyDatasetTest {
         assertEquals(new DummyQuad(),
                 dataset.stream(null, new DummyIRI(1), new DummyIRI(2), new DummyIRI(3)).findAny().get());
         assertFalse(dataset.stream(null, new DummyIRI(0), new DummyIRI(0), new DummyIRI(0)).findAny().isPresent());
-    }
-
-    @Test
-    public void testGetGraph() throws Exception {
-        assertTrue(dataset.getGraph() instanceof DummyGraph);
-    }
-
-    @Test
-    public void testGetGraphNull() throws Exception {
-        assertTrue(dataset.getGraph(null).get() instanceof DummyGraph);
-    }
-
-    @Test
-    public void testGetGraphNamed() throws Exception {
-        assertFalse(dataset.getGraph(new DummyIRI(0)).isPresent());
-    }
-
-    @Test
-    public void testGetGraphNames() throws Exception {
-        assertFalse(dataset.getGraphNames().findAny().isPresent());
     }
 }

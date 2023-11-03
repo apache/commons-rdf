@@ -26,8 +26,8 @@ class DummyIRI implements IRI {
     }
 
     @Override
-    public String ntriplesString() {
-        return "<" + EXAMPLE_COM + i + ">";
+    public boolean equals(final Object obj) {
+        return (obj instanceof IRI) && ((IRI) obj).getIRIString().equals(EXAMPLE_COM + i);
     }
 
     @Override
@@ -36,12 +36,12 @@ class DummyIRI implements IRI {
     }
 
     @Override
-    public boolean equals(final Object obj) {
-        return (obj instanceof IRI) && ((IRI) obj).getIRIString().equals(EXAMPLE_COM + i);
+    public int hashCode() {
+        return getIRIString().hashCode();
     }
 
     @Override
-    public int hashCode() {
-        return getIRIString().hashCode();
+    public String ntriplesString() {
+        return "<" + EXAMPLE_COM + i + ">";
     }
 }

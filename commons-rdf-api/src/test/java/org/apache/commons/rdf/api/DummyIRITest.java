@@ -26,23 +26,8 @@ public class DummyIRITest {
     DummyIRI iri = new DummyIRI(1337);
 
     @Test
-    public void testI() throws Exception {
-        assertEquals(1337, iri.i);
-    }
-
-    @Test
     public void testEquals() throws Exception {
         assertEquals(iri, new DummyIRI(1337));
-    }
-
-    @Test
-    public void testNotEquals() throws Exception {
-        assertNotEquals(iri, new DummyIRI(1));
-    }
-
-    @Test
-    public void testNtriplesString() throws Exception {
-        assertEquals("<http://example.com/1337>", iri.ntriplesString());
     }
 
     @Test
@@ -53,5 +38,20 @@ public class DummyIRITest {
     @Test
     public void testHashCode() throws Exception {
         assertEquals("http://example.com/1337".hashCode(), iri.hashCode());
+    }
+
+    @Test
+    public void testI() throws Exception {
+        assertEquals(1337, iri.i);
+    }
+
+    @Test
+    public void testNotEquals() throws Exception {
+        assertNotEquals(iri, new DummyIRI(1));
+    }
+
+    @Test
+    public void testNtriplesString() throws Exception {
+        assertEquals("<http://example.com/1337>", iri.ntriplesString());
     }
 }

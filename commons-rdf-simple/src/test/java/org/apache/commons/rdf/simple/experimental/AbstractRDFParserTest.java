@@ -58,37 +58,8 @@ public class AbstractRDFParserTest {
 
 	private Path symlink;
 
-    @Before
-    public void createTempFile() throws IOException {
-        testNt = Files.createTempFile("test", ".nt");
-        testTtl = Files.createTempFile("test", ".ttl");
-        testXml = Files.createTempFile("test", ".xml");
-        // No need to populate the files as the dummy parser
-        // doesn't actually read anything
-
-        // If supported, we'll make a symbolic link
-        final Path symlinks = Files.createTempDirectory("symlinked");
-        try {
-        	symlink = Files.createSymbolicLink(
-        				symlinks.resolve("linked.ttl"), testNt);
-        } catch (IOException|UnsupportedOperationException ex) {
-        	symlink = null;
-        }
-    }
-
-    @After
-    public void deleteTempFiles() throws IOException {
-        Files.deleteIfExists(testNt);
-        Files.deleteIfExists(testTtl);
-        Files.deleteIfExists(testXml);
-    }
-
-    @Test
-    public void testGuessRDFSyntax() throws Exception {
-        assertEquals(RDFSyntax.NTRIPLES, AbstractRDFParser.guessRDFSyntax(testNt).get());
-        assertEquals(RDFSyntax.TURTLE, AbstractRDFParser.guessRDFSyntax(testTtl).get());
-        assertFalse(AbstractRDFParser.guessRDFSyntax(testXml).isPresent());
-    }
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     private void checkGraph(final Graph graph) throws Exception {
         assertFalse(graph.isEmpty());
@@ -117,6 +88,54 @@ public class AbstractRDFParserTest {
         assertTrue(2 > graph.stream(null, factory.createIRI("http://example.com/contentTypeSyntax"), null).count());
     }
 
+    @Before
+    public void createTempFile() throws IOException {
+        testNt = Files.createTempFile("test", ".nt");
+        testTtl = Files.createTempFile("test", ".ttl");
+        testXml = Files.createTempFile("test", ".xml");
+        // No need to populate the files as the dummy parser
+        // doesn't actually read anything
+
+        // If supported, we'll make a symbolic link
+        final Path symlinks = Files.createTempDirectory("symlinked");
+        try {
+        	symlink = Files.createSymbolicLink(
+        				symlinks.resolve("linked.ttl"), testNt);
+        } catch (IOException|UnsupportedOperationException ex) {
+        	symlink = null;
+        }
+    }
+
+    @After
+    public void deleteTempFiles() throws IOException {
+        Files.deleteIfExists(testNt);
+        Files.deleteIfExists(testTtl);
+        Files.deleteIfExists(testXml);
+    }
+
+    private String firstPredicate(final Graph g, final String pred) {
+        return g.stream(null, factory.createIRI("http://example.com/" + pred), null).map(Triple::getObject)
+                .map(RDFTerm::ntriplesString).findAny().orElse(null);
+    }
+
+    @Test
+    public void testGuessRDFSyntax() throws Exception {
+        assertEquals(RDFSyntax.NTRIPLES, AbstractRDFParser.guessRDFSyntax(testNt).get());
+        assertEquals(RDFSyntax.TURTLE, AbstractRDFParser.guessRDFSyntax(testTtl).get());
+        assertFalse(AbstractRDFParser.guessRDFSyntax(testXml).isPresent());
+    }
+
+    @Test
+    public void testParseBaseAndContentTypeNoSource() throws Exception {
+        // Can set the other options, even without source()
+        final IRI base = dummyParser.createRDFTermFactory().createIRI("http://www.example.org/test.rdf");
+        final RDFParser parser = dummyParser.base(base).contentType(RDFSyntax.RDFXML);
+        thrown.expect(IllegalStateException.class);
+        thrown.expectMessage("No source has been set");
+        // but .parse() should fail
+        parser.parse();
+    }
+
     @Test
     public void testParseFile() throws Exception {
         try (final Graph g = factory.createGraph()) {
@@ -137,47 +156,6 @@ public class AbstractRDFParserTest {
     }
 
     @Test
-    public void testParseFileSymlink() throws Exception {
-        // This test will typically not work in Windows
-        // which requires system privileges to create symlinks
-        assumeNotNull(symlink);
-        try (final Graph g = factory.createGraph()) {
-            final RDFParser parser = dummyParser.source(symlink).target(g);
-            parser.parse().get(5, TimeUnit.SECONDS);
-            checkGraph(g);
-            assertEquals("<" + symlink.toUri().toString() + ">", firstPredicate(g, "source"));
-            assertEquals("<" + testNt.toRealPath().toUri().toString() + ">", firstPredicate(g, "base"));
-        }
-    }
-
-    @Test
-    public void testParseNoSource() throws Exception {
-        thrown.expect(IllegalStateException.class);
-        dummyParser.parse();
-    }
-
-    @Test
-    public void testParseBaseAndContentTypeNoSource() throws Exception {
-        // Can set the other options, even without source()
-        final IRI base = dummyParser.createRDFTermFactory().createIRI("http://www.example.org/test.rdf");
-        final RDFParser parser = dummyParser.base(base).contentType(RDFSyntax.RDFXML);
-        thrown.expect(IllegalStateException.class);
-        thrown.expectMessage("No source has been set");
-        // but .parse() should fail
-        parser.parse();
-    }
-
-    @Test
-    public void testParseFileMissing() throws Exception {
-        Files.delete(testNt);
-        // This should not fail yet
-        final RDFParser parser = dummyParser.source(testNt);
-        // but here:
-        thrown.expect(IOException.class);
-        parser.parse();
-    }
-
-    @Test
     public void testParseFileContentType() throws Exception {
         try (final Graph g = factory.createGraph()) {
             final RDFParser parser = dummyParser.source(testNt).contentType(RDFSyntax.NTRIPLES).target(g);
@@ -194,13 +172,29 @@ public class AbstractRDFParserTest {
         }
     }
 
-    private String firstPredicate(final Graph g, final String pred) {
-        return g.stream(null, factory.createIRI("http://example.com/" + pred), null).map(Triple::getObject)
-                .map(RDFTerm::ntriplesString).findAny().orElse(null);
+    @Test
+    public void testParseFileMissing() throws Exception {
+        Files.delete(testNt);
+        // This should not fail yet
+        final RDFParser parser = dummyParser.source(testNt);
+        // but here:
+        thrown.expect(IOException.class);
+        parser.parse();
     }
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
+    @Test
+    public void testParseFileSymlink() throws Exception {
+        // This test will typically not work in Windows
+        // which requires system privileges to create symlinks
+        assumeNotNull(symlink);
+        try (final Graph g = factory.createGraph()) {
+            final RDFParser parser = dummyParser.source(symlink).target(g);
+            parser.parse().get(5, TimeUnit.SECONDS);
+            checkGraph(g);
+            assertEquals("<" + symlink.toUri().toString() + ">", firstPredicate(g, "source"));
+            assertEquals("<" + testNt.toRealPath().toUri().toString() + ">", firstPredicate(g, "base"));
+        }
+    }
 
     @Test
     public void testParseInputStreamFailsIfBaseMissing() throws Exception {
@@ -276,6 +270,12 @@ public class AbstractRDFParserTest {
             assertEquals("\"" + RDFSyntax.TURTLE.name() + "\"", firstPredicate(g, "contentTypeSyntax"));
             assertEquals("\"text/turtle\"", firstPredicate(g, "contentType"));
         }
+    }
+
+    @Test
+    public void testParseNoSource() throws Exception {
+        thrown.expect(IllegalStateException.class);
+        dummyParser.parse();
     }
 
 }

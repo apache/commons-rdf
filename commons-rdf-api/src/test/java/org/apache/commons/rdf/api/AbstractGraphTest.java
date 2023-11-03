@@ -53,6 +53,11 @@ import org.junit.Test;
  */
 public abstract class AbstractGraphTest {
 
+    private static Optional<? extends Triple> closableFindAny(final Stream<? extends Triple> stream) {
+        try (Stream<? extends Triple> s = stream) {
+            return s.findAny();
+        }
+    }
     protected RDF factory;
     protected Graph graph;
     protected IRI alice;
@@ -66,7 +71,39 @@ public abstract class AbstractGraphTest {
     protected Literal bobName;
     protected Literal secretClubName;
     protected Literal companyName;
+
     protected Triple bobNameTriple;
+
+    /**
+     * Add all triples from the source to the target.
+     * <p>
+     * The triples may be copied in any order. No special conversion or
+     * adaptation of {@link BlankNode}s are performed.
+     *
+     * @param source
+     *            Source Graph to copy triples from
+     * @param target
+     *            Target Graph where triples will be added
+     */
+    private void addAllTriples(final Graph source, final Graph target) {
+
+        // unordered() as we don't need to preserve triple order
+        // sequential() as we don't (currently) require target Graph to be
+        // thread-safe
+
+        try (Stream<? extends Triple> stream = source.stream()) {
+            stream.unordered().sequential().forEach(t -> target.add(t));
+        }
+    }
+
+    /**
+     * Special triple closing for RDF4J.
+     */
+    private void closeIterable(final Iterable<Triple> iterate) throws Exception {
+        if (iterate instanceof AutoCloseable) {
+            ((AutoCloseable) iterate).close();
+        }
+    }
 
     /**
      *
@@ -76,6 +113,45 @@ public abstract class AbstractGraphTest {
      * @return {@link RDF} instance to be tested.
      */
     protected abstract RDF createFactory();
+
+    /**
+     * Make a new graph with two BlankNodes - each with a different
+     * uniqueReference
+     */
+    private Graph createGraph1() {
+        final RDF factory1 = createFactory();
+
+        final IRI name = factory1.createIRI("http://xmlns.com/foaf/0.1/name");
+        final Graph g1 = factory1.createGraph();
+        final BlankNode b1 = createOwnBlankNode("b1", "0240eaaa-d33e-4fc0-a4f1-169d6ced3680");
+        g1.add(b1, name, factory1.createLiteral("Alice"));
+
+        final BlankNode b2 = createOwnBlankNode("b2", "9de7db45-0ce7-4b0f-a1ce-c9680ffcfd9f");
+        g1.add(b2, name, factory1.createLiteral("Bob"));
+
+        final IRI hasChild = factory1.createIRI("http://example.com/hasChild");
+        g1.add(b1, hasChild, b2);
+
+        return g1;
+    }
+
+    private Graph createGraph2() {
+        final RDF factory2 = createFactory();
+        final IRI name = factory2.createIRI("http://xmlns.com/foaf/0.1/name");
+
+        final Graph g2 = factory2.createGraph();
+
+        final BlankNode b1 = createOwnBlankNode("b1", "bc8d3e45-a08f-421d-85b3-c25b373abf87");
+        g2.add(b1, name, factory2.createLiteral("Charlie"));
+
+        final BlankNode b2 = createOwnBlankNode("b2", "2209097a-5078-4b03-801a-6a2d2f50d739");
+        g2.add(b2, name, factory2.createLiteral("Dave"));
+
+        final IRI hasChild = factory2.createIRI("http://example.com/hasChild");
+        // NOTE: Opposite direction of loadGraph1
+        g2.add(b2, hasChild, b1);
+        return g2;
+    }
 
     @Before
     public void createGraphAndAdd() {
@@ -133,186 +209,47 @@ public abstract class AbstractGraphTest {
         }
     }
 
-    @Test
-    public void testSize() throws Exception {
-        assertFalse(graph.isEmpty());
-        Assume.assumeNotNull(bnode1, bnode2, aliceName, bobName, secretClubName, companyName, bobNameTriple);
-        // Can only reliably predict size if we could create all triples
-        assertEquals(8, graph.size());
-    }
-
-    @Test
-    public void testIterate() throws Exception {
-
-        Assume.assumeFalse(graph.isEmpty());
-
-        final List<Triple> triples = new ArrayList<>();
-        for (final Triple t : graph.iterate()) {
-            triples.add(t);
-        }
-        assertEquals(graph.size(), triples.size());
-        if (bobNameTriple != null) {
-            assertTrue(triples.contains(bobNameTriple));
-        }
-
-        // aborted iteration
-        final Iterable<Triple> iterate = graph.iterate();
-        final Iterator<Triple> it = iterate.iterator();
-
-        assertTrue(it.hasNext());
-        it.next();
-        closeIterable(iterate);
-
-        // second iteration - should start from fresh and
-        // get the same count
-        long count = 0;
-        final Iterable<Triple> iterable = graph.iterate();
-        for (@SuppressWarnings("unused") final
-        Triple t : iterable) {
-            count++;
-        }
-        assertEquals(graph.size(), count);
-    }
-
     /**
-     * Special triple closing for RDF4J.
+     * Create a different implementation of BlankNode to be tested with
+     * graph.add(a,b,c); (the implementation may or may not then choose to
+     * translate such to its own instances)
+     *
+     * @param name
+     * @return
      */
-    private void closeIterable(final Iterable<Triple> iterate) throws Exception {
-        if (iterate instanceof AutoCloseable) {
-            ((AutoCloseable) iterate).close();
-        }
+    private BlankNode createOwnBlankNode(final String name, final String uuid) {
+        return new BlankNode() {
+            @Override
+            public boolean equals(final Object obj) {
+                if (!(obj instanceof BlankNode)) {
+                    return false;
+                }
+                final BlankNode other = (BlankNode) obj;
+                return uuid.equals(other.uniqueReference());
+            }
+
+            @Override
+            public int hashCode() {
+                return uuid.hashCode();
+            }
+
+            @Override
+            public String ntriplesString() {
+                return "_: " + name;
+            }
+
+            @Override
+            public String uniqueReference() {
+                return uuid;
+            }
+        };
     }
 
-    @Test
-    public void testIterateFilter() throws Exception {
-        final List<RDFTerm> friends = new ArrayList<>();
-        final IRI alice = factory.createIRI("http://example.com/alice");
-        final IRI knows = factory.createIRI("http://xmlns.com/foaf/0.1/knows");
-        for (final Triple t : graph.iterate(alice, knows, null)) {
-            friends.add(t.getObject());
-        }
-        assertEquals(1, friends.size());
-        assertEquals(bob, friends.get(0));
-
-        // .. can we iterate over zero hits?
-        final Iterable<Triple> iterate = graph.iterate(bob, knows, alice);
-        for (final Triple unexpected : iterate) {
-            fail("Unexpected triple " + unexpected);
-        }
-        // closeIterable(iterate);
-    }
-
-    @Test
-    public void testContains() throws Exception {
-        assertFalse(graph.contains(bob, knows, alice)); // or so he claims..
-
-        assertTrue(graph.contains(alice, knows, bob));
-
-        try (Stream<? extends Triple> stream = graph.stream()) {
-            final Optional<? extends Triple> first = stream.skip(4).findFirst();
-            Assume.assumeTrue(first.isPresent());
-            final Triple existingTriple = first.get();
-            assertTrue(graph.contains(existingTriple));
-        }
-
-        final Triple nonExistingTriple = factory.createTriple(bob, knows, alice);
-        assertFalse(graph.contains(nonExistingTriple));
-
-        Triple triple = null;
-        try {
-            triple = factory.createTriple(alice, knows, bob);
-        } catch (final UnsupportedOperationException ex) {
-        }
-        if (triple != null) {
-            // FIXME: Should not this always be true?
-            // assertTrue(graph.contains(triple));
-        }
-    }
-
-    @Test
-    public void testRemove() throws Exception {
-        final long fullSize = graph.size();
-        graph.remove(alice, knows, bob);
-        final long shrunkSize = graph.size();
-        assertEquals(1, fullSize - shrunkSize);
-
-        graph.remove(alice, knows, bob);
-        assertEquals(shrunkSize, graph.size()); // unchanged
-
-        graph.add(alice, knows, bob);
-        graph.add(alice, knows, bob);
-        graph.add(alice, knows, bob);
-        // Undetermined size at this point -- but at least it
-        // should be bigger
-        assertTrue(graph.size() > shrunkSize);
-
-        // and after a single remove they should all be gone
-        graph.remove(alice, knows, bob);
-        assertEquals(shrunkSize, graph.size());
-
-        Triple otherTriple;
-        try (Stream<? extends Triple> stream = graph.stream()) {
-            final Optional<? extends Triple> anyTriple = stream.findAny();
-            Assume.assumeTrue(anyTriple.isPresent());
-            otherTriple = anyTriple.get();
-        }
-
-        graph.remove(otherTriple);
-        assertEquals(shrunkSize - 1, graph.size());
-        graph.remove(otherTriple);
-        assertEquals(shrunkSize - 1, graph.size()); // no change
-
-        // for some reason in rdf4j this causes duplicates!
-        graph.add(otherTriple);
-        // graph.stream().forEach(System.out::println);
-        // should have increased
-        assertTrue(graph.size() >= shrunkSize);
-    }
-
-    @Test
-    public void testClear() throws Exception {
-        graph.clear();
-        assertFalse(graph.contains(alice, knows, bob));
-        assertEquals(0, graph.size());
-        graph.clear(); // no-op
-        assertEquals(0, graph.size());
-    }
-
-    @Test
-    public void testGetTriples() throws Exception {
-        long tripleCount;
-        try (Stream<? extends Triple> stream = graph.stream()) {
-            tripleCount = stream.count();
-        }
-        assertTrue(tripleCount > 0);
-
-        try (Stream<? extends Triple> stream = graph.stream()) {
-            assertTrue(stream.allMatch(t -> graph.contains(t)));
-        }
-
-        // Check exact count
-        Assume.assumeNotNull(bnode1, bnode2, aliceName, bobName, secretClubName, companyName, bobNameTriple);
-        assertEquals(8, tripleCount);
-    }
-
-    @Test
-    public void testGetTriplesQuery() throws Exception {
-
-        try (Stream<? extends Triple> stream = graph.stream(alice, null, null)) {
-            final long aliceCount = stream.count();
-            assertTrue(aliceCount > 0);
-            Assume.assumeNotNull(aliceName);
-            assertEquals(3, aliceCount);
-        }
-
-        Assume.assumeNotNull(bnode1, bnode2, bobName, companyName, secretClubName);
-        try (Stream<? extends Triple> stream = graph.stream(null, name, null)) {
-            assertEquals(4, stream.count());
-        }
-        Assume.assumeNotNull(bnode1);
-        try (Stream<? extends Triple> stream = graph.stream(null, member, null)) {
-            assertEquals(3, stream.count());
-        }
+    private void notEquals(final BlankNodeOrIRI node1, final BlankNodeOrIRI node2) {
+        assertFalse(node1.equals(node2));
+        // in which case we should be able to assume
+        // (as they are in the same graph)
+        assertFalse(node1.ntriplesString().equals(node2.ntriplesString()));
     }
 
     @Test
@@ -379,6 +316,42 @@ public abstract class AbstractGraphTest {
             assertFalse(g3.contains(b1Charlie, hasChild, null));
         } catch (final UnsupportedOperationException ex) {
             Assume.assumeNoException(ex);
+        }
+    }
+
+    @Test
+    public void testClear() throws Exception {
+        graph.clear();
+        assertFalse(graph.contains(alice, knows, bob));
+        assertEquals(0, graph.size());
+        graph.clear(); // no-op
+        assertEquals(0, graph.size());
+    }
+
+    @Test
+    public void testContains() throws Exception {
+        assertFalse(graph.contains(bob, knows, alice)); // or so he claims..
+
+        assertTrue(graph.contains(alice, knows, bob));
+
+        try (Stream<? extends Triple> stream = graph.stream()) {
+            final Optional<? extends Triple> first = stream.skip(4).findFirst();
+            Assume.assumeTrue(first.isPresent());
+            final Triple existingTriple = first.get();
+            assertTrue(graph.contains(existingTriple));
+        }
+
+        final Triple nonExistingTriple = factory.createTriple(bob, knows, alice);
+        assertFalse(graph.contains(nonExistingTriple));
+
+        Triple triple = null;
+        try {
+            triple = factory.createTriple(alice, knows, bob);
+        } catch (final UnsupportedOperationException ex) {
+        }
+        if (triple != null) {
+            // FIXME: Should not this always be true?
+            // assertTrue(graph.contains(triple));
         }
     }
 
@@ -468,6 +441,135 @@ public abstract class AbstractGraphTest {
 
 
     @Test
+    public void testGetTriples() throws Exception {
+        long tripleCount;
+        try (Stream<? extends Triple> stream = graph.stream()) {
+            tripleCount = stream.count();
+        }
+        assertTrue(tripleCount > 0);
+
+        try (Stream<? extends Triple> stream = graph.stream()) {
+            assertTrue(stream.allMatch(t -> graph.contains(t)));
+        }
+
+        // Check exact count
+        Assume.assumeNotNull(bnode1, bnode2, aliceName, bobName, secretClubName, companyName, bobNameTriple);
+        assertEquals(8, tripleCount);
+    }
+
+    @Test
+    public void testGetTriplesQuery() throws Exception {
+
+        try (Stream<? extends Triple> stream = graph.stream(alice, null, null)) {
+            final long aliceCount = stream.count();
+            assertTrue(aliceCount > 0);
+            Assume.assumeNotNull(aliceName);
+            assertEquals(3, aliceCount);
+        }
+
+        Assume.assumeNotNull(bnode1, bnode2, bobName, companyName, secretClubName);
+        try (Stream<? extends Triple> stream = graph.stream(null, name, null)) {
+            assertEquals(4, stream.count());
+        }
+        Assume.assumeNotNull(bnode1);
+        try (Stream<? extends Triple> stream = graph.stream(null, member, null)) {
+            assertEquals(3, stream.count());
+        }
+    }
+
+    @Test
+    public void testIterate() throws Exception {
+
+        Assume.assumeFalse(graph.isEmpty());
+
+        final List<Triple> triples = new ArrayList<>();
+        for (final Triple t : graph.iterate()) {
+            triples.add(t);
+        }
+        assertEquals(graph.size(), triples.size());
+        if (bobNameTriple != null) {
+            assertTrue(triples.contains(bobNameTriple));
+        }
+
+        // aborted iteration
+        final Iterable<Triple> iterate = graph.iterate();
+        final Iterator<Triple> it = iterate.iterator();
+
+        assertTrue(it.hasNext());
+        it.next();
+        closeIterable(iterate);
+
+        // second iteration - should start from fresh and
+        // get the same count
+        long count = 0;
+        final Iterable<Triple> iterable = graph.iterate();
+        for (@SuppressWarnings("unused") final
+        Triple t : iterable) {
+            count++;
+        }
+        assertEquals(graph.size(), count);
+    }
+
+    @Test
+    public void testIterateFilter() throws Exception {
+        final List<RDFTerm> friends = new ArrayList<>();
+        final IRI alice = factory.createIRI("http://example.com/alice");
+        final IRI knows = factory.createIRI("http://xmlns.com/foaf/0.1/knows");
+        for (final Triple t : graph.iterate(alice, knows, null)) {
+            friends.add(t.getObject());
+        }
+        assertEquals(1, friends.size());
+        assertEquals(bob, friends.get(0));
+
+        // .. can we iterate over zero hits?
+        final Iterable<Triple> iterate = graph.iterate(bob, knows, alice);
+        for (final Triple unexpected : iterate) {
+            fail("Unexpected triple " + unexpected);
+        }
+        // closeIterable(iterate);
+    }
+
+    @Test
+    public void testRemove() throws Exception {
+        final long fullSize = graph.size();
+        graph.remove(alice, knows, bob);
+        final long shrunkSize = graph.size();
+        assertEquals(1, fullSize - shrunkSize);
+
+        graph.remove(alice, knows, bob);
+        assertEquals(shrunkSize, graph.size()); // unchanged
+
+        graph.add(alice, knows, bob);
+        graph.add(alice, knows, bob);
+        graph.add(alice, knows, bob);
+        // Undetermined size at this point -- but at least it
+        // should be bigger
+        assertTrue(graph.size() > shrunkSize);
+
+        // and after a single remove they should all be gone
+        graph.remove(alice, knows, bob);
+        assertEquals(shrunkSize, graph.size());
+
+        Triple otherTriple;
+        try (Stream<? extends Triple> stream = graph.stream()) {
+            final Optional<? extends Triple> anyTriple = stream.findAny();
+            Assume.assumeTrue(anyTriple.isPresent());
+            otherTriple = anyTriple.get();
+        }
+
+        graph.remove(otherTriple);
+        assertEquals(shrunkSize - 1, graph.size());
+        graph.remove(otherTriple);
+        assertEquals(shrunkSize - 1, graph.size()); // no change
+
+        // for some reason in rdf4j this causes duplicates!
+        graph.add(otherTriple);
+        // graph.stream().forEach(System.out::println);
+        // should have increased
+        assertTrue(graph.size() >= shrunkSize);
+    }
+
+    @Test
     public void testRemoveLanguageTagsCaseInsensitive() throws Exception {
         // COMMONSRDF-51: Ensure we can remove with any casing
         // of literal language tag
@@ -495,10 +597,12 @@ public abstract class AbstractGraphTest {
         }
     }
 
-    private static Optional<? extends Triple> closableFindAny(final Stream<? extends Triple> stream) {
-        try (Stream<? extends Triple> s = stream) {
-            return s.findAny();
-        }
+    @Test
+    public void testSize() throws Exception {
+        assertFalse(graph.isEmpty());
+        Assume.assumeNotNull(bnode1, bnode2, aliceName, bobName, secretClubName, companyName, bobNameTriple);
+        // Can only reliably predict size if we could create all triples
+        assertEquals(8, graph.size());
     }
 
     @Test
@@ -524,110 +628,6 @@ public abstract class AbstractGraphTest {
             final Triple t = closableFindAny(graph.stream(null, null, lower)).get();
             assertEquals(t, factory.createTriple(example1, greeting, mixed));
         }
-    }
-
-    private void notEquals(final BlankNodeOrIRI node1, final BlankNodeOrIRI node2) {
-        assertFalse(node1.equals(node2));
-        // in which case we should be able to assume
-        // (as they are in the same graph)
-        assertFalse(node1.ntriplesString().equals(node2.ntriplesString()));
-    }
-
-    /**
-     * Add all triples from the source to the target.
-     * <p>
-     * The triples may be copied in any order. No special conversion or
-     * adaptation of {@link BlankNode}s are performed.
-     *
-     * @param source
-     *            Source Graph to copy triples from
-     * @param target
-     *            Target Graph where triples will be added
-     */
-    private void addAllTriples(final Graph source, final Graph target) {
-
-        // unordered() as we don't need to preserve triple order
-        // sequential() as we don't (currently) require target Graph to be
-        // thread-safe
-
-        try (Stream<? extends Triple> stream = source.stream()) {
-            stream.unordered().sequential().forEach(t -> target.add(t));
-        }
-    }
-
-    /**
-     * Make a new graph with two BlankNodes - each with a different
-     * uniqueReference
-     */
-    private Graph createGraph1() {
-        final RDF factory1 = createFactory();
-
-        final IRI name = factory1.createIRI("http://xmlns.com/foaf/0.1/name");
-        final Graph g1 = factory1.createGraph();
-        final BlankNode b1 = createOwnBlankNode("b1", "0240eaaa-d33e-4fc0-a4f1-169d6ced3680");
-        g1.add(b1, name, factory1.createLiteral("Alice"));
-
-        final BlankNode b2 = createOwnBlankNode("b2", "9de7db45-0ce7-4b0f-a1ce-c9680ffcfd9f");
-        g1.add(b2, name, factory1.createLiteral("Bob"));
-
-        final IRI hasChild = factory1.createIRI("http://example.com/hasChild");
-        g1.add(b1, hasChild, b2);
-
-        return g1;
-    }
-
-    /**
-     * Create a different implementation of BlankNode to be tested with
-     * graph.add(a,b,c); (the implementation may or may not then choose to
-     * translate such to its own instances)
-     *
-     * @param name
-     * @return
-     */
-    private BlankNode createOwnBlankNode(final String name, final String uuid) {
-        return new BlankNode() {
-            @Override
-            public String ntriplesString() {
-                return "_: " + name;
-            }
-
-            @Override
-            public String uniqueReference() {
-                return uuid;
-            }
-
-            @Override
-            public int hashCode() {
-                return uuid.hashCode();
-            }
-
-            @Override
-            public boolean equals(final Object obj) {
-                if (!(obj instanceof BlankNode)) {
-                    return false;
-                }
-                final BlankNode other = (BlankNode) obj;
-                return uuid.equals(other.uniqueReference());
-            }
-        };
-    }
-
-    private Graph createGraph2() {
-        final RDF factory2 = createFactory();
-        final IRI name = factory2.createIRI("http://xmlns.com/foaf/0.1/name");
-
-        final Graph g2 = factory2.createGraph();
-
-        final BlankNode b1 = createOwnBlankNode("b1", "bc8d3e45-a08f-421d-85b3-c25b373abf87");
-        g2.add(b1, name, factory2.createLiteral("Charlie"));
-
-        final BlankNode b2 = createOwnBlankNode("b2", "2209097a-5078-4b03-801a-6a2d2f50d739");
-        g2.add(b2, name, factory2.createLiteral("Dave"));
-
-        final IRI hasChild = factory2.createIRI("http://example.com/hasChild");
-        // NOTE: Opposite direction of loadGraph1
-        g2.add(b2, hasChild, b1);
-        return g2;
     }
 
     /**

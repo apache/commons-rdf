@@ -23,23 +23,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 class DummyQuad implements Quad {
-    @Override
-    public Optional<BlankNodeOrIRI> getGraphName() {
-        return Optional.empty();
-    }
-    @Override
-    public BlankNodeOrIRI getSubject() {
-        return new DummyIRI(1);
-    }
-    @Override
-    public IRI getPredicate() {
-        return new DummyIRI(2);
-    }
-    @Override
-    public RDFTerm getObject() {
-        return new DummyIRI(3);
-    }
-
     private static List<RDFTerm> quadList(final Quad q) {
          return Arrays.asList(
              q.getGraphName().orElse(null),
@@ -47,13 +30,30 @@ class DummyQuad implements Quad {
              q.getPredicate(),
              q.getObject());
     }
-
     @Override
     public boolean equals(final Object obj) {
         if (!(obj instanceof Quad)) {
             return false;
         }
         return quadList(this).equals(quadList((Quad) obj));
+    }
+    @Override
+    public Optional<BlankNodeOrIRI> getGraphName() {
+        return Optional.empty();
+    }
+    @Override
+    public RDFTerm getObject() {
+        return new DummyIRI(3);
+    }
+
+    @Override
+    public IRI getPredicate() {
+        return new DummyIRI(2);
+    }
+
+    @Override
+    public BlankNodeOrIRI getSubject() {
+        return new DummyIRI(1);
     }
 
     @Override

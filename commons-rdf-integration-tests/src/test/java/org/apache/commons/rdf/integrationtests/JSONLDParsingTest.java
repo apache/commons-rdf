@@ -78,6 +78,11 @@ public class JSONLDParsingTest {
     URL aliceCached = getClass().getResource("/alice-cached.jsonld");
     URL aliceEmbedded = getClass().getResource("/alice-embedded.jsonld");
 
+    private void checkGraph(final Graph g) {
+        assertTrue(g.contains(alice, name, aliceWLand));
+        assertTrue(g.contains(alice, type, person));
+    }
+
     /**
      * Pre-test that src/test/resources files are on the classpath
      *
@@ -93,23 +98,6 @@ public class JSONLDParsingTest {
         // (We'll use these to ensure our HTTPClient dependency works)
     }
 
-    private void checkGraph(final Graph g) {
-        assertTrue(g.contains(alice, name, aliceWLand));
-        assertTrue(g.contains(alice, type, person));
-    }
-
-    @Test
-    public void testJenaParseEmbedded() throws Exception {
-        jenaParse(aliceEmbedded);
-    }
-
-    @Test
-    public void testJenaParseCached() throws Exception {
-        // Check if HTTPClient cache is used from
-        // jarcache.json
-        jenaParse(aliceCached);
-    }
-
     private void jenaParse(final URL url) throws Exception {
         try (final JenaDataset dataset = new JenaRDF().createDataset()) {
             RDFDataMgr.read(dataset.asJenaDatasetGraph(), url.toExternalForm());
@@ -117,16 +105,14 @@ public class JSONLDParsingTest {
         }
     }
 
-    @Test
-    public void testRdf4jParseEmbedded() throws Exception {
-        rdf4jParse(aliceEmbedded);
-    }
-
-    @Test
-    public void testRdf4jParseCached() throws Exception {
-        // Check if HTTPClient cache is used from
-        // jarcache.json
-        rdf4jParse(aliceCached);
+    private void jsonldParse(final URL url) throws Exception {
+        final Object aliceJson = JsonUtils.fromURL(url, JsonUtils.getDefaultHttpClient());
+        final JsonLdOptions options = new JsonLdOptions();
+        options.setBase(url.toExternalForm());
+        final RDFDataset ds = (RDFDataset) JsonLdProcessor.toRDF(aliceJson);
+        try (final JsonLdGraph graph = new JsonLdRDF().asGraph(ds)) {
+            checkGraph(graph);
+        }
     }
 
     private void rdf4jParse(final URL url) throws Exception {
@@ -140,8 +126,15 @@ public class JSONLDParsingTest {
     }
 
     @Test
-    public void testJsonldParseEmbedded() throws Exception {
-        jsonldParse(aliceEmbedded);
+    public void testJenaParseCached() throws Exception {
+        // Check if HTTPClient cache is used from
+        // jarcache.json
+        jenaParse(aliceCached);
+    }
+
+    @Test
+    public void testJenaParseEmbedded() throws Exception {
+        jenaParse(aliceEmbedded);
     }
 
     @Test
@@ -151,13 +144,20 @@ public class JSONLDParsingTest {
         jsonldParse(aliceCached);
     }
 
-    private void jsonldParse(final URL url) throws Exception {
-        final Object aliceJson = JsonUtils.fromURL(url, JsonUtils.getDefaultHttpClient());
-        final JsonLdOptions options = new JsonLdOptions();
-        options.setBase(url.toExternalForm());
-        final RDFDataset ds = (RDFDataset) JsonLdProcessor.toRDF(aliceJson);
-        try (final JsonLdGraph graph = new JsonLdRDF().asGraph(ds)) {
-            checkGraph(graph);
-        }
+    @Test
+    public void testJsonldParseEmbedded() throws Exception {
+        jsonldParse(aliceEmbedded);
+    }
+
+    @Test
+    public void testRdf4jParseCached() throws Exception {
+        // Check if HTTPClient cache is used from
+        // jarcache.json
+        rdf4jParse(aliceCached);
+    }
+
+    @Test
+    public void testRdf4jParseEmbedded() throws Exception {
+        rdf4jParse(aliceEmbedded);
     }
 }
