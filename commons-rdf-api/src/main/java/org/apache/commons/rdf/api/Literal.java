@@ -36,15 +36,30 @@ import java.util.Optional;
 public interface Literal extends RDFTerm {
 
     /**
-     * The lexical form of this literal, represented by a
-     * <a href="http://www.unicode.org/versions/latest/">Unicode string</a>.
+     * Check it this Literal is equal to another Literal.
+     * <blockquote>
+     * <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-literal-term">Literal
+     * term equality</a>:
+     * Two literals are term-equal (the same RDF literal) if
+     * and only if the two lexical forms, the two datatype IRIs, and the two
+     * language tags (if any) compare equal, character by character. Thus, two
+     * literals can have the same value without being the same RDF term.
+     * </blockquote>
+     * As the value space for language tags is lower-space, if they are present,
+     * they MUST be compared character by character
+     * using the equivalent of {@link String#toLowerCase(java.util.Locale)} with
+     * the locale {@link Locale#ROOT}.
+     * <p>
+     * Implementations MUST also override {@link #hashCode()} so that two equal
+     * Literals produce the same hash code.
      *
-     * @return The lexical form of this literal.
-     * @see <a href=
-     *      "http://www.w3.org/TR/rdf11-concepts/#dfn-lexical-form">RDF-1.1
-     *      Literal lexical form</a>
+     * @param other
+     *            Another object
+     * @return true if other is a Literal and is equal to this
+     * @see Object#equals(Object)
      */
-    String getLexicalForm();
+    @Override
+    boolean equals(Object other);
 
     /**
      * The IRI identifying the datatype that determines how the lexical form
@@ -97,30 +112,15 @@ public interface Literal extends RDFTerm {
     Optional<String> getLanguageTag();
 
     /**
-     * Check it this Literal is equal to another Literal.
-     * <blockquote>
-     * <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-literal-term">Literal
-     * term equality</a>:
-     * Two literals are term-equal (the same RDF literal) if
-     * and only if the two lexical forms, the two datatype IRIs, and the two
-     * language tags (if any) compare equal, character by character. Thus, two
-     * literals can have the same value without being the same RDF term.
-     * </blockquote>
-     * As the value space for language tags is lower-space, if they are present,
-     * they MUST be compared character by character
-     * using the equivalent of {@link String#toLowerCase(java.util.Locale)} with
-     * the locale {@link Locale#ROOT}.
-     * <p>
-     * Implementations MUST also override {@link #hashCode()} so that two equal
-     * Literals produce the same hash code.
+     * The lexical form of this literal, represented by a
+     * <a href="http://www.unicode.org/versions/latest/">Unicode string</a>.
      *
-     * @param other
-     *            Another object
-     * @return true if other is a Literal and is equal to this
-     * @see Object#equals(Object)
+     * @return The lexical form of this literal.
+     * @see <a href=
+     *      "http://www.w3.org/TR/rdf11-concepts/#dfn-lexical-form">RDF-1.1
+     *      Literal lexical form</a>
      */
-    @Override
-    boolean equals(Object other);
+    String getLexicalForm();
 
     /**
      * Calculate a hash code for this Literal.

@@ -56,6 +56,11 @@ public interface GraphLike<T extends TripleLike> {
     void add(T statement);
 
     /**
+     * Remove all statements.
+     */
+    void clear();
+
+    /**
      * Check if statement is contained.
      *
      * @param statement
@@ -65,17 +70,24 @@ public interface GraphLike<T extends TripleLike> {
     boolean contains(T statement);
 
     /**
+     * Iterate over contained statements.
+     *
+     * @return An {@link Iterable} of {@link TripleLike} statements.
+     * @throws IllegalStateException
+     *             if the {@link Iterable} has been reused
+     * @throws ConcurrentModificationException
+     *             if a concurrency conflict occurs while the Iterator is
+     *             active.
+     */
+    Iterable<T> iterate() throws ConcurrentModificationException, IllegalStateException;
+
+    /**
      * Add a statement.
      *
      * @param statement
      *            The TripleLike statement to add
      */
     void remove(T statement);
-
-    /**
-     * Remove all statements.
-     */
-    void clear();
 
     /**
      * Number of statements.
@@ -90,17 +102,5 @@ public interface GraphLike<T extends TripleLike> {
      * @return A {@link Stream} of {@link TripleLike} statements.
      */
     Stream<? extends T> stream();
-
-    /**
-     * Iterate over contained statements.
-     *
-     * @return An {@link Iterable} of {@link TripleLike} statements.
-     * @throws IllegalStateException
-     *             if the {@link Iterable} has been reused
-     * @throws ConcurrentModificationException
-     *             if a concurrency conflict occurs while the Iterator is
-     *             active.
-     */
-    Iterable<T> iterate() throws ConcurrentModificationException, IllegalStateException;
 
 }

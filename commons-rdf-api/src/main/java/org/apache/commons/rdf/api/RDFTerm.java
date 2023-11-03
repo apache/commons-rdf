@@ -53,16 +53,6 @@ package org.apache.commons.rdf.api;
 public interface RDFTerm {
 
     /**
-     * Return the term serialised as specified by the RDF-1.1 N-Triples
-     * Canonical form.
-     *
-     * @return The term serialised as RDF-1.1 N-Triples.
-     * @see <a href="http://www.w3.org/TR/n-triples/#canonical-ntriples">
-     *      RDF-1.1 N-Triples Canonical form</a>
-     */
-    String ntriplesString();
-
-	/**
 	 * Check it this RDFTerm is equal to another RDFTerm.
 	 * <p>
 	 * If this object is an {@link IRI}, equality is checked using
@@ -103,5 +93,15 @@ public interface RDFTerm {
 	 */
     @Override
     int hashCode();
+
+	/**
+     * Return the term serialised as specified by the RDF-1.1 N-Triples
+     * Canonical form.
+     *
+     * @return The term serialised as RDF-1.1 N-Triples.
+     * @see <a href="http://www.w3.org/TR/n-triples/#canonical-ntriples">
+     *      RDF-1.1 N-Triples Canonical form</a>
+     */
+    String ntriplesString();
 
 }

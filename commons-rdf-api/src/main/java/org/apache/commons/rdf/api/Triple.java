@@ -56,40 +56,6 @@ import java.util.Objects;
 public interface Triple extends TripleLike {
 
     /**
-     * The subject of this triple, which may be either a {@link BlankNode} or an
-     * {@link IRI}, which are represented in Commons RDF by the interface
-     * {@link BlankNodeOrIRI}.
-     *
-     * @return The subject {@link BlankNodeOrIRI} of this triple.
-     * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-subject">RDF-1.1
-     *      Triple subject</a>
-     */
-    @Override
-    BlankNodeOrIRI getSubject();
-
-    /**
-     * The predicate {@link IRI} of this triple.
-     *
-     * @return The predicate {@link IRI} of this triple.
-     * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-predicate">RDF-1.1
-     *      Triple predicate</a>
-     */
-    @Override
-    IRI getPredicate();
-
-    /**
-     * The object of this triple, which may be either a {@link BlankNode}, an
-     * {@link IRI}, or a {@link Literal}, which are represented in Commons RDF
-     * by the interface {@link RDFTerm}.
-     *
-     * @return The object {@link RDFTerm} of this triple.
-     * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-object">RDF-1.1
-     *      Triple object</a>
-     */
-    @Override
-    RDFTerm getObject();
-
-    /**
      * Check it this Triple is equal to another Triple.
      * <p>
      * Two Triples are equal if and only if their {@link #getSubject()},
@@ -107,6 +73,40 @@ public interface Triple extends TripleLike {
      */
     @Override
     boolean equals(Object other);
+
+    /**
+     * The object of this triple, which may be either a {@link BlankNode}, an
+     * {@link IRI}, or a {@link Literal}, which are represented in Commons RDF
+     * by the interface {@link RDFTerm}.
+     *
+     * @return The object {@link RDFTerm} of this triple.
+     * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-object">RDF-1.1
+     *      Triple object</a>
+     */
+    @Override
+    RDFTerm getObject();
+
+    /**
+     * The predicate {@link IRI} of this triple.
+     *
+     * @return The predicate {@link IRI} of this triple.
+     * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-predicate">RDF-1.1
+     *      Triple predicate</a>
+     */
+    @Override
+    IRI getPredicate();
+
+    /**
+     * The subject of this triple, which may be either a {@link BlankNode} or an
+     * {@link IRI}, which are represented in Commons RDF by the interface
+     * {@link BlankNodeOrIRI}.
+     *
+     * @return The subject {@link BlankNodeOrIRI} of this triple.
+     * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-subject">RDF-1.1
+     *      Triple subject</a>
+     */
+    @Override
+    BlankNodeOrIRI getSubject();
 
     /**
      * Calculate a hash code for this Triple.

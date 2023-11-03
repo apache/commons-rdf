@@ -59,32 +59,6 @@ import java.util.UUID;
 public interface BlankNode extends BlankNodeOrIRI {
 
     /**
-     * Return a reference for uniquely identifying the blank node.
-     * <p>
-     * The reference string MUST universally and uniquely identify this blank
-     * node. That is, different blank nodes created separately in different JVMs
-     * or from different {@link RDF} instances MUST NOT have the same reference
-     * string.
-     * <p>
-     * The {@link #uniqueReference()} of two <code>BlankNode</code> instances
-     * MUST be equal if and only if the two blank nodes are equal according to
-     * {@link #equals(Object)}.
-     * <p>
-     * Clients should not assume any particular structure of the reference
-     * string, however it is recommended that the reference string contain a
-     * UUID-derived string, e.g. as returned from {@link UUID#toString()}.
-     * <p>
-     * <strong>IMPORTANT:</strong> This is not a
-     * <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node-identifier">
-     * blank node identifier</a> nor a serialization/syntax label, and there are
-     * no guarantees that it is a valid identifier in any concrete RDF syntax.
-     * For an N-Triples compatible identifier, use {@link #ntriplesString()}.
-     *
-     * @return A universally unique reference to identify this {@link BlankNode}
-     */
-    String uniqueReference();
-
-    /**
      * Check it this BlankNode is equal to another BlankNode. Two BlankNodes
      * MUST be equal if, and only if, they have the same
      * {@link #uniqueReference()}.
@@ -116,5 +90,31 @@ public interface BlankNode extends BlankNodeOrIRI {
      */
     @Override
     int hashCode();
+
+    /**
+     * Return a reference for uniquely identifying the blank node.
+     * <p>
+     * The reference string MUST universally and uniquely identify this blank
+     * node. That is, different blank nodes created separately in different JVMs
+     * or from different {@link RDF} instances MUST NOT have the same reference
+     * string.
+     * <p>
+     * The {@link #uniqueReference()} of two <code>BlankNode</code> instances
+     * MUST be equal if and only if the two blank nodes are equal according to
+     * {@link #equals(Object)}.
+     * <p>
+     * Clients should not assume any particular structure of the reference
+     * string, however it is recommended that the reference string contain a
+     * UUID-derived string, e.g. as returned from {@link UUID#toString()}.
+     * <p>
+     * <strong>IMPORTANT:</strong> This is not a
+     * <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node-identifier">
+     * blank node identifier</a> nor a serialization/syntax label, and there are
+     * no guarantees that it is a valid identifier in any concrete RDF syntax.
+     * For an N-Triples compatible identifier, use {@link #ntriplesString()}.
+     *
+     * @return A universally unique reference to identify this {@link BlankNode}
+     */
+    String uniqueReference();
 
 }

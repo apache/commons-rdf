@@ -28,16 +28,6 @@ package org.apache.commons.rdf.api;
 public interface IRI extends BlankNodeOrIRI {
 
     /**
-     * Return the IRI encoded as a native Unicode String.<br>
-     *
-     * The returned string must not include URL-encoding to escape non-ASCII
-     * characters.
-     *
-     * @return The IRI encoded as a native Unicode String.
-     */
-    String getIRIString();
-
-    /**
      * Check it this IRI is equal to another IRI. <blockquote>
      * <a href="http://www.w3.org/TR/rdf11-concepts/#section-IRIs">IRI
      * equality</a>: Two IRIs are equal if and only if they are equivalent under
@@ -58,6 +48,16 @@ public interface IRI extends BlankNodeOrIRI {
      */
     @Override
     boolean equals(Object other);
+
+    /**
+     * Return the IRI encoded as a native Unicode String.<br>
+     *
+     * The returned string must not include URL-encoding to escape non-ASCII
+     * characters.
+     *
+     * @return The IRI encoded as a native Unicode String.
+     */
+    String getIRIString();
 
     /**
      * Calculate a hash code for this IRI.

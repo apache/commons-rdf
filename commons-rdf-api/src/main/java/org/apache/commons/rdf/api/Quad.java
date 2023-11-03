@@ -61,61 +61,6 @@ import java.util.Optional;
 public interface Quad extends QuadLike<BlankNodeOrIRI> {
 
     /**
-     * The graph name (graph label) of this quad, if present.
-     *
-     * If {@link Optional#isPresent()}, then the {@link Optional#get()} is
-     * either a {@link BlankNode} or an {@link IRI}, indicating the
-     * <a href="https://www.w3.org/TR/rdf11-concepts/#dfn-named-graph">graph
-     * name</a> of this Quad. If the graph name is not present, e.g. the value
-     * is {@link Optional#empty()}, it indicates that this Quad is in the
-     * <a href="https://www.w3.org/TR/rdf11-concepts/#dfn-default-graph">default
-     * graph</a>.
-     *
-     * @return If {@link Optional#isPresent()}, the graph name
-     *         {@link BlankNodeOrIRI} of this quad, otherwise
-     *         {@link Optional#empty()}, indicating the default graph.
-     *
-     * @see <a href="https://www.w3.org/TR/rdf11-concepts/#dfn-rdf-dataset">RDF-
-     *      1.1 Dataset</a>
-     */
-    @Override
-    Optional<BlankNodeOrIRI> getGraphName();
-
-    /**
-     * The subject of this quad, which may be either a {@link BlankNode} or an
-     * {@link IRI}, which are represented in Commons RDF by the interface
-     * {@link BlankNodeOrIRI}.
-     *
-     * @return The subject {@link BlankNodeOrIRI} of this quad.
-     * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-subject">RDF-1.1
-     *      Triple subject</a>
-     */
-    @Override
-    BlankNodeOrIRI getSubject();
-
-    /**
-     * The predicate {@link IRI} of this quad.
-     *
-     * @return The predicate {@link IRI} of this quad.
-     * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-predicate">RDF-1.1
-     *      Triple predicate</a>
-     */
-    @Override
-    IRI getPredicate();
-
-    /**
-     * The object of this quad, which may be either a {@link BlankNode}, an
-     * {@link IRI}, or a {@link Literal}, which are represented in Commons RDF
-     * by the interface {@link RDFTerm}.
-     *
-     * @return The object {@link RDFTerm} of this quad.
-     * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-object">RDF-1.1
-     *      Triple object</a>
-     */
-    @Override
-    RDFTerm getObject();
-
-    /**
      * Adapt this Quad to a Triple.
      * <p>
      * The returned {@link Triple} will have equivalent values returned from the
@@ -153,21 +98,6 @@ public interface Quad extends QuadLike<BlankNodeOrIRI> {
     default Triple asTriple() {
         return new Triple() {
             @Override
-            public BlankNodeOrIRI getSubject() {
-                return Quad.this.getSubject();
-            }
-
-            @Override
-            public IRI getPredicate() {
-                return Quad.this.getPredicate();
-            }
-
-            @Override
-            public RDFTerm getObject() {
-                return Quad.this.getObject();
-            }
-
-            @Override
             public boolean equals(final Object obj) {
                 if (obj == this) {
                     return true;
@@ -179,6 +109,21 @@ public interface Quad extends QuadLike<BlankNodeOrIRI> {
                 return Objects.equals(getSubject(), other.getSubject())
                         && Objects.equals(getPredicate(), other.getPredicate())
                         && Objects.equals(getObject(), other.getObject());
+            }
+
+            @Override
+            public RDFTerm getObject() {
+                return Quad.this.getObject();
+            }
+
+            @Override
+            public IRI getPredicate() {
+                return Quad.this.getPredicate();
+            }
+
+            @Override
+            public BlankNodeOrIRI getSubject() {
+                return Quad.this.getSubject();
             }
 
             @Override
@@ -218,6 +163,61 @@ public interface Quad extends QuadLike<BlankNodeOrIRI> {
      */
     @Override
     boolean equals(Object other);
+
+    /**
+     * The graph name (graph label) of this quad, if present.
+     *
+     * If {@link Optional#isPresent()}, then the {@link Optional#get()} is
+     * either a {@link BlankNode} or an {@link IRI}, indicating the
+     * <a href="https://www.w3.org/TR/rdf11-concepts/#dfn-named-graph">graph
+     * name</a> of this Quad. If the graph name is not present, e.g. the value
+     * is {@link Optional#empty()}, it indicates that this Quad is in the
+     * <a href="https://www.w3.org/TR/rdf11-concepts/#dfn-default-graph">default
+     * graph</a>.
+     *
+     * @return If {@link Optional#isPresent()}, the graph name
+     *         {@link BlankNodeOrIRI} of this quad, otherwise
+     *         {@link Optional#empty()}, indicating the default graph.
+     *
+     * @see <a href="https://www.w3.org/TR/rdf11-concepts/#dfn-rdf-dataset">RDF-
+     *      1.1 Dataset</a>
+     */
+    @Override
+    Optional<BlankNodeOrIRI> getGraphName();
+
+    /**
+     * The object of this quad, which may be either a {@link BlankNode}, an
+     * {@link IRI}, or a {@link Literal}, which are represented in Commons RDF
+     * by the interface {@link RDFTerm}.
+     *
+     * @return The object {@link RDFTerm} of this quad.
+     * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-object">RDF-1.1
+     *      Triple object</a>
+     */
+    @Override
+    RDFTerm getObject();
+
+    /**
+     * The predicate {@link IRI} of this quad.
+     *
+     * @return The predicate {@link IRI} of this quad.
+     * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-predicate">RDF-1.1
+     *      Triple predicate</a>
+     */
+    @Override
+    IRI getPredicate();
+
+    /**
+     * The subject of this quad, which may be either a {@link BlankNode} or an
+     * {@link IRI}, which are represented in Commons RDF by the interface
+     * {@link BlankNodeOrIRI}.
+     *
+     * @return The subject {@link BlankNodeOrIRI} of this quad.
+     * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-subject">RDF-1.1
+     *      Triple subject</a>
+     */
+    @Override
+    BlankNodeOrIRI getSubject();
 
     /**
      * Calculate a hash code for this Quad.

@@ -32,16 +32,6 @@ import java.util.stream.Stream;
 public interface Graph extends AutoCloseable, GraphLike<Triple> {
 
     /**
-     * Adds a triple to the graph, possibly mapping any of the components of the
-     * Triple to those supported by this Graph.
-     *
-     * @param triple
-     *            The triple to add
-     */
-    @Override
-    void add(Triple triple);
-
-    /**
      * Adds a triple to the graph, possibly mapping any of the components to
      * those supported by this Graph.
      *
@@ -55,28 +45,20 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
     void add(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
 
     /**
-     * Checks if graph contains triple.
+     * Adds a triple to the graph, possibly mapping any of the components of the
+     * Triple to those supported by this Graph.
      *
      * @param triple
-     *            The triple to check.
-     * @return True if the Graph contains the given Triple.
+     *            The triple to add
      */
     @Override
-    boolean contains(Triple triple);
+    void add(Triple triple);
 
     /**
-     * Checks if graph contains a pattern of triples.
-     *
-     * @param subject
-     *            The triple subject (null is a wildcard)
-     * @param predicate
-     *            The triple predicate (null is a wildcard)
-     * @param object
-     *            The triple object (null is a wildcard)
-     * @return True if the Graph contains any Triples that match the given
-     *         pattern.
+     * Clears the graph, removing all triples.
      */
-    boolean contains(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
+    @Override
+    void clear();
 
     /**
      * Closes the graph, relinquishing any underlying resources.
@@ -98,92 +80,28 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
     }
 
     /**
-     * Removes a concrete triple from the graph.
+     * Checks if graph contains a pattern of triples.
+     *
+     * @param subject
+     *            The triple subject (null is a wildcard)
+     * @param predicate
+     *            The triple predicate (null is a wildcard)
+     * @param object
+     *            The triple object (null is a wildcard)
+     * @return True if the Graph contains any Triples that match the given
+     *         pattern.
+     */
+    boolean contains(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
+
+    /**
+     * Checks if graph contains triple.
      *
      * @param triple
-     *            triple to remove
+     *            The triple to check.
+     * @return True if the Graph contains the given Triple.
      */
     @Override
-    void remove(Triple triple);
-
-    /**
-     * Removes a concrete pattern of triples from the graph.
-     *
-     * @param subject
-     *            The triple subject (null is a wildcard)
-     * @param predicate
-     *            The triple predicate (null is a wildcard)
-     * @param object
-     *            The triple object (null is a wildcard)
-     */
-    void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
-
-    /**
-     * Clears the graph, removing all triples.
-     */
-    @Override
-    void clear();
-
-    /**
-     * Number of triples contained by the graph.
-     * <p>
-     * The count of a set does not include duplicates, consistent with the
-     * {@link Triple#equals(Object)} equals method for each {@link Triple}.
-     * </p>
-     *
-     * @return The number of triples in the graph
-     */
-    @Override
-    long size();
-
-    /**
-     * Gets all triples contained by the graph.<br>
-     * <p>
-     * The iteration does not contain any duplicate triples, as determined by
-     * the {@link Triple#equals(Object)} method for each {@link Triple}.
-     * </p>
-     * <p>
-     * The behavior of the {@link Stream} is not specified if
-     * {@link #add(Triple)}, {@link #remove(Triple)} or {@link #clear()} are
-     * called on the {@link Graph} before it terminates.
-     * </p>
-     * <p>
-     * Implementations may throw {@link ConcurrentModificationException} from
-     * Stream methods if they detect a conflict while the Stream is active.
-     * </p>
-     *
-     * @since 0.3.0-incubating
-     * @return A {@link Stream} over all of the triples in the graph
-     */
-    @Override
-    Stream<? extends Triple> stream();
-
-    /**
-     * Gets all triples contained by the graph matched with the pattern.
-     * <p>
-     * The iteration does not contain any duplicate triples, as determined by
-     * the {@link Triple#equals(Object)} method for each {@link Triple}.
-     * </p>
-     * <p>
-     * The behavior of the {@link Stream} is not specified if
-     * {@link #add(Triple)}, {@link #remove(Triple)} or {@link #clear()} are
-     * called on the {@link Graph} before it terminates.
-     * </p>
-     * <p>
-     * Implementations may throw {@link ConcurrentModificationException} from
-     * Stream methods if they detect a conflict while the Stream is active.
-     * </p>
-     *
-     * @since 0.3.0-incubating
-     * @param subject
-     *            The triple subject (null is a wildcard)
-     * @param predicate
-     *            The triple predicate (null is a wildcard)
-     * @param object
-     *            The triple object (null is a wildcard)
-     * @return A {@link Stream} over the matched triples.
-     */
-    Stream<? extends Triple> stream(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
+    boolean contains(Triple triple);
 
     /**
      * This method is deprecated, use the equivalent method {@link #stream()}
@@ -321,5 +239,87 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
             throws ConcurrentModificationException, IllegalStateException {
         return ((Stream<Triple>) stream(subject, predicate, object))::iterator;
     }
+
+    /**
+     * Removes a concrete pattern of triples from the graph.
+     *
+     * @param subject
+     *            The triple subject (null is a wildcard)
+     * @param predicate
+     *            The triple predicate (null is a wildcard)
+     * @param object
+     *            The triple object (null is a wildcard)
+     */
+    void remove(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
+
+    /**
+     * Removes a concrete triple from the graph.
+     *
+     * @param triple
+     *            triple to remove
+     */
+    @Override
+    void remove(Triple triple);
+
+    /**
+     * Number of triples contained by the graph.
+     * <p>
+     * The count of a set does not include duplicates, consistent with the
+     * {@link Triple#equals(Object)} equals method for each {@link Triple}.
+     * </p>
+     *
+     * @return The number of triples in the graph
+     */
+    @Override
+    long size();
+
+    /**
+     * Gets all triples contained by the graph.<br>
+     * <p>
+     * The iteration does not contain any duplicate triples, as determined by
+     * the {@link Triple#equals(Object)} method for each {@link Triple}.
+     * </p>
+     * <p>
+     * The behavior of the {@link Stream} is not specified if
+     * {@link #add(Triple)}, {@link #remove(Triple)} or {@link #clear()} are
+     * called on the {@link Graph} before it terminates.
+     * </p>
+     * <p>
+     * Implementations may throw {@link ConcurrentModificationException} from
+     * Stream methods if they detect a conflict while the Stream is active.
+     * </p>
+     *
+     * @since 0.3.0-incubating
+     * @return A {@link Stream} over all of the triples in the graph
+     */
+    @Override
+    Stream<? extends Triple> stream();
+
+    /**
+     * Gets all triples contained by the graph matched with the pattern.
+     * <p>
+     * The iteration does not contain any duplicate triples, as determined by
+     * the {@link Triple#equals(Object)} method for each {@link Triple}.
+     * </p>
+     * <p>
+     * The behavior of the {@link Stream} is not specified if
+     * {@link #add(Triple)}, {@link #remove(Triple)} or {@link #clear()} are
+     * called on the {@link Graph} before it terminates.
+     * </p>
+     * <p>
+     * Implementations may throw {@link ConcurrentModificationException} from
+     * Stream methods if they detect a conflict while the Stream is active.
+     * </p>
+     *
+     * @since 0.3.0-incubating
+     * @param subject
+     *            The triple subject (null is a wildcard)
+     * @param predicate
+     *            The triple predicate (null is a wildcard)
+     * @param object
+     *            The triple object (null is a wildcard)
+     * @return A {@link Stream} over the matched triples.
+     */
+    Stream<? extends Triple> stream(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
 
 }

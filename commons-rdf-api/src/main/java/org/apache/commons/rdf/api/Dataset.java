@@ -34,16 +34,6 @@ import java.util.stream.Stream;
 public interface Dataset extends AutoCloseable, GraphLike<Quad> {
 
     /**
-     * Add a quad to the dataset, possibly mapping any of the components of the
-     * Quad to those supported by this dataset.
-     *
-     * @param quad
-     *            The quad to add
-     */
-    @Override
-    void add(Quad quad);
-
-    /**
      * Add a quad to the dataset, possibly mapping any of the components to
      * those supported by this dataset.
      *
@@ -60,14 +50,36 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
     void add(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
 
     /**
-     * Check if dataset contains quad.
+     * Add a quad to the dataset, possibly mapping any of the components of the
+     * Quad to those supported by this dataset.
      *
      * @param quad
-     *            The quad to check.
-     * @return True if the dataset contains the given Quad.
+     *            The quad to add
      */
     @Override
-    boolean contains(Quad quad);
+    void add(Quad quad);
+
+    /**
+     * Clear the dataset, removing all quads.
+     */
+    @Override
+    void clear();
+
+    /**
+     * Close the dataset, relinquishing any underlying resources.
+     * <p>
+     * For example, this would close any open file and network streams and free
+     * database locks held by the dataset implementation.
+     * <p>
+     * The behavior of the other dataset methods are undefined after closing
+     * the dataset.
+     * <p>
+     * Implementations might not need {@link #close()}, hence the default
+     * implementation does nothing.
+     */
+    @Override
+    default void close() throws Exception {
+    }
 
     /**
      * Check if dataset contains a pattern of quads.
@@ -88,20 +100,14 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
     boolean contains(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
 
     /**
-     * Close the dataset, relinquishing any underlying resources.
-     * <p>
-     * For example, this would close any open file and network streams and free
-     * database locks held by the dataset implementation.
-     * <p>
-     * The behavior of the other dataset methods are undefined after closing
-     * the dataset.
-     * <p>
-     * Implementations might not need {@link #close()}, hence the default
-     * implementation does nothing.
+     * Check if dataset contains quad.
+     *
+     * @param quad
+     *            The quad to check.
+     * @return True if the dataset contains the given Quad.
      */
     @Override
-    default void close() throws Exception {
-    }
+    boolean contains(Quad quad);
 
     /**
      * Gets the default graph of this dataset.
@@ -175,94 +181,6 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
     default boolean isEmpty() {
         return size() == 0;
     }
-
-    /**
-     * Remove a concrete quad from the dataset.
-     *
-     * @param quad
-     *            quad to remove
-     */
-    @Override
-    void remove(Quad quad);
-
-    /**
-     * Remove a concrete pattern of quads from the default graph of the dataset.
-     *
-     * @param graphName
-     *            The graph the quad belongs to, wrapped as an {@link Optional}
-     *            (<code>null</code> is a wildcard, {@link Optional#empty()} is
-     *            the default graph)
-     * @param subject
-     *            The quad subject (<code>null</code> is a wildcard)
-     * @param predicate
-     *            The quad predicate (<code>null</code> is a wildcard)
-     * @param object
-     *            The quad object (<code>null</code> is a wildcard)
-     */
-    void remove(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
-
-    /**
-     * Clear the dataset, removing all quads.
-     */
-    @Override
-    void clear();
-
-    /**
-     * Number of quads contained by the dataset.
-     * <p>
-     * The count of a set does not include duplicates, consistent with the
-     * {@link Quad#equals(Object)} equals method for each {@link Quad}.
-     *
-     * @return The number of quads in the dataset
-     */
-    @Override
-    long size();
-
-    /**
-     * Gets all quads contained by the dataset.<br>
-     * <p>
-     * The iteration does not contain any duplicate quads, as determined by the
-     * {@link Quad#equals(Object)} method for each {@link Quad}.
-     * <p>
-     * The behavior of the {@link Stream} is not specified if
-     * {@link #add(Quad)}, {@link #remove(Quad)} or {@link #clear()} are called
-     * on the {@link Dataset} before it terminates.
-     * <p>
-     * Implementations may throw {@link ConcurrentModificationException} from
-     * Stream methods if they detect a conflict while the Stream is active.
-     *
-     * @return A {@link Stream} over all of the quads in the dataset
-     */
-    @Override
-    Stream<? extends Quad> stream();
-
-    /**
-     * Gets all quads contained by the dataset matched with the pattern.
-     * <p>
-     * The iteration does not contain any duplicate quads, as determined by the
-     * {@link Quad#equals(Object)} method for each {@link Quad}.
-     * <p>
-     * The behavior of the {@link Stream} is not specified if
-     * {@link #add(Quad)}, {@link #remove(Quad)} or {@link #clear()} are called
-     * on the {@link Dataset} before it terminates.
-     * <p>
-     * Implementations may throw {@link ConcurrentModificationException} from
-     * Stream methods if they detect a conflict while the Stream is active.
-     *
-     * @param graphName
-     *            The graph the quad belongs to, wrapped as an {@link Optional}
-     *            (<code>null</code> is a wildcard, {@link Optional#empty()} is
-     *            the default graph)
-     * @param subject
-     *            The quad subject (<code>null</code> is a wildcard)
-     * @param predicate
-     *            The quad predicate (<code>null</code> is a wildcard)
-     * @param object
-     *            The quad object (<code>null</code> is a wildcard)
-     * @return A {@link Stream} over the matched quads.
-     */
-    Stream<? extends Quad> stream(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate,
-            RDFTerm object);
 
     /**
      * Gets an Iterable for iterating over all quads in the dataset.
@@ -360,5 +278,87 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
             final RDFTerm object) throws ConcurrentModificationException, IllegalStateException {
         return ((Stream<Quad>) stream(graphName, subject, predicate, object))::iterator;
     }
+
+    /**
+     * Remove a concrete pattern of quads from the default graph of the dataset.
+     *
+     * @param graphName
+     *            The graph the quad belongs to, wrapped as an {@link Optional}
+     *            (<code>null</code> is a wildcard, {@link Optional#empty()} is
+     *            the default graph)
+     * @param subject
+     *            The quad subject (<code>null</code> is a wildcard)
+     * @param predicate
+     *            The quad predicate (<code>null</code> is a wildcard)
+     * @param object
+     *            The quad object (<code>null</code> is a wildcard)
+     */
+    void remove(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
+
+    /**
+     * Remove a concrete quad from the dataset.
+     *
+     * @param quad
+     *            quad to remove
+     */
+    @Override
+    void remove(Quad quad);
+
+    /**
+     * Number of quads contained by the dataset.
+     * <p>
+     * The count of a set does not include duplicates, consistent with the
+     * {@link Quad#equals(Object)} equals method for each {@link Quad}.
+     *
+     * @return The number of quads in the dataset
+     */
+    @Override
+    long size();
+
+    /**
+     * Gets all quads contained by the dataset.<br>
+     * <p>
+     * The iteration does not contain any duplicate quads, as determined by the
+     * {@link Quad#equals(Object)} method for each {@link Quad}.
+     * <p>
+     * The behavior of the {@link Stream} is not specified if
+     * {@link #add(Quad)}, {@link #remove(Quad)} or {@link #clear()} are called
+     * on the {@link Dataset} before it terminates.
+     * <p>
+     * Implementations may throw {@link ConcurrentModificationException} from
+     * Stream methods if they detect a conflict while the Stream is active.
+     *
+     * @return A {@link Stream} over all of the quads in the dataset
+     */
+    @Override
+    Stream<? extends Quad> stream();
+
+    /**
+     * Gets all quads contained by the dataset matched with the pattern.
+     * <p>
+     * The iteration does not contain any duplicate quads, as determined by the
+     * {@link Quad#equals(Object)} method for each {@link Quad}.
+     * <p>
+     * The behavior of the {@link Stream} is not specified if
+     * {@link #add(Quad)}, {@link #remove(Quad)} or {@link #clear()} are called
+     * on the {@link Dataset} before it terminates.
+     * <p>
+     * Implementations may throw {@link ConcurrentModificationException} from
+     * Stream methods if they detect a conflict while the Stream is active.
+     *
+     * @param graphName
+     *            The graph the quad belongs to, wrapped as an {@link Optional}
+     *            (<code>null</code> is a wildcard, {@link Optional#empty()} is
+     *            the default graph)
+     * @param subject
+     *            The quad subject (<code>null</code> is a wildcard)
+     * @param predicate
+     *            The quad predicate (<code>null</code> is a wildcard)
+     * @param object
+     *            The quad object (<code>null</code> is a wildcard)
+     * @return A {@link Stream} over the matched quads.
+     */
+    Stream<? extends Quad> stream(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate,
+            RDFTerm object);
 
 }

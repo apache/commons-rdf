@@ -41,11 +41,12 @@ package org.apache.commons.rdf.api;
 public interface TripleLike {
 
     /**
-     * The subject of this statement.
+     * The object of this statement.
      *
-     * @return The subject, typically an {@link IRI} or {@link BlankNode}.
+     * @return The object, typically an {@link IRI}, {@link BlankNode} or
+     *         {@link Literal}.
      */
-    RDFTerm getSubject();
+    RDFTerm getObject();
 
     /**
      * The predicate of this statement.
@@ -55,10 +56,9 @@ public interface TripleLike {
     RDFTerm getPredicate();
 
     /**
-     * The object of this statement.
+     * The subject of this statement.
      *
-     * @return The object, typically an {@link IRI}, {@link BlankNode} or
-     *         {@link Literal}.
+     * @return The subject, typically an {@link IRI} or {@link BlankNode}.
      */
-    RDFTerm getObject();
+    RDFTerm getSubject();
 }

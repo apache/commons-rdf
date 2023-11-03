@@ -84,16 +84,6 @@ public interface RDF {
     BlankNode createBlankNode(String name);
 
     /**
-     * Create a new graph.
-     *
-     * It is undefined if the graph will be persisted by any underlying storage
-     * mechanism.
-     *
-     * @return A new Graph
-     */
-    Graph createGraph();
-
-    /**
      * Create a new dataset.
      *
      * It is undefined if the dataset will be persisted by any underlying
@@ -102,6 +92,16 @@ public interface RDF {
      * @return A new Dataset
      */
     Dataset createDataset();
+
+    /**
+     * Create a new graph.
+     *
+     * It is undefined if the graph will be persisted by any underlying storage
+     * mechanism.
+     *
+     * @return A new Graph
+     */
+    Graph createGraph();
 
     /**
      * Create an IRI from a (possibly escaped) String.
@@ -207,28 +207,6 @@ public interface RDF {
     Literal createLiteral(String lexicalForm, String languageTag) throws IllegalArgumentException;
 
     /**
-     * Create a triple.
-     *
-     * The returned Triple SHOULD have a {@link Triple#getSubject()} that is
-     * equal to the provided subject, a {@link Triple#getPredicate()} that is
-     * equal to the provided predicate, and a {@link Triple#getObject()} that is
-     * equal to the provided object.
-     *
-     * @param subject
-     *            The IRI or BlankNode that is the subject of the triple
-     * @param predicate
-     *            The IRI that is the predicate of the triple
-     * @param object
-     *            The IRI, BlankNode or Literal that is the object of the triple
-     * @return The created Triple
-     * @throws IllegalArgumentException
-     *             If any of the provided arguments are not acceptable, e.g.
-     *             because a Literal has a lexicalForm that is too large for an
-     *             underlying storage.
-     */
-    Triple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) throws IllegalArgumentException;
-
-    /**
      * Create a quad.
      * <p>
      * The returned Quad SHOULD have a {@link Quad#getGraphName()} that is equal
@@ -254,5 +232,27 @@ public interface RDF {
      */
     Quad createQuad(BlankNodeOrIRI graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object)
             throws IllegalArgumentException;
+
+    /**
+     * Create a triple.
+     *
+     * The returned Triple SHOULD have a {@link Triple#getSubject()} that is
+     * equal to the provided subject, a {@link Triple#getPredicate()} that is
+     * equal to the provided predicate, and a {@link Triple#getObject()} that is
+     * equal to the provided object.
+     *
+     * @param subject
+     *            The IRI or BlankNode that is the subject of the triple
+     * @param predicate
+     *            The IRI that is the predicate of the triple
+     * @param object
+     *            The IRI, BlankNode or Literal that is the object of the triple
+     * @return The created Triple
+     * @throws IllegalArgumentException
+     *             If any of the provided arguments are not acceptable, e.g.
+     *             because a Literal has a lexicalForm that is too large for an
+     *             underlying storage.
+     */
+    Triple createTriple(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) throws IllegalArgumentException;
 
 }

@@ -54,21 +54,6 @@ class W3CRDFSyntax implements RDFSyntax {
         }
 
         @Override
-        public String getIRIString() {
-            return BASE + format;
-        }
-
-        @Override
-        public String ntriplesString() {
-            return "<" + getIRIString() + ">";
-        }
-
-        @Override
-        public String toString() {
-            return ntriplesString();
-        }
-
-        @Override
         public boolean equals(final Object obj) {
             if (this == obj) {
                 return true;
@@ -81,8 +66,23 @@ class W3CRDFSyntax implements RDFSyntax {
         }
 
         @Override
+        public String getIRIString() {
+            return BASE + format;
+        }
+
+        @Override
         public int hashCode() {
             return getIRIString().hashCode();
+        }
+
+        @Override
+        public String ntriplesString() {
+            return "<" + getIRIString() + ">";
+        }
+
+        @Override
+        public String toString() {
+            return ntriplesString();
         }
     }
 
@@ -104,12 +104,12 @@ class W3CRDFSyntax implements RDFSyntax {
             private final Set<String> extensions = Collections.unmodifiableSet(new LinkedHashSet<>(
                             Arrays.asList(".html", ".xhtml")));
             @Override
-            public Set<String> mediaTypes() {
-                return types;
-            }
-            @Override
             public Set<String> fileExtensions() {
                 return extensions;
+            }
+            @Override
+            public Set<String> mediaTypes() {
+                return types;
             }
         };
         syntaxes = Collections.unmodifiableSet(new LinkedHashSet<>(
@@ -137,16 +137,16 @@ class W3CRDFSyntax implements RDFSyntax {
         this.iri = new FormatIRI(name);
     }
 
-    /**
-     * {@inheritDoc}
-     * <p>
-     * {@link W3CRDFSyntax} always defines media type in lower case, so
-     * {@link String#toLowerCase(Locale)} need not be called.
-     *
-     */
     @Override
-    public String mediaType() {
-        return mediaType;
+    public boolean equals(final Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof RDFSyntax)) {
+            return false;
+        }
+        final RDFSyntax other = (RDFSyntax) obj;
+        return mediaType.equals(other.mediaType().toLowerCase(Locale.ROOT));
     }
 
     /**
@@ -162,13 +162,25 @@ class W3CRDFSyntax implements RDFSyntax {
     }
 
     @Override
-    public boolean supportsDataset() {
-        return supportsDataset;
+    public int hashCode() {
+        return mediaType.hashCode();
     }
 
     @Override
-    public String title() {
-        return title;
+    public IRI iri() {
+        return iri;
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * {@link W3CRDFSyntax} always defines media type in lower case, so
+     * {@link String#toLowerCase(Locale)} need not be called.
+     *
+     */
+    @Override
+    public String mediaType() {
+        return mediaType;
     }
 
     @Override
@@ -177,25 +189,13 @@ class W3CRDFSyntax implements RDFSyntax {
     }
 
     @Override
-    public IRI iri() {
-        return iri;
+    public boolean supportsDataset() {
+        return supportsDataset;
     }
 
     @Override
-    public boolean equals(final Object obj) {
-        if (obj == this) {
-            return true;
-        }
-        if (!(obj instanceof RDFSyntax)) {
-            return false;
-        }
-        final RDFSyntax other = (RDFSyntax) obj;
-        return mediaType.equals(other.mediaType().toLowerCase(Locale.ROOT));
-    }
-
-    @Override
-    public int hashCode() {
-        return mediaType.hashCode();
+    public String title() {
+        return title;
     }
 
     @Override
