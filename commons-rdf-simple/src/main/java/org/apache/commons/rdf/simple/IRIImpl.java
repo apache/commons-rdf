@@ -37,21 +37,6 @@ final class IRIImpl implements IRI, SimpleRDF.SimpleRDFTerm {
     }
 
     @Override
-    public String getIRIString() {
-        return iri;
-    }
-
-    @Override
-    public String ntriplesString() {
-        return "<" + getIRIString() + ">";
-    }
-
-    @Override
-    public String toString() {
-        return ntriplesString();
-    }
-
-    @Override
     public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
@@ -64,8 +49,23 @@ final class IRIImpl implements IRI, SimpleRDF.SimpleRDFTerm {
     }
 
     @Override
+    public String getIRIString() {
+        return iri;
+    }
+
+    @Override
     public int hashCode() {
         return iri.hashCode();
+    }
+
+    @Override
+    public String ntriplesString() {
+        return "<" + getIRIString() + ">";
+    }
+
+    @Override
+    public String toString() {
+        return ntriplesString();
     }
 
 }

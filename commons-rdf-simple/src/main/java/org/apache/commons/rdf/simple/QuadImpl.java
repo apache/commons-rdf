@@ -59,35 +59,8 @@ final class QuadImpl implements Quad {
     }
 
     @Override
-    public Optional<BlankNodeOrIRI> getGraphName() {
-        return Optional.ofNullable(graphName);
-    }
-
-    @Override
-    public BlankNodeOrIRI getSubject() {
-        return subject;
-    }
-
-    @Override
-    public IRI getPredicate() {
-        return predicate;
-    }
-
-    @Override
-    public RDFTerm getObject() {
-        return object;
-    }
-
-    @Override
-    public String toString() {
-        return getSubject().ntriplesString() + " " + getPredicate().ntriplesString() + " "
-                + getObject().ntriplesString() + " " + getGraphName().map(g -> g.ntriplesString() + " ").orElse("")
-                + ".";
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(subject, predicate, object, graphName);
+    public Triple asTriple() {
+        return new TripleImpl(getSubject(), getPredicate(), getObject());
     }
 
     @Override
@@ -101,8 +74,35 @@ final class QuadImpl implements Quad {
     }
 
     @Override
-    public Triple asTriple() {
-        return new TripleImpl(getSubject(), getPredicate(), getObject());
+    public Optional<BlankNodeOrIRI> getGraphName() {
+        return Optional.ofNullable(graphName);
+    }
+
+    @Override
+    public RDFTerm getObject() {
+        return object;
+    }
+
+    @Override
+    public IRI getPredicate() {
+        return predicate;
+    }
+
+    @Override
+    public BlankNodeOrIRI getSubject() {
+        return subject;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(subject, predicate, object, graphName);
+    }
+
+    @Override
+    public String toString() {
+        return getSubject().ntriplesString() + " " + getPredicate().ntriplesString() + " "
+                + getObject().ntriplesString() + " " + getGraphName().map(g -> g.ntriplesString() + " ").orElse("")
+                + ".";
     }
 
 }

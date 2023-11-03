@@ -56,8 +56,8 @@ class JsonLdGraphImpl extends AbstractJsonLdGraphLike<Triple> implements JsonLdG
     }
 
     @Override
-    public void clear() {
-        filteredGraphs(graphName).forEach(List::clear);
+    public void add(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
+        super.add(graphName.orElse(null), subject, predicate, object);
     }
 
     @Override
@@ -67,8 +67,13 @@ class JsonLdGraphImpl extends AbstractJsonLdGraphLike<Triple> implements JsonLdG
     }
 
     @Override
-    public void add(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
-        super.add(graphName.orElse(null), subject, predicate, object);
+    JsonLdTriple asTripleOrQuad(final com.github.jsonldjava.core.RDFDataset.Quad jsonldQuad) {
+        return factory.asTriple(jsonldQuad);
+    }
+
+    @Override
+    public void clear() {
+        filteredGraphs(graphName).forEach(List::clear);
     }
 
     @Override
@@ -102,10 +107,5 @@ class JsonLdGraphImpl extends AbstractJsonLdGraphLike<Triple> implements JsonLdG
     public Stream<JsonLdTriple> stream(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         return filteredGraphs(graphName).flatMap(List::stream).filter(quadFilter(subject, predicate, object))
                 .map(factory::asTriple);
-    }
-
-    @Override
-    JsonLdTriple asTripleOrQuad(final com.github.jsonldjava.core.RDFDataset.Quad jsonldQuad) {
-        return factory.asTriple(jsonldQuad);
     }
 }

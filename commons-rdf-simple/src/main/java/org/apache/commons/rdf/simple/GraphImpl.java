@@ -63,6 +63,25 @@ final class GraphImpl implements Graph {
         triples.add(internallyMap(triple));
     }
 
+    @Override
+    public void clear() {
+        triples.clear();
+    }
+
+    @Override
+    public boolean contains(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
+        return stream(subject, predicate, object).findFirst().isPresent();
+    }
+
+    @Override
+    public boolean contains(final Triple triple) {
+        return triples.contains(internallyMap(triple));
+    }
+
+    private Stream<Triple> getTriples(final Predicate<Triple> filter) {
+        return stream().filter(filter);
+    }
+
     private <T extends RDFTerm> RDFTerm internallyMap(final T object) {
         if (object == null || object instanceof SimpleRDFTerm) {
             // No need to re-map our own objects.
@@ -107,18 +126,22 @@ final class GraphImpl implements Graph {
     }
 
     @Override
-    public void clear() {
-        triples.clear();
+    public void remove(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
+        final Stream<Triple> toRemove = stream(subject, predicate, object);
+        for (final Triple t : toRemove.collect(Collectors.toList())) {
+            // Avoid ConcurrentModificationException in ArrayList
+            remove(t);
+        }
     }
 
     @Override
-    public boolean contains(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
-        return stream(subject, predicate, object).findFirst().isPresent();
+    public void remove(final Triple triple) {
+        triples.remove(internallyMap(triple));
     }
 
     @Override
-    public boolean contains(final Triple triple) {
-        return triples.contains(internallyMap(triple));
+    public long size() {
+        return triples.size();
     }
 
     @Override
@@ -146,29 +169,6 @@ final class GraphImpl implements Graph {
             }
             return true;
         });
-    }
-
-    private Stream<Triple> getTriples(final Predicate<Triple> filter) {
-        return stream().filter(filter);
-    }
-
-    @Override
-    public void remove(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
-        final Stream<Triple> toRemove = stream(subject, predicate, object);
-        for (final Triple t : toRemove.collect(Collectors.toList())) {
-            // Avoid ConcurrentModificationException in ArrayList
-            remove(t);
-        }
-    }
-
-    @Override
-    public void remove(final Triple triple) {
-        triples.remove(internallyMap(triple));
-    }
-
-    @Override
-    public long size() {
-        return triples.size();
     }
 
     @Override

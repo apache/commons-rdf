@@ -66,15 +66,15 @@ public class SimpleRDF implements RDF {
     }
 
     @Override
+    public Dataset createDataset() throws UnsupportedOperationException {
+        return new DatasetImpl(this);
+    }
+
+    @Override
     public Graph createGraph() {
         // Creates a GraphImpl object using this object as the factory for
         // delegating all object creation to
         return new GraphImpl(this);
-    }
-
-    @Override
-    public Dataset createDataset() throws UnsupportedOperationException {
-        return new DatasetImpl(this);
     }
 
     @Override
@@ -100,13 +100,13 @@ public class SimpleRDF implements RDF {
     }
 
     @Override
-    public Triple createTriple(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
-        return new TripleImpl(subject, predicate, object);
-    }
-
-    @Override
     public Quad createQuad(final BlankNodeOrIRI graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object)
             throws IllegalArgumentException {
         return new QuadImpl(graphName, subject, predicate, object);
+    }
+
+    @Override
+    public Triple createTriple(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
+        return new TripleImpl(subject, predicate, object);
     }
 }

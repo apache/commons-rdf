@@ -53,13 +53,13 @@ final class TripleImpl implements Triple {
     }
 
     @Override
-    public BlankNodeOrIRI getSubject() {
-        return subject;
-    }
-
-    @Override
-    public IRI getPredicate() {
-        return predicate;
+    public boolean equals(final Object obj) {
+        if (!(obj instanceof Triple)) {
+            return false;
+        }
+        final Triple other = (Triple) obj;
+        return getSubject().equals(other.getSubject()) && getPredicate().equals(other.getPredicate())
+                && getObject().equals(other.getObject());
     }
 
     @Override
@@ -68,9 +68,13 @@ final class TripleImpl implements Triple {
     }
 
     @Override
-    public String toString() {
-        return getSubject().ntriplesString() + " " + getPredicate().ntriplesString() + " "
-                + getObject().ntriplesString() + " .";
+    public IRI getPredicate() {
+        return predicate;
+    }
+
+    @Override
+    public BlankNodeOrIRI getSubject() {
+        return subject;
     }
 
     @Override
@@ -79,13 +83,9 @@ final class TripleImpl implements Triple {
     }
 
     @Override
-    public boolean equals(final Object obj) {
-        if (!(obj instanceof Triple)) {
-            return false;
-        }
-        final Triple other = (Triple) obj;
-        return getSubject().equals(other.getSubject()) && getPredicate().equals(other.getPredicate())
-                && getObject().equals(other.getObject());
+    public String toString() {
+        return getSubject().ntriplesString() + " " + getPredicate().ntriplesString() + " "
+                + getObject().ntriplesString() + " .";
     }
 
 }

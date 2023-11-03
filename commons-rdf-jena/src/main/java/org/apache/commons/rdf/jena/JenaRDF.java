@@ -79,180 +79,42 @@ public final class JenaRDF implements RDF {
     private static final InternalJenaFactory INTERNAL_JENA_FACTORY = new InternalJenaFactory() {
     };
 
-    private final UUID salt;
-
     /**
-     * Create a JenaRDF.
+     * Convert from Jena {@link org.apache.jena.sparql.core.Quad} to a Commons
+     * RDF {@link Quad}.
      * <p>
-     * This constructor will use a randomly generated {@link UUID} as a salt for
-     * the purposes of {@link BlankNode} identity, see {@link #salt()}.
-     */
-    public JenaRDF() {
-        this.salt = UUID.randomUUID();
-    }
-
-    /**
-     * Create a JenaRDF.
+     * Note that if any of the quad's nodes {@link Node#isBlank()}, then the
+     * factory's {@link RDF#createBlankNode(String)} will be used, meaning that
+     * care should be taken if reusing an {@link RDF} instance for multiple
+     * conversion sessions.
      * <p>
-     * This constructor will use the specified {@link UUID} as a salt for the
-     * purposes of {@link BlankNode} identity, and should only be used in cases
-     * where predictable and consistent {@link BlankNode#uniqueReference()} are
-     * important.
+     * If the provided quad {@link org.apache.jena.sparql.core.Quad#isDefaultGraph()},
+     * the returned {@link JenaQuadLike} has a {@link JenaQuadLike#getGraphName()}
+     * of {@link Optional#empty()}.
      *
-     * @param salt
-     *            {@link UUID} to use as salt for {@link BlankNode} equality
-     */
-    public JenaRDF(final UUID salt) {
-        this.salt = salt;
-    }
-
-    @Override
-    public JenaBlankNode createBlankNode() {
-        return INTERNAL_JENA_FACTORY.createBlankNode(salt());
-    }
-
-    @Override
-    public JenaBlankNode createBlankNode(final String name) {
-        return INTERNAL_JENA_FACTORY.createBlankNode(name, salt());
-    }
-
-    @Override
-    public JenaDataset createDataset() {
-        return INTERNAL_JENA_FACTORY.createDataset(salt());
-    }
-
-    @Override
-    public JenaGraph createGraph() {
-        return INTERNAL_JENA_FACTORY.createGraph(salt());
-    }
-
-    @Override
-    public JenaIRI createIRI(final String iri) {
-        validateIRI(iri);
-        return INTERNAL_JENA_FACTORY.createIRI(iri);
-    }
-
-    @Override
-    public JenaLiteral createLiteral(final String lexicalForm) {
-        return INTERNAL_JENA_FACTORY.createLiteral(lexicalForm);
-    }
-
-    @Override
-    public JenaLiteral createLiteral(final String lexicalForm, final IRI dataType) {
-        return INTERNAL_JENA_FACTORY.createLiteralDT(lexicalForm, dataType.getIRIString());
-    }
-
-    @Override
-    public JenaLiteral createLiteral(final String lexicalForm, final String languageTag) {
-        validateLang(languageTag);
-        return INTERNAL_JENA_FACTORY.createLiteralLang(lexicalForm, languageTag);
-    }
-
-    @Override
-    public JenaTriple createTriple(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
-        return INTERNAL_JENA_FACTORY.createTriple(subject, predicate, object);
-    }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * In addition to supporting a <code>graphName</code> of <code>null</code>
-     * for representing a triple in the <em>default graph</em>, this method also
-     * recognize a {@link JenaIRI} which {@link JenaRDFTerm#asJenaNode()}
-     * represent the default graph according to
-     * {@link org.apache.jena.sparql.core.Quad#isDefaultGraph(Node)}, in which
-     * case the returned JenaQuad will have a {@link Quad#getGraphName()} of
-     * {@link Optional#empty()} rather than the provided IRI.
+     * @see #asQuad(org.apache.jena.sparql.core.Quad)
+     * @see #asGeneralizedQuad(org.apache.jena.sparql.core.Quad)
      *
-     */
-    @Override
-    public JenaQuad createQuad(final BlankNodeOrIRI graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object)
-            throws IllegalArgumentException, UnsupportedOperationException {
-        return INTERNAL_JENA_FACTORY.createQuad(subject, predicate, object, graphName);
-    }
-
-    /**
-     * Create a generalized Jena triple.
-     * <p>
-     * The <em>generalized triple</em> supports any {@link RDFTerm} as its
-     * {@link TripleLike#getSubject()} {@link TripleLike#getPredicate()} or
-     * {@link TripleLike#getObject()}.
-     *
-     * @see #createTriple(BlankNodeOrIRI, IRI, RDFTerm)
-     * @see #createGeneralizedQuad(RDFTerm, RDFTerm, RDFTerm, RDFTerm)
-     *
-     * @param subject
-     *            The subject of the statement
-     * @param predicate
-     *            The predicate of the statement
-     * @param object
-     *            The object of the statement
-     * @return Generalized {@link TripleLike}. Note that the generalized triple
-     *         does <strong>not</strong> implement {@link Triple#equals(Object)}
-     *         or {@link Triple#hashCode()}.
-     */
-    public JenaGeneralizedTripleLike createGeneralizedTriple(final RDFTerm subject, final RDFTerm predicate, final RDFTerm object) {
-        return INTERNAL_JENA_FACTORY.createGeneralizedTriple(subject, predicate, object);
-    }
-
-    /**
-     * Create a generalized Jena quad.
-     * <p>
-     * The <em>generalized quad</em> supports any {@link RDFTerm} as its
-     * {@link QuadLike#getSubject()} {@link QuadLike#getPredicate()},
-     * {@link QuadLike#getObject()} or {@link QuadLike#getObject()}.
-     * <p>
-     * In addition to supporting a <code>graphName</code> of <code>null</code>
-     * for representing a triple in the <em>default graph</em>, this method also
-     * recognize a {@link JenaIRI} which {@link JenaRDFTerm#asJenaNode()}
-     * represent the default graph according to
-     * {@link org.apache.jena.sparql.core.Quad#isDefaultGraph(Node)}, in which
-     * case the returned JenaQuad will have a {@link Quad#getGraphName()} of
-     * {@link Optional#empty()} rather than the provided IRI.
-     *
-     * @see #createQuad(BlankNodeOrIRI, BlankNodeOrIRI, IRI, RDFTerm)
-     * @see #createGeneralizedTriple(RDFTerm, RDFTerm, RDFTerm)
-     *
-     * @param subject
-     *            The subject of the statement
-     * @param predicate
-     *            The predicate of the statement
-     * @param object
-     *            The object of the statement
-     * @param graphName
-     *            The graph name of the statement
-     * @return Generalized {@link QuadLike}. Note that the generalized quad does
-     *         <strong>not</strong> implement {@link Quad#equals(Object)} or
-     *         {@link Quad#hashCode()}.
-     */
-    public JenaGeneralizedQuadLike createGeneralizedQuad(final RDFTerm subject, final RDFTerm predicate, final RDFTerm object,
-            final RDFTerm graphName) {
-        return INTERNAL_JENA_FACTORY.createGeneralizedQuad(subject, predicate, object, graphName);
-    }
-
-    /**
-     * Adapt an existing Jena Node to CommonsRDF {@link RDFTerm}.
-     * <p>
-     * If {@link Node#isLiteral()}, then the returned value is a
-     * {@link Literal}. If {@link Node#isURI()}, the returned value is a IRI. If
-     * {$@link Node#isBlank()}, the returned value is a {@link BlankNode}, which
-     * will use a {@link UUID} salt from this {@link JenaRDF} instance in
-     * combination with {@link Node#getBlankNodeId()} for the purpose of its
-     * {@link BlankNode#uniqueReference()}.
-     *
-     * @see #asRDFTerm(RDF, Node)
-     *
-     * @param node
-     *            The Jena Node to adapt. It's {@link Node#isConcrete()} must be
-     *            <code>true</code>.
-     * @return Adapted {@link JenaRDFTerm}
+     * @param factory
+     *            {@link RDF} to use for creating the {@link Triple} and its
+     *            {@link RDFTerm}s.
+     * @param quad
+     *            Jena {@link org.apache.jena.sparql.core.Quad} to adapt
+     * @return Converted {@link Quad}
      * @throws ConversionException
-     *             If the {@link Node} can't be represented as an
-     *             {@link RDFTerm}, e.g. if the node is not concrete or
-     *             represents a variable in Jena.
+     *             if any of the quad's nodes are not concrete or the quad is a
+     *             generalized quad
      */
-    public JenaRDFTerm asRDFTerm(final Node node) throws ConversionException {
-        return INTERNAL_JENA_FACTORY.createRDFTerm(node, salt());
+    public static Quad asQuad(final RDF factory, final org.apache.jena.sparql.core.Quad quad) {
+        if (factory instanceof JenaRDF) {
+            // No need to convert, just wrap
+            return ((JenaRDF) factory).asQuad(quad);
+        }
+        final BlankNodeOrIRI graphName = (BlankNodeOrIRI) (asRDFTerm(factory, quad.getGraph()));
+        final BlankNodeOrIRI subject = (BlankNodeOrIRI) (asRDFTerm(factory, quad.getSubject()));
+        final IRI predicate = (IRI) (asRDFTerm(factory, quad.getPredicate()));
+        final RDFTerm object = asRDFTerm(factory, quad.getObject());
+        return factory.createQuad(graphName, subject, predicate, object);
     }
 
     /**
@@ -306,88 +168,6 @@ public final class JenaRDF implements RDF {
     }
 
     /**
-     * Adapt an existing Jena Triple to CommonsRDF {@link Triple}.
-     * <p>
-     * If the triple contains any {@link Node#isBlank()}, then any corresponding
-     * {@link BlankNode} will use a {@link UUID} salt from this {@link JenaRDF}
-     * instance in combination with {@link Node#getBlankNodeId()} for the
-     * purpose of its {@link BlankNode#uniqueReference()}.
-     *
-     * @see #asTriple(RDF, org.apache.jena.graph.Triple)
-     *
-     * @param triple
-     *            Jena {@link org.apache.jena.graph.Triple} to adapt
-     * @return Adapted {@link JenaTriple}
-     * @throws ConversionException
-     *             if any of the triple's nodes are not concrete or the triple
-     *             is a generalized triple
-     */
-    public JenaTriple asTriple(final org.apache.jena.graph.Triple triple) throws ConversionException {
-        return INTERNAL_JENA_FACTORY.createTriple(triple, salt());
-    }
-
-    /**
-     * Adapt a generalized Jena {@link org.apache.jena.graph.Triple} to a
-     * CommonsRDF {@link TripleLike}.
-     * <p>
-     * The generalized triple supports any {@link RDFTerm} as its
-     * {@link TripleLike#getSubject()} {@link TripleLike#getPredicate()} or
-     * {@link TripleLike#getObject()}.
-     * <p>
-     * If the Jena triple contains any {@link Node#isBlank()}, then any
-     * corresponding {@link BlankNode} will use a {@link UUID} salt from this
-     * {@link JenaRDF} instance in combination with
-     * {@link Node#getBlankNodeId()} for the purpose of its
-     * {@link BlankNode#uniqueReference()}.
-     *
-     * @see #asTriple(RDF, org.apache.jena.graph.Triple)
-     *
-     * @param triple
-     *            Jena triple
-     * @return Adapted {@link TripleLike}. Note that the generalized triple does
-     *         <strong>not</strong> implement {@link Triple#equals(Object)} or
-     *         {@link Triple#hashCode()}.
-     * @throws ConversionException
-     *             if any of the triple's nodes are not concrete
-     */
-    public JenaTripleLike asGeneralizedTriple(final org.apache.jena.graph.Triple triple) throws ConversionException {
-        return INTERNAL_JENA_FACTORY.createGeneralizedTriple(triple, salt());
-    }
-
-    /**
-     * Adapt a generalized Jena {@link org.apache.jena.sparql.core.Quad} to a
-     * CommonsRDF {@link QuadLike}.
-     * <p>
-     * The generalized quad supports any {@link RDFTerm} as its
-     * {@link QuadLike#getGraphName()}, {@link QuadLike#getSubject()}
-     * {@link QuadLike#getPredicate()} or {@link QuadLike#getObject()}.
-     * <p>
-     * If the Jena quad contains any {@link Node#isBlank()}, then any
-     * corresponding {@link BlankNode} will use a {@link UUID} salt from this
-     * {@link JenaRDF} instance in combination with
-     * {@link Node#getBlankNodeId()} for the purpose of its
-     * {@link BlankNode#uniqueReference()}.
-     * <p>
-     * If the provided quad {@link org.apache.jena.sparql.core.Quad#isDefaultGraph()},
-     * the returned {@link JenaQuadLike} has a {@link JenaQuadLike#getGraphName()}
-     * of {@link Optional#empty()}.
-     *
-     * @see #asQuad(org.apache.jena.sparql.core.Quad)
-     * @see #asGeneralizedTriple(org.apache.jena.graph.Triple)
-     *
-     * @param quad
-     *            Jena quad
-     * @return Adapted {@link QuadLike}. Note that the generalized quad does
-     *         <strong>not</strong> implement {@link Quad#equals(Object)} or
-     *         {@link Quad#hashCode()}.
-     * @throws ConversionException
-     *             if any of the quad nodes are not concrete
-     */
-    public JenaQuadLike<RDFTerm> asGeneralizedQuad(final org.apache.jena.sparql.core.Quad quad) throws ConversionException {
-        return INTERNAL_JENA_FACTORY.createGeneralizedQuad(quad, salt());
-    }
-
-    /**
      * Convert from Jena {@link org.apache.jena.graph.Triple} to a Commons RDF
      * {@link Triple}.
      * <p>
@@ -426,66 +206,60 @@ public final class JenaRDF implements RDF {
     }
 
     /**
-     * Adapt an existing Jena {@link org.apache.jena.sparql.core.Quad} to
-     * CommonsRDF {@link Quad}.
+     * Create a {@link StreamRDF} instance that inserts the converted
+     * {@link Quad}s. into a the provided {@link Consumer}.
      * <p>
-     * If the quad contains any {@link Node#isBlank()}, then any corresponding
-     * {@link BlankNode} will use a {@link UUID} salt from this {@link JenaRDF}
-     * instance in combination with {@link Node#getBlankNodeId()} for the
-     * purpose of its {@link BlankNode#uniqueReference()}.
-     * <p>
-     * If the provided quad {@link org.apache.jena.sparql.core.Quad#isDefaultGraph()},
-     * the returned {@link JenaQuad} has a {@link Quad#getGraphName()}
-     * of {@link Optional#empty()}.
+     * The returned {@link StreamRDF} can be used for instance with Jena's
+     * {@link RDFDataMgr#parse(StreamRDF, String)}.
      *
-     * @param quad
-     *            Jena quad
-     * @return Adapted quad
+     * @param factory
+     *            {@link RDF} to use for creating {@link RDFTerm}s and
+     *            {@link Quad}s.
+     * @param consumer
+     *            A {@link Consumer} of {@link Quad}s
+     * @return A {@link StreamRDF} that will stream converted quads to the
+     *         consumer
      */
-    public JenaQuad asQuad(final org.apache.jena.sparql.core.Quad quad) {
-        return INTERNAL_JENA_FACTORY.createQuad(quad, salt());
+    public static StreamRDF streamJenaToQuad(final RDF factory, final Consumer<Quad> consumer) {
+        return new StreamRDFBase() {
+            @Override
+            public void quad(final org.apache.jena.sparql.core.Quad quad) {
+                consumer.accept(asQuad(factory, quad));
+            }
+        };
+    }
+
+    private static void validateLang(final String languageTag) {
+        if (languageTag.contains(" ")) {
+            throw new IllegalArgumentException("Invalid language tag: " + languageTag);
+        }
+    }
+
+    private final UUID salt;
+
+    /**
+     * Create a JenaRDF.
+     * <p>
+     * This constructor will use a randomly generated {@link UUID} as a salt for
+     * the purposes of {@link BlankNode} identity, see {@link #salt()}.
+     */
+    public JenaRDF() {
+        this.salt = UUID.randomUUID();
     }
 
     /**
-     * Adapt an existing Jena {@link org.apache.jena.graph.Graph} to CommonsRDF
-     * {@link Graph}.
+     * Create a JenaRDF.
      * <p>
-     * This does not take a copy, changes to the CommonsRDF Graph are reflected
-     * in the jena graph, which is accessible from
-     * {@link JenaGraph#asJenaGraph()}.
-     * <p>
-     * If the graph contains any {@link Node#isBlank()}, then any corresponding
-     * {@link BlankNode} will use a {@link UUID} salt from this {@link JenaRDF}
-     * instance in combination with {@link Node#getBlankNodeId()} for the
-     * purpose of its {@link BlankNode#uniqueReference()}.
+     * This constructor will use the specified {@link UUID} as a salt for the
+     * purposes of {@link BlankNode} identity, and should only be used in cases
+     * where predictable and consistent {@link BlankNode#uniqueReference()} are
+     * important.
      *
-     * @param graph
-     *            Jena {@link org.apache.jena.graph.Graph} to adapt
-     * @return Adapted {@link JenaGraph}
+     * @param salt
+     *            {@link UUID} to use as salt for {@link BlankNode} equality
      */
-    public JenaGraph asGraph(final org.apache.jena.graph.Graph graph) {
-        return INTERNAL_JENA_FACTORY.createGraph(graph, salt());
-    }
-
-    /**
-     * Adapt an existing Jena {@link org.apache.jena.rdf.model.Model} to
-     * CommonsRDF {@link Graph}.
-     * <p>
-     * This does not ake a copy, changes to the CommonsRDF Graph are reflected
-     * in the jena graph, which is accessible from
-     * {@link JenaGraph#asJenaGraph()}.
-     * <p>
-     * If the graph contains any {@link Node#isBlank()}, then any corresponding
-     * {@link BlankNode} will use a {@link UUID} salt from this {@link JenaRDF}
-     * instance in combination with {@link Node#getBlankNodeId()} for the
-     * purpose of its {@link BlankNode#uniqueReference()}.
-     *
-     * @param model
-     *            Jena {@link org.apache.jena.rdf.model.Model} to adapt
-     * @return Adapted {@link JenaGraph}
-     */
-    public JenaGraph asGraph(final org.apache.jena.rdf.model.Model model) {
-        return INTERNAL_JENA_FACTORY.createGraph(model, salt());
+    public JenaRDF(final UUID salt) {
+        this.salt = salt;
     }
 
     /**
@@ -533,137 +307,106 @@ public final class JenaRDF implements RDF {
     }
 
     /**
-     * Convert from Jena {@link org.apache.jena.sparql.core.Quad} to a Commons
-     * RDF {@link Quad}.
+     * Adapt a generalized Jena {@link org.apache.jena.sparql.core.Quad} to a
+     * CommonsRDF {@link QuadLike}.
      * <p>
-     * Note that if any of the quad's nodes {@link Node#isBlank()}, then the
-     * factory's {@link RDF#createBlankNode(String)} will be used, meaning that
-     * care should be taken if reusing an {@link RDF} instance for multiple
-     * conversion sessions.
+     * The generalized quad supports any {@link RDFTerm} as its
+     * {@link QuadLike#getGraphName()}, {@link QuadLike#getSubject()}
+     * {@link QuadLike#getPredicate()} or {@link QuadLike#getObject()}.
+     * <p>
+     * If the Jena quad contains any {@link Node#isBlank()}, then any
+     * corresponding {@link BlankNode} will use a {@link UUID} salt from this
+     * {@link JenaRDF} instance in combination with
+     * {@link Node#getBlankNodeId()} for the purpose of its
+     * {@link BlankNode#uniqueReference()}.
      * <p>
      * If the provided quad {@link org.apache.jena.sparql.core.Quad#isDefaultGraph()},
      * the returned {@link JenaQuadLike} has a {@link JenaQuadLike#getGraphName()}
      * of {@link Optional#empty()}.
      *
      * @see #asQuad(org.apache.jena.sparql.core.Quad)
-     * @see #asGeneralizedQuad(org.apache.jena.sparql.core.Quad)
+     * @see #asGeneralizedTriple(org.apache.jena.graph.Triple)
      *
-     * @param factory
-     *            {@link RDF} to use for creating the {@link Triple} and its
-     *            {@link RDFTerm}s.
      * @param quad
-     *            Jena {@link org.apache.jena.sparql.core.Quad} to adapt
-     * @return Converted {@link Quad}
+     *            Jena quad
+     * @return Adapted {@link QuadLike}. Note that the generalized quad does
+     *         <strong>not</strong> implement {@link Quad#equals(Object)} or
+     *         {@link Quad#hashCode()}.
      * @throws ConversionException
-     *             if any of the quad's nodes are not concrete or the quad is a
-     *             generalized quad
+     *             if any of the quad nodes are not concrete
      */
-    public static Quad asQuad(final RDF factory, final org.apache.jena.sparql.core.Quad quad) {
-        if (factory instanceof JenaRDF) {
-            // No need to convert, just wrap
-            return ((JenaRDF) factory).asQuad(quad);
-        }
-        final BlankNodeOrIRI graphName = (BlankNodeOrIRI) (asRDFTerm(factory, quad.getGraph()));
-        final BlankNodeOrIRI subject = (BlankNodeOrIRI) (asRDFTerm(factory, quad.getSubject()));
-        final IRI predicate = (IRI) (asRDFTerm(factory, quad.getPredicate()));
-        final RDFTerm object = asRDFTerm(factory, quad.getObject());
-        return factory.createQuad(graphName, subject, predicate, object);
+    public JenaQuadLike<RDFTerm> asGeneralizedQuad(final org.apache.jena.sparql.core.Quad quad) throws ConversionException {
+        return INTERNAL_JENA_FACTORY.createGeneralizedQuad(quad, salt());
     }
 
     /**
-     * Return {@link RDFSyntax} corresponding to a Jena {@link Lang}.
-     *
-     * @param lang
-     *            {@link Lang} to convert
-     * @return Matched {@link RDFSyntax}, otherwise {@link Optional#empty()}
-     */
-    public Optional<RDFSyntax> asRDFSyntax(final Lang lang) {
-        return RDFSyntax.byMediaType(lang.getContentType().getContentType());
-    }
-
-    /**
-     * Return Jena {@link Lang} corresponding to a {@link RDFSyntax}.
-     *
-     * @param rdfSyntax
-     *            {@link RDFSyntax} to convert
-     * @return Matched {@link Lang}, otherwise {@link Optional#empty()}
-     */
-    public Optional<Lang> asJenaLang(final RDFSyntax rdfSyntax) {
-        return Optional.ofNullable(RDFLanguages.contentTypeToLang(rdfSyntax.mediaType()));
-    }
-
-    /**
-     * Create a {@link StreamRDF} instance that inserts the converted
-     * {@link Quad}s. into a the provided {@link Consumer}.
+     * Adapt a generalized Jena {@link org.apache.jena.graph.Triple} to a
+     * CommonsRDF {@link TripleLike}.
      * <p>
-     * The returned {@link StreamRDF} can be used for instance with Jena's
-     * {@link RDFDataMgr#parse(StreamRDF, String)}.
-     *
-     * @param factory
-     *            {@link RDF} to use for creating {@link RDFTerm}s and
-     *            {@link Quad}s.
-     * @param consumer
-     *            A {@link Consumer} of {@link Quad}s
-     * @return A {@link StreamRDF} that will stream converted quads to the
-     *         consumer
-     */
-    public static StreamRDF streamJenaToQuad(final RDF factory, final Consumer<Quad> consumer) {
-        return new StreamRDFBase() {
-            @Override
-            public void quad(final org.apache.jena.sparql.core.Quad quad) {
-                consumer.accept(asQuad(factory, quad));
-            }
-        };
-    }
-
-    /**
-     * Create a {@link StreamRDF} instance that inserts generalized
-     * {@link TripleLike}s. into a the provided {@link Consumer}.
-     * <p>
-     * A generalized triple allows any {@link RDFTerm} for
-     * {@link TripleLike#getSubject()}, {@link TripleLike#getPredicate()} and
+     * The generalized triple supports any {@link RDFTerm} as its
+     * {@link TripleLike#getSubject()} {@link TripleLike#getPredicate()} or
      * {@link TripleLike#getObject()}.
      * <p>
-     * The returned {@link StreamRDF} can be used for instance with Jena's
-     * {@link RDFDataMgr#parse(StreamRDF, String)}.
+     * If the Jena triple contains any {@link Node#isBlank()}, then any
+     * corresponding {@link BlankNode} will use a {@link UUID} salt from this
+     * {@link JenaRDF} instance in combination with
+     * {@link Node#getBlankNodeId()} for the purpose of its
+     * {@link BlankNode#uniqueReference()}.
      *
-     * @param generalizedConsumer
-     *            A {@link Consumer} of generalized {@link TripleLike}s
-     * @return A {@link StreamRDF} that will stream generalized triples to the
-     *         consumer
+     * @see #asTriple(RDF, org.apache.jena.graph.Triple)
+     *
+     * @param triple
+     *            Jena triple
+     * @return Adapted {@link TripleLike}. Note that the generalized triple does
+     *         <strong>not</strong> implement {@link Triple#equals(Object)} or
+     *         {@link Triple#hashCode()}.
+     * @throws ConversionException
+     *             if any of the triple's nodes are not concrete
      */
-    public StreamRDF streamJenaToGeneralizedTriple(final Consumer<TripleLike> generalizedConsumer) {
-        return new StreamRDFBase() {
-            @Override
-            public void triple(final org.apache.jena.graph.Triple triple) {
-                generalizedConsumer.accept(asGeneralizedTriple(triple));
-            }
-        };
+    public JenaTripleLike asGeneralizedTriple(final org.apache.jena.graph.Triple triple) throws ConversionException {
+        return INTERNAL_JENA_FACTORY.createGeneralizedTriple(triple, salt());
     }
 
     /**
-     * Create a {@link StreamRDF} instance that inserts generalized
-     * {@link QuadLike}s. into a the provided {@link Consumer}.
+     * Adapt an existing Jena {@link org.apache.jena.graph.Graph} to CommonsRDF
+     * {@link Graph}.
      * <p>
-     * A generalized quad allows any {@link RDFTerm} for
-     * {@link QuadLike#getSubject()}, {@link TripleLike#getPredicate()},
-     * {@link QuadLike#getObject()} and {@link QuadLike#getGraphName()} .
+     * This does not take a copy, changes to the CommonsRDF Graph are reflected
+     * in the jena graph, which is accessible from
+     * {@link JenaGraph#asJenaGraph()}.
      * <p>
-     * The returned {@link StreamRDF} can be used for instance with Jena's
-     * {@link RDFDataMgr#parse(StreamRDF, String)}.
+     * If the graph contains any {@link Node#isBlank()}, then any corresponding
+     * {@link BlankNode} will use a {@link UUID} salt from this {@link JenaRDF}
+     * instance in combination with {@link Node#getBlankNodeId()} for the
+     * purpose of its {@link BlankNode#uniqueReference()}.
      *
-     * @param generalizedConsumer
-     *            A {@link Consumer} of generalized {@link QuadLike}s
-     * @return A {@link StreamRDF} that will stream generalized quads to the
-     *         consumer
+     * @param graph
+     *            Jena {@link org.apache.jena.graph.Graph} to adapt
+     * @return Adapted {@link JenaGraph}
      */
-    public StreamRDF streamJenaToGeneralizedQuad(final Consumer<QuadLike<RDFTerm>> generalizedConsumer) {
-        return new StreamRDFBase() {
-            @Override
-            public void quad(final org.apache.jena.sparql.core.Quad quad) {
-                generalizedConsumer.accept(asGeneralizedQuad(quad));
-            }
-        };
+    public JenaGraph asGraph(final org.apache.jena.graph.Graph graph) {
+        return INTERNAL_JENA_FACTORY.createGraph(graph, salt());
+    }
+
+    /**
+     * Adapt an existing Jena {@link org.apache.jena.rdf.model.Model} to
+     * CommonsRDF {@link Graph}.
+     * <p>
+     * This does not ake a copy, changes to the CommonsRDF Graph are reflected
+     * in the jena graph, which is accessible from
+     * {@link JenaGraph#asJenaGraph()}.
+     * <p>
+     * If the graph contains any {@link Node#isBlank()}, then any corresponding
+     * {@link BlankNode} will use a {@link UUID} salt from this {@link JenaRDF}
+     * instance in combination with {@link Node#getBlankNodeId()} for the
+     * purpose of its {@link BlankNode#uniqueReference()}.
+     *
+     * @param model
+     *            Jena {@link org.apache.jena.rdf.model.Model} to adapt
+     * @return Adapted {@link JenaGraph}
+     */
+    public JenaGraph asGraph(final org.apache.jena.rdf.model.Model model) {
+        return INTERNAL_JENA_FACTORY.createGraph(model, salt());
     }
 
     /**
@@ -718,6 +461,17 @@ public final class JenaRDF implements RDF {
     }
 
     /**
+     * Return Jena {@link Lang} corresponding to a {@link RDFSyntax}.
+     *
+     * @param rdfSyntax
+     *            {@link RDFSyntax} to convert
+     * @return Matched {@link Lang}, otherwise {@link Optional#empty()}
+     */
+    public Optional<Lang> asJenaLang(final RDFSyntax rdfSyntax) {
+        return Optional.ofNullable(RDFLanguages.contentTypeToLang(rdfSyntax.mediaType()));
+    }
+
+    /**
      * Convert a CommonsRDF RDFTerm to a Jena Node. If the RDFTerm was from Jena
      * originally, return that original object, else create a copy using Jena
      * objects.
@@ -756,26 +510,6 @@ public final class JenaRDF implements RDF {
     }
 
     /**
-     * Convert a CommonsRDF {@link Triple} to a Jena
-     * {@link org.apache.jena.graph.Triple}.
-     * <p>
-     * If the triple was from Jena originally, return that original object, else
-     * create a copy using Jena objects.
-     *
-     * @param triple
-     *            Commons RDF {@link Triple} to convert
-     * @return Converted Jena {@link org.apache.jena.graph.Triple}
-     */
-    public org.apache.jena.graph.Triple asJenaTriple(final Triple triple) {
-        if (triple instanceof JenaTriple) {
-            return ((JenaTriple) triple).asJenaTriple();
-        }
-        return org.apache.jena.graph.Triple.create(asJenaNode(triple.getSubject()),
-                asJenaNode(triple.getPredicate()),
-                asJenaNode(triple.getObject()));
-    }
-
-    /**
      * Convert a CommonsRDF {@link Quad} to a Jena
      * {@link org.apache.jena.sparql.core.Quad}.
      * <p>
@@ -797,23 +531,226 @@ public final class JenaRDF implements RDF {
                 asJenaNode(quad.getObject()));
     }
 
-    // Some simple validations - full IRI parsing is not cheap.
-    private void validateIRI(final String iri) {
-        if (iri.contains(" ")) {
-            throw new IllegalArgumentException();
+    /**
+     * Convert a CommonsRDF {@link Triple} to a Jena
+     * {@link org.apache.jena.graph.Triple}.
+     * <p>
+     * If the triple was from Jena originally, return that original object, else
+     * create a copy using Jena objects.
+     *
+     * @param triple
+     *            Commons RDF {@link Triple} to convert
+     * @return Converted Jena {@link org.apache.jena.graph.Triple}
+     */
+    public org.apache.jena.graph.Triple asJenaTriple(final Triple triple) {
+        if (triple instanceof JenaTriple) {
+            return ((JenaTriple) triple).asJenaTriple();
         }
-        if (iri.contains("<")) {
-            throw new IllegalArgumentException();
-        }
-        if (iri.contains(">")) {
-            throw new IllegalArgumentException();
-        }
+        return org.apache.jena.graph.Triple.create(asJenaNode(triple.getSubject()),
+                asJenaNode(triple.getPredicate()),
+                asJenaNode(triple.getObject()));
     }
 
-    private static void validateLang(final String languageTag) {
-        if (languageTag.contains(" ")) {
-            throw new IllegalArgumentException("Invalid language tag: " + languageTag);
-        }
+    /**
+     * Adapt an existing Jena {@link org.apache.jena.sparql.core.Quad} to
+     * CommonsRDF {@link Quad}.
+     * <p>
+     * If the quad contains any {@link Node#isBlank()}, then any corresponding
+     * {@link BlankNode} will use a {@link UUID} salt from this {@link JenaRDF}
+     * instance in combination with {@link Node#getBlankNodeId()} for the
+     * purpose of its {@link BlankNode#uniqueReference()}.
+     * <p>
+     * If the provided quad {@link org.apache.jena.sparql.core.Quad#isDefaultGraph()},
+     * the returned {@link JenaQuad} has a {@link Quad#getGraphName()}
+     * of {@link Optional#empty()}.
+     *
+     * @param quad
+     *            Jena quad
+     * @return Adapted quad
+     */
+    public JenaQuad asQuad(final org.apache.jena.sparql.core.Quad quad) {
+        return INTERNAL_JENA_FACTORY.createQuad(quad, salt());
+    }
+
+    /**
+     * Return {@link RDFSyntax} corresponding to a Jena {@link Lang}.
+     *
+     * @param lang
+     *            {@link Lang} to convert
+     * @return Matched {@link RDFSyntax}, otherwise {@link Optional#empty()}
+     */
+    public Optional<RDFSyntax> asRDFSyntax(final Lang lang) {
+        return RDFSyntax.byMediaType(lang.getContentType().getContentType());
+    }
+
+    /**
+     * Adapt an existing Jena Node to CommonsRDF {@link RDFTerm}.
+     * <p>
+     * If {@link Node#isLiteral()}, then the returned value is a
+     * {@link Literal}. If {@link Node#isURI()}, the returned value is a IRI. If
+     * {$@link Node#isBlank()}, the returned value is a {@link BlankNode}, which
+     * will use a {@link UUID} salt from this {@link JenaRDF} instance in
+     * combination with {@link Node#getBlankNodeId()} for the purpose of its
+     * {@link BlankNode#uniqueReference()}.
+     *
+     * @see #asRDFTerm(RDF, Node)
+     *
+     * @param node
+     *            The Jena Node to adapt. It's {@link Node#isConcrete()} must be
+     *            <code>true</code>.
+     * @return Adapted {@link JenaRDFTerm}
+     * @throws ConversionException
+     *             If the {@link Node} can't be represented as an
+     *             {@link RDFTerm}, e.g. if the node is not concrete or
+     *             represents a variable in Jena.
+     */
+    public JenaRDFTerm asRDFTerm(final Node node) throws ConversionException {
+        return INTERNAL_JENA_FACTORY.createRDFTerm(node, salt());
+    }
+
+    /**
+     * Adapt an existing Jena Triple to CommonsRDF {@link Triple}.
+     * <p>
+     * If the triple contains any {@link Node#isBlank()}, then any corresponding
+     * {@link BlankNode} will use a {@link UUID} salt from this {@link JenaRDF}
+     * instance in combination with {@link Node#getBlankNodeId()} for the
+     * purpose of its {@link BlankNode#uniqueReference()}.
+     *
+     * @see #asTriple(RDF, org.apache.jena.graph.Triple)
+     *
+     * @param triple
+     *            Jena {@link org.apache.jena.graph.Triple} to adapt
+     * @return Adapted {@link JenaTriple}
+     * @throws ConversionException
+     *             if any of the triple's nodes are not concrete or the triple
+     *             is a generalized triple
+     */
+    public JenaTriple asTriple(final org.apache.jena.graph.Triple triple) throws ConversionException {
+        return INTERNAL_JENA_FACTORY.createTriple(triple, salt());
+    }
+
+    @Override
+    public JenaBlankNode createBlankNode() {
+        return INTERNAL_JENA_FACTORY.createBlankNode(salt());
+    }
+
+    @Override
+    public JenaBlankNode createBlankNode(final String name) {
+        return INTERNAL_JENA_FACTORY.createBlankNode(name, salt());
+    }
+
+    @Override
+    public JenaDataset createDataset() {
+        return INTERNAL_JENA_FACTORY.createDataset(salt());
+    }
+
+    /**
+     * Create a generalized Jena quad.
+     * <p>
+     * The <em>generalized quad</em> supports any {@link RDFTerm} as its
+     * {@link QuadLike#getSubject()} {@link QuadLike#getPredicate()},
+     * {@link QuadLike#getObject()} or {@link QuadLike#getObject()}.
+     * <p>
+     * In addition to supporting a <code>graphName</code> of <code>null</code>
+     * for representing a triple in the <em>default graph</em>, this method also
+     * recognize a {@link JenaIRI} which {@link JenaRDFTerm#asJenaNode()}
+     * represent the default graph according to
+     * {@link org.apache.jena.sparql.core.Quad#isDefaultGraph(Node)}, in which
+     * case the returned JenaQuad will have a {@link Quad#getGraphName()} of
+     * {@link Optional#empty()} rather than the provided IRI.
+     *
+     * @see #createQuad(BlankNodeOrIRI, BlankNodeOrIRI, IRI, RDFTerm)
+     * @see #createGeneralizedTriple(RDFTerm, RDFTerm, RDFTerm)
+     *
+     * @param subject
+     *            The subject of the statement
+     * @param predicate
+     *            The predicate of the statement
+     * @param object
+     *            The object of the statement
+     * @param graphName
+     *            The graph name of the statement
+     * @return Generalized {@link QuadLike}. Note that the generalized quad does
+     *         <strong>not</strong> implement {@link Quad#equals(Object)} or
+     *         {@link Quad#hashCode()}.
+     */
+    public JenaGeneralizedQuadLike createGeneralizedQuad(final RDFTerm subject, final RDFTerm predicate, final RDFTerm object,
+            final RDFTerm graphName) {
+        return INTERNAL_JENA_FACTORY.createGeneralizedQuad(subject, predicate, object, graphName);
+    }
+
+    /**
+     * Create a generalized Jena triple.
+     * <p>
+     * The <em>generalized triple</em> supports any {@link RDFTerm} as its
+     * {@link TripleLike#getSubject()} {@link TripleLike#getPredicate()} or
+     * {@link TripleLike#getObject()}.
+     *
+     * @see #createTriple(BlankNodeOrIRI, IRI, RDFTerm)
+     * @see #createGeneralizedQuad(RDFTerm, RDFTerm, RDFTerm, RDFTerm)
+     *
+     * @param subject
+     *            The subject of the statement
+     * @param predicate
+     *            The predicate of the statement
+     * @param object
+     *            The object of the statement
+     * @return Generalized {@link TripleLike}. Note that the generalized triple
+     *         does <strong>not</strong> implement {@link Triple#equals(Object)}
+     *         or {@link Triple#hashCode()}.
+     */
+    public JenaGeneralizedTripleLike createGeneralizedTriple(final RDFTerm subject, final RDFTerm predicate, final RDFTerm object) {
+        return INTERNAL_JENA_FACTORY.createGeneralizedTriple(subject, predicate, object);
+    }
+
+    @Override
+    public JenaGraph createGraph() {
+        return INTERNAL_JENA_FACTORY.createGraph(salt());
+    }
+
+    @Override
+    public JenaIRI createIRI(final String iri) {
+        validateIRI(iri);
+        return INTERNAL_JENA_FACTORY.createIRI(iri);
+    }
+
+    @Override
+    public JenaLiteral createLiteral(final String lexicalForm) {
+        return INTERNAL_JENA_FACTORY.createLiteral(lexicalForm);
+    }
+
+    @Override
+    public JenaLiteral createLiteral(final String lexicalForm, final IRI dataType) {
+        return INTERNAL_JENA_FACTORY.createLiteralDT(lexicalForm, dataType.getIRIString());
+    }
+
+    @Override
+    public JenaLiteral createLiteral(final String lexicalForm, final String languageTag) {
+        validateLang(languageTag);
+        return INTERNAL_JENA_FACTORY.createLiteralLang(lexicalForm, languageTag);
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * In addition to supporting a <code>graphName</code> of <code>null</code>
+     * for representing a triple in the <em>default graph</em>, this method also
+     * recognize a {@link JenaIRI} which {@link JenaRDFTerm#asJenaNode()}
+     * represent the default graph according to
+     * {@link org.apache.jena.sparql.core.Quad#isDefaultGraph(Node)}, in which
+     * case the returned JenaQuad will have a {@link Quad#getGraphName()} of
+     * {@link Optional#empty()} rather than the provided IRI.
+     *
+     */
+    @Override
+    public JenaQuad createQuad(final BlankNodeOrIRI graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object)
+            throws IllegalArgumentException, UnsupportedOperationException {
+        return INTERNAL_JENA_FACTORY.createQuad(subject, predicate, object, graphName);
+    }
+
+    @Override
+    public JenaTriple createTriple(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
+        return INTERNAL_JENA_FACTORY.createTriple(subject, predicate, object);
     }
 
     /**
@@ -829,6 +766,69 @@ public final class JenaRDF implements RDF {
      */
     public UUID salt() {
         return salt;
+    }
+
+    /**
+     * Create a {@link StreamRDF} instance that inserts generalized
+     * {@link QuadLike}s. into a the provided {@link Consumer}.
+     * <p>
+     * A generalized quad allows any {@link RDFTerm} for
+     * {@link QuadLike#getSubject()}, {@link TripleLike#getPredicate()},
+     * {@link QuadLike#getObject()} and {@link QuadLike#getGraphName()} .
+     * <p>
+     * The returned {@link StreamRDF} can be used for instance with Jena's
+     * {@link RDFDataMgr#parse(StreamRDF, String)}.
+     *
+     * @param generalizedConsumer
+     *            A {@link Consumer} of generalized {@link QuadLike}s
+     * @return A {@link StreamRDF} that will stream generalized quads to the
+     *         consumer
+     */
+    public StreamRDF streamJenaToGeneralizedQuad(final Consumer<QuadLike<RDFTerm>> generalizedConsumer) {
+        return new StreamRDFBase() {
+            @Override
+            public void quad(final org.apache.jena.sparql.core.Quad quad) {
+                generalizedConsumer.accept(asGeneralizedQuad(quad));
+            }
+        };
+    }
+
+    /**
+     * Create a {@link StreamRDF} instance that inserts generalized
+     * {@link TripleLike}s. into a the provided {@link Consumer}.
+     * <p>
+     * A generalized triple allows any {@link RDFTerm} for
+     * {@link TripleLike#getSubject()}, {@link TripleLike#getPredicate()} and
+     * {@link TripleLike#getObject()}.
+     * <p>
+     * The returned {@link StreamRDF} can be used for instance with Jena's
+     * {@link RDFDataMgr#parse(StreamRDF, String)}.
+     *
+     * @param generalizedConsumer
+     *            A {@link Consumer} of generalized {@link TripleLike}s
+     * @return A {@link StreamRDF} that will stream generalized triples to the
+     *         consumer
+     */
+    public StreamRDF streamJenaToGeneralizedTriple(final Consumer<TripleLike> generalizedConsumer) {
+        return new StreamRDFBase() {
+            @Override
+            public void triple(final org.apache.jena.graph.Triple triple) {
+                generalizedConsumer.accept(asGeneralizedTriple(triple));
+            }
+        };
+    }
+
+    // Some simple validations - full IRI parsing is not cheap.
+    private void validateIRI(final String iri) {
+        if (iri.contains(" ")) {
+            throw new IllegalArgumentException();
+        }
+        if (iri.contains("<")) {
+            throw new IllegalArgumentException();
+        }
+        if (iri.contains(">")) {
+            throw new IllegalArgumentException();
+        }
     }
 
 }

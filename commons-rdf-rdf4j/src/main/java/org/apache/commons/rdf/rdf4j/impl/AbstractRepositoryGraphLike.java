@@ -49,6 +49,18 @@ abstract class AbstractRepositoryGraphLike<T extends TripleLike> implements RDF4
     }
 
     @Override
+    public Optional<Model> asModel() {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Repository> asRepository() {
+        return Optional.of(repository);
+    }
+
+    protected abstract T asTripleLike(Statement s);
+
+    @Override
     public void close() throws Exception {
         if (handleInitAndShutdown) {
             repository.shutDown();
@@ -57,20 +69,8 @@ abstract class AbstractRepositoryGraphLike<T extends TripleLike> implements RDF4
         // down
     }
 
-    protected abstract T asTripleLike(Statement s);
-
     protected RepositoryConnection getRepositoryConnection() {
         return repository.getConnection();
-    }
-
-    @Override
-    public Optional<Repository> asRepository() {
-        return Optional.of(repository);
-    }
-
-    @Override
-    public Optional<Model> asModel() {
-        return Optional.empty();
     }
 
 }

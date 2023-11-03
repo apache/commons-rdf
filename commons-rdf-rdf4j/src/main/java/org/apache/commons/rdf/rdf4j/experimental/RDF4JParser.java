@@ -57,6 +57,24 @@ import org.eclipse.rdf4j.rio.helpers.AbstractRDFHandler;
  */
 public class RDF4JParser extends AbstractRDFParser<RDF4JParser> {
 
+    private final static class AddToModel extends AbstractRDFHandler {
+        private final Model model;
+
+        public AddToModel(final Model model) {
+            this.model = model;
+        }
+
+        @Override
+        public void handleNamespace(final String prefix, final String uri) throws RDFHandlerException {
+            model.setNamespace(prefix, uri);
+        }
+
+        @Override
+        public void handleStatement(final org.eclipse.rdf4j.model.Statement st) throws RDFHandlerException {
+            model.add(st);
+        }
+    }
+
     private final class AddToQuadConsumer extends AbstractRDFHandler {
         private final Consumer<Quad> quadTarget;
 
@@ -81,24 +99,6 @@ public class RDF4JParser extends AbstractRDFParser<RDF4JParser> {
         }
     }
 
-    private final static class AddToModel extends AbstractRDFHandler {
-        private final Model model;
-
-        public AddToModel(final Model model) {
-            this.model = model;
-        }
-
-        @Override
-        public void handleStatement(final org.eclipse.rdf4j.model.Statement st) throws RDFHandlerException {
-            model.add(st);
-        }
-
-        @Override
-        public void handleNamespace(final String prefix, final String uri) throws RDFHandlerException {
-            model.setNamespace(prefix, uri);
-        }
-    }
-
     private RDF4J rdf4jTermFactory;
     private ParserConfig parserConfig = new ParserConfig();
 
@@ -107,14 +107,64 @@ public class RDF4JParser extends AbstractRDFParser<RDF4JParser> {
         return new RDF4J();
     }
 
-    @Override
-    protected RDF4JParser prepareForParsing() throws IOException, IllegalStateException {
-        final RDF4JParser c = super.prepareForParsing();
-        // Ensure we have an RDF4J for conversion.
-        // We'll make a new one if user has provided a non-RDF4J factory
-        c.rdf4jTermFactory = (RDF4J) getRdfTermFactory().filter(RDF4J.class::isInstance)
-                .orElseGet(c::createRDFTermFactory);
-        return c;
+    /**
+     * Gets the RDF4J {@link ParserConfig} to use.
+     * <p>
+     * If no parser config is set, the default configuration is provided.
+     * <p>
+     * <strong>Note:</strong> The parser config is mutable - changes in the
+     * returned config is reflected in this instance of the parser. To avoid
+     * mutation, create a new {@link ParserConfig} and set
+     * {@link #setParserConfig(ParserConfig)}.
+     *
+     * @return The RDF4J {@link ParserConfig}
+     */
+    public ParserConfig getParserConfig() {
+        return parserConfig;
+    }
+
+    protected RDFHandler makeRDFHandler() {
+
+        // TODO: Can we join the below DF4JDataset and RDF4JGraph cases
+        // using RDF4JGraphLike<TripleLike<BlankNodeOrIRI,IRI,RDFTerm>>
+        // or will that need tricky generics types?
+
+        if (getTargetDataset().filter(RDF4JDataset.class::isInstance).isPresent()) {
+            // One of us, we can add them as Statements directly
+            final RDF4JDataset dataset = (RDF4JDataset) getTargetDataset().get();
+            if (dataset.asRepository().isPresent()) {
+                return new RDFInserter(dataset.asRepository().get().getConnection());
+            }
+            if (dataset.asModel().isPresent()) {
+                final Model model = dataset.asModel().get();
+                return new AddToModel(model);
+            }
+            // Not backed by Repository or Model?
+            // Third-party RDF4JDataset subclass, so we'll fall through to the
+            // getTarget() handling further down
+        } else if (getTargetGraph().filter(RDF4JGraph.class::isInstance).isPresent()) {
+            final RDF4JGraph graph = (RDF4JGraph) getTargetGraph().get();
+
+            if (graph.asRepository().isPresent()) {
+                final RDFInserter inserter = new RDFInserter(graph.asRepository().get().getConnection());
+                if (!graph.getContextMask().isEmpty()) {
+                    final Stream<RDF4JBlankNodeOrIRI> b = graph.getContextMask().stream();
+                    final Stream<Resource> c = b.map(RDF4JBlankNodeOrIRI::asValue);
+                    final Resource[] contexts = c.toArray(Resource[]::new);
+                    inserter.enforceContext(contexts);
+                }
+                return inserter;
+            }
+            if (graph.asModel().isPresent() && graph.getContextMask().isEmpty()) {
+                // the model accepts any quad
+                final Model model = graph.asModel().get();
+                return new AddToModel(model);
+            }
+            // else - fall through
+        }
+
+        // Fall thorough: let target() consume our converted quads.
+        return new AddToQuadConsumer(getTarget());
     }
 
     @Override
@@ -161,20 +211,14 @@ public class RDF4JParser extends AbstractRDFParser<RDF4JParser> {
         loader.load(getSourceInputStream().get(), base, formatByMimeType.orElse(null), rdfHandler);
     }
 
-    /**
-     * Gets the RDF4J {@link ParserConfig} to use.
-     * <p>
-     * If no parser config is set, the default configuration is provided.
-     * <p>
-     * <strong>Note:</strong> The parser config is mutable - changes in the
-     * returned config is reflected in this instance of the parser. To avoid
-     * mutation, create a new {@link ParserConfig} and set
-     * {@link #setParserConfig(ParserConfig)}.
-     *
-     * @return The RDF4J {@link ParserConfig}
-     */
-    public ParserConfig getParserConfig() {
-        return parserConfig;
+    @Override
+    protected RDF4JParser prepareForParsing() throws IOException, IllegalStateException {
+        final RDF4JParser c = super.prepareForParsing();
+        // Ensure we have an RDF4J for conversion.
+        // We'll make a new one if user has provided a non-RDF4J factory
+        c.rdf4jTermFactory = (RDF4J) getRdfTermFactory().filter(RDF4J.class::isInstance)
+                .orElseGet(c::createRDFTermFactory);
+        return c;
     }
 
     /**
@@ -185,50 +229,6 @@ public class RDF4JParser extends AbstractRDFParser<RDF4JParser> {
      */
     public void setParserConfig(final ParserConfig parserConfig) {
         this.parserConfig = parserConfig;
-    }
-
-    protected RDFHandler makeRDFHandler() {
-
-        // TODO: Can we join the below DF4JDataset and RDF4JGraph cases
-        // using RDF4JGraphLike<TripleLike<BlankNodeOrIRI,IRI,RDFTerm>>
-        // or will that need tricky generics types?
-
-        if (getTargetDataset().filter(RDF4JDataset.class::isInstance).isPresent()) {
-            // One of us, we can add them as Statements directly
-            final RDF4JDataset dataset = (RDF4JDataset) getTargetDataset().get();
-            if (dataset.asRepository().isPresent()) {
-                return new RDFInserter(dataset.asRepository().get().getConnection());
-            }
-            if (dataset.asModel().isPresent()) {
-                final Model model = dataset.asModel().get();
-                return new AddToModel(model);
-            }
-            // Not backed by Repository or Model?
-            // Third-party RDF4JDataset subclass, so we'll fall through to the
-            // getTarget() handling further down
-        } else if (getTargetGraph().filter(RDF4JGraph.class::isInstance).isPresent()) {
-            final RDF4JGraph graph = (RDF4JGraph) getTargetGraph().get();
-
-            if (graph.asRepository().isPresent()) {
-                final RDFInserter inserter = new RDFInserter(graph.asRepository().get().getConnection());
-                if (!graph.getContextMask().isEmpty()) {
-                    final Stream<RDF4JBlankNodeOrIRI> b = graph.getContextMask().stream();
-                    final Stream<Resource> c = b.map(RDF4JBlankNodeOrIRI::asValue);
-                    final Resource[] contexts = c.toArray(Resource[]::new);
-                    inserter.enforceContext(contexts);
-                }
-                return inserter;
-            }
-            if (graph.asModel().isPresent() && graph.getContextMask().isEmpty()) {
-                // the model accepts any quad
-                final Model model = graph.asModel().get();
-                return new AddToModel(model);
-            }
-            // else - fall through
-        }
-
-        // Fall thorough: let target() consume our converted quads.
-        return new AddToQuadConsumer(getTarget());
     }
 
 }

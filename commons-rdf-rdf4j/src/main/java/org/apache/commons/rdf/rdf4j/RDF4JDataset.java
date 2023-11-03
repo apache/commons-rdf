@@ -44,44 +44,6 @@ public interface RDF4JDataset extends Dataset, RDF4JGraphLike<Quad> {
      * This can generally achieved using a try-with-resources block, e.g.:
      *
      * <pre>
-     * int subjects;
-     * try (Stream&lt;RDF4JQuad&gt; s : graph.stream()) {
-     *   subjects = s.map(RDF4JQuad::getSubject).distinct().count()
-     * }
-     * </pre>
-     */
-    @Override
-    Stream<RDF4JQuad> stream();
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * Note that for datasets backed by a repository ({@link #asRepository()} is
-     * present), the stream <strong>must be closed</strong> with
-     * {@link Stream#close()}.
-     * <p>
-     * This can generally achieved using a try-with-resources block, e.g.:
-     *
-     * <pre>
-     * int subjects;
-     * try (Stream&lt;RDF4JQuad&gt; s : graph.stream()) {
-     *   subjects = s.map(RDF4JQuad::getSubject).distinct().count()
-     * }
-     * </pre>
-     */
-    @Override
-    Stream<RDF4JQuad> stream(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * Note that for datasets backed by a repository ({@link #asRepository()} is
-     * present), the stream <strong>must be closed</strong> with
-     * {@link Stream#close()}.
-     * <p>
-     * This can generally achieved using a try-with-resources block, e.g.:
-     *
-     * <pre>
      * int graphs;
      * try (Stream&lt;BlankNodeOrIRI&gt; s : graph.stream()) {
      *   graphs = s.count()
@@ -137,5 +99,43 @@ public interface RDF4JDataset extends Dataset, RDF4JGraphLike<Quad> {
     @Override
     ClosableIterable<Quad> iterate(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate,
             RDFTerm object);
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Note that for datasets backed by a repository ({@link #asRepository()} is
+     * present), the stream <strong>must be closed</strong> with
+     * {@link Stream#close()}.
+     * <p>
+     * This can generally achieved using a try-with-resources block, e.g.:
+     *
+     * <pre>
+     * int subjects;
+     * try (Stream&lt;RDF4JQuad&gt; s : graph.stream()) {
+     *   subjects = s.map(RDF4JQuad::getSubject).distinct().count()
+     * }
+     * </pre>
+     */
+    @Override
+    Stream<RDF4JQuad> stream();
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Note that for datasets backed by a repository ({@link #asRepository()} is
+     * present), the stream <strong>must be closed</strong> with
+     * {@link Stream#close()}.
+     * <p>
+     * This can generally achieved using a try-with-resources block, e.g.:
+     *
+     * <pre>
+     * int subjects;
+     * try (Stream&lt;RDF4JQuad&gt; s : graph.stream()) {
+     *   subjects = s.map(RDF4JQuad::getSubject).distinct().count()
+     * }
+     * </pre>
+     */
+    @Override
+    Stream<RDF4JQuad> stream(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
 
 }

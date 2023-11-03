@@ -85,28 +85,39 @@ class JenaDatasetImpl implements JenaDataset {
                 toJenaPattern(object));
     }
 
-    private Node toJenaPattern(final Optional<? extends RDFTerm> graphName) {
-        // In theory we could have done:
-        // factory.toJena(graphName.orElse(internalJenaFactory::createAnyVariable))
-        // but because of generics casting rules that doesn't work :(
-
-        if (graphName == null) {
-            return ANY;
-        }
-        // null: default datasetGraph
-        return factory.asJenaNode(graphName.orElse(null));
-    }
-
-    private Node toJenaPattern(final RDFTerm term) {
-        if (term == null) {
-            return ANY;
-        }
-        return factory.asJenaNode(term);
-    }
-
     @Override
     public boolean contains(final Quad quad) {
         return datasetGraph.contains(factory.asJenaQuad(quad));
+    }
+
+    @Override
+    public Graph getGraph() {
+        final GraphView g = GraphView.createDefaultGraph(datasetGraph);
+        return new JenaGraphImpl(g, salt);
+    }
+
+    @Override
+    public Optional<Graph> getGraph(final BlankNodeOrIRI graphName) {
+        final GraphView gv = GraphView.createNamedGraph(datasetGraph, factory.asJenaNode(graphName));
+        return Optional.of(new JenaGraphImpl(gv, salt));
+    }
+
+    @Override
+    public Stream<BlankNodeOrIRI> getGraphNames() {
+        final JenaRDF factory = new JenaRDF(salt);
+        return Iter.asStream(datasetGraph.listGraphNodes()).map(node -> (BlankNodeOrIRI) factory.asRDFTerm(node));
+    }
+
+    @Override
+    public JenaGraph getUnionGraph() {
+        final GraphView gv = GraphView.createUnionGraph(datasetGraph);
+        return new JenaGraphImpl(gv, salt);
+    }
+
+    @Override
+    public Iterable<Quad> iterate() {
+        final JenaRDF factory = new JenaRDF(salt);
+        return Iter.asStream(datasetGraph.find(), false).map(q -> (Quad) factory.asQuad(q))::iterator;
     }
 
     @Override
@@ -146,41 +157,30 @@ class JenaDatasetImpl implements JenaDataset {
                 .map(factory::asQuad);
     }
 
+    private Node toJenaPattern(final Optional<? extends RDFTerm> graphName) {
+        // In theory we could have done:
+        // factory.toJena(graphName.orElse(internalJenaFactory::createAnyVariable))
+        // but because of generics casting rules that doesn't work :(
+
+        if (graphName == null) {
+            return ANY;
+        }
+        // null: default datasetGraph
+        return factory.asJenaNode(graphName.orElse(null));
+    }
+
+    private Node toJenaPattern(final RDFTerm term) {
+        if (term == null) {
+            return ANY;
+        }
+        return factory.asJenaNode(term);
+    }
+
     @Override
     public String toString() {
         final StringWriter sw = new StringWriter();
         RDFDataMgr.write(sw, datasetGraph, Lang.NQUADS);
         return sw.toString();
-    }
-
-    @Override
-    public Graph getGraph() {
-        final GraphView g = GraphView.createDefaultGraph(datasetGraph);
-        return new JenaGraphImpl(g, salt);
-    }
-
-    @Override
-    public JenaGraph getUnionGraph() {
-        final GraphView gv = GraphView.createUnionGraph(datasetGraph);
-        return new JenaGraphImpl(gv, salt);
-    }
-
-    @Override
-    public Optional<Graph> getGraph(final BlankNodeOrIRI graphName) {
-        final GraphView gv = GraphView.createNamedGraph(datasetGraph, factory.asJenaNode(graphName));
-        return Optional.of(new JenaGraphImpl(gv, salt));
-    }
-
-    @Override
-    public Stream<BlankNodeOrIRI> getGraphNames() {
-        final JenaRDF factory = new JenaRDF(salt);
-        return Iter.asStream(datasetGraph.listGraphNodes()).map(node -> (BlankNodeOrIRI) factory.asRDFTerm(node));
-    }
-
-    @Override
-    public Iterable<Quad> iterate() {
-        final JenaRDF factory = new JenaRDF(salt);
-        return Iter.asStream(datasetGraph.find(), false).map(q -> (Quad) factory.asQuad(q))::iterator;
     }
 
 }

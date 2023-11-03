@@ -43,15 +43,15 @@ class JenaGraphImpl implements JenaGraph {
     private final transient JenaRDF factory;
     private Model model;
 
-    JenaGraphImpl(final org.apache.jena.graph.Graph graph, final UUID salt) {
-        this.graph = graph;
+    JenaGraphImpl(final Model model, final UUID salt) {
+        this.model = model;
+        this.graph = model.getGraph();
         this.salt = salt;
         this.factory = new JenaRDF(salt);
     }
 
-    JenaGraphImpl(final Model model, final UUID salt) {
-        this.model = model;
-        this.graph = model.getGraph();
+    JenaGraphImpl(final org.apache.jena.graph.Graph graph, final UUID salt) {
+        this.graph = graph;
         this.salt = salt;
         this.factory = new JenaRDF(salt);
     }
@@ -70,6 +70,21 @@ class JenaGraphImpl implements JenaGraph {
     @Override
     public org.apache.jena.graph.Graph asJenaGraph() {
         return graph;
+    }
+
+    @Override
+    public Model asJenaModel() {
+        if (model == null) {
+            synchronized (this) {
+                // As Model can be used for locks, we should make sure we don't
+                // make
+                // more than one model
+                if (model == null) {
+                    model = ModelFactory.createModelForGraph(graph);
+                }
+            }
+        }
+        return model;
     }
 
     @Override
@@ -96,13 +111,6 @@ class JenaGraphImpl implements JenaGraph {
     public void remove(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         graph.remove(toJenaPattern(subject), toJenaPattern(predicate),
                 toJenaPattern(object));
-    }
-
-    private Node toJenaPattern(final RDFTerm pattern) {
-        if (pattern == null) {
-            return Node.ANY;
-        }
-        return factory.asJenaNode(pattern);
     }
 
     @Override
@@ -145,26 +153,18 @@ class JenaGraphImpl implements JenaGraph {
         return factory.asJenaNode(term);
     }
 
+    private Node toJenaPattern(final RDFTerm pattern) {
+        if (pattern == null) {
+            return Node.ANY;
+        }
+        return factory.asJenaNode(pattern);
+    }
+
     @Override
     public String toString() {
         final StringWriter sw = new StringWriter();
         RDFDataMgr.write(sw, graph, Lang.NT);
         return sw.toString();
-    }
-
-    @Override
-    public Model asJenaModel() {
-        if (model == null) {
-            synchronized (this) {
-                // As Model can be used for locks, we should make sure we don't
-                // make
-                // more than one model
-                if (model == null) {
-                    model = ModelFactory.createModelForGraph(graph);
-                }
-            }
-        }
-        return model;
     }
 
 }

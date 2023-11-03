@@ -285,47 +285,6 @@ public final class Types implements IRI, SimpleRDF.SimpleRDFTerm {
         ALL_TYPES = Collections.unmodifiableSet(tempTypes);
     }
 
-    private final IRI field;
-
-    private Types(final String field) {
-        this.field = new IRIImpl(field);
-    }
-
-    @Override
-    public String getIRIString() {
-        return this.field.getIRIString();
-    }
-
-    @Override
-    public String ntriplesString() {
-        return this.field.ntriplesString();
-    }
-
-    @Override
-    public boolean equals(final Object other) {
-        return this.field.equals(other);
-    }
-
-    @Override
-    public int hashCode() {
-        return this.field.hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return this.field.toString();
-    }
-
-    /**
-     * Gets an immutable set of the IRIs used by the RDF-1.1 specification to
-     * define types, from the RDF and XML Schema vocabularies.
-     *
-     * @return A {@link Set} containing all of the IRIs in this collection.
-     */
-    public static Set<IRI> values() {
-        return ALL_TYPES;
-    }
-
     /**
      * Gets the IRI from this collection if it is present, or return
      * {@link Optional#empty()} otherwise.
@@ -346,5 +305,46 @@ public final class Types implements IRI, SimpleRDF.SimpleRDFTerm {
             }
         }
         return Optional.empty();
+    }
+
+    /**
+     * Gets an immutable set of the IRIs used by the RDF-1.1 specification to
+     * define types, from the RDF and XML Schema vocabularies.
+     *
+     * @return A {@link Set} containing all of the IRIs in this collection.
+     */
+    public static Set<IRI> values() {
+        return ALL_TYPES;
+    }
+
+    private final IRI field;
+
+    private Types(final String field) {
+        this.field = new IRIImpl(field);
+    }
+
+    @Override
+    public boolean equals(final Object other) {
+        return this.field.equals(other);
+    }
+
+    @Override
+    public String getIRIString() {
+        return this.field.getIRIString();
+    }
+
+    @Override
+    public int hashCode() {
+        return this.field.hashCode();
+    }
+
+    @Override
+    public String ntriplesString() {
+        return this.field.ntriplesString();
+    }
+
+    @Override
+    public String toString() {
+        return this.field.toString();
     }
 }

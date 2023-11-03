@@ -36,17 +36,6 @@ final class JsonLdBlankNodeImpl extends AbstractJsonLdTermImpl implements JsonLd
     }
 
     @Override
-    public String ntriplesString() {
-        // TODO: Escape if this is not valid ntriples string (e.g. contains :)
-        return node.getValue();
-    }
-
-    @Override
-    public String uniqueReference() {
-        return blankNodePrefix + node.getValue();
-    }
-
-    @Override
     public boolean equals(final Object obj) {
         if (!(obj instanceof BlankNode)) {
             return false;
@@ -61,7 +50,18 @@ final class JsonLdBlankNodeImpl extends AbstractJsonLdTermImpl implements JsonLd
     }
 
     @Override
+    public String ntriplesString() {
+        // TODO: Escape if this is not valid ntriples string (e.g. contains :)
+        return node.getValue();
+    }
+
+    @Override
     public String toString() {
         return ntriplesString() + " [" + uniqueReference() + "]";
+    }
+
+    @Override
+    public String uniqueReference() {
+        return blankNodePrefix + node.getValue();
     }
 }

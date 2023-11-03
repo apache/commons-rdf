@@ -50,10 +50,6 @@ public interface JsonLdUnionGraph extends JsonLdGraphLike<org.apache.commons.rdf
 class JsonLdUnionGraphImpl extends AbstractJsonLdGraphLike<org.apache.commons.rdf.api.Triple>
         implements JsonLdUnionGraph {
 
-    JsonLdUnionGraphImpl(final String bnodePrefix) {
-        super(bnodePrefix);
-    }
-
     JsonLdUnionGraphImpl(final RDFDataset rdfDataSet) {
         super(rdfDataSet);
     }
@@ -62,9 +58,18 @@ class JsonLdUnionGraphImpl extends AbstractJsonLdGraphLike<org.apache.commons.rd
         super(rdfDataSet, bnodePrefix);
     }
 
+    JsonLdUnionGraphImpl(final String bnodePrefix) {
+        super(bnodePrefix);
+    }
+
     @Override
     public void add(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         super.add(null, subject, predicate, object);
+    }
+
+    @Override
+    JsonLdTriple asTripleOrQuad(final com.github.jsonldjava.core.RDFDataset.Quad jsonldQuad) {
+        return factory.asTriple(jsonldQuad);
     }
 
     @Override
@@ -84,12 +89,10 @@ class JsonLdUnionGraphImpl extends AbstractJsonLdGraphLike<org.apache.commons.rd
     }
 
     @Override
-    public Stream<JsonLdTriple> stream(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
-        return filteredGraphs(null).flatMap(List::stream).filter(quadFilter(subject, predicate, object))
-                .map(factory::asTriple)
-                // Make sure we don't have duplicate triples
-                // NOTE: This can be quite inefficient
-                .distinct();
+    public long size() {
+        // Note: Our specialized stream() already removes duplicates using
+        // .distinct()
+        return stream().count();
     }
 
     @Override
@@ -100,14 +103,11 @@ class JsonLdUnionGraphImpl extends AbstractJsonLdGraphLike<org.apache.commons.rd
     }
 
     @Override
-    JsonLdTriple asTripleOrQuad(final com.github.jsonldjava.core.RDFDataset.Quad jsonldQuad) {
-        return factory.asTriple(jsonldQuad);
-    }
-
-    @Override
-    public long size() {
-        // Note: Our specialized stream() already removes duplicates using
-        // .distinct()
-        return stream().count();
+    public Stream<JsonLdTriple> stream(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
+        return filteredGraphs(null).flatMap(List::stream).filter(quadFilter(subject, predicate, object))
+                .map(factory::asTriple)
+                // Make sure we don't have duplicate triples
+                // NOTE: This can be quite inefficient
+                .distinct();
     }
 }

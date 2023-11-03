@@ -43,6 +43,11 @@ class JsonLdQuadLikeImpl<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm
         this.blankNodePrefix = blankNodePrefix;
     }
 
+    @Override
+    public Quad asJsonLdQuad() {
+        return quad;
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public Optional<G> getGraphName() {
@@ -52,8 +57,8 @@ class JsonLdQuadLikeImpl<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm
 
     @SuppressWarnings("unchecked")
     @Override
-    public S getSubject() {
-        return (S) RDF_TERM_FACTORY.asRDFTerm(quad.getSubject(), blankNodePrefix);
+    public O getObject() {
+        return (O) RDF_TERM_FACTORY.asRDFTerm(quad.getObject(), blankNodePrefix);
     }
 
     @SuppressWarnings("unchecked")
@@ -64,13 +69,8 @@ class JsonLdQuadLikeImpl<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm
 
     @SuppressWarnings("unchecked")
     @Override
-    public O getObject() {
-        return (O) RDF_TERM_FACTORY.asRDFTerm(quad.getObject(), blankNodePrefix);
-    }
-
-    @Override
-    public Quad asJsonLdQuad() {
-        return quad;
+    public S getSubject() {
+        return (S) RDF_TERM_FACTORY.asRDFTerm(quad.getSubject(), blankNodePrefix);
     }
 
     @Override

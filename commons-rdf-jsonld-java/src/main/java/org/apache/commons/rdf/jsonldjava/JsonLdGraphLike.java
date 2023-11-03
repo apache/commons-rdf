@@ -36,28 +36,6 @@ import org.apache.commons.rdf.api.TripleLike;
 import com.github.jsonldjava.core.RDFDataset;
 import com.github.jsonldjava.core.RDFDataset.Node;
 
-/**
- * Common abstract {@link GraphLike}.
- * <p>
- * Specialised by {@link JsonLdGraph}, {@link JsonLdUnionGraph} and
- * {@link JsonLdDataset}.
- *
- * @param <T>
- *            specialisation of {@link TripleLike}, e.g. {@link Triple} or
- *            {@link org.apache.commons.rdf.api.Quad}
- */
-public interface JsonLdGraphLike<T extends TripleLike> extends GraphLike<T> {
-    /**
-     * Return the underlying JSONLD-Java {@link RDFDataset}.
-     * <p>
-     * Changes in the JSONLD-Java dataset is reflected in this class and vice
-     * versa.
-     *
-     * @return The underlying JSONLD-JAva RDFDataset
-     */
-    RDFDataset getRdfDataSet();
-}
-
 abstract class AbstractJsonLdGraphLike<T extends TripleLike> implements JsonLdGraphLike<T> {
 
     /**
@@ -94,19 +72,6 @@ abstract class AbstractJsonLdGraphLike<T extends TripleLike> implements JsonLdGr
         this(new RDFDataset(), bnodePrefix);
     }
 
-    @Override
-    public void add(final T t) {
-        // add triples to default graph by default
-        BlankNodeOrIRI graphName = null;
-        if (t instanceof org.apache.commons.rdf.api.Quad) {
-            final org.apache.commons.rdf.api.Quad q = (org.apache.commons.rdf.api.Quad) t;
-            graphName = q.getGraphName().orElse(null);
-        }
-        // FIXME: JSON-LD's rdfDataSet.addQuad method does not support
-        // generalized RDF, so we have to do a naive cast here
-        add(graphName, (BlankNodeOrIRI) t.getSubject(), (IRI) t.getPredicate(), t.getObject());
-    }
-
     void add(final BlankNodeOrIRI graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         final String g = factory.asJsonLdString(graphName);
         final String s = factory.asJsonLdString(subject);
@@ -122,36 +87,17 @@ abstract class AbstractJsonLdGraphLike<T extends TripleLike> implements JsonLdGr
         }
     }
 
-    public void close() {
-        // Drop the memory reference, but don't clear it
-        rdfDataSet = null;
-    }
-
     @Override
-    public void clear() {
-        filteredGraphs(null).forEach(List::clear);
-        // In theory we could use
-        // rdfDataSet.clear();
-        // but then we would need to also do
-        // rdfDataSet.put("@default", new ArrayList());
-        // .. both of which seems to be touching too much on JsonLd-Java's
-        // internal structure
-    }
-
-    @Override
-    public boolean contains(final T tripleOrQuad) {
-        return stream().anyMatch(Predicate.isEqual(tripleOrQuad));
-    }
-
-    @Override
-    public RDFDataset getRdfDataSet() {
-        return rdfDataSet;
-    }
-
-    @Override
-    public Stream<? extends T> stream() {
-        return rdfDataSet.graphNames().parallelStream().map(rdfDataSet::getQuads)
-                .flatMap(List<RDFDataset.Quad>::parallelStream).map(this::asTripleOrQuad);
+    public void add(final T t) {
+        // add triples to default graph by default
+        BlankNodeOrIRI graphName = null;
+        if (t instanceof org.apache.commons.rdf.api.Quad) {
+            final org.apache.commons.rdf.api.Quad q = (org.apache.commons.rdf.api.Quad) t;
+            graphName = q.getGraphName().orElse(null);
+        }
+        // FIXME: JSON-LD's rdfDataSet.addQuad method does not support
+        // generalized RDF, so we have to do a naive cast here
+        add(graphName, (BlankNodeOrIRI) t.getSubject(), (IRI) t.getPredicate(), t.getObject());
     }
 
     /**
@@ -167,10 +113,31 @@ abstract class AbstractJsonLdGraphLike<T extends TripleLike> implements JsonLdGr
      */
     abstract T asTripleOrQuad(RDFDataset.Quad jsonldQuad);
 
+    @Override
+    public void clear() {
+        filteredGraphs(null).forEach(List::clear);
+        // In theory we could use
+        // rdfDataSet.clear();
+        // but then we would need to also do
+        // rdfDataSet.put("@default", new ArrayList());
+        // .. both of which seems to be touching too much on JsonLd-Java's
+        // internal structure
+    }
+
+    public void close() {
+        // Drop the memory reference, but don't clear it
+        rdfDataSet = null;
+    }
+
     // This will be made public in JsonLdDataset
     // and is used by the other methods.
     boolean contains(final Optional<BlankNodeOrIRI> graphName, final BlankNodeOrIRI s, final IRI p, final RDFTerm o) {
         return filteredGraphs(graphName).flatMap(List::stream).anyMatch(quadFilter(s, p, o));
+    }
+
+    @Override
+    public boolean contains(final T tripleOrQuad) {
+        return stream().anyMatch(Predicate.isEqual(tripleOrQuad));
     }
 
     Stream<List<RDFDataset.Quad>> filteredGraphs(final Optional<BlankNodeOrIRI> graphName) {
@@ -182,6 +149,11 @@ abstract class AbstractJsonLdGraphLike<T extends TripleLike> implements JsonLdGr
                 // remove the quads which match our filter (which could have
                 // nulls as wildcards)
                 .map(rdfDataSet::getQuads);
+    }
+
+    @Override
+    public RDFDataset getRdfDataSet() {
+        return rdfDataSet;
     }
 
     String graphNameAsJsonLdString(final T tripleOrQuad) {
@@ -233,4 +205,32 @@ abstract class AbstractJsonLdGraphLike<T extends TripleLike> implements JsonLdGr
         filteredGraphs(graphName).forEach(t -> t.removeIf(quadFilter(subject, predicate, object)));
     }
 
+    @Override
+    public Stream<? extends T> stream() {
+        return rdfDataSet.graphNames().parallelStream().map(rdfDataSet::getQuads)
+                .flatMap(List<RDFDataset.Quad>::parallelStream).map(this::asTripleOrQuad);
+    }
+
+}
+
+/**
+ * Common abstract {@link GraphLike}.
+ * <p>
+ * Specialised by {@link JsonLdGraph}, {@link JsonLdUnionGraph} and
+ * {@link JsonLdDataset}.
+ *
+ * @param <T>
+ *            specialisation of {@link TripleLike}, e.g. {@link Triple} or
+ *            {@link org.apache.commons.rdf.api.Quad}
+ */
+public interface JsonLdGraphLike<T extends TripleLike> extends GraphLike<T> {
+    /**
+     * Return the underlying JSONLD-Java {@link RDFDataset}.
+     * <p>
+     * Changes in the JSONLD-Java dataset is reflected in this class and vice
+     * versa.
+     *
+     * @return The underlying JSONLD-JAva RDFDataset
+     */
+    RDFDataset getRdfDataSet();
 }

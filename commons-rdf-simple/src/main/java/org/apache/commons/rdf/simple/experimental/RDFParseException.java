@@ -39,10 +39,9 @@ public class RDFParseException extends Exception {
      * Constructs a new instance.
      * @param builder TODO
      * @param message TODO
-     * @param cause TODO
      */
-    public RDFParseException(final RDFParser builder, final String message, final Throwable cause) {
-        super(message, cause);
+    public RDFParseException(final RDFParser builder, final String message) {
+        super(message);
         this.builder = builder;
     }
 
@@ -50,9 +49,10 @@ public class RDFParseException extends Exception {
      * Constructs a new instance.
      * @param builder TODO
      * @param message TODO
+     * @param cause TODO
      */
-    public RDFParseException(final RDFParser builder, final String message) {
-        super(message);
+    public RDFParseException(final RDFParser builder, final String message, final Throwable cause) {
+        super(message, cause);
         this.builder = builder;
     }
 

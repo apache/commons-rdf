@@ -39,8 +39,12 @@ final class JsonLdIRIImpl extends AbstractJsonLdTermImpl implements JsonLdIRI {
     }
 
     @Override
-    public String ntriplesString() {
-        return "<" + node.getValue() + ">";
+    public boolean equals(final Object obj) {
+        if (!(obj instanceof IRI)) {
+            return false;
+        }
+        final IRI other = (IRI) obj;
+        return node.getValue().equals(other.getIRIString());
     }
 
     @Override
@@ -54,11 +58,7 @@ final class JsonLdIRIImpl extends AbstractJsonLdTermImpl implements JsonLdIRI {
     }
 
     @Override
-    public boolean equals(final Object obj) {
-        if (!(obj instanceof IRI)) {
-            return false;
-        }
-        final IRI other = (IRI) obj;
-        return node.getValue().equals(other.getIRIString());
+    public String ntriplesString() {
+        return "<" + node.getValue() + ">";
     }
 }

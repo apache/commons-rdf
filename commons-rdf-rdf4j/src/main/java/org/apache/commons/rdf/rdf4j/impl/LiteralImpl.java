@@ -29,12 +29,12 @@ final class LiteralImpl extends AbstractRDFTerm<org.eclipse.rdf4j.model.Literal>
 
     private static final String QUOTE = "\"";
 
-    LiteralImpl(final org.eclipse.rdf4j.model.Literal literal) {
-        super(literal);
-    }
-
     private static String lowerCase(final String langTag) {
         return langTag.toLowerCase(Locale.ROOT);
+    }
+
+    LiteralImpl(final org.eclipse.rdf4j.model.Literal literal) {
+        super(literal);
     }
 
     @Override

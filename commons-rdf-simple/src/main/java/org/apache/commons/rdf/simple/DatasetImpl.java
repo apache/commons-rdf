@@ -80,6 +80,45 @@ final class DatasetImpl implements Dataset {
         }
     }
 
+    @Override
+    public void clear() {
+        quads.clear();
+    }
+
+    @Override
+    public void close() {
+    }
+
+    @Override
+    public boolean contains(final Optional<BlankNodeOrIRI> graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
+        return stream(graphName, subject, predicate, object).findAny().isPresent();
+    }
+
+    @Override
+    public boolean contains(final Quad quad) {
+        return quads.contains(Objects.requireNonNull(quad));
+    }
+
+    @Override
+    public Graph getGraph() {
+        return getGraph(null).get();
+    }
+
+    @Override
+    public Optional<Graph> getGraph(final BlankNodeOrIRI graphName) {
+        return Optional.of(new DatasetGraphView(this, graphName));
+    }
+
+    @Override
+    public Stream<BlankNodeOrIRI> getGraphNames() {
+        // Not very efficient..
+        return stream().map(Quad::getGraphName).filter(Optional::isPresent).map(Optional::get).distinct();
+    }
+
+    private Stream<Quad> getQuads(final Predicate<Quad> filter) {
+        return stream().filter(filter);
+    }
+
     private <T extends RDFTerm> RDFTerm internallyMap(final T object) {
         if (object == null || object instanceof SimpleRDFTerm) {
             return object;
@@ -107,18 +146,22 @@ final class DatasetImpl implements Dataset {
     }
 
     @Override
-    public void clear() {
-        quads.clear();
+    public void remove(final Optional<BlankNodeOrIRI> graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
+        final Stream<Quad> toRemove = stream(graphName, subject, predicate, object);
+        for (final Quad t : toRemove.collect(Collectors.toList())) {
+            // Avoid ConcurrentModificationException in ArrayList
+            remove(t);
+        }
     }
 
     @Override
-    public boolean contains(final Optional<BlankNodeOrIRI> graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
-        return stream(graphName, subject, predicate, object).findAny().isPresent();
+    public void remove(final Quad quad) {
+        quads.remove(Objects.requireNonNull(quad));
     }
 
     @Override
-    public boolean contains(final Quad quad) {
-        return quads.contains(Objects.requireNonNull(quad));
+    public long size() {
+        return quads.size();
     }
 
     @Override
@@ -158,29 +201,6 @@ final class DatasetImpl implements Dataset {
         });
     }
 
-    private Stream<Quad> getQuads(final Predicate<Quad> filter) {
-        return stream().filter(filter);
-    }
-
-    @Override
-    public void remove(final Optional<BlankNodeOrIRI> graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
-        final Stream<Quad> toRemove = stream(graphName, subject, predicate, object);
-        for (final Quad t : toRemove.collect(Collectors.toList())) {
-            // Avoid ConcurrentModificationException in ArrayList
-            remove(t);
-        }
-    }
-
-    @Override
-    public void remove(final Quad quad) {
-        quads.remove(Objects.requireNonNull(quad));
-    }
-
-    @Override
-    public long size() {
-        return quads.size();
-    }
-
     @Override
     public String toString() {
         final String s = stream().limit(TO_STRING_MAX).map(Object::toString).collect(Collectors.joining("\n"));
@@ -188,26 +208,6 @@ final class DatasetImpl implements Dataset {
             return s + "\n# ... +" + (size() - TO_STRING_MAX) + " more";
         }
         return s;
-    }
-
-    @Override
-    public void close() {
-    }
-
-    @Override
-    public Graph getGraph() {
-        return getGraph(null).get();
-    }
-
-    @Override
-    public Optional<Graph> getGraph(final BlankNodeOrIRI graphName) {
-        return Optional.of(new DatasetGraphView(this, graphName));
-    }
-
-    @Override
-    public Stream<BlankNodeOrIRI> getGraphNames() {
-        // Not very efficient..
-        return stream().map(Quad::getGraphName).filter(Optional::isPresent).map(Optional::get).distinct();
     }
 
 }

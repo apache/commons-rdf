@@ -86,6 +86,36 @@ final class ModelGraphImpl implements RDF4JGraph {
     }
 
     @Override
+    public Set<RDF4JBlankNodeOrIRI> getContextMask() {
+        // ModelGraph always do the unionGraph
+        return Collections.emptySet();
+        // TODO: Should we support contextMask like in RepositoryGraphImpl?
+    }
+
+    @Override
+    public ClosableIterable<Triple> iterate() throws ConcurrentModificationException, IllegalStateException {
+        return iterate(null, null, null);
+    }
+
+    @Override
+    public ClosableIterable<Triple> iterate(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
+        return new ClosableIterable<Triple>() {
+            @Override
+            public void close() throws Exception {
+                // no-op as Model don't have transaction
+            }
+
+            @SuppressWarnings("unchecked")
+            @Override
+            public Iterator<Triple> iterator() {
+                // double-cast to fight Java generics..
+                final Stream<? extends Triple> s = stream(subject, predicate, object);
+                return (Iterator<Triple>) s.iterator();
+            }
+        };
+    }
+
+    @Override
     public void remove(final BlankNodeOrIRI subject, final org.apache.commons.rdf.api.IRI predicate, final RDFTerm object) {
         model.remove((Resource) rdf4jTermFactory.asValue(subject),
                 (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate), rdf4jTermFactory.asValue(object));
@@ -118,36 +148,6 @@ final class ModelGraphImpl implements RDF4JGraph {
         return model.filter((Resource) rdf4jTermFactory.asValue(subject),
                 (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate), rdf4jTermFactory.asValue(object))
                 .parallelStream().map(rdf4jTermFactory::asTriple);
-    }
-
-    @Override
-    public Set<RDF4JBlankNodeOrIRI> getContextMask() {
-        // ModelGraph always do the unionGraph
-        return Collections.emptySet();
-        // TODO: Should we support contextMask like in RepositoryGraphImpl?
-    }
-
-    @Override
-    public ClosableIterable<Triple> iterate(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
-        return new ClosableIterable<Triple>() {
-            @SuppressWarnings("unchecked")
-            @Override
-            public Iterator<Triple> iterator() {
-                // double-cast to fight Java generics..
-                final Stream<? extends Triple> s = stream(subject, predicate, object);
-                return (Iterator<Triple>) s.iterator();
-            }
-
-            @Override
-            public void close() throws Exception {
-                // no-op as Model don't have transaction
-            }
-        };
-    }
-
-    @Override
-    public ClosableIterable<Triple> iterate() throws ConcurrentModificationException, IllegalStateException {
-        return iterate(null, null, null);
     }
 
 }

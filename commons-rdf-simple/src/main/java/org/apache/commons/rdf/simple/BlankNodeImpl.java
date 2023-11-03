@@ -68,26 +68,6 @@ final class BlankNodeImpl implements BlankNode, SimpleRDFTerm {
     }
 
     @Override
-    public String uniqueReference() {
-        return uniqueReference;
-    }
-
-    @Override
-    public String ntriplesString() {
-        return "_:" + uniqueReference;
-    }
-
-    @Override
-    public String toString() {
-        return ntriplesString();
-    }
-
-    @Override
-    public int hashCode() {
-        return uniqueReference.hashCode();
-    }
-
-    @Override
     public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
@@ -104,6 +84,26 @@ final class BlankNodeImpl implements BlankNode, SimpleRDFTerm {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return uniqueReference.hashCode();
+    }
+
+    @Override
+    public String ntriplesString() {
+        return "_:" + uniqueReference;
+    }
+
+    @Override
+    public String toString() {
+        return ntriplesString();
+    }
+
+    @Override
+    public String uniqueReference() {
+        return uniqueReference;
     }
 
 }

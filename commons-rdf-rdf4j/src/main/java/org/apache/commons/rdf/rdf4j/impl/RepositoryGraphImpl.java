@@ -52,6 +52,17 @@ class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> implements
     }
 
     @Override
+    public void add(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
+        final Resource subj = (Resource) rdf4jTermFactory.asValue(subject);
+        final org.eclipse.rdf4j.model.IRI pred = (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate);
+        final Value obj = rdf4jTermFactory.asValue(object);
+        try (RepositoryConnection conn = getRepositoryConnection()) {
+            conn.add(subj, pred, obj, contextMask);
+            conn.commit();
+        }
+    }
+
+    @Override
     public void add(final Triple tripleLike) {
         final Statement statement = rdf4jTermFactory.asStatement(tripleLike);
         try (RepositoryConnection conn = getRepositoryConnection()) {
@@ -61,49 +72,14 @@ class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> implements
     }
 
     @Override
-    public boolean contains(final Triple tripleLike) {
-        final Statement statement = rdf4jTermFactory.asStatement(tripleLike);
-        try (RepositoryConnection conn = getRepositoryConnection()) {
-            return conn.hasStatement(statement, includeInferred, contextMask);
-        }
-    }
-
-    @Override
-    public void remove(final Triple tripleLike) {
-        final Statement statement = rdf4jTermFactory.asStatement(tripleLike);
-        try (RepositoryConnection conn = getRepositoryConnection()) {
-            conn.remove(statement, contextMask);
-            conn.commit();
-        }
+    protected RDF4JTriple asTripleLike(final Statement statement) {
+        return rdf4jTermFactory.asTriple(statement);
     }
 
     @Override
     public void clear() {
         try (RepositoryConnection conn = getRepositoryConnection()) {
             conn.clear(contextMask);
-            conn.commit();
-        }
-    }
-
-    @Override
-    public long size() {
-        if (!includeInferred && contextMask.length == 0) {
-            try (RepositoryConnection conn = getRepositoryConnection()) {
-                return conn.size();
-            }
-        }
-        try (Stream<RDF4JTriple> stream = stream()) {
-            return stream.count();
-        }
-    }
-
-    @Override
-    public void add(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
-        final Resource subj = (Resource) rdf4jTermFactory.asValue(subject);
-        final org.eclipse.rdf4j.model.IRI pred = (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate);
-        final Value obj = rdf4jTermFactory.asValue(object);
-        try (RepositoryConnection conn = getRepositoryConnection()) {
-            conn.add(subj, pred, obj, contextMask);
             conn.commit();
         }
     }
@@ -119,14 +95,20 @@ class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> implements
     }
 
     @Override
-    public void remove(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
-        final Resource subj = (Resource) rdf4jTermFactory.asValue(subject);
-        final org.eclipse.rdf4j.model.IRI pred = (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate);
-        final Value obj = rdf4jTermFactory.asValue(object);
+    public boolean contains(final Triple tripleLike) {
+        final Statement statement = rdf4jTermFactory.asStatement(tripleLike);
         try (RepositoryConnection conn = getRepositoryConnection()) {
-            conn.remove(subj, pred, obj, contextMask);
-            conn.commit();
+            return conn.hasStatement(statement, includeInferred, contextMask);
         }
+    }
+
+    @Override
+    public Set<RDF4JBlankNodeOrIRI> getContextMask() {
+        final Set<RDF4JBlankNodeOrIRI> mask = new HashSet<>();
+        for (final Resource s : contextMask) {
+            mask.add(rdf4jTermFactory.asRDFTerm(s));
+        }
+        return Collections.unmodifiableSet(mask);
     }
 
     @Override
@@ -142,6 +124,38 @@ class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> implements
         final Value obj = rdf4jTermFactory.asValue(object);
         return new ConvertedStatements<>(this::getRepositoryConnection, rdf4jTermFactory::asTriple, subj, pred,
                 obj, contextMask);
+    }
+
+    @Override
+    public void remove(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
+        final Resource subj = (Resource) rdf4jTermFactory.asValue(subject);
+        final org.eclipse.rdf4j.model.IRI pred = (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate);
+        final Value obj = rdf4jTermFactory.asValue(object);
+        try (RepositoryConnection conn = getRepositoryConnection()) {
+            conn.remove(subj, pred, obj, contextMask);
+            conn.commit();
+        }
+    }
+
+    @Override
+    public void remove(final Triple tripleLike) {
+        final Statement statement = rdf4jTermFactory.asStatement(tripleLike);
+        try (RepositoryConnection conn = getRepositoryConnection()) {
+            conn.remove(statement, contextMask);
+            conn.commit();
+        }
+    }
+
+    @Override
+    public long size() {
+        if (!includeInferred && contextMask.length == 0) {
+            try (RepositoryConnection conn = getRepositoryConnection()) {
+                return conn.size();
+            }
+        }
+        try (Stream<RDF4JTriple> stream = stream()) {
+            return stream.count();
+        }
     }
 
     @Override
@@ -174,20 +188,6 @@ class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> implements
         }
         // Make sure the RepositoryConnection is closed
         return stream == null ? null : stream.onClose(conn::close);
-    }
-
-    @Override
-    protected RDF4JTriple asTripleLike(final Statement statement) {
-        return rdf4jTermFactory.asTriple(statement);
-    }
-
-    @Override
-    public Set<RDF4JBlankNodeOrIRI> getContextMask() {
-        final Set<RDF4JBlankNodeOrIRI> mask = new HashSet<>();
-        for (final Resource s : contextMask) {
-            mask.add(rdf4jTermFactory.asRDFTerm(s));
-        }
-        return Collections.unmodifiableSet(mask);
     }
 
 }

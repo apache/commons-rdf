@@ -47,25 +47,8 @@ public class JenaRDFParser extends AbstractRDFParser<JenaRDFParser> {
         return new JenaRDF();
     }
 
-    public JenaRDFParser targetGeneralizedTriple(final Consumer<TripleLike> consumer) {
-        final JenaRDFParser c = this.clone();
-        c.resetTarget();
-        c.generalizedConsumerTriple = consumer;
-        return c;
-    }
-
-    public JenaRDFParser targetGeneralizedQuad(final Consumer<QuadLike<RDFTerm>> consumer) {
-        final JenaRDFParser c = this.clone();
-        c.resetTarget();
-        c.generalizedConsumerQuad = consumer;
-        return c;
-    }
-
-    @Override
-    protected void resetTarget() {
-        super.resetTarget();
-        this.generalizedConsumerTriple = null;
-        this.generalizedConsumerQuad = null;
+    private JenaRDF getJenaFactory() {
+        return (JenaRDF) getRdfTermFactory().filter(JenaRDF.class::isInstance).orElseGet(this::createRDFTermFactory);
     }
 
     @Override
@@ -99,8 +82,25 @@ public class JenaRDFParser extends AbstractRDFParser<JenaRDFParser> {
         }
     }
 
-    private JenaRDF getJenaFactory() {
-        return (JenaRDF) getRdfTermFactory().filter(JenaRDF.class::isInstance).orElseGet(this::createRDFTermFactory);
+    @Override
+    protected void resetTarget() {
+        super.resetTarget();
+        this.generalizedConsumerTriple = null;
+        this.generalizedConsumerQuad = null;
+    }
+
+    public JenaRDFParser targetGeneralizedQuad(final Consumer<QuadLike<RDFTerm>> consumer) {
+        final JenaRDFParser c = this.clone();
+        c.resetTarget();
+        c.generalizedConsumerQuad = consumer;
+        return c;
+    }
+
+    public JenaRDFParser targetGeneralizedTriple(final Consumer<TripleLike> consumer) {
+        final JenaRDFParser c = this.clone();
+        c.resetTarget();
+        c.generalizedConsumerTriple = consumer;
+        return c;
     }
 
 }

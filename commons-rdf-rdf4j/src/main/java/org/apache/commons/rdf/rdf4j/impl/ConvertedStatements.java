@@ -30,28 +30,6 @@ import org.eclipse.rdf4j.repository.RepositoryResult;
 
 final class ConvertedStatements<T> implements ClosableIterable<T> {
 
-    private final RepositoryConnection conn;
-    private final RepositoryResult<Statement> results;
-    private final Function<Statement, T> statementAdapter;
-
-    ConvertedStatements(final Supplier<RepositoryConnection> repositoryConnector, final Function<Statement, T> statementAdapter,
-            final Resource subj, final org.eclipse.rdf4j.model.IRI pred, final Value obj, final Resource... contexts) {
-        this.statementAdapter = statementAdapter;
-        this.conn = repositoryConnector.get();
-        this.results = conn.getStatements(subj, pred, obj, contexts);
-    }
-
-    @Override
-    public Iterator<T> iterator() {
-        return new ConvertedIterator();
-    }
-
-    @Override
-    public void close() {
-        results.close();
-        conn.close();
-    }
-
     private final class ConvertedIterator implements Iterator<T> {
         @Override
         public boolean hasNext() {
@@ -66,6 +44,28 @@ final class ConvertedStatements<T> implements ClosableIterable<T> {
         public T next() {
             return statementAdapter.apply(results.next());
         }
+    }
+    private final RepositoryConnection conn;
+    private final RepositoryResult<Statement> results;
+
+    private final Function<Statement, T> statementAdapter;
+
+    ConvertedStatements(final Supplier<RepositoryConnection> repositoryConnector, final Function<Statement, T> statementAdapter,
+            final Resource subj, final org.eclipse.rdf4j.model.IRI pred, final Value obj, final Resource... contexts) {
+        this.statementAdapter = statementAdapter;
+        this.conn = repositoryConnector.get();
+        this.results = conn.getStatements(subj, pred, obj, contexts);
+    }
+
+    @Override
+    public void close() {
+        results.close();
+        conn.close();
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new ConvertedIterator();
     }
 
 }

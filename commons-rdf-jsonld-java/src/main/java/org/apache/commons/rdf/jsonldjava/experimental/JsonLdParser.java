@@ -43,9 +43,19 @@ import com.github.jsonldjava.utils.JsonUtils;
 
 public class JsonLdParser extends AbstractRDFParser<JsonLdParser> {
 
+    private static URL asURL(final IRI iri) throws IllegalStateException {
+        try {
+            return new URI(iri.getIRIString()).toURL();
+        } catch (MalformedURLException | URISyntaxException e) {
+            throw new IllegalStateException("Invalid URL: " + iri.getIRIString());
+        }
+    }
+
     @Override
-    protected JsonLdRDF createRDFTermFactory() {
-        return new JsonLdRDF();
+    protected void checkSource() throws IOException {
+        super.checkSource();
+        // Might throw IllegalStateException if invalid
+        getSourceIri().map(JsonLdParser::asURL);
     }
 
     @Override
@@ -65,19 +75,16 @@ public class JsonLdParser extends AbstractRDFParser<JsonLdParser> {
         return c;
     }
 
-    private static URL asURL(final IRI iri) throws IllegalStateException {
-        try {
-            return new URI(iri.getIRIString()).toURL();
-        } catch (MalformedURLException | URISyntaxException e) {
-            throw new IllegalStateException("Invalid URL: " + iri.getIRIString());
-        }
+    @Override
+    protected JsonLdRDF createRDFTermFactory() {
+        return new JsonLdRDF();
     }
 
-    @Override
-    protected void checkSource() throws IOException {
-        super.checkSource();
-        // Might throw IllegalStateException if invalid
-        getSourceIri().map(JsonLdParser::asURL);
+    private JsonLdRDF getJsonLdFactory() {
+        if (getRdfTermFactory().isPresent() && getRdfTermFactory().get() instanceof JsonLdRDF) {
+            return (JsonLdRDF) getRdfTermFactory().get();
+        }
+        return createRDFTermFactory();
     }
 
     @Override
@@ -129,13 +136,6 @@ public class JsonLdParser extends AbstractRDFParser<JsonLdParser> {
             // No need for .sequential() here
             fromDataset.stream().forEach(getTarget());
         }
-    }
-
-    private JsonLdRDF getJsonLdFactory() {
-        if (getRdfTermFactory().isPresent() && getRdfTermFactory().get() instanceof JsonLdRDF) {
-            return (JsonLdRDF) getRdfTermFactory().get();
-        }
-        return createRDFTermFactory();
     }
 
     private Object readSource() throws IOException {

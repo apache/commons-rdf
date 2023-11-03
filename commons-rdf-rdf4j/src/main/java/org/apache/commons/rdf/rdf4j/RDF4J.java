@@ -103,12 +103,6 @@ import org.eclipse.rdf4j.sail.memory.MemoryStore;
 @SuppressWarnings("PMD.UnnecessaryFullyQualifiedName") // we use fully-qualified names for clarity
 public final class RDF4J implements RDF {
 
-    /**
-     * InternalRDF4JFactory is deliberately abstract
-     */
-    private static final InternalRDF4JFactory RDF4J = new InternalRDF4JFactory() {
-    };
-
     public enum Option {
         /**
          * The Graph/Dataset should include any inferred statements
@@ -122,6 +116,48 @@ public final class RDF4J implements RDF {
         handleInitAndShutdown
     }
 
+    /**
+     * InternalRDF4JFactory is deliberately abstract
+     */
+    private static final InternalRDF4JFactory RDF4J = new InternalRDF4JFactory() {
+    };
+
+    /**
+     * Adapt a RDF4J {@link Value} as a Commons RDF {@link RDFTerm}.
+     * <p>
+     * The value will be of the same kind as the term, e.g. a
+     * {@link org.eclipse.rdf4j.model.BNode} is converted to a
+     * {@link org.apache.commons.rdf.api.BlankNode}, a
+     * {@link org.eclipse.rdf4j.model.IRI} is converted to a
+     * {@link org.apache.commons.rdf.api.IRI} and a
+     * {@link org.eclipse.rdf4j.model.Literal}. is converted to a
+     * {@link org.apache.commons.rdf.api.Literal}
+     *
+     * @param value
+     *            The RDF4J {@link Value} to convert.
+     * @param salt
+     *            A {@link UUID} salt to use for uniquely mapping any
+     *            {@link BNode}s. The salt should typically be the same for
+     *            multiple statements in the same {@link Repository} or
+     *            {@link Model} to ensure {@link BlankNode#equals(Object)} and
+     *            {@link BlankNode#uniqueReference()} works as intended.
+     * @return A {@link RDFTerm} that corresponds to the RDF4J value
+     * @throws IllegalArgumentException
+     *             if the value is not a BNode, Literal or IRI
+     */
+    public static RDF4JTerm asRDFTerm(final Value value, final UUID salt) {
+        if (value instanceof BNode) {
+            return RDF4J.createBlankNodeImpl((BNode) value, salt);
+        }
+        if (value instanceof org.eclipse.rdf4j.model.Literal) {
+            return RDF4J.createLiteralImpl((org.eclipse.rdf4j.model.Literal) value);
+        }
+        if (value instanceof org.eclipse.rdf4j.model.IRI) {
+            return RDF4J.createIRIImpl((org.eclipse.rdf4j.model.IRI) value);
+        }
+        throw new IllegalArgumentException("Value is not a BNode, Literal or IRI: " + value.getClass());
+    }
+
     private final UUID salt;
 
     private final ValueFactory valueFactory;
@@ -132,6 +168,21 @@ public final class RDF4J implements RDF {
      */
     public RDF4J() {
         this(SimpleValueFactory.getInstance(), UUID.randomUUID());
+    }
+
+    /**
+     * Construct an {@link RDF4J}.
+     * <p>
+     * This constructor may be used if reproducible
+     * {@link BlankNode#uniqueReference()} in {@link BlankNode} is desirable.
+     *
+     * @param salt
+     *            An {@link UUID} salt to be used by any created
+     *            {@link BlankNode}s for the purpose of
+     *            {@link BlankNode#uniqueReference()}
+     */
+    public RDF4J(final UUID salt) {
+        this(SimpleValueFactory.getInstance(), salt);
     }
 
     /**
@@ -154,21 +205,6 @@ public final class RDF4J implements RDF {
      * This constructor may be used if reproducible
      * {@link BlankNode#uniqueReference()} in {@link BlankNode} is desirable.
      *
-     * @param salt
-     *            An {@link UUID} salt to be used by any created
-     *            {@link BlankNode}s for the purpose of
-     *            {@link BlankNode#uniqueReference()}
-     */
-    public RDF4J(final UUID salt) {
-        this(SimpleValueFactory.getInstance(), salt);
-    }
-
-    /**
-     * Construct an {@link RDF4J}.
-     * <p>
-     * This constructor may be used if reproducible
-     * {@link BlankNode#uniqueReference()} in {@link BlankNode} is desirable.
-     *
      * @param valueFactory
      *            The RDF4J {@link ValueFactory} to use
      * @param salt
@@ -179,6 +215,119 @@ public final class RDF4J implements RDF {
     public RDF4J(final ValueFactory valueFactory, final UUID salt) {
         this.valueFactory = valueFactory;
         this.salt = salt;
+    }
+
+    /**
+     * Adapt an RDF4J {@link Repository} as a Commons RDF {@link Dataset}.
+     * <p>
+     * Changes to the dataset are reflected in the repository, and vice versa.
+     * <p>
+     * <strong>Note:</strong> Some operations on the {@link RDF4JDataset}
+     * requires the use of try-with-resources to close underlying
+     * {@link RepositoryConnection}s, including {@link RDF4JDataset#iterate()},
+     * {@link RDF4JDataset#stream()} and {@link RDF4JDataset#getGraphNames()}.
+     *
+     * @param repository
+     *            RDF4J {@link Repository} to connect to.
+     * @param options
+     *            Zero or more {@link Option}
+     * @return A {@link Dataset} backed by the RDF4J repository.
+     */
+    public RDF4JDataset asDataset(final Repository repository, final Option... options) {
+        final EnumSet<Option> opts = optionSet(options);
+        return RDF4J.createRepositoryDatasetImpl(repository, opts.contains(Option.handleInitAndShutdown),
+                opts.contains(Option.includeInferred));
+    }
+
+    /**
+     * Adapt an RDF4J {@link Model} as a Commons RDF {@link Graph}.
+     * <p>
+     * Changes to the graph are reflected in the model, and vice versa.
+     *
+     * @param model
+     *            RDF4J {@link Model} to adapt.
+     * @return Adapted {@link Graph}.
+     */
+    public RDF4JGraph asGraph(final Model model) {
+        return RDF4J.createModelGraphImpl(model, this);
+    }
+
+    /**
+     * Adapt an RDF4J {@link Repository} as a Commons RDF {@link Graph}.
+     * <p>
+     * The graph will only include triples in the default graph (equivalent to
+     * context <code>new Resource[0]{null})</code> in RDF4J).
+     * <p>
+     * Changes to the graph are reflected in the repository, and vice versa.
+     * <p>
+     * <strong>Note:</strong> Some operations on the {@link RDF4JGraph} requires
+     * the use of try-with-resources to close underlying
+     * {@link RepositoryConnection}s, including {@link RDF4JGraph#iterate()} and
+     * {@link RDF4JGraph#stream()}.
+     *
+     * @param repository
+     *            RDF4J {@link Repository} to connect to.
+     * @param options
+     *            Zero or more {@link Option}
+     * @return A {@link Graph} backed by the RDF4J repository.
+     */
+    public RDF4JGraph asGraph(final Repository repository, final Option... options) {
+        final EnumSet<Option> opts = optionSet(options);
+        return RDF4J.createRepositoryGraphImpl(repository, opts.contains(Option.handleInitAndShutdown),
+                opts.contains(Option.includeInferred), new Resource[] { null }); // default
+                                                                                 // graph
+    }
+
+    /**
+     * Adapt an RDF4J {@link Repository} as a Commons RDF {@link Graph}.
+     * <p>
+     * The graph will include triples in the specified contexts.
+     * <p>
+     * Changes to the graph are reflected in the repository, and vice versa.
+     * Triples added/removed to the graph are reflected in all the specified
+     * contexts.
+     * <p>
+     * <strong>Note:</strong> Some operations on the {@link RDF4JGraph} requires
+     * the use of try-with-resources to close underlying
+     * {@link RepositoryConnection}s, including {@link RDF4JGraph#iterate()} and
+     * {@link RDF4JGraph#stream()}.
+     *
+     * @param repository
+     *            RDF4J {@link Repository} to connect to.
+     * @param contexts
+     *            A {@link Set} of {@link BlankNodeOrIRI} specifying the graph
+     *            names to use as a context. The set may include the value
+     *            <code>null</code> to indicate the default graph. The empty set
+     *            indicates any context, e.g. the <em>union graph</em>.
+     * @param option
+     *            Zero or more {@link Option}s
+     * @return A {@link Graph} backed by the RDF4J repository.
+     */
+    public RDF4JGraph asGraph(final Repository repository, final Set<? extends BlankNodeOrIRI> contexts, final Option... option) {
+        final EnumSet<Option> opts = optionSet(option);
+        /** NOTE: asValue() deliberately CAN handle <code>null</code> */
+        final Resource[] resources = contexts.stream().map(g -> (Resource) asValue(g)).toArray(Resource[]::new);
+        return RDF4J.createRepositoryGraphImpl(Objects.requireNonNull(repository),
+                opts.contains(Option.handleInitAndShutdown), opts.contains(Option.includeInferred), resources);
+    }
+
+    /**
+     * Adapt an RDF4J {@link Repository} as a Commons RDF {@link Graph}.
+     * <p>
+     * The graph will include triples in any contexts (e.g. the union graph).
+     * <p>
+     * Changes to the graph are reflected in the repository, and vice versa.
+     *
+     * @param repository
+     *            RDF4J {@link Repository} to connect to.
+     * @param options
+     *            Zero or more {@link Option}
+     * @return A union {@link Graph} backed by the RDF4J repository.
+     */
+    public RDF4JGraph asGraphUnion(final Repository repository, final Option... options) {
+        final EnumSet<Option> opts = optionSet(options);
+        return RDF4J.createRepositoryGraphImpl(repository, opts.contains(Option.handleInitAndShutdown),
+                opts.contains(Option.includeInferred)); // union graph
     }
 
     /**
@@ -200,38 +349,6 @@ public final class RDF4J implements RDF {
      */
     public RDF4JQuad asQuad(final Statement statement) {
         return RDF4J.createQuadImpl(statement, salt);
-    }
-
-    /**
-     *
-     * Adapt a RDF4J {@link Value} as a Commons RDF {@link RDFTerm}.
-     * <p>
-     * The value will be of the same kind as the term, e.g. a
-     * {@link org.eclipse.rdf4j.model.BNode} is converted to a
-     * {@link org.apache.commons.rdf.api.BlankNode}, a
-     * {@link org.eclipse.rdf4j.model.IRI} is converted to a
-     * {@link org.apache.commons.rdf.api.IRI} and a
-     * {@link org.eclipse.rdf4j.model.Literal}. is converted to a
-     * {@link org.apache.commons.rdf.api.Literal}
-     * <p>
-     * For the purpose of {@link BlankNode} equivalence, this method will use an
-     * internal salt UUID that is unique per instance of {@link RDF4J}.
-     * <p>
-     * <strong>NOTE:</strong> If combining RDF4J values from multiple
-     * repositories or models, then their {@link BNode}s may have the same
-     * {@link BNode#getID()}, which with this method would become equivalent
-     * according to {@link BlankNode#equals(Object)} and
-     * {@link BlankNode#uniqueReference()}, unless a separate {@link RDF4J}
-     * instance is used per RDF4J repository/model.
-     *
-     * @param value
-     *            The RDF4J {@link Value} to convert.
-     * @return A {@link RDFTerm} that corresponds to the RDF4J value
-     * @throws IllegalArgumentException
-     *             if the value is not a BNode, Literal or IRI
-     */
-    public RDF4JTerm asRDFTerm(final Value value) {
-        return asRDFTerm(value, salt);
     }
 
     /**
@@ -307,6 +424,7 @@ public final class RDF4J implements RDF {
     }
 
     /**
+     *
      * Adapt a RDF4J {@link Value} as a Commons RDF {@link RDFTerm}.
      * <p>
      * The value will be of the same kind as the term, e.g. a
@@ -316,143 +434,25 @@ public final class RDF4J implements RDF {
      * {@link org.apache.commons.rdf.api.IRI} and a
      * {@link org.eclipse.rdf4j.model.Literal}. is converted to a
      * {@link org.apache.commons.rdf.api.Literal}
+     * <p>
+     * For the purpose of {@link BlankNode} equivalence, this method will use an
+     * internal salt UUID that is unique per instance of {@link RDF4J}.
+     * <p>
+     * <strong>NOTE:</strong> If combining RDF4J values from multiple
+     * repositories or models, then their {@link BNode}s may have the same
+     * {@link BNode#getID()}, which with this method would become equivalent
+     * according to {@link BlankNode#equals(Object)} and
+     * {@link BlankNode#uniqueReference()}, unless a separate {@link RDF4J}
+     * instance is used per RDF4J repository/model.
      *
      * @param value
      *            The RDF4J {@link Value} to convert.
-     * @param salt
-     *            A {@link UUID} salt to use for uniquely mapping any
-     *            {@link BNode}s. The salt should typically be the same for
-     *            multiple statements in the same {@link Repository} or
-     *            {@link Model} to ensure {@link BlankNode#equals(Object)} and
-     *            {@link BlankNode#uniqueReference()} works as intended.
      * @return A {@link RDFTerm} that corresponds to the RDF4J value
      * @throws IllegalArgumentException
      *             if the value is not a BNode, Literal or IRI
      */
-    public static RDF4JTerm asRDFTerm(final Value value, final UUID salt) {
-        if (value instanceof BNode) {
-            return RDF4J.createBlankNodeImpl((BNode) value, salt);
-        }
-        if (value instanceof org.eclipse.rdf4j.model.Literal) {
-            return RDF4J.createLiteralImpl((org.eclipse.rdf4j.model.Literal) value);
-        }
-        if (value instanceof org.eclipse.rdf4j.model.IRI) {
-            return RDF4J.createIRIImpl((org.eclipse.rdf4j.model.IRI) value);
-        }
-        throw new IllegalArgumentException("Value is not a BNode, Literal or IRI: " + value.getClass());
-    }
-
-    /**
-     * Adapt an RDF4J {@link Repository} as a Commons RDF {@link Dataset}.
-     * <p>
-     * Changes to the dataset are reflected in the repository, and vice versa.
-     * <p>
-     * <strong>Note:</strong> Some operations on the {@link RDF4JDataset}
-     * requires the use of try-with-resources to close underlying
-     * {@link RepositoryConnection}s, including {@link RDF4JDataset#iterate()},
-     * {@link RDF4JDataset#stream()} and {@link RDF4JDataset#getGraphNames()}.
-     *
-     * @param repository
-     *            RDF4J {@link Repository} to connect to.
-     * @param options
-     *            Zero or more {@link Option}
-     * @return A {@link Dataset} backed by the RDF4J repository.
-     */
-    public RDF4JDataset asDataset(final Repository repository, final Option... options) {
-        final EnumSet<Option> opts = optionSet(options);
-        return RDF4J.createRepositoryDatasetImpl(repository, opts.contains(Option.handleInitAndShutdown),
-                opts.contains(Option.includeInferred));
-    }
-
-    /**
-     * Adapt an RDF4J {@link Model} as a Commons RDF {@link Graph}.
-     * <p>
-     * Changes to the graph are reflected in the model, and vice versa.
-     *
-     * @param model
-     *            RDF4J {@link Model} to adapt.
-     * @return Adapted {@link Graph}.
-     */
-    public RDF4JGraph asGraph(final Model model) {
-        return RDF4J.createModelGraphImpl(model, this);
-    }
-
-    /**
-     * Adapt an RDF4J {@link Repository} as a Commons RDF {@link Graph}.
-     * <p>
-     * The graph will only include triples in the default graph (equivalent to
-     * context <code>new Resource[0]{null})</code> in RDF4J).
-     * <p>
-     * Changes to the graph are reflected in the repository, and vice versa.
-     * <p>
-     * <strong>Note:</strong> Some operations on the {@link RDF4JGraph} requires
-     * the use of try-with-resources to close underlying
-     * {@link RepositoryConnection}s, including {@link RDF4JGraph#iterate()} and
-     * {@link RDF4JGraph#stream()}.
-     *
-     * @param repository
-     *            RDF4J {@link Repository} to connect to.
-     * @param options
-     *            Zero or more {@link Option}
-     * @return A {@link Graph} backed by the RDF4J repository.
-     */
-    public RDF4JGraph asGraph(final Repository repository, final Option... options) {
-        final EnumSet<Option> opts = optionSet(options);
-        return RDF4J.createRepositoryGraphImpl(repository, opts.contains(Option.handleInitAndShutdown),
-                opts.contains(Option.includeInferred), new Resource[] { null }); // default
-                                                                                 // graph
-    }
-
-    /**
-     * Adapt an RDF4J {@link Repository} as a Commons RDF {@link Graph}.
-     * <p>
-     * The graph will include triples in any contexts (e.g. the union graph).
-     * <p>
-     * Changes to the graph are reflected in the repository, and vice versa.
-     *
-     * @param repository
-     *            RDF4J {@link Repository} to connect to.
-     * @param options
-     *            Zero or more {@link Option}
-     * @return A union {@link Graph} backed by the RDF4J repository.
-     */
-    public RDF4JGraph asGraphUnion(final Repository repository, final Option... options) {
-        final EnumSet<Option> opts = optionSet(options);
-        return RDF4J.createRepositoryGraphImpl(repository, opts.contains(Option.handleInitAndShutdown),
-                opts.contains(Option.includeInferred)); // union graph
-    }
-
-    /**
-     * Adapt an RDF4J {@link Repository} as a Commons RDF {@link Graph}.
-     * <p>
-     * The graph will include triples in the specified contexts.
-     * <p>
-     * Changes to the graph are reflected in the repository, and vice versa.
-     * Triples added/removed to the graph are reflected in all the specified
-     * contexts.
-     * <p>
-     * <strong>Note:</strong> Some operations on the {@link RDF4JGraph} requires
-     * the use of try-with-resources to close underlying
-     * {@link RepositoryConnection}s, including {@link RDF4JGraph#iterate()} and
-     * {@link RDF4JGraph#stream()}.
-     *
-     * @param repository
-     *            RDF4J {@link Repository} to connect to.
-     * @param contexts
-     *            A {@link Set} of {@link BlankNodeOrIRI} specifying the graph
-     *            names to use as a context. The set may include the value
-     *            <code>null</code> to indicate the default graph. The empty set
-     *            indicates any context, e.g. the <em>union graph</em>.
-     * @param option
-     *            Zero or more {@link Option}s
-     * @return A {@link Graph} backed by the RDF4J repository.
-     */
-    public RDF4JGraph asGraph(final Repository repository, final Set<? extends BlankNodeOrIRI> contexts, final Option... option) {
-        final EnumSet<Option> opts = optionSet(option);
-        /** NOTE: asValue() deliberately CAN handle <code>null</code> */
-        final Resource[] resources = contexts.stream().map(g -> (Resource) asValue(g)).toArray(Resource[]::new);
-        return RDF4J.createRepositoryGraphImpl(Objects.requireNonNull(repository),
-                opts.contains(Option.handleInitAndShutdown), opts.contains(Option.includeInferred), resources);
+    public RDF4JTerm asRDFTerm(final Value value) {
+        return asRDFTerm(value, salt);
     }
 
     /**
@@ -628,21 +628,21 @@ public final class RDF4J implements RDF {
     }
 
     @Override
-    public RDF4JTriple createTriple(final BlankNodeOrIRI subject, final org.apache.commons.rdf.api.IRI predicate, final RDFTerm object)
-            throws IllegalArgumentException {
-        final Statement statement = getValueFactory().createStatement(
-                (org.eclipse.rdf4j.model.Resource) asValue(subject), (org.eclipse.rdf4j.model.IRI) asValue(predicate),
-                asValue(object));
-        return asTriple(statement);
-    }
-
-    @Override
     public Quad createQuad(final BlankNodeOrIRI graphName, final BlankNodeOrIRI subject, final org.apache.commons.rdf.api.IRI predicate,
             final RDFTerm object) throws IllegalArgumentException {
         final Statement statement = getValueFactory().createStatement(
                 (org.eclipse.rdf4j.model.Resource) asValue(subject), (org.eclipse.rdf4j.model.IRI) asValue(predicate),
                 asValue(object), (org.eclipse.rdf4j.model.Resource) asValue(graphName));
         return asQuad(statement);
+    }
+
+    @Override
+    public RDF4JTriple createTriple(final BlankNodeOrIRI subject, final org.apache.commons.rdf.api.IRI predicate, final RDFTerm object)
+            throws IllegalArgumentException {
+        final Statement statement = getValueFactory().createStatement(
+                (org.eclipse.rdf4j.model.Resource) asValue(subject), (org.eclipse.rdf4j.model.IRI) asValue(predicate),
+                asValue(object));
+        return asTriple(statement);
     }
 
     public ValueFactory getValueFactory() {

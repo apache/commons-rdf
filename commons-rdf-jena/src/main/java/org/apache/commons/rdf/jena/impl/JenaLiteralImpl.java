@@ -32,15 +32,15 @@ class JenaLiteralImpl extends AbstractJenaRDFTerm implements JenaLiteral {
     private static final InternalJenaFactory INTERNAL_JENA_FACTORY = new InternalJenaFactory() {
     };
 
+    private static String lowerCase(final String langTag) {
+        return langTag.toLowerCase(Locale.ROOT);
+    }
+
     JenaLiteralImpl(final Node node) {
         super(node);
         if (!node.isLiteral()) {
             throw new IllegalArgumentException("Node is not a literal: " + node);
         }
-    }
-
-    private static String lowerCase(final String langTag) {
-        return langTag.toLowerCase(Locale.ROOT);
     }
 
     @Override

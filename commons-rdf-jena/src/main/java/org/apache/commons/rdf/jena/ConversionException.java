@@ -37,11 +37,11 @@ public class ConversionException extends RuntimeException {
         super(message);
     }
 
-    public ConversionException(final Throwable cause) {
-        super(cause);
-    }
-
     public ConversionException(final String message, final Throwable cause) {
         super(message, cause);
+    }
+
+    public ConversionException(final Throwable cause) {
+        super(cause);
     }
 }

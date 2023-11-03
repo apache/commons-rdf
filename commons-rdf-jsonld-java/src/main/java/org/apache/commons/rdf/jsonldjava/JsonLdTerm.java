@@ -21,16 +21,6 @@ import org.apache.commons.rdf.api.RDFTerm;
 
 import com.github.jsonldjava.core.RDFDataset.Node;
 
-public interface JsonLdTerm extends RDFTerm {
-
-    /**
-     * Return the underlying JsonLd {@link Node}.
-     *
-     * @return JsonLd {@link Node}
-     */
-    Node asJsonLdNode();
-}
-
 abstract class AbstractJsonLdTermImpl implements JsonLdTerm {
     final Node node;
 
@@ -48,4 +38,14 @@ abstract class AbstractJsonLdTermImpl implements JsonLdTerm {
         return ntriplesString();
     }
 
+}
+
+public interface JsonLdTerm extends RDFTerm {
+
+    /**
+     * Return the underlying JsonLd {@link Node}.
+     *
+     * @return JsonLd {@link Node}
+     */
+    Node asJsonLdNode();
 }

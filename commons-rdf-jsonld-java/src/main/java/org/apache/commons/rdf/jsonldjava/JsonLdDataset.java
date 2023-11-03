@@ -55,6 +55,11 @@ class JsonLdDatasetImpl extends AbstractJsonLdGraphLike<org.apache.commons.rdf.a
     }
 
     @Override
+    Quad asTripleOrQuad(final com.github.jsonldjava.core.RDFDataset.Quad jsonldQuad) {
+        return factory.asQuad(jsonldQuad);
+    }
+
+    @Override
     public boolean contains(final Optional<BlankNodeOrIRI> graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         return super.contains(graphName, subject, predicate, object);
     }
@@ -91,21 +96,16 @@ class JsonLdDatasetImpl extends AbstractJsonLdGraphLike<org.apache.commons.rdf.a
     }
 
     @Override
-    public Stream<? extends Quad> stream(final Optional<BlankNodeOrIRI> graphName, final BlankNodeOrIRI subject, final IRI predicate,
-            final RDFTerm object) {
-        return filteredGraphs(graphName).flatMap(List::stream).filter(quadFilter(subject, predicate, object))
-                .map(factory::asQuad);
-    }
-
-    @Override
     public long size() {
         return rdfDataSet.graphNames().stream().map(rdfDataSet::getQuads)
                 .collect(Collectors.summingLong(List::size));
     }
 
     @Override
-    Quad asTripleOrQuad(final com.github.jsonldjava.core.RDFDataset.Quad jsonldQuad) {
-        return factory.asQuad(jsonldQuad);
+    public Stream<? extends Quad> stream(final Optional<BlankNodeOrIRI> graphName, final BlankNodeOrIRI subject, final IRI predicate,
+            final RDFTerm object) {
+        return filteredGraphs(graphName).flatMap(List::stream).filter(quadFilter(subject, predicate, object))
+                .map(factory::asQuad);
     }
 
 }

@@ -32,6 +32,10 @@ public interface JsonLdLiteral extends JsonLdTerm, Literal {
 
 class JsonLdLiteralImpl extends AbstractJsonLdTermImpl implements JsonLdLiteral {
 
+    private static String lowerCase(final String langTag) {
+        return langTag.toLowerCase(Locale.ROOT);
+    }
+
     JsonLdLiteralImpl(final Node node) {
         super(node);
         if (!node.isLiteral()) {
@@ -39,8 +43,39 @@ class JsonLdLiteralImpl extends AbstractJsonLdTermImpl implements JsonLdLiteral 
         }
     }
 
-    private static String lowerCase(final String langTag) {
-        return langTag.toLowerCase(Locale.ROOT);
+    @Override
+    public boolean equals(final Object obj) {
+        // COMMONSRDF-56: Do **not** use
+        // asJsonLdNode().compareTo(other.asJsonLdNode())
+        if (obj instanceof Literal) {
+            final Literal other = (Literal) obj;
+            return getLexicalForm().equals(other.getLexicalForm())
+                    && getDatatype().equals(other.getDatatype())
+                    && getLanguageTag().map(JsonLdLiteralImpl::lowerCase)
+                        .equals(other.getLanguageTag().map(JsonLdLiteralImpl::lowerCase));
+        }
+        return false;
+    }
+
+    @Override
+    public IRI getDatatype() {
+        return new JsonLdIRIImpl(node.getDatatype());
+    }
+
+    @Override
+    public Optional<String> getLanguageTag() {
+        return Optional.ofNullable(node.getLanguage());
+    }
+
+    @Override
+    public String getLexicalForm() {
+        return node.getValue();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(node.getValue(), node.getDatatype(),
+                getLanguageTag().map(JsonLdLiteralImpl::lowerCase));
     }
 
     @Override
@@ -62,40 +97,5 @@ class JsonLdLiteralImpl extends AbstractJsonLdTermImpl implements JsonLdLiteral 
             sb.append(getDatatype().ntriplesString());
         }
         return sb.toString();
-    }
-
-    @Override
-    public String getLexicalForm() {
-        return node.getValue();
-    }
-
-    @Override
-    public IRI getDatatype() {
-        return new JsonLdIRIImpl(node.getDatatype());
-    }
-
-    @Override
-    public Optional<String> getLanguageTag() {
-        return Optional.ofNullable(node.getLanguage());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(node.getValue(), node.getDatatype(),
-                getLanguageTag().map(JsonLdLiteralImpl::lowerCase));
-    }
-
-    @Override
-    public boolean equals(final Object obj) {
-        // COMMONSRDF-56: Do **not** use
-        // asJsonLdNode().compareTo(other.asJsonLdNode())
-        if (obj instanceof Literal) {
-            final Literal other = (Literal) obj;
-            return getLexicalForm().equals(other.getLexicalForm())
-                    && getDatatype().equals(other.getDatatype())
-                    && getLanguageTag().map(JsonLdLiteralImpl::lowerCase)
-                        .equals(other.getLanguageTag().map(JsonLdLiteralImpl::lowerCase));
-        }
-        return false;
     }
 }

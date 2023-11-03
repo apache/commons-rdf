@@ -32,8 +32,12 @@ final class LiteralImpl implements Literal, SimpleRDF.SimpleRDFTerm {
 
     private static final String QUOTE = "\"";
 
+    private static String lowerCase(final String langTag) {
+        return langTag.toLowerCase(Locale.ROOT);
+    }
     private final IRI dataType;
     private final String languageTag;
+
     private final String lexicalForm;
 
     public LiteralImpl(final String literal) {
@@ -69,6 +73,19 @@ final class LiteralImpl implements Literal, SimpleRDF.SimpleRDFTerm {
     }
 
     @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || !(obj instanceof Literal)) {
+            return false;
+        }
+        final Literal literal = (Literal) obj;
+        return getDatatype().equals(literal.getDatatype()) && getLexicalForm().equals(literal.getLexicalForm())
+                && getLanguageTag().equals(literal.getLanguageTag().map(LiteralImpl::lowerCase));
+    }
+
+    @Override
     public IRI getDatatype() {
         return dataType;
     }
@@ -81,6 +98,11 @@ final class LiteralImpl implements Literal, SimpleRDF.SimpleRDFTerm {
     @Override
     public String getLexicalForm() {
         return lexicalForm;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(lexicalForm, dataType, languageTag);
     }
 
     @Override
@@ -109,28 +131,6 @@ final class LiteralImpl implements Literal, SimpleRDF.SimpleRDFTerm {
     @Override
     public String toString() {
         return ntriplesString();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(lexicalForm, dataType, languageTag);
-    }
-
-    private static String lowerCase(final String langTag) {
-        return langTag.toLowerCase(Locale.ROOT);
-    }
-
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || !(obj instanceof Literal)) {
-            return false;
-        }
-        final Literal literal = (Literal) obj;
-        return getDatatype().equals(literal.getDatatype()) && getLexicalForm().equals(literal.getLexicalForm())
-                && getLanguageTag().equals(literal.getLanguageTag().map(LiteralImpl::lowerCase));
     }
 
 }

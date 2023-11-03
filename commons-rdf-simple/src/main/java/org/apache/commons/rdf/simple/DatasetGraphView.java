@@ -78,9 +78,8 @@ public class DatasetGraphView implements Graph {
     }
 
     @Override
-    public void close() throws Exception {
-        dataset.close();
-
+    public void add(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
+        dataset.add(namedGraph, subject, predicate, object);
     }
 
     @Override
@@ -89,20 +88,14 @@ public class DatasetGraphView implements Graph {
     }
 
     @Override
-    public void add(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
-        dataset.add(namedGraph, subject, predicate, object);
+    public void clear() {
+        dataset.remove(unionOrNamedGraph(), null, null, null);
     }
 
     @Override
-    public boolean contains(final Triple triple) {
-        return dataset.contains(unionOrNamedGraph(), triple.getSubject(), triple.getPredicate(), triple.getObject());
-    }
+    public void close() throws Exception {
+        dataset.close();
 
-    private Optional<BlankNodeOrIRI> unionOrNamedGraph() {
-        if (unionGraph) {
-            return null;
-        }
-        return Optional.ofNullable(namedGraph);
     }
 
     @Override
@@ -111,8 +104,8 @@ public class DatasetGraphView implements Graph {
     }
 
     @Override
-    public void remove(final Triple triple) {
-        dataset.remove(unionOrNamedGraph(), triple.getSubject(), triple.getPredicate(), triple.getObject());
+    public boolean contains(final Triple triple) {
+        return dataset.contains(unionOrNamedGraph(), triple.getSubject(), triple.getPredicate(), triple.getObject());
     }
 
     @Override
@@ -121,8 +114,8 @@ public class DatasetGraphView implements Graph {
     }
 
     @Override
-    public void clear() {
-        dataset.remove(unionOrNamedGraph(), null, null, null);
+    public void remove(final Triple triple) {
+        dataset.remove(unionOrNamedGraph(), triple.getSubject(), triple.getPredicate(), triple.getObject());
     }
 
     @Override
@@ -143,6 +136,13 @@ public class DatasetGraphView implements Graph {
             return stream.distinct();
         }
         return stream;
+    }
+
+    private Optional<BlankNodeOrIRI> unionOrNamedGraph() {
+        if (unionGraph) {
+            return null;
+        }
+        return Optional.ofNullable(namedGraph);
     }
 
 }

@@ -49,9 +49,6 @@ import org.apache.jena.sparql.core.Quad;
 abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends RDFTerm, G extends RDFTerm>
         implements JenaQuadLike<G> {
 
-    private static final InternalJenaFactory INTERNAL_JENA_FACTORY = new InternalJenaFactory() {
-    };
-
     /**
      * COMMONSRDF-55 - special handling of urn:x-arq:DefaultGraph and friends
      * <p>
@@ -98,6 +95,9 @@ abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
         }
     }
 
+    private static final InternalJenaFactory INTERNAL_JENA_FACTORY = new InternalJenaFactory() {
+    };
+
     private static final DefaultGraphChecker DEFAULT_GRAPH_CHECKER = new DefaultGraphChecker();
 
     final Optional<G> graphName;
@@ -108,16 +108,13 @@ abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
     org.apache.jena.graph.Triple triple = null;
 
 
-    AbstractQuadLike(final S subject, final P predicate, final O object, final Optional<G> graphName) {
-        this.subject = Objects.requireNonNull(subject);
-        this.predicate = Objects.requireNonNull(predicate);
-        this.object = Objects.requireNonNull(object);
-        // Enforce
-        this.graphName = Objects.requireNonNull(graphName).filter(DEFAULT_GRAPH_CHECKER::isNotDefaultGraphJenaNode);
-    }
-
-    AbstractQuadLike(final S subject, final P predicate, final O object) {
-        this(subject, predicate, object, Optional.empty());
+    @SuppressWarnings("unchecked")
+    AbstractQuadLike(final org.apache.jena.graph.Triple triple, final UUID salt) {
+        this.triple = Objects.requireNonNull(triple);
+        this.subject = (S) INTERNAL_JENA_FACTORY.createRDFTerm(triple.getSubject(), salt);
+        this.predicate = (P) INTERNAL_JENA_FACTORY.createRDFTerm(triple.getPredicate(), salt);
+        this.object = (O) INTERNAL_JENA_FACTORY.createRDFTerm(triple.getObject(), salt);
+        this.graphName = Optional.empty();
     }
 
     @SuppressWarnings("unchecked")
@@ -133,13 +130,16 @@ abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
         }
     }
 
-    @SuppressWarnings("unchecked")
-    AbstractQuadLike(final org.apache.jena.graph.Triple triple, final UUID salt) {
-        this.triple = Objects.requireNonNull(triple);
-        this.subject = (S) INTERNAL_JENA_FACTORY.createRDFTerm(triple.getSubject(), salt);
-        this.predicate = (P) INTERNAL_JENA_FACTORY.createRDFTerm(triple.getPredicate(), salt);
-        this.object = (O) INTERNAL_JENA_FACTORY.createRDFTerm(triple.getObject(), salt);
-        this.graphName = Optional.empty();
+    AbstractQuadLike(final S subject, final P predicate, final O object) {
+        this(subject, predicate, object, Optional.empty());
+    }
+
+    AbstractQuadLike(final S subject, final P predicate, final O object, final Optional<G> graphName) {
+        this.subject = Objects.requireNonNull(subject);
+        this.predicate = Objects.requireNonNull(predicate);
+        this.object = Objects.requireNonNull(object);
+        // Enforce
+        this.graphName = Objects.requireNonNull(graphName).filter(DEFAULT_GRAPH_CHECKER::isNotDefaultGraphJenaNode);
     }
 
     @Override
@@ -168,13 +168,8 @@ abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
     }
 
     @Override
-    public S getSubject() {
-        return subject;
-    }
-
-    @Override
-    public P getPredicate() {
-        return predicate;
+    public Optional<G> getGraphName() {
+        return graphName;
     }
 
     @Override
@@ -183,8 +178,13 @@ abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
     }
 
     @Override
-    public Optional<G> getGraphName() {
-        return graphName;
+    public P getPredicate() {
+        return predicate;
+    }
+
+    @Override
+    public S getSubject() {
+        return subject;
     }
 
     @Override
