@@ -50,7 +50,7 @@ public class UserGuideTest {
     }
 
     @Test
-    public void creating() throws Exception {
+    public void testCreating() throws Exception {
         BlankNode aliceBlankNode = factory.createBlankNode();
         IRI nameIri = factory.createIRI("http://example.com/name");
         Literal aliceLiteral = factory.createLiteral("Alice");
@@ -63,7 +63,7 @@ public class UserGuideTest {
     }
 
     @Test
-    public void ntriples() throws Exception {
+    public void testNtriples() throws Exception {
         IRI iri = factory.createIRI("http://example.com/alice");
         System.out.println(iri.getIRIString());
 
@@ -79,7 +79,7 @@ public class UserGuideTest {
     }
 
     @Test
-    public void blanknode() throws Exception {
+    public void testBlanknode() throws Exception {
         BlankNode bnode = factory.createBlankNode();
         System.out.println(bnode.equals(bnode));
         System.out.println(bnode.equals(factory.createBlankNode()));
@@ -95,7 +95,7 @@ public class UserGuideTest {
     }
 
     @Test
-    public void literal() throws Exception {
+    public void testLiteral() throws Exception {
         Literal literal = factory.createLiteral("Hello world!");
         System.out.println(literal.ntriplesString());
 
@@ -158,7 +158,7 @@ public class UserGuideTest {
     }
 
     @Test
-    public void quad() throws Exception {
+    public void testQuad() throws Exception {
         BlankNodeOrIRI graph = factory.createIRI("http://example.com/graph");
         BlankNodeOrIRI subject = factory.createBlankNode();
         IRI predicate = factory.createIRI("http://example.com/says");
@@ -198,7 +198,7 @@ public class UserGuideTest {
     }
 
     @Test
-    public void graph() throws Exception {
+    public void testGraph() throws Exception {
         IRI nameIri = factory.createIRI("http://example.com/name");
         BlankNode aliceBlankNode = factory.createBlankNode();
         Literal aliceLiteral = factory.createLiteral("Alice");

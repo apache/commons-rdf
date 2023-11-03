@@ -27,7 +27,7 @@ import org.junit.Test;
 public class RDFSyntaxTest {
 
     @Test
-    public void byFileExtension() throws Exception {
+    public void testByFileExtension() throws Exception {
         assertEquals(RDFSyntax.JSONLD, RDFSyntax.byFileExtension(".jsonld").get());
         assertEquals(RDFSyntax.NQUADS, RDFSyntax.byFileExtension(".nq").get());
         assertEquals(RDFSyntax.NTRIPLES, RDFSyntax.byFileExtension(".nt").get());
@@ -38,22 +38,22 @@ public class RDFSyntaxTest {
     }
 
     @Test
-    public void byFileExtensionFailsWithoutDot() throws Exception {
+    public void testByFileExtensionFailsWithoutDot() throws Exception {
         assertEquals(Optional.empty(), RDFSyntax.byFileExtension("rdf"));
     }
 
     @Test
-    public void byFileExtensionLowerCase() throws Exception {
+    public void testByFileExtensionLowerCase() throws Exception {
         assertEquals(RDFSyntax.TURTLE, RDFSyntax.byFileExtension(".TtL").get());
     }
 
     @Test
-    public void byFileExtensionUnknown() throws Exception {
+    public void testByFileExtensionUnknown() throws Exception {
         assertEquals(Optional.empty(), RDFSyntax.byFileExtension(".tar"));
     }
 
     @Test
-    public void byMediaType() throws Exception {
+    public void testByMediaType() throws Exception {
         assertEquals(RDFSyntax.JSONLD, RDFSyntax.byMediaType("application/ld+json").get());
         assertEquals(RDFSyntax.NQUADS, RDFSyntax.byMediaType("application/n-quads").get());
         assertEquals(RDFSyntax.NTRIPLES, RDFSyntax.byMediaType("application/n-triples").get());
@@ -65,7 +65,7 @@ public class RDFSyntaxTest {
     }
 
     @Test
-    public void byMediaTypeContentType() throws Exception {
+    public void testByMediaTypeContentType() throws Exception {
         assertEquals(RDFSyntax.TURTLE, RDFSyntax.byMediaType("text/turtle; charset=\"UTF-8\"").get());
         assertEquals(RDFSyntax.TURTLE, RDFSyntax.byMediaType("text/turtle ; charset=\"UTF-8\"").get());
         // That's a Content-Type, not media type; we won't split by ","
@@ -75,17 +75,17 @@ public class RDFSyntaxTest {
     }
 
     @Test
-    public void byMediaTypeLowerCase() throws Exception {
+    public void testByMediaTypeLowerCase() throws Exception {
         assertEquals(RDFSyntax.JSONLD, RDFSyntax.byMediaType("APPLICATION/ld+JSON").get());
     }
 
     @Test
-    public void byMediaTypeUnknown() throws Exception {
+    public void testByMediaTypeUnknown() throws Exception {
         assertEquals(Optional.empty(), RDFSyntax.byMediaType("application/octet-stream"));
     }
 
     @Test
-    public void fileExtension() throws Exception {
+    public void testFileExtension() throws Exception {
         assertEquals(".jsonld", RDFSyntax.JSONLD.fileExtension());
         assertEquals(".nq", RDFSyntax.NQUADS.fileExtension());
         assertEquals(".nt", RDFSyntax.NTRIPLES.fileExtension());
@@ -96,7 +96,7 @@ public class RDFSyntaxTest {
     }
 
     @Test
-    public void fileExtensions() throws Exception {
+    public void testFileExtensions() throws Exception {
         assertTrue(RDFSyntax.JSONLD.fileExtensions().contains(".jsonld"));
         assertTrue(RDFSyntax.NQUADS.fileExtensions().contains(".nq"));
         assertTrue(RDFSyntax.NTRIPLES.fileExtensions().contains(".nt"));
@@ -108,7 +108,7 @@ public class RDFSyntaxTest {
     }
 
     @Test
-    public void mediaType() throws Exception {
+    public void testMediaType() throws Exception {
         assertEquals("application/ld+json", RDFSyntax.JSONLD.mediaType());
         assertEquals("application/n-quads", RDFSyntax.NQUADS.mediaType());
         assertEquals("application/n-triples", RDFSyntax.NTRIPLES.mediaType());
@@ -120,7 +120,7 @@ public class RDFSyntaxTest {
 
 
     @Test
-    public void mediaTypes() throws Exception {
+    public void testMediaTypes() throws Exception {
         assertTrue(RDFSyntax.JSONLD.mediaTypes().contains("application/ld+json"));
         assertTrue(RDFSyntax.NQUADS.mediaTypes().contains("application/n-quads"));
         assertTrue(RDFSyntax.NTRIPLES.mediaTypes().contains("application/n-triples"));
@@ -132,13 +132,13 @@ public class RDFSyntaxTest {
     }
 
     @Test
-    public void string() throws Exception {
+    public void testString() throws Exception {
         assertEquals("JSON-LD 1.0", RDFSyntax.JSONLD.toString());
         assertEquals("RDF 1.1 Turtle", RDFSyntax.TURTLE.toString());
     }
 
     @Test
-    public void byName() throws Exception {
+    public void testByName() throws Exception {
         for (final RDFSyntax s : RDFSyntax.w3cSyntaxes()) {
             assertEquals(s, RDFSyntax.byName(s.name()).get());
         }

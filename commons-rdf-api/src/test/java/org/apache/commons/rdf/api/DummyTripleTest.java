@@ -27,20 +27,20 @@ public class DummyTripleTest {
     Triple triple = new DummyTriple();
 
     @Test
-    public void getSubject() throws Exception {
+    public void testGetSubject() throws Exception {
         assertEquals(1, ((DummyIRI) triple.getSubject()).i);
     }
     @Test
-    public void getPredicate() throws Exception {
+    public void testGetPredicate() throws Exception {
         assertEquals(2, ((DummyIRI) triple.getPredicate()).i);
     }
     @Test
-    public void getObject() throws Exception {
+    public void testGetObject() throws Exception {
         assertEquals(3, ((DummyIRI) triple.getObject()).i);
     }
 
     @Test
-    public void equals() throws Exception {
+    public void testEquals() throws Exception {
         assertEquals(triple, new DummyTriple());
     }
 

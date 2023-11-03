@@ -44,7 +44,7 @@ public class JenaRDFTest extends AbstractRDFTest {
     }
 
     @Test
-    public void roundTripDatasetGraphShouldMaintainIdentity() {
+    public void testRoundTripDatasetGraphShouldMaintainIdentity() {
         final DatasetGraph dsg = DatasetGraphFactory.create();
         final JenaDataset dataset = createFactory().asDataset(dsg);
         final DatasetGraph roundTrippedDSG = createFactory().asJenaDatasetGraph(dataset);

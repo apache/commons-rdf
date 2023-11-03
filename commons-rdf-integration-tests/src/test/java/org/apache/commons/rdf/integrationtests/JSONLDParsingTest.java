@@ -99,12 +99,12 @@ public class JSONLDParsingTest {
     }
 
     @Test
-    public void jenaParseEmbedded() throws Exception {
+    public void testJenaParseEmbedded() throws Exception {
         jenaParse(aliceEmbedded);
     }
 
     @Test
-    public void jenaParseCached() throws Exception {
+    public void testJenaParseCached() throws Exception {
         // Check if HTTPClient cache is used from
         // jarcache.json
         jenaParse(aliceCached);
@@ -118,12 +118,12 @@ public class JSONLDParsingTest {
     }
 
     @Test
-    public void rdf4jParseEmbedded() throws Exception {
+    public void testRdf4jParseEmbedded() throws Exception {
         rdf4jParse(aliceEmbedded);
     }
 
     @Test
-    public void rdf4jParseCached() throws Exception {
+    public void testRdf4jParseCached() throws Exception {
         // Check if HTTPClient cache is used from
         // jarcache.json
         rdf4jParse(aliceCached);
@@ -140,12 +140,12 @@ public class JSONLDParsingTest {
     }
 
     @Test
-    public void jsonldParseEmbedded() throws Exception {
+    public void testJsonldParseEmbedded() throws Exception {
         jsonldParse(aliceEmbedded);
     }
 
     @Test
-    public void jsonldParseCached() throws Exception {
+    public void testJsonldParseCached() throws Exception {
         // Check if HTTPClient cache is used from
         // jarcache.json
         jsonldParse(aliceCached);

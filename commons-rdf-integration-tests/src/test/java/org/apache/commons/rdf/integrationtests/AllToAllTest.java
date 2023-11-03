@@ -77,7 +77,7 @@ public class AllToAllTest {
      *             Just in case..
      */
     @Test
-    public void addTermsFromOtherFactory() throws Exception {
+    public void testAddTermsFromOtherFactory() throws Exception {
         try (final Graph g = graphFactory.createGraph()) {
             final BlankNode s = nodeFactory.createBlankNode();
             final IRI p = nodeFactory.createIRI("http://example.com/p");
@@ -125,7 +125,7 @@ public class AllToAllTest {
      *             Just in case..
      */
     @Test
-    public void addTriplesFromOtherFactory() throws Exception {
+    public void testAddTriplesFromOtherFactory() throws Exception {
         try (final Graph g = graphFactory.createGraph()) {
             final BlankNode s = nodeFactory.createBlankNode();
             final IRI p = nodeFactory.createIRI("http://example.com/p");

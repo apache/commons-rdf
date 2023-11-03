@@ -28,13 +28,13 @@ public class DefaultGraphTest {
     DummyGraph graph = new DummyGraph();
 
     @Test
-    public void close() throws Exception {
+    public void testClose() throws Exception {
         graph.close(); // no-op
     }
 
     @SuppressWarnings("deprecation")
     @Test
-    public void defaultGetTriples() throws Exception {
+    public void testDefaultGetTriples() throws Exception {
         assertFalse(graph.streamCalled);
         assertFalse(graph.filteredStreamCalled);
         assertEquals(1L, graph.getTriples().count());
@@ -44,7 +44,7 @@ public class DefaultGraphTest {
 
     @SuppressWarnings("deprecation")
     @Test
-    public void defaultGetTriplesFiltered() throws Exception {
+    public void testDefaultGetTriplesFiltered() throws Exception {
         assertFalse(graph.streamCalled);
         assertFalse(graph.filteredStreamCalled);
         assertEquals(1L, graph.getTriples(null,null,null).count());
@@ -55,7 +55,7 @@ public class DefaultGraphTest {
     }
 
     @Test
-    public void defaultIterate() throws Exception {
+    public void testDefaultIterate() throws Exception {
         assertFalse(graph.streamCalled);
         assertFalse(graph.filteredStreamCalled);
         for (final Triple t : graph.iterate()) {
@@ -66,7 +66,7 @@ public class DefaultGraphTest {
     }
 
     @Test
-    public void defaultFilteredIterate() throws Exception {
+    public void testDefaultFilteredIterate() throws Exception {
         assertFalse(graph.streamCalled);
         assertFalse(graph.filteredStreamCalled);
         for (final Triple t : graph.iterate(null, new DummyIRI(2), null)) {

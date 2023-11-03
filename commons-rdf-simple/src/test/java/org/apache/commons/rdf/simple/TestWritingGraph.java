@@ -86,12 +86,12 @@ public class TestWritingGraph {
     }
 
     @Test
-    public void createGraphTiming() throws Exception {
+    public void testCreateGraphTiming() throws Exception {
         createGraph();
     }
 
     @Test
-    public void countQuery() {
+    public void testCountQuery() {
         final IRI subject = factory.createIRI("subj");
         final IRI predicate = factory.createIRI("pred");
         final long count = graph.stream(subject, predicate, null).unordered().parallel().count();
@@ -105,7 +105,7 @@ public class TestWritingGraph {
     }
 
     @Test
-    public void writeGraphFromStream() throws Exception {
+    public void testWriteGraphFromStream() throws Exception {
         final Path graphFile = Files.createTempFile("graph", ".nt");
         if (KEEP_FILES) {
             System.out.println("From stream: " + graphFile);
@@ -118,7 +118,7 @@ public class TestWritingGraph {
     }
 
     @Test
-    public void writeGraphFromStreamFiltered() throws Exception {
+    public void testWriteGraphFromStreamFiltered() throws Exception {
         final Path graphFile = Files.createTempFile("graph", ".nt");
         if (KEEP_FILES) {
             System.out.println("Filtered stream: " + graphFile);
@@ -134,7 +134,7 @@ public class TestWritingGraph {
     }
 
     @Test
-    public void writeGraphFromStreamFilteredNoMatches() throws Exception {
+    public void testWriteGraphFromStreamFilteredNoMatches() throws Exception {
         final Path graphFile = Files.createTempFile("graph-empty-", ".nt");
         if (KEEP_FILES) {
             System.out.println("Filtered stream: " + graphFile);

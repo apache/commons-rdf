@@ -23,7 +23,7 @@ import org.junit.Test;
 public class IntroToRDFTest {
 
   @Test
-  public void runIntroToRDF() {
+  public void testRunIntroToRDF() {
     IntroToRDF.main(new String[0]);
   }
 

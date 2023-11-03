@@ -26,27 +26,27 @@ public class DummyIRITest {
     DummyIRI iri = new DummyIRI(1337);
 
     @Test
-    public void i() throws Exception {
+    public void testI() throws Exception {
         assertEquals(1337, iri.i);
     }
 
     @Test
-    public void equals() throws Exception {
+    public void testEquals() throws Exception {
         assertEquals(iri, new DummyIRI(1337));
     }
 
     @Test
-    public void notEquals() throws Exception {
+    public void testNotEquals() throws Exception {
         assertNotEquals(iri, new DummyIRI(1));
     }
 
     @Test
-    public void ntriplesString() throws Exception {
+    public void testNtriplesString() throws Exception {
         assertEquals("<http://example.com/1337>", iri.ntriplesString());
     }
 
     @Test
-    public void getIRIString() throws Exception {
+    public void testGetIRIString() throws Exception {
         assertEquals("http://example.com/1337", iri.getIRIString());
     }
 

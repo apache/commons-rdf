@@ -58,7 +58,7 @@ public class TestJenaGraphToCommonsRDFGraph {
     }
 
     @Test
-    public void jenaToCommonsRDF() throws Exception {
+    public void testJenaToCommonsRDF() throws Exception {
         final org.apache.jena.graph.Graph jGraph = GraphFactory.createGraphMem();
         RDFDataMgr.read(jGraph, turtleFile.toUri().toString());
 

@@ -84,7 +84,7 @@ public class AbstractRDFParserTest {
     }
 
     @Test
-    public void guessRDFSyntax() throws Exception {
+    public void testGuessRDFSyntax() throws Exception {
         assertEquals(RDFSyntax.NTRIPLES, AbstractRDFParser.guessRDFSyntax(testNt).get());
         assertEquals(RDFSyntax.TURTLE, AbstractRDFParser.guessRDFSyntax(testTtl).get());
         assertFalse(AbstractRDFParser.guessRDFSyntax(testXml).isPresent());
@@ -118,7 +118,7 @@ public class AbstractRDFParserTest {
     }
 
     @Test
-    public void parseFile() throws Exception {
+    public void testParseFile() throws Exception {
         try (final Graph g = factory.createGraph()) {
             final RDFParser parser = dummyParser.source(testNt).target(g);
             parser.parse().get(5, TimeUnit.SECONDS);
@@ -137,7 +137,7 @@ public class AbstractRDFParserTest {
     }
 
     @Test
-    public void parseFileSymlink() throws Exception {
+    public void testParseFileSymlink() throws Exception {
         // This test will typically not work in Windows
         // which requires system privileges to create symlinks
         assumeNotNull(symlink);
@@ -151,13 +151,13 @@ public class AbstractRDFParserTest {
     }
 
     @Test
-    public void parseNoSource() throws Exception {
+    public void testParseNoSource() throws Exception {
         thrown.expect(IllegalStateException.class);
         dummyParser.parse();
     }
 
     @Test
-    public void parseBaseAndContentTypeNoSource() throws Exception {
+    public void testParseBaseAndContentTypeNoSource() throws Exception {
         // Can set the other options, even without source()
         final IRI base = dummyParser.createRDFTermFactory().createIRI("http://www.example.org/test.rdf");
         final RDFParser parser = dummyParser.base(base).contentType(RDFSyntax.RDFXML);
@@ -168,7 +168,7 @@ public class AbstractRDFParserTest {
     }
 
     @Test
-    public void parseFileMissing() throws Exception {
+    public void testParseFileMissing() throws Exception {
         Files.delete(testNt);
         // This should not fail yet
         final RDFParser parser = dummyParser.source(testNt);
@@ -178,7 +178,7 @@ public class AbstractRDFParserTest {
     }
 
     @Test
-    public void parseFileContentType() throws Exception {
+    public void testParseFileContentType() throws Exception {
         try (final Graph g = factory.createGraph()) {
             final RDFParser parser = dummyParser.source(testNt).contentType(RDFSyntax.NTRIPLES).target(g);
             parser.parse().get(5, TimeUnit.SECONDS);
@@ -203,7 +203,7 @@ public class AbstractRDFParserTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Test
-    public void parseInputStreamFailsIfBaseMissing() throws Exception {
+    public void testParseInputStreamFailsIfBaseMissing() throws Exception {
         final InputStream inputStream = new ByteArrayInputStream(new byte[0]);
         // Should not fail at this point
         final RDFParser parser = dummyParser.source(inputStream);
@@ -214,7 +214,7 @@ public class AbstractRDFParserTest {
     }
 
     @Test
-    public void parseInputStreamWithBase() throws Exception {
+    public void testParseInputStreamWithBase() throws Exception {
         final InputStream inputStream = new ByteArrayInputStream(new byte[0]);
         final IRI base = dummyParser.createRDFTermFactory().createIRI("http://www.example.org/test.rdf");
         try (final Graph g = factory.createGraph()) {
@@ -231,7 +231,7 @@ public class AbstractRDFParserTest {
     }
 
     @Test
-    public void parseInputStreamWithNQuads() throws Exception {
+    public void testParseInputStreamWithNQuads() throws Exception {
         final InputStream inputStream = new ByteArrayInputStream(new byte[0]);
         try (final Graph g = factory.createGraph()) {
             final RDFParser parser = dummyParser.source(inputStream).contentType(RDFSyntax.NQUADS).target(g);
@@ -247,7 +247,7 @@ public class AbstractRDFParserTest {
     }
 
     @Test
-    public void parseIRI() throws Exception {
+    public void testParseIRI() throws Exception {
         final IRI iri = dummyParser.createRDFTermFactory().createIRI("http://www.example.net/test.ttl");
         try (final Graph g = factory.createGraph()) {
             final RDFParser parser = dummyParser.source(iri).target(g);
@@ -265,7 +265,7 @@ public class AbstractRDFParserTest {
     }
 
     @Test
-    public void parseIRIBaseContentType() throws Exception {
+    public void testParseIRIBaseContentType() throws Exception {
         final IRI iri = dummyParser.createRDFTermFactory().createIRI("http://www.example.net/test.ttl");
         try (final Graph g = factory.createGraph()) {
             final RDFParser parser = dummyParser.source(iri).base(iri).contentType(RDFSyntax.TURTLE).target(g);

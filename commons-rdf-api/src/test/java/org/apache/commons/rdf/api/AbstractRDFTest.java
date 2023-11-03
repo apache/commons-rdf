@@ -429,26 +429,26 @@ public abstract class AbstractRDFTest {
     }
 
     @Test
-    public void hashCodeBlankNode() throws Exception {
+    public void testHashCodeBlankNode() throws Exception {
         final BlankNode bnode1 = factory.createBlankNode();
         assertEquals(bnode1.uniqueReference().hashCode(), bnode1.hashCode());
     }
 
     @Test
-    public void hashCodeIRI() throws Exception {
+    public void testHashCodeIRI() throws Exception {
         final IRI iri = factory.createIRI("http://example.com/");
         assertEquals(iri.getIRIString().hashCode(), iri.hashCode());
     }
 
     @Test
-    public void hashCodeLiteral() throws Exception {
+    public void testHashCodeLiteral() throws Exception {
         final Literal literal = factory.createLiteral("Hello");
         assertEquals(Objects.hash(literal.getLexicalForm(), literal.getDatatype(), literal.getLanguageTag()),
                 literal.hashCode());
     }
 
     @Test
-    public void hashCodeTriple() throws Exception {
+    public void testHashCodeTriple() throws Exception {
         final IRI iri = factory.createIRI("http://example.com/");
         final Triple triple = factory.createTriple(iri, iri, iri);
         assertEquals(Objects.hash(iri, iri, iri), triple.hashCode());

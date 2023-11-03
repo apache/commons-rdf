@@ -33,7 +33,7 @@ public class GeneralizedRDFQuadTest {
     private final JenaRDF jena = new JenaRDF();
 
     @Test
-    public void bnodeProperty() throws Exception {
+    public void testBnodeProperty() throws Exception {
         final BlankNode b1 = jena.createBlankNode("b1");
         final JenaIRI ex1 = jena.createIRI("http://example.com/ex1");
         final JenaIRI ex2 = jena.createIRI("http://example.com/ex2");
@@ -48,7 +48,7 @@ public class GeneralizedRDFQuadTest {
     }
 
     @Test
-    public void literalPredicate() throws Exception {
+    public void testLiteralPredicate() throws Exception {
         final JenaIRI ex1 = jena.createIRI("http://example.com/ex1");
         final JenaIRI ex2 = jena.createIRI("http://example.com/ex2");
         final JenaIRI ex3 = jena.createIRI("http://example.com/ex3");
@@ -64,7 +64,7 @@ public class GeneralizedRDFQuadTest {
 
 
     @Test
-    public void literalSubject() throws Exception {
+    public void testLiteralSubject() throws Exception {
         final JenaIRI ex1 = jena.createIRI("http://example.com/ex1");
         final JenaIRI ex2 = jena.createIRI("http://example.com/ex2");
         final JenaIRI ex3 = jena.createIRI("http://example.com/ex3");
@@ -79,7 +79,7 @@ public class GeneralizedRDFQuadTest {
     }
 
     @Test
-    public void literalSubjectDefaultGraphGen() throws Exception {
+    public void testLiteralSubjectDefaultGraphGen() throws Exception {
         final JenaIRI ex1 = jena.createIRI("http://example.com/ex1");
         final JenaIRI ex2 = jena.createIRI("http://example.com/ex2");
         // No need to cast to JenaIRI
@@ -96,7 +96,7 @@ public class GeneralizedRDFQuadTest {
     }
 
     @Test
-    public void asGeneralizedQuad() throws Exception {
+    public void testAsGeneralizedQuad() throws Exception {
         final Node s = NodeFactory.createLiteral("Hello");
         final Node p = NodeFactory.createBlankNode();
         final Node o = NodeFactory.createURI("http://example.com/ex");
@@ -110,7 +110,7 @@ public class GeneralizedRDFQuadTest {
     }
 
     @Test
-    public void literalGraph() throws Exception {
+    public void testLiteralGraph() throws Exception {
         final JenaIRI ex1 = jena.createIRI("http://example.com/ex1");
         final JenaIRI ex2 = jena.createIRI("http://example.com/ex2");
         final JenaIRI ex3 = jena.createIRI("http://example.com/ex3");

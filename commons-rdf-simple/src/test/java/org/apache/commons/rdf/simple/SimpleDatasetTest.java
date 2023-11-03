@@ -35,7 +35,7 @@ public class SimpleDatasetTest extends AbstractDatasetTest {
     }
 
     @Test
-    public void datasetToString() {
+    public void testDatasetToString() {
         Assume.assumeNotNull(aliceName, companyName);
         //System.out.println(dataset);
         assertTrue(

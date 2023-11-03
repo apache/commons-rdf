@@ -40,7 +40,7 @@ public class DefaultGraphInQuadTest {
     Node exampleJena = NodeFactory.createURI("http://example.com/");
 
     @Test
-    public void createFromNull() throws Exception {
+    public void testCreateFromNull() throws Exception {
         final JenaQuad q = rdf.createQuad(null, example, example, example);
         assertFalse(q.getGraphName().isPresent());
         assertTrue(q.asJenaQuad().isDefaultGraph());
@@ -48,7 +48,7 @@ public class DefaultGraphInQuadTest {
     }
 
     @Test
-    public void createFromDefaultGraphIRI() throws Exception {
+    public void testCreateFromDefaultGraphIRI() throws Exception {
         final JenaIRI defaultGraph = (JenaIRI) rdf.asRDFTerm(Quad.defaultGraphIRI);
         final JenaQuad q = rdf.createQuad(defaultGraph, example, example, example);
         // NOTE: JenaRDF specially recognize this JenaIRI constant,
@@ -61,7 +61,7 @@ public class DefaultGraphInQuadTest {
     }
 
     @Test
-    public void createFromForeignDefaultGraph() throws Exception {
+    public void testCreateFromForeignDefaultGraph() throws Exception {
         // What if <urn:x-arq:DefaultGraph> appear in a non-Jena IRI?
         final IRI foreignDefaultGraph = simpleRDF.createIRI(Quad.defaultGraphIRI.getURI());
         final JenaQuad q = rdf.createQuad(foreignDefaultGraph, example, example, example);
@@ -77,7 +77,7 @@ public class DefaultGraphInQuadTest {
 
 
     @Test
-    public void createFromDefaultGraphNodeGeneratedIRINode() throws Exception {
+    public void testCreateFromDefaultGraphNodeGeneratedIRINode() throws Exception {
         // What if <urn:x-arq:DefaultGraphNode> appear as an IRI instance?
         final IRI foreignDefaultGraph = rdf.createIRI(Quad.defaultGraphNodeGenerated.getURI());
         final JenaQuad q = rdf.createQuad(foreignDefaultGraph, example, example, example);
@@ -90,7 +90,7 @@ public class DefaultGraphInQuadTest {
     }
 
     @Test
-    public void createFromDefaultGraphNodeGeneratedIRIString() throws Exception {
+    public void testCreateFromDefaultGraphNodeGeneratedIRIString() throws Exception {
         // What if <urn:x-arq:DefaultGraphNode> appear in a non-Jena IRI?
         final IRI foreignDefaultGraph = simpleRDF.createIRI(Quad.defaultGraphNodeGenerated.getURI());
         final JenaQuad q = rdf.createQuad(foreignDefaultGraph, example, example, example);
@@ -104,7 +104,7 @@ public class DefaultGraphInQuadTest {
 
 
     @Test
-    public void defaultGraphIRI() throws Exception {
+    public void testDefaultGraphIRI() throws Exception {
         final Quad jenaQuad = Quad.create(Quad.defaultGraphIRI, exampleJena, exampleJena, exampleJena);
         final JenaQuad q = rdf.asQuad(jenaQuad);
         assertFalse(q.getGraphName().isPresent());
@@ -112,7 +112,7 @@ public class DefaultGraphInQuadTest {
     }
 
     @Test
-    public void defaultGraphNodeGenerated() throws Exception {
+    public void testDefaultGraphNodeGenerated() throws Exception {
         // <urn:x-arq:DefaultGraphNode> might appear in parser output
         final Quad jenaQuad = Quad.create(Quad.defaultGraphNodeGenerated, exampleJena, exampleJena, exampleJena);
         final JenaQuad q = rdf.asQuad(jenaQuad);
@@ -123,7 +123,7 @@ public class DefaultGraphInQuadTest {
     }
 
     @Test
-    public void unionGraph() throws Exception {
+    public void testUnionGraph() throws Exception {
         // unionGraph shouldn't really appear as a quad except
         // in a pattern
         final Quad jenaQuad = Quad.create(Quad.unionGraph, exampleJena, exampleJena, exampleJena);

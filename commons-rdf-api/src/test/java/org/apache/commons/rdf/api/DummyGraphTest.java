@@ -27,22 +27,22 @@ public class DummyGraphTest {
     Graph graph = new DummyGraph();
 
     @Test
-    public void add() throws Exception {
+    public void testAdd() throws Exception {
         graph.add(new DummyTriple());
     }
 
     @Test
-    public void addSPO() throws Exception {
+    public void testAddSPO() throws Exception {
         graph.add(new DummyIRI(1), new DummyIRI(2), new DummyIRI(3));
     }
 
     @Test
-    public void contains() throws Exception {
+    public void testContains() throws Exception {
         assertTrue(graph.contains(new DummyTriple()));
     }
 
     @Test
-    public void containsSPO() throws Exception {
+    public void testContainsSPO() throws Exception {
         assertTrue(graph.contains(null, null, null));
         assertTrue(graph.contains(new DummyIRI(1), new DummyIRI(2), new DummyIRI(3)));
         assertFalse(graph.contains(new DummyIRI(0), new DummyIRI(0), new DummyIRI(0)));
@@ -59,22 +59,22 @@ public class DummyGraphTest {
     }
 
     @Test
-    public void removeSPO() throws Exception {
+    public void testRemoveSPO() throws Exception {
         graph.remove(new DummyIRI(0), new DummyIRI(0), new DummyIRI(0));
     }
 
     @Test
-    public void size() throws Exception {
+    public void testSize() throws Exception {
         assertEquals(1, graph.size());
     }
 
     @Test
-    public void stream() throws Exception {
+    public void testStream() throws Exception {
         assertEquals(new DummyTriple(), graph.stream().findAny().get());
     }
 
     @Test
-    public void streamFiltered() throws Exception {
+    public void testStreamFiltered() throws Exception {
         assertEquals(new DummyTriple(), graph.stream(null, null, null).findAny().get());
         assertEquals(new DummyTriple(),
                 graph.stream(new DummyIRI(1), new DummyIRI(2), new DummyIRI(3)).findAny().get());

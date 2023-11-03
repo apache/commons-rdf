@@ -31,7 +31,7 @@ public class GeneralizedRDFTripleTest {
     private final JenaRDF jena = new JenaRDF();
 
     @Test
-    public void bnodeProperty() throws Exception {
+    public void testBnodeProperty() throws Exception {
         final BlankNode b1 = jena.createBlankNode("b1");
         final JenaIRI ex1 = jena.createIRI("http://example.com/ex1");
         final JenaIRI ex2 = jena.createIRI("http://example.com/ex2");
@@ -44,7 +44,7 @@ public class GeneralizedRDFTripleTest {
     }
 
     @Test
-    public void literalPredicate() throws Exception {
+    public void testLiteralPredicate() throws Exception {
         final JenaIRI ex1 = jena.createIRI("http://example.com/ex1");
         final JenaIRI ex2 = jena.createIRI("http://example.com/ex2");
         final JenaLiteral lit = jena.createLiteral("Hello");
@@ -58,7 +58,7 @@ public class GeneralizedRDFTripleTest {
 
 
     @Test
-    public void literalSubject() throws Exception {
+    public void testLiteralSubject() throws Exception {
         final JenaIRI ex1 = jena.createIRI("http://example.com/ex1");
         final JenaIRI ex2 = jena.createIRI("http://example.com/ex2");
         final JenaLiteral lit = jena.createLiteral("Hello");
@@ -71,7 +71,7 @@ public class GeneralizedRDFTripleTest {
     }
 
     @Test
-    public void asGeneralizedTriple() throws Exception {
+    public void testAsGeneralizedTriple() throws Exception {
         final Node s = NodeFactory.createLiteral("Hello");
         final Node p = NodeFactory.createBlankNode();
         final Node o = NodeFactory.createURI("http://example.com/ex");

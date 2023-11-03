@@ -134,7 +134,7 @@ public abstract class AbstractGraphTest {
     }
 
     @Test
-    public void size() throws Exception {
+    public void testSize() throws Exception {
         assertFalse(graph.isEmpty());
         Assume.assumeNotNull(bnode1, bnode2, aliceName, bobName, secretClubName, companyName, bobNameTriple);
         // Can only reliably predict size if we could create all triples
@@ -142,7 +142,7 @@ public abstract class AbstractGraphTest {
     }
 
     @Test
-    public void iterate() throws Exception {
+    public void testIterate() throws Exception {
 
         Assume.assumeFalse(graph.isEmpty());
 
@@ -184,7 +184,7 @@ public abstract class AbstractGraphTest {
     }
 
     @Test
-    public void iterateFilter() throws Exception {
+    public void testIterateFilter() throws Exception {
         final List<RDFTerm> friends = new ArrayList<>();
         final IRI alice = factory.createIRI("http://example.com/alice");
         final IRI knows = factory.createIRI("http://xmlns.com/foaf/0.1/knows");
@@ -203,7 +203,7 @@ public abstract class AbstractGraphTest {
     }
 
     @Test
-    public void contains() throws Exception {
+    public void testContains() throws Exception {
         assertFalse(graph.contains(bob, knows, alice)); // or so he claims..
 
         assertTrue(graph.contains(alice, knows, bob));
@@ -230,7 +230,7 @@ public abstract class AbstractGraphTest {
     }
 
     @Test
-    public void remove() throws Exception {
+    public void testRemove() throws Exception {
         final long fullSize = graph.size();
         graph.remove(alice, knows, bob);
         final long shrunkSize = graph.size();
@@ -270,7 +270,7 @@ public abstract class AbstractGraphTest {
     }
 
     @Test
-    public void clear() throws Exception {
+    public void testClear() throws Exception {
         graph.clear();
         assertFalse(graph.contains(alice, knows, bob));
         assertEquals(0, graph.size());
@@ -279,7 +279,7 @@ public abstract class AbstractGraphTest {
     }
 
     @Test
-    public void getTriples() throws Exception {
+    public void testGetTriples() throws Exception {
         long tripleCount;
         try (Stream<? extends Triple> stream = graph.stream()) {
             tripleCount = stream.count();
@@ -296,7 +296,7 @@ public abstract class AbstractGraphTest {
     }
 
     @Test
-    public void getTriplesQuery() throws Exception {
+    public void testGetTriplesQuery() throws Exception {
 
         try (Stream<? extends Triple> stream = graph.stream(alice, null, null)) {
             final long aliceCount = stream.count();
@@ -316,7 +316,7 @@ public abstract class AbstractGraphTest {
     }
 
     @Test
-    public void addBlankNodesFromMultipleGraphs() throws Exception {
+    public void testAddBlankNodesFromMultipleGraphs() throws Exception {
 
         // Create two separate Graph instances
         // and add them to a new Graph g3
@@ -383,7 +383,7 @@ public abstract class AbstractGraphTest {
     }
 
     @Test
-    public void containsLanguageTagsCaseInsensitive() throws Exception {
+    public void testContainsLanguageTagsCaseInsensitive() throws Exception {
         // COMMONSRDF-51: Ensure we can add/contains/remove with any casing
         // of literal language tag
         final Literal lower = factory.createLiteral("Hello", "en-gb");
@@ -409,7 +409,7 @@ public abstract class AbstractGraphTest {
     }
 
     @Test
-    public void containsLanguageTagsCaseInsensitiveTurkish() throws Exception {
+    public void testContainsLanguageTagsCaseInsensitiveTurkish() throws Exception {
         // COMMONSRDF-51: Special test for Turkish issue where
         // "i".toLowerCase() != "i"
         // See also:
@@ -468,7 +468,7 @@ public abstract class AbstractGraphTest {
 
 
     @Test
-    public void removeLanguageTagsCaseInsensitive() throws Exception {
+    public void testRemoveLanguageTagsCaseInsensitive() throws Exception {
         // COMMONSRDF-51: Ensure we can remove with any casing
         // of literal language tag
         final Literal lower = factory.createLiteral("Hello", "en-gb");
@@ -502,7 +502,7 @@ public abstract class AbstractGraphTest {
     }
 
     @Test
-    public void streamLanguageTagsCaseInsensitive() throws Exception {
+    public void testStreamLanguageTagsCaseInsensitive() throws Exception {
         // COMMONSRDF-51: Ensure we can add/contains/remove with any casing
         // of literal language tag
         final Literal lower = factory.createLiteral("Hello", "en-gb");
@@ -648,7 +648,7 @@ public abstract class AbstractGraphTest {
      * @throws Exception If test fails
      */
     @Test
-    public void whyJavaStreamsMightNotTakeOverFromSparql() throws Exception {
+    public void testWhyJavaStreamsMightNotTakeOverFromSparql() throws Exception {
         Assume.assumeNotNull(bnode1, bnode2, secretClubName);
         // Find a secret organizations
         try (Stream<? extends Triple> stream = graph.stream(null, knows, null)) {

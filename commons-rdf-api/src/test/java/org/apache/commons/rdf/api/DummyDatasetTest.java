@@ -27,22 +27,22 @@ public class DummyDatasetTest {
     Dataset dataset = new DummyDataset();
 
     @Test
-    public void add() throws Exception {
+    public void testAdd() throws Exception {
         dataset.add(new DummyQuad());
     }
 
     @Test
-    public void addSPO() throws Exception {
+    public void testAddSPO() throws Exception {
         dataset.add(null, new DummyIRI(1), new DummyIRI(2), new DummyIRI(3));
     }
 
     @Test
-    public void contains() throws Exception {
+    public void testContains() throws Exception {
         assertTrue(dataset.contains(new DummyQuad()));
     }
 
     @Test
-    public void containsSPO() throws Exception {
+    public void testContainsSPO() throws Exception {
         assertTrue(dataset.contains(null, null, null, null));
         assertTrue(dataset.contains(null, new DummyIRI(1), new DummyIRI(2), new DummyIRI(3)));
         assertFalse(dataset.contains(null, new DummyIRI(0), new DummyIRI(0), new DummyIRI(0)));
@@ -59,22 +59,22 @@ public class DummyDatasetTest {
     }
 
     @Test
-    public void removeSPO() throws Exception {
+    public void testRemoveSPO() throws Exception {
         dataset.remove(null, new DummyIRI(0), new DummyIRI(0), new DummyIRI(0));
     }
 
     @Test
-    public void size() throws Exception {
+    public void testSize() throws Exception {
         assertEquals(1, dataset.size());
     }
 
     @Test
-    public void stream() throws Exception {
+    public void testStream() throws Exception {
         assertEquals(new DummyQuad(), dataset.stream().findAny().get());
     }
 
     @Test
-    public void streamFiltered() throws Exception {
+    public void testStreamFiltered() throws Exception {
         assertEquals(new DummyQuad(), dataset.stream(null, null, null, null).findAny().get());
         assertEquals(new DummyQuad(),
                 dataset.stream(null, new DummyIRI(1), new DummyIRI(2), new DummyIRI(3)).findAny().get());
@@ -82,22 +82,22 @@ public class DummyDatasetTest {
     }
 
     @Test
-    public void getGraph() throws Exception {
+    public void testGetGraph() throws Exception {
         assertTrue(dataset.getGraph() instanceof DummyGraph);
     }
 
     @Test
-    public void getGraphNull() throws Exception {
+    public void testGetGraphNull() throws Exception {
         assertTrue(dataset.getGraph(null).get() instanceof DummyGraph);
     }
 
     @Test
-    public void getGraphNamed() throws Exception {
+    public void testGetGraphNamed() throws Exception {
         assertFalse(dataset.getGraph(new DummyIRI(0)).isPresent());
     }
 
     @Test
-    public void getGraphNames() throws Exception {
+    public void testGetGraphNames() throws Exception {
         assertFalse(dataset.getGraphNames().findAny().isPresent());
     }
 }
