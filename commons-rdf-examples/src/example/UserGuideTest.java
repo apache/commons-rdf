@@ -128,7 +128,7 @@ public class UserGuideTest {
     }
 
     @Test
-    public void triple() throws Exception {
+    public void testTriple() throws Exception {
         BlankNodeOrIRI subject = factory.createBlankNode();
         IRI predicate = factory.createIRI("http://example.com/says");
         RDFTerm object = factory.createLiteral("Hello");
