@@ -23,7 +23,7 @@ import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.jena.JenaGeneralizedTripleLike;
 import org.apache.jena.graph.Triple;
 
-class JenaGeneralizedTripleLikeImpl extends AbstractQuadLike<RDFTerm, RDFTerm, RDFTerm, RDFTerm>
+final class JenaGeneralizedTripleLikeImpl extends AbstractQuadLike<RDFTerm, RDFTerm, RDFTerm, RDFTerm>
         implements JenaGeneralizedTripleLike {
 
     JenaGeneralizedTripleLikeImpl(final RDFTerm subject, final RDFTerm predicate, final RDFTerm object) {

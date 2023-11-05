@@ -28,7 +28,7 @@ import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.jena.ConversionException;
 import org.apache.commons.rdf.jena.JenaTriple;
 
-class JenaTripleImpl extends AbstractQuadLike<BlankNodeOrIRI, IRI, RDFTerm, RDFTerm> implements JenaTriple {
+final class JenaTripleImpl extends AbstractQuadLike<BlankNodeOrIRI, IRI, RDFTerm, RDFTerm> implements JenaTriple {
 
     JenaTripleImpl(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         super(subject, predicate, object);

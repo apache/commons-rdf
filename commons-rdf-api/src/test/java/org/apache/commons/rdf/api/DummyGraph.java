@@ -20,7 +20,7 @@ package org.apache.commons.rdf.api;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-class DummyGraph implements Graph {
+final class DummyGraph implements Graph {
 
     boolean streamCalled = false;
     boolean filteredStreamCalled;

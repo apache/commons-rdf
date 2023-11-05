@@ -17,7 +17,7 @@
  */
 package org.apache.commons.rdf.api;
 
-class DummyIRI implements IRI {
+final class DummyIRI implements IRI {
     static final String EXAMPLE_COM = "http://example.com/";
     final int i;
 

@@ -38,7 +38,7 @@ import org.eclipse.rdf4j.repository.Repository;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryResult;
 
-class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> implements RDF4JDataset {
+final class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> implements RDF4JDataset {
 
     RepositoryDatasetImpl(final Repository repository, final UUID salt, final boolean handleInitAndShutdown, final boolean includeInferred) {
         super(repository, salt, handleInitAndShutdown, includeInferred);

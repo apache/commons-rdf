@@ -23,7 +23,7 @@ import org.apache.commons.rdf.jena.JenaIRI;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.NodeFactory;
 
-class JenaIRIImpl extends AbstractJenaRDFTerm implements JenaIRI {
+final class JenaIRIImpl extends AbstractJenaRDFTerm implements JenaIRI {
 
     JenaIRIImpl(final Node node) {
         super(node);

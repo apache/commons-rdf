@@ -47,7 +47,7 @@ import com.github.jsonldjava.core.RDFDataset;
 public interface JsonLdUnionGraph extends JsonLdGraphLike<org.apache.commons.rdf.api.Triple>, Graph {
 }
 
-class JsonLdUnionGraphImpl extends AbstractJsonLdGraphLike<org.apache.commons.rdf.api.Triple>
+final class JsonLdUnionGraphImpl extends AbstractJsonLdGraphLike<org.apache.commons.rdf.api.Triple>
         implements JsonLdUnionGraph {
 
     JsonLdUnionGraphImpl(final RDFDataset rdfDataSet) {

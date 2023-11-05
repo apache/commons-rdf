@@ -41,7 +41,7 @@ import org.eclipse.rdf4j.repository.Repository;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryResult;
 
-class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> implements RDF4JGraph {
+final class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> implements RDF4JGraph {
 
     private final Resource[] contextMask;
 

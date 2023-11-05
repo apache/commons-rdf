@@ -24,7 +24,7 @@ import org.apache.commons.rdf.api.RDFTerm;
 import org.apache.commons.rdf.jena.JenaGeneralizedQuadLike;
 import org.apache.jena.sparql.core.Quad;
 
-class JenaGeneralizedQuadLikeImpl extends AbstractQuadLike<RDFTerm, RDFTerm, RDFTerm, RDFTerm>
+final class JenaGeneralizedQuadLikeImpl extends AbstractQuadLike<RDFTerm, RDFTerm, RDFTerm, RDFTerm>
         implements JenaGeneralizedQuadLike {
 
     JenaGeneralizedQuadLikeImpl(final Quad quad, final UUID salt) {

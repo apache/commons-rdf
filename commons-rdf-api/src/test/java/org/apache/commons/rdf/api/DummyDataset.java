@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-class DummyDataset implements Dataset {
+final class DummyDataset implements Dataset {
 
     boolean streamCalled = false;
     boolean filteredStreamCalled;

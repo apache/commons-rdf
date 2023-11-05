@@ -41,7 +41,7 @@ import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.sparql.core.DatasetGraph;
 import org.apache.jena.sparql.core.GraphView;
 
-class JenaDatasetImpl implements JenaDataset {
+final class JenaDatasetImpl implements JenaDataset {
 
     private final DatasetGraph datasetGraph;
     private final UUID salt;

@@ -27,7 +27,7 @@ import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.jena.JenaLiteral;
 import org.apache.jena.graph.Node;
 
-class JenaLiteralImpl extends AbstractJenaRDFTerm implements JenaLiteral {
+final class JenaLiteralImpl extends AbstractJenaRDFTerm implements JenaLiteral {
 
     private static final InternalJenaFactory INTERNAL_JENA_FACTORY = new InternalJenaFactory() {
     };

@@ -24,7 +24,7 @@ import org.apache.commons.rdf.api.BlankNode;
 import org.apache.commons.rdf.jena.JenaBlankNode;
 import org.apache.jena.graph.Node;
 
-class JenaBlankNodeImpl extends AbstractJenaRDFTerm implements JenaBlankNode {
+final class JenaBlankNodeImpl extends AbstractJenaRDFTerm implements JenaBlankNode {
 
     private final UUID salt;
 

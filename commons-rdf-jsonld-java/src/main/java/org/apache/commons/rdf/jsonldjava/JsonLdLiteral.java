@@ -30,7 +30,7 @@ import com.github.jsonldjava.core.RDFDataset.Node;
 public interface JsonLdLiteral extends JsonLdTerm, Literal {
 }
 
-class JsonLdLiteralImpl extends AbstractJsonLdTermImpl implements JsonLdLiteral {
+final class JsonLdLiteralImpl extends AbstractJsonLdTermImpl implements JsonLdLiteral {
 
     private static String lowerCase(final String langTag) {
         return langTag.toLowerCase(Locale.ROOT);

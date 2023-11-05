@@ -35,7 +35,7 @@ import com.github.jsonldjava.core.RDFDataset;
 public interface JsonLdDataset extends JsonLdGraphLike<org.apache.commons.rdf.api.Quad>, Dataset {
 }
 
-class JsonLdDatasetImpl extends AbstractJsonLdGraphLike<org.apache.commons.rdf.api.Quad> implements JsonLdDataset {
+final class JsonLdDatasetImpl extends AbstractJsonLdGraphLike<org.apache.commons.rdf.api.Quad> implements JsonLdDataset {
 
     JsonLdDatasetImpl(final RDFDataset rdfDataSet) {
         super(rdfDataSet);

@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-class DummyQuad implements Quad {
+final class DummyQuad implements Quad {
     private static List<RDFTerm> quadList(final Quad q) {
          return Arrays.asList(
              q.getGraphName().orElse(null),

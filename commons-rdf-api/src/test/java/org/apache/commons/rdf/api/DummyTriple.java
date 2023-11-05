@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-class DummyTriple implements Triple {
+final class DummyTriple implements Triple {
     private static List<RDFTerm> tripleList(final Triple q) {
          return Arrays.asList(
              q.getSubject(),
