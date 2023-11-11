@@ -37,7 +37,7 @@ final class QuadImpl implements Quad {
     private final RDFTerm object;
 
     /**
-     * Construct Quad from its constituent parts.
+     * Constructs Quad from its constituent parts.
      * <p>
      * The objects are not changed. All mapping of BNode objects is done in
      * {@link SimpleRDF#createQuad(BlankNodeOrIRI, BlankNodeOrIRI, IRI, RDFTerm)}.

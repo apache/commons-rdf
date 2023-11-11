@@ -163,7 +163,7 @@ public final class RDF4J implements RDF {
     private final ValueFactory valueFactory;
 
     /**
-     * Construct an {@link RDF4J}.
+     * Constructs an {@link RDF4J}.
      *
      */
     public RDF4J() {
@@ -171,7 +171,7 @@ public final class RDF4J implements RDF {
     }
 
     /**
-     * Construct an {@link RDF4J}.
+     * Constructs an {@link RDF4J}.
      * <p>
      * This constructor may be used if reproducible
      * {@link BlankNode#uniqueReference()} in {@link BlankNode} is desirable.
@@ -186,7 +186,7 @@ public final class RDF4J implements RDF {
     }
 
     /**
-     * Construct an {@link RDF4J}.
+     * Constructs an {@link RDF4J}.
      * <p>
      * This constructor is intended for use with the value factory from
      * {@link Repository#getValueFactory()} when using Repository-based graphs
@@ -200,7 +200,7 @@ public final class RDF4J implements RDF {
     }
 
     /**
-     * Construct an {@link RDF4J}.
+     * Constructs an {@link RDF4J}.
      * <p>
      * This constructor may be used if reproducible
      * {@link BlankNode#uniqueReference()} in {@link BlankNode} is desirable.

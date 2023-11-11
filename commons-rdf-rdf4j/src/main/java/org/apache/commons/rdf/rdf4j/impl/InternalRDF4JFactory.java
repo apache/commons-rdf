@@ -56,7 +56,7 @@ import org.eclipse.rdf4j.repository.Repository;
 public abstract class InternalRDF4JFactory {
 
     /**
-     * Construct a {@link RDF4JBlankNode} from a RDF4J {@link BNode}.
+     * Constructs a {@link RDF4JBlankNode} from a RDF4J {@link BNode}.
      *
      * @param bNode
      *            RDF4J {@link BNode} to adapt
@@ -70,7 +70,7 @@ public abstract class InternalRDF4JFactory {
     }
 
     /**
-     * Construct a {@link RDF4JIRI} from a RDF4J {@link IRI}.
+     * Constructs a {@link RDF4JIRI} from a RDF4J {@link IRI}.
      *
      * @param iri
      *            RDF4J {@link IRI} to adapt
@@ -81,7 +81,7 @@ public abstract class InternalRDF4JFactory {
     }
 
     /**
-     * Construct a {@link RDF4JLiteral} from a RDF4J {@link Literal}.
+     * Constructs a {@link RDF4JLiteral} from a RDF4J {@link Literal}.
      *
      * @param literal
      *            RDF4J {@link Literal}
@@ -92,7 +92,7 @@ public abstract class InternalRDF4JFactory {
     }
 
     /**
-     * Construct a {@link RDF4JGraph} from a RDF4J {@link Model}.
+     * Constructs a {@link RDF4JGraph} from a RDF4J {@link Model}.
      * <p>
      * Changes in the graph will be reflected in the model, and vice versa.
      *
@@ -107,7 +107,7 @@ public abstract class InternalRDF4JFactory {
     }
 
     /**
-     * Construct a {@link RDF4JQuad} from a RDF4J {@link Statement}.
+     * Constructs a {@link RDF4JQuad} from a RDF4J {@link Statement}.
      *
      * @param statement
      *            RDF4J {@link Statement} to adapt
@@ -120,7 +120,7 @@ public abstract class InternalRDF4JFactory {
     }
 
     /**
-     * Construct a {@link RDF4JDataset} from a RDF4J {@link Repository}.
+     * Constructs a {@link RDF4JDataset} from a RDF4J {@link Repository}.
      * <p>
      * Changes in the dataset will be reflected in the repsitory, and vice
      * versa.
@@ -142,7 +142,7 @@ public abstract class InternalRDF4JFactory {
     }
 
     /**
-     * Construct a {@link RDF4JGraph} from a RDF4J {@link Model}.
+     * Constructs a {@link RDF4JGraph} from a RDF4J {@link Model}.
      * <p>
      * Changes in the graph will be reflected in the model, and vice versa.
      *
@@ -168,7 +168,7 @@ public abstract class InternalRDF4JFactory {
     }
 
     /**
-     * Construct a {@link RDF4JTriple} from a RDF4J {@link Statement}.
+     * Constructs a {@link RDF4JTriple} from a RDF4J {@link Statement}.
      *
      * @param statement
      *            RDF4J {@link Statement} to adapt

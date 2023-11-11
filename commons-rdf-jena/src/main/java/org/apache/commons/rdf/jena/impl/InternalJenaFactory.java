@@ -46,7 +46,7 @@ import org.apache.jena.sparql.graph.GraphFactory;
 import org.apache.jena.system.JenaSystem;
 
 /**
- * Construct Jena implementations of Commons RDF.
+ * Constructs Jena implementations of Commons RDF.
  * <p>
  * This class is deliberately an abstract class, as it is an internal helper
  * which <strong>may change</strong> in any minor version update; users should
