@@ -303,5 +303,4 @@ public interface RDFSyntax {
      */
     String title();
 
-
 }

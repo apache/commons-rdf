@@ -55,7 +55,6 @@ public class GeneralizedRDFTripleTest {
         assertTrue(t.asJenaTriple().getPredicate().isBlank());
     }
 
-
     @Test
     public void testLiteralPredicate() throws Exception {
         final JenaIRI ex1 = jena.createIRI("http://example.com/ex1");

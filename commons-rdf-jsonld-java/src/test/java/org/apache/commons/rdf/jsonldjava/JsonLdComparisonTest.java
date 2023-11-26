@@ -106,14 +106,12 @@ public class JsonLdComparisonTest {
         assertEquals(lit1, lit3);
     }
 
-
     @Test
     public void testLiteralEqualLang() throws Exception {
         final JsonLdLiteral lit1 = rdf.createLiteral("Allo Allo", "fr");
         final JsonLdLiteral lit2 = rdf.createLiteral("Allo Allo", "fr");
         assertEquals(lit1, lit2);
     }
-
 
     @Test
     public void testLiteralEqualType() throws Exception {

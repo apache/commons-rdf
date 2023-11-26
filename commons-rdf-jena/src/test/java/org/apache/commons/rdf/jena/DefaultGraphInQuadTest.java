@@ -78,7 +78,6 @@ public class DefaultGraphInQuadTest {
         assertEquals(foreignDefaultGraph, q.getGraphName().get());
     }
 
-
     @Test
     public void testCreateFromForeignDefaultGraph() throws Exception {
         // What if <urn:x-arq:DefaultGraph> appear in a non-Jena IRI?
@@ -101,7 +100,6 @@ public class DefaultGraphInQuadTest {
         assertTrue(q.asJenaQuad().isDefaultGraph());
         assertEquals(Quad.defaultGraphIRI,  q.asJenaQuad().getGraph());
     }
-
 
     @Test
     public void testDefaultGraphIRI() throws Exception {

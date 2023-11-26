@@ -439,7 +439,6 @@ public abstract class AbstractGraphTest {
         }
     }
 
-
     @Test
     public void testGetTriples() throws Exception {
         long tripleCount;

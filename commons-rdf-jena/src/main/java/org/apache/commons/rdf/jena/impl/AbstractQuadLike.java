@@ -107,7 +107,6 @@ abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
     org.apache.jena.sparql.core.Quad quad = null;
     org.apache.jena.graph.Triple triple = null;
 
-
     @SuppressWarnings("unchecked")
     AbstractQuadLike(final org.apache.jena.graph.Triple triple, final UUID salt) {
         this.triple = Objects.requireNonNull(triple);

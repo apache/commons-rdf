@@ -86,7 +86,6 @@ class W3CRDFSyntax implements RDFSyntax {
         }
     }
 
-
     static final RDFSyntax JSONLD, TURTLE, NQUADS, NTRIPLES, RDFA, RDFXML, TRIG;
     static final Set<RDFSyntax> syntaxes;
 

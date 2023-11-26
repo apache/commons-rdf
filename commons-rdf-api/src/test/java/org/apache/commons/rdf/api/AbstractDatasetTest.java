@@ -150,7 +150,6 @@ public abstract class AbstractDatasetTest {
         return g2;
     }
 
-
     @Before
     public void createDatasetAndAdd() {
         factory = createFactory();
@@ -192,9 +191,7 @@ public abstract class AbstractDatasetTest {
         dataset.add(null, alice, isPrimaryTopicOf, graph1);
         dataset.add(null, bob, isPrimaryTopicOf, graph2);
 
-
     }
-
 
     /**
      *
@@ -357,7 +354,6 @@ public abstract class AbstractDatasetTest {
 
         final IRI example1 = factory.createIRI("http://example.com/s1");
         final IRI greeting = factory.createIRI("http://example.com/greeting");
-
 
         dataset.add(null, example1, greeting, upper);
 
@@ -542,7 +538,6 @@ public abstract class AbstractDatasetTest {
         }
     }
 
-
     @Test
     public void testIterate() throws Exception {
         Assume.assumeFalse(dataset.isEmpty());
@@ -599,7 +594,6 @@ public abstract class AbstractDatasetTest {
         }
         assertEquals(2, topics);
     }
-
 
     @Test
     public void testIterateFilter() throws Exception {
@@ -690,7 +684,6 @@ public abstract class AbstractDatasetTest {
     public void testSize() throws Exception {
         assertEquals(10, dataset.size());
     }
-
 
     @Test
     public void testStreamDefaultGraphNameAlice() throws Exception {

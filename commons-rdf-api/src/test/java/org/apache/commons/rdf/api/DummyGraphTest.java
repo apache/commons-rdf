@@ -81,6 +81,4 @@ public class DummyGraphTest {
         assertFalse(graph.stream(new DummyIRI(0), new DummyIRI(0), new DummyIRI(0)).findAny().isPresent());
     }
 
-
-
 }

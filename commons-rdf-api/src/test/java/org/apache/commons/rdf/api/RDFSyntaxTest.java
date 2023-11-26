@@ -114,7 +114,6 @@ public class RDFSyntaxTest {
         assertTrue(RDFSyntax.TURTLE.fileExtensions().contains(".ttl"));
     }
 
-
     @Test
     public void testMediaType() throws Exception {
         assertEquals("application/ld+json", RDFSyntax.JSONLD.mediaType());

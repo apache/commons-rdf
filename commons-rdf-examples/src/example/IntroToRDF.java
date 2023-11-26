@@ -67,7 +67,6 @@ public class IntroToRDF {
           System.out.println(triple.getObject());
       }
 
-
       System.out.println("Does Alice anyone that plays Football?");
       for (Triple triple : graph.iterate(alice, knows, null)) {
           RDFTerm aliceFriend = triple.getObject();
@@ -87,7 +86,6 @@ public class IntroToRDF {
       if (nameTriple.isPresent()) {
           System.out.println(nameTriple.get());
       }
-
 
       graph.stream(alice, name, null)
               .findAny().map(Triple::getObject)

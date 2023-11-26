@@ -61,7 +61,6 @@ public class GeneralizedRDFQuadTest {
         assertTrue(q.asJenaQuad().getPredicate().isBlank());
     }
 
-
     @Test
     public void testLiteralGraph() throws Exception {
         final JenaIRI ex1 = jena.createIRI("http://example.com/ex1");
@@ -123,7 +122,5 @@ public class GeneralizedRDFQuadTest {
         assertFalse(q.getGraphName().isPresent());
         assertTrue(q.asJenaQuad().isDefaultGraph());
     }
-
-
 
 }

@@ -40,8 +40,6 @@ public class DefaultQuadTest {
         assertEquals(new DummyIRI(2), t.getPredicate());
         assertEquals(new DummyIRI(3), t.getObject());
 
-
-
         assertEquals(Objects.hash(q.getSubject(), q.getPredicate(), q.getObject()), t.hashCode());
     }
 

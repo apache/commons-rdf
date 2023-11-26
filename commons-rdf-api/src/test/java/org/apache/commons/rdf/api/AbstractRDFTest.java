@@ -194,7 +194,6 @@ public abstract class AbstractRDFTest {
         assertEquals("\"Example\"@en", example.ntriplesString());
     }
 
-
     @Test
     public void testCreateLiteralLangCaseInsensitive() throws Exception {
         /*

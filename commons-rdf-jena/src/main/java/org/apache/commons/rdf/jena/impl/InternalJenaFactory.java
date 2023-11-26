@@ -63,7 +63,6 @@ public abstract class InternalJenaFactory {
         JenaSystem.init();
     }
 
-
     public JenaBlankNode createBlankNode(final String id, final UUID salt) {
         return new JenaBlankNodeImpl(NodeFactory.createBlankNode(id), salt);
     }
