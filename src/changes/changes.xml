@@ -76,7 +76,7 @@
             Bump junit from 4.12 to 4.13.1 in /commons-rdf-examples #82.
         </action>
         <action type="update" dev="ggregory" due-to="Gary Gregory">
-            Bump commons-io from 2.13.0 to 2.15.0.
+            Bump commons-io from 2.13.0 to 2.15.1.
         </action>
     </release>
     <release version="0.5.0" date="2017-11-19" description="Minor feature and bug fix release.">
