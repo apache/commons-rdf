@@ -41,6 +41,6 @@
  * 1.1 syntaxes and their media types.
  * <p>
  * For further documentation and contact details, see the
- * <a href="http://commonsrdf.incubator.apache.org/">Commons RDF</a> web site.
+ * <a href="https://commonsrdf.incubator.apache.org/">Commons RDF</a> web site.
  */
 package org.apache.commons.rdf.api;

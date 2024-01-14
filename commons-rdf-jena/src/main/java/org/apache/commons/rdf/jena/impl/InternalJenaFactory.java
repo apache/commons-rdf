@@ -59,7 +59,7 @@ import org.apache.jena.system.JenaSystem;
 public abstract class InternalJenaFactory {
 
     static {
-        // http://jena.apache.org/documentation/notes/system-initialization.html
+        // https://jena.apache.org/documentation/notes/system-initialization.html
         JenaSystem.init();
     }
 

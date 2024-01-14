@@ -179,7 +179,7 @@ public interface RDF {
      * not include "quotes" unless those are part of the literal value.
      *
      * The provided language tag MUST be valid according to
-     * <a href="http://tools.ietf.org/html/bcp47">BCP47</a>, e.g.
+     * <a href="https://tools.ietf.org/html/bcp47">BCP47</a>, e.g.
      * <code>en</code>.
      *
      * The provided language tag
@@ -198,7 +198,7 @@ public interface RDF {
      *            The literal value
      * @param languageTag
      *            The non-empty language tag as defined by
-     *            <a href="http://tools.ietf.org/html/bcp47">BCP47</a>
+     *            <a href="https://tools.ietf.org/html/bcp47">BCP47</a>
      * @return The created Literal
      * @throws IllegalArgumentException
      *             If the provided values are not acceptable, e.g. because the

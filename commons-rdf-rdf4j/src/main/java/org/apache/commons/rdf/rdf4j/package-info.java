@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 /**
- * Commons RDF integration with <a href="http://rdf4j.org/">RDF4J</a>.
+ * Commons RDF integration with <a href="https://rdf4j.org/">RDF4J</a>.
  * <p>
  * Use the {@link org.apache.commons.rdf.rdf4j.RDF4J} to convert between Commons RDF and RDF4J types, for
  * instance {@link org.apache.commons.rdf.rdf4j.RDF4J#asQuad(org.eclipse.rdf4j.model.Statement)} converts a

@@ -22,7 +22,7 @@ import org.apache.commons.rdf.api.*;
 import org.apache.commons.rdf.simple.SimpleRDF;
 import org.apache.commons.rdf.simple.Types;
 
-/** See http://commonsrdf.incubator.apache.org/introduction.html
+/** See https://commonsrdf.incubator.apache.org/introduction.html
  */
 public class IntroToRDF {
     public static void main(String[] args) {

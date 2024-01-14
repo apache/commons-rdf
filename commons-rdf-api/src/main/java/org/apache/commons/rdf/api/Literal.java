@@ -70,7 +70,7 @@ public interface Literal extends RDFTerm {
      * >http://www.w3.org/1999/02/22-rdf-syntax-ns#langString</a>,
      * {@link #getLanguageTag()} must not return {@link Optional#empty()}, and
      * it must return a valid
-     * <a href="http://tools.ietf.org/html/bcp47">BCP47</a> language tag.
+     * <a href="https://tools.ietf.org/html/bcp47">BCP47</a> language tag.
      *
      * @return The datatype IRI for this literal.
      * @see <a href=
@@ -84,7 +84,7 @@ public interface Literal extends RDFTerm {
      * <a href="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
      * >http://www.w3.org/1999/02/22-rdf-syntax-ns#langString</a>, the language
      * tag for this Literal is a non-empty language tag as defined by
-     * <a href="http://tools.ietf.org/html/bcp47">BCP47</a>.<br>
+     * <a href="https://tools.ietf.org/html/bcp47">BCP47</a>.<br>
      * If the datatype IRI is not
      * <a href="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
      * >http://www.w3.org/1999/02/22-rdf-syntax-ns#langString</a>, this method
