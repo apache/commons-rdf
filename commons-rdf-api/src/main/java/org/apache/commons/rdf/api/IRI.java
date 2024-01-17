@@ -50,7 +50,7 @@ public interface IRI extends BlankNodeOrIRI {
     boolean equals(Object other);
 
     /**
-     * Return the IRI encoded as a native Unicode String.<br>
+     * Gets the IRI encoded as a native Unicode String.<br>
      *
      * The returned string must not include URL-encoding to escape non-ASCII
      * characters.

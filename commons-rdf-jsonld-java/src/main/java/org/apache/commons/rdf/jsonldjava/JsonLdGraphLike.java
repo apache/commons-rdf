@@ -225,7 +225,7 @@ abstract class AbstractJsonLdGraphLike<T extends TripleLike> implements JsonLdGr
  */
 public interface JsonLdGraphLike<T extends TripleLike> extends GraphLike<T> {
     /**
-     * Return the underlying JSONLD-Java {@link RDFDataset}.
+     * Gets the underlying JSONLD-Java {@link RDFDataset}.
      * <p>
      * Changes in the JSONLD-Java dataset is reflected in this class and vice
      * versa.

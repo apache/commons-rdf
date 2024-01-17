@@ -41,7 +41,7 @@ public interface JenaDataset extends Dataset {
     DatasetGraph asJenaDatasetGraph();
 
     /**
-     * Return a union graph view of this dataset.
+     * Gets a union graph view of this dataset.
      * <p>
      * The <em>union graph</em> contains triples in any graph (including the
      * default graph).

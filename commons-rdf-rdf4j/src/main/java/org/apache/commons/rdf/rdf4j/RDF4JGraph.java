@@ -42,7 +42,7 @@ import org.eclipse.rdf4j.repository.Repository;
 public interface RDF4JGraph extends Graph, RDF4JGraphLike<Triple> {
 
     /**
-     * Return a copy of the context mask as a {@link Set} of
+     * Gets a copy of the context mask as a {@link Set} of
      * {@link RDF4JBlankNodeOrIRI} graph names.
      * <p>
      * If the set is not {@link Set#isEmpty()}, the mask determines which
