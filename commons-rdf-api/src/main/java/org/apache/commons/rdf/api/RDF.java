@@ -217,7 +217,7 @@ public interface RDF {
      *
      * @param graphName
      *            The IRI or BlankNode that this quad belongs to, or
-     *            <code>null</code> for the public graph
+     *            {@code null} for the public graph
      * @param subject
      *            The IRI or BlankNode that is the subject of the quad
      * @param predicate

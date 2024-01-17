@@ -651,7 +651,7 @@ public final class JenaRDF implements RDF {
      * {@link QuadLike#getSubject()} {@link QuadLike#getPredicate()},
      * {@link QuadLike#getObject()} or {@link QuadLike#getObject()}.
      * <p>
-     * In addition to supporting a <code>graphName</code> of <code>null</code>
+     * In addition to supporting a <code>graphName</code> of {@code null}
      * for representing a triple in the <em>default graph</em>, this method also
      * recognize a {@link JenaIRI} which {@link JenaRDFTerm#asJenaNode()}
      * represent the default graph according to
@@ -733,7 +733,7 @@ public final class JenaRDF implements RDF {
     /**
      * {@inheritDoc}
      * <p>
-     * In addition to supporting a <code>graphName</code> of <code>null</code>
+     * In addition to supporting a <code>graphName</code> of {@code null}
      * for representing a triple in the <em>default graph</em>, this method also
      * recognize a {@link JenaIRI} which {@link JenaRDFTerm#asJenaNode()}
      * represent the default graph according to

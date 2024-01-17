@@ -156,7 +156,7 @@ public abstract class InternalRDF4JFactory {
      *            If true, any inferred quads are included in the dataset
      * @param contextMask
      *            Zero or more {@link Resource}s contexts. The array may contain
-     *            the value <code>null</code> for the default graph - however
+     *            the value {@code null} for the default graph - however
      *            care must be taken to not provide a null-array
      *            <code>(Resource[]) null</code>.
      * @return Adapted {@link RDF4JGraph}

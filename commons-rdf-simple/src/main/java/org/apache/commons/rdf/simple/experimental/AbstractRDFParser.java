@@ -363,9 +363,9 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      * Gets the target to consume parsed Quads.
      * <p>
      * From the call to {@link #parseSynchronusly()}, this will be a
-     * non-<code>null</code> value (as a target is a required setting).
+     * non-{@code null} value (as a target is a required setting).
      *
-     * @return The target consumer of {@link Quad}s, or <code>null</code> if it
+     * @return The target consumer of {@link Quad}s, or {@code null} if it
      *         has not yet been set.
      *
      */

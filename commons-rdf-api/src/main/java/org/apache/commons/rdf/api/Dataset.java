@@ -38,7 +38,7 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
      * those supported by this dataset.
      *
      * @param graphName
-     *            The graph the quad belongs to, or <code>null</code> for the
+     *            The graph the quad belongs to, or {@code null} for the
      *            default graph
      * @param subject
      *            The quad subject
@@ -86,14 +86,14 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
      *
      * @param graphName
      *            The graph the quad belongs to, wrapped as an {@link Optional}
-     *            (<code>null</code> is a wildcard, {@link Optional#empty()} is
+     *            ({@code null} is a wildcard, {@link Optional#empty()} is
      *            the default graph)
      * @param subject
-     *            The quad subject (<code>null</code> is a wildcard)
+     *            The quad subject ({@code null} is a wildcard)
      * @param predicate
-     *            The quad predicate (<code>null</code> is a wildcard)
+     *            The quad predicate ({@code null} is a wildcard)
      * @param object
-     *            The quad object (<code>null</code> is a wildcard)
+     *            The quad object ({@code null} is a wildcard)
      * @return True if the dataset contains any quads that match the given
      *         pattern.
      */
@@ -132,7 +132,7 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
      * The {@link Triple}s of the named graph are equivalent to the Quads of
      * this Dataset which has the {@link Quad#getGraphName()} equal to the
      * provided <code>graphName</code>, or equal to {@link Optional#empty()} if
-     * the provided <code>graphName</code> is <code>null</code>.
+     * the provided <code>graphName</code> is {@code null}.
      * <p>
      * It is unspecified if modifications to the returned Graph are reflected in
      * this Dataset.
@@ -143,7 +143,7 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
      * @see #getGraph()
      * @see #getGraphNames()
      * @param graphName
-     *            The name of the graph, or <code>null</code> for the default
+     *            The name of the graph, or {@code null} for the default
      *            graph.
      * @return The named Graph, or {@link Optional#empty()} if the dataset do
      *         not contain the named graph.
@@ -257,14 +257,14 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
      *
      * @param graphName
      *            The graph the quad belongs to, wrapped as an {@link Optional}
-     *            (<code>null</code> is a wildcard, {@link Optional#empty()} is
+     *            ({@code null} is a wildcard, {@link Optional#empty()} is
      *            the default graph)
      * @param subject
-     *            The quad subject (<code>null</code> is a wildcard)
+     *            The quad subject ({@code null} is a wildcard)
      * @param predicate
-     *            The quad predicate (<code>null</code> is a wildcard)
+     *            The quad predicate ({@code null} is a wildcard)
      * @param object
-     *            The quad object (<code>null</code> is a wildcard)
+     *            The quad object ({@code null} is a wildcard)
      * @return A {@link Iterable} that returns {@link Iterator} over the
      *         matching quads in the dataset
      * @throws IllegalStateException
@@ -284,14 +284,14 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
      *
      * @param graphName
      *            The graph the quad belongs to, wrapped as an {@link Optional}
-     *            (<code>null</code> is a wildcard, {@link Optional#empty()} is
+     *            ({@code null} is a wildcard, {@link Optional#empty()} is
      *            the default graph)
      * @param subject
-     *            The quad subject (<code>null</code> is a wildcard)
+     *            The quad subject ({@code null} is a wildcard)
      * @param predicate
-     *            The quad predicate (<code>null</code> is a wildcard)
+     *            The quad predicate ({@code null} is a wildcard)
      * @param object
-     *            The quad object (<code>null</code> is a wildcard)
+     *            The quad object ({@code null} is a wildcard)
      */
     void remove(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
 
@@ -348,14 +348,14 @@ public interface Dataset extends AutoCloseable, GraphLike<Quad> {
      *
      * @param graphName
      *            The graph the quad belongs to, wrapped as an {@link Optional}
-     *            (<code>null</code> is a wildcard, {@link Optional#empty()} is
+     *            ({@code null} is a wildcard, {@link Optional#empty()} is
      *            the default graph)
      * @param subject
-     *            The quad subject (<code>null</code> is a wildcard)
+     *            The quad subject ({@code null} is a wildcard)
      * @param predicate
-     *            The quad predicate (<code>null</code> is a wildcard)
+     *            The quad predicate ({@code null} is a wildcard)
      * @param object
-     *            The quad object (<code>null</code> is a wildcard)
+     *            The quad object ({@code null} is a wildcard)
      * @return A {@link Stream} over the matched quads.
      */
     Stream<? extends Quad> stream(Optional<BlankNodeOrIRI> graphName, BlankNodeOrIRI subject, IRI predicate,

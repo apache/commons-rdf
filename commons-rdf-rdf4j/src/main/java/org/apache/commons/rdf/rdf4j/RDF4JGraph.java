@@ -52,7 +52,7 @@ public interface RDF4JGraph extends Graph, RDF4JGraphLike<Triple> {
      * contexts, while retrieval (e.g. {@link #contains(Triple)}) will succeed
      * if the triple is in at least one of the specified contexts.
      * <p>
-     * The context mask array may contain <code>null</code>, indicating the
+     * The context mask array may contain {@code null}, indicating the
      * default context (the <em>default graph</em> in RDF datasets).
      * <p>
      * If the context mask is {@link Set#isEmpty()}, then this is a <em>union
@@ -60,13 +60,13 @@ public interface RDF4JGraph extends Graph, RDF4JGraphLike<Triple> {
      * added to the graph will be added in the default context, e.g. equivalent
      * to <code>new Resource[1]{null}</code>) in RDF4J.
      * <p>
-     * Note that the context mask itself cannot be <code>null</code>.
+     * Note that the context mask itself cannot be {@code null}.
      * <p>
      * The returned set is an immutable copy; to specify a different mask, use
      * {@link RDF4J#asGraph(Repository, Set, Option...)}
      *
      * @return The context mask as a set of {@link BlankNodeOrIRI} graph names,
-     *         which may contain the value <code>null</code>.
+     *         which may contain the value {@code null}.
      */
     Set<RDF4JBlankNodeOrIRI> getContextMask();
 

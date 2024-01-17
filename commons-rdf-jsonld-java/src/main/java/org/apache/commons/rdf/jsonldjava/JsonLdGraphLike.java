@@ -53,7 +53,7 @@ abstract class AbstractJsonLdGraphLike<T extends TripleLike> implements JsonLdGr
     /**
      * The underlying JSON-LD {@link RDFDataset}.
      * <p>
-     * Note: This is NOT final as it is reset to <code>null</code> by
+     * Note: This is NOT final as it is reset to {@code null} by
      * {@link #close()} (to free memory).
      */
     RDFDataset rdfDataSet;

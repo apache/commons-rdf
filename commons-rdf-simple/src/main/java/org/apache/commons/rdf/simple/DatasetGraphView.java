@@ -43,7 +43,7 @@ import org.apache.commons.rdf.api.Triple;
  *
  * <dt>{@link #DatasetGraphView(Dataset, BlankNodeOrIRI)}</dt>
  * <dd>Expose a particular graph of the Dataset, either named by an {@link IRI},
- * a {@link BlankNode}, or <code>null</code> for the <em>default
+ * a {@link BlankNode}, or {@code null} for the <em>default
  * graph</em>.</dd>
  * </dl>
  * <p>

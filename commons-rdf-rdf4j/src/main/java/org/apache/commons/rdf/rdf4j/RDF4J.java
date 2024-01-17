@@ -297,7 +297,7 @@ public final class RDF4J implements RDF {
      * @param contexts
      *            A {@link Set} of {@link BlankNodeOrIRI} specifying the graph
      *            names to use as a context. The set may include the value
-     *            <code>null</code> to indicate the default graph. The empty set
+     *            {@code null} to indicate the default graph. The empty set
      *            indicates any context, e.g. the <em>union graph</em>.
      * @param option
      *            Zero or more {@link Option}s
@@ -305,7 +305,7 @@ public final class RDF4J implements RDF {
      */
     public RDF4JGraph asGraph(final Repository repository, final Set<? extends BlankNodeOrIRI> contexts, final Option... option) {
         final EnumSet<Option> opts = optionSet(option);
-        /** NOTE: asValue() deliberately CAN handle <code>null</code> */
+        /** NOTE: asValue() deliberately CAN handle {@code null} */
         final Resource[] resources = contexts.stream().map(g -> (Resource) asValue(g)).toArray(Resource[]::new);
         return RDF4J.createRepositoryGraphImpl(Objects.requireNonNull(repository),
                 opts.contains(Option.handleInitAndShutdown), opts.contains(Option.includeInferred), resources);
@@ -522,8 +522,8 @@ public final class RDF4J implements RDF {
      * {@link org.apache.commons.rdf.api.Literal} is converted to a
      * {@link org.eclipse.rdf4j.model.Literal}.
      * <p>
-     * If the provided {@link RDFTerm} is <code>null</code>, then the returned
-     * value is <code>null</code>.
+     * If the provided {@link RDFTerm} is {@code null}, then the returned
+     * value is {@code null}.
      * <p>
      * If the provided term is an instance of {@link RDF4JTerm}, then the
      * {@link RDF4JTerm#asValue()} is returned without any conversion. Note that

@@ -61,7 +61,7 @@ import org.apache.commons.rdf.api.Triple;
  * Setting a method that has already been set will override any existing value
  * in the returned builder - regardless of the parameter type (e.g.
  * {@link #source(IRI)} will override a previous {@link #source(Path)}. Settings
- * can be unset by passing <code>null</code> - note that this may require
+ * can be unset by passing {@code null} - note that this may require
  * casting, e.g. <code>contentType( (RDFSyntax) null )</code> to undo a previous
  * call to {@link #contentType(RDFSyntax)}.
  * <p>
@@ -213,7 +213,7 @@ public interface RDFParser {
      * <p>
      * The returned {@link Future} contains a {@link ParseResult}.
      * Implementations may subclass this interface to provide any parser
-     * details, e.g. list of warnings. <code>null</code> is a possible return
+     * details, e.g. list of warnings. {@code null} is a possible return
      * value if no details are available, but parsing succeeded.
      * <p>
      * If an exception occurs during parsing, (e.g. {@link IOException} or
