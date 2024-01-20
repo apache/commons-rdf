@@ -85,7 +85,6 @@ public class JSONLDParsingTest {
 
     /**
      * Pre-test that src/test/resources files are on the classpath
-     *
      */
     @Before
     public void checkTestResources() throws Exception {

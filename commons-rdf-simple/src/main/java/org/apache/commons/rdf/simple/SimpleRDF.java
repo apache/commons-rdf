@@ -45,7 +45,6 @@ public class SimpleRDF implements RDF {
      * implementation. Used by {@link GraphImpl} to avoid double remapping.
      * <p>
      * This method is package protected to avoid any third-party subclasses.
-     *
      */
     interface SimpleRDFTerm extends RDFTerm {
     }

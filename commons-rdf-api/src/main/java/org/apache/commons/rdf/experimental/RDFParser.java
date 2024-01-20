@@ -379,7 +379,6 @@ public interface RDFParser {
      * @return An {@link RDFParser} that will use the specified source.
      * @throws IllegalArgumentException
      *             If the base is not a valid absolute IRI string
-     *
      */
     RDFParser source(String iri) throws IllegalArgumentException;
 

@@ -740,7 +740,6 @@ public final class JenaRDF implements RDF {
      * {@link org.apache.jena.sparql.core.Quad#isDefaultGraph(Node)}, in which
      * case the returned JenaQuad will have a {@link Quad#getGraphName()} of
      * {@link Optional#empty()} rather than the provided IRI.
-     *
      */
     @Override
     public JenaQuad createQuad(final BlankNodeOrIRI graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object)

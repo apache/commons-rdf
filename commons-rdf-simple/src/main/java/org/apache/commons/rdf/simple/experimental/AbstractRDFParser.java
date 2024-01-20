@@ -367,7 +367,6 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      *
      * @return The target consumer of {@link Quad}s, or {@code null} if it
      *         has not yet been set.
-     *
      */
     public Consumer<Quad> getTarget() {
         return target;
@@ -487,7 +486,6 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      * <p>
      * Subclasses should override this and call <code>super.resetSource()</code>
      * if they need to reset any additional source* fields.
-     *
      */
     protected void resetSource() {
         sourceInputStream = null;
@@ -503,7 +501,6 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      * <p>
      * Subclasses should override this and call <code>super.resetTarget()</code>
      * if they need to reset any additional target* fields.
-     *
      */
     protected void resetTarget() {
         targetDataset = null;

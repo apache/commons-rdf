@@ -153,7 +153,6 @@ class W3CRDFSyntax implements RDFSyntax {
      * <p>
      * {@link W3CRDFSyntax} always defines file extensions in lower case, so
      * {@link String#toLowerCase(Locale)} need not be called.
-     *
      */
     @Override
     public String fileExtension() {
@@ -175,7 +174,6 @@ class W3CRDFSyntax implements RDFSyntax {
      * <p>
      * {@link W3CRDFSyntax} always defines media type in lower case, so
      * {@link String#toLowerCase(Locale)} need not be called.
-     *
      */
     @Override
     public String mediaType() {

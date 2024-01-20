@@ -42,7 +42,6 @@ public interface RDFSyntax {
      *
      * @see <a href=
      *      "https://www.w3.org/TR/json-ld/">https://www.w3.org/TR/json-ld/</a>
-     *
      */
     RDFSyntax JSONLD = W3CRDFSyntax.JSONLD;
 
@@ -51,7 +50,6 @@ public interface RDFSyntax {
      *
      * @see <a href=
      *      "https://www.w3.org/TR/turtle/">https://www.w3.org/TR/turtle/</a>
-     *
      */
     RDFSyntax TURTLE = W3CRDFSyntax.TURTLE;
 

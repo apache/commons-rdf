@@ -164,7 +164,6 @@ public final class RDF4J implements RDF {
 
     /**
      * Constructs an {@link RDF4J}.
-     *
      */
     public RDF4J() {
         this(SimpleValueFactory.getInstance(), UUID.randomUUID());
@@ -587,7 +586,6 @@ public final class RDF4J implements RDF {
      * requires the use of try-with-resources to close underlying
      * {@link RepositoryConnection}s, including {@link RDF4JDataset#iterate()},
      * {@link RDF4JDataset#stream()} and {@link RDF4JDataset#getGraphNames()}.
-     *
      */
     @Override
     public RDF4JDataset createDataset() {
