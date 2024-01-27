@@ -15,6 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * Commons RDF, a common library of RDF 1.1 concepts.
  * <p>

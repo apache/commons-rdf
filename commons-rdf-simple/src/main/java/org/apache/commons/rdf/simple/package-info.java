@@ -15,6 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * A simple in-memory implementation of the Commons RDF API.
  * <p>

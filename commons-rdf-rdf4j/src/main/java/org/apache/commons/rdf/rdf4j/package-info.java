@@ -15,6 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * Commons RDF integration with <a href="https://rdf4j.org/">RDF4J</a>.
  * <p>
