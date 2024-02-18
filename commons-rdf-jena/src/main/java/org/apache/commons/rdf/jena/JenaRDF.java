@@ -580,7 +580,7 @@ public final class JenaRDF implements RDF {
      * @return Matched {@link RDFSyntax}, otherwise {@link Optional#empty()}
      */
     public Optional<RDFSyntax> asRDFSyntax(final Lang lang) {
-        return RDFSyntax.byMediaType(lang.getContentType().getContentType());
+        return RDFSyntax.byMediaType(lang.getContentType().getContentTypeStr());
     }
 
     /**

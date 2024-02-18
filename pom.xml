@@ -60,7 +60,7 @@
 	          is cross-compatible -->
         <jsonldjava.version>0.13.4</jsonldjava.version>
         <rdf4j.version>3.7.7</rdf4j.version>
-        <jena.version>3.5.0</jena.version>
+        <jena.version>4.10.0</jena.version>
         <!--  NOTE: dexx and xerces versions should match 
         the versions marked as <optional> in jena-osgi pom
          -->

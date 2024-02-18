@@ -53,24 +53,26 @@
 		</dependency>
 		<!-- Uncomment below and disable jena-osgi to access the regular non-osgi 
 			 Jena dependencies (e.g. for debugging) -->
-		<!-- 
-	
 		<dependency>
 			<groupId>org.apache.jena</groupId>
 			<artifactId>apache-jena-libs</artifactId>
 			<version>${jena.version}</version>
 			<type>pom</type>
-			<scope>optional</scope>
 		</dependency>
-				--> 
 
 		<!-- As commons-rdf-jena is an OSGi bundle, we'll use the Jena OSGi bundle -->
-		<dependency>
-			<groupId>org.apache.jena</groupId>
-			<artifactId>jena-osgi</artifactId>
-			<version>${jena.version}</version>
-		</dependency>
-
+<!--		<dependency>-->
+<!--			<groupId>org.apache.jena</groupId>-->
+<!--			<artifactId>jena-osgi</artifactId>-->
+<!--			<version>${jena.version}</version>-->
+<!--		</dependency>-->
+<!--
+### Apache Jena OSGi
+The last release of apache-jena-osgi source was with Jena 4.2.0 on 2021-09-16.
+The last release of the OSGi binary artifacts was with Jena 4.1.0 2021-06-04.
+Source is available from git with tag "jena-4.2.0".
+The commit retiring apache-jena-osgi is 79a477c00e.
+-->
 		<!-- Additional bundles needed by jena-osgi -->
 		<dependency>
 			<groupId>org.apache.servicemix.bundles</groupId>
