@@ -68,32 +68,32 @@ Building has been tested with [Apache Maven 3](http://maven.apache.org/download.
     [INFO] ------------------------------------------------------------------------
     [INFO] Reactor Build Order:
     [INFO] 
-    [INFO] Commons RDF
-    [INFO] Commons RDF: API
-    [INFO] Commons RDF: Simple impl
+    [INFO] Commons RDF                                                        [pom]
+    [INFO] Commons RDF API                                                    [jar]
+    [INFO] Commons RDF impl: Simple                                           [jar]
+    [INFO] Commons RDF impl: RDF4j                                            [jar]
+    [INFO] Commons RDF impl: Jena                                             [jar]
+    [INFO] Commons RDF impl: JSON-LD Java                                     [jar]
+    [INFO] Commons RDF Integration tests                                      [jar]
     [INFO] 
-    [INFO] Using the builder org.apache.maven.lifecycle.internal.builder.singlethreaded.SingleThreadedBuilder with a thread count of 1
-    [INFO]                                                                         
+    [INFO] ---------------< org.apache.commons:commons-rdf-parent >----------------
+    [INFO] Building Commons RDF 0.6.0-SNAPSHOT                                [1/7]
+    ....
     [INFO] ------------------------------------------------------------------------
-    [INFO] Building Commons RDF 0.5.0
-        ....
-    [INFO] Installing /home/johndoe/src/commons-rdf/commons-rdf-api/target/commons-rdf-api-0.5.0-javadoc.jar to /home/johndoe/.m2/repository/org/apache/commons/commons-rdf/commons-rdf-api/0.5.0/commons-rdf-api-0.5.0-javadoc.jar
-    [INFO] ------------------------------------------------------------------------
-    [INFO] Reactor Summary:
+    [INFO] Reactor Summary for Commons RDF 0.6.0-SNAPSHOT:
     [INFO] 
-    [INFO] Commons RDF ........................................ SUCCESS [  0.404 s]
-    [INFO] Commons RDF: API ................................... SUCCESS [  0.031 s]
-    [INFO] Commons RDF: Simple Implementation ................. SUCCESS [  0.010 s]
-    [INFO] Commons RDF: Integration: RDF4j .................... SUCCESS [  0.012 s]
-    [INFO] Commons RDF: Integration: Apache Jena .............. SUCCESS [  0.011 s]
-    [INFO] Commons RDF: Integration: JSON-LD Java ............. SUCCESS [  0.009 s]
-    [INFO] Commons RDF: Integration tests ..................... SUCCESS [  0.005 s]
+    [INFO] Commons RDF ........................................ SUCCESS [ 11.382 s]
+    [INFO] Commons RDF API .................................... SUCCESS [ 13.508 s]
+    [INFO] Commons RDF impl: Simple ........................... SUCCESS [ 11.445 s]
+    [INFO] Commons RDF impl: RDF4j ............................ SUCCESS [ 14.536 s]
+    [INFO] Commons RDF impl: Jena ............................. SUCCESS [ 14.855 s]
+    [INFO] Commons RDF impl: JSON-LD Java ..................... SUCCESS [ 12.190 s]
+    [INFO] Commons RDF Integration tests ...................... SUCCESS [  5.109 s]
     [INFO] ------------------------------------------------------------------------
     [INFO] BUILD SUCCESS
     [INFO] ------------------------------------------------------------------------
-    [INFO] Total time: 7.718 s
-    [INFO] Finished at: 2015-01-26T02:09:10+00:00
-    [INFO] Final Memory: 22M/309M
+    [INFO] Total time:  01:23 min
+    [INFO] Finished at: 2025-04-17T13:33:23+02:00
     [INFO] ------------------------------------------------------------------------
 
 
