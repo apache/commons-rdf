@@ -27,6 +27,9 @@
 	</parent>
 	<artifactId>commons-rdf-integration-tests</artifactId>
 	<name>Commons RDF Integration tests</name>
+    <properties>
+        <project.build.outputTimestamp>2024-02-01T03:27:02Z</project.build.outputTimestamp>
+    </properties>
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>

@@ -24,7 +24,7 @@
     <parent>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-parent</artifactId>
-        <version>64</version>
+        <version>66</version>
     </parent>
 
     <artifactId>commons-rdf-parent</artifactId>
@@ -42,6 +42,7 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.encoding>UTF-8</project.build.encoding>
+        <project.build.outputTimestamp>2024-02-01T03:27:02Z</project.build.outputTimestamp>
         <commons.encoding>UTF-8</commons.encoding>
         <commons.componentid>rdf</commons.componentid>
         <commons.module.name>org.apache.commons.rdf</commons.module.name>

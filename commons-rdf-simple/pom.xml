@@ -39,6 +39,9 @@
         <url>scm:svn:${commons.scmPubUrl}/simple/</url>
       </site>
     </distributionManagement>
+    <properties>
+        <project.build.outputTimestamp>2024-02-01T03:27:02Z</project.build.outputTimestamp>
+    </properties>
 
     <dependencies>
         <dependency>

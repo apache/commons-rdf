@@ -35,6 +35,7 @@
 
     <properties>
       <commons.osgi.symbolicName>org.apache.commons.rdf.api</commons.osgi.symbolicName>
+      <project.build.outputTimestamp>2024-02-01T03:27:02Z</project.build.outputTimestamp>
     </properties>
 
     <build>
