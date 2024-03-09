@@ -20,6 +20,7 @@ package org.apache.commons.rdf.rdf4j.impl;
 import java.util.Collections;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -60,6 +61,11 @@ final class ModelGraphImpl implements RDF4JGraph {
     }
 
     @Override
+	public void add(List<Triple> statements) {
+		statements.forEach(this::add);		
+	}
+
+	@Override
     public Optional<Model> asModel() {
         return Optional.of(model);
     }

@@ -18,6 +18,7 @@
 package org.apache.commons.rdf.simple;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -64,6 +65,11 @@ final class GraphImpl implements Graph {
     }
 
     @Override
+	public void add(List<Triple> statements) {
+		statements.forEach(this::add);		
+	}
+
+	@Override
     public void clear() {
         triples.clear();
     }

@@ -21,6 +21,7 @@ package org.apache.commons.rdf.jena.impl;
 import static org.apache.jena.graph.Node.ANY;
 
 import java.io.StringWriter;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -65,6 +66,11 @@ final class JenaDatasetImpl implements JenaDataset {
     }
 
     @Override
+	public void add(List<Quad> statements) {
+		statements.forEach(this::add);		
+	}
+
+	@Override
     public DatasetGraph asJenaDatasetGraph() {
         return datasetGraph;
     }

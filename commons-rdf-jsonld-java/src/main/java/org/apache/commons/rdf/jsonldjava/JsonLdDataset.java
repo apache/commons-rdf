@@ -55,6 +55,11 @@ final class JsonLdDatasetImpl extends AbstractJsonLdGraphLike<org.apache.commons
     }
 
     @Override
+	public void add(List<Quad> statements) {
+		statements.forEach(this::add);		
+	}
+
+	@Override
     Quad asTripleOrQuad(final com.github.jsonldjava.core.RDFDataset.Quad jsonldQuad) {
         return factory.asQuad(jsonldQuad);
     }

@@ -18,6 +18,7 @@
 package org.apache.commons.rdf.simple;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -81,6 +82,11 @@ final class DatasetImpl implements Dataset {
     }
 
     @Override
+	public void add(List<Quad> statements) {
+		statements.forEach(this::add);		
+	}
+
+	@Override
     public void clear() {
         quads.clear();
     }

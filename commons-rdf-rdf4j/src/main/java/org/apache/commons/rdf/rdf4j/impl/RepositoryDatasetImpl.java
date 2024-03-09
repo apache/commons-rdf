@@ -18,8 +18,10 @@
 package org.apache.commons.rdf.rdf4j.impl;
 
 import java.util.ConcurrentModificationException;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
@@ -65,7 +67,18 @@ final class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> impl
         }
     }
 
-    private Resource[] asContexts(final Optional<BlankNodeOrIRI> graphName) {
+    @Override
+	public void add(List<Quad> statements) {
+        List<Statement> stmts = statements.stream()
+        		.map(rdf4jTermFactory::asStatement)
+        		.collect(Collectors.toList());
+        try (RepositoryConnection conn = getRepositoryConnection()) {
+        	stmts.forEach(conn::add);
+            conn.commit();
+        }
+	}
+
+	private Resource[] asContexts(final Optional<BlankNodeOrIRI> graphName) {
         Resource[] contexts;
         if (graphName == null) {
             // no contexts == any contexts

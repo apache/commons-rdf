@@ -61,6 +61,11 @@ final class JsonLdGraphImpl extends AbstractJsonLdGraphLike<Triple> implements J
     }
 
     @Override
+	public void add(List<Triple> statements) {
+		statements.forEach(this::add);		
+	}
+
+	@Override
     public void add(final Triple t) {
         // Ensure it's added in the correct graph
         super.add(graphName.orElse(null), t.getSubject(), t.getPredicate(), t.getObject());
