@@ -25,6 +25,10 @@
 
   <body>
     <release version="0.6.0" date="20YY-MM-DD" description="Minor feature and bug fix release.">
+        <!-- ADD -->
+        <action dev="ggregory" type="fix" due-to="Gary Gregory">
+            Add project.build.outputTimestam Maven property to make build reproducible.
+        </action>
         <!-- FIX -->
         <action dev="ggregory" type="fix" due-to="Gary Gregory">
             Fix Java 17 build.
@@ -43,7 +47,7 @@
             Bump actions/setup-java from 1.4.0 to 3.6.0 #81, #99.
         </action>
         <action type="update" dev="ggregory" due-to="Gary Gregory">
-            Bump commons-parent from 52 to 58.
+            Bump commons-parent from 52 to 66.
         </action>
         <action type="update" dev="ggregory" due-to="Dependabot">
             Bump actions/upload-artifact from 3.1.0 to 3.1.1 #100.
@@ -77,6 +81,9 @@
         </action>
         <action type="update" dev="ggregory" due-to="Gary Gregory">
             Bump commons-io from 2.13.0 to 2.15.1.
+        </action>
+        <action type="update" dev="ggregory" due-to="Gary Gregory">
+            Bump Java from 8 to 11.
         </action>
     </release>
     <release version="0.5.0" date="2017-11-19" description="Minor feature and bug fix release.">

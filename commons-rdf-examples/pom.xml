@@ -34,6 +34,7 @@
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.outputTimestamp>2024-02-01T03:27:02Z</project.build.outputTimestamp>
         <commons.rdf.version>0.5.0</commons.rdf.version> <!-- update to latest version -->
     </properties>
 
