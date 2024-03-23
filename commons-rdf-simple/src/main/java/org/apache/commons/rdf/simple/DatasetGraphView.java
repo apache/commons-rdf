@@ -17,6 +17,7 @@
  */
 package org.apache.commons.rdf.simple;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -88,6 +89,11 @@ public class DatasetGraphView implements Graph {
     }
 
     @Override
+	public void add(List<Triple> statements) {
+		statements.forEach(this::add);		
+	}
+
+	@Override
     public void clear() {
         dataset.remove(unionOrNamedGraph(), null, null, null);
     }

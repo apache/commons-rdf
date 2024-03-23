@@ -19,6 +19,7 @@
 package org.apache.commons.rdf.jena.impl;
 
 import java.io.StringWriter;
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -63,6 +64,11 @@ final class JenaGraphImpl implements JenaGraph {
     }
 
     @Override
+	public void add(List<Triple> statements) {
+		statements.forEach(this::add);		
+	}
+
+	@Override
     public void add(final Triple triple) {
         graph.add(factory.asJenaTriple(triple));
     }

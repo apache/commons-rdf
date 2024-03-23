@@ -68,6 +68,11 @@ final class JsonLdUnionGraphImpl extends AbstractJsonLdGraphLike<org.apache.comm
     }
 
     @Override
+	public void add(List<Triple> statements) {
+		statements.forEach(this::add);		
+	}
+
+	@Override
     JsonLdTriple asTripleOrQuad(final com.github.jsonldjava.core.RDFDataset.Quad jsonldQuad) {
         return factory.asTriple(jsonldQuad);
     }
