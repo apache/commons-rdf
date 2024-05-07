@@ -18,6 +18,7 @@
 package org.apache.commons.rdf.api;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Stream;
 
 final class DummyGraph implements Graph {
@@ -36,8 +37,12 @@ final class DummyGraph implements Graph {
         if (! contains(triple)) {
             throw new IllegalStateException("DummyGraph can't be modified");
         }
-    }
+    }    
     @Override
+	public void add(List<Triple> statements) {
+   		statements.forEach(this::add);		
+	}    
+	@Override
     public void clear() {
         throw new IllegalStateException("DummyGraph can't be modified");
     }

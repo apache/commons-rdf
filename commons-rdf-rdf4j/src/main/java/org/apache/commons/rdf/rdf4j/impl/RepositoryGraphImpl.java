@@ -20,9 +20,11 @@ package org.apache.commons.rdf.rdf4j.impl;
 import java.util.Collections;
 import java.util.ConcurrentModificationException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
@@ -72,6 +74,17 @@ final class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> impl
     }
 
     @Override
+	public void add(List<Triple> statements) {
+        List<Statement> stmts = statements.stream()
+        		.map(rdf4jTermFactory::asStatement)
+        		.collect(Collectors.toList());
+        try (RepositoryConnection conn = getRepositoryConnection()) {
+        	stmts.forEach(stmt->conn.add(stmt, contextMask));
+            conn.commit();
+        }
+	}
+
+    @Override
     protected RDF4JTriple asTripleLike(final Statement statement) {
         return rdf4jTermFactory.asTriple(statement);
     }
@@ -102,7 +115,7 @@ final class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> impl
         }
     }
 
-    @Override
+	@Override
     public Set<RDF4JBlankNodeOrIRI> getContextMask() {
         final Set<RDF4JBlankNodeOrIRI> mask = new HashSet<>();
         for (final Resource s : contextMask) {
