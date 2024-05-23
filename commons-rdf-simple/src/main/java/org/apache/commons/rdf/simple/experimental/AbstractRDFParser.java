@@ -129,7 +129,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     private Graph targetGraph;
     /**
      * Returns this.
-     * @return this.
+     * @return {@code this} instance.
      */
     @SuppressWarnings("unchecked")
     protected T asT() {
