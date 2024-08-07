@@ -1,7 +1,6 @@
 # Apache Commons RDF
 
 [![Java CI](https://github.com/apache/commons-rdf/actions/workflows/maven.yml/badge.svg)](https://github.com/apache/commons-rdf/actions/workflows/maven.yml)
-[![Coverage Status](https://codecov.io/gh/apache/commons-rdf/branch/master/graph/badge.svg?branch=master&service=github)](https://app.codecov.io/gh/apache/commons-rdf)
 
 [Commons RDF](https://commons.apache.org/proper/commons-rdf/) aims to provide a common
 library for [RDF 1.1](http://www.w3.org/TR/rdf11-concepts/) with implementations
