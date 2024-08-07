@@ -18,6 +18,7 @@
 package org.apache.commons.rdf.api;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -39,6 +40,11 @@ final class DummyDataset implements Dataset {
             throw new IllegalStateException("DummyDataset can't be modified");
         }
     }
+
+	@Override
+	public void add(List<Quad> statements) {
+		statements.forEach(this::add);		
+	}
 
     @Override
     public void clear() {
