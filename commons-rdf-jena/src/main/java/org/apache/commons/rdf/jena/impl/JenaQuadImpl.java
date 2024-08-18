@@ -38,7 +38,7 @@ final class JenaQuadImpl extends AbstractQuadLike<BlankNodeOrIRI, IRI, RDFTerm, 
     JenaQuadImpl(final org.apache.jena.sparql.core.Quad quad, final UUID salt) {
         super(quad, salt);
         // Check the conversion
-        if ((graphName.isPresent() && !(graphName.get() instanceof BlankNodeOrIRI))
+        if (graphName.isPresent() && !(graphName.get() instanceof BlankNodeOrIRI)
                 || !(subject instanceof BlankNodeOrIRI) || !(predicate instanceof IRI)
                 || !(object instanceof RDFTerm)) {
             throw new ConversionException("Can't adapt generalized quad: " + quad);
