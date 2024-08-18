@@ -57,7 +57,7 @@ import org.eclipse.rdf4j.rio.helpers.AbstractRDFHandler;
  */
 public class RDF4JParser extends AbstractRDFParser<RDF4JParser> {
 
-    private final static class AddToModel extends AbstractRDFHandler {
+    private static final class AddToModel extends AbstractRDFHandler {
         private final Model model;
 
         public AddToModel(final Model model) {
