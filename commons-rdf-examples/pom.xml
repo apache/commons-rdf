@@ -32,6 +32,7 @@
     <version>0.1</version>
 
     <properties>
+        <commons.parent.dir>${basedir}/..</commons.parent.dir>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.outputTimestamp>2024-02-01T03:27:02Z</project.build.outputTimestamp>

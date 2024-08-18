@@ -51,14 +51,11 @@ limitations under the License.
     <property name="fileExtensions" value="java" />
     <property name="severity" value="warning" />
   </module>
+  <module name="LineLength">
+    <property name="max" value="160"/>
+  </module>
 
   <module name="TreeWalker">
-    <property name="cacheFile" value="target/cachefile" />
-    <!-- 
-     -->
-    <module name="LineLength">
-      <property name="max" value="160"/>
-    </module>
  
     <!-- Checks for Naming Conventions.                  -->
     <!-- See http://checkstyle.sf.net/config_naming.html -->
@@ -173,31 +170,23 @@ limitations under the License.
     <module name="UpperEll"/>
     
     <!-- Required for SuppressionCommentFilter below -->
-    <module name="FileContentsHolder"/>
     <module name="ImportOrder">
       <property name="option" value="top"/>
       <property name="groups" value="java,javax,org"/>
       <property name="ordered" value="true"/>
       <property name="separated" value="true"/>
     </module>
-
-  </module>
-
-  <module name="SuppressionCommentFilter"/>
-
-  <module name="SuppressionFilter">
-    <!-- config_loc is used by Eclipse plugin -->
-    <property name="file" value="${config_loc}/src/conf/checkstyle-suppressions.xml"/>
-  </module>
-
-  <!-- 
+    <module name="SuppressionCommentFilter"/>
+    <!-- 
       Allow comment to suppress checkstyle for a single line
       e.g. // CHECKSTYLE IGNORE MagicNumber
-   -->
-  <module name="SuppressWithNearbyCommentFilter">
-    <property name="commentFormat" value="CHECKSTYLE IGNORE (\w+)"/>
-    <property name="checkFormat" value="$1"/>
+     -->
+    <module name="SuppressWithNearbyCommentFilter">
+      <property name="commentFormat" value="CHECKSTYLE IGNORE (\w+)"/>
+      <property name="checkFormat" value="$1"/>
+    </module>
   </module>
+
   <!-- @author tags are deprecated -->
   <module name="RegexpSingleline">
     <property name="format" value="^\s+\*\s+@author\s" />

@@ -33,6 +33,7 @@
 	<name>Commons RDF impl: RDF4j</name>
 	<description>Eclipse RDF4j implementation of Commons RDF API</description>
     <properties>
+        <commons.parent.dir>${basedir}/..</commons.parent.dir>
         <project.build.outputTimestamp>2024-02-01T03:27:02Z</project.build.outputTimestamp>
     </properties>
 

@@ -34,6 +34,7 @@
     <description>Commons Java API for RDF 1.1</description>
 
     <properties>
+      <commons.parent.dir>${basedir}/..</commons.parent.dir>
       <commons.osgi.symbolicName>org.apache.commons.rdf.api</commons.osgi.symbolicName>
       <project.build.outputTimestamp>2024-02-01T03:27:02Z</project.build.outputTimestamp>
     </properties>

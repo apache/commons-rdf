@@ -85,6 +85,9 @@
         <action type="update" dev="ggregory" due-to="Gary Gregory">
             Bump Java from 8 to 11.
         </action>
+        <action type="update" dev="ggregory" due-to="Gary Gregory">
+            Bump commons-parent from 71 to 73.
+        </action>
     </release>
     <release version="0.5.0" date="2017-11-19" description="Minor feature and bug fix release.">
         <action type="fix" issue="COMMONSRDF-47">

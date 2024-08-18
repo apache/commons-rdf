@@ -28,6 +28,7 @@
 	<artifactId>commons-rdf-integration-tests</artifactId>
 	<name>Commons RDF Integration tests</name>
     <properties>
+        <commons.parent.dir>${basedir}/..</commons.parent.dir>
         <project.build.outputTimestamp>2024-02-01T03:27:02Z</project.build.outputTimestamp>
     </properties>
 	<dependencies>

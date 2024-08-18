@@ -24,7 +24,7 @@
     <parent>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-parent</artifactId>
-        <version>71</version>
+        <version>73</version>
     </parent>
 
     <artifactId>commons-rdf-parent</artifactId>
@@ -43,6 +43,7 @@
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.encoding>UTF-8</project.build.encoding>
         <project.build.outputTimestamp>2024-02-01T03:27:02Z</project.build.outputTimestamp>
+        <commons.parent.dir>${basedir}</commons.parent.dir>
         <commons.encoding>UTF-8</commons.encoding>
         <commons.componentid>rdf</commons.componentid>
         <commons.module.name>org.apache.commons.rdf</commons.module.name>
@@ -288,7 +289,7 @@
     </dependencies>
 
     <build>
-        <defaultGoal>clean verify javadoc:javadoc</defaultGoal>
+        <defaultGoal>clean verify checkstyle:check javadoc:javadoc</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -509,6 +510,16 @@
                         </excludes>
                     </configuration>
                 </plugin>
+                <plugin>
+                     <groupId>org.apache.maven.plugins</groupId>
+                     <artifactId>maven-checkstyle-plugin</artifactId>
+                     <configuration>
+                         <configLocation>${commons.parent.dir}/src/conf/checkstyle.xml</configLocation>
+                         <propertyExpansion>config_loc=${commons.parent.dir}/src/conf/</propertyExpansion>
+                         <enableRulesSummary>false</enableRulesSummary>
+                         <suppressionsLocation>${commons.parent.dir}/src/conf/checkstyle-suppressions.xml</suppressionsLocation>
+                     </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
@@ -539,7 +550,6 @@
              <plugin>
                  <groupId>org.apache.maven.plugins</groupId>
                  <artifactId>maven-checkstyle-plugin</artifactId>
-                 <version>3.2.0</version>
                  <configuration>
                      <configLocation>${project.basedir}/src/conf/checkstyle.xml</configLocation>
                      <!-- Needed to define config_loc -->
