@@ -110,9 +110,9 @@ public final class JenaRDF implements RDF {
             // No need to convert, just wrap
             return ((JenaRDF) factory).asQuad(quad);
         }
-        final BlankNodeOrIRI graphName = (BlankNodeOrIRI) (asRDFTerm(factory, quad.getGraph()));
-        final BlankNodeOrIRI subject = (BlankNodeOrIRI) (asRDFTerm(factory, quad.getSubject()));
-        final IRI predicate = (IRI) (asRDFTerm(factory, quad.getPredicate()));
+        final BlankNodeOrIRI graphName = (BlankNodeOrIRI) asRDFTerm(factory, quad.getGraph());
+        final BlankNodeOrIRI subject = (BlankNodeOrIRI) asRDFTerm(factory, quad.getSubject());
+        final IRI predicate = (IRI) asRDFTerm(factory, quad.getPredicate());
         final RDFTerm object = asRDFTerm(factory, quad.getObject());
         return factory.createQuad(graphName, subject, predicate, object);
     }
