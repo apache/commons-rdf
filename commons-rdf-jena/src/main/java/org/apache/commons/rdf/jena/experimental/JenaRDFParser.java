@@ -72,12 +72,12 @@ public class JenaRDFParser extends AbstractRDFParser<JenaRDFParser> {
         final String baseStr = getBase().map(IRI::getIRIString).orElse(null);
 
         if (getSourceIri().isPresent()) {
-        	    RDFParser.source(getSourceIri().get().toString()).base(baseStr).lang(lang).parse(dest);
-        } else if (getSourceFile().isPresent()) {
-            try (InputStream s = Files.newInputStream(getSourceFile().get())) {
-            	    RDFParser.source(s).base(baseStr).lang(lang).parse(dest);
-            }
-        } else {
+                RDFParser.source(getSourceIri().get().toString()).base(baseStr).lang(lang).parse(dest);
+            } else if (getSourceFile().isPresent()) {
+                try (InputStream s = Files.newInputStream(getSourceFile().get())) {
+                    RDFParser.source(s).base(baseStr).lang(lang).parse(dest);
+                }
+            } else {
             RDFParser.source(getSourceInputStream().get()).base(baseStr).lang(lang).parse(dest);
         }
     }
