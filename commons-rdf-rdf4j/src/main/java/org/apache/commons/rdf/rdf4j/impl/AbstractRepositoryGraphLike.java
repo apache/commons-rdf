@@ -30,11 +30,11 @@ import org.eclipse.rdf4j.repository.RepositoryConnection;
 
 abstract class AbstractRepositoryGraphLike<T extends TripleLike> implements RDF4JGraphLike<T> {
 
-    protected final Repository repository;
-    protected final boolean includeInferred;
-    protected final boolean handleInitAndShutdown;
-    protected final RDF4J rdf4jTermFactory;
-    protected final UUID salt;
+    private final Repository repository;
+    private final boolean includeInferred;
+    private final boolean handleInitAndShutdown;
+    private final RDF4J rdf4jTermFactory;
+    private final UUID salt;
 
     AbstractRepositoryGraphLike(final Repository repository, final UUID salt, final boolean handleInitAndShutdown,
             final boolean includeInferred) {
@@ -69,8 +69,28 @@ abstract class AbstractRepositoryGraphLike<T extends TripleLike> implements RDF4
         // down
     }
 
+    protected boolean getHandleInitAndShutdown() {
+        return handleInitAndShutdown;
+    }
+
+    protected boolean getIncludeInferred() {
+        return includeInferred;
+    }
+
+    protected RDF4J getRdf4jTermFactory() {
+        return rdf4jTermFactory;
+    }
+
+    protected Repository getRepository() {
+        return repository;
+    }
+
     protected RepositoryConnection getRepositoryConnection() {
         return repository.getConnection();
+    }
+
+    protected UUID getSalt() {
+        return salt;
     }
 
 }
