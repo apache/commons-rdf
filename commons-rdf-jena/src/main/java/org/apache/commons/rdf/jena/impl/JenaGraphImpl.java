@@ -115,7 +115,7 @@ final class JenaGraphImpl implements JenaGraph {
 
     @Override
     public void remove(final Triple triple) {
-        if ((triple.getObject() instanceof Literal) &&
+        if (triple.getObject() instanceof Literal &&
                 ((Literal) triple.getObject()).getLanguageTag().isPresent()) {
             // COMMONSRDF-51: graph.delete(Triple) would be too restrictive
             // as it won't delete triples with different lang tag - so
