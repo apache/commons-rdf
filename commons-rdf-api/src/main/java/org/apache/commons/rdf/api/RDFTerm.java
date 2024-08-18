@@ -53,48 +53,48 @@ package org.apache.commons.rdf.api;
 public interface RDFTerm {
 
     /**
-	 * Check it this RDFTerm is equal to another RDFTerm.
-	 * <p>
-	 * If this object is an {@link IRI}, equality is checked using
-	 * {@link IRI#equals(Object)}, or if this object is a {@link BlankNode},
-	 * equality is checked using {@link BlankNode#equals(Object)}, or if this
-	 * object is a {@link Literal}, equality is checked using
-	 * {@link Literal#equals(Object)}.
-	 * <p>
-	 * Implementations MUST also override {@link #hashCode()} so that two equal
-	 * Literals produce the same hash code.
-	 *
-	 * @see IRI#equals(Object)
-	 * @see BlankNode#equals(Object)
-	 * @see Literal#equals(Object)
-	 *
-	 * @param other
-	 *            Another object
-	 * @return true if other is a RDFTerm and is equal to this
-	 */
+     * Check it this RDFTerm is equal to another RDFTerm.
+     * <p>
+     * If this object is an {@link IRI}, equality is checked using
+     * {@link IRI#equals(Object)}, or if this object is a {@link BlankNode},
+     * equality is checked using {@link BlankNode#equals(Object)}, or if this
+     * object is a {@link Literal}, equality is checked using
+     * {@link Literal#equals(Object)}.
+     * <p>
+     * Implementations MUST also override {@link #hashCode()} so that two equal
+     * Literals produce the same hash code.
+     *
+     * @see IRI#equals(Object)
+     * @see BlankNode#equals(Object)
+     * @see Literal#equals(Object)
+     *
+     * @param other
+     *            Another object
+     * @return true if other is a RDFTerm and is equal to this
+     */
     @Override
     boolean equals(Object other);
 
-	/**
-	 * Calculate a hash code for this RDFTerm.
-	 * <p>
-	 * As an {@link RDFTerm} is <em>immutable</em>, this method will always
-	 * return the same hashCode over the lifetime of this object.
-	 * <p>
-	 * This method MUST be implemented in conjunction with
-	 * {@link #equals(Object)} so that two equal RDFTerm produce the same hash
-	 * code.
-	 *
-	 * @see IRI#hashCode()
-	 * @see Literal#hashCode()
-	 * @see BlankNode#hashCode()
-	 *
-	 * @return a hash code value for this RDFTerm.
-	 */
+    /**
+     * Calculate a hash code for this RDFTerm.
+     * <p>
+     * As an {@link RDFTerm} is <em>immutable</em>, this method will always
+     * return the same hashCode over the lifetime of this object.
+     * <p>
+     * This method MUST be implemented in conjunction with
+     * {@link #equals(Object)} so that two equal RDFTerm produce the same hash
+     * code.
+     *
+     * @see IRI#hashCode()
+     * @see Literal#hashCode()
+     * @see BlankNode#hashCode()
+     *
+     * @return a hash code value for this RDFTerm.
+     */
     @Override
     int hashCode();
 
-	/**
+    /**
      * Return the term serialised as specified by the RDF-1.1 N-Triples
      * Canonical form.
      *
