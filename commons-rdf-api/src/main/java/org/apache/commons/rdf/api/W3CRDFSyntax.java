@@ -45,7 +45,7 @@ class W3CRDFSyntax implements RDFSyntax {
      * IRI representing a <a href="https://www.w3.org/ns/formats/">W3C RDF
      * format</a>.
      */
-    private final static class FormatIRI implements IRI {
+    private static final class FormatIRI implements IRI {
         private static final String BASE = "http://www.w3.org/ns/formats/";
         private final String format;
 
@@ -86,7 +86,13 @@ class W3CRDFSyntax implements RDFSyntax {
         }
     }
 
-    static final RDFSyntax JSONLD, TURTLE, NQUADS, NTRIPLES, RDFA, RDFXML, TRIG;
+    static final RDFSyntax JSONLD;
+    static final RDFSyntax TURTLE;
+    static final RDFSyntax NQUADS;
+    static final RDFSyntax NTRIPLES;
+    static final RDFSyntax RDFA;
+    static final RDFSyntax RDFXML;
+    static final RDFSyntax TRIG;
     static final Set<RDFSyntax> syntaxes;
 
     static {
