@@ -135,7 +135,7 @@ final class DatasetImpl implements Dataset {
             final IRI iri = (IRI) object;
             return factory.createIRI(iri.getIRIString());
         }
-        if (!(object instanceof Literal) || (object instanceof LiteralImpl)) {
+        if (!(object instanceof Literal) || object instanceof LiteralImpl) {
             throw new IllegalArgumentException("Not a BlankNode, IRI or Literal: " + object);
         }
         final Literal literal = (Literal) object;
