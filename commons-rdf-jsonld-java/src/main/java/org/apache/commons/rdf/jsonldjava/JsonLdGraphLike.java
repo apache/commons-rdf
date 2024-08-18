@@ -24,12 +24,12 @@ import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+//NOTE: To avod confusion, don't importing either of the Quad
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.GraphLike;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.api.RDFTerm;
-// NOTE: To avod confusion, don't importing either of the Quad
 import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.api.TripleLike;
 
