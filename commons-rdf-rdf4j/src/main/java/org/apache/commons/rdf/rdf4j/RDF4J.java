@@ -560,7 +560,7 @@ public final class RDF4J implements RDF {
             // This is where it gets tricky to support round trips!
             final BlankNode blankNode = (BlankNode) term;
             // FIXME: The uniqueReference might not be a valid BlankNode
-            // identifier..
+            // identifier.
             // does it have to be in RDF4J?
             return getValueFactory().createBNode(blankNode.uniqueReference());
         }

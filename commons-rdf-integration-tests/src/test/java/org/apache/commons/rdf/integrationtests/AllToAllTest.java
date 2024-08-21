@@ -74,7 +74,7 @@ public class AllToAllTest {
      * second factory.
      *
      * @throws Exception
-     *             Just in case..
+     *             Just in case.
      */
     @Test
     public void testAddTermsFromOtherFactory() throws Exception {
@@ -122,7 +122,7 @@ public class AllToAllTest {
      * the graph.
      *
      * @throws Exception
-     *             Just in case..
+     *             Just in case.
      */
     @Test
     public void testAddTriplesFromOtherFactory() throws Exception {

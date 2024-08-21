@@ -111,7 +111,7 @@ final class DatasetImpl implements Dataset {
 
     @Override
     public Stream<BlankNodeOrIRI> getGraphNames() {
-        // Not very efficient..
+        // Not very efficient.
         return stream().map(Quad::getGraphName).filter(Optional::isPresent).map(Optional::get).distinct();
     }
 

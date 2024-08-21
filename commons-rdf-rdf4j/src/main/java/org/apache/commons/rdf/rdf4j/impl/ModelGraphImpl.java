@@ -108,7 +108,7 @@ final class ModelGraphImpl implements RDF4JGraph {
             @SuppressWarnings("unchecked")
             @Override
             public Iterator<Triple> iterator() {
-                // double-cast to fight Java generics..
+                // double-cast to fight Java generics.
                 final Stream<? extends Triple> s = stream(subject, predicate, object);
                 return (Iterator<Triple>) s.iterator();
             }

@@ -77,7 +77,7 @@ public abstract class InternalJenaFactory {
 
     public JenaDataset createDataset(final UUID salt) {
         final DatasetGraph dg = DatasetGraphFactory.createGeneral();
-        // Or which createMethod() -- a bit confusing with lots of choice..
+        // Or which createMethod() -- a bit confusing with lots of choice.
         return new JenaDatasetImpl(dg, salt);
     }
 

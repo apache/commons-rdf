@@ -147,7 +147,6 @@ public class UserGuideTest {
             String s = ((IRI) subj).getIRIString();
             System.out.println(s);
         }
-        // ..
         if (obj instanceof Literal) {
             IRI type = ((Literal) obj).getDatatype();
             System.out.println(type);
