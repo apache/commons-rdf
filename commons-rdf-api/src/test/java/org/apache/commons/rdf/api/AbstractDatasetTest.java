@@ -324,7 +324,7 @@ public abstract class AbstractDatasetTest {
 
     @Test
     public void testContains() throws Exception {
-        assertFalse(dataset.contains(null, bob, knows, alice)); // or so he claims..
+        assertFalse(dataset.contains(null, bob, knows, alice)); // or so he claims.
 
         assertTrue(dataset.contains(Optional.of(graph1), alice, knows, bob));
 

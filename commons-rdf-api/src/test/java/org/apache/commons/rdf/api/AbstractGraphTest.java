@@ -330,7 +330,7 @@ public abstract class AbstractGraphTest {
 
     @Test
     public void testContains() throws Exception {
-        assertFalse(graph.contains(bob, knows, alice)); // or so he claims..
+        assertFalse(graph.contains(bob, knows, alice)); // or so he claims.
 
         assertTrue(graph.contains(alice, knows, bob));
 
