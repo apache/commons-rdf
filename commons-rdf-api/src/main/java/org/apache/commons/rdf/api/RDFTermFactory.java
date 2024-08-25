@@ -20,7 +20,7 @@ package org.apache.commons.rdf.api;
 /**
  * Factory for creating RDFTerm instances.
  * <p>
- * This interface is <strong>deprecated</strong> in favour of the richer
+ * This interface is <strong>deprecated</strong> in favor of the richer
  * {@link RDF}.
  *
  * @see RDF
