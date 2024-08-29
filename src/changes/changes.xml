@@ -47,7 +47,7 @@
             Bump actions/setup-java from 1.4.0 to 3.6.0 #81, #99.
         </action>
         <action type="update" dev="ggregory" due-to="Gary Gregory">
-            Bump org.apache.commons:commons-parent from 52 to 71.
+            Bump org.apache.commons:commons-parent from 52 to 74 #259.
         </action>
         <action type="update" dev="ggregory" due-to="Dependabot">
             Bump actions/upload-artifact from 3.1.0 to 3.1.1 #100.
@@ -84,9 +84,6 @@
         </action>
         <action type="update" dev="ggregory" due-to="Gary Gregory">
             Bump Java from 8 to 11.
-        </action>
-        <action type="update" dev="ggregory" due-to="Gary Gregory">
-            Bump commons-parent from 71 to 73.
         </action>
     </release>
     <release version="0.5.0" date="2017-11-19" description="Minor feature and bug fix release.">
