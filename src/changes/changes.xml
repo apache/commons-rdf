@@ -80,7 +80,7 @@
             Bump junit from 4.12 to 4.13.1 in /commons-rdf-examples #82.
         </action>
         <action type="update" dev="ggregory" due-to="Gary Gregory">
-            Bump commons-io from 2.13.0 to 2.16.1 #257.
+            Bump commons-io from 2.13.0 to 2.17.0 #257, #264.
         </action>
         <action type="update" dev="ggregory" due-to="Gary Gregory">
             Bump Java from 8 to 11.
