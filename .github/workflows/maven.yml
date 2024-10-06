@@ -32,7 +32,9 @@ jobs:
         include:
           - java: 21
             experimental: true        
-          - java: 22-ea
+          - java: 23
+            experimental: true        
+          - java: 24-ea
             experimental: true        
         
     steps:
