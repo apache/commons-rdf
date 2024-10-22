@@ -38,7 +38,7 @@
         </action>
         <!-- UPDATE -->
         <action type="update" dev="ggregory" due-to="Gary Gregory">
-            Bump org.apache.commons:commons-parent from 52 to 77 #259, #265, #269, #273.
+            Bump org.apache.commons:commons-parent from 52 to 78 #259, #265, #269, #273, #279.
         </action>
         <action type="update" dev="ggregory" due-to="Gary Gregory">
             Bump actions/cache from 2.1.4 to 3.0.11 #77, #97.
