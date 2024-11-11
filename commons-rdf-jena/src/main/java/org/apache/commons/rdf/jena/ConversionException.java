@@ -23,7 +23,7 @@ package org.apache.commons.rdf.jena;
  * <p>
  * This should not happen in well-formed RDF data but, for example, Jena triples
  * allow
- * <a href="http://www.w3.org/TR/rdf11-concepts/#section-generalized-rdf" >
+ * <a href="http://www.w3.org/TR/rdf11-concepts/#section-generalized-rdf">
  * generalized RDF</a>.
  */
 
