@@ -22,7 +22,7 @@ import java.util.Optional;
 
 /**
  * A Quad is a statement in a
- * <a href= "http://www.w3.org/TR/rdf11-concepts/#section-dataset" >RDF-1.1
+ * <a href= "http://www.w3.org/TR/rdf11-concepts/#section-dataset">RDF-1.1
  * Dataset</a>, as defined by <a href=
  * "https://www.w3.org/TR/2014/NOTE-rdf11-datasets-20140225/#quad-semantics"
  * >RDF-1.1 Concepts and Abstract Syntax</a>, a W3C Working Group Note published

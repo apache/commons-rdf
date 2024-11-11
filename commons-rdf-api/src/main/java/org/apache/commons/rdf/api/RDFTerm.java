@@ -18,9 +18,9 @@
 package org.apache.commons.rdf.api;
 
 /**
- * An <a href= "http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-term" >RDF-1.1
+ * An <a href= "http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-term">RDF-1.1
  * Term</a>, as defined by
- * <a href= "http://www.w3.org/TR/rdf11-concepts/" >RDF-1.1 Concepts and
+ * <a href= "http://www.w3.org/TR/rdf11-concepts/">RDF-1.1 Concepts and
  * Abstract Syntax</a>, a W3C Recommendation published on 25 February 2014.
  * <p>
  * A {@link RDFTerm} object in Commons RDF is considered
@@ -47,7 +47,7 @@ package org.apache.commons.rdf.api;
  * Any <code>RDFTerm</code> can be used interchangeably across Commons RDF
  * implementations.
  *
- * @see <a href= "http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-term" >RDF-1.1
+ * @see <a href= "http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-term">RDF-1.1
  *      Term</a>
  */
 public interface RDFTerm {
