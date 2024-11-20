@@ -19,8 +19,8 @@ package org.apache.commons.rdf.jsonldjava;
 
 import org.apache.commons.rdf.api.AbstractRDFTest;
 import org.apache.commons.rdf.api.RDF;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 public class JsonLdRDFTest extends AbstractRDFTest {
 
@@ -29,7 +29,7 @@ public class JsonLdRDFTest extends AbstractRDFTest {
         return new JsonLdRDF();
     }
 
-    @Ignore("JSONLD-Java does not validate IRIs")
+    @Disabled("JSONLD-Java does not validate IRIs")
     @Test
     @Override
     public void testInvalidIRI() throws Exception {
@@ -37,14 +37,14 @@ public class JsonLdRDFTest extends AbstractRDFTest {
     }
 
     // TODO: Add support for checking for invalid lang/iri/blanknode IDs
-    @Ignore("JSONLD-Java does not validate lang strings")
+    @Disabled("JSONLD-Java does not validate lang strings")
     @Test
     @Override
     public void testInvalidLiteralLang() throws Exception {
         super.testInvalidLiteralLang();
     }
 
-    @Ignore("JSONLD-Java does not validate blanknode identifiers")
+    @Disabled("JSONLD-Java does not validate blanknode identifiers")
     @Test
     @Override
     public void testPossiblyInvalidBlankNode() throws Exception {

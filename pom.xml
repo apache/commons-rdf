@@ -58,13 +58,13 @@
         <commons.scmPubCheckoutDirectory>${project.build.directory}/site-content</commons.scmPubCheckoutDirectory>
         -->
         <commons.javadoc.java.link>https://docs.oracle.com/javase/8/docs/api/</commons.javadoc.java.link>
-        
+
 	    <!--  NOTE: jsonldjava is also used by rdf4j and jena, check the version
 	          is cross-compatible -->
         <jsonldjava.version>0.13.4</jsonldjava.version>
         <rdf4j.version>3.7.7</rdf4j.version>
         <jena.version>3.5.0</jena.version>
-        <!--  NOTE: dexx and xerces versions should match 
+        <!--  NOTE: dexx and xerces versions should match
         the versions marked as <optional> in jena-osgi pom
          -->
         <dexx.collection.version>0.7</dexx.collection.version>
@@ -72,7 +72,7 @@
 
         <!-- Test dependencies -->
         <slf4j.version>1.7.26</slf4j.version>
-        <junit.version>4.13.2</junit.version>
+        <junit.version>5.11.4</junit.version>
         <skipAPICompatCheck>false</skipAPICompatCheck>
         <moditect.skip>true</moditect.skip>
     </properties>
@@ -253,8 +253,8 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter</artifactId>
                 <version>${junit.version}</version>
             </dependency>
             <dependency>
@@ -265,14 +265,14 @@
         </dependencies>
     </dependencyManagement>
 
-    <!--  
-    Common dependencies across modules. 
+    <!--
+    Common dependencies across modules.
     Keep this list small and only <scope>test</scope> !
     -->
     <dependencies>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -286,7 +286,7 @@
             <artifactId>commons-io</artifactId>
             <version>2.18.0</version>
             <scope>test</scope>
-        </dependency>    
+        </dependency>
     </dependencies>
 
     <build>

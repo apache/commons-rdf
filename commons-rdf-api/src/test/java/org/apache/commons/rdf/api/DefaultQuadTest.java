@@ -17,12 +17,12 @@
  */
 package org.apache.commons.rdf.api;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.util.Objects;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class DefaultQuadTest {
     @Test
@@ -31,8 +31,8 @@ public class DefaultQuadTest {
         final Triple t = q.asTriple();
         assertEquals(t, t);
         assertNotEquals(t,  q);
-        assertEquals(t, new DummyTriple());
-        assertEquals(t, new DummyQuad().asTriple());
+        assertEquals(new DummyTriple(), t);
+        assertEquals(new DummyQuad().asTriple(), t);
 
         // FIXME: This would not catch if asTriple() accidentally mixed up s/p/o
         // as they are here all the same

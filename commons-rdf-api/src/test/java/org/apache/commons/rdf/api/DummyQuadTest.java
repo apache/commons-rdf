@@ -17,29 +17,31 @@
  */
 package org.apache.commons.rdf.api;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.Objects;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class DummyQuadTest {
     Quad quad = new DummyQuad();
 
     @Test
     public void testEquals() throws Exception {
-        assertEquals(quad, new DummyQuad());
+        assertEquals(new DummyQuad(), quad);
     }
 
     @Test
     public void testGetGraphName() throws Exception {
         assertFalse(quad.getGraphName().isPresent());
     }
+
     @Test
     public void testGetObject() throws Exception {
         assertEquals(3, ((DummyIRI) quad.getObject()).i);
     }
+
     @Test
     public void testGetPredicate() throws Exception {
         assertEquals(2, ((DummyIRI) quad.getPredicate()).i);

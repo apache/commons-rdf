@@ -17,14 +17,14 @@
  */
 package org.apache.commons.rdf.jena;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.apache.commons.rdf.api.AbstractDatasetTest;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.api.RDF;
 import org.apache.commons.rdf.simple.Types;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class DatasetJenaTest extends AbstractDatasetTest {
 
