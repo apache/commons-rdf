@@ -17,8 +17,8 @@
  */
 package org.apache.commons.rdf.integrationtests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,16 +36,12 @@ import org.apache.commons.rdf.jena.JenaRDF;
 import org.apache.commons.rdf.jsonldjava.JsonLdRDF;
 import org.apache.commons.rdf.rdf4j.RDF4J;
 import org.apache.commons.rdf.simple.SimpleRDF;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
-@RunWith(Parameterized.class)
 public class AllToAllTest {
 
     @SuppressWarnings("rawtypes")
-    @Parameters(name = "{index}: {0}->{1}")
     public static Collection<Object[]> data() {
         final List<Class> factories = Arrays.asList(SimpleRDF.class, JenaRDF.class, RDF4J.class, JsonLdRDF.class);
         final Collection<Object[]> allToAll = new ArrayList<>();
@@ -58,15 +54,6 @@ public class AllToAllTest {
         }
         return allToAll;
     }
-    private final RDF nodeFactory;
-
-    private final RDF graphFactory;
-
-    public AllToAllTest(final Class<? extends RDF> from, final Class<? extends RDF> to)
-            throws ReflectiveOperationException {
-        this.nodeFactory = from.getConstructor().newInstance();
-        this.graphFactory = to.newInstance();
-    }
 
     /**
      * This test creates a {@link Graph} with the first {@link RDF},
@@ -76,8 +63,12 @@ public class AllToAllTest {
      * @throws Exception
      *             Just in case.
      */
-    @Test
-    public void testAddTermsFromOtherFactory() throws Exception {
+    @MethodSource("data")
+    @ParameterizedTest(name = "{index}: {0}->{1}")
+    public void testAddTermsFromOtherFactory(final Class<? extends RDF> from, final Class<? extends RDF> to) throws Exception {
+        RDF nodeFactory = from.getConstructor().newInstance();
+        RDF graphFactory = to.newInstance();
+
         try (final Graph g = graphFactory.createGraph()) {
             final BlankNode s = nodeFactory.createBlankNode();
             final IRI p = nodeFactory.createIRI("http://example.com/p");
@@ -117,15 +108,19 @@ public class AllToAllTest {
     }
 
     /**
-     * This is a variation of {@link #addTermsFromOtherFactory()}, but here
+     * This is a variation of {@link #testAddTermsFromOtherFactory(Class, Class)}, but here
      * {@link Triple} is created in the "foreign" nodeFactory before adding to
      * the graph.
      *
      * @throws Exception
      *             Just in case.
      */
-    @Test
-    public void testAddTriplesFromOtherFactory() throws Exception {
+    @MethodSource("data")
+    @ParameterizedTest(name = "{index}: {0}->{1}")
+    public void testAddTriplesFromOtherFactory(final Class<? extends RDF> from, final Class<? extends RDF> to) throws Exception {
+        RDF nodeFactory = from.getConstructor().newInstance();
+        RDF graphFactory = to.newInstance();
+
         try (final Graph g = graphFactory.createGraph()) {
             final BlankNode s = nodeFactory.createBlankNode();
             final IRI p = nodeFactory.createIRI("http://example.com/p");

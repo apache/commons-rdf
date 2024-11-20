@@ -17,7 +17,7 @@
  */
 package org.apache.commons.rdf.integrationtests;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -37,8 +37,8 @@ import org.apache.jena.riot.RDFDataMgr;
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.rio.RDFFormat;
 import org.eclipse.rdf4j.rio.Rio;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.github.jsonldjava.core.JsonLdOptions;
 import com.github.jsonldjava.core.JsonLdProcessor;
@@ -86,7 +86,7 @@ public class JSONLDParsingTest {
     /**
      * Pre-test that src/test/resources files are on the classpath
      */
-    @Before
+    @BeforeEach
     public void checkTestResources() throws Exception {
         aliceCached.openStream().close();
         aliceEmbedded.openStream().close();

@@ -17,23 +17,25 @@
  */
 package org.apache.commons.rdf.api;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Objects;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class DummyTripleTest {
     Triple triple = new DummyTriple();
 
     @Test
     public void testEquals() throws Exception {
-        assertEquals(triple, new DummyTriple());
+        assertEquals(new DummyTriple(), triple);
     }
+
     @Test
     public void testGetObject() throws Exception {
         assertEquals(3, ((DummyIRI) triple.getObject()).i);
     }
+
     @Test
     public void testGetPredicate() throws Exception {
         assertEquals(2, ((DummyIRI) triple.getPredicate()).i);

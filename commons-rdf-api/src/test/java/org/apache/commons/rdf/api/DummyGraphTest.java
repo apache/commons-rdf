@@ -17,23 +17,26 @@
  */
 package org.apache.commons.rdf.api;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class DummyGraphTest {
     Graph graph = new DummyGraph();
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void clearNotSupported() throws Exception {
-        graph.clear();
+        assertThrows(IllegalStateException.class, () ->
+            graph.clear());
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void remove() throws Exception {
-        graph.remove(new DummyTriple());
+        assertThrows(IllegalStateException.class, () ->
+            graph.remove(new DummyTriple()));
     }
 
     @Test
