@@ -67,7 +67,6 @@ public interface RDFTerm {
      * @see IRI#equals(Object)
      * @see BlankNode#equals(Object)
      * @see Literal#equals(Object)
-     *
      * @param other
      *            Another object
      * @return true if other is a RDFTerm and is equal to this
@@ -88,7 +87,6 @@ public interface RDFTerm {
      * @see IRI#hashCode()
      * @see Literal#hashCode()
      * @see BlankNode#hashCode()
-     *
      * @return a hash code value for this RDFTerm.
      */
     @Override

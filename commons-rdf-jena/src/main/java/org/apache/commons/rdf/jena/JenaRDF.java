@@ -94,7 +94,6 @@ public final class JenaRDF implements RDF {
      *
      * @see #asQuad(org.apache.jena.sparql.core.Quad)
      * @see #asGeneralizedQuad(org.apache.jena.sparql.core.Quad)
-     *
      * @param factory
      *            {@link RDF} to use for creating the {@link Triple} and its
      *            {@link RDFTerm}s.
@@ -126,7 +125,6 @@ public final class JenaRDF implements RDF {
      * conversion sessions.
      *
      * @see #asRDFTerm(Node)
-     *
      * @param factory
      *            {@link RDF} to use for creating {@link RDFTerm}.
      * @param node
@@ -177,7 +175,6 @@ public final class JenaRDF implements RDF {
      * conversion sessions.
      *
      * @see #asTriple(org.apache.jena.graph.Triple)
-     *
      * @param factory
      *            {@link RDF} to use for creating the {@link Triple} and its
      *            {@link RDFTerm}s.
@@ -326,7 +323,6 @@ public final class JenaRDF implements RDF {
      *
      * @see #asQuad(org.apache.jena.sparql.core.Quad)
      * @see #asGeneralizedTriple(org.apache.jena.graph.Triple)
-     *
      * @param quad
      *            Jena quad
      * @return Adapted {@link QuadLike}. Note that the generalized quad does
@@ -354,7 +350,6 @@ public final class JenaRDF implements RDF {
      * {@link BlankNode#uniqueReference()}.
      *
      * @see #asTriple(RDF, org.apache.jena.graph.Triple)
-     *
      * @param triple
      *            Jena triple
      * @return Adapted {@link TripleLike}. Note that the generalized triple does
@@ -594,7 +589,6 @@ public final class JenaRDF implements RDF {
      * {@link BlankNode#uniqueReference()}.
      *
      * @see #asRDFTerm(RDF, Node)
-     *
      * @param node
      *            The Jena Node to adapt. It's {@link Node#isConcrete()} must be
      *            <code>true</code>.
@@ -617,7 +611,6 @@ public final class JenaRDF implements RDF {
      * purpose of its {@link BlankNode#uniqueReference()}.
      *
      * @see #asTriple(RDF, org.apache.jena.graph.Triple)
-     *
      * @param triple
      *            Jena {@link org.apache.jena.graph.Triple} to adapt
      * @return Adapted {@link JenaTriple}
@@ -661,7 +654,6 @@ public final class JenaRDF implements RDF {
      *
      * @see #createQuad(BlankNodeOrIRI, BlankNodeOrIRI, IRI, RDFTerm)
      * @see #createGeneralizedTriple(RDFTerm, RDFTerm, RDFTerm)
-     *
      * @param subject
      *            The subject of the statement
      * @param predicate
@@ -688,7 +680,6 @@ public final class JenaRDF implements RDF {
      *
      * @see #createTriple(BlankNodeOrIRI, IRI, RDFTerm)
      * @see #createGeneralizedQuad(RDFTerm, RDFTerm, RDFTerm, RDFTerm)
-     *
      * @param subject
      *            The subject of the statement
      * @param predicate
