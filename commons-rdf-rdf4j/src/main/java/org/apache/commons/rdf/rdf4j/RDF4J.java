@@ -379,7 +379,7 @@ public final class RDF4J implements RDF {
      * Adapt a RDF4J
      * {@link org.eclipse.rdf4j.model.Literal} as a Commons RDF
      * {@link org.apache.commons.rdf.api.Literal}
-     * <p>
+     *
      * @param value
      *            The RDF4J {@link Literal} to convert.
      * @return A {@link RDF4JLiteral} that corresponds to the RDF4J literal
@@ -393,7 +393,7 @@ public final class RDF4J implements RDF {
      * Adapt a RDF4J
      * {@link org.eclipse.rdf4j.model.IRI} as a Commons RDF
      * {@link org.apache.commons.rdf.api.IRI}
-     * <p>
+     *
      * @param value
      *            The RDF4J {@link Value} to convert.
      * @return A {@link RDF4JIRI} that corresponds to the RDF4J IRI
@@ -407,7 +407,7 @@ public final class RDF4J implements RDF {
      * Adapt a RDF4J
      * {@link org.eclipse.rdf4j.model.Resource} as a Commons RDF
      * {@link org.apache.commons.rdf.api.BlankNodeOrIRI}
-     * <p>
+     *
      * @param value
      *            The RDF4J {@link Value} to convert.
      * @return A {@link RDF4JBlankNodeOrIRI} that corresponds to the RDF4J Resource
