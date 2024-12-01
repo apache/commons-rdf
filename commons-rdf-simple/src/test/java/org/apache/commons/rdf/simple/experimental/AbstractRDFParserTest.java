@@ -17,11 +17,13 @@
  */
 package org.apache.commons.rdf.simple.experimental;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -41,11 +43,9 @@ import org.apache.commons.rdf.experimental.RDFParser;
 import org.apache.commons.rdf.simple.DummyRDFParserBuilder;
 import org.apache.commons.rdf.simple.SimpleRDF;
 import org.apache.commons.rdf.simple.Types;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class AbstractRDFParserTest {
 
@@ -58,22 +58,19 @@ public class AbstractRDFParserTest {
 
 	private Path symlink;
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
     private void checkGraph(final Graph graph) throws Exception {
         assertFalse(graph.isEmpty());
         final IRI greeting = factory.createIRI("http://example.com/greeting");
         // Should only have parsed once!
         assertEquals(1, graph.stream(null, greeting, null).count());
         final Triple triple = graph.stream(null, greeting, null).findAny().get();
-        assertTrue(triple.getSubject() instanceof IRI);
+        assertInstanceOf(IRI.class, triple.getSubject());
         final IRI parsing = (IRI) triple.getSubject();
         assertTrue(parsing.getIRIString().startsWith("urn:uuid:"));
 
         assertEquals("http://example.com/greeting", triple.getPredicate().getIRIString());
 
-        assertTrue(triple.getObject() instanceof Literal);
+        assertInstanceOf(Literal.class, triple.getObject());
         final Literal literal = (Literal) triple.getObject();
         assertEquals("Hello world", literal.getLexicalForm());
         assertFalse(literal.getLanguageTag().isPresent());
@@ -88,7 +85,7 @@ public class AbstractRDFParserTest {
         assertTrue(2 > graph.stream(null, factory.createIRI("http://example.com/contentTypeSyntax"), null).count());
     }
 
-    @Before
+    @BeforeEach
     public void createTempFile() throws IOException {
         testNt = Files.createTempFile("test", ".nt");
         testTtl = Files.createTempFile("test", ".ttl");
@@ -106,7 +103,7 @@ public class AbstractRDFParserTest {
         }
     }
 
-    @After
+    @AfterEach
     public void deleteTempFiles() throws IOException {
         Files.deleteIfExists(testNt);
         Files.deleteIfExists(testTtl);
@@ -127,13 +124,14 @@ public class AbstractRDFParserTest {
 
     @Test
     public void testParseBaseAndContentTypeNoSource() throws Exception {
-        // Can set the other options, even without source()
-        final IRI base = dummyParser.createRDFTermFactory().createIRI("http://www.example.org/test.rdf");
-        final RDFParser parser = dummyParser.base(base).contentType(RDFSyntax.RDFXML);
-        thrown.expect(IllegalStateException.class);
-        thrown.expectMessage("No source has been set");
-        // but .parse() should fail
-        parser.parse();
+        Throwable exception = assertThrows(IllegalStateException.class, () -> {
+            // Can set the other options, even without source()
+            final IRI base = dummyParser.createRDFTermFactory().createIRI("http://www.example.org/test.rdf");
+            final RDFParser parser = dummyParser.base(base).contentType(RDFSyntax.RDFXML);
+            // but .parse() should fail
+            parser.parse();
+        });
+        assertTrue(exception.getMessage().contains("No source has been set"));
     }
 
     @Test
@@ -145,9 +143,9 @@ public class AbstractRDFParserTest {
             // FIXME: this could potentially break if the equivalent of /tmp
             // includes
             // international characters
-            assertEquals("<" + testNt.toUri().toString() + ">", firstPredicate(g, "source"));
+            assertEquals("<" + testNt.toUri() + ">", firstPredicate(g, "source"));
             // Should be set to the file path - after following symlinks
-            assertEquals("<" + testNt.toRealPath().toUri().toString() + ">", firstPredicate(g, "base"));
+            assertEquals("<" + testNt.toRealPath().toUri() + ">", firstPredicate(g, "base"));
 
             // Should NOT have guessed the content type
             assertNull(firstPredicate(g, "contentType"));
@@ -164,9 +162,9 @@ public class AbstractRDFParserTest {
             // FIXME: this could potentially break if the equivalent of /tmp
             // includes
             // international characters
-            assertEquals("<" + testNt.toUri().toString() + ">", firstPredicate(g, "source"));
+            assertEquals("<" + testNt.toUri() + ">", firstPredicate(g, "source"));
             // Should be set to the file path - after following symlinks
-            assertEquals("<" + testNt.toRealPath().toUri().toString() + ">", firstPredicate(g, "base"));
+            assertEquals("<" + testNt.toRealPath().toUri() + ">", firstPredicate(g, "base"));
             assertEquals("\"" + RDFSyntax.NTRIPLES.name() + "\"", firstPredicate(g, "contentTypeSyntax"));
             assertEquals("\"application/n-triples\"", firstPredicate(g, "contentType"));
         }
@@ -174,37 +172,37 @@ public class AbstractRDFParserTest {
 
     @Test
     public void testParseFileMissing() throws Exception {
-        Files.delete(testNt);
-        // This should not fail yet
-        final RDFParser parser = dummyParser.source(testNt);
-        // but here:
-        thrown.expect(IOException.class);
-        parser.parse();
+        assertThrows(IOException.class, () -> {
+            Files.delete(testNt);
+            // This should not fail yet
+            final RDFParser parser = dummyParser.source(testNt);
+            parser.parse();
+        });
     }
 
     @Test
     public void testParseFileSymlink() throws Exception {
         // This test will typically not work in Windows
         // which requires system privileges to create symlinks
-        assumeNotNull(symlink);
+        assumeTrue(symlink != null);
         try (final Graph g = factory.createGraph()) {
             final RDFParser parser = dummyParser.source(symlink).target(g);
             parser.parse().get(5, TimeUnit.SECONDS);
             checkGraph(g);
-            assertEquals("<" + symlink.toUri().toString() + ">", firstPredicate(g, "source"));
-            assertEquals("<" + testNt.toRealPath().toUri().toString() + ">", firstPredicate(g, "base"));
+            assertEquals("<" + symlink.toUri() + ">", firstPredicate(g, "source"));
+            assertEquals("<" + testNt.toRealPath().toUri() + ">", firstPredicate(g, "base"));
         }
     }
 
     @Test
     public void testParseInputStreamFailsIfBaseMissing() throws Exception {
-        final InputStream inputStream = new ByteArrayInputStream(new byte[0]);
-        // Should not fail at this point
-        final RDFParser parser = dummyParser.source(inputStream);
-        // but here:
-        thrown.expect(IllegalStateException.class);
-        thrown.expectMessage("base iri required for inputstream source");
-        parser.parse();
+        Throwable exception = assertThrows(IllegalStateException.class, () -> {
+            final InputStream inputStream = new ByteArrayInputStream(new byte[0]);
+            // Should not fail at this point
+            final RDFParser parser = dummyParser.source(inputStream);
+            parser.parse();
+        });
+        assertTrue(exception.getMessage().contains("base iri required for inputstream source"));
     }
 
     @Test
@@ -274,8 +272,7 @@ public class AbstractRDFParserTest {
 
     @Test
     public void testParseNoSource() throws Exception {
-        thrown.expect(IllegalStateException.class);
-        dummyParser.parse();
+        assertThrows(IllegalStateException.class, dummyParser::parse);
     }
 
 }
