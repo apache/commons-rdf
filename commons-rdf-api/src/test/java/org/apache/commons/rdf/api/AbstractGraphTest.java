@@ -17,11 +17,14 @@
  */
 package org.apache.commons.rdf.api;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -33,9 +36,8 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test Graph implementation
@@ -92,7 +94,7 @@ public abstract class AbstractGraphTest {
         // thread-safe
 
         try (Stream<? extends Triple> stream = source.stream()) {
-            stream.unordered().sequential().forEach(t -> target.add(t));
+            stream.unordered().sequential().forEach(target::add);
         }
     }
 
@@ -153,7 +155,7 @@ public abstract class AbstractGraphTest {
         return g2;
     }
 
-    @Before
+    @BeforeEach
     public void createGraphAndAdd() {
         factory = createFactory();
         graph = factory.createGraph();
@@ -246,10 +248,10 @@ public abstract class AbstractGraphTest {
     }
 
     private void notEquals(final BlankNodeOrIRI node1, final BlankNodeOrIRI node2) {
-        assertFalse(node1.equals(node2));
+        assertNotEquals(node1, node2);
         // in which case we should be able to assume
         // (as they are in the same graph)
-        assertFalse(node1.ntriplesString().equals(node2.ntriplesString()));
+        assertNotEquals(node1.ntriplesString(), node2.ntriplesString());
     }
 
     @Test
@@ -315,7 +317,7 @@ public abstract class AbstractGraphTest {
             assertFalse(g3.contains(b2Bob, hasChild, null));
             assertFalse(g3.contains(b1Charlie, hasChild, null));
         } catch (final UnsupportedOperationException ex) {
-            Assume.assumeNoException(ex);
+            assumeFalse(true);
         }
     }
 
@@ -336,7 +338,7 @@ public abstract class AbstractGraphTest {
 
         try (Stream<? extends Triple> stream = graph.stream()) {
             final Optional<? extends Triple> first = stream.skip(4).findFirst();
-            Assume.assumeTrue(first.isPresent());
+            assumeTrue(first.isPresent());
             final Triple existingTriple = first.get();
             assertTrue(graph.contains(existingTriple));
         }
@@ -404,7 +406,7 @@ public abstract class AbstractGraphTest {
             // If the below assertion fails, then the Turkish
             // locale no longer have this peculiarity that
             // we want to test.
-            Assume.assumeFalse("FI".toLowerCase().equals("fi"));
+            assumeFalse("FI".toLowerCase().equals("fi"));
 
             // Below is pretty much the same as in
             // containsLanguageTagsCaseInsensitive()
@@ -452,7 +454,7 @@ public abstract class AbstractGraphTest {
         }
 
         // Check exact count
-        Assume.assumeNotNull(bnode1, bnode2, aliceName, bobName, secretClubName, companyName, bobNameTriple);
+        assumeTrue(bnode1 != null && bnode2 != null && aliceName != null && bobName != null && secretClubName != null && companyName != null && bobNameTriple != null);
         assertEquals(8, tripleCount);
     }
 
@@ -462,15 +464,15 @@ public abstract class AbstractGraphTest {
         try (Stream<? extends Triple> stream = graph.stream(alice, null, null)) {
             final long aliceCount = stream.count();
             assertTrue(aliceCount > 0);
-            Assume.assumeNotNull(aliceName);
+            assumeTrue(aliceName != null);
             assertEquals(3, aliceCount);
         }
 
-        Assume.assumeNotNull(bnode1, bnode2, bobName, companyName, secretClubName);
+        assumeTrue(bnode1 != null && bnode2 != null && bobName != null && companyName != null && secretClubName != null);
         try (Stream<? extends Triple> stream = graph.stream(null, name, null)) {
             assertEquals(4, stream.count());
         }
-        Assume.assumeNotNull(bnode1);
+        assumeTrue(bnode1 != null);
         try (Stream<? extends Triple> stream = graph.stream(null, member, null)) {
             assertEquals(3, stream.count());
         }
@@ -479,7 +481,7 @@ public abstract class AbstractGraphTest {
     @Test
     public void testIterate() throws Exception {
 
-        Assume.assumeFalse(graph.isEmpty());
+        assumeFalse(graph.isEmpty());
 
         final List<Triple> triples = new ArrayList<>();
         for (final Triple t : graph.iterate()) {
@@ -552,7 +554,7 @@ public abstract class AbstractGraphTest {
         Triple otherTriple;
         try (Stream<? extends Triple> stream = graph.stream()) {
             final Optional<? extends Triple> anyTriple = stream.findAny();
-            Assume.assumeTrue(anyTriple.isPresent());
+            assumeTrue(anyTriple.isPresent());
             otherTriple = anyTriple.get();
         }
 
@@ -599,7 +601,7 @@ public abstract class AbstractGraphTest {
     @Test
     public void testSize() throws Exception {
         assertFalse(graph.isEmpty());
-        Assume.assumeNotNull(bnode1, bnode2, aliceName, bobName, secretClubName, companyName, bobNameTriple);
+        assumeTrue(bnode1 != null && bnode2 != null && aliceName != null && bobName != null && secretClubName != null && companyName != null && bobNameTriple != null);
         // Can only reliably predict size if we could create all triples
         assertEquals(8, graph.size());
     }
@@ -648,7 +650,7 @@ public abstract class AbstractGraphTest {
      */
     @Test
     public void testWhyJavaStreamsMightNotTakeOverFromSparql() throws Exception {
-        Assume.assumeNotNull(bnode1, bnode2, secretClubName);
+        assumeTrue(bnode1 != null && bnode2 != null && secretClubName != null);
         // Find a secret organizations
         try (Stream<? extends Triple> stream = graph.stream(null, knows, null)) {
             assertEquals("\"The Secret Club\"",
