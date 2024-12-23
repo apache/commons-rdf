@@ -18,6 +18,7 @@
 package org.apache.commons.rdf.api;
 
 import java.util.ConcurrentModificationException;
+import java.util.List;
 import java.util.stream.Stream;
 
 /**
@@ -54,6 +55,14 @@ public interface GraphLike<T extends TripleLike> {
      *            The TripleLike statement to add
      */
     void add(T statement);
+
+    /**
+     * Add statements.
+     *
+     * @param statements
+     *            The TripleLike statements to add
+     */
+    void add(List<T> statements);
 
     /**
      * Remove all statements.
