@@ -17,9 +17,11 @@
  */
 package org.apache.commons.rdf.rdf4j;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.function.Uncheck;
 import org.apache.commons.rdf.api.AbstractGraphTest;
@@ -35,10 +37,9 @@ import org.eclipse.rdf4j.repository.RepositoryResult;
 import org.eclipse.rdf4j.repository.sail.SailRepository;
 import org.eclipse.rdf4j.sail.Sail;
 import org.eclipse.rdf4j.sail.nativerdf.NativeStore;
-import org.junit.After;
-import org.junit.Rule;
-import org.junit.rules.TemporaryFolder;
-import org.junit.rules.Timeout;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Timeout;
+import org.junit.jupiter.api.io.TempDir;
 
 /**
  * Test a graph within a file-based RDF4J {@link SailRepository}.
@@ -46,7 +47,11 @@ import org.junit.rules.Timeout;
  * TIP: If the {@link #shutdownAndDelete()} take about 20 seconds this is a hint
  * that a {@link RepositoryConnection} or {@link RepositoryResult} was not
  * closed correctly.
+ * <p>
+ * A timeout of more than 15 seconds pr test indicates typically that
+ * shutdownAndDelete failed.
  */
+@Timeout(value = 15, unit = TimeUnit.SECONDS)
 public class NativeStoreGraphTest extends AbstractGraphTest {
 
     public final class NativeStoreRDF implements RDF {
@@ -109,19 +114,13 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
         public RDF4JTriple createTriple(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
             return rdf4jFactory.createTriple(subject, predicate, object);
         }
+
     }
 
-    @Rule
-    public TemporaryFolder tempDir = new TemporaryFolder();
+    @TempDir
+    public File tempDir;
 
     private SailRepository repository;
-
-    @Rule
-    /**
-     * A timeout of more than 15 seconds pr test indicates typically that
-     * shutdownAndDelete failed.
-     */
-    public Timeout globalTimeout = Timeout.seconds(15);
 
     @Override
     public RDF createFactory() {
@@ -129,7 +128,7 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
     }
 
     public void createRepository() throws IOException {
-        final Sail sail = new NativeStore(tempDir.newFolder());
+        final Sail sail = new NativeStore(newFolder(tempDir, "junit"));
         repository = new SailRepository(sail);
         repository.initialize();
     }
@@ -159,7 +158,7 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
     // });
     // }
 
-    @After
+    @AfterEach
     public void shutdownAndDelete() {
         // must shutdown before we delete
         if (repository != null) {
@@ -172,6 +171,15 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
             repository.shutDown();
             System.out.println("OK");
         }
+    }
+
+    private static File newFolder(File root, String... subDirs) throws IOException {
+        String subFolder = String.join("/", subDirs);
+        File result = new File(root, subFolder);
+        if (!result.mkdirs()) {
+            throw new IOException("Couldn't create folders " + root);
+        }
+        return result;
     }
 
 }

@@ -17,18 +17,19 @@
  */
 package org.apache.commons.rdf.api;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test RDF implementation (and thus its RDFTerm implementations)
@@ -59,7 +60,7 @@ public abstract class AbstractRDFTest {
      */
     protected abstract RDF createFactory();
 
-    @Before
+    @BeforeEach
     public void setUp() {
         factory = createFactory();
     }
@@ -69,8 +70,9 @@ public abstract class AbstractRDFTest {
         final BlankNode bnode = factory.createBlankNode();
 
         final BlankNode bnode2 = factory.createBlankNode();
-        assertNotEquals("Second blank node has not got a unique internal identifier", bnode.uniqueReference(),
-                bnode2.uniqueReference());
+        assertNotEquals(bnode.uniqueReference(),
+                bnode2.uniqueReference(),
+                "Second blank node has not got a unique internal identifier");
     }
 
     @Test
@@ -128,12 +130,12 @@ public abstract class AbstractRDFTest {
     public void testCreateGraph() throws Exception {
         try (final Graph graph = factory.createGraph(); final Graph graph2 = factory.createGraph()) {
 
-            assertEquals("Graph was not empty", 0, graph.size());
+            assertEquals(0, graph.size(), "Graph was not empty");
             graph.add(factory.createBlankNode(), factory.createIRI("http://example.com/"), factory.createBlankNode());
 
             assertNotSame(graph, graph2);
-            assertEquals("Graph was empty after adding", 1, graph.size());
-            assertEquals("New graph was not empty", 0, graph2.size());
+            assertEquals(1, graph.size(), "Graph was empty after adding");
+            assertEquals(0, graph2.size(), "New graph was not empty");
         }
     }
 
@@ -256,7 +258,7 @@ public abstract class AbstractRDFTest {
             // If the below assertion fails, then the Turkish
             // locale no longer have this peculiarity that
             // we want to test.
-            Assume.assumeFalse("FI".toLowerCase().equals("fi"));
+            assumeFalse("FI".toLowerCase().equals("fi"));
 
             final Literal mixed = factory.createLiteral("moi", "fI");
             final Literal lower = factory.createLiteral("moi", "fi");
@@ -418,22 +420,26 @@ public abstract class AbstractRDFTest {
         assertEquals(Objects.hash(iri, iri, iri), triple.hashCode());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testInvalidIRI() throws Exception {
-        factory.createIRI("<no_brackets>");
+        assertThrows(IllegalArgumentException.class, () ->
+            factory.createIRI("<no_brackets>"));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testInvalidLiteralLang() throws Exception {
-        factory.createLiteral("Example", "with space");
+        assertThrows(IllegalArgumentException.class, () ->
+            factory.createLiteral("Example", "with space"));
     }
 
-    @Test(expected = Exception.class)
+    @Test
     public void testInvalidTriplePredicate() {
-        final BlankNode subject = factory.createBlankNode("b1");
-        final BlankNode predicate = factory.createBlankNode("b2");
-        final BlankNode object = factory.createBlankNode("b3");
-        factory.createTriple(subject, (IRI) predicate, object);
+        assertThrows(Exception.class, () -> {
+            final BlankNode subject = factory.createBlankNode("b1");
+            final BlankNode predicate = factory.createBlankNode("b2");
+            final BlankNode object = factory.createBlankNode("b3");
+            factory.createTriple(subject, (IRI) predicate, object);
+        });
     }
 
     @Test

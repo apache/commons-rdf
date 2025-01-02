@@ -17,23 +17,27 @@
  */
 package org.apache.commons.rdf.api;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class DummyDatasetTest {
     Dataset dataset = new DummyDataset();
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void clearNotSupported() throws Exception {
-        dataset.clear();
+        assertThrows(IllegalStateException.class, () ->
+            dataset.clear());
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void remove() throws Exception {
-        dataset.remove(new DummyQuad());
+        assertThrows(IllegalStateException.class, () ->
+            dataset.remove(new DummyQuad()));
     }
 
     @Test
@@ -60,7 +64,7 @@ public class DummyDatasetTest {
 
     @Test
     public void testGetGraph() throws Exception {
-        assertTrue(dataset.getGraph() instanceof DummyGraph);
+        assertInstanceOf(DummyGraph.class, dataset.getGraph());
     }
 
     @Test
@@ -75,7 +79,7 @@ public class DummyDatasetTest {
 
     @Test
     public void testGetGraphNull() throws Exception {
-        assertTrue(dataset.getGraph(null).get() instanceof DummyGraph);
+        assertInstanceOf(DummyGraph.class, dataset.getGraph(null).get());
     }
 
     @Test

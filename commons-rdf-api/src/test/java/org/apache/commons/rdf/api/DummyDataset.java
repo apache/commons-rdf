@@ -17,7 +17,6 @@
  */
 package org.apache.commons.rdf.api;
 
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -93,7 +92,7 @@ final class DummyDataset implements Dataset {
     @Override
     public Stream<? extends Quad> stream() {
         streamCalled = true;
-        return Arrays.asList(new DummyQuad()).stream();
+        return Stream.of(new DummyQuad());
     }
 
     @Override

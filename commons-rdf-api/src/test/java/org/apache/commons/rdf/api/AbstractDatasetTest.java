@@ -17,12 +17,15 @@
  */
 package org.apache.commons.rdf.api;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -36,9 +39,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test Dataset implementation
@@ -98,7 +100,7 @@ public abstract class AbstractDatasetTest {
         // thread-safe
 
         try (Stream<? extends Quad> stream = source.stream()) {
-            stream.unordered().sequential().forEach(t -> target.add(t));
+            stream.unordered().sequential().forEach(target::add);
         }
     }
 
@@ -150,7 +152,7 @@ public abstract class AbstractDatasetTest {
         return g2;
     }
 
-    @Before
+    @BeforeEach
     public void createDatasetAndAdd() {
         factory = createFactory();
         dataset = factory.createDataset();
@@ -239,10 +241,10 @@ public abstract class AbstractDatasetTest {
     }
 
     private void notEquals(final BlankNodeOrIRI node1, final BlankNodeOrIRI node2) {
-        assertFalse(node1.equals(node2));
+        assertNotEquals(node1, node2);
         // in which case we should be able to assume
         // (as they are in the same dataset)
-        assertFalse(node1.ntriplesString().equals(node2.ntriplesString()));
+        assertNotEquals(node1.ntriplesString(), node2.ntriplesString());
     }
 
     @Test
@@ -330,7 +332,7 @@ public abstract class AbstractDatasetTest {
 
         try (Stream<? extends Quad> stream = dataset.stream()) {
             final Optional<? extends Quad> first = stream.skip(4).findFirst();
-            Assume.assumeTrue(first.isPresent());
+            assumeTrue(first.isPresent());
             final Quad existingQuad = first.get();
             assertTrue(dataset.contains(existingQuad));
         }
@@ -391,7 +393,7 @@ public abstract class AbstractDatasetTest {
             // If the below assertion fails, then the Turkish
             // locale no longer have this peculiarity that
             // we want to test.
-            Assume.assumeFalse("FI".toLowerCase().equals("fi"));
+            assumeFalse("FI".toLowerCase().equals("fi"));
 
             // Below is pretty much the same as in
             // containsLanguageTagsCaseInsensitive()
@@ -477,12 +479,12 @@ public abstract class AbstractDatasetTest {
     @Test
     public void testGetGraphNames() throws Exception {
         final Set<BlankNodeOrIRI> names = dataset.getGraphNames().collect(Collectors.toSet());
-        assertTrue("Can't find graph name " + graph1, names.contains(graph1));
-        assertTrue("Found no quads in graph1", dataset.contains(Optional.of(graph1), null, null, null));
+        assertTrue(names.contains(graph1), "Can't find graph name " + graph1);
+        assertTrue(dataset.contains(Optional.of(graph1), null, null, null), "Found no quads in graph1");
 
         final Optional<BlankNodeOrIRI> graphName2 = dataset.getGraphNames().filter(BlankNode.class::isInstance).findAny();
-        assertTrue("Could not find graph2-like BlankNode", graphName2.isPresent());
-        assertTrue("Found no quads in graph2", dataset.contains(graphName2, null, null, null));
+        assertTrue(graphName2.isPresent(), "Could not find graph2-like BlankNode");
+        assertTrue(dataset.contains(graphName2, null, null, null), "Found no quads in graph2");
 
         // Some implementations like Virtuoso might have additional internal graphs,
         // so we can't assume this:
@@ -514,7 +516,7 @@ public abstract class AbstractDatasetTest {
         }
 
         // Check exact count
-        Assume.assumeNotNull(bnode1, bnode2, aliceName, bobName, secretClubName, companyName, bobNameQuad);
+        assumeTrue(bnode1 != null && bnode2 != null && aliceName != null && bobName != null && secretClubName != null && companyName != null && bobNameQuad != null);
         assertEquals(10, quadCount);
     }
 
@@ -524,15 +526,15 @@ public abstract class AbstractDatasetTest {
         try (Stream<? extends Quad> stream = dataset.stream(Optional.of(graph1), alice, null, null)) {
             final long aliceCount = stream.count();
             assertTrue(aliceCount > 0);
-            Assume.assumeNotNull(aliceName);
+            assumeTrue(aliceName != null);
             assertEquals(3, aliceCount);
         }
 
-        Assume.assumeNotNull(bnode1, bnode2, bobName, companyName, secretClubName);
+        assumeTrue(bnode1 != null && bnode2 != null && bobName != null && companyName != null && secretClubName != null);
         try (Stream<? extends Quad> stream = dataset.stream(null, null, name, null)) {
             assertEquals(4, stream.count());
         }
-        Assume.assumeNotNull(bnode1);
+        assumeTrue(bnode1 != null);
         try (Stream<? extends Quad> stream = dataset.stream(null, null, member, null)) {
             assertEquals(3, stream.count());
         }
@@ -540,7 +542,7 @@ public abstract class AbstractDatasetTest {
 
     @Test
     public void testIterate() throws Exception {
-        Assume.assumeFalse(dataset.isEmpty());
+        assumeFalse(dataset.isEmpty());
         final List<Quad> quads = new ArrayList<>();
         for (final Quad t : dataset.iterate()) {
             quads.add(t);
@@ -638,7 +640,7 @@ public abstract class AbstractDatasetTest {
         Quad otherQuad;
         try (Stream<? extends Quad> stream = dataset.stream()) {
             final Optional<? extends Quad> anyQuad = stream.findAny();
-            Assume.assumeTrue(anyQuad.isPresent());
+            assumeTrue(anyQuad.isPresent());
             otherQuad = anyQuad.get();
         }
 
@@ -747,7 +749,7 @@ public abstract class AbstractDatasetTest {
      */
     @Test
     public void testWhyJavaStreamsMightNotTakeOverFromSparql() throws Exception {
-        Assume.assumeNotNull(bnode1, bnode2, secretClubName);
+        assumeTrue(bnode1 != null && bnode2 != null && secretClubName != null);
         // Find a secret organizations
         try (Stream<? extends Quad> stream = dataset.stream(null, null, knows, null)) {
             assertEquals("\"The Secret Club\"",

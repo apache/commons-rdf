@@ -18,12 +18,12 @@
 
 package org.apache.commons.rdf.jena;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ServiceLoader;
 
 import org.apache.commons.rdf.api.RDF;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class JenaServiceLoaderTest {
 
