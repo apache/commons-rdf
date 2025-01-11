@@ -36,6 +36,7 @@
     <properties>
       <commons.parent.dir>${basedir}/..</commons.parent.dir>
       <commons.osgi.symbolicName>org.apache.commons.rdf.api</commons.osgi.symbolicName>
+      <!-- project.build.outputTimestamp is managed by Maven plugins, see https://maven.apache.org/guides/mini/guide-reproducible-builds.html -->
       <project.build.outputTimestamp>2024-02-01T03:27:02Z</project.build.outputTimestamp>
     </properties>
 

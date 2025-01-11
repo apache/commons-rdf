@@ -34,6 +34,7 @@
 	<description>Eclipse RDF4j implementation of Commons RDF API</description>
     <properties>
         <commons.parent.dir>${basedir}/..</commons.parent.dir>
+        <!-- project.build.outputTimestamp is managed by Maven plugins, see https://maven.apache.org/guides/mini/guide-reproducible-builds.html -->
         <project.build.outputTimestamp>2024-02-01T03:27:02Z</project.build.outputTimestamp>
     </properties>
 

@@ -42,6 +42,7 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.encoding>UTF-8</project.build.encoding>
+        <!-- project.build.outputTimestamp is managed by Maven plugins, see https://maven.apache.org/guides/mini/guide-reproducible-builds.html -->
         <project.build.outputTimestamp>2024-02-01T03:27:02Z</project.build.outputTimestamp>
         <commons.parent.dir>${basedir}</commons.parent.dir>
         <commons.encoding>UTF-8</commons.encoding>
