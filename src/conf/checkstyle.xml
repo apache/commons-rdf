@@ -185,6 +185,7 @@ limitations under the License.
       <property name="commentFormat" value="CHECKSTYLE IGNORE (\w+)"/>
       <property name="checkFormat" value="$1"/>
     </module>
+    <module name="TypecastParenPad" />
   </module>
 
   <!-- @author tags are deprecated -->
