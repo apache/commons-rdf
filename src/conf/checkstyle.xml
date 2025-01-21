@@ -100,9 +100,7 @@ limitations under the License.
     -->
     <module name="ParenPad"/>
     <module name="WhitespaceAfter"/>
-    <!-- Too many to fix at present
     <module name="WhitespaceAround"/>
-    -->
     
     <!-- Modifier Checks                                    -->
     <!-- See http://checkstyle.sf.net/config_modifiers.html -->
