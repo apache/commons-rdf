@@ -99,8 +99,8 @@ limitations under the License.
     </module>
     -->
     <module name="ParenPad"/>
-    <!-- Too many to fix at present
     <module name="WhitespaceAfter"/>
+    <!-- Too many to fix at present
     <module name="WhitespaceAround"/>
     -->
     
