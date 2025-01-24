@@ -24,7 +24,7 @@
   </properties>
 
   <body>
-    <release version="0.6.0" date="20YY-MM-DD" description="Minor feature and bug fix release.">
+    <release version="0.6.0" date="YYYY-MM-DD" description="Minor feature and bug fix release.">
         <!-- ADD -->
         <action dev="ggregory" type="fix" due-to="Gary Gregory">
             Add project.build.outputTimestam Maven property to make build reproducible.
@@ -36,6 +36,7 @@
         <action type="fix" dev="ggregory" due-to="step-security-bot, Gary Gregory">
             [StepSecurity] ci: Harden GitHub Actions #137.
         </action>
+        <action type="fix" dev="ggregory" due-to="strangelookingnerd, Gary Gregory">Migrate tests to JUnit5 #289.</action>
         <!-- UPDATE -->
         <action type="update" dev="ggregory" due-to="Gary Gregory">
             Bump org.apache.commons:commons-parent from 52 to 78 #259, #265, #269, #273, #279.
