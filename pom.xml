@@ -92,154 +92,6 @@
       <url>https://builds.apache.org/</url>
     </ciManagement>
 
-    <developers>
-        <developer>
-            <id>lewismc</id>
-            <name>Lewis John McGibbney</name>
-            <email>lewismc[at]apache[dot]org</email>
-            <roles>
-                <role>Committer</role>
-                <role>Emeritus PPMC Member</role>
-                <role>Emeritus Champion</role>
-            </roles>
-            <timezone>+1</timezone>
-        </developer>
-        <developer>
-            <id>ggregory</id>
-            <name>Gary Gregory</name>
-            <email>ggregory at apache.org</email>
-            <url>https://www.garygregory.com</url>
-            <organization>The Apache Software Foundation</organization>
-            <organizationUrl>https://www.apache.org/</organizationUrl>
-            <roles>
-                <role>PMC Member</role>
-            </roles>
-            <timezone>America/New_York</timezone>
-            <properties>
-                <picUrl>https://people.apache.org/~ggregory/img/garydgregory80.png</picUrl>
-            </properties>
-        </developer>
-        <developer>
-            <id>wikier</id>
-            <name>Sergio Fernández</name>
-            <email>wikier[at]apache[dot]org</email>
-            <url>http://www.wikier.org</url>
-            <roles>
-                <role>Committer</role>
-                <role>Emeritus PPMC Member</role>
-            </roles>
-            <timezone>+1</timezone>
-        </developer>
-        <developer>
-            <id>stain</id>
-            <name>Stian Soiland-Reyes</name>
-            <email>stain[at]apache[dot]org</email>
-            <url>http://orcid.org/0000-0001-9842-9718</url>
-            <roles>
-                <role>Committer</role>
-                <role>PMC Member</role>
-                <role>Emeritus PPMC Member</role>
-            </roles>
-            <timezone>+0</timezone>
-        </developer>
-        <developer>
-            <id>enridaga</id>
-            <name>Enrico Daga</name>
-            <email>enridaga[at]apache[dot]org</email>
-            <roles>
-                <role>Committer</role>
-                <role>Emeritus PPMC Member</role>
-            </roles>
-            <timezone>+0</timezone>
-        </developer>
-        <developer>
-            <id>britter</id>
-            <name>Benedikt Ritter</name>
-            <email>britter[at]apache[dot]org</email>
-            <roles>
-                <role>Committer</role>
-                <role>PMC Member</role>
-                <role>Emeritus PPMC Member</role>
-            </roles>
-            <timezone>+1</timezone>
-        </developer>
-        <developer>
-            <id>ansell</id>
-            <name>Peter Ansell</name>
-            <email>ansell[at]apache[dot]org</email>
-            <url>https://github.com/ansell</url>
-            <roles>
-                <role>Reviewer</role>
-                <role>Emeritus Committer</role>
-                <role>Emeritus PPMC Member</role>
-            </roles>
-        </developer>
-    </developers>
-
-    <contributors>
-        <contributor>
-            <name>Reto Gmür</name>
-            <email>reto[at]apache[dot]org</email>
-            <roles>
-                <role>Emeritus Committer</role>
-                <role>Emeritus PPMC Member</role>
-            </roles>
-            <timezone>+1</timezone>
-        </contributor>
-        <contributor>
-            <name>Andy Seaborne</name>
-            <email>andy[at]apache[dot]org</email>
-            <roles>
-                <role>Emeritus Committer</role>
-                <role>Emeritus PPPMC Member</role>
-                <role>Reviewer</role>
-            </roles>
-            <timezone>+0</timezone>
-        </contributor>
-        <contributor>
-            <name>Rob Vesse</name>
-            <email>rvesse[at]apache[dot]org</email>
-            <roles>
-                <role>Emeritus Mentor</role>
-            </roles>
-            <timezone>+0</timezone>
-        </contributor>
-        <contributor>
-            <name>John D Ament</name>
-            <email>johndament[at]apache[dot]org</email>
-            <roles>
-                <role>Emeritus PPMC Member</role>
-                <role>Emeritus Mentor</role>
-            </roles>
-            <timezone>+1</timezone>
-        </contributor>
-        <contributor>
-            <name>Aaron Coburn</name>
-            <email>acoburn[at]apache[dot]org</email>
-            <roles>
-                <role>Contributor</role>
-            </roles>
-            <timezone>+1</timezone>
-        </contributor>
-        <contributor>
-            <name>Adam Soroka</name>
-            <email>ajs6f[at]apache[dot]org</email>
-            <roles>
-                <role>Reviewer</role>
-            </roles>
-            <timezone>+0</timezone>
-        </contributor>
-        <contributor>
-            <name>Guohui Xiao</name>
-            <email>gx.xiao[at]gmail[dot]com</email>
-	    <url>http://orcid.org/0000-0002-5115-4769</url>
-            <roles>
-                <role>Contributor</role>
-            </roles>
-            <timezone>+1</timezone>
-        </contributor>
-    </contributors>
-
     <modules>
         <module>commons-rdf-api</module>
         <module>commons-rdf-simple</module>
@@ -645,5 +497,150 @@
       </site>
       <downloadUrl>${project.url}download.html</downloadUrl>
     </distributionManagement>
-
+    <developers>
+        <developer>
+            <id>lewismc</id>
+            <name>Lewis John McGibbney</name>
+            <email>lewismc[at]apache[dot]org</email>
+            <roles>
+                <role>Committer</role>
+                <role>Emeritus PPMC Member</role>
+                <role>Emeritus Champion</role>
+            </roles>
+            <timezone>+1</timezone>
+        </developer>
+        <developer>
+            <id>ggregory</id>
+            <name>Gary Gregory</name>
+            <email>ggregory at apache.org</email>
+            <url>https://www.garygregory.com</url>
+            <organization>The Apache Software Foundation</organization>
+            <organizationUrl>https://www.apache.org/</organizationUrl>
+            <roles>
+                <role>PMC Member</role>
+            </roles>
+            <timezone>America/New_York</timezone>
+            <properties>
+                <picUrl>https://people.apache.org/~ggregory/img/garydgregory80.png</picUrl>
+            </properties>
+        </developer>
+        <developer>
+            <id>wikier</id>
+            <name>Sergio Fernández</name>
+            <email>wikier[at]apache[dot]org</email>
+            <url>http://www.wikier.org</url>
+            <roles>
+                <role>Committer</role>
+                <role>Emeritus PPMC Member</role>
+            </roles>
+            <timezone>+1</timezone>
+        </developer>
+        <developer>
+            <id>stain</id>
+            <name>Stian Soiland-Reyes</name>
+            <email>stain[at]apache[dot]org</email>
+            <url>http://orcid.org/0000-0001-9842-9718</url>
+            <roles>
+                <role>Committer</role>
+                <role>PMC Member</role>
+                <role>Emeritus PPMC Member</role>
+            </roles>
+            <timezone>+0</timezone>
+        </developer>
+        <developer>
+            <id>enridaga</id>
+            <name>Enrico Daga</name>
+            <email>enridaga[at]apache[dot]org</email>
+            <roles>
+                <role>Committer</role>
+                <role>Emeritus PPMC Member</role>
+            </roles>
+            <timezone>+0</timezone>
+        </developer>
+        <developer>
+            <id>britter</id>
+            <name>Benedikt Ritter</name>
+            <email>britter[at]apache[dot]org</email>
+            <roles>
+                <role>Committer</role>
+                <role>PMC Member</role>
+                <role>Emeritus PPMC Member</role>
+            </roles>
+            <timezone>+1</timezone>
+        </developer>
+        <developer>
+            <id>ansell</id>
+            <name>Peter Ansell</name>
+            <email>ansell[at]apache[dot]org</email>
+            <url>https://github.com/ansell</url>
+            <roles>
+                <role>Reviewer</role>
+                <role>Emeritus Committer</role>
+                <role>Emeritus PPMC Member</role>
+            </roles>
+        </developer>
+    </developers>
+    <contributors>
+        <contributor>
+            <name>Reto Gmür</name>
+            <email>reto[at]apache[dot]org</email>
+            <roles>
+                <role>Emeritus Committer</role>
+                <role>Emeritus PPMC Member</role>
+            </roles>
+            <timezone>+1</timezone>
+        </contributor>
+        <contributor>
+            <name>Andy Seaborne</name>
+            <email>andy[at]apache[dot]org</email>
+            <roles>
+                <role>Emeritus Committer</role>
+                <role>Emeritus PPPMC Member</role>
+                <role>Reviewer</role>
+            </roles>
+            <timezone>+0</timezone>
+        </contributor>
+        <contributor>
+            <name>Rob Vesse</name>
+            <email>rvesse[at]apache[dot]org</email>
+            <roles>
+                <role>Emeritus Mentor</role>
+            </roles>
+            <timezone>+0</timezone>
+        </contributor>
+        <contributor>
+            <name>John D Ament</name>
+            <email>johndament[at]apache[dot]org</email>
+            <roles>
+                <role>Emeritus PPMC Member</role>
+                <role>Emeritus Mentor</role>
+            </roles>
+            <timezone>+1</timezone>
+        </contributor>
+        <contributor>
+            <name>Aaron Coburn</name>
+            <email>acoburn[at]apache[dot]org</email>
+            <roles>
+                <role>Contributor</role>
+            </roles>
+            <timezone>+1</timezone>
+        </contributor>
+        <contributor>
+            <name>Adam Soroka</name>
+            <email>ajs6f[at]apache[dot]org</email>
+            <roles>
+                <role>Reviewer</role>
+            </roles>
+            <timezone>+0</timezone>
+        </contributor>
+        <contributor>
+            <name>Guohui Xiao</name>
+            <email>gx.xiao[at]gmail[dot]com</email>
+	    <url>http://orcid.org/0000-0002-5115-4769</url>
+            <roles>
+                <role>Contributor</role>
+            </roles>
+            <timezone>+1</timezone>
+        </contributor>
+    </contributors>
 </project>
