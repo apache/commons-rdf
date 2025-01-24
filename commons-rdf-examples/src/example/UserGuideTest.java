@@ -37,15 +37,15 @@ import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.api.TripleLike;
 import org.apache.commons.rdf.simple.SimpleRDF;
 import org.apache.commons.rdf.simple.Types;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class UserGuideTest {
 
     private RDF factory;
 
-    @Before
-    public void factory() {
+    @BeforeAll
+    public static void factory() {
         factory = new SimpleRDF();
     }
 

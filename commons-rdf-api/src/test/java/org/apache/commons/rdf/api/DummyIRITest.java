@@ -17,17 +17,17 @@
  */
 package org.apache.commons.rdf.api;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class DummyIRITest {
     DummyIRI iri = new DummyIRI(1337);
 
     @Test
     public void testEquals() throws Exception {
-        assertEquals(iri, new DummyIRI(1337));
+        assertEquals(new DummyIRI(1337), iri);
     }
 
     @Test
@@ -47,7 +47,7 @@ public class DummyIRITest {
 
     @Test
     public void testNotEquals() throws Exception {
-        assertNotEquals(iri, new DummyIRI(1));
+        assertNotEquals(new DummyIRI(1), iri);
     }
 
     @Test

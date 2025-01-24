@@ -17,9 +17,9 @@
  */
 package org.apache.commons.rdf.jena;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.commons.rdf.api.AbstractRDFTest;
 import org.apache.commons.rdf.api.BlankNode;
@@ -34,7 +34,7 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.sparql.core.DatasetGraph;
 import org.apache.jena.sparql.core.DatasetGraphFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class JenaRDFTest extends AbstractRDFTest {
 
@@ -48,7 +48,7 @@ public class JenaRDFTest extends AbstractRDFTest {
         final DatasetGraph dsg = DatasetGraphFactory.create();
         final JenaDataset dataset = createFactory().asDataset(dsg);
         final DatasetGraph roundTrippedDSG = createFactory().asJenaDatasetGraph(dataset);
-        assertSame("Should have gotten the same DatasetGraph object from a round trip!", dsg, roundTrippedDSG);
+        assertSame(dsg, roundTrippedDSG, "Should have gotten the same DatasetGraph object from a round trip!");
     }
 
     @Test
@@ -63,9 +63,9 @@ public class JenaRDFTest extends AbstractRDFTest {
         ds.add(quad);
         final JenaRDF jenaFactory = createFactory();
         final org.apache.jena.query.Dataset jenaDS = jenaFactory.asJenaDataset(ds);
-        assertEquals("Should have found one named graph!", 1, jenaDS.asDatasetGraph().size());
+        assertEquals(1, jenaDS.asDatasetGraph().size(), "Should have found one named graph!");
         final Model namedModel = jenaDS.getNamedModel(graph.getIRIString());
-        assertEquals("Should have found one triple in named graph!", 1, namedModel.size());
+        assertEquals(1, namedModel.size(), "Should have found one triple in named graph!");
         final Statement statement = namedModel.listStatements().next();
         final Resource jenaSubject = statement.getSubject();
         final Property jenaPredicate = statement.getPredicate();

@@ -17,11 +17,11 @@
  */
 package org.apache.commons.rdf.api;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class DefaultGraphTest {
 
@@ -37,7 +37,7 @@ public class DefaultGraphTest {
         assertFalse(graph.streamCalled);
         assertFalse(graph.filteredStreamCalled);
         for (final Triple t : graph.iterate(null, new DummyIRI(2), null)) {
-            assertEquals(t, new DummyTriple());
+            assertEquals(new DummyTriple(), t);
         }
         assertTrue(graph.filteredStreamCalled);
         assertFalse(graph.streamCalled);
@@ -70,7 +70,7 @@ public class DefaultGraphTest {
         assertFalse(graph.streamCalled);
         assertFalse(graph.filteredStreamCalled);
         for (final Triple t : graph.iterate()) {
-            assertEquals(t, new DummyTriple());
+            assertEquals(new DummyTriple(), t);
         }
         assertTrue(graph.streamCalled);
         assertFalse(graph.filteredStreamCalled);

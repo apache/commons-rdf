@@ -18,8 +18,9 @@
 
 package org.apache.commons.rdf.jena;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -35,23 +36,23 @@ import org.apache.commons.rdf.simple.Types;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.sparql.graph.GraphFactory;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /** Adapt a Jena Graph after parsing data into it */
 public class TestJenaGraphToCommonsRDFGraph {
     private static final boolean DEBUG = false;
     private Path turtleFile;
 
-    @After
+    @AfterEach
     public void deletePath() throws IOException {
         if (turtleFile != null) {
             Files.deleteIfExists(turtleFile);
         }
     }
 
-    @Before
+    @BeforeEach
     public void preparePath() throws IOException {
         turtleFile = Files.createTempFile("commonsrdf", "test.ttl");
         Files.copy(getClass().getResourceAsStream("/D.ttl"), turtleFile, StandardCopyOption.REPLACE_EXISTING);
@@ -77,13 +78,13 @@ public class TestJenaGraphToCommonsRDFGraph {
             final JenaIRI p1 = factory.createIRI("http://example.com/p1");
             // Let's look up the BlankNode
             final BlankNodeOrIRI bnode1 = graph.stream(null, p1, null).findFirst().map(Triple::getSubject).get();
-            assertTrue(bnode1 instanceof BlankNode);
+            assertInstanceOf(BlankNode.class, bnode1);
 
             // Verify we can use BlankNode in query again
             final RDFTerm obj = graph.stream(bnode1, p1, null).findFirst().map(Triple::getObject).get();
 
             // Let's look up also that nested blank node
-            assertTrue(obj instanceof BlankNode);
+            assertInstanceOf(BlankNode.class, obj);
             final BlankNode bnode2 = (BlankNode) obj;
 
             final JenaIRI q = factory.createIRI("http://example.com/q");

@@ -17,9 +17,9 @@
  */
 package org.apache.commons.rdf.jsonldjava;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -34,7 +34,7 @@ import org.apache.commons.rdf.api.Literal;
 import org.apache.commons.rdf.api.RDFSyntax;
 import org.apache.commons.rdf.jsonldjava.experimental.JsonLdParser;
 import org.apache.commons.rdf.simple.Types;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class JsonLdParserBuilderTest {
     private static final String TEST_JSONLD = "/test.jsonld";
@@ -74,7 +74,7 @@ public class JsonLdParserBuilderTest {
         final Path path = Files.createTempFile("test", ".jsonld");
         path.toFile().deleteOnExit();
         try (InputStream is = getClass().getResourceAsStream(TEST_JSONLD)) {
-            assertNotNull("Test resource not found: " + TEST_JSONLD, is);
+            assertNotNull(is, "Test resource not found: " + TEST_JSONLD);
             Files.copy(is, path, StandardCopyOption.REPLACE_EXISTING);
         }
         try (final Graph g = factory.createGraph()) {
@@ -87,7 +87,7 @@ public class JsonLdParserBuilderTest {
     public void testParseByStream() throws Exception {
         try (final Graph g = factory.createGraph()) {
             try (InputStream is = getClass().getResourceAsStream(TEST_JSONLD)) {
-                assertNotNull("Test resource not found: " + TEST_JSONLD, is);
+                assertNotNull(is, "Test resource not found: " + TEST_JSONLD);
                 new JsonLdParser().base("http://example.com/base/").contentType(RDFSyntax.JSONLD).source(is).target(g)
                         .parse().get(10, TimeUnit.SECONDS);
             }
@@ -98,7 +98,7 @@ public class JsonLdParserBuilderTest {
     @Test
     public void testParseByUrl() throws Exception {
         final URL url = getClass().getResource(TEST_JSONLD);
-        assertNotNull("Test resource not found: " + TEST_JSONLD, url);
+        assertNotNull(url, "Test resource not found: " + TEST_JSONLD);
         final IRI iri = factory.createIRI(url.toString());
         try (final Graph g = factory.createGraph()) {
             new JsonLdParser().contentType(RDFSyntax.JSONLD).source(iri).target(g).parse().get(10, TimeUnit.SECONDS);

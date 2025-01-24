@@ -17,12 +17,13 @@
  */
 package org.apache.commons.rdf.simple;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
+
 
 import org.apache.commons.rdf.api.AbstractDatasetTest;
 import org.apache.commons.rdf.api.RDF;
-import org.junit.Assume;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test SimpleRDF with AbstractGraphTest
@@ -36,7 +37,7 @@ public class SimpleDatasetTest extends AbstractDatasetTest {
 
     @Test
     public void testDatasetToString() {
-        Assume.assumeNotNull(aliceName, companyName);
+        assumeTrue(aliceName != null && companyName != null);
         //System.out.println(dataset);
         assertTrue(
                 dataset.toString().contains("<http://example.com/alice> <http://xmlns.com/foaf/0.1/name> \"Alice\" <http://example.com/graph1> ."));

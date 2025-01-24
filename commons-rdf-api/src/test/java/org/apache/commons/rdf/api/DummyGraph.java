@@ -17,7 +17,6 @@
  */
 package org.apache.commons.rdf.api;
 
-import java.util.Arrays;
 import java.util.stream.Stream;
 
 final class DummyGraph implements Graph {
@@ -70,7 +69,7 @@ final class DummyGraph implements Graph {
     @Override
     public Stream<? extends Triple> stream() {
         streamCalled = true;
-        return Arrays.asList(new DummyTriple()).stream();
+        return Stream.of(new DummyTriple());
     }
 
     @Override

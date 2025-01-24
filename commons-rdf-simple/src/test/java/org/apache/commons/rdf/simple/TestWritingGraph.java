@@ -17,7 +17,7 @@
  */
 package org.apache.commons.rdf.simple;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -31,9 +31,9 @@ import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDF;
 import org.apache.commons.rdf.api.Triple;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test writing graph
@@ -55,7 +55,7 @@ public class TestWritingGraph {
 
     private static RDF factory;
 
-    @BeforeClass
+    @BeforeAll
     public static void createGraph() throws Exception {
         factory = new SimpleRDF();
         graph = factory.createGraph();
@@ -79,7 +79,7 @@ public class TestWritingGraph {
         }
     }
 
-    @AfterClass
+    @AfterAll
     public static void tearDownClass() throws Exception {
         graph.clear();
         graph = null;
@@ -96,7 +96,7 @@ public class TestWritingGraph {
         final IRI predicate = factory.createIRI("pred");
         final long count = graph.stream(subject, predicate, null).unordered().parallel().count();
         // System.out.println("Counted - " + count);
-        assertEquals(count, TRIPLES);
+        assertEquals(TRIPLES, count);
     }
 
     @Test

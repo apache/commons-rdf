@@ -19,7 +19,8 @@ package org.apache.commons.rdf.rdf4j;
 
 import org.apache.commons.rdf.api.AbstractRDFTest;
 import org.apache.commons.rdf.api.RDF;
-import org.junit.Assume;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 public class RDF4JTest extends AbstractRDFTest {
 
@@ -29,8 +30,9 @@ public class RDF4JTest extends AbstractRDFTest {
     }
 
     @Override
+    @Test
+    @Disabled("RDF4J doesn't check Lang strings")
     public void testInvalidLiteralLang() throws Exception {
-        Assume.assumeTrue("RDF4J doesn't check Lang strings", false);
         super.testInvalidLiteralLang();
     }
 

@@ -17,7 +17,9 @@
  */
 package org.apache.commons.rdf.api;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * Test that all {@link RDFTermFactory} default methods throw
@@ -28,36 +30,51 @@ public class DefaultRDFTermFactoryTest {
     // All methods in RDFTermFactory has a default implementation
     RDFTermFactory factory = new RDFTermFactory() {};
 
-    @Test(expected=UnsupportedOperationException.class)
+    @Test
     public void createBlankNode() throws Exception {
-        factory.createBlankNode();
+        assertThrows(UnsupportedOperationException.class, () ->
+            factory.createBlankNode());
     }
-    @Test(expected=UnsupportedOperationException.class)
+
+    @Test
     public void createBlankNodeName() throws Exception {
-        factory.createBlankNode("fred");
+        assertThrows(UnsupportedOperationException.class, () ->
+            factory.createBlankNode("fred"));
     }
-    @Test(expected=UnsupportedOperationException.class)
+
+    @Test
     public void createGraph() throws Exception {
-        factory.createGraph();
+        assertThrows(UnsupportedOperationException.class, () ->
+            factory.createGraph());
     }
-    @Test(expected=UnsupportedOperationException.class)
+
+    @Test
     public void createIRI() throws Exception {
-        factory.createIRI("http://example.com/");
+        assertThrows(UnsupportedOperationException.class, () ->
+            factory.createIRI("http://example.com/"));
     }
-    @Test(expected=UnsupportedOperationException.class)
+
+    @Test
     public void createLiteral() throws Exception {
-        factory.createLiteral("Alice");
+        assertThrows(UnsupportedOperationException.class, () ->
+            factory.createLiteral("Alice"));
     }
-    @Test(expected=UnsupportedOperationException.class)
+
+    @Test
     public void createLiteralLang() throws Exception {
-        factory.createLiteral("Alice", "en");
+        assertThrows(UnsupportedOperationException.class, () ->
+            factory.createLiteral("Alice", "en"));
     }
-    @Test(expected=UnsupportedOperationException.class)
+
+    @Test
     public void createLiteralTyped() throws Exception {
-        factory.createLiteral("Alice", new DummyIRI(0));
+        assertThrows(UnsupportedOperationException.class, () ->
+            factory.createLiteral("Alice", new DummyIRI(0)));
     }
-    @Test(expected=UnsupportedOperationException.class)
+
+    @Test
     public void createTriple() throws Exception {
-        factory.createTriple(new DummyIRI(1), new DummyIRI(2), new DummyIRI(3));
+        assertThrows(UnsupportedOperationException.class, () ->
+            factory.createTriple(new DummyIRI(1), new DummyIRI(2), new DummyIRI(3)));
     }
 }
