@@ -528,7 +528,7 @@
             <id>wikier</id>
             <name>Sergio Fernández</name>
             <email>wikier[at]apache[dot]org</email>
-            <url>http://www.wikier.org</url>
+            <url>https://www.wikier.org</url>
             <roles>
                 <role>Committer</role>
                 <role>Emeritus PPMC Member</role>
@@ -539,7 +539,7 @@
             <id>stain</id>
             <name>Stian Soiland-Reyes</name>
             <email>stain[at]apache[dot]org</email>
-            <url>http://orcid.org/0000-0001-9842-9718</url>
+            <url>https://orcid.org/0000-0001-9842-9718</url>
             <roles>
                 <role>Committer</role>
                 <role>PMC Member</role>
@@ -636,7 +636,7 @@
         <contributor>
             <name>Guohui Xiao</name>
             <email>gx.xiao[at]gmail[dot]com</email>
-	    <url>http://orcid.org/0000-0002-5115-4769</url>
+	    <url>https://orcid.org/0000-0002-5115-4769</url>
             <roles>
                 <role>Contributor</role>
             </roles>
