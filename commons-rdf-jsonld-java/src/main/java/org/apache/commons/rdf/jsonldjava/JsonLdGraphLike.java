@@ -220,7 +220,7 @@ abstract class AbstractJsonLdGraphLike<T extends TripleLike> implements JsonLdGr
  * {@link JsonLdDataset}.
  *
  * @param <T>
- *            specialisation of {@link TripleLike}, e.g. {@link Triple} or
+ *            specialization of {@link TripleLike}, e.g. {@link Triple} or
  *            {@link org.apache.commons.rdf.api.Quad}
  */
 public interface JsonLdGraphLike<T extends TripleLike> extends GraphLike<T> {

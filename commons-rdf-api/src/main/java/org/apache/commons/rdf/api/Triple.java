@@ -34,12 +34,12 @@ import java.util.Objects;
  * <p>
  * Note that <code>Triple</code> methods are not required to return object
  * identical (<code>==</code>) instances as long as they are equivalent
- * according to {@link RDFTerm#equals(Object)}. Specialisations of
+ * according to {@link RDFTerm#equals(Object)}. Specializations of
  * <code>Triple</code> may provide additional methods that are documented to be
  * mutable.
  * <p>
  * <code>Triple</code> methods are <strong>thread-safe</strong>, however
- * specialisations may provide additional methods that are documented to not be
+ * specializations may provide additional methods that are documented to not be
  * thread-safe.
  * <p>
  * <code>Triple</code>s can be safely used in hashing collections like
