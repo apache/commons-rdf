@@ -24,7 +24,7 @@ import java.util.Optional;
  * <p>
  * A QuadLike statement has at least a {@link #getSubject()},
  * {@link #getPredicate()}, {@link #getObject()} and {@link #getGraphName()},
- * but unlike a {@link Quad} does not have a formalised
+ * but unlike a {@link Quad} does not have a formalized
  * {@link Quad#equals(Object)} or {@link Quad#hashCode()} semantics and is not
  * required to be <em>immutable</em> or <em>thread-safe</em>. This interface can
  * also be used for <em>generalized quads</em> (e.g. a {@link BlankNode} as
