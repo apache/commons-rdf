@@ -30,7 +30,7 @@ import java.util.Optional;
  * also be used for <em>generalized quads</em> (e.g. a {@link BlankNode} as
  * predicate).
  * <p>
- * Implementations should specialise which specific {@link RDFTerm} types they
+ * Implementations should specialize which specific {@link RDFTerm} types they
  * return by overriding {@link #getSubject()}, {@link #getPredicate()},
  * {@link #getObject()} and {@link #getGraphName()}.
  *

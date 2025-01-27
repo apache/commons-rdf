@@ -216,7 +216,7 @@ abstract class AbstractJsonLdGraphLike<T extends TripleLike> implements JsonLdGr
 /**
  * Common abstract {@link GraphLike}.
  * <p>
- * Specialised by {@link JsonLdGraph}, {@link JsonLdUnionGraph} and
+ * specialized by {@link JsonLdGraph}, {@link JsonLdUnionGraph} and
  * {@link JsonLdDataset}.
  *
  * @param <T>

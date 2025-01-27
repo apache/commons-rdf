@@ -93,10 +93,10 @@ public interface RDFTerm {
     int hashCode();
 
     /**
-     * Return the term serialised as specified by the RDF-1.1 N-Triples
+     * Return the term serialized as specified by the RDF-1.1 N-Triples
      * Canonical form.
      *
-     * @return The term serialised as RDF-1.1 N-Triples.
+     * @return The term serialized as RDF-1.1 N-Triples.
      * @see <a href="http://www.w3.org/TR/n-triples/#canonical-ntriples">
      *      RDF-1.1 N-Triples Canonical form</a>
      */

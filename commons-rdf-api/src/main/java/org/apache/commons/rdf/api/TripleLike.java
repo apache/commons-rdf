@@ -28,7 +28,7 @@ package org.apache.commons.rdf.api;
  * <em>immutable</em> or <em>thread-safe</em>. This interfaced can also be used
  * for <em>generalized triples</em> (e.g. a {@link BlankNode} as predicate).
  * <p>
- * Implementations should specialise which specific {@link RDFTerm} types they
+ * Implementations should specialize which specific {@link RDFTerm} types they
  * return by overriding {@link #getSubject()}, {@link #getPredicate()} and
  * {@link #getObject()}.
  *
