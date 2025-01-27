@@ -102,7 +102,7 @@ The API also includes a couple of "upper" interfaces  which do not have
 the above equality semantics and bridge the graph/quad duality:
 
 * [TripleLike](apidocs/index.html?org/apache/commons/rdf/api/TripleLike.html):
-  common super-interface of `Triple` and `Quad` (also a generalised triple).
+  common super-interface of `Triple` and `Quad` (also a generalized triple).
 * [QuadLike](apidocs/index.html?org/apache/commons/rdf/api/QuadLike.html):
   a `TripleLike` that also has `getGraphName()` (a generalized quad)
 * [GraphLike](apidocs/index.html?org/apache/commons/rdf/api/GraphLike.html):

@@ -18,7 +18,7 @@
 package org.apache.commons.rdf.api;
 
 /**
- * A generalised "triple-like" interface, extended by {@link Triple} and
+ * A generalized "triple-like" interface, extended by {@link Triple} and
  * {@link Quad}.
  * <p>
  * A TripleLike statement has at least a {@link #getSubject()},
@@ -26,7 +26,7 @@ package org.apache.commons.rdf.api;
  * does not have a formalised {@link Triple#equals(Object)} or
  * {@link Triple#hashCode()} semantics and is not required to be
  * <em>immutable</em> or <em>thread-safe</em>. This interfaced can also be used
- * for <em>generalised triples</em> (e.g. a {@link BlankNode} as predicate).
+ * for <em>generalized triples</em> (e.g. a {@link BlankNode} as predicate).
  * <p>
  * Implementations should specialise which specific {@link RDFTerm} types they
  * return by overriding {@link #getSubject()}, {@link #getPredicate()} and

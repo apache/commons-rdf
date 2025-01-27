@@ -27,7 +27,7 @@ import java.util.stream.Stream;
  * {@link Quad}).
  * <p>
  * Unlike {@link Graph} and {@link Dataset}, this interface can support
- * generalised {@link TripleLike} or {@link QuadLike} statements, but does not
+ * generalized {@link TripleLike} or {@link QuadLike} statements, but does not
  * imply semantics like {@link #size()} or the requirement of mapping
  * {@link RDFTerm} instances from different implementations.
  * <p>
