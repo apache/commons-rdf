@@ -764,7 +764,7 @@ public final class JenaRDF implements RDF {
      * <p>
      * A generalized quad allows any {@link RDFTerm} for
      * {@link QuadLike#getSubject()}, {@link TripleLike#getPredicate()},
-     * {@link QuadLike#getObject()} and {@link QuadLike#getGraphName()} .
+     * {@link QuadLike#getObject()} and {@link QuadLike#getGraphName()}.
      * <p>
      * The returned {@link StreamRDF} can be used for instance with Jena's
      * {@link RDFDataMgr#parse(StreamRDF, String)}.
