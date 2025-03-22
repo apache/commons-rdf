@@ -289,8 +289,8 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      * Stream methods if they detect a conflict while the Stream is active.
      * </p>
      *
-     * @since 0.3.0-incubating
      * @return A {@link Stream} over all of the triples in the graph
+     * @since 0.3.0-incubating
      */
     @Override
     Stream<? extends Triple> stream();
@@ -311,7 +311,6 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      * Stream methods if they detect a conflict while the Stream is active.
      * </p>
      *
-     * @since 0.3.0-incubating
      * @param subject
      *            The triple subject (null is a wildcard)
      * @param predicate
@@ -319,6 +318,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      * @param object
      *            The triple object (null is a wildcard)
      * @return A {@link Stream} over the matched triples.
+     * @since 0.3.0-incubating
      */
     Stream<? extends Triple> stream(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
 
