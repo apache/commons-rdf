@@ -32,7 +32,7 @@ jobs:
         include:
           - java: 21
             experimental: true        
-          - java: 23
+          - java: 24
             experimental: true        
           - java: 25-ea
             experimental: true        
