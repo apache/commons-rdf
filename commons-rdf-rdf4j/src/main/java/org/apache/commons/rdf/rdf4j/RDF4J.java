@@ -109,7 +109,7 @@ public final class RDF4J implements RDF {
          */
         includeInferred,
         /**
-         * The graph/dataset should handle {@link Repository#initialize()} (if
+         * The graph/dataset should handle {@link Repository#init()} (if
          * needed) and {@link Repository#shutDown()} on {@link Graph#close()} /
          * {@link Dataset#close()}.
          */
