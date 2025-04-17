@@ -43,7 +43,7 @@ abstract class AbstractRepositoryGraphLike<T extends TripleLike> implements RDF4
         this.includeInferred = includeInferred;
         this.handleInitAndShutdown = handleInitAndShutdown;
         if (handleInitAndShutdown && !repository.isInitialized()) {
-            repository.initialize();
+            repository.init();
         }
         rdf4jTermFactory = new RDF4J(repository.getValueFactory(), salt);
     }
