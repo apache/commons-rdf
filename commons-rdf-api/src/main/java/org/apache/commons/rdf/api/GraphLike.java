@@ -56,6 +56,15 @@ public interface GraphLike<T extends TripleLike> {
     void add(T statement);
 
     /**
+     * Adds all statements.
+     * 
+     * @param statements The TripleLike statements to add.
+     */
+    default void addAll(Iterable<? extends T> statements) {
+        statements.forEach(this::add);
+    }
+    
+    /**
      * Remove all statements.
      */
     void clear();
