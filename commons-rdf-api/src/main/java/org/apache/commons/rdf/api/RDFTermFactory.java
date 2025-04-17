@@ -29,6 +29,8 @@ package org.apache.commons.rdf.api;
 public interface RDFTermFactory {
 
     /**
+     * Deprecated.
+     *
      * @return By default, throws UnsupportedOperationException
      */
     default BlankNode createBlankNode() throws UnsupportedOperationException {
@@ -36,6 +38,8 @@ public interface RDFTermFactory {
     }
 
     /**
+     * Deprecated.
+     *
      * @param name TODO
      * @return By default, throws UnsupportedOperationException
      */
@@ -44,6 +48,8 @@ public interface RDFTermFactory {
     }
 
     /**
+     * Deprecated.
+     *
      * @return By default, throws UnsupportedOperationException
      */
     default Graph createGraph() throws UnsupportedOperationException {
@@ -51,6 +57,8 @@ public interface RDFTermFactory {
     }
 
     /**
+     * Deprecated.
+     *
      * @param iri TODO
      * @return TODO
      */
@@ -59,6 +67,8 @@ public interface RDFTermFactory {
     }
 
     /**
+     * Deprecated.
+     *
      * @param lexicalForm TODO
      * @return TODO
      */
@@ -67,6 +77,8 @@ public interface RDFTermFactory {
     }
 
     /**
+     * Deprecated.
+     *
      * @param lexicalForm TODO
      * @param dataType TODO
      * @return TODO
@@ -77,6 +89,8 @@ public interface RDFTermFactory {
     }
 
     /**
+     * Deprecated.
+     *
      * @param lexicalForm TODO
      * @param languageTag TODO
      * @return TODO
@@ -87,6 +101,8 @@ public interface RDFTermFactory {
     }
 
     /**
+     * Deprecated.
+     *
      * @param subject TODO
      * @param predicate TODO
      * @param object TODO
