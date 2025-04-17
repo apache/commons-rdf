@@ -32,7 +32,6 @@ See the [Commons RDF homepage](httasp://commons.apache.org/proper/commons-rdf/) 
 
 ## License
 
-
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements. See the [NOTICE](NOTICE) file
 distributed with this work for additional information
@@ -49,7 +48,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-
 ## Contributing
 
 Feel free to subscribe to the 
@@ -60,14 +58,12 @@ to follow the ongoing development of Commons RDF, ask questions
 about its usage, or help shape Commons RDF by 
 [contributing](https://commons.apache.org/proper/commons-rdf/contributing.html)
 your ideas, code and use cases. 
- 
-
 
 ## Building
 
-Building has been tested with [Apache Maven 3.2](http://maven.apache.org/download.cgi) and [Java JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/).
+Building has been tested with [Apache Maven 3](http://maven.apache.org/download.cgi) and [Java 11 and up](https://github.com/apache/commons-rdf/blob/master/.github/workflows/maven.yml).
 
-    $ mvn clean install
+    $ mvn
     [INFO] Scanning for projects...
     [INFO] ------------------------------------------------------------------------
     [INFO] Reactor Build Order:
@@ -117,14 +113,12 @@ The `<version>` above might not be up to date,
 see the [downloads](https://commons.apache.org/proper/commons-rdf/download.html) to
 use the latest stable release published in Maven Central.
     
-
 ## Snapshot repository
 
 The Apache Commons RDF project is aiming to regularly release early 
 previews releases (0.x.y versions) and publish these to Maven Central.
 See the [downloads](https://commons.apache.org/proper/commons-rdf/download.html) to 
 use the latest stable release.
-
 
 However, if you are following the ongoing
 development on [dev@commons](https://lists.apache.org/list.html?dev@commons.apache.org), (using subject tag `[RDF]`)
@@ -147,7 +141,6 @@ as found in the current [pom.xml](pom.xml), and add to your own `pom.xml`:
   </repository>
 </repositories>
 ```
-
 
 ## Simple implementation
 
