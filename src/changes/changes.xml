@@ -37,6 +37,7 @@
             [StepSecurity] ci: Harden GitHub Actions #137.
         </action>
         <action type="fix" dev="ggregory" due-to="strangelookingnerd, Gary Gregory">Migrate tests to JUnit5 #289.</action>
+        <action type="fix" dev="ggregory" due-to="naturzukunft">Fix AbstractDatasetTest #327.</action>
         <!-- UPDATE -->
         <action type="update" dev="ggregory" due-to="Gary Gregory">
             Bump org.apache.commons:commons-parent from 52 to 78 #259, #265, #269, #273, #279.
