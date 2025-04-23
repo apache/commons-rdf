@@ -29,11 +29,14 @@ import java.util.Optional;
  * required to be <em>immutable</em> or <em>thread-safe</em>. This interface can
  * also be used for <em>generalized quads</em> (e.g. a {@link BlankNode} as
  * predicate).
+ * </p>
  * <p>
  * Implementations should specialize which specific {@link RDFTerm} types they
  * return by overriding {@link #getSubject()}, {@link #getPredicate()},
  * {@link #getObject()} and {@link #getGraphName()}.
+ * </p>
  *
+ * @param <G> Optional value type.
  * @since 0.3.0-incubating
  * @see Quad
  */
@@ -46,6 +49,7 @@ public interface QuadLike<G extends RDFTerm> extends TripleLike {
      * the graph name of this statement. If the graph name is not present,e.g.
      * the value is {@link Optional#empty()}, it indicates that this Quad is in
      * the default graph.
+     * </p>
      *
      * @return If {@link Optional#isPresent()}, the graph name of this quad,
      *         otherwise {@link Optional#empty()}, indicating the default graph.
