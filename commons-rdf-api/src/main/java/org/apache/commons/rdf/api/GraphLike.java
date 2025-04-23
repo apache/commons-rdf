@@ -102,5 +102,13 @@ public interface GraphLike<T extends TripleLike> {
      * @return A {@link Stream} of {@link TripleLike} statements.
      */
     Stream<? extends T> stream();
-
+    
+    /**
+     * Returns a possibly parallel {@code Stream} of {@link TripleLike} statements.
+     * It is allowable for this method to return a sequential stream.
+     * @return A possibly parallel {@link Stream} of {@link TripleLike} statements.
+     */    
+    default Stream<? extends T> parallelStream() {
+    	return stream();
+    }
 }
