@@ -28,7 +28,7 @@
         <!-- ADD -->
         <action dev="ggregory" type="fix" due-to="Gary Gregory">Add project.build.outputTimestam Maven property to make build reproducible.</action>
         <!-- FIX -->
-        <action dev="ggregory" type="fix" due-to="Gary Gregory">Fix Java 17 build.</action>
+        <action type="fix" dev="ggregory" due-to="Gary Gregory">Fix Java 17 build.</action>
         <action type="fix" dev="ggregory" due-to="step-security-bot, Gary Gregory">[StepSecurity] ci: Harden GitHub Actions #137.</action>
         <action type="fix" dev="ggregory" due-to="strangelookingnerd, Gary Gregory">Migrate tests to JUnit5 #289.</action>
         <action type="fix" dev="ggregory" due-to="naturzukunft">Fix AbstractDatasetTest #327.</action>
@@ -38,7 +38,7 @@
         <action type="update" dev="ggregory" due-to="Gary Gregory">Bump actions/checkout from 2 to 3.1.0 and more #76, #95.</action>
         <action type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump actions/setup-java from 1.4.0 to 3.6.0 and more #81, #99.</action>
         <action type="update" dev="ggregory" due-to="Dependabot">Bump actions/upload-artifact from 3.1.0 to 3.1.1 and more #100.</action>
-        <action dev="ggregory" type="update" due-to="Gary Gregory, Dependabot">Bump commons.japicmp.version from 0.11.0 to 0.17.1, #111.</action>
+        <action type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump commons.japicmp.version from 0.11.0 to 0.17.1, #111.</action>
         <action type="update" dev="ggregory" due-to="Gary Gregory">Bump JAXB API from 2.3.0 to 2.3.1.</action>
         <action type="update" dev="ggregory" due-to="Gary Gregory">Bump JAXB Glassfish runtime 2.3.0 to 2.3.6.</action>
         <action type="update" dev="ggregory" due-to="Gary Gregory">Bump maven-pmd-plugin from 3.12.0 to 3.16.0 #75.</action>
