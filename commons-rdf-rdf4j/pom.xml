@@ -34,6 +34,13 @@
     <commons.parent.dir>${basedir}/..</commons.parent.dir>
         <!-- project.build.outputTimestamp is managed by Maven plugins, see https://maven.apache.org/guides/mini/guide-reproducible-builds.html -->
     <project.build.outputTimestamp>2024-02-01T03:27:02Z</project.build.outputTimestamp>
+    <!-- JaCoCo: Don't make code coverage worse than: -->
+    <commons.jacoco.classRatio>0.85</commons.jacoco.classRatio>
+    <commons.jacoco.instructionRatio>0.75</commons.jacoco.instructionRatio>
+    <commons.jacoco.methodRatio>0.83</commons.jacoco.methodRatio>
+    <commons.jacoco.branchRatio>0.53</commons.jacoco.branchRatio>
+    <commons.jacoco.lineRatio>0.75</commons.jacoco.lineRatio>    
+    <commons.jacoco.complexityRatio>0.68</commons.jacoco.complexityRatio>
   </properties>
   <build>
     <plugins>
@@ -131,7 +138,7 @@
       <groupId>org.eclipse.rdf4j</groupId>
       <artifactId>rdf4j-repository-sail</artifactId>
     </dependency>
-		<!--  and nativerdf for testing -->
+    <!--  and nativerdf for testing -->
     <dependency>
       <groupId>org.eclipse.rdf4j</groupId>
       <artifactId>rdf4j-sail-nativerdf</artifactId>
