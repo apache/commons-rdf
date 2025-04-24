@@ -330,6 +330,7 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
 	 * @param predicate The triple predicate (null is a wildcard)
 	 * @param object    The triple object (null is a wildcard)
 	 * @return A {@link Stream} over the matched triples.
+	 * @since 0.6.0
 	 */
     default Stream<? extends Triple> parallelStream(BlankNodeOrIRI subject, IRI predicate, RDFTerm object) {
     	return stream(subject, predicate, object);
