@@ -102,6 +102,13 @@ public class RDF4JParser extends AbstractRDFParser<RDF4JParser> {
     private RDF4J rdf4jTermFactory;
     private ParserConfig parserConfig = new ParserConfig();
 
+    /**
+     * Constructs a new instance.
+     */
+    public RDF4JParser() {
+        // empty
+    }
+
     @Override
     protected RDF4J createRDFTermFactory() {
         return new RDF4J();

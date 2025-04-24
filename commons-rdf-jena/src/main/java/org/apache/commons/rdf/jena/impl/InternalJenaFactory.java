@@ -63,6 +63,13 @@ public abstract class InternalJenaFactory {
     }
 
     /**
+     * Constructs a new instance.
+     */
+    public InternalJenaFactory() {
+        // empty
+    }
+
+    /**
      * Creates a blank node based on the given ID and name.
      *
      * @param id   A non-empty, non-null, String that is unique to this blank node in the context of this {@link RDF}.

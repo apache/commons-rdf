@@ -54,6 +54,13 @@ public class JsonLdParser extends AbstractRDFParser<JsonLdParser> {
         }
     }
 
+    /**
+     * Constructs a new instance.
+     */
+    public JsonLdParser() {
+        // empty
+    }
+
     @Override
     protected void checkSource() throws IOException {
         super.checkSource();

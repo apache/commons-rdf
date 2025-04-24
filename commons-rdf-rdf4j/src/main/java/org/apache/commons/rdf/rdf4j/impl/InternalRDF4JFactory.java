@@ -45,15 +45,24 @@ import org.eclipse.rdf4j.repository.Repository;
  * {@link RDF4J} methods like {@link RDF4J#createBlankNode()},
  * {@link RDF4J#asRDFTerm(org.eclipse.rdf4j.model.Value)} and
  * {@link RDF4J#asGraph(Repository, Option...)}
+ * </p>
  * <p>
  * This class exists as a <code>public</code> bridge between the packages
  * {@link org.apache.commons.rdf.rdf4j} and
  * {@link org.apache.commons.rdf.rdf4j.impl} by exposing the package-public
  * constructors.
+ * </p>
  *
  * @see RDF4J
  */
 public abstract class InternalRDF4JFactory {
+
+    /**
+     * Constructs a new instance.
+     */
+    public InternalRDF4JFactory() {
+        // empty
+    }
 
     /**
      * Constructs a {@link RDF4JBlankNode} from a RDF4J {@link BNode}.
@@ -95,6 +104,7 @@ public abstract class InternalRDF4JFactory {
      * Constructs a {@link RDF4JGraph} from a RDF4J {@link Model}.
      * <p>
      * Changes in the graph will be reflected in the model, and vice versa.
+     * </p>
      *
      * @param model
      *            RDF4J {@link Model} to adapt
@@ -124,6 +134,7 @@ public abstract class InternalRDF4JFactory {
      * <p>
      * Changes in the dataset will be reflected in the repsitory, and vice
      * versa.
+     * </p>
      *
      * @param repository
      *            RDF4J {@link Repository} to adapt
@@ -145,6 +156,7 @@ public abstract class InternalRDF4JFactory {
      * Constructs a {@link RDF4JGraph} from a RDF4J {@link Model}.
      * <p>
      * Changes in the graph will be reflected in the model, and vice versa.
+     * </p>
      *
      * @param repository
      *            RDF4J {@link Repository} to adapt
