@@ -97,10 +97,10 @@
       </properties>
     </profile>
     <profile>
-      <!-- Java 11 -->
-      <id>java-24</id>
+      <!-- Java 24 and up. -->
+      <id>java-24-up</id>
       <activation>
-        <jdk>24</jdk>
+        <jdk>[24,)</jdk>
       </activation>
       <properties>
         <!-- JaCoCo: Java 24 limits show up differently on Java 24. -->
