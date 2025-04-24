@@ -701,9 +701,9 @@ public abstract class AbstractDatasetTest {
     public void testStreamDefaultGraphNameByPattern() throws Exception {
         dataset.stream(Optional.empty(), null, null, null).forEach(quad -> {
             // COMMONSRDF-55: should not be <urn:x-arq:defaultgraph> or similar
-            Boolean isGraph1 = quad.getGraphName().map(gn->gn.equals(graph1)).orElse(false);
-            Boolean isGraph2 = quad.getGraphName().map(gn->gn.equals(graph2)).orElse(false);
-            if (!(isGraph1||isGraph2)) {
+            Boolean isGraph1 = quad.getGraphName().map(gn -> gn.equals(graph1)).orElse(false);
+            Boolean isGraph2 = quad.getGraphName().map(gn -> gn.equals(graph2)).orElse(false);
+            if (!(isGraph1 || isGraph2)) {
                 assertNull(quad.getGraphName().orElse(null));
                 assertFalse(quad.getGraphName().isPresent());
             }
