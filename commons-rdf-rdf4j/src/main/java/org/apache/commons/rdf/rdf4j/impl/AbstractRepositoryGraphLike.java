@@ -55,6 +55,7 @@ abstract class AbstractRepositoryGraphLike<T extends TripleLike> implements RDF4
      * 
      * @param tripleLike A {@link Triple} or {@link Quad} to adapt
      * @return A corresponding {@link Statement}
+     * @since 0.6.0
      */
     protected Statement asStatement(final TripleLike tripleLike) {
         return rdf4jTermFactory.asStatement(tripleLike);
