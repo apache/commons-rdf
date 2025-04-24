@@ -703,7 +703,7 @@ public abstract class AbstractDatasetTest {
             // COMMONSRDF-55: should not be <urn:x-arq:defaultgraph> or similar
             Boolean isGraph1 = quad.getGraphName().map(gn->gn.equals(graph1)).orElse(false);
             Boolean isGraph2 = quad.getGraphName().map(gn->gn.equals(graph2)).orElse(false);
-            if(!(isGraph1||isGraph2)) {
+            if (!(isGraph1||isGraph2)) {
                 assertNull(quad.getGraphName().orElse(null));
                 assertFalse(quad.getGraphName().isPresent());
             }
