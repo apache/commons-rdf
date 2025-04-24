@@ -96,5 +96,22 @@
         <commons.jacoco.complexityRatio>0.72</commons.jacoco.complexityRatio>
       </properties>
     </profile>
+    <profile>
+      <!-- Java 11 -->
+      <id>java-24</id>
+      <activation>
+        <jdk>24</jdk>
+      </activation>
+      <properties>
+        <!-- JaCoCo: Java 24 limits show up differently on Java 24. -->
+        <!-- JaCoCo: Don't make code coverage worse than: -->
+        <commons.jacoco.classRatio>0.84</commons.jacoco.classRatio>
+        <commons.jacoco.instructionRatio>0.81</commons.jacoco.instructionRatio>
+        <commons.jacoco.methodRatio>0.83</commons.jacoco.methodRatio>
+        <commons.jacoco.branchRatio>0.72</commons.jacoco.branchRatio>
+        <commons.jacoco.lineRatio>0.81</commons.jacoco.lineRatio>    
+        <commons.jacoco.complexityRatio>0.72</commons.jacoco.complexityRatio>
+      </properties>
+    </profile>
   </profiles>
 </project>
