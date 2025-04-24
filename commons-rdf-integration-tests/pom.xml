@@ -18,48 +18,49 @@
     limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.apache.commons</groupId>
-		<artifactId>commons-rdf-parent</artifactId>
-		<version>0.6.0-SNAPSHOT</version>
-	</parent>
-	<artifactId>commons-rdf-integration-tests</artifactId>
-	<name>Commons RDF Integration tests</name>
-    <properties>
-        <commons.parent.dir>${basedir}/..</commons.parent.dir>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-rdf-parent</artifactId>
+    <version>0.6.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>commons-rdf-integration-tests</artifactId>
+  <name>Commons RDF Integration tests</name>
+  <properties>
+    <commons.parent.dir>${basedir}/..</commons.parent.dir>
         <!-- project.build.outputTimestamp is managed by Maven plugins, see https://maven.apache.org/guides/mini/guide-reproducible-builds.html -->
-        <project.build.outputTimestamp>2024-02-01T03:27:02Z</project.build.outputTimestamp>
-    </properties>
-	<dependencies>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>commons-rdf-api</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>commons-rdf-simple</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>commons-rdf-rdf4j</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>commons-rdf-jena</artifactId>
-			<version>${project.version}</version>
-		</dependency>
+    <project.build.outputTimestamp>2024-02-01T03:27:02Z</project.build.outputTimestamp>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>commons-rdf-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>commons-rdf-simple</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>commons-rdf-rdf4j</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>commons-rdf-jena</artifactId>
+      <version>${project.version}</version>
+    </dependency>
 		<!-- NOTE: This might be quite version-sensitive (including transitives) 
 			See the JSONLDParsingTest.
 			 -->
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>commons-rdf-jsonld-java</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-	</dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>commons-rdf-jsonld-java</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
 </project>

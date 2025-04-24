@@ -18,59 +18,53 @@
     limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-
-    <parent>
-        <groupId>org.apache.commons</groupId>
-        <artifactId>commons-rdf-parent</artifactId>
-        <version>0.6.0-SNAPSHOT</version>
-    </parent>
-
-    <artifactId>commons-rdf-jsonld-java</artifactId>
-    <packaging>jar</packaging>
-
-    <name>Commons RDF impl: JSON-LD Java</name>
-    <description>Parser integration of JSON-LD Java</description>
-    <properties>
-        <commons.parent.dir>${basedir}/..</commons.parent.dir>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-rdf-parent</artifactId>
+    <version>0.6.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>commons-rdf-jsonld-java</artifactId>
+  <packaging>jar</packaging>
+  <name>Commons RDF impl: JSON-LD Java</name>
+  <description>Parser integration of JSON-LD Java</description>
+  <properties>
+    <commons.parent.dir>${basedir}/..</commons.parent.dir>
         <!-- project.build.outputTimestamp is managed by Maven plugins, see https://maven.apache.org/guides/mini/guide-reproducible-builds.html -->
-        <project.build.outputTimestamp>2024-02-01T03:27:02Z</project.build.outputTimestamp>
-    </properties>
-
-    <distributionManagement>
-      <site>
-        <id>commonsrdf-api-site</id>
-        <url>scm:svn:${commons.scmPubUrl}/jsonld-java/</url>
-      </site>
-    </distributionManagement>
-
-    <dependencies>
-        <dependency>
-            <groupId>${project.parent.groupId}</groupId>
-            <artifactId>commons-rdf-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.parent.groupId}</groupId>
-            <artifactId>commons-rdf-api</artifactId>
-            <version>${project.version}</version>
-            <classifier>tests</classifier>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>${project.parent.groupId}</groupId>
-            <artifactId>commons-rdf-simple</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-		    <groupId>com.github.jsonld-java</groupId>
-		    <artifactId>jsonld-java</artifactId>
-		    <version>${jsonldjava.version}</version>
-		</dependency>
-        
-    </dependencies>
-
+    <project.build.outputTimestamp>2024-02-01T03:27:02Z</project.build.outputTimestamp>
+  </properties>
+  <distributionManagement>
+    <site>
+      <id>commonsrdf-api-site</id>
+      <url>scm:svn:${commons.scmPubUrl}/jsonld-java/</url>
+    </site>
+  </distributionManagement>
+  <dependencies>
+    <dependency>
+      <groupId>${project.parent.groupId}</groupId>
+      <artifactId>commons-rdf-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.parent.groupId}</groupId>
+      <artifactId>commons-rdf-api</artifactId>
+      <version>${project.version}</version>
+      <classifier>tests</classifier>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>${project.parent.groupId}</groupId>
+      <artifactId>commons-rdf-simple</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.github.jsonld-java</groupId>
+      <artifactId>jsonld-java</artifactId>
+      <version>${jsonldjava.version}</version>
+    </dependency>
+  </dependencies>
   <build>
     <plugins>
       <plugin>
