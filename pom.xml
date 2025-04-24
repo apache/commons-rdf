@@ -24,7 +24,7 @@
   <parent>
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-parent</artifactId>
-    <version>79</version>
+    <version>81</version>
   </parent>
   <artifactId>commons-rdf-parent</artifactId>
   <version>0.6.0-SNAPSHOT</version>
@@ -166,21 +166,14 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-javadocs</id>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-          </execution>
-        </executions>
         <configuration>
-          <additionalparam>-Xdoclint:all</additionalparam>
+          <source>${maven.compiler.source}</source>
+          <linksource>true</linksource>
           <links>
-            <link>${commons.javadoc.java.link}</link>
-            <link>https://jena.apache.org/documentation/javadoc/jena/</link>
-            <link>https://jena.apache.org/documentation/javadoc/arq/</link>
-            <link>https://rdf4j.org/javadoc/2.5.4//</link>
+            <!-- For now, avoid WARNING] javadoc: warning - The code being documented uses packages in the unnamed module, but the packages defined in https://jena.apache.org/documentation/javadoc/arq/ are in named modules. -->
+            <!-- <link>https://jena.apache.org/documentation/javadoc/jena/</link>-->
+            <!--  <link>https://jena.apache.org/documentation/javadoc/arq/</link>-->
+            <link>https://rdf4j.org/javadoc/${rdf4j.version}/</link>
           </links>
         </configuration>
       </plugin>
