@@ -32,6 +32,9 @@ import org.apache.commons.rdf.api.RDFTerm;
 
 import com.github.jsonldjava.core.RDFDataset;
 
+/**
+ * An empty extension of {@link JsonLdGraphLike} and {@link Dataset}.
+ */
 public interface JsonLdDataset extends JsonLdGraphLike<org.apache.commons.rdf.api.Quad>, Dataset {
 }
 

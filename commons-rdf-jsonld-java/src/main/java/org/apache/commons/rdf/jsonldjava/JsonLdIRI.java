@@ -16,12 +16,14 @@
  * limitations under the License.
  */
 package org.apache.commons.rdf.jsonldjava;
-
 import org.apache.commons.rdf.api.IRI;
 
 import com.github.jsonldjava.core.RDFDataset;
 import com.github.jsonldjava.core.RDFDataset.Node;
 
+/**
+ * An empty extension of {@link JsonLdTerm} and {@link IRI}.
+ */
 public interface JsonLdIRI extends JsonLdTerm, IRI {
 }
 

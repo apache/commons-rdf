@@ -37,6 +37,9 @@ import org.apache.jena.riot.RDFParser;
 import org.apache.jena.riot.system.StreamRDF;
 import org.apache.jena.riot.system.StreamRDFLib;
 
+/**
+ * Experimental.
+ */
 public class JenaRDFParser extends AbstractRDFParser<JenaRDFParser> {
 
     private Consumer<TripleLike> generalizedConsumerTriple;
@@ -89,6 +92,12 @@ public class JenaRDFParser extends AbstractRDFParser<JenaRDFParser> {
         this.generalizedConsumerQuad = null;
     }
 
+    /**
+     * Experimental.
+     *
+     * @param consumer a Consumer.
+     * @return a clone of this instance.
+     */
     public JenaRDFParser targetGeneralizedQuad(final Consumer<QuadLike<RDFTerm>> consumer) {
         final JenaRDFParser c = this.clone();
         c.resetTarget();
@@ -96,6 +105,12 @@ public class JenaRDFParser extends AbstractRDFParser<JenaRDFParser> {
         return c;
     }
 
+    /**
+     * Experimental.
+     *
+     * @param consumer a Consumer.
+     * @return a clone of this instance.
+     */
     public JenaRDFParser targetGeneralizedTriple(final Consumer<TripleLike> consumer) {
         final JenaRDFParser c = this.clone();
         c.resetTarget();

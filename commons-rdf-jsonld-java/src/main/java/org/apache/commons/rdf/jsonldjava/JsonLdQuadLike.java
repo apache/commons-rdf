@@ -24,6 +24,9 @@ import org.apache.commons.rdf.api.RDFTerm;
 
 import com.github.jsonldjava.core.RDFDataset.Quad;
 
+/**
+ * An empty extension of {@link QuadLike} and {@link JsonLdTripleLike}.
+ */
 public interface JsonLdQuadLike<G extends RDFTerm> extends QuadLike<G>, JsonLdTripleLike {
 
 }

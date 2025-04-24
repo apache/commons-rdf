@@ -26,6 +26,9 @@ import org.apache.commons.rdf.api.Triple;
 
 import com.github.jsonldjava.core.RDFDataset.Quad;
 
+/**
+ * An empty extension of {@link Triple} and {@link JsonLdTripleLike}.
+ */
 public interface JsonLdTriple extends Triple, JsonLdTripleLike {
 
 }

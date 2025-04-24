@@ -103,6 +103,9 @@ import org.eclipse.rdf4j.sail.memory.MemoryStore;
 @SuppressWarnings("PMD.UnnecessaryFullyQualifiedName") // we use fully-qualified names for clarity
 public final class RDF4J implements RDF {
 
+    /**
+     * Enumerates options.
+     */
     public enum Option {
         /**
          * The Graph/Dataset should include any inferred statements
@@ -643,6 +646,11 @@ public final class RDF4J implements RDF {
         return asTriple(statement);
     }
 
+    /**
+     * Gets the value factory.
+     *
+     * @return the value factory.
+     */
     public ValueFactory getValueFactory() {
         return valueFactory;
     }

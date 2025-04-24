@@ -23,6 +23,7 @@ package org.apache.commons.rdf.api;
  * position of a {@link Quad}.
  * <p>
  * Instances of BlankNodeOrIRI SHOULD be a {@link BlankNode} or an {@link IRI}.
+ * </p>
  */
 public interface BlankNodeOrIRI extends RDFTerm {
 }

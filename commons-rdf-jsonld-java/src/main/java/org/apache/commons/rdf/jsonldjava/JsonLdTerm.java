@@ -40,6 +40,9 @@ abstract class AbstractJsonLdTermImpl implements JsonLdTerm {
 
 }
 
+/**
+ * Extends {@link RDFTerm} to provide a conversion service.
+ */
 public interface JsonLdTerm extends RDFTerm {
 
     /**

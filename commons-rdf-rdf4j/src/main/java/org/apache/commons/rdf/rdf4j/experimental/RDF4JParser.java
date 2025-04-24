@@ -123,6 +123,11 @@ public class RDF4JParser extends AbstractRDFParser<RDF4JParser> {
         return parserConfig;
     }
 
+    /**
+     * Creates a new instance of an RDFHandler.
+     *
+     * @return a new instance of an RDFHandler.
+     */
     protected RDFHandler makeRDFHandler() {
 
         // TODO: Can we join the below DF4JDataset and RDF4JGraph cases
