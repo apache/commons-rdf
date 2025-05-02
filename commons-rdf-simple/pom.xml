@@ -115,7 +115,7 @@
     </profile>
     <profile>
       <!-- Java 21 -->
-      <id>java-21-up</id>
+      <id>java-21</id>
       <activation>
         <jdk>21</jdk>
       </activation>
@@ -128,7 +128,7 @@
     </profile>
     <profile>
       <!-- Java 24 -->
-      <id>java-24-up</id>
+      <id>java-24</id>
       <activation>
         <jdk>24</jdk>
       </activation>
