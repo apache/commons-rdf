@@ -100,7 +100,7 @@
       <!-- Java 24 and up. -->
       <id>java-17-up</id>
       <activation>
-        <jdk>[17,)</jdk>
+        <jdk>[17,24]</jdk>
       </activation>
       <properties>
         <!-- JaCoCo: Java 17 limits show up differently on Java >= 17. -->
@@ -111,6 +111,18 @@
         <commons.jacoco.branchRatio>0.72</commons.jacoco.branchRatio>
         <commons.jacoco.lineRatio>0.81</commons.jacoco.lineRatio>    
         <commons.jacoco.complexityRatio>0.72</commons.jacoco.complexityRatio>
+      </properties>
+    </profile>
+    <profile>
+      <!-- Java 25 -->
+      <id>java-25</id>
+      <activation>
+        <jdk>25</jdk>
+      </activation>
+      <properties>
+        <!-- JaCoCo: Don't make code coverage worse than: -->
+        <commons.jacoco.branchRatio>0.71</commons.jacoco.branchRatio>
+        <commons.jacoco.complexityRatio>0.71</commons.jacoco.complexityRatio>
       </properties>
     </profile>
   </profiles>
