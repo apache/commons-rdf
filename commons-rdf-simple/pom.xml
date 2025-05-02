@@ -86,7 +86,7 @@
         <jdk>11</jdk>
       </activation>
       <properties>
-        <!-- JaCoCo: Java 11 limits show up differently on Java 11 vs. > 11. -->
+        <!-- JaCoCo: Limits show up differently for this Java version. -->
         <!-- JaCoCo: Don't make code coverage worse than: -->
         <commons.jacoco.classRatio>0.84</commons.jacoco.classRatio>
         <commons.jacoco.instructionRatio>0.65</commons.jacoco.instructionRatio>
@@ -97,13 +97,13 @@
       </properties>
     </profile>
     <profile>
-      <!-- Java 24 and up. -->
-      <id>java-17-up</id>
+      <!-- Java 17 -->
+      <id>java-17</id>
       <activation>
-        <jdk>[17,24]</jdk>
+        <jdk>17</jdk>
       </activation>
       <properties>
-        <!-- JaCoCo: Java 17 limits show up differently on Java >= 17. -->
+        <!-- JaCoCo: Limits show up differently for this Java version. -->
         <!-- JaCoCo: Don't make code coverage worse than: -->
         <commons.jacoco.classRatio>0.84</commons.jacoco.classRatio>
         <commons.jacoco.instructionRatio>0.81</commons.jacoco.instructionRatio>
@@ -114,12 +114,26 @@
       </properties>
     </profile>
     <profile>
+      <!-- Java 24 -->
+      <id>java-24-up</id>
+      <activation>
+        <jdk>24</jdk>
+      </activation>
+      <properties>
+        <!-- JaCoCo: Limits show up differently for this Java version. -->
+        <!-- JaCoCo: Don't make code coverage worse than: -->
+        <commons.jacoco.branchRatio>0.73</commons.jacoco.branchRatio>
+        <commons.jacoco.complexityRatio>0.73</commons.jacoco.complexityRatio>
+      </properties>
+    </profile>
+    <profile>
       <!-- Java 25 -->
       <id>java-25</id>
       <activation>
         <jdk>25</jdk>
       </activation>
       <properties>
+        <!-- JaCoCo: Limits show up differently for this Java version. -->
         <!-- JaCoCo: Don't make code coverage worse than: -->
         <commons.jacoco.branchRatio>0.71</commons.jacoco.branchRatio>
         <commons.jacoco.complexityRatio>0.71</commons.jacoco.complexityRatio>
