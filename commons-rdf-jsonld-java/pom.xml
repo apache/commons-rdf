@@ -88,4 +88,17 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <!-- Java 24 -->
+      <id>java-24</id>
+      <activation>
+        <jdk>24</jdk>
+      </activation>
+      <properties>
+        <!-- JaCoCo: Don't make code coverage worse than: -->
+        <commons.jacoco.branchRatio>0.57</commons.jacoco.branchRatio>
+      </properties>
+    </profile>
+  </profiles>
 </project>
