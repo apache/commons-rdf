@@ -77,11 +77,24 @@ public class DummyGraphTest {
     }
 
     @Test
+    public void testParallelStream() throws Exception {
+        assertEquals(new DummyTriple(), graph.parallelStream().findAny().get());
+    }
+
+    @Test
     public void testStreamFiltered() throws Exception {
         assertEquals(new DummyTriple(), graph.stream(null, null, null).findAny().get());
         assertEquals(new DummyTriple(),
                 graph.stream(new DummyIRI(1), new DummyIRI(2), new DummyIRI(3)).findAny().get());
         assertFalse(graph.stream(new DummyIRI(0), new DummyIRI(0), new DummyIRI(0)).findAny().isPresent());
+    }
+
+    @Test
+    public void testParallelStreamFiltered() throws Exception {
+        assertEquals(new DummyTriple(), graph.parallelStream(null, null, null).findAny().get());
+        assertEquals(new DummyTriple(),
+                graph.parallelStream(new DummyIRI(1), new DummyIRI(2), new DummyIRI(3)).findAny().get());
+        assertFalse(graph.parallelStream(new DummyIRI(0), new DummyIRI(0), new DummyIRI(0)).findAny().isPresent());
     }
 
 }
