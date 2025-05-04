@@ -15,6 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.rdf.rdf4j;
 
 import java.util.Optional;
@@ -27,13 +28,14 @@ import org.eclipse.rdf4j.repository.Repository;
 /**
  * Marker interface for RDF4J implementations of GraphLike.
  * <p>
- * This is a common interface for {@link RDF4JGraph} and {@link RDF4JDataset}
- * which provides access to the underlying RDF4J {@link Model} and/or
+ * This is a common interface for {@link RDF4JGraph} and {@link RDF4JDataset} which provides access to the underlying RDF4J {@link Model} and/or
  * {@link Repository}.
+ * </p>
  * <p>
- * At least one of {@link #asModel()} or {@link #asRepository()} will always be
- * {@link Optional#isPresent()}.
+ * At least one of {@link #asModel()} or {@link #asRepository()} will always be {@link Optional#isPresent()}.
+ * </p>
  *
+ * @param <T> A {@link TripleLike} type.
  * @see RDF4JDataset
  * @see RDF4JGraph
  */
@@ -42,10 +44,11 @@ public interface RDF4JGraphLike<T extends TripleLike> extends GraphLike<T>, Auto
     /**
      * Return the corresponding RDF4J {@link Model}, if present.
      * <p>
-     * The return value is {@link Optional#isPresent()} if this is backed by a
-     * Model.
+     * The return value is {@link Optional#isPresent()} if this is backed by a Model.
+     * </p>
      * <p>
      * Changes to the Model are reflected in both directions.
+     * </p>
      *
      * @return The corresponding RDF4J Model.
      */
@@ -54,13 +57,13 @@ public interface RDF4JGraphLike<T extends TripleLike> extends GraphLike<T>, Auto
     /**
      * Return the corresponding RDF4J {@link Repository}, if present.
      * <p>
-     * The return value is {@link Optional#isPresent()} if this is backed by a
-     * Repository.
+     * The return value is {@link Optional#isPresent()} if this is backed by a Repository.
+     * </p>
      * <p>
      * Changes to the Repository are reflected in both directions.
+     * </p>
      *
      * @return The corresponding RDF4J Repository.
      */
     Optional<Repository> asRepository();
-
 }

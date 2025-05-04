@@ -21,9 +21,10 @@ import org.apache.commons.rdf.api.Literal;
 import org.apache.jena.graph.Node;
 
 /**
- * A Jena-backed {@link Literal}
- *
+ * A Jena-backed {@link Literal}.
+ * <p>
  * The underlying Jena {@link Node} can be accessed from {@link #asJenaNode()}.
+ * </p>
  *
  * @see Node#isLiteral()
  */

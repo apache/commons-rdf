@@ -24,6 +24,7 @@ import org.apache.commons.rdf.api.BlankNodeOrIRI;
  * <p>
  * The underlying Jena {@link org.apache.jena.sparql.core.Quad} can be accessed
  * with {@link #asJenaQuad()}.
+ * </p>
  */
 public interface JenaQuad extends org.apache.commons.rdf.api.Quad, JenaQuadLike<BlankNodeOrIRI> {
 }

@@ -24,6 +24,9 @@ import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDFTerm;
 // Note: To avoid confusion - don't import either Quad
 
+/**
+ * An empty extension of {@link org.apache.commons.rdf.api.Quad} and {@link JsonLdTripleLike}.
+ */
 public interface JsonLdQuad extends org.apache.commons.rdf.api.Quad, JsonLdTripleLike {
 
 }

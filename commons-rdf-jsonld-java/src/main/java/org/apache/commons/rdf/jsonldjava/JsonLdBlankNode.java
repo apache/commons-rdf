@@ -21,6 +21,9 @@ import org.apache.commons.rdf.api.BlankNode;
 
 import com.github.jsonldjava.core.RDFDataset.Node;
 
+/**
+ * An empty extension of {@link JsonLdTerm} and {@link BlankNode}.
+ */
 public interface JsonLdBlankNode extends JsonLdTerm, BlankNode {
 }
 

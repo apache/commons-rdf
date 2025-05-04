@@ -19,6 +19,9 @@ package org.apache.commons.rdf.jsonldjava;
 
 import org.apache.commons.rdf.api.TripleLike;
 
+/**
+ * Extends {@link TripleLike} to provide a conversion service.
+ */
 public interface JsonLdTripleLike extends TripleLike {
 
     /**

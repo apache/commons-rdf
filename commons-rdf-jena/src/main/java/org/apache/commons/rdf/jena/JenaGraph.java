@@ -25,17 +25,17 @@ import org.apache.jena.rdf.model.Model;
 /**
  * A Jena-backed {@link org.apache.commons.rdf.api.Graph}.
  * <p>
- * The underlying Jena {@link org.apache.jena.graph.Graph} can be accessed with
- * {@link #asJenaGraph()}.
+ * The underlying Jena {@link org.apache.jena.graph.Graph} can be accessed with {@link #asJenaGraph()}.
+ * </p>
  */
 public interface JenaGraph extends org.apache.commons.rdf.api.Graph {
 
     /**
      * Return the underlying Jena {@link org.apache.jena.graph.Graph}.
      * <p>
-     * Changes to the Jena graph are reflected in the Commons RDF graph and vice
-     * versa.
-     *
+     * Changes to the Jena graph are reflected in the Commons RDF graph and vice versa.
+     * </p>
+     * 
      * @return A Jena {@link org.apache.jena.graph.Graph}
      */
     org.apache.jena.graph.Graph asJenaGraph();
@@ -43,12 +43,12 @@ public interface JenaGraph extends org.apache.commons.rdf.api.Graph {
     /**
      * Return the graph as a Jena {@link Model}.
      * <p>
-     * Changes to the Jena model are reflected in the Commons RDF graph and vice
-     * versa.
+     * Changes to the Jena model are reflected in the Commons RDF graph and vice versa.
+     * </p>
      * <p>
-     * Note that in some cases there is no underlying Jena {@link Model}, in
-     * which case this method will create one. Subsequent calls should return
-     * the same model.
+     * Note that in some cases there is no underlying Jena {@link Model}, in which case this method will create one. Subsequent calls should return the same
+     * model.
+     * </p>
      *
      * @return A Jena {@link Model}
      */

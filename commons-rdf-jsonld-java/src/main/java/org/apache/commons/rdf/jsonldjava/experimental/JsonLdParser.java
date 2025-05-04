@@ -41,6 +41,9 @@ import com.github.jsonldjava.core.JsonLdProcessor;
 import com.github.jsonldjava.core.RDFDataset;
 import com.github.jsonldjava.utils.JsonUtils;
 
+/**
+ * Experimental.
+ */
 public class JsonLdParser extends AbstractRDFParser<JsonLdParser> {
 
     private static URL asURL(final IRI iri) throws IllegalStateException {
@@ -49,6 +52,13 @@ public class JsonLdParser extends AbstractRDFParser<JsonLdParser> {
         } catch (MalformedURLException | URISyntaxException e) {
             throw new IllegalStateException("Invalid URL: " + iri.getIRIString());
         }
+    }
+
+    /**
+     * Constructs a new instance.
+     */
+    public JsonLdParser() {
+        // empty
     }
 
     @Override

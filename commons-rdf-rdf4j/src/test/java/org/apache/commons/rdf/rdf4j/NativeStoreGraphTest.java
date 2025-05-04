@@ -130,7 +130,7 @@ public class NativeStoreGraphTest extends AbstractGraphTest {
     public void createRepository() throws IOException {
         final Sail sail = new NativeStore(newFolder(tempDir, "junit"));
         repository = new SailRepository(sail);
-        repository.initialize();
+        repository.init();
     }
 
     public synchronized SailRepository getRepository() {

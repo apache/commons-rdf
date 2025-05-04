@@ -27,11 +27,13 @@ import org.apache.jena.sparql.core.Quad;
  * <p>
  * This is a marker interface common to its specializations {@link JenaQuad} and
  * {@link JenaGeneralizedQuadLike}.
+ * </p>
  *
+ * @param <T> An {@link RDFTerm} type.
  * @see JenaQuad
  * @see JenaGeneralizedQuadLike
  */
-public interface JenaQuadLike<G extends RDFTerm> extends JenaTripleLike, QuadLike<G> {
+public interface JenaQuadLike<T extends RDFTerm> extends JenaTripleLike, QuadLike<T> {
 
     /**
      * Return the adapted Jena quad

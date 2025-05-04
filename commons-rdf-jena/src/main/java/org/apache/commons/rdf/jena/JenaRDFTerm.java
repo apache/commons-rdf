@@ -25,11 +25,18 @@ import org.apache.jena.graph.Node;
  * A Jena-backed {@link RDFTerm}.
  * <p>
  * The underlying Jena {@link Node} can be retrieved with {@link #asJenaNode()}.
+ * </p>
  *
  * @see JenaIRI
  * @see JenaLiteral
  * @see JenaBlankNode
  */
 public interface JenaRDFTerm extends RDFTerm {
+    
+    /**
+     * Converts this instance to a node.
+     *
+     * @return this instance as a node.
+     */
     Node asJenaNode();
 }
