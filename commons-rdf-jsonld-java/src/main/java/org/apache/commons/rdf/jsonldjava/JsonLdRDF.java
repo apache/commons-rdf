@@ -42,6 +42,9 @@ public final class JsonLdRDF implements RDF {
 
     final String bnodePrefix;
 
+    /**
+     * Constructs a new instance.
+     */
     public JsonLdRDF() {
         // An "outside Graph" bnodePrefix
         this("urn:uuid:" + UUID.randomUUID() + "#b");
@@ -86,6 +89,12 @@ public final class JsonLdRDF implements RDF {
         return new JsonLdGraphImpl(rdfDataSet);
     }
 
+    /**
+     * Creates a new node for the given term.
+     *
+     * @param term The RDF term.
+     * @return a new node.
+     */
     public Node asJsonLdNode(final RDFTerm term) {
         if (term instanceof JsonLdBlankNode) {
             final JsonLdBlankNode jsonLdBlankNode = (JsonLdBlankNode) term;

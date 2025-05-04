@@ -37,6 +37,7 @@ import org.apache.commons.rdf.api.Triple;
  * {@link Dataset} instances created by SimpleRDF are simple in-memory
  * Implementations that are not thread-safe or efficient, but which may be
  * useful for testing and prototyping purposes.
+ * </p>
  */
 public class SimpleRDF implements RDF {
 
@@ -45,6 +46,7 @@ public class SimpleRDF implements RDF {
      * implementation. Used by {@link GraphImpl} to avoid double remapping.
      * <p>
      * This method is package protected to avoid any third-party subclasses.
+     * </p>
      */
     interface SimpleRDFTerm extends RDFTerm {
     }
@@ -53,6 +55,13 @@ public class SimpleRDF implements RDF {
      * Unique salt per instance, for {@link #createBlankNode(String)}
      */
     private final UUID SALT = UUID.randomUUID();
+
+    /**
+     * Constructs a new instance.
+     */
+    public SimpleRDF() {
+        // empty
+    }
 
     @Override
     public BlankNode createBlankNode() {

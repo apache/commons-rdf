@@ -18,43 +18,46 @@
     limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-
-	<parent>
-		<groupId>org.apache.commons</groupId>
-		<artifactId>commons-rdf-parent</artifactId>
-		<version>0.6.0-SNAPSHOT</version>
-	</parent>
-
-	<artifactId>commons-rdf-jena</artifactId>
-	<packaging>jar</packaging>
-
-	<name>Commons RDF impl: Jena</name>
-	<description>Apache Jena implementation of Commons RDF API</description>
-    <properties>
-        <commons.parent.dir>${basedir}/..</commons.parent.dir>
-        <project.build.outputTimestamp>2024-02-01T03:27:02Z</project.build.outputTimestamp>
-    </properties>
-
-    <distributionManagement>
-      <site>
-        <id>commonsrdf-api-site</id>
-        <url>scm:svn:${commons.scmPubUrl}/jena/</url>
-      </site>
-    </distributionManagement>
-
-	<dependencies>
-		<dependency>
-			<groupId>${project.parent.groupId}</groupId>
-			<artifactId>commons-rdf-api</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>${project.parent.groupId}</groupId>
-			<artifactId>commons-rdf-simple</artifactId>
-			<version>${project.version}</version>
-		</dependency>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-rdf-parent</artifactId>
+    <version>0.6.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>commons-rdf-jena</artifactId>
+  <packaging>jar</packaging>
+  <name>Commons RDF impl: Jena</name>
+  <description>Apache Jena implementation of Commons RDF API</description>
+  <properties>
+    <commons.parent.dir>${basedir}/..</commons.parent.dir>
+    <project.build.outputTimestamp>2024-02-01T03:27:02Z</project.build.outputTimestamp>
+    <!-- JaCoCo: Don't make code coverage worse than: -->
+    <commons.jacoco.classRatio>0.81</commons.jacoco.classRatio>
+    <commons.jacoco.instructionRatio>0.72</commons.jacoco.instructionRatio>
+    <commons.jacoco.methodRatio>0.82</commons.jacoco.methodRatio>
+    <commons.jacoco.branchRatio>0.58</commons.jacoco.branchRatio>
+    <commons.jacoco.lineRatio>0.74</commons.jacoco.lineRatio>    
+    <commons.jacoco.complexityRatio>0.67</commons.jacoco.complexityRatio>
+  </properties>
+  <distributionManagement>
+    <site>
+      <id>commonsrdf-api-site</id>
+      <url>scm:svn:${commons.scmPubUrl}/jena/</url>
+    </site>
+  </distributionManagement>
+  <dependencies>
+    <dependency>
+      <groupId>${project.parent.groupId}</groupId>
+      <artifactId>commons-rdf-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.parent.groupId}</groupId>
+      <artifactId>commons-rdf-simple</artifactId>
+      <version>${project.version}</version>
+    </dependency>
 		<!-- Uncomment below and disable jena-osgi to access the regular non-osgi 
 			 Jena dependencies (e.g. for debugging) -->
 		<!-- 
@@ -69,34 +72,31 @@
 				--> 
 
 		<!-- As commons-rdf-jena is an OSGi bundle, we'll use the Jena OSGi bundle -->
-		<dependency>
-			<groupId>org.apache.jena</groupId>
-			<artifactId>jena-osgi</artifactId>
-			<version>${jena.version}</version>
-		</dependency>
+    <dependency>
+      <groupId>org.apache.jena</groupId>
+      <artifactId>jena-osgi</artifactId>
+      <version>${jena.version}</version>
+    </dependency>
 
 		<!-- Additional bundles needed by jena-osgi -->
-		<dependency>
-			<groupId>org.apache.servicemix.bundles</groupId>
-			<artifactId>org.apache.servicemix.bundles.xerces</artifactId>
-			<version>${servicemix.xerces.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.github.andrewoma.dexx</groupId>
-			<artifactId>collection</artifactId>
-			<version>${dexx.collection.version}</version>
-		</dependency>
-
-
-		<dependency>
-			<groupId>${project.parent.groupId}</groupId>
-			<artifactId>commons-rdf-api</artifactId>
-			<version>${project.version}</version>
-			<classifier>tests</classifier>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
-
+    <dependency>
+      <groupId>org.apache.servicemix.bundles</groupId>
+      <artifactId>org.apache.servicemix.bundles.xerces</artifactId>
+      <version>${servicemix.xerces.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.github.andrewoma.dexx</groupId>
+      <artifactId>collection</artifactId>
+      <version>${dexx.collection.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.parent.groupId}</groupId>
+      <artifactId>commons-rdf-api</artifactId>
+      <version>${project.version}</version>
+      <classifier>tests</classifier>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
   <build>
     <plugins>
       <plugin>

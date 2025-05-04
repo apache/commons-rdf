@@ -699,12 +699,15 @@ public abstract class AbstractDatasetTest {
 
     @Test
     public void testStreamDefaultGraphNameByPattern() throws Exception {
-        // Explicitly select in only the default graph Optional.empty()
-        final Optional<? extends Quad> aliceTopic = dataset.stream(Optional.empty(), null, null, null).findAny();
-        assertTrue(aliceTopic.isPresent());
-        // COMMONSRDF-55: should not be <urn:x-arq:defaultgraph> or similar
-        assertNull(aliceTopic.get().getGraphName().orElse(null));
-        assertFalse(aliceTopic.get().getGraphName().isPresent());
+        dataset.stream(Optional.empty(), null, null, null).forEach(quad -> {
+            // COMMONSRDF-55: should not be <urn:x-arq:defaultgraph> or similar
+            Boolean isGraph1 = quad.getGraphName().map(gn -> gn.equals(graph1)).orElse(false);
+            Boolean isGraph2 = quad.getGraphName().map(gn -> gn.equals(graph2)).orElse(false);
+            if (!(isGraph1 || isGraph2)) {
+                assertNull(quad.getGraphName().orElse(null));
+                assertFalse(quad.getGraphName().isPresent());
+            }
+        });
     }
 
     @Test

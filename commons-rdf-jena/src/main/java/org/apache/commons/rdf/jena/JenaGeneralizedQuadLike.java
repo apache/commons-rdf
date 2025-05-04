@@ -27,10 +27,12 @@ import org.apache.commons.rdf.api.RDFTerm;
  * {@link RDFTerm} type for its {@link #getSubject()}, {@link #getPredicate()}
  * {@link #getObject()} and {@link #getGraphName()}. This might be useful with
  * some serializations like JSON-LD.
+ * </p>
  * <p>
  * Note that unlike {@link Quad}, this type does not have fixed semantics for
  * {@link Object#equals(Object)} or {@link Object#hashCode()} beyond object
  * identity.
+ * </p>
  *
  * @see JenaGeneralizedTripleLike
  */

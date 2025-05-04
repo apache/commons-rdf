@@ -27,6 +27,9 @@ import org.apache.commons.rdf.simple.Types;
 
 import com.github.jsonldjava.core.RDFDataset.Node;
 
+/**
+ * An empty extension of {@link JsonLdTerm} and {@link Literal}.
+ */
 public interface JsonLdLiteral extends JsonLdTerm, Literal {
 }
 

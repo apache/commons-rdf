@@ -36,6 +36,13 @@ public class SimpleRDFTermFactory implements RDFTermFactory {
 
     private final SimpleRDF factory = new SimpleRDF();
 
+    /**
+     * Constructs a new instance.
+     */
+    public SimpleRDFTermFactory() {
+        // empty
+    }
+
     @Override
     public BlankNode createBlankNode() {
         return factory.createBlankNode();

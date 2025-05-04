@@ -18,179 +18,162 @@
     limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-
-    <parent>
-        <groupId>org.apache.commons</groupId>
-        <artifactId>commons-parent</artifactId>
-        <version>79</version>
-    </parent>
-
-    <artifactId>commons-rdf-parent</artifactId>
-    <version>0.6.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
-
-    <name>Commons RDF</name>
-    <description>Commons Java API for RDF 1.1</description>
-
-    <url>https://commons.apache.org/proper/commons-rdf/</url>
-
-    <inceptionYear>2015</inceptionYear>
-
-    <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-        <project.build.encoding>UTF-8</project.build.encoding>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-parent</artifactId>
+    <version>83</version>
+  </parent>
+  <artifactId>commons-rdf-parent</artifactId>
+  <version>0.6.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>Commons RDF</name>
+  <description>Commons Java API for RDF 1.1</description>
+  <url>https://commons.apache.org/proper/commons-rdf/</url>
+  <inceptionYear>2015</inceptionYear>
+  <properties>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+    <project.build.encoding>UTF-8</project.build.encoding>
         <!-- project.build.outputTimestamp is managed by Maven plugins, see https://maven.apache.org/guides/mini/guide-reproducible-builds.html -->
-        <project.build.outputTimestamp>2024-02-01T03:27:02Z</project.build.outputTimestamp>
-        <commons.parent.dir>${basedir}</commons.parent.dir>
-        <commons.encoding>UTF-8</commons.encoding>
-        <commons.componentid>rdf</commons.componentid>
-        <commons.module.name>org.apache.commons.rdf</commons.module.name>
-        <commons.release.version>0.6.0</commons.release.version>
-        <commons.bc.version>0.5.0</commons.bc.version>
-        <commons.jira.id>COMMONSRDF</commons.jira.id>
-        <commons.jira.pid>12316620</commons.jira.pid>
-        <commons.site.path>rdf</commons.site.path>
-	    <commons.scmPubUrl>https://svn.apache.org/repos/infra/websites/production/commons/content/proper/commons-rdf/</commons.scmPubUrl>
+    <project.build.outputTimestamp>2024-02-01T03:27:02Z</project.build.outputTimestamp>
+    <commons.parent.dir>${basedir}</commons.parent.dir>
+    <commons.encoding>UTF-8</commons.encoding>
+    <commons.componentid>rdf</commons.componentid>
+    <commons.module.name>org.apache.commons.rdf</commons.module.name>
+    <commons.release.version>0.6.0</commons.release.version>
+    <commons.bc.version>0.5.0</commons.bc.version>
+    <commons.jira.id>COMMONSRDF</commons.jira.id>
+    <commons.jira.pid>12316620</commons.jira.pid>
+    <commons.site.path>rdf</commons.site.path>
+    <commons.scmPubUrl>https://svn.apache.org/repos/infra/websites/production/commons/content/proper/commons-rdf/</commons.scmPubUrl>
         <!--
         <commons.scmPubCheckoutDirectory>${project.build.directory}/site-content</commons.scmPubCheckoutDirectory>
         -->
 
 	    <!--  NOTE: jsonldjava is also used by rdf4j and jena, check the version
 	          is cross-compatible -->
-        <jsonldjava.version>0.13.4</jsonldjava.version>
-        <rdf4j.version>3.7.7</rdf4j.version>
-        <jena.version>3.5.0</jena.version>
+    <jsonldjava.version>0.13.4</jsonldjava.version>
+    <rdf4j.version>5.1.3</rdf4j.version>
+    <jena.version>3.5.0</jena.version>
         <!--  NOTE: dexx and xerces versions should match
         the versions marked as <optional> in jena-osgi pom
          -->
-        <dexx.collection.version>0.7</dexx.collection.version>
-        <servicemix.xerces.version>2.11.0_1</servicemix.xerces.version>
-
-        <!-- Test dependencies -->
-        <slf4j.version>1.7.26</slf4j.version>
-        <skipAPICompatCheck>false</skipAPICompatCheck>
-        <moditect.skip>true</moditect.skip>
-    </properties>
-
-    <scm>
-        <url>https://gitbox.apache.org/repos/asf/commons-rdf.git</url>
-        <connection>scm:git:https://gitbox.apache.org/repos/asf/commons-rdf.git</connection>
-        <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/commons-rdf.git</developerConnection>
-        <tag>HEAD</tag>
-    </scm>
-
-    <issueManagement>
-        <system>Jira</system>
-        <url>https://issues.apache.org/jira/browse/COMMONSRDF</url>
-    </issueManagement>
-    <ciManagement>
-      <system>jenkins</system>
-      <url>https://builds.apache.org/</url>
-    </ciManagement>
-
-    <modules>
-        <module>commons-rdf-api</module>
-        <module>commons-rdf-simple</module>
-        <module>commons-rdf-rdf4j</module>
-        <module>commons-rdf-jena</module>
-        <module>commons-rdf-jsonld-java</module>
-        <module>commons-rdf-integration-tests</module>
-    </modules>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-simple</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
+    <dexx.collection.version>0.7</dexx.collection.version>
+    <servicemix.xerces.version>2.11.0_1</servicemix.xerces.version>
+    <!-- Test dependencies -->
+    <slf4j.version>1.7.26</slf4j.version>
+    <skipAPICompatCheck>false</skipAPICompatCheck>
+    <moditect.skip>true</moditect.skip>
+    <!-- JaCoCo: Don't make code coverage worse than: -->
+    <commons.jacoco.haltOnFailure>true</commons.jacoco.haltOnFailure>
+  </properties>
+  <scm>
+    <url>https://gitbox.apache.org/repos/asf/commons-rdf.git</url>
+    <connection>scm:git:https://gitbox.apache.org/repos/asf/commons-rdf.git</connection>
+    <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/commons-rdf.git</developerConnection>
+    <tag>HEAD</tag>
+  </scm>
+  <issueManagement>
+    <system>Jira</system>
+    <url>https://issues.apache.org/jira/browse/COMMONSRDF</url>
+  </issueManagement>
+  <ciManagement>
+    <system>jenkins</system>
+    <url>https://builds.apache.org/</url>
+  </ciManagement>
+  <modules>
+    <module>commons-rdf-api</module>
+    <module>commons-rdf-simple</module>
+    <module>commons-rdf-rdf4j</module>
+    <module>commons-rdf-jena</module>
+    <module>commons-rdf-jsonld-java</module>
+    <module>commons-rdf-integration-tests</module>
+  </modules>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-simple</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
     <!--
     Common dependencies across modules.
     Keep this list small and only <scope>test</scope> !
     -->
-    <dependencies>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
+  <dependencies>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
             <!-- System.err logging for Jena, JSONLD-Java, RDF4J -->
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.19.0</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
-    <build>
-        <defaultGoal>clean verify checkstyle:check javadoc:javadoc</defaultGoal>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <skipIfEmpty>true</skipIfEmpty>
-                    <archive>
-                        <addMavenDescriptor>false</addMavenDescriptor>
-                    </archive>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>jar</goal>
-                            <goal>test-jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <skipIfEmpty>true</skipIfEmpty>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <finalName>apache-commons-rdf-${project.version}</finalName>
-                    <runOnlyAtExecutionRoot>true</runOnlyAtExecutionRoot>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <additionalparam>-Xdoclint:all</additionalparam>
-                    <links>
-                    <link>${commons.javadoc.java.link}</link>
-                    <link>https://jena.apache.org/documentation/javadoc/jena/</link>
-                    <link>https://jena.apache.org/documentation/javadoc/arq/</link>
-                    <link>https://rdf4j.org/javadoc/2.5.4//</link>
-                    </links>
-                </configuration>
-            </plugin>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.19.0</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+  <build>
+    <defaultGoal>clean verify checkstyle:check javadoc:javadoc</defaultGoal>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <skipIfEmpty>true</skipIfEmpty>
+          <archive>
+            <addMavenDescriptor>false</addMavenDescriptor>
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>jar</goal>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <skipIfEmpty>true</skipIfEmpty>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <finalName>apache-commons-rdf-${project.version}</finalName>
+          <runOnlyAtExecutionRoot>true</runOnlyAtExecutionRoot>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <source>${maven.compiler.source}</source>
+          <linksource>true</linksource>
+          <links>
+            <!-- For now, avoid WARNING] javadoc: warning - The code being documented uses packages in the unnamed module, but the packages defined in https://jena.apache.org/documentation/javadoc/arq/ are in named modules. -->
+            <!-- <link>https://jena.apache.org/documentation/javadoc/jena/</link>-->
+            <!--  <link>https://jena.apache.org/documentation/javadoc/arq/</link>-->
+            <link>https://rdf4j.org/javadoc/${rdf4j.version}/</link>
+          </links>
+        </configuration>
+      </plugin>
             <!--
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -202,34 +185,34 @@
                 </configuration>
             </plugin>
 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <configuration>
-                    <useReleaseProfile>true</useReleaseProfile>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <configuration>
+          <useReleaseProfile>true</useReleaseProfile>
             <!-- TODO: Can we use apache-parent's apache-release rather than common-parent's release?
             It seems to force adding a -source-release
             -->
-                    <releaseProfiles>release</releaseProfiles>
-                    <goals>deploy</goals>
-                    <autoVersionSubmodules>true</autoVersionSubmodules>
-                    <localCheckout>true</localCheckout>
-                    <tagNameFormat>@{version}</tagNameFormat>
-                    <preparationGoals>clean install</preparationGoals>
-                    <pushChanges>false</pushChanges>
-                    <connectionUrl>scm:git:file://`pwd`/.git</connectionUrl>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-site-plugin</artifactId>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.apache.maven.doxia</groupId>
-                        <artifactId>doxia-module-markdown</artifactId>
-                        <version>2.0.0</version>
-                    </dependency>
-                </dependencies>
+          <releaseProfiles>release</releaseProfiles>
+          <goals>deploy</goals>
+          <autoVersionSubmodules>true</autoVersionSubmodules>
+          <localCheckout>true</localCheckout>
+          <tagNameFormat>@{version}</tagNameFormat>
+          <preparationGoals>clean install</preparationGoals>
+          <pushChanges>false</pushChanges>
+          <connectionUrl>scm:git:file://`pwd`/.git</connectionUrl>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.maven.doxia</groupId>
+            <artifactId>doxia-module-markdown</artifactId>
+            <version>2.0.0</version>
+          </dependency>
+        </dependencies>
                 <!--
                 <configuration>
                     <siteDirectory>${project.basedir}/src/site</siteDirectory>
@@ -237,20 +220,19 @@
                     <showAvatarImages>false</showAvatarImages>
                 </configuration>
               -->
-            </plugin>
-        </plugins>
-        <pluginManagement>
-            <plugins>
+      </plugin>
+    </plugins>
+    <pluginManagement>
+      <plugins>
                 <!--This plugin's configuration is used to store Eclipse m2e settings
                     only. It has no influence on the Maven build itself. -->
-
-                <plugin>
-                    <groupId>org.eclipse.m2e</groupId>
-                    <artifactId>lifecycle-mapping</artifactId>
-                    <version>1.0.0</version>
-                    <configuration>
-                        <lifecycleMappingMetadata>
-                            <pluginExecutions>
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
                               <!-- No longer needed?
                                 <pluginExecution>
                                     <pluginExecutionFilter>
@@ -266,68 +248,68 @@
                                     </action>
                                 </pluginExecution>
                               -->
-                                <pluginExecution>
-                                    <pluginExecutionFilter>
-                                        <groupId>org.apache.maven.plugins</groupId>
-                                        <artifactId>maven-antrun-plugin</artifactId>
-                                        <versionRange>[1.8,)</versionRange>
-                                        <goals>
-                                            <goal>run</goal>
-                                        </goals>
-                                    </pluginExecutionFilter>
-                                    <action>
-                                        <ignore />
-                                    </action>
-                                </pluginExecution>
-                                <pluginExecution>
-                                    <pluginExecutionFilter>
-                                        <groupId>org.apache.felix</groupId>
-                                        <artifactId>maven-bundle-plugin</artifactId>
-                                        <versionRange>[2.5.3,)</versionRange>
-                                        <goals>
-                                            <goal>manifest</goal>
-                                        </goals>
-                                    </pluginExecutionFilter>
-                                    <action>
-                                        <ignore />
-                                    </action>
-                                </pluginExecution>
-                            </pluginExecutions>
-                        </lifecycleMappingMetadata>
-                    </configuration>
-                </plugin>
-                <plugin>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <versionRange>[1.8,)</versionRange>
+                    <goals>
+                      <goal>run</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore />
+                  </action>
+                </pluginExecution>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-bundle-plugin</artifactId>
+                    <versionRange>[2.5.3,)</versionRange>
+                    <goals>
+                      <goal>manifest</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore />
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
+        <plugin>
                     <!-- Check if we broke compatibibility against previous release -->
-                    <groupId>com.github.siom79.japicmp</groupId>
-                    <artifactId>japicmp-maven-plugin</artifactId>
-                    <configuration>
-                        <parameter>
+          <groupId>com.github.siom79.japicmp</groupId>
+          <artifactId>japicmp-maven-plugin</artifactId>
+          <configuration>
+            <parameter>
                             <!-- Tell japicmp about the -incubator suffix for 0.3.0 -->
-                            <oldVersionPattern>\d+\.\d+\.\d+\-incubating</oldVersionPattern>
+              <oldVersionPattern>\d+\.\d+\.\d+\-incubating</oldVersionPattern>
                             <!-- japicmp requires "mvn package site" - below means "mvn
                                  site" still works (but without japicmp report) -->
-                            <ignoreMissingNewVersion>true</ignoreMissingNewVersion>
-                        </parameter>
-                    </configuration>
-                    <dependencies>
-                      <dependency>
+              <ignoreMissingNewVersion>true</ignoreMissingNewVersion>
+            </parameter>
+          </configuration>
+          <dependencies>
+            <dependency>
                         <!-- the current version of japicmp on JDK 9 requires the following javaee libraries -->
-                        <groupId>javax.xml.bind</groupId>
-                        <artifactId>jaxb-api</artifactId>
-                        <version>2.3.1</version>
-                      </dependency>
-                      <dependency>
-                        <groupId>javax.activation</groupId>
-                        <artifactId>activation</artifactId>
-                        <version>1.1.1</version>
-                      </dependency>
-                      <dependency>
-                        <groupId>org.glassfish.jaxb</groupId>
-                        <artifactId>jaxb-runtime</artifactId>
-                        <version>2.3.6</version>
-                      </dependency>
-                    </dependencies>
-                </plugin>
+              <groupId>javax.xml.bind</groupId>
+              <artifactId>jaxb-api</artifactId>
+              <version>2.3.1</version>
+            </dependency>
+            <dependency>
+              <groupId>javax.activation</groupId>
+              <artifactId>activation</artifactId>
+              <version>1.1.1</version>
+            </dependency>
+            <dependency>
+              <groupId>org.glassfish.jaxb</groupId>
+              <artifactId>jaxb-runtime</artifactId>
+              <version>2.3.6</version>
+            </dependency>
+          </dependencies>
+        </plugin>
                 <!--
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
@@ -337,309 +319,307 @@
                         <skip>true</skip>
                     </configuration>
                 </plugin>-->
-                <plugin>
-                    <groupId>org.apache.rat</groupId>
-                    <artifactId>apache-rat-plugin</artifactId>
-                    <version>${commons.rat.version}</version>
-                    <configuration>
-                        <excludes combine.children="append">
-                            <exclude>.travis.yml</exclude>
+        <plugin>
+          <groupId>org.apache.rat</groupId>
+          <artifactId>apache-rat-plugin</artifactId>
+          <version>${commons.rat.version}</version>
+          <configuration>
+            <excludes combine.children="append">
+              <exclude>.travis.yml</exclude>
                             <!-- Eclipse files in examples/ -->
-                            <exclude>examples/.settings/**</exclude>
-                            <exclude>examples/.project</exclude>
-                            <exclude>examples/.classpath</exclude>
+              <exclude>examples/.settings/**</exclude>
+              <exclude>examples/.project</exclude>
+              <exclude>examples/.classpath</exclude>
                             <!-- ServiceLoader file -->
-                            <exclude>**/META-INF/services/*</exclude>
+              <exclude>**/META-INF/services/*</exclude>
                             <!-- Duplicates of NOTICE and LICENSE -->
-                            <exclude>**/src/main/resources/NOTICE</exclude>
-                            <exclude>**/src/main/resources/LICENSE</exclude>
-                        </excludes>
-                    </configuration>
-                </plugin>
-                <plugin>
-                     <groupId>org.apache.maven.plugins</groupId>
-                     <artifactId>maven-checkstyle-plugin</artifactId>
-                     <configuration>
-                         <configLocation>${commons.parent.dir}/src/conf/checkstyle.xml</configLocation>
-                         <propertyExpansion>config_loc=${commons.parent.dir}/src/conf/</propertyExpansion>
-                         <enableRulesSummary>false</enableRulesSummary>
-                         <suppressionsLocation>${commons.parent.dir}/src/conf/checkstyle-suppressions.xml</suppressionsLocation>
-                     </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
-    <reporting>
-        <plugins>
-            <plugin>
-                 <groupId>org.apache.maven.plugins</groupId>
-                 <artifactId>maven-javadoc-plugin</artifactId>
-                 <configuration>
-                     <additionalparam>-Xdoclint:all</additionalparam>
-                 </configuration>
-                 <reportSets>
-                   <reportSet><!-- by default, id = "default" -->
-                     <reports><!-- select non-aggregate reports -->
-                       <report>javadoc</report>
-                       <report>test-javadoc</report>
-                     </reports>
-                   </reportSet>
-                   <reportSet><!-- aggregate reportSet, to define in poms having modules -->
-                     <id>aggregate</id>
-                     <inherited>false</inherited><!-- don't run aggregate in child modules -->
-                     <reports>
-                       <report>aggregate</report>
-                     </reports>
-                   </reportSet>
-                 </reportSets>
-             </plugin>
-             <plugin>
-                 <groupId>org.apache.maven.plugins</groupId>
-                 <artifactId>maven-checkstyle-plugin</artifactId>
-                 <configuration>
-                     <configLocation>${project.basedir}/src/conf/checkstyle.xml</configLocation>
+              <exclude>**/src/main/resources/NOTICE</exclude>
+              <exclude>**/src/main/resources/LICENSE</exclude>
+            </excludes>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <configuration>
+            <configLocation>${commons.parent.dir}/src/conf/checkstyle.xml</configLocation>
+            <propertyExpansion>config_loc=${commons.parent.dir}/src/conf/</propertyExpansion>
+            <enableRulesSummary>false</enableRulesSummary>
+            <suppressionsLocation>${commons.parent.dir}/src/conf/checkstyle-suppressions.xml</suppressionsLocation>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <additionalparam>-Xdoclint:all</additionalparam>
+        </configuration>
+        <reportSets>
+          <reportSet><!-- by default, id = "default" -->
+            <reports><!-- select non-aggregate reports -->
+              <report>javadoc</report>
+              <report>test-javadoc</report>
+            </reports>
+          </reportSet>
+          <reportSet><!-- aggregate reportSet, to define in poms having modules -->
+            <id>aggregate</id>
+            <inherited>false</inherited><!-- don't run aggregate in child modules -->
+            <reports>
+              <report>aggregate</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <configuration>
+          <configLocation>${project.basedir}/src/conf/checkstyle.xml</configLocation>
                      <!-- Needed to define config_loc -->
-                     <propertyExpansion>config_loc=${project.basedir}</propertyExpansion>
-                     <enableRulesSummary>false</enableRulesSummary>
-                 </configuration>
-                 <reportSets>
-                     <reportSet>
-                         <reports>
-                             <report>checkstyle-aggregate</report>
-                         </reports>
-                     </reportSet>
-                 </reportSets>
-             </plugin>
-            <plugin>
-                <artifactId>maven-pmd-plugin</artifactId>
-                <configuration>
-                    <targetJdk>${maven.compiler.target}</targetJdk>
-                    <linkXref>true</linkXref>
-                </configuration>
-                <reportSets>
-                    <reportSet>
-                        <id>pmd-report</id>
-                        <reports>
-                            <report>pmd</report>
-                        </reports>
-                    </reportSet>
-                    <reportSet>
-                        <id>pmd-aggregate</id>
-                        <inherited>false</inherited>
-                        <reports>
-                            <report>pmd</report>
-                        </reports>
-                        <configuration>
-                            <aggregate>true</aggregate>
-                        </configuration>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>findbugs-maven-plugin</artifactId>
-                <version>${commons.findbugs.version}</version>
-                <configuration>
-                    <threshold>Normal</threshold>
-                    <effort>Default</effort>
-                    <excludeFilterFile>src/conf/findbugs-exclude-filter.xml</excludeFilterFile>
-                    <fork>true</fork>
-                    <jvmArgs>-Duser.language=en</jvmArgs>
-                </configuration>
-            </plugin>
-        </plugins>
-    </reporting>
-
-    <profiles>
-        <profile>
-            <id>ignore-japicmp</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
+          <propertyExpansion>config_loc=${project.basedir}</propertyExpansion>
+          <enableRulesSummary>false</enableRulesSummary>
+        </configuration>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>checkstyle-aggregate</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+      <plugin>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <configuration>
+          <targetJdk>${maven.compiler.target}</targetJdk>
+          <linkXref>true</linkXref>
+        </configuration>
+        <reportSets>
+          <reportSet>
+            <id>pmd-report</id>
+            <reports>
+              <report>pmd</report>
+            </reports>
+          </reportSet>
+          <reportSet>
+            <id>pmd-aggregate</id>
+            <inherited>false</inherited>
+            <reports>
+              <report>pmd</report>
+            </reports>
+            <configuration>
+              <aggregate>true</aggregate>
+            </configuration>
+          </reportSet>
+        </reportSets>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>findbugs-maven-plugin</artifactId>
+        <version>${commons.findbugs.version}</version>
+        <configuration>
+          <threshold>Normal</threshold>
+          <effort>Default</effort>
+          <excludeFilterFile>src/conf/findbugs-exclude-filter.xml</excludeFilterFile>
+          <fork>true</fork>
+          <jvmArgs>-Duser.language=en</jvmArgs>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
+  <profiles>
+    <profile>
+      <id>ignore-japicmp</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
                 <!-- COMMONSRDF-62 : JAPICMP does not handle 0.x release boundaries as defined in Semantic Versioning -->
-                <commons.japicmp.breakBuildOnBinaryIncompatibleModifications>false</commons.japicmp.breakBuildOnBinaryIncompatibleModifications>
-            </properties>
-        </profile>
-        <profile>
-            <id>release</id>
-            <properties>
+        <commons.japicmp.breakBuildOnBinaryIncompatibleModifications>false</commons.japicmp.breakBuildOnBinaryIncompatibleModifications>
+      </properties>
+    </profile>
+    <profile>
+      <id>release</id>
+      <properties>
                 <!-- COMMONSRDF-62 : JAPICMP does not handle 0.x release boundaries as defined in Semantic Versioning -->
-                <commons.japicmp.breakBuildOnBinaryIncompatibleModifications>false</commons.japicmp.breakBuildOnBinaryIncompatibleModifications>
-            </properties>
+        <commons.japicmp.breakBuildOnBinaryIncompatibleModifications>false</commons.japicmp.breakBuildOnBinaryIncompatibleModifications>
+      </properties>
             <!-- extends the release profile from commons -->
-            <build>
+      <build>
                 <!-- <finalName>apache-commons-rdf-${project.version}</finalName> -->
-                <plugins>
-                    <plugin>
+        <plugins>
+          <plugin>
                         <!-- Avoid making *.asc.asc -->
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <configuration>
-                            <excludes>
-                                <exclude>**/*.asc</exclude>
-                                <exclude>**/*.md5</exclude>
-                                <exclude>**/*.sha1</exclude>
-                            </excludes>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
-
-    <distributionManagement>
-      <site>
-        <id>commonsrdf-site</id>
-        <name>Apache Commons Site SVN</name>
-        <url>scm:svn:${commons.scmPubUrl}</url>
-      </site>
-      <downloadUrl>${project.url}download.html</downloadUrl>
-    </distributionManagement>
-    <developers>
-        <developer>
-            <id>lewismc</id>
-            <name>Lewis John McGibbney</name>
-            <email>lewismc[at]apache[dot]org</email>
-            <roles>
-                <role>Committer</role>
-                <role>Emeritus PPMC Member</role>
-                <role>Emeritus Champion</role>
-            </roles>
-            <timezone>+1</timezone>
-        </developer>
-        <developer>
-            <id>ggregory</id>
-            <name>Gary Gregory</name>
-            <email>ggregory at apache.org</email>
-            <url>https://www.garygregory.com</url>
-            <organization>The Apache Software Foundation</organization>
-            <organizationUrl>https://www.apache.org/</organizationUrl>
-            <roles>
-                <role>PMC Member</role>
-            </roles>
-            <timezone>America/New_York</timezone>
-            <properties>
-                <picUrl>https://people.apache.org/~ggregory/img/garydgregory80.png</picUrl>
-            </properties>
-        </developer>
-        <developer>
-            <id>wikier</id>
-            <name>Sergio Fernández</name>
-            <email>wikier[at]apache[dot]org</email>
-            <url>https://www.wikier.org</url>
-            <roles>
-                <role>Committer</role>
-                <role>Emeritus PPMC Member</role>
-            </roles>
-            <timezone>+1</timezone>
-        </developer>
-        <developer>
-            <id>stain</id>
-            <name>Stian Soiland-Reyes</name>
-            <email>stain[at]apache[dot]org</email>
-            <url>https://orcid.org/0000-0001-9842-9718</url>
-            <roles>
-                <role>Committer</role>
-                <role>PMC Member</role>
-                <role>Emeritus PPMC Member</role>
-            </roles>
-            <timezone>+0</timezone>
-        </developer>
-        <developer>
-            <id>enridaga</id>
-            <name>Enrico Daga</name>
-            <email>enridaga[at]apache[dot]org</email>
-            <roles>
-                <role>Committer</role>
-                <role>Emeritus PPMC Member</role>
-            </roles>
-            <timezone>+0</timezone>
-        </developer>
-        <developer>
-            <id>britter</id>
-            <name>Benedikt Ritter</name>
-            <email>britter[at]apache[dot]org</email>
-            <roles>
-                <role>Committer</role>
-                <role>PMC Member</role>
-                <role>Emeritus PPMC Member</role>
-            </roles>
-            <timezone>+1</timezone>
-        </developer>
-        <developer>
-            <id>ansell</id>
-            <name>Peter Ansell</name>
-            <email>ansell[at]apache[dot]org</email>
-            <url>https://github.com/ansell</url>
-            <roles>
-                <role>Reviewer</role>
-                <role>Emeritus Committer</role>
-                <role>Emeritus PPMC Member</role>
-            </roles>
-        </developer>
-    </developers>
-    <contributors>
-        <contributor>
-            <name>Reto Gmür</name>
-            <email>reto[at]apache[dot]org</email>
-            <roles>
-                <role>Emeritus Committer</role>
-                <role>Emeritus PPMC Member</role>
-            </roles>
-            <timezone>+1</timezone>
-        </contributor>
-        <contributor>
-            <name>Andy Seaborne</name>
-            <email>andy[at]apache[dot]org</email>
-            <roles>
-                <role>Emeritus Committer</role>
-                <role>Emeritus PPPMC Member</role>
-                <role>Reviewer</role>
-            </roles>
-            <timezone>+0</timezone>
-        </contributor>
-        <contributor>
-            <name>Rob Vesse</name>
-            <email>rvesse[at]apache[dot]org</email>
-            <roles>
-                <role>Emeritus Mentor</role>
-            </roles>
-            <timezone>+0</timezone>
-        </contributor>
-        <contributor>
-            <name>John D Ament</name>
-            <email>johndament[at]apache[dot]org</email>
-            <roles>
-                <role>Emeritus PPMC Member</role>
-                <role>Emeritus Mentor</role>
-            </roles>
-            <timezone>+1</timezone>
-        </contributor>
-        <contributor>
-            <name>Aaron Coburn</name>
-            <email>acoburn[at]apache[dot]org</email>
-            <roles>
-                <role>Contributor</role>
-            </roles>
-            <timezone>+1</timezone>
-        </contributor>
-        <contributor>
-            <name>Adam Soroka</name>
-            <email>ajs6f[at]apache[dot]org</email>
-            <roles>
-                <role>Reviewer</role>
-            </roles>
-            <timezone>+0</timezone>
-        </contributor>
-        <contributor>
-            <name>Guohui Xiao</name>
-            <email>gx.xiao[at]gmail[dot]com</email>
-	    <url>https://orcid.org/0000-0002-5115-4769</url>
-            <roles>
-                <role>Contributor</role>
-            </roles>
-            <timezone>+1</timezone>
-        </contributor>
-    </contributors>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <configuration>
+              <excludes>
+                <exclude>**/*.asc</exclude>
+                <exclude>**/*.md5</exclude>
+                <exclude>**/*.sha1</exclude>
+              </excludes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+  <distributionManagement>
+    <site>
+      <id>commonsrdf-site</id>
+      <name>Apache Commons Site SVN</name>
+      <url>scm:svn:${commons.scmPubUrl}</url>
+    </site>
+    <downloadUrl>${project.url}download.html</downloadUrl>
+  </distributionManagement>
+  <developers>
+    <developer>
+      <id>lewismc</id>
+      <name>Lewis John McGibbney</name>
+      <email>lewismc[at]apache[dot]org</email>
+      <roles>
+        <role>Committer</role>
+        <role>Emeritus PPMC Member</role>
+        <role>Emeritus Champion</role>
+      </roles>
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <id>ggregory</id>
+      <name>Gary Gregory</name>
+      <email>ggregory at apache.org</email>
+      <url>https://www.garygregory.com</url>
+      <organization>The Apache Software Foundation</organization>
+      <organizationUrl>https://www.apache.org/</organizationUrl>
+      <roles>
+        <role>PMC Member</role>
+      </roles>
+      <timezone>America/New_York</timezone>
+      <properties>
+        <picUrl>https://people.apache.org/~ggregory/img/garydgregory80.png</picUrl>
+      </properties>
+    </developer>
+    <developer>
+      <id>wikier</id>
+      <name>Sergio Fernández</name>
+      <email>wikier[at]apache[dot]org</email>
+      <url>https://www.wikier.org</url>
+      <roles>
+        <role>Committer</role>
+        <role>Emeritus PPMC Member</role>
+      </roles>
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <id>stain</id>
+      <name>Stian Soiland-Reyes</name>
+      <email>stain[at]apache[dot]org</email>
+      <url>https://orcid.org/0000-0001-9842-9718</url>
+      <roles>
+        <role>Committer</role>
+        <role>PMC Member</role>
+        <role>Emeritus PPMC Member</role>
+      </roles>
+      <timezone>+0</timezone>
+    </developer>
+    <developer>
+      <id>enridaga</id>
+      <name>Enrico Daga</name>
+      <email>enridaga[at]apache[dot]org</email>
+      <roles>
+        <role>Committer</role>
+        <role>Emeritus PPMC Member</role>
+      </roles>
+      <timezone>+0</timezone>
+    </developer>
+    <developer>
+      <id>britter</id>
+      <name>Benedikt Ritter</name>
+      <email>britter[at]apache[dot]org</email>
+      <roles>
+        <role>Committer</role>
+        <role>PMC Member</role>
+        <role>Emeritus PPMC Member</role>
+      </roles>
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <id>ansell</id>
+      <name>Peter Ansell</name>
+      <email>ansell[at]apache[dot]org</email>
+      <url>https://github.com/ansell</url>
+      <roles>
+        <role>Reviewer</role>
+        <role>Emeritus Committer</role>
+        <role>Emeritus PPMC Member</role>
+      </roles>
+    </developer>
+  </developers>
+  <contributors>
+    <contributor>
+      <name>Reto Gmür</name>
+      <email>reto[at]apache[dot]org</email>
+      <roles>
+        <role>Emeritus Committer</role>
+        <role>Emeritus PPMC Member</role>
+      </roles>
+      <timezone>+1</timezone>
+    </contributor>
+    <contributor>
+      <name>Andy Seaborne</name>
+      <email>andy[at]apache[dot]org</email>
+      <roles>
+        <role>Emeritus Committer</role>
+        <role>Emeritus PPPMC Member</role>
+        <role>Reviewer</role>
+      </roles>
+      <timezone>+0</timezone>
+    </contributor>
+    <contributor>
+      <name>Rob Vesse</name>
+      <email>rvesse[at]apache[dot]org</email>
+      <roles>
+        <role>Emeritus Mentor</role>
+      </roles>
+      <timezone>+0</timezone>
+    </contributor>
+    <contributor>
+      <name>John D Ament</name>
+      <email>johndament[at]apache[dot]org</email>
+      <roles>
+        <role>Emeritus PPMC Member</role>
+        <role>Emeritus Mentor</role>
+      </roles>
+      <timezone>+1</timezone>
+    </contributor>
+    <contributor>
+      <name>Aaron Coburn</name>
+      <email>acoburn[at]apache[dot]org</email>
+      <roles>
+        <role>Contributor</role>
+      </roles>
+      <timezone>+1</timezone>
+    </contributor>
+    <contributor>
+      <name>Adam Soroka</name>
+      <email>ajs6f[at]apache[dot]org</email>
+      <roles>
+        <role>Reviewer</role>
+      </roles>
+      <timezone>+0</timezone>
+    </contributor>
+    <contributor>
+      <name>Guohui Xiao</name>
+      <email>gx.xiao[at]gmail[dot]com</email>
+      <url>https://orcid.org/0000-0002-5115-4769</url>
+      <roles>
+        <role>Contributor</role>
+      </roles>
+      <timezone>+1</timezone>
+    </contributor>
+  </contributors>
 </project>

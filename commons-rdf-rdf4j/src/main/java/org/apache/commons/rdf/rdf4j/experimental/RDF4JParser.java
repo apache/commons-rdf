@@ -102,6 +102,13 @@ public class RDF4JParser extends AbstractRDFParser<RDF4JParser> {
     private RDF4J rdf4jTermFactory;
     private ParserConfig parserConfig = new ParserConfig();
 
+    /**
+     * Constructs a new instance.
+     */
+    public RDF4JParser() {
+        // empty
+    }
+
     @Override
     protected RDF4J createRDFTermFactory() {
         return new RDF4J();
@@ -123,6 +130,11 @@ public class RDF4JParser extends AbstractRDFParser<RDF4JParser> {
         return parserConfig;
     }
 
+    /**
+     * Creates a new instance of an RDFHandler.
+     *
+     * @return a new instance of an RDFHandler.
+     */
     protected RDFHandler makeRDFHandler() {
 
         // TODO: Can we join the below DF4JDataset and RDF4JGraph cases
