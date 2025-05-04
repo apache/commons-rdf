@@ -110,6 +110,6 @@ public interface GraphLike<T extends TripleLike> {
      * @since 0.6.0
      */    
     default Stream<? extends T> parallelStream() {
-    	return stream();
+        return stream();
     }
 }
