@@ -321,4 +321,5 @@ public interface Graph extends AutoCloseable, GraphLike<Triple> {
      * @since 0.3.0-incubating
      */
     Stream<? extends Triple> stream(BlankNodeOrIRI subject, IRI predicate, RDFTerm object);
+
 }

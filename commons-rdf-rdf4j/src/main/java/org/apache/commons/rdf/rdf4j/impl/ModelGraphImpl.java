@@ -149,4 +149,5 @@ final class ModelGraphImpl implements RDF4JGraph {
                 (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate), rdf4jTermFactory.asValue(object))
                 .stream().map(rdf4jTermFactory::asTriple);
     }
+
 }

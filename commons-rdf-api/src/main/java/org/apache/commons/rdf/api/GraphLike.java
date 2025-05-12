@@ -102,4 +102,5 @@ public interface GraphLike<T extends TripleLike> {
      * @return A {@link Stream} of {@link TripleLike} statements.
      */
     Stream<? extends T> stream();
+
 }
