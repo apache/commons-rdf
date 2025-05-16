@@ -179,7 +179,7 @@ public interface RDFSyntax {
      */
 
     static Set<RDFSyntax> w3cSyntaxes() {
-        return W3CRDFSyntax.syntaxes;
+        return W3CRDFSyntax.SYNTAXES;
     }
 
     /**

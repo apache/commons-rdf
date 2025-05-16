@@ -92,7 +92,7 @@ class W3CRDFSyntax implements RDFSyntax {
     static final RDFSyntax RDFA;
     static final RDFSyntax RDFXML;
     static final RDFSyntax TRIG;
-    static final Set<RDFSyntax> syntaxes;
+    static final Set<RDFSyntax> SYNTAXES;
     
     static {
         // Initialize within static block to avoid inserting nulls
@@ -117,7 +117,7 @@ class W3CRDFSyntax implements RDFSyntax {
                 return types;
             }
         };
-        syntaxes = Collections.unmodifiableSet(new LinkedHashSet<>(Arrays.asList(JSONLD, NQUADS, NTRIPLES, RDFA, RDFXML, TRIG, TURTLE)));
+        SYNTAXES = Collections.unmodifiableSet(new LinkedHashSet<>(Arrays.asList(JSONLD, NQUADS, NTRIPLES, RDFA, RDFXML, TRIG, TURTLE)));
     }
     
     private final String title;
@@ -152,6 +152,7 @@ class W3CRDFSyntax implements RDFSyntax {
      * {@inheritDoc}
      * <p>
      * {@link W3CRDFSyntax} always defines file extensions in lower case, so {@link String#toLowerCase(Locale)} need not be called.
+     * </p>
      */
     @Override
     public String fileExtension() {
