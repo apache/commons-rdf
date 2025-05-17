@@ -115,6 +115,18 @@ public class RDFSyntaxTest {
     }
 
     @Test
+    public void testIri() throws Exception {
+        assertEquals("<http://www.w3.org/ns/formats/JSON-LD>", RDFSyntax.JSONLD.iri().toString());
+        assertEquals("<http://www.w3.org/ns/formats/N-Quads>", RDFSyntax.NQUADS.iri().toString());
+        assertEquals("<http://www.w3.org/ns/formats/N-Triples>", RDFSyntax.NTRIPLES.iri().toString());
+        assertEquals("<http://www.w3.org/ns/formats/RDFa>", RDFSyntax.RDFA.iri().toString());
+        assertEquals("<http://www.w3.org/ns/formats/RDF_XML>", RDFSyntax.RDFXML.iri().toString());
+        assertEquals("<http://www.w3.org/ns/formats/TriG>", RDFSyntax.TRIG.iri().toString());
+        assertEquals("<http://www.w3.org/ns/formats/Turtle>", RDFSyntax.TURTLE.iri().toString());
+        assertEquals("<http://www.w3.org/ns/formats/JSON-LD>", RDFSyntax.JSONLD.iri().toString());
+    }
+
+    @Test
     public void testMediaType() throws Exception {
         assertEquals("application/ld+json", RDFSyntax.JSONLD.mediaType());
         assertEquals("application/n-quads", RDFSyntax.NQUADS.mediaType());
