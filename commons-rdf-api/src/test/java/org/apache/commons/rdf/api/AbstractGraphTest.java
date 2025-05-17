@@ -679,4 +679,13 @@ public abstract class AbstractGraphTest {
                             }).findFirst().get());
         }
     }
+
+    /**
+     * See https://github.com/apache/commons-rdf/pull/328
+     */
+    @Test
+    public void testSequentialStream() {
+    	assertFalse(graph.stream().isParallel());
+    	assertFalse(graph.stream(null, null, null).isParallel());
+    }
 }
