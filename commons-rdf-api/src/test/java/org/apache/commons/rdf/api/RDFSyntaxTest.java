@@ -212,6 +212,18 @@ public class RDFSyntaxTest {
     }
 
     @Test
+    public void testSupportsDataset() throws Exception {
+        assertTrue(RDFSyntax.JSONLD.supportsDataset());
+        assertTrue(RDFSyntax.NQUADS.supportsDataset());
+        assertFalse(RDFSyntax.NTRIPLES.supportsDataset());
+        assertFalse(RDFSyntax.RDFA.supportsDataset());
+        assertFalse(RDFSyntax.RDFA.supportsDataset());
+        assertFalse(RDFSyntax.RDFXML.supportsDataset());
+        assertTrue(RDFSyntax.TRIG.supportsDataset());
+        assertFalse(RDFSyntax.TURTLE.supportsDataset());
+    }
+
+    @Test
     public void testTitle() throws Exception {
         assertEquals("JSON-LD 1.0", RDFSyntax.JSONLD.title());
         assertEquals("RDF 1.1 N-Quads", RDFSyntax.NQUADS.title());
