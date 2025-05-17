@@ -43,6 +43,13 @@
     <commons.jacoco.lineRatio>0.76</commons.jacoco.lineRatio>    
     <commons.jacoco.complexityRatio>0.66</commons.jacoco.complexityRatio>
   </properties>
+  <dependencies>
+    <dependency>
+      <groupId>org.junit-pioneer</groupId>
+      <artifactId>junit-pioneer</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
   <build>
     <plugins>
       <plugin>

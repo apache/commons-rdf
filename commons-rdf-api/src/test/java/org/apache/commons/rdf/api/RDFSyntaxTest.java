@@ -18,13 +18,23 @@
 package org.apache.commons.rdf.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
+import org.junitpioneer.jupiter.cartesian.ArgumentSets;
+import org.junitpioneer.jupiter.cartesian.CartesianTest;
 
 public class RDFSyntaxTest {
+
+    static ArgumentSets providerRDFSyntax() {
+        return ArgumentSets
+                .argumentsForFirstParameter(RDFSyntax.w3cSyntaxes())
+                .argumentsForNextParameter(RDFSyntax.w3cSyntaxes());
+    }
 
     @Test
     public void testByFileExtension() throws Exception {
@@ -88,6 +98,20 @@ public class RDFSyntaxTest {
     public void testByName() throws Exception {
         for (final RDFSyntax s : RDFSyntax.w3cSyntaxes()) {
             assertEquals(s, RDFSyntax.byName(s.name()).get());
+        }
+    }
+
+    @CartesianTest
+    @CartesianTest.MethodFactory("providerRDFSyntax")
+    void testEqualsAndHashCode(final RDFSyntax left, final RDFSyntax right) {
+        assertNotNull(left);
+        assertNotNull(right);
+        if (left == right) {
+            assertEquals(left, right);
+            assertEquals(left.hashCode(), right.hashCode());
+        } else {
+            assertNotEquals(left, right);
+            assertNotEquals(left.hashCode(), right.hashCode());
         }
     }
 
