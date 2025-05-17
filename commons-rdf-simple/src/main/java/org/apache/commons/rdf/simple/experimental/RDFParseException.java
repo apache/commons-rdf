@@ -24,57 +24,64 @@ import org.apache.commons.rdf.experimental.RDFParser;
  * A form of Exception for Apache Commons RDF.
  */
 public class RDFParseException extends Exception {
+
     private static final long serialVersionUID = 5427752643780702976L;
-    
     /**
-     * RDF builder.
+     * RDF parser.
      */
-    private final RDFParser builder;
+    private final RDFParser rdfParser;
 
     /**
      * Constructs a new instance.
-     * @param builder TODO
+     *
+     * @param rdfParser RDF parser.
      */
-    public RDFParseException(final RDFParser builder) {
-        this.builder = builder;
+    public RDFParseException(final RDFParser rdfParser) {
+        this.rdfParser = rdfParser;
     }
 
     /**
      * Constructs a new instance.
-     * @param builder TODO
-     * @param message TODO
+     *
+     * @param rdfParser RDF parser.
+     * @param message   the detail message (which is saved for later retrieval by the {@link #getMessage()} method).
      */
-    public RDFParseException(final RDFParser builder, final String message) {
+    public RDFParseException(final RDFParser rdfParser, final String message) {
         super(message);
-        this.builder = builder;
+        this.rdfParser = rdfParser;
     }
 
     /**
      * Constructs a new instance.
-     * @param builder TODO
-     * @param message TODO
-     * @param cause TODO
+     *
+     * @param rdfParser RDF parser.
+     * @param message   the detail message (which is saved for later retrieval by the {@link #getMessage()} method).
+     * @param cause     the cause (which is saved for later retrieval by the {@link #getCause()} method). (A {@code null} value is permitted, and indicates that
+     *                  the cause is nonexistent or unknown.)
      */
-    public RDFParseException(final RDFParser builder, final String message, final Throwable cause) {
+    public RDFParseException(final RDFParser rdfParser, final String message, final Throwable cause) {
         super(message, cause);
-        this.builder = builder;
+        this.rdfParser = rdfParser;
     }
 
     /**
      * Constructs a new instance.
-     * @param builder TODO
-     * @param cause TODO
+     *
+     * @param rdfParser RDF parser.
+     * @param cause     the cause (which is saved for later retrieval by the {@link #getCause()} method). (A {@code null} value is permitted, and indicates that
+     *                  the cause is nonexistent or unknown.)
      */
-    public RDFParseException(final RDFParser builder, final Throwable cause) {
+    public RDFParseException(final RDFParser rdfParser, final Throwable cause) {
         super(cause);
-        this.builder = builder;
+        this.rdfParser = rdfParser;
     }
 
     /**
      * Gets the builder.
+     *
      * @return the builder.
      */
     public RDFParser getRDFParserBuilder() {
-        return builder;
+        return rdfParser;
     }
 }
