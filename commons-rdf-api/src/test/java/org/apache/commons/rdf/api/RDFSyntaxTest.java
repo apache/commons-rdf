@@ -115,7 +115,19 @@ public class RDFSyntaxTest {
     }
 
     @Test
-    public void testIri() throws Exception {
+    public void testIriGetIRIString() throws Exception {
+        assertEquals("http://www.w3.org/ns/formats/JSON-LD", RDFSyntax.JSONLD.iri().getIRIString());
+        assertEquals("http://www.w3.org/ns/formats/N-Quads", RDFSyntax.NQUADS.iri().getIRIString());
+        assertEquals("http://www.w3.org/ns/formats/N-Triples", RDFSyntax.NTRIPLES.iri().getIRIString());
+        assertEquals("http://www.w3.org/ns/formats/RDFa", RDFSyntax.RDFA.iri().getIRIString());
+        assertEquals("http://www.w3.org/ns/formats/RDF_XML", RDFSyntax.RDFXML.iri().getIRIString());
+        assertEquals("http://www.w3.org/ns/formats/TriG", RDFSyntax.TRIG.iri().getIRIString());
+        assertEquals("http://www.w3.org/ns/formats/Turtle", RDFSyntax.TURTLE.iri().getIRIString());
+        assertEquals("http://www.w3.org/ns/formats/JSON-LD", RDFSyntax.JSONLD.iri().getIRIString());
+    }
+
+    @Test
+    public void testIriToString() throws Exception {
         assertEquals("<http://www.w3.org/ns/formats/JSON-LD>", RDFSyntax.JSONLD.iri().toString());
         assertEquals("<http://www.w3.org/ns/formats/N-Quads>", RDFSyntax.NQUADS.iri().toString());
         assertEquals("<http://www.w3.org/ns/formats/N-Triples>", RDFSyntax.NTRIPLES.iri().toString());
