@@ -20,19 +20,23 @@
  * A simple in-memory implementation of the Commons RDF API.
  * <p>
  * This package contains a simple (if not naive) implementation of
- * {@link org.apache.commons.rdf.api} using in-memory POJO objects.
+ * {@code org.apache.commons.rdf.api} using in-memory POJO objects.
+ * </p>
  * <p>
  * Note that although this module fully implements the commons-rdf API, it
  * should <strong>not</strong> be considered a reference implementation. It is
  * <strong>not thread-safe</strong> nor scalable, but may be useful for testing
  * and simple usage (e.g. prototyping).
+ * </p>
  * <p>
  * To use this implementation, create an instance of
  * {@link org.apache.commons.rdf.simple.SimpleRDF} and use methods like
  * {@link org.apache.commons.rdf.simple.SimpleRDF#createGraph} and
  * {@link org.apache.commons.rdf.simple.SimpleRDF#createIRI(String)}.
+ * </p>
  * <p>
  * The {@link org.apache.commons.rdf.simple.Types} class provide constant
  * {@link org.apache.commons.rdf.api.IRI}s of the common RDF XML datatypes.
+ * </p>
  */
 package org.apache.commons.rdf.simple;
