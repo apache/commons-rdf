@@ -104,7 +104,7 @@ public class RDFSyntaxTest {
 
     @CartesianTest
     @CartesianTest.MethodFactory("providerRDFSyntax")
-    void testEqualsAndHashCode(final RDFSyntax left, final RDFSyntax right) {
+    public void testEqualsAndHashCode(final RDFSyntax left, final RDFSyntax right) {
         assertNotNull(left);
         assertNotNull(right);
         assertEquals(left, left);
@@ -112,15 +112,23 @@ public class RDFSyntaxTest {
         if (left == right) {
             assertEquals(left, right);
             assertEquals(left.hashCode(), right.hashCode());
+            assertEquals(left.iri(), right.iri());
+            assertEquals(left.iri().hashCode(), right.iri().hashCode());
         } else {
             assertNotEquals(left, right);
             assertNotEquals(left.hashCode(), right.hashCode());
+            assertNotEquals(left.iri(), right.iri());
+            assertNotEquals(left.iri().hashCode(), right.iri().hashCode());
         }
         assertFalse(left.equals(null));
         assertFalse(right.equals(null));
+        assertFalse(left.iri().equals(null));
+        assertFalse(right.iri().equals(null));
         final Object notAnInstance = "a";
         assertFalse(left.equals(notAnInstance));
         assertFalse(right.equals(notAnInstance));
+        assertFalse(left.iri().equals(notAnInstance));
+        assertFalse(right.iri().equals(notAnInstance));
     }
 
     @Test

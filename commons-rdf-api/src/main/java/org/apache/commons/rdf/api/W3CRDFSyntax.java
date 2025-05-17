@@ -22,7 +22,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * W3C RDF 1.1 serialization syntax.
@@ -46,10 +49,10 @@ class W3CRDFSyntax implements RDFSyntax {
     private static final class FormatIRI implements IRI {
 
         private static final String BASE = "http://www.w3.org/ns/formats/";
-        private final String format;
+        private final String iriString;
 
         private FormatIRI(final String format) {
-            this.format = format;
+            this.iriString = BASE + Objects.requireNonNull(format, "format");
         }
 
         @Override
@@ -66,7 +69,7 @@ class W3CRDFSyntax implements RDFSyntax {
 
         @Override
         public String getIRIString() {
-            return BASE + format;
+            return iriString;
         }
 
         @Override
@@ -93,59 +96,48 @@ class W3CRDFSyntax implements RDFSyntax {
     static final RDFSyntax RDFXML;
     static final RDFSyntax TRIG;
     static final Set<RDFSyntax> SYNTAXES;
-    
     static {
         // Initialize within static block to avoid inserting nulls
-        JSONLD = new W3CRDFSyntax("JSON-LD", "JSON-LD 1.0", "application/ld+json", ".jsonld", true);
-        TURTLE = new W3CRDFSyntax("Turtle", "RDF 1.1 Turtle", "text/turtle", ".ttl", false);
-        NQUADS = new W3CRDFSyntax("N-Quads", "RDF 1.1 N-Quads", "application/n-quads", ".nq", true);
-        NTRIPLES = new W3CRDFSyntax("N-Triples", "RDF 1.1 N-Triples", "application/n-triples", ".nt", false);
-        RDFXML = new W3CRDFSyntax("RDF_XML", "RDF 1.1 XML Syntax", "application/rdf+xml", ".rdf", false);
-        TRIG = new W3CRDFSyntax("TriG", "RDF 1.1 TriG", "application/trig", ".trig", true);
-        RDFA = new W3CRDFSyntax("RDFa", "HTML+RDFa 1.1", "text/html", ".html", false) {
-
-            private final Set<String> types = Collections.unmodifiableSet(new LinkedHashSet<>(Arrays.asList("text/html", "application/xhtml+xml")));
-            private final Set<String> extensions = Collections.unmodifiableSet(new LinkedHashSet<>(Arrays.asList(".html", ".xhtml")));
-
-            @Override
-            public Set<String> fileExtensions() {
-                return extensions;
-            }
-
-            @Override
-            public Set<String> mediaTypes() {
-                return types;
-            }
-        };
+        JSONLD = new W3CRDFSyntax("JSON-LD", "JSON-LD 1.0", "application/ld+json", true, ".jsonld");
+        TURTLE = new W3CRDFSyntax("Turtle", "RDF 1.1 Turtle", "text/turtle", false, ".ttl");
+        NQUADS = new W3CRDFSyntax("N-Quads", "RDF 1.1 N-Quads", "application/n-quads", true, ".nq");
+        NTRIPLES = new W3CRDFSyntax("N-Triples", "RDF 1.1 N-Triples", "application/n-triples", false, ".nt");
+        RDFXML = new W3CRDFSyntax("RDF_XML", "RDF 1.1 XML Syntax", "application/rdf+xml", false, ".rdf");
+        TRIG = new W3CRDFSyntax("TriG", "RDF 1.1 TriG", "application/trig", true, ".trig");
+        RDFA = new W3CRDFSyntax("RDFa", "HTML+RDFa 1.1", new LinkedHashSet<>(Arrays.asList("text/html", "application/xhtml+xml")), false, ".html", ".xhtml");
         SYNTAXES = Collections.unmodifiableSet(new LinkedHashSet<>(Arrays.asList(JSONLD, NQUADS, NTRIPLES, RDFA, RDFXML, TRIG, TURTLE)));
     }
-    
     private final String title;
-    private final String mediaType;
-    private final String fileExtension;
+    private final LinkedHashSet<String> mediaTypes;
+    private final LinkedHashSet<String> fileExtensions;
     private final boolean supportsDataset;
     private final String name;
     private final IRI iri;
 
-    private W3CRDFSyntax(final String name, final String title, final String mediaType, final String fileExtension, final boolean supportsDataset) {
+    private W3CRDFSyntax(final String name, final String title, final LinkedHashSet<String> mediaTypes, final boolean supportsDataset,
+            final String... fileExtension) {
         this.name = name;
         this.title = title;
-        this.mediaType = mediaType.toLowerCase(Locale.ROOT);
-        this.fileExtension = fileExtension.toLowerCase(Locale.ROOT);
+        this.mediaTypes = mediaTypes.stream().map(s -> s.toLowerCase(Locale.ROOT)).collect(Collectors.toCollection(LinkedHashSet::new));
+        this.fileExtensions = Stream.of(fileExtension).map(s -> s.toLowerCase(Locale.ROOT)).collect(Collectors.toCollection(LinkedHashSet::new));
         this.supportsDataset = supportsDataset;
         this.iri = new FormatIRI(name);
     }
 
+    private W3CRDFSyntax(final String name, final String title, final String mediaType, final boolean supportsDataset, final String... fileExtension) {
+        this(name, title, new LinkedHashSet<>(Arrays.asList(mediaType)), supportsDataset, fileExtension);
+    }
+
     @Override
-    public boolean equals(final Object obj) {
-        if (obj == this) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
             return true;
         }
-        if (!(obj instanceof RDFSyntax)) {
+        if (!(obj instanceof W3CRDFSyntax)) {
             return false;
         }
-        final RDFSyntax other = (RDFSyntax) obj;
-        return mediaType.equals(other.mediaType().toLowerCase(Locale.ROOT));
+        W3CRDFSyntax other = (W3CRDFSyntax) obj;
+        return Objects.equals(mediaTypes, other.mediaTypes);
     }
 
     /**
@@ -156,12 +148,17 @@ class W3CRDFSyntax implements RDFSyntax {
      */
     @Override
     public String fileExtension() {
-        return fileExtension;
+        return fileExtensions.iterator().next();
+    }
+
+    @Override
+    public Set<String> fileExtensions() {
+        return fileExtensions;
     }
 
     @Override
     public int hashCode() {
-        return mediaType.hashCode();
+        return Objects.hash(mediaTypes);
     }
 
     @Override
@@ -177,7 +174,12 @@ class W3CRDFSyntax implements RDFSyntax {
      */
     @Override
     public String mediaType() {
-        return mediaType;
+        return mediaTypes.iterator().next();
+    }
+
+    @Override
+    public Set<String> mediaTypes() {
+        return mediaTypes;
     }
 
     @Override

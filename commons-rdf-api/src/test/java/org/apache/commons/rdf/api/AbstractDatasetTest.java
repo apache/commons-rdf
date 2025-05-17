@@ -433,6 +433,7 @@ public abstract class AbstractDatasetTest {
         try (final Graph defaultGraph = dataset.getGraph()) {
             // TODO: Can we assume the default graph was empty before our new triples?
             assertEquals(2, defaultGraph.size());
+            assertFalse(defaultGraph.isEmpty());
             assertTrue(defaultGraph.contains(alice, isPrimaryTopicOf, graph1));
             // NOTE: graph2 is a BlankNode
             assertTrue(defaultGraph.contains(bob, isPrimaryTopicOf, null));
@@ -560,6 +561,7 @@ public abstract class AbstractDatasetTest {
         for (final Quad t : dataset.iterate()) {
             quads.add(t);
         }
+        assertFalse(dataset.isEmpty());
         assertEquals(dataset.size(), quads.size());
 
         //assertTrue(quads.contains(bobNameQuad));
