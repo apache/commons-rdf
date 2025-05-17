@@ -18,13 +18,24 @@
 package org.apache.commons.rdf.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
+import org.junitpioneer.jupiter.cartesian.ArgumentSets;
+import org.junitpioneer.jupiter.cartesian.CartesianTest;
 
 public class RDFSyntaxTest {
+
+    static ArgumentSets providerRDFSyntax() {
+        return ArgumentSets
+                .argumentsForFirstParameter(RDFSyntax.w3cSyntaxes())
+                .argumentsForNextParameter(RDFSyntax.w3cSyntaxes());
+    }
 
     @Test
     public void testByFileExtension() throws Exception {
@@ -89,6 +100,35 @@ public class RDFSyntaxTest {
         for (final RDFSyntax s : RDFSyntax.w3cSyntaxes()) {
             assertEquals(s, RDFSyntax.byName(s.name()).get());
         }
+    }
+
+    @CartesianTest
+    @CartesianTest.MethodFactory("providerRDFSyntax")
+    public void testEqualsAndHashCode(final RDFSyntax left, final RDFSyntax right) {
+        assertNotNull(left);
+        assertNotNull(right);
+        assertEquals(left, left);
+        assertEquals(right, right);
+        if (left == right) {
+            assertEquals(left, right);
+            assertEquals(left.hashCode(), right.hashCode());
+            assertEquals(left.iri(), right.iri());
+            assertEquals(left.iri().hashCode(), right.iri().hashCode());
+        } else {
+            assertNotEquals(left, right);
+            assertNotEquals(left.hashCode(), right.hashCode());
+            assertNotEquals(left.iri(), right.iri());
+            assertNotEquals(left.iri().hashCode(), right.iri().hashCode());
+        }
+        assertFalse(left.equals(null));
+        assertFalse(right.equals(null));
+        assertFalse(left.iri().equals(null));
+        assertFalse(right.iri().equals(null));
+        final Object notAnInstance = "a";
+        assertFalse(left.equals(notAnInstance));
+        assertFalse(right.equals(notAnInstance));
+        assertFalse(left.iri().equals(notAnInstance));
+        assertFalse(right.iri().equals(notAnInstance));
     }
 
     @Test
@@ -177,6 +217,29 @@ public class RDFSyntaxTest {
     public void testString() throws Exception {
         assertEquals("JSON-LD 1.0", RDFSyntax.JSONLD.toString());
         assertEquals("RDF 1.1 Turtle", RDFSyntax.TURTLE.toString());
+    }
+
+    @Test
+    public void testSupportsDataset() throws Exception {
+        assertTrue(RDFSyntax.JSONLD.supportsDataset());
+        assertTrue(RDFSyntax.NQUADS.supportsDataset());
+        assertFalse(RDFSyntax.NTRIPLES.supportsDataset());
+        assertFalse(RDFSyntax.RDFA.supportsDataset());
+        assertFalse(RDFSyntax.RDFA.supportsDataset());
+        assertFalse(RDFSyntax.RDFXML.supportsDataset());
+        assertTrue(RDFSyntax.TRIG.supportsDataset());
+        assertFalse(RDFSyntax.TURTLE.supportsDataset());
+    }
+
+    @Test
+    public void testTitle() throws Exception {
+        assertEquals("JSON-LD 1.0", RDFSyntax.JSONLD.title());
+        assertEquals("RDF 1.1 N-Quads", RDFSyntax.NQUADS.title());
+        assertEquals("RDF 1.1 N-Triples", RDFSyntax.NTRIPLES.title());
+        assertEquals("HTML+RDFa 1.1", RDFSyntax.RDFA.title());
+        assertEquals("RDF 1.1 XML Syntax", RDFSyntax.RDFXML.title());
+        assertEquals("RDF 1.1 TriG", RDFSyntax.TRIG.title());
+        assertEquals("RDF 1.1 Turtle", RDFSyntax.TURTLE.title());
     }
 
 }

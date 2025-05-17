@@ -44,24 +44,28 @@ public interface RDFSyntax {
      * @see <a href= "https://www.w3.org/TR/json-ld/">https://www.w3.org/TR/json-ld/</a>
      */
     RDFSyntax JSONLD = W3CRDFSyntax.JSONLD;
+
     /**
      * RDF 1.1 Turtle
      *
      * @see <a href= "https://www.w3.org/TR/turtle/">https://www.w3.org/TR/turtle/</a>
      */
     RDFSyntax TURTLE = W3CRDFSyntax.TURTLE;
+
     /**
      * RDF 1.1 N-Quads
      *
      * @see <a href= "https://www.w3.org/TR/n-quads/">https://www.w3.org/TR/n-quads/</a>
      */
     RDFSyntax NQUADS = W3CRDFSyntax.NQUADS;
+
     /**
      * RDF 1.1 N-Triples
      *
      * @see <a href= "https://www.w3.org/TR/n-triples/">https://www.w3.org/TR/n-triples/</a>
      */
     RDFSyntax NTRIPLES = W3CRDFSyntax.NTRIPLES;
+
     /**
      * HTML+RDFa 1.1 and XHTML+RDFa 1.1
      *
@@ -69,12 +73,14 @@ public interface RDFSyntax {
      * @see <a href= "https://www.w3.org/TR/xhtml-rdfa/">https://www.w3.org/TR/xhtml-rdfa/</a>
      */
     RDFSyntax RDFA = W3CRDFSyntax.RDFA;
+
     /**
      * RDF 1.1 XML Syntax
      *
      * @see <a href= "https://www.w3.org/TR/rdf-syntax-grammar/">https://www.w3.org/TR/rdf-syntax-grammar/</a>
      */
     RDFSyntax RDFXML = W3CRDFSyntax.RDFXML;
+
     /**
      * RDF 1.1 TriG
      *

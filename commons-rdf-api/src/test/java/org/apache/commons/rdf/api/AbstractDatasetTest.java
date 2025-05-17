@@ -433,9 +433,23 @@ public abstract class AbstractDatasetTest {
         try (final Graph defaultGraph = dataset.getGraph()) {
             // TODO: Can we assume the default graph was empty before our new triples?
             assertEquals(2, defaultGraph.size());
+            assertFalse(defaultGraph.isEmpty());
             assertTrue(defaultGraph.contains(alice, isPrimaryTopicOf, graph1));
             // NOTE: graph2 is a BlankNode
             assertTrue(defaultGraph.contains(bob, isPrimaryTopicOf, null));
+            final Triple triple = factory.createTriple(bnode1, alice, bob);
+            defaultGraph.add(triple);
+            assertTrue(defaultGraph.contains(triple));
+            defaultGraph.remove(triple);
+            assertFalse(defaultGraph.contains(triple));
+            defaultGraph.add(bnode1, alice, bob);
+            assertTrue(defaultGraph.contains(triple));
+            defaultGraph.remove(bnode1, alice, bob);
+            assertFalse(defaultGraph.contains(triple));
+            defaultGraph.add(triple);
+            assertTrue(defaultGraph.contains(triple));
+            defaultGraph.clear();
+            assertFalse(defaultGraph.contains(triple));
         }
     }
 
@@ -547,6 +561,7 @@ public abstract class AbstractDatasetTest {
         for (final Quad t : dataset.iterate()) {
             quads.add(t);
         }
+        assertFalse(dataset.isEmpty());
         assertEquals(dataset.size(), quads.size());
 
         //assertTrue(quads.contains(bobNameQuad));
