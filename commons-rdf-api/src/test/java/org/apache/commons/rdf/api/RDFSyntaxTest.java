@@ -18,6 +18,7 @@
 package org.apache.commons.rdf.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -106,6 +107,8 @@ public class RDFSyntaxTest {
     void testEqualsAndHashCode(final RDFSyntax left, final RDFSyntax right) {
         assertNotNull(left);
         assertNotNull(right);
+        assertEquals(left, left);
+        assertEquals(right, right);
         if (left == right) {
             assertEquals(left, right);
             assertEquals(left.hashCode(), right.hashCode());
@@ -113,6 +116,11 @@ public class RDFSyntaxTest {
             assertNotEquals(left, right);
             assertNotEquals(left.hashCode(), right.hashCode());
         }
+        assertFalse(left.equals(null));
+        assertFalse(right.equals(null));
+        final Object notAnInstance = "a";
+        assertFalse(left.equals(notAnInstance));
+        assertFalse(right.equals(notAnInstance));
     }
 
     @Test
@@ -201,6 +209,17 @@ public class RDFSyntaxTest {
     public void testString() throws Exception {
         assertEquals("JSON-LD 1.0", RDFSyntax.JSONLD.toString());
         assertEquals("RDF 1.1 Turtle", RDFSyntax.TURTLE.toString());
+    }
+
+    @Test
+    public void testTitle() throws Exception {
+        assertEquals("JSON-LD 1.0", RDFSyntax.JSONLD.title());
+        assertEquals("RDF 1.1 N-Quads", RDFSyntax.NQUADS.title());
+        assertEquals("RDF 1.1 N-Triples", RDFSyntax.NTRIPLES.title());
+        assertEquals("HTML+RDFa 1.1", RDFSyntax.RDFA.title());
+        assertEquals("RDF 1.1 XML Syntax", RDFSyntax.RDFXML.title());
+        assertEquals("RDF 1.1 TriG", RDFSyntax.TRIG.title());
+        assertEquals("RDF 1.1 Turtle", RDFSyntax.TURTLE.title());
     }
 
 }
