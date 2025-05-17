@@ -436,6 +436,19 @@ public abstract class AbstractDatasetTest {
             assertTrue(defaultGraph.contains(alice, isPrimaryTopicOf, graph1));
             // NOTE: graph2 is a BlankNode
             assertTrue(defaultGraph.contains(bob, isPrimaryTopicOf, null));
+            final Triple triple = factory.createTriple(bnode1, alice, bob);
+            defaultGraph.add(triple);
+            assertTrue(defaultGraph.contains(triple));
+            defaultGraph.remove(triple);
+            assertFalse(defaultGraph.contains(triple));
+            defaultGraph.add(bnode1, alice, bob);
+            assertTrue(defaultGraph.contains(triple));
+            defaultGraph.remove(bnode1, alice, bob);
+            assertFalse(defaultGraph.contains(triple));
+            defaultGraph.add(triple);
+            assertTrue(defaultGraph.contains(triple));
+            defaultGraph.clear();
+            assertFalse(defaultGraph.contains(triple));
         }
     }
 
