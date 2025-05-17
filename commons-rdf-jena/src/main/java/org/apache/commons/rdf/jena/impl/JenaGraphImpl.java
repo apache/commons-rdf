@@ -137,13 +137,13 @@ final class JenaGraphImpl implements JenaGraph {
     @Override
     public Stream<? extends Triple> stream() {
         final JenaRDF factory = new JenaRDF(salt);
-        return Iter.asStream(graph.find(null, null, null), true).map(factory::asTriple);
+        return Iter.asStream(graph.find(null, null, null), true).map(factory::asTriple).sequential();
     }
 
     @Override
     public Stream<? extends Triple> stream(final BlankNodeOrIRI s, final IRI p, final RDFTerm o) {
         final JenaRDF factory = new JenaRDF(salt);
-        return Iter.asStream(graph.find(toJenaAny(s), toJenaAny(p), toJenaAny(o)), true).map(factory::asTriple);
+        return Iter.asStream(graph.find(toJenaAny(s), toJenaAny(p), toJenaAny(o)), true).map(factory::asTriple).sequential();
     }
 
     private Node toJenaAny(final RDFTerm term) {

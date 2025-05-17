@@ -106,6 +106,6 @@ final class JsonLdGraphImpl extends AbstractJsonLdGraphLike<Triple> implements J
     @Override
     public Stream<JsonLdTriple> stream(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         return filteredGraphs(graphName).flatMap(List::stream).filter(quadFilter(subject, predicate, object))
-                .map(factory::asTriple);
+                .map(factory::asTriple).sequential();
     }
 }

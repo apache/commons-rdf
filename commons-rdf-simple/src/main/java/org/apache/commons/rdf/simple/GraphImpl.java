@@ -37,7 +37,7 @@ import org.apache.commons.rdf.simple.SimpleRDF.SimpleRDFTerm;
  * <p>
  * {@link Triple}s in the graph are kept in a {@link Set}.
  * <p>
- * All Stream operations are performed using parallel and unordered directives.
+ * All Stream operations are performed using sequential and unordered directives.
  */
 final class GraphImpl implements Graph {
 
@@ -146,7 +146,7 @@ final class GraphImpl implements Graph {
 
     @Override
     public Stream<Triple> stream() {
-        return triples.parallelStream().unordered();
+        return triples.stream().unordered();
     }
 
     @Override
