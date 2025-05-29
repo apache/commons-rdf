@@ -18,9 +18,12 @@
 package org.apache.commons.rdf.rdf4j.impl;
 
 import java.util.ConcurrentModificationException;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.Graph;
@@ -61,6 +64,15 @@ final class RepositoryDatasetImpl extends AbstractRepositoryGraphLike<Quad> impl
         final Statement statement = getRdf4jTermFactory().asStatement(tripleLike);
         try (RepositoryConnection conn = getRepositoryConnection()) {
             conn.add(statement);
+            conn.commit();
+        }
+    }
+
+    @Override
+    public void addAll(Iterable<? extends Quad> statements) {
+        List<Statement> stmts = StreamSupport.stream(statements.spliterator(), false).map(this::asStatement).collect(Collectors.toList());
+        try (RepositoryConnection conn = getRepositoryConnection()) {
+            conn.add(stmts);
             conn.commit();
         }
     }
