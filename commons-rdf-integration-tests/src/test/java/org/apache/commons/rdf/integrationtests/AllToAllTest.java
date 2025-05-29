@@ -39,6 +39,9 @@ import org.apache.commons.rdf.simple.SimpleRDF;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+/**
+ * Tests {@link Graph}, {@link RDF}, {@link RDFTerm}, and more.
+ */
 public class AllToAllTest {
 
     @SuppressWarnings("rawtypes")
@@ -55,7 +58,7 @@ public class AllToAllTest {
         return allToAll;
     }
 
-    /**
+    /*
      * This test creates a {@link Graph} with the first {@link RDF},
      * then inserts/queries with triples using {@link RDFTerm}s created with the
      * second factory.
@@ -64,7 +67,7 @@ public class AllToAllTest {
      *             Just in case.
      */
     @MethodSource("data")
-    @ParameterizedTest(name = "{index}: {0}->{1}")
+    @ParameterizedTest(name = "{index}: {0} -> {1}")
     public void testAddTermsFromOtherFactory(final Class<? extends RDF> from, final Class<? extends RDF> to) throws Exception {
         RDF nodeFactory = from.getConstructor().newInstance();
         RDF graphFactory = to.newInstance();
@@ -107,7 +110,7 @@ public class AllToAllTest {
         }
     }
 
-    /**
+    /*
      * This is a variation of {@link #testAddTermsFromOtherFactory(Class, Class)}, but here
      * {@link Triple} is created in the "foreign" nodeFactory before adding to
      * the graph.
@@ -116,7 +119,7 @@ public class AllToAllTest {
      *             Just in case.
      */
     @MethodSource("data")
-    @ParameterizedTest(name = "{index}: {0}->{1}")
+    @ParameterizedTest(name = "{index}: {0} -> {1}")
     public void testAddTriplesFromOtherFactory(final Class<? extends RDF> from, final Class<? extends RDF> to) throws Exception {
         RDF nodeFactory = from.getConstructor().newInstance();
         RDF graphFactory = to.newInstance();

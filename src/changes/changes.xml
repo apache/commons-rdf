@@ -32,8 +32,10 @@
         <action type="fix" dev="ggregory" due-to="step-security-bot, Gary Gregory">[StepSecurity] ci: Harden GitHub Actions #137.</action>
         <action type="fix" dev="ggregory" due-to="strangelookingnerd, Gary Gregory">Migrate tests to JUnit5 #289.</action>
         <action type="fix" dev="ggregory" due-to="naturzukunft">Fix AbstractDatasetTest #327.</action>
+        <action type="fix" dev="ggregory" due-to="Gary Gregory">Replace unmaintained FindBugs with SpotBugs.</action>
+        <action type="fix" dev="ggregory" due-to="naturzukunft, Gary Gregory">stream() implementations should default to being sequential #328.</action>
         <!-- UPDATE -->
-        <action type="update" dev="ggregory" due-to="Gary Gregory">Bump org.apache.commons:commons-parent from 52 to 83 #259, #265, #269, #273, #279.</action>
+        <action type="update" dev="ggregory" due-to="Gary Gregory">Bump org.apache.commons:commons-parent from 52 to 84 #259, #265, #269, #273, #279.</action>
         <action type="update" dev="ggregory" due-to="Gary Gregory">Bump actions/cache from 2.1.4 to 3.0.11 and more #77, #97.</action>
         <action type="update" dev="ggregory" due-to="Gary Gregory">Bump actions/checkout from 2 to 3.1.0 and more #76, #95.</action>
         <action type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump actions/setup-java from 1.4.0 to 3.6.0 and more #81, #99.</action>

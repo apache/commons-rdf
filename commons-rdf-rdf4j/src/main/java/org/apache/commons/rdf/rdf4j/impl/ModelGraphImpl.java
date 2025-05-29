@@ -139,7 +139,7 @@ final class ModelGraphImpl implements RDF4JGraph {
 
     @Override
     public Stream<RDF4JTriple> stream() {
-        return model.parallelStream().map(rdf4jTermFactory::asTriple);
+        return model.stream().map(rdf4jTermFactory::asTriple);
     }
 
     @Override
@@ -147,7 +147,7 @@ final class ModelGraphImpl implements RDF4JGraph {
             final RDFTerm object) {
         return model.filter((Resource) rdf4jTermFactory.asValue(subject),
                 (org.eclipse.rdf4j.model.IRI) rdf4jTermFactory.asValue(predicate), rdf4jTermFactory.asValue(object))
-                .parallelStream().map(rdf4jTermFactory::asTriple);
+                .stream().map(rdf4jTermFactory::asTriple);
     }
 
 }

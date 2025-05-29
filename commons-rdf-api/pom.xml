@@ -36,13 +36,20 @@
     <!-- project.build.outputTimestamp is managed by Maven plugins, see https://maven.apache.org/guides/mini/guide-reproducible-builds.html -->
     <project.build.outputTimestamp>2024-02-01T03:27:02Z</project.build.outputTimestamp>
     <!-- JaCoCo: Don't make code coverage worse than: -->
-    <commons.jacoco.classRatio>0.90</commons.jacoco.classRatio>
+    <commons.jacoco.classRatio>0.88</commons.jacoco.classRatio>
     <commons.jacoco.instructionRatio>0.79</commons.jacoco.instructionRatio>
     <commons.jacoco.methodRatio>0.77</commons.jacoco.methodRatio>
     <commons.jacoco.branchRatio>0.30</commons.jacoco.branchRatio>
     <commons.jacoco.lineRatio>0.76</commons.jacoco.lineRatio>    
     <commons.jacoco.complexityRatio>0.66</commons.jacoco.complexityRatio>
   </properties>
+  <dependencies>
+    <dependency>
+      <groupId>org.junit-pioneer</groupId>
+      <artifactId>junit-pioneer</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
   <build>
     <plugins>
       <plugin>
@@ -51,7 +58,7 @@
         <executions>
           <execution>
             <id>test-jar</id>
-                      <!-- Also expose abstract test classes -->
+            <!-- Also expose abstract test classes -->
             <goals>
               <goal>test-jar</goal>
             </goals>

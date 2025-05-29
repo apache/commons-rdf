@@ -208,7 +208,7 @@ abstract class AbstractJsonLdGraphLike<T extends TripleLike> implements JsonLdGr
     @Override
     public Stream<? extends T> stream() {
         return rdfDataSet.graphNames().parallelStream().map(rdfDataSet::getQuads)
-                .flatMap(List<RDFDataset.Quad>::parallelStream).map(this::asTripleOrQuad);
+                .flatMap(List<RDFDataset.Quad>::parallelStream).map(this::asTripleOrQuad).sequential();
     }
 
 }
