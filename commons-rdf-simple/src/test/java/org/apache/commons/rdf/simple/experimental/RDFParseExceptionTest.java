@@ -34,7 +34,7 @@ public class RDFParseExceptionTest {
     RDFParser rdfParser = new DummyRDFParserBuilder();
 
     @Test
-    public void testGetCauseAndMessage() {
+    void testGetCauseAndMessage() {
         final IOException e = new IOException();
         e.fillInStackTrace();
         assertEquals(null, new RDFParseException(rdfParser).getCause());
@@ -44,7 +44,7 @@ public class RDFParseExceptionTest {
     }
 
     @Test
-    public void testGetCauseNoMessage() {
+    void testGetCauseNoMessage() {
         final IOException e = new IOException();
         e.fillInStackTrace();
         assertEquals(null, new RDFParseException(rdfParser).getCause());
@@ -53,14 +53,14 @@ public class RDFParseExceptionTest {
     }
 
     @Test
-    public void testGetMessage() {
+    void testGetMessage() {
         assertEquals(null, new RDFParseException(rdfParser).getMessage());
         assertEquals(null, new RDFParseException(rdfParser, (String) null).getMessage());
         assertEquals("a", new RDFParseException(rdfParser, "a").getMessage());
     }
 
     @Test
-    public void testGetRDFParser() {
+    void testGetRDFParser() {
         assertEquals(rdfParser, new RDFParseException(rdfParser).getRDFParserBuilder());
     }
 }

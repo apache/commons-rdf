@@ -31,7 +31,7 @@ import org.junit.jupiter.api.Test;
 public class RDF4JMethodOverloadsTest {
 
     @Test
-    public void testAsRDFTermOverloads() {
+    void testAsRDFTermOverloads() {
         final RDF4J rdf4J = new RDF4J();
 
         final ValueFactory valueFactory = SimpleValueFactory.getInstance();

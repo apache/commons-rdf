@@ -27,27 +27,27 @@ public class DummyTripleTest {
     Triple triple = new DummyTriple();
 
     @Test
-    public void testEquals() throws Exception {
+    void testEquals() throws Exception {
         assertEquals(new DummyTriple(), triple);
     }
 
     @Test
-    public void testGetObject() throws Exception {
+    void testGetObject() throws Exception {
         assertEquals(3, ((DummyIRI) triple.getObject()).i);
     }
 
     @Test
-    public void testGetPredicate() throws Exception {
+    void testGetPredicate() throws Exception {
         assertEquals(2, ((DummyIRI) triple.getPredicate()).i);
     }
 
     @Test
-    public void testGetSubject() throws Exception {
+    void testGetSubject() throws Exception {
         assertEquals(1, ((DummyIRI) triple.getSubject()).i);
     }
 
     @Test
-    public void testHashCode() {
+    void testHashCode() {
         final int expected = Objects.hash(triple.getSubject(), triple.getPredicate(), triple.getObject());
         assertEquals(expected, triple.hashCode());
     }

@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 public class JsonLdServiceLoaderTest {
 
     @Test
-    public void testServiceLoaderLookup() {
+    void testServiceLoaderLookup() {
         final ServiceLoader<RDF> loader = ServiceLoader.load(RDF.class);
         for (final RDF impl : loader) {
             if (impl instanceof JsonLdRDF) {

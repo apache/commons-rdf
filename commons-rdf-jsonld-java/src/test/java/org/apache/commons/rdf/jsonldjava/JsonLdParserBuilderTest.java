@@ -70,7 +70,7 @@ public class JsonLdParserBuilderTest {
     }
 
     @Test
-    public void testParseByPath() throws Exception {
+    void testParseByPath() throws Exception {
         final Path path = Files.createTempFile("test", ".jsonld");
         path.toFile().deleteOnExit();
         try (InputStream is = getClass().getResourceAsStream(TEST_JSONLD)) {
@@ -84,7 +84,7 @@ public class JsonLdParserBuilderTest {
     }
 
     @Test
-    public void testParseByStream() throws Exception {
+    void testParseByStream() throws Exception {
         try (final Graph g = factory.createGraph()) {
             try (InputStream is = getClass().getResourceAsStream(TEST_JSONLD)) {
                 assertNotNull(is, "Test resource not found: " + TEST_JSONLD);
@@ -96,7 +96,7 @@ public class JsonLdParserBuilderTest {
     }
 
     @Test
-    public void testParseByUrl() throws Exception {
+    void testParseByUrl() throws Exception {
         final URL url = getClass().getResource(TEST_JSONLD);
         assertNotNull(url, "Test resource not found: " + TEST_JSONLD);
         final IRI iri = factory.createIRI(url.toString());

@@ -38,7 +38,7 @@ public class RDFSyntaxTest {
     }
 
     @Test
-    public void testByFileExtension() throws Exception {
+    void testByFileExtension() throws Exception {
         assertEquals(RDFSyntax.JSONLD, RDFSyntax.byFileExtension(".jsonld").get());
         assertEquals(RDFSyntax.NQUADS, RDFSyntax.byFileExtension(".nq").get());
         assertEquals(RDFSyntax.NTRIPLES, RDFSyntax.byFileExtension(".nt").get());
@@ -49,22 +49,22 @@ public class RDFSyntaxTest {
     }
 
     @Test
-    public void testByFileExtensionFailsWithoutDot() throws Exception {
+    void testByFileExtensionFailsWithoutDot() throws Exception {
         assertEquals(Optional.empty(), RDFSyntax.byFileExtension("rdf"));
     }
 
     @Test
-    public void testByFileExtensionLowerCase() throws Exception {
+    void testByFileExtensionLowerCase() throws Exception {
         assertEquals(RDFSyntax.TURTLE, RDFSyntax.byFileExtension(".TtL").get());
     }
 
     @Test
-    public void testByFileExtensionUnknown() throws Exception {
+    void testByFileExtensionUnknown() throws Exception {
         assertEquals(Optional.empty(), RDFSyntax.byFileExtension(".tar"));
     }
 
     @Test
-    public void testByMediaType() throws Exception {
+    void testByMediaType() throws Exception {
         assertEquals(RDFSyntax.JSONLD, RDFSyntax.byMediaType("application/ld+json").get());
         assertEquals(RDFSyntax.NQUADS, RDFSyntax.byMediaType("application/n-quads").get());
         assertEquals(RDFSyntax.NTRIPLES, RDFSyntax.byMediaType("application/n-triples").get());
@@ -76,7 +76,7 @@ public class RDFSyntaxTest {
     }
 
     @Test
-    public void testByMediaTypeContentType() throws Exception {
+    void testByMediaTypeContentType() throws Exception {
         assertEquals(RDFSyntax.TURTLE, RDFSyntax.byMediaType("text/turtle; charset=\"UTF-8\"").get());
         assertEquals(RDFSyntax.TURTLE, RDFSyntax.byMediaType("text/turtle ; charset=\"UTF-8\"").get());
         // That's a Content-Type, not media type; we won't split by ","
@@ -86,17 +86,17 @@ public class RDFSyntaxTest {
     }
 
     @Test
-    public void testByMediaTypeLowerCase() throws Exception {
+    void testByMediaTypeLowerCase() throws Exception {
         assertEquals(RDFSyntax.JSONLD, RDFSyntax.byMediaType("APPLICATION/ld+JSON").get());
     }
 
     @Test
-    public void testByMediaTypeUnknown() throws Exception {
+    void testByMediaTypeUnknown() throws Exception {
         assertEquals(Optional.empty(), RDFSyntax.byMediaType("application/octet-stream"));
     }
 
     @Test
-    public void testByName() throws Exception {
+    void testByName() throws Exception {
         for (final RDFSyntax s : RDFSyntax.w3cSyntaxes()) {
             assertEquals(s, RDFSyntax.byName(s.name()).get());
         }
@@ -104,7 +104,7 @@ public class RDFSyntaxTest {
 
     @CartesianTest
     @CartesianTest.MethodFactory("providerRDFSyntax")
-    public void testEqualsAndHashCode(final RDFSyntax left, final RDFSyntax right) {
+    void testEqualsAndHashCode(final RDFSyntax left, final RDFSyntax right) {
         assertNotNull(left);
         assertNotNull(right);
         assertEquals(left, left);
@@ -132,7 +132,7 @@ public class RDFSyntaxTest {
     }
 
     @Test
-    public void testFileExtension() throws Exception {
+    void testFileExtension() throws Exception {
         assertEquals(".jsonld", RDFSyntax.JSONLD.fileExtension());
         assertEquals(".nq", RDFSyntax.NQUADS.fileExtension());
         assertEquals(".nt", RDFSyntax.NTRIPLES.fileExtension());
@@ -143,7 +143,7 @@ public class RDFSyntaxTest {
     }
 
     @Test
-    public void testFileExtensions() throws Exception {
+    void testFileExtensions() throws Exception {
         assertTrue(RDFSyntax.JSONLD.fileExtensions().contains(".jsonld"));
         assertTrue(RDFSyntax.NQUADS.fileExtensions().contains(".nq"));
         assertTrue(RDFSyntax.NTRIPLES.fileExtensions().contains(".nt"));
@@ -155,7 +155,7 @@ public class RDFSyntaxTest {
     }
 
     @Test
-    public void testIriGetIRIString() throws Exception {
+    void testIriGetIRIString() throws Exception {
         assertEquals("http://www.w3.org/ns/formats/JSON-LD", RDFSyntax.JSONLD.iri().getIRIString());
         assertEquals("http://www.w3.org/ns/formats/N-Quads", RDFSyntax.NQUADS.iri().getIRIString());
         assertEquals("http://www.w3.org/ns/formats/N-Triples", RDFSyntax.NTRIPLES.iri().getIRIString());
@@ -167,7 +167,7 @@ public class RDFSyntaxTest {
     }
 
     @Test
-    public void testIriNtriplesString() throws Exception {
+    void testIriNtriplesString() throws Exception {
         assertEquals("<http://www.w3.org/ns/formats/JSON-LD>", RDFSyntax.JSONLD.iri().ntriplesString());
         assertEquals("<http://www.w3.org/ns/formats/N-Quads>", RDFSyntax.NQUADS.iri().ntriplesString());
         assertEquals("<http://www.w3.org/ns/formats/N-Triples>", RDFSyntax.NTRIPLES.iri().ntriplesString());
@@ -179,7 +179,7 @@ public class RDFSyntaxTest {
     }
 
     @Test
-    public void testIriToString() throws Exception {
+    void testIriToString() throws Exception {
         assertEquals("<http://www.w3.org/ns/formats/JSON-LD>", RDFSyntax.JSONLD.iri().toString());
         assertEquals("<http://www.w3.org/ns/formats/N-Quads>", RDFSyntax.NQUADS.iri().toString());
         assertEquals("<http://www.w3.org/ns/formats/N-Triples>", RDFSyntax.NTRIPLES.iri().toString());
@@ -191,7 +191,7 @@ public class RDFSyntaxTest {
     }
 
     @Test
-    public void testMediaType() throws Exception {
+    void testMediaType() throws Exception {
         assertEquals("application/ld+json", RDFSyntax.JSONLD.mediaType());
         assertEquals("application/n-quads", RDFSyntax.NQUADS.mediaType());
         assertEquals("application/n-triples", RDFSyntax.NTRIPLES.mediaType());
@@ -202,7 +202,7 @@ public class RDFSyntaxTest {
     }
 
     @Test
-    public void testMediaTypes() throws Exception {
+    void testMediaTypes() throws Exception {
         assertTrue(RDFSyntax.JSONLD.mediaTypes().contains("application/ld+json"));
         assertTrue(RDFSyntax.NQUADS.mediaTypes().contains("application/n-quads"));
         assertTrue(RDFSyntax.NTRIPLES.mediaTypes().contains("application/n-triples"));
@@ -214,13 +214,13 @@ public class RDFSyntaxTest {
     }
 
     @Test
-    public void testString() throws Exception {
+    void testString() throws Exception {
         assertEquals("JSON-LD 1.0", RDFSyntax.JSONLD.toString());
         assertEquals("RDF 1.1 Turtle", RDFSyntax.TURTLE.toString());
     }
 
     @Test
-    public void testSupportsDataset() throws Exception {
+    void testSupportsDataset() throws Exception {
         assertTrue(RDFSyntax.JSONLD.supportsDataset());
         assertTrue(RDFSyntax.NQUADS.supportsDataset());
         assertFalse(RDFSyntax.NTRIPLES.supportsDataset());
@@ -232,7 +232,7 @@ public class RDFSyntaxTest {
     }
 
     @Test
-    public void testTitle() throws Exception {
+    void testTitle() throws Exception {
         assertEquals("JSON-LD 1.0", RDFSyntax.JSONLD.title());
         assertEquals("RDF 1.1 N-Quads", RDFSyntax.NQUADS.title());
         assertEquals("RDF 1.1 N-Triples", RDFSyntax.NTRIPLES.title());

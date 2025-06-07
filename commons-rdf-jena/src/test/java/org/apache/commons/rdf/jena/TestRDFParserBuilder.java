@@ -53,7 +53,7 @@ public class TestRDFParserBuilder {
     }
 
     @Test
-    public void testParseTurtle() throws Exception {
+    void testParseTurtle() throws Exception {
         try (final Graph g = new JenaRDF().createGraph()) {
             final Future<ParseResult> gFuture = new JenaRDFParser().contentType(RDFSyntax.TURTLE).source(turtleFile)
                     .target(g).parse();

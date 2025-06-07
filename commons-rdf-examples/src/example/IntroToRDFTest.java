@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test;
 public class IntroToRDFTest {
 
   @Test
-  public void testRunIntroToRDF() {
+  void testRunIntroToRDF() {
     IntroToRDF.main(new String[0]);
   }
 

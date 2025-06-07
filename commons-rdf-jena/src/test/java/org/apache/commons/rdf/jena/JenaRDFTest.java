@@ -44,7 +44,7 @@ public class JenaRDFTest extends AbstractRDFTest {
     }
 
     @Test
-    public void testRoundTripDatasetGraphShouldMaintainIdentity() {
+    void testRoundTripDatasetGraphShouldMaintainIdentity() {
         final DatasetGraph dsg = DatasetGraphFactory.create();
         final JenaDataset dataset = createFactory().asDataset(dsg);
         final DatasetGraph roundTrippedDSG = createFactory().asJenaDatasetGraph(dataset);
@@ -52,7 +52,7 @@ public class JenaRDFTest extends AbstractRDFTest {
     }
 
     @Test
-    public void testSimpleDatasetConversion() {
+    void testSimpleDatasetConversion() {
         final SimpleRDF factory = new SimpleRDF();
         final Dataset ds = factory.createDataset();
         final BlankNode subject = factory.createBlankNode("b1");

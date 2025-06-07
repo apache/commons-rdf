@@ -34,7 +34,7 @@ public class DatasetJenaTest extends AbstractDatasetTest {
     }
 
     @Test
-    public void testDatasetImplToStringTest() {
+    void testDatasetImplToStringTest() {
         final RDF rdf = createFactory();
         final JenaDataset jena = (JenaDataset) rdf.createDataset();
         final IRI graph = rdf.createIRI("http://example.com/");

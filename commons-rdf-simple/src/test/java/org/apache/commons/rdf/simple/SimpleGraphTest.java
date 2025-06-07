@@ -35,7 +35,7 @@ public class SimpleGraphTest extends AbstractGraphTest {
     }
 
     @Test
-    public void testGraphToString() {
+    void testGraphToString() {
         assumeTrue(aliceName != null && companyName != null);
         // System.out.println(graph);
         assertTrue(

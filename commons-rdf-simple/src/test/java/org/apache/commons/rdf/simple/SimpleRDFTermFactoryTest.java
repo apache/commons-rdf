@@ -33,56 +33,56 @@ import org.junit.jupiter.api.Test;
 public class SimpleRDFTermFactoryTest {
 
     @Test
-    public void testCreateBlankNode() {
+    void testCreateBlankNode() {
         final SimpleRDFTermFactory factory = new SimpleRDFTermFactory();
         final BlankNode actual = factory.createBlankNode();
         assertInstanceOf(BlankNodeImpl.class, actual);
     }
 
     @Test
-    public void testCreateBlankNodeWithName() {
+    void testCreateBlankNodeWithName() {
         final SimpleRDFTermFactory factory = new SimpleRDFTermFactory();
         final BlankNode actual = factory.createBlankNode("name");
         assertInstanceOf(BlankNodeImpl.class, actual);
     }
 
     @Test
-    public void testCreateGraph() {
+    void testCreateGraph() {
         final SimpleRDFTermFactory factory = new SimpleRDFTermFactory();
         final Graph actual = factory.createGraph();
         assertInstanceOf(GraphImpl.class, actual);
     }
 
     @Test
-    public void testCreateIRIWithIRI() {
+    void testCreateIRIWithIRI() {
         final SimpleRDFTermFactory factory = new SimpleRDFTermFactory();
         final IRI actual = factory.createIRI(Types.RDF_LANGSTRING.getIRIString());
         assertInstanceOf(Types.class, actual);
     }
 
     @Test
-    public void testCreateLiteralWithLiteral() {
+    void testCreateLiteralWithLiteral() {
         final SimpleRDFTermFactory factory = new SimpleRDFTermFactory();
         final Literal actual = factory.createLiteral("literal");
         assertInstanceOf(LiteralImpl.class, actual);
     }
 
     @Test
-    public void testCreateLiteralWithLiteralAndIRI() {
+    void testCreateLiteralWithLiteralAndIRI() {
         final SimpleRDFTermFactory factory = new SimpleRDFTermFactory();
         final Literal actual = factory.createLiteral("literal", Types.RDF_PLAINLITERAL);
         assertInstanceOf(LiteralImpl.class, actual);
     }
 
     @Test
-    public void testCreateLiteralWithLiteralAndLanguage() {
+    void testCreateLiteralWithLiteralAndLanguage() {
         final SimpleRDFTermFactory factory = new SimpleRDFTermFactory();
         final Literal actual = factory.createLiteral("literal", "language");
         assertInstanceOf(LiteralImpl.class, actual);
     }
 
     @Test
-    public void testCreateTriple() {
+    void testCreateTriple() {
         final SimpleRDFTermFactory factory = new SimpleRDFTermFactory();
         final Triple actual = factory.createTriple(Types.RDF_PLAINLITERAL, Types.RDF_LANGSTRING, factory.createLiteral("literal"));
         assertInstanceOf(TripleImpl.class, actual);

@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 
 public class DefaultQuadTest {
     @Test
-    public void testAsQuad() throws Exception {
+    void testAsQuad() throws Exception {
         final Quad q = new DummyQuad();
         final Triple t = q.asTriple();
         assertEquals(t, t);

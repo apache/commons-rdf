@@ -248,7 +248,7 @@ public abstract class AbstractDatasetTest {
     }
 
     @Test
-    public void testAddBlankNodesFromMultipleDatasets() throws Exception {
+    void testAddBlankNodesFromMultipleDatasets() throws Exception {
         // Create two separate Dataset instances
         try (final Dataset g1 = createDataset1();
                 final Dataset g2 = createDataset2();
@@ -315,7 +315,7 @@ public abstract class AbstractDatasetTest {
     }
 
     @Test
-    public void testClear() throws Exception {
+    void testClear() throws Exception {
         dataset.clear();
         assertFalse(dataset.contains(null, alice, knows, bob));
         assertEquals(0, dataset.size());
@@ -325,7 +325,7 @@ public abstract class AbstractDatasetTest {
     }
 
     @Test
-    public void testContains() throws Exception {
+    void testContains() throws Exception {
         assertFalse(dataset.contains(null, bob, knows, alice)); // or so he claims.
 
         assertTrue(dataset.contains(Optional.of(graph1), alice, knows, bob));
@@ -347,7 +347,7 @@ public abstract class AbstractDatasetTest {
     }
 
     @Test
-    public void testContainsLanguageTagsCaseInsensitive() {
+    void testContainsLanguageTagsCaseInsensitive() {
         // COMMONSRDF-51: Ensure we can add/contains/remove with any casing
         // of literal language tag
         final Literal lower = factory.createLiteral("Hello there", "en-gb");
@@ -371,7 +371,7 @@ public abstract class AbstractDatasetTest {
     }
 
     @Test
-    public void testContainsLanguageTagsCaseInsensitiveTurkish() {
+    void testContainsLanguageTagsCaseInsensitiveTurkish() {
         // COMMONSRDF-51: Special test for Turkish issue where
         // "i".toLowerCase() != "i"
         // See also:
@@ -429,7 +429,7 @@ public abstract class AbstractDatasetTest {
     }
 
     @Test
-    public void testGetGraph() throws Exception {
+    void testGetGraph() throws Exception {
         try (final Graph defaultGraph = dataset.getGraph()) {
             // TODO: Can we assume the default graph was empty before our new triples?
             assertEquals(2, defaultGraph.size());
@@ -454,7 +454,7 @@ public abstract class AbstractDatasetTest {
     }
 
     @Test
-    public void testGetGraph1() throws Exception {
+    void testGetGraph1() throws Exception {
         // graph1 should be present
         try (final Graph g1 = dataset.getGraph(graph1).get()) {
             assertEquals(4, g1.size());
@@ -467,7 +467,7 @@ public abstract class AbstractDatasetTest {
     }
 
     @Test
-    public void testGetGraph2() throws Exception {
+    void testGetGraph2() throws Exception {
         // graph2 should be present, even if is named by a BlankNode
         // We'll look up the potentially mapped graph2 blanknode
         final BlankNodeOrIRI graph2Name = (BlankNodeOrIRI) dataset.stream(Optional.empty(), bob, isPrimaryTopicOf, null)
@@ -491,7 +491,7 @@ public abstract class AbstractDatasetTest {
      *             If test fails
      */
     @Test
-    public void testGetGraphNames() throws Exception {
+    void testGetGraphNames() throws Exception {
         final Set<BlankNodeOrIRI> names = dataset.getGraphNames().collect(Collectors.toSet());
         assertTrue(names.contains(graph1), "Can't find graph name " + graph1);
         assertTrue(dataset.contains(Optional.of(graph1), null, null, null), "Found no quads in graph1");
@@ -506,7 +506,7 @@ public abstract class AbstractDatasetTest {
     }
 
     @Test
-    public void testGetGraphNull() throws Exception {
+    void testGetGraphNull() throws Exception {
         // Default graph should be present
         try (final Graph defaultGraph = dataset.getGraph(null).get()) {
             // TODO: Can we assume the default graph was empty before our new triples?
@@ -518,7 +518,7 @@ public abstract class AbstractDatasetTest {
     }
 
     @Test
-    public void testGetQuads() throws Exception {
+    void testGetQuads() throws Exception {
         long quadCount;
         try (Stream<? extends Quad> stream = dataset.stream()) {
             quadCount = stream.count();
@@ -535,7 +535,7 @@ public abstract class AbstractDatasetTest {
     }
 
     @Test
-    public void testGetQuadsQuery() throws Exception {
+    void testGetQuadsQuery() throws Exception {
 
         try (Stream<? extends Quad> stream = dataset.stream(Optional.of(graph1), alice, null, null)) {
             final long aliceCount = stream.count();
@@ -555,7 +555,7 @@ public abstract class AbstractDatasetTest {
     }
 
     @Test
-    public void testIterate() throws Exception {
+    void testIterate() throws Exception {
         assumeFalse(dataset.isEmpty());
         final List<Quad> quads = new ArrayList<>();
         for (final Quad t : dataset.iterate()) {
@@ -613,7 +613,7 @@ public abstract class AbstractDatasetTest {
     }
 
     @Test
-    public void testIterateFilter() throws Exception {
+    void testIterateFilter() throws Exception {
         final List<RDFTerm> friends = new ArrayList<>();
         final IRI alice = factory.createIRI("http://example.com/alice");
         final IRI knows = factory.createIRI("http://xmlns.com/foaf/0.1/knows");
@@ -632,7 +632,7 @@ public abstract class AbstractDatasetTest {
     }
 
     @Test
-    public void testRemove() throws Exception {
+    void testRemove() throws Exception {
         final long fullSize = dataset.size();
         dataset.remove(Optional.of(graph1), alice, knows, bob);
         final long shrunkSize = dataset.size();
@@ -672,7 +672,7 @@ public abstract class AbstractDatasetTest {
     }
 
     @Test
-    public void testRemoveLanguageTagsCaseInsensitive() {
+    void testRemoveLanguageTagsCaseInsensitive() {
         // COMMONSRDF-51: Ensure we can remove with any casing
         // of literal language tag
         final Literal lower = factory.createLiteral("Howdy", "en-us");
@@ -698,12 +698,12 @@ public abstract class AbstractDatasetTest {
     }
 
     @Test
-    public void testSize() throws Exception {
+    void testSize() throws Exception {
         assertEquals(10, dataset.size());
     }
 
     @Test
-    public void testStreamDefaultGraphNameAlice() throws Exception {
+    void testStreamDefaultGraphNameAlice() throws Exception {
         // null below would match in ANY graph (including default graph)
         final Optional<? extends Quad> aliceTopic = dataset.stream(null, alice, isPrimaryTopicOf, null).findAny();
         assertTrue(aliceTopic.isPresent());
@@ -713,7 +713,7 @@ public abstract class AbstractDatasetTest {
     }
 
     @Test
-    public void testStreamDefaultGraphNameByPattern() throws Exception {
+    void testStreamDefaultGraphNameByPattern() throws Exception {
         dataset.stream(Optional.empty(), null, null, null).forEach(quad -> {
             // COMMONSRDF-55: should not be <urn:x-arq:defaultgraph> or similar
             Boolean isGraph1 = quad.getGraphName().map(gn -> gn.equals(graph1)).orElse(false);
@@ -726,7 +726,7 @@ public abstract class AbstractDatasetTest {
     }
 
     @Test
-    public void testStreamLanguageTagsCaseInsensitive() {
+    void testStreamLanguageTagsCaseInsensitive() {
         // COMMONSRDF-51: Ensure we can add/contains/remove with any casing
         // of literal language tag
         final Literal lower = factory.createLiteral("Good afternoon", "en-gb");
@@ -766,7 +766,7 @@ public abstract class AbstractDatasetTest {
      * @throws Exception If test fails
      */
     @Test
-    public void testWhyJavaStreamsMightNotTakeOverFromSparql() throws Exception {
+    void testWhyJavaStreamsMightNotTakeOverFromSparql() throws Exception {
         assumeTrue(bnode1 != null && bnode2 != null && secretClubName != null);
         // Find a secret organizations
         try (Stream<? extends Quad> stream = dataset.stream(null, null, knows, null)) {

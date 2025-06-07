@@ -28,12 +28,12 @@ public class DefaultDatasetTest {
     DummyDataset dataset = new DummyDataset();
 
     @Test
-    public void testClose() throws Exception {
+    void testClose() throws Exception {
         dataset.close(); // no-op
     }
 
     @Test
-    public void testDefaultFilteredIterate() throws Exception {
+    void testDefaultFilteredIterate() throws Exception {
         assertFalse(dataset.streamCalled);
         assertFalse(dataset.filteredStreamCalled);
         for (final Quad t : dataset.iterate(null, null, new DummyIRI(2), null)) {
@@ -44,7 +44,7 @@ public class DefaultDatasetTest {
     }
 
     @Test
-    public void testDefaultIterate() throws Exception {
+    void testDefaultIterate() throws Exception {
         assertFalse(dataset.streamCalled);
         assertFalse(dataset.filteredStreamCalled);
         for (final Quad t : dataset.iterate()) {
