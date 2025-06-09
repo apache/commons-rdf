@@ -52,7 +52,7 @@ import org.junit.jupiter.api.io.TempDir;
  * shutdownAndDelete failed.
  */
 @Timeout(value = 15, unit = TimeUnit.SECONDS)
-public class NativeStoreGraphTest extends AbstractGraphTest {
+class NativeStoreGraphTest extends AbstractGraphTest {
 
     public final class NativeStoreRDF implements RDF {
 

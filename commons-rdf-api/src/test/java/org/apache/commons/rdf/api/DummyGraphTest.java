@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-public class DummyGraphTest {
+class DummyGraphTest {
     Graph graph = new DummyGraph();
 
     @Test

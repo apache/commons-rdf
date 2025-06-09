@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-public class DummyDatasetTest {
+class DummyDatasetTest {
     Dataset dataset = new DummyDataset();
 
     @Test

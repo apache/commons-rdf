@@ -42,7 +42,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 /**
  * Tests {@link Graph}, {@link RDF}, {@link RDFTerm}, and more.
  */
-public class AllToAllTest {
+class AllToAllTest {
 
     @SuppressWarnings("rawtypes")
     public static Collection<Object[]> data() {

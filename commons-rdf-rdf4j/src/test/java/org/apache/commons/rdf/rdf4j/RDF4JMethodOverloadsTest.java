@@ -28,7 +28,7 @@ import org.eclipse.rdf4j.model.ValueFactory;
 import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
 import org.junit.jupiter.api.Test;
 
-public class RDF4JMethodOverloadsTest {
+class RDF4JMethodOverloadsTest {
 
     @Test
     void testAsRDFTermOverloads() {

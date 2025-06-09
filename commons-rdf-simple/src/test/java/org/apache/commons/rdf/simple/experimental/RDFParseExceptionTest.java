@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests {@link RDFParseException}.
  */
-public class RDFParseExceptionTest {
+class RDFParseExceptionTest {
 
     RDFParser rdfParser = new DummyRDFParserBuilder();
 

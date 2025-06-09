@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests {@link SimpleRDFTermFactory}.
  */
-public class SimpleRDFTermFactoryTest {
+class SimpleRDFTermFactoryTest {
 
     @Test
     void testCreateBlankNode() {

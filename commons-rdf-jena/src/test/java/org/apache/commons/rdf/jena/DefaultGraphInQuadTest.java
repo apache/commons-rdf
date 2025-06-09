@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
  * COMMONSRDF-55: Handling of
  * Jena's default graph IRI urn:x-arq:DefaultGraph
  */
-public class DefaultGraphInQuadTest {
+class DefaultGraphInQuadTest {
 
     JenaRDF rdf = new JenaRDF();
     SimpleRDF simpleRDF = new SimpleRDF();

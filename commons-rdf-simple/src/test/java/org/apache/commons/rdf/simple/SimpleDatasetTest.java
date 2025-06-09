@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test SimpleRDF with AbstractGraphTest
  */
-public class SimpleDatasetTest extends AbstractDatasetTest {
+class SimpleDatasetTest extends AbstractDatasetTest {
 
     @Override
     public RDF createFactory() {

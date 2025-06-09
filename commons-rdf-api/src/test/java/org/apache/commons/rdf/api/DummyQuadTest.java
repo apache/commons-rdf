@@ -24,7 +24,7 @@ import java.util.Objects;
 
 import org.junit.jupiter.api.Test;
 
-public class DummyQuadTest {
+class DummyQuadTest {
     Quad quad = new DummyQuad();
 
     @Test

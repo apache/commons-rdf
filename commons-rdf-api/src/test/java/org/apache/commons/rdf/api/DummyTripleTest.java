@@ -23,7 +23,7 @@ import java.util.Objects;
 
 import org.junit.jupiter.api.Test;
 
-public class DummyTripleTest {
+class DummyTripleTest {
     Triple triple = new DummyTriple();
 
     @Test

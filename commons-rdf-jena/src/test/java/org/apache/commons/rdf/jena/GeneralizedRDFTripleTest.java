@@ -26,7 +26,7 @@ import org.apache.jena.graph.NodeFactory;
 import org.apache.jena.graph.Triple;
 import org.junit.jupiter.api.Test;
 
-public class GeneralizedRDFTripleTest {
+class GeneralizedRDFTripleTest {
 
     private final JenaRDF jena = new JenaRDF();
 

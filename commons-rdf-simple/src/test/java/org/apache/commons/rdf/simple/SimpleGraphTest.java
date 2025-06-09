@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test SimpleRDF with AbstractGraphTest
  */
-public class SimpleGraphTest extends AbstractGraphTest {
+class SimpleGraphTest extends AbstractGraphTest {
 
     @Override
     public RDF createFactory() {

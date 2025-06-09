@@ -20,7 +20,7 @@ package org.apache.commons.rdf.jsonldjava;
 import org.apache.commons.rdf.api.AbstractDatasetTest;
 import org.apache.commons.rdf.api.RDF;
 
-public class JsonLdDatasetTest extends AbstractDatasetTest {
+class JsonLdDatasetTest extends AbstractDatasetTest {
 
     @Override
     public RDF createFactory() {

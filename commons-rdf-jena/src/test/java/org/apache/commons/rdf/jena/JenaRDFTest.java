@@ -36,7 +36,7 @@ import org.apache.jena.sparql.core.DatasetGraph;
 import org.apache.jena.sparql.core.DatasetGraphFactory;
 import org.junit.jupiter.api.Test;
 
-public class JenaRDFTest extends AbstractRDFTest {
+class JenaRDFTest extends AbstractRDFTest {
 
     @Override
     public JenaRDF createFactory() {

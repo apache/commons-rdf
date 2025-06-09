@@ -26,7 +26,7 @@ import org.apache.commons.rdf.api.RDF;
 import org.apache.commons.rdf.simple.Types;
 import org.junit.jupiter.api.Test;
 
-public class DatasetJenaTest extends AbstractDatasetTest {
+class DatasetJenaTest extends AbstractDatasetTest {
 
     @Override
     public RDF createFactory() {

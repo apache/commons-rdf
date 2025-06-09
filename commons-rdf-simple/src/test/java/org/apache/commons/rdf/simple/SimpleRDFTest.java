@@ -23,7 +23,7 @@ import org.apache.commons.rdf.api.RDF;
 /**
  * Simple RDF Test
  */
-public class SimpleRDFTest extends AbstractRDFTest {
+class SimpleRDFTest extends AbstractRDFTest {
 
     @Override
     public RDF createFactory() {

@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests for the {@link org.apache.commons.rdf.simple.Types} enumeration.
  */
-public class TypesTest {
+class TypesTest {
 
     /**
      * Test method for

@@ -40,7 +40,7 @@ import org.apache.commons.rdf.simple.Types;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-public class UserGuideTest {
+class UserGuideTest {
 
     private RDF factory;
 

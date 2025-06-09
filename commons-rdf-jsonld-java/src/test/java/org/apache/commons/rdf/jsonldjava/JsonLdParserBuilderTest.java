@@ -36,7 +36,7 @@ import org.apache.commons.rdf.jsonldjava.experimental.JsonLdParser;
 import org.apache.commons.rdf.simple.Types;
 import org.junit.jupiter.api.Test;
 
-public class JsonLdParserBuilderTest {
+class JsonLdParserBuilderTest {
     private static final String TEST_JSONLD = "/test.jsonld";
 
     static JsonLdRDF factory = new JsonLdRDF();

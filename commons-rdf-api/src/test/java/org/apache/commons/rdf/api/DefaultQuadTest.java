@@ -24,7 +24,7 @@ import java.util.Objects;
 
 import org.junit.jupiter.api.Test;
 
-public class DefaultQuadTest {
+class DefaultQuadTest {
     @Test
     void testAsQuad() throws Exception {
         final Quad q = new DummyQuad();

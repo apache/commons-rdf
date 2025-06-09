@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 /**
  * COMMONSRDF-56: Test Literal comparisons with JSONLD-Java
  */
-public class JsonLdComparisonTest {
+class JsonLdComparisonTest {
 
     JsonLdRDF rdf = new JsonLdRDF();
 

@@ -66,7 +66,7 @@ import com.github.jsonldjava.utils.JsonUtils;
  * (however it does not check that it is compatible with Jena and
  * RDF4J's external fetching of RDF documents).
  */
-public class JSONLDParsingTest {
+class JSONLDParsingTest {
 
     static RDF rdf = new SimpleRDF();
     static IRI alice = rdf.createIRI("http://example.com/Alice");

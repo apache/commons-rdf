@@ -28,7 +28,7 @@ import org.apache.jena.graph.NodeFactory;
 import org.apache.jena.sparql.core.Quad;
 import org.junit.jupiter.api.Test;
 
-public class GeneralizedRDFQuadTest {
+class GeneralizedRDFQuadTest {
 
     private final JenaRDF jena = new JenaRDF();
 

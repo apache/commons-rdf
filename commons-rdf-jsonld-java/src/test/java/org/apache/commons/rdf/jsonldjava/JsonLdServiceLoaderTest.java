@@ -25,7 +25,7 @@ import java.util.ServiceLoader;
 import org.apache.commons.rdf.api.RDF;
 import org.junit.jupiter.api.Test;
 
-public class JsonLdServiceLoaderTest {
+class JsonLdServiceLoaderTest {
 
     @Test
     void testServiceLoaderLookup() {

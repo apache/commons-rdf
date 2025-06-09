@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import org.junit.jupiter.api.Test;
 
-public class DummyIRITest {
+class DummyIRITest {
     DummyIRI iri = new DummyIRI(1337);
 
     @Test

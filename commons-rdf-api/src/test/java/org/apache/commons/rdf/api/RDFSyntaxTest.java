@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 import org.junitpioneer.jupiter.cartesian.ArgumentSets;
 import org.junitpioneer.jupiter.cartesian.CartesianTest;
 
-public class RDFSyntaxTest {
+class RDFSyntaxTest {
 
     static ArgumentSets providerRDFSyntax() {
         return ArgumentSets

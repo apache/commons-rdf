@@ -20,7 +20,7 @@ package org.apache.commons.rdf.rdf4j;
 import org.apache.commons.rdf.api.AbstractDatasetTest;
 import org.apache.commons.rdf.api.RDF;
 
-public class DatasetTest extends AbstractDatasetTest {
+class DatasetTest extends AbstractDatasetTest {
 
     @Override
     public RDF createFactory() {
