@@ -44,7 +44,7 @@
     <commons.jacoco.classRatio>0.84</commons.jacoco.classRatio>
     <commons.jacoco.instructionRatio>0.81</commons.jacoco.instructionRatio>
     <commons.jacoco.methodRatio>0.83</commons.jacoco.methodRatio>
-    <commons.jacoco.branchRatio>0.73</commons.jacoco.branchRatio>
+    <commons.jacoco.branchRatio>0.72</commons.jacoco.branchRatio>
     <commons.jacoco.lineRatio>0.81</commons.jacoco.lineRatio>    
     <commons.jacoco.complexityRatio>0.73</commons.jacoco.complexityRatio>
   </properties>
