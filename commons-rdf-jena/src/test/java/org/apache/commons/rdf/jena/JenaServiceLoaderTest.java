@@ -25,10 +25,10 @@ import java.util.ServiceLoader;
 import org.apache.commons.rdf.api.RDF;
 import org.junit.jupiter.api.Test;
 
-public class JenaServiceLoaderTest {
+class JenaServiceLoaderTest {
 
     @Test
-    public void testServiceLoaderLookup() {
+    void testServiceLoaderLookup() {
         final ServiceLoader<RDF> loader = ServiceLoader.load(RDF.class);
         for (final RDF impl : loader) {
             if (impl instanceof JenaRDF) {

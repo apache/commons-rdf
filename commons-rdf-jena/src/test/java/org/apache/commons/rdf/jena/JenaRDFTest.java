@@ -36,7 +36,7 @@ import org.apache.jena.sparql.core.DatasetGraph;
 import org.apache.jena.sparql.core.DatasetGraphFactory;
 import org.junit.jupiter.api.Test;
 
-public class JenaRDFTest extends AbstractRDFTest {
+class JenaRDFTest extends AbstractRDFTest {
 
     @Override
     public JenaRDF createFactory() {
@@ -44,7 +44,7 @@ public class JenaRDFTest extends AbstractRDFTest {
     }
 
     @Test
-    public void testRoundTripDatasetGraphShouldMaintainIdentity() {
+    void testRoundTripDatasetGraphShouldMaintainIdentity() {
         final DatasetGraph dsg = DatasetGraphFactory.create();
         final JenaDataset dataset = createFactory().asDataset(dsg);
         final DatasetGraph roundTrippedDSG = createFactory().asJenaDatasetGraph(dataset);
@@ -52,7 +52,7 @@ public class JenaRDFTest extends AbstractRDFTest {
     }
 
     @Test
-    public void testSimpleDatasetConversion() {
+    void testSimpleDatasetConversion() {
         final SimpleRDF factory = new SimpleRDF();
         final Dataset ds = factory.createDataset();
         final BlankNode subject = factory.createBlankNode("b1");

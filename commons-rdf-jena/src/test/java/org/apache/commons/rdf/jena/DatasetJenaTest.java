@@ -26,7 +26,7 @@ import org.apache.commons.rdf.api.RDF;
 import org.apache.commons.rdf.simple.Types;
 import org.junit.jupiter.api.Test;
 
-public class DatasetJenaTest extends AbstractDatasetTest {
+class DatasetJenaTest extends AbstractDatasetTest {
 
     @Override
     public RDF createFactory() {
@@ -34,7 +34,7 @@ public class DatasetJenaTest extends AbstractDatasetTest {
     }
 
     @Test
-    public void testDatasetImplToStringTest() {
+    void testDatasetImplToStringTest() {
         final RDF rdf = createFactory();
         final JenaDataset jena = (JenaDataset) rdf.createDataset();
         final IRI graph = rdf.createIRI("http://example.com/");

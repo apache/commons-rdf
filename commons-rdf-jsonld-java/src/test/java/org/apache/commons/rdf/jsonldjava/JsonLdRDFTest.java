@@ -22,7 +22,7 @@ import org.apache.commons.rdf.api.RDF;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public class JsonLdRDFTest extends AbstractRDFTest {
+class JsonLdRDFTest extends AbstractRDFTest {
 
     @Override
     public RDF createFactory() {

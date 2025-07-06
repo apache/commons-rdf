@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-public class DummyDatasetTest {
+class DummyDatasetTest {
     Dataset dataset = new DummyDataset();
 
     @Test
@@ -41,64 +41,64 @@ public class DummyDatasetTest {
     }
 
     @Test
-    public void testAdd() throws Exception {
+    void testAdd() throws Exception {
         dataset.add(new DummyQuad());
     }
 
     @Test
-    public void testAddSPO() throws Exception {
+    void testAddSPO() throws Exception {
         dataset.add(null, new DummyIRI(1), new DummyIRI(2), new DummyIRI(3));
     }
 
     @Test
-    public void testContains() throws Exception {
+    void testContains() throws Exception {
         assertTrue(dataset.contains(new DummyQuad()));
     }
 
     @Test
-    public void testContainsSPO() throws Exception {
+    void testContainsSPO() throws Exception {
         assertTrue(dataset.contains(null, null, null, null));
         assertTrue(dataset.contains(null, new DummyIRI(1), new DummyIRI(2), new DummyIRI(3)));
         assertFalse(dataset.contains(null, new DummyIRI(0), new DummyIRI(0), new DummyIRI(0)));
     }
 
     @Test
-    public void testGetGraph() throws Exception {
+    void testGetGraph() throws Exception {
         assertInstanceOf(DummyGraph.class, dataset.getGraph());
     }
 
     @Test
-    public void testGetGraphNamed() throws Exception {
+    void testGetGraphNamed() throws Exception {
         assertFalse(dataset.getGraph(new DummyIRI(0)).isPresent());
     }
 
     @Test
-    public void testGetGraphNames() throws Exception {
+    void testGetGraphNames() throws Exception {
         assertFalse(dataset.getGraphNames().findAny().isPresent());
     }
 
     @Test
-    public void testGetGraphNull() throws Exception {
+    void testGetGraphNull() throws Exception {
         assertInstanceOf(DummyGraph.class, dataset.getGraph(null).get());
     }
 
     @Test
-    public void testRemoveSPO() throws Exception {
+    void testRemoveSPO() throws Exception {
         dataset.remove(null, new DummyIRI(0), new DummyIRI(0), new DummyIRI(0));
     }
 
     @Test
-    public void testSize() throws Exception {
+    void testSize() throws Exception {
         assertEquals(1, dataset.size());
     }
 
     @Test
-    public void testStream() throws Exception {
+    void testStream() throws Exception {
         assertEquals(new DummyQuad(), dataset.stream().findAny().get());
     }
 
     @Test
-    public void testStreamFiltered() throws Exception {
+    void testStreamFiltered() throws Exception {
         assertEquals(new DummyQuad(), dataset.stream(null, null, null, null).findAny().get());
         assertEquals(new DummyQuad(),
                 dataset.stream(null, new DummyIRI(1), new DummyIRI(2), new DummyIRI(3)).findAny().get());

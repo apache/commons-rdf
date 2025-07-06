@@ -24,36 +24,36 @@ import java.util.Objects;
 
 import org.junit.jupiter.api.Test;
 
-public class DummyQuadTest {
+class DummyQuadTest {
     Quad quad = new DummyQuad();
 
     @Test
-    public void testEquals() throws Exception {
+    void testEquals() throws Exception {
         assertEquals(new DummyQuad(), quad);
     }
 
     @Test
-    public void testGetGraphName() throws Exception {
+    void testGetGraphName() throws Exception {
         assertFalse(quad.getGraphName().isPresent());
     }
 
     @Test
-    public void testGetObject() throws Exception {
+    void testGetObject() throws Exception {
         assertEquals(3, ((DummyIRI) quad.getObject()).i);
     }
 
     @Test
-    public void testGetPredicate() throws Exception {
+    void testGetPredicate() throws Exception {
         assertEquals(2, ((DummyIRI) quad.getPredicate()).i);
     }
 
     @Test
-    public void testGetSubject() throws Exception {
+    void testGetSubject() throws Exception {
         assertEquals(1, ((DummyIRI) quad.getSubject()).i);
     }
 
     @Test
-    public void testHashCode() {
+    void testHashCode() {
         final int expected = Objects.hash(quad.getSubject(), quad.getPredicate(), quad.getObject(), quad.getGraphName());
         assertEquals(expected, quad.hashCode());
     }

@@ -42,7 +42,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 /**
  * Tests {@link Graph}, {@link RDF}, {@link RDFTerm}, and more.
  */
-public class AllToAllTest {
+class AllToAllTest {
 
     @SuppressWarnings("rawtypes")
     public static Collection<Object[]> data() {
@@ -68,7 +68,7 @@ public class AllToAllTest {
      */
     @MethodSource("data")
     @ParameterizedTest(name = "{index}: {0} -> {1}")
-    public void testAddTermsFromOtherFactory(final Class<? extends RDF> from, final Class<? extends RDF> to) throws Exception {
+    void testAddTermsFromOtherFactory(final Class<? extends RDF> from, final Class<? extends RDF> to) throws Exception {
         RDF nodeFactory = from.getConstructor().newInstance();
         RDF graphFactory = to.newInstance();
 
@@ -120,7 +120,7 @@ public class AllToAllTest {
      */
     @MethodSource("data")
     @ParameterizedTest(name = "{index}: {0} -> {1}")
-    public void testAddTriplesFromOtherFactory(final Class<? extends RDF> from, final Class<? extends RDF> to) throws Exception {
+    void testAddTriplesFromOtherFactory(final Class<? extends RDF> from, final Class<? extends RDF> to) throws Exception {
         RDF nodeFactory = from.getConstructor().newInstance();
         RDF graphFactory = to.newInstance();
 

@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
  * {@link UnsupportedOperationException}.
  */
 @SuppressWarnings("deprecation")
-public class DefaultRDFTermFactoryTest {
+class DefaultRDFTermFactoryTest {
     // All methods in RDFTermFactory has a default implementation
     RDFTermFactory factory = new RDFTermFactory() {};
 

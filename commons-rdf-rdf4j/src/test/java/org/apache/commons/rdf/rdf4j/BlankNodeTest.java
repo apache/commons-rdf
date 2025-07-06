@@ -20,7 +20,7 @@ package org.apache.commons.rdf.rdf4j;
 import org.apache.commons.rdf.api.AbstractBlankNodeTest;
 import org.apache.commons.rdf.api.BlankNode;
 
-public class BlankNodeTest extends AbstractBlankNodeTest {
+class BlankNodeTest extends AbstractBlankNodeTest {
 
     RDF4J factory = new RDF4J();
 

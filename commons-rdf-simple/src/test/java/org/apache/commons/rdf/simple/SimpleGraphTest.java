@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test SimpleRDF with AbstractGraphTest
  */
-public class SimpleGraphTest extends AbstractGraphTest {
+class SimpleGraphTest extends AbstractGraphTest {
 
     @Override
     public RDF createFactory() {
@@ -35,7 +35,7 @@ public class SimpleGraphTest extends AbstractGraphTest {
     }
 
     @Test
-    public void testGraphToString() {
+    void testGraphToString() {
         assumeTrue(aliceName != null && companyName != null);
         // System.out.println(graph);
         assertTrue(

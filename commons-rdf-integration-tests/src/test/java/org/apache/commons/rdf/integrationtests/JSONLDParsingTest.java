@@ -66,7 +66,7 @@ import com.github.jsonldjava.utils.JsonUtils;
  * (however it does not check that it is compatible with Jena and
  * RDF4J's external fetching of RDF documents).
  */
-public class JSONLDParsingTest {
+class JSONLDParsingTest {
 
     static RDF rdf = new SimpleRDF();
     static IRI alice = rdf.createIRI("http://example.com/Alice");
@@ -127,38 +127,38 @@ public class JSONLDParsingTest {
     }
 
     @Test
-    public void testJenaParseCached() throws Exception {
+    void testJenaParseCached() throws Exception {
         // Check if HTTPClient cache is used from
         // jarcache.json
         jenaParse(aliceCached);
     }
 
     @Test
-    public void testJenaParseEmbedded() throws Exception {
+    void testJenaParseEmbedded() throws Exception {
         jenaParse(aliceEmbedded);
     }
 
     @Test
-    public void testJsonldParseCached() throws Exception {
+    void testJsonldParseCached() throws Exception {
         // Check if HTTPClient cache is used from
         // jarcache.json
         jsonldParse(aliceCached);
     }
 
     @Test
-    public void testJsonldParseEmbedded() throws Exception {
+    void testJsonldParseEmbedded() throws Exception {
         jsonldParse(aliceEmbedded);
     }
 
     @Test
-    public void testRdf4jParseCached() throws Exception {
+    void testRdf4jParseCached() throws Exception {
         // Check if HTTPClient cache is used from
         // jarcache.json
         rdf4jParse(aliceCached);
     }
 
     @Test
-    public void testRdf4jParseEmbedded() throws Exception {
+    void testRdf4jParseEmbedded() throws Exception {
         rdf4jParse(aliceEmbedded);
     }
 }

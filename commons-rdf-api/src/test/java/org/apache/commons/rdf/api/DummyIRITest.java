@@ -22,36 +22,36 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import org.junit.jupiter.api.Test;
 
-public class DummyIRITest {
+class DummyIRITest {
     DummyIRI iri = new DummyIRI(1337);
 
     @Test
-    public void testEquals() throws Exception {
+    void testEquals() throws Exception {
         assertEquals(new DummyIRI(1337), iri);
     }
 
     @Test
-    public void testGetIRIString() throws Exception {
+    void testGetIRIString() throws Exception {
         assertEquals("http://example.com/1337", iri.getIRIString());
     }
 
     @Test
-    public void testHashCode() throws Exception {
+    void testHashCode() throws Exception {
         assertEquals("http://example.com/1337".hashCode(), iri.hashCode());
     }
 
     @Test
-    public void testI() throws Exception {
+    void testI() throws Exception {
         assertEquals(1337, iri.i);
     }
 
     @Test
-    public void testNotEquals() throws Exception {
+    void testNotEquals() throws Exception {
         assertNotEquals(new DummyIRI(1), iri);
     }
 
     @Test
-    public void testNtriplesString() throws Exception {
+    void testNtriplesString() throws Exception {
         assertEquals("<http://example.com/1337>", iri.ntriplesString());
     }
 }

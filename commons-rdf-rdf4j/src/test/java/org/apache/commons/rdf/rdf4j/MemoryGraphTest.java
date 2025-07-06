@@ -31,7 +31,7 @@ import org.eclipse.rdf4j.sail.Sail;
 import org.eclipse.rdf4j.sail.memory.MemoryStore;
 import org.eclipse.rdf4j.sail.memory.model.MemValueFactory;
 
-public class MemoryGraphTest extends AbstractGraphTest {
+class MemoryGraphTest extends AbstractGraphTest {
 
     public static final class MemoryStoreRDF implements RDF {
 

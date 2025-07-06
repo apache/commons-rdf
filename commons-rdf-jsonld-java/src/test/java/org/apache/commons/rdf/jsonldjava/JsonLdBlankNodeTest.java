@@ -24,7 +24,7 @@ import org.apache.commons.rdf.api.BlankNode;
 
 import com.github.jsonldjava.core.RDFDataset;
 
-public class JsonLdBlankNodeTest extends AbstractBlankNodeTest {
+class JsonLdBlankNodeTest extends AbstractBlankNodeTest {
 
     String fixedPrefix = "urn:uuid:d028ca89-8b2f-4e18-90a0-8959f955038d#";
 

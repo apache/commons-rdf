@@ -25,7 +25,7 @@ import org.apache.commons.rdf.api.BlankNode;
 /**
  * Concrete implementation of BlankNodeImpl test.
  */
-public class BlankNodeImplTest extends AbstractBlankNodeTest {
+class BlankNodeImplTest extends AbstractBlankNodeTest {
 
     // Fixed salt just for this test
     private static final UUID SALT = UUID.fromString("35019b59-18b3-4e74-8707-ec55f62a37d6");
