@@ -59,7 +59,7 @@ abstract class AbstractJsonLdGraphLike<T extends TripleLike> implements JsonLdGr
     RDFDataset rdfDataSet;
 
     AbstractJsonLdGraphLike(final RDFDataset rdfDataSet) {
-        this(rdfDataSet, "urn:uuid:" + SALT + "#" + "g" + System.identityHashCode(rdfDataSet));
+        this(rdfDataSet, "urn:uuid:" + SALT + "#g" + System.identityHashCode(rdfDataSet));
     }
 
     AbstractJsonLdGraphLike(final RDFDataset rdfDataSet, final String bnodePrefix) {
