@@ -145,7 +145,7 @@
             <!-- For now, avoid WARNING] javadoc: warning - The code being documented uses packages in the unnamed module, but the packages defined in https://jena.apache.org/documentation/javadoc/arq/ are in named modules. -->
             <!-- <link>https://jena.apache.org/documentation/javadoc/jena/</link>-->
             <!--  <link>https://jena.apache.org/documentation/javadoc/arq/</link>-->
-            <link>https://rdf4j.org/javadoc/${rdf4j.version}/</link>
+            <link>https://rdf4j.org/javadoc/latest/</link>
           </links>
         </configuration>
       </plugin>
