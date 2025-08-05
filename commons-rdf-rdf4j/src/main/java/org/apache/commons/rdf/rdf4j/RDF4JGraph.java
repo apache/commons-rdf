@@ -58,7 +58,7 @@ public interface RDF4JGraph extends Graph, RDF4JGraphLike<Triple> {
      * If the context mask is {@link Set#isEmpty()}, then this is a <em>union
      * graph</em> which triples reflect statements in any contexts. Triples
      * added to the graph will be added in the default context, e.g. equivalent
-     * to <code>new Resource[1]{null}</code>) in RDF4J.
+     * to {@code new Resource[1]{null}}) in RDF4J.
      * <p>
      * Note that the context mask itself cannot be {@code null}.
      * <p>

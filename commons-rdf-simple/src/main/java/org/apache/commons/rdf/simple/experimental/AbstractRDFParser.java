@@ -81,16 +81,16 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     /**
      * Return the file extension of a Path - if any.
      * <p>
-     * The returned file extension includes the leading <code>.</code>
+     * The returned file extension includes the leading {@code .}
      * </p>
      * <p>
      * Note that this only returns the last extension, e.g. the file extension
-     * for <code>archive.tar.gz</code> would be <code>.gz</code>
+     * for {@code archive.tar.gz} would be {@code .gz}
      * </p>
      *
      * @param path
      *            Path which file name might contain an extension
-     * @return File extension (including the leading <code>.</code>, or
+     * @return File extension (including the leading {@code .}, or
      *         {@link Optional#empty()} if the path has no extension
      */
     private static Optional<String> fileExtension(final Path path) {
@@ -309,7 +309,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      * {@link Optional#empty()}.
      * </p>
      *
-     * @return The Content-Type IANA media type, e.g. <code>text/turtle</code>,
+     * @return The Content-Type IANA media type, e.g. {@code text/turtle},
      *         or {@link Optional#empty()} if it has not been set
      */
     public final Optional<String> getContentType() {
@@ -475,7 +475,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      * </p>
      * <p>
      * If the {@link #getSourceFile()} is present, but the {@link #getBase()} is
-     * not present, the base will be set to the <code>file:///</code> IRI for
+     * not present, the base will be set to the {@code file:///} IRI for
      * the Path's real path (e.g. resolving any symbolic links).
      * </p>
      *
@@ -518,7 +518,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     /**
      * Reset all source* fields to Optional.empty()
      * <p>
-     * Subclasses should override this and call <code>super.resetSource()</code>
+     * Subclasses should override this and call {@code super.resetSource()}
      * if they need to reset any additional source* fields.
      * </p>
      */
@@ -535,7 +535,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      * <strong>note</strong> reset.
      * </p>
      * <p>
-     * Subclasses should override this and call <code>super.resetTarget()</code>
+     * Subclasses should override this and call {@code super.resetTarget()}
      * if they need to reset any additional target* fields.
      * </p>
      */

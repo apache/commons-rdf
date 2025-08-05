@@ -55,7 +55,7 @@ import org.apache.jena.sparql.graph.GraphFactory;
  * Instances of JenaRDF can also convert existing objects from Jena with methods
  * like {@link #asRDFTerm(Node)} and
  * {@link #asGraph(org.apache.jena.graph.Graph)}, and vice versa from any
- * Commons RDF object to Jena with the <code>asJena*</code> methods like
+ * Commons RDF object to Jena with the {@code asJena*} methods like
  * {@link #asJenaNode(RDFTerm)} and {@link #asJenaGraph(Graph)}.
  * <p>
  * Note that Commons RDF objects created by this class implement the
@@ -129,7 +129,7 @@ public final class JenaRDF implements RDF {
      *            {@link RDF} to use for creating {@link RDFTerm}.
      * @param node
      *            The Jena Node to adapt. It's {@link Node#isConcrete()} must be
-     *            <code>true</code>.
+     *            {@code true}.
      * @return Adapted {@link RDFTerm}
      * @throws ConversionException
      *             If the {@link Node} can't be represented as an
@@ -591,7 +591,7 @@ public final class JenaRDF implements RDF {
      * @see #asRDFTerm(RDF, Node)
      * @param node
      *            The Jena Node to adapt. It's {@link Node#isConcrete()} must be
-     *            <code>true</code>.
+     *            {@code true}.
      * @return Adapted {@link JenaRDFTerm}
      * @throws ConversionException
      *             If the {@link Node} can't be represented as an
@@ -644,7 +644,7 @@ public final class JenaRDF implements RDF {
      * {@link QuadLike#getSubject()} {@link QuadLike#getPredicate()},
      * {@link QuadLike#getObject()} or {@link QuadLike#getObject()}.
      * <p>
-     * In addition to supporting a <code>graphName</code> of {@code null}
+     * In addition to supporting a {@code graphName} of {@code null}
      * for representing a triple in the <em>default graph</em>, this method also
      * recognize a {@link JenaIRI} which {@link JenaRDFTerm#asJenaNode()}
      * represent the default graph according to
@@ -724,7 +724,7 @@ public final class JenaRDF implements RDF {
     /**
      * {@inheritDoc}
      * <p>
-     * In addition to supporting a <code>graphName</code> of {@code null}
+     * In addition to supporting a {@code graphName} of {@code null}
      * for representing a triple in the <em>default graph</em>, this method also
      * recognize a {@link JenaIRI} which {@link JenaRDFTerm#asJenaNode()}
      * represent the default graph according to

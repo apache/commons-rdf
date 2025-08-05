@@ -23,7 +23,7 @@ import java.util.Locale;
 /**
  * A RDF implementation.
  * <p>
- * A <code>RDF</code> implementation can create instances of the {@link RDFTerm}
+ * A {@code RDF} implementation can create instances of the {@link RDFTerm}
  * types {@link IRI}, {@link BlankNode} and {@link Literal}, as well as creating
  * instances of the types {@link Triple}, {@link Quad}, {@link Graph} or
  * {@link Dataset}.
@@ -32,7 +32,7 @@ import java.util.Locale;
  * and may throw {@link UnsupportedOperationException} where applicable, e.g. if
  * it does not support creating {@link Dataset}s or {@link Quad}s.
  * <p>
- * Instances of <code>RDF</code> work like a factory for creating Commons RDF
+ * Instances of {@code RDF} work like a factory for creating Commons RDF
  * instances. spezializations of this interface may also provide methods for
  * conversions from/to their underlying RDF framework.
  * <p>
@@ -61,18 +61,18 @@ public interface RDF {
     /**
      * Create a blank node based on the given name.
      * <p>
-     * All {@link BlankNode}s created with the given <code>name</code> <em>on a
-     * particular instance</em> of <code>RDF</code> MUST be equivalent according
+     * All {@link BlankNode}s created with the given {@code name} <em>on a
+     * particular instance</em> of {@code RDF} MUST be equivalent according
      * to {@link BlankNode#equals(Object)},
      * <p>
-     * The returned BlankNode MUST NOT be equal to <code>BlankNode</code>
-     * instances returned for any other <code>name</code> or those returned from
+     * The returned BlankNode MUST NOT be equal to {@code BlankNode}
+     * instances returned for any other {@code name} or those returned from
      * {@link #createBlankNode()}.
      * <p>
      * The returned BlankNode SHOULD NOT be equivalent to any BlankNodes created
-     * on a <em>different</em> <code>RDF</code> instance, e.g. different
-     * instances of <code>RDF</code> should produce different blank nodes for
-     * the same <code>name</code> unless they purposely are intending to create
+     * on a <em>different</em> {@code RDF} instance, e.g. different
+     * instances of {@code RDF} should produce different blank nodes for
+     * the same {@code name} unless they purposely are intending to create
      * equivalent {@link BlankNode} instances (e.g. a reinstated
      * {@link Serializable} factory).
      *
@@ -129,7 +129,7 @@ public interface RDF {
      * equal to the provided lexical form, MUST NOT have a
      * {@link Literal#getLanguageTag()} present, and SHOULD return a
      * {@link Literal#getDatatype()} that is equal to the IRI
-     * <code>http://www.w3.org/2001/XMLSchema#string</code>.
+     * {@code http://www.w3.org/2001/XMLSchema#string}.
      *
      * @param lexicalForm
      *            The literal value in plain text
@@ -164,7 +164,7 @@ public interface RDF {
      *            The literal value
      * @param dataType
      *            The data type IRI for the literal value, e.g.
-     *            <code>http://www.w3.org/2001/XMLSchema#integer</code>
+     *            {@code http://www.w3.org/2001/XMLSchema#integer}
      * @return The created Literal
      * @throws IllegalArgumentException
      *             If any of the provided arguments are not acceptable, e.g.
@@ -180,7 +180,7 @@ public interface RDF {
      *
      * The provided language tag MUST be valid according to
      * <a href="https://tools.ietf.org/html/bcp47">BCP47</a>, e.g.
-     * <code>en</code>.
+     * {@code en}.
      *
      * The provided language tag
      * <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-language-tagged-string"
@@ -189,7 +189,7 @@ public interface RDF {
      * The returned Literal SHOULD have a {@link Literal#getLexicalForm()} which
      * is equal to the provided lexicalForm, MUST return a
      * {@link Literal#getDatatype()} that is equal to the IRI
-     * <code>http://www.w3.org/1999/02/22-rdf-syntax-ns#langString</code>, and
+     * {@code http://www.w3.org/1999/02/22-rdf-syntax-ns#langString}, and
      * MUST have a {@link Literal#getLanguageTag()} present which SHOULD be
      * equal to the provided language tag (compared as
      * {@link String#toLowerCase(Locale)} using {@link Locale#ENGLISH}).

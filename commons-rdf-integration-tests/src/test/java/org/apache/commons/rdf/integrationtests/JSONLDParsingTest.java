@@ -50,18 +50,18 @@ import com.github.jsonldjava.utils.JsonUtils;
  * implementations even if they might have slightly incompatible versions of
  * their dependencies.
  * <p>
- * The <code>*Embedded</code> tests parse <code>alice-embedded.jsonld</code>
+ * The {@code *Embedded} tests parse {@code alice-embedded.jsonld}
  * from the test classpath through Jena, RDF4J and JSONLD-Java and verifies it
  * contains the expected triples using {@link #checkGraph(Graph)}. This ensures
  * that the versions of JSONLD-Java and Jackson are compatible with Jena and
  * RDF4J.
  * <p>
- * The <code>*Cached</code> tests parse <code>alice-cached.jsonld</code>, which
- * references an external <code>@context</code> of http://example.com/context -
+ * The {@code *Cached} tests parse {@code alice-cached.jsonld}, which
+ * references an external {@code @context} of http://example.com/context -
  * but using the <a href=
  * "https://github.com/jsonld-java/jsonld-java#loading-contexts-from-classpathjar">jarcache.json</a>
  * mechanism of JSONLD-Java, this context will be loaded from
- * <code>contexts/example.jsonld</code> on the test classpath instead. This
+ * {@code contexts/example.jsonld} on the test classpath instead. This
  * ensures that the versions of HTTPClient is compatible with JSONLD-Java
  * (however it does not check that it is compatible with Jena and
  * RDF4J's external fetching of RDF documents).

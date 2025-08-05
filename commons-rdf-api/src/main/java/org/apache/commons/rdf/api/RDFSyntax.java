@@ -33,7 +33,7 @@ import java.util.Set;
  * </p>
  * <p>
  * An enumeration of the official RDF 1.1 syntaxes is available in {@link W3CRDFSyntax} - for convenience they are also accessible as constants here, e.g.
- * <code>RDFSyntax.JSONLD</code>.
+ * {@code RDFSyntax.JSONLD}.
  * </p>
  */
 public interface RDFSyntax {
@@ -91,14 +91,14 @@ public interface RDFSyntax {
     /**
      * Return the RDFSyntax with the specified file extension.
      * <p>
-     * The <code>fileExtension</code> is compared in lower case to all extensions supported, therefore it might not be equal to the
+     * The {@code fileExtension} is compared in lower case to all extensions supported, therefore it might not be equal to the
      * {@link RDFSyntax#fileExtension} of the returned RDFSyntax.
      * </p>
      * <p>
      * This method support all syntaxes returned by {@link #w3cSyntaxes()}.
      * </p>
      *
-     * @param fileExtension The fileExtension to match, starting with <code>.</code>
+     * @param fileExtension The fileExtension to match, starting with {@code .}
      * @return If {@link Optional#isPresent()}, the {@link RDFSyntax} which has a matching {@link RDFSyntax#fileExtension()}, otherwise {@link Optional#empty()}
      *         indicating that no matching file extension was found.
      */
@@ -110,11 +110,11 @@ public interface RDFSyntax {
     /**
      * Return the RDFSyntax with the specified media type.
      * <p>
-     * The <code>mediaType</code> is compared in lower case to all media types supported, therefore it might not be equal to the {@link RDFSyntax#mediaType} of
+     * The {@code mediaType} is compared in lower case to all media types supported, therefore it might not be equal to the {@link RDFSyntax#mediaType} of
      * the returned RDFSyntax.
      * </p>
      * <p>
-     * If the media type specifies parameters, e.g. <code>text/turtle; charset=ascii</code>, only the part of the string to before <code>;</code> is considered.
+     * If the media type specifies parameters, e.g. {@code text/turtle; charset=ascii}, only the part of the string to before {@code ;} is considered.
      * </p>
      * <p>
      * This method support all syntaxes returned by {@link #w3cSyntaxes()}.
@@ -135,7 +135,7 @@ public interface RDFSyntax {
      * This method support all syntaxes returned by {@link #w3cSyntaxes()}.
      * </p>
      *
-     * @param name The name to match, , e.g. <code>"JSONLD"</code>
+     * @param name The name to match, , e.g. {@code "JSONLD"}
      * @return If {@link Optional#isPresent()}, the {@link RDFSyntax} which has a matching {@link RDFSyntax#name()}, otherwise {@link Optional#empty()}
      *         indicating that no matching name was found.
      */
@@ -177,7 +177,7 @@ public interface RDFSyntax {
     /**
      * The <a href="https://tools.ietf.org/html/rfc2046">IANA-registered</a> file extension.
      * <p>
-     * The file extension includes the leading period, e.g. <code>.jsonld</code>
+     * The file extension includes the leading period, e.g. {@code .jsonld}
      * </p>
      *
      * @return The registered file extension of the RDF Syntax
@@ -187,7 +187,7 @@ public interface RDFSyntax {
     /**
      * Sets of file extensions for this RDF syntax, including any non-official extensions.
      * <p>
-     * The file extension includes the leading period, e.g. <code>.jsonld</code>
+     * The file extension includes the leading period, e.g. {@code .jsonld}
      * </p>
      * <p>
      * The returned Set MUST include the value from {@link #fileExtension()}; this is the behavior of the default implementation.
@@ -214,14 +214,14 @@ public interface RDFSyntax {
      * Note that the identifying IRI is generally distinct from the IRI of the document that <em>specifies</em> the RDF syntax.
      * </p>
      *
-     * @return Identifying IRI, e.g. <code>http://www.w3.org/ns/formats/JSON-LD</code>
+     * @return Identifying IRI, e.g. {@code http://www.w3.org/ns/formats/JSON-LD}
      */
     IRI iri();
 
     /**
      * The <a href="https://tools.ietf.org/html/rfc2046">IANA media type</a> for the RDF syntax.
      * <p>
-     * The media type can be used as part of <code>Content-Type</code> and <code>Accept</code> for <em>content negotiation</em> in the
+     * The media type can be used as part of {@code Content-Type} and {@code Accept} for <em>content negotiation</em> in the
      * <a href="https://tools.ietf.org/html/rfc7231#section-3.1.1.1">HTTP protocol</a>.
      * </p>
      *
@@ -232,7 +232,7 @@ public interface RDFSyntax {
     /**
      * Sets of <a href="https://tools.ietf.org/html/rfc2046">IANA media types</a> that covers this RDF syntax, including any non-official media types.
      * <p>
-     * The media type can be used as part of <code>Content-Type</code> and <code>Accept</code> for <em>content negotiation</em> in the
+     * The media type can be used as part of {@code Content-Type} and {@code Accept} for <em>content negotiation</em> in the
      * <a href="https://tools.ietf.org/html/rfc7231#section-3.1.1.1">HTTP protocol</a>.
      * </p>
      * <p>
@@ -246,7 +246,7 @@ public interface RDFSyntax {
     }
 
     /**
-     * A short name of the RDF Syntax e.g. <code>JSONLD</code>.
+     * A short name of the RDF Syntax e.g. {@code JSONLD}.
      * <p>
      * The name is specific to Commons RDF and carries no particular meaning.
      * </p>

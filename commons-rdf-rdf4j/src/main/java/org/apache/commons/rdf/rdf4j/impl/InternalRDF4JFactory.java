@@ -47,7 +47,7 @@ import org.eclipse.rdf4j.repository.Repository;
  * {@link RDF4J#asGraph(Repository, Option...)}
  * </p>
  * <p>
- * This class exists as a <code>public</code> bridge between the packages
+ * This class exists as a {@code public} bridge between the packages
  * {@link org.apache.commons.rdf.rdf4j} and
  * {@link org.apache.commons.rdf.rdf4j.impl} by exposing the package-public
  * constructors.
@@ -139,7 +139,7 @@ public abstract class InternalRDF4JFactory {
      * @param repository
      *            RDF4J {@link Repository} to adapt
      * @param handleInitAndShutdown
-     *            If <code>true</code>, the {@link RDF4JDataset} will initialize
+     *            If {@code true}, the {@link RDF4JDataset} will initialize
      *            the repository (if needed), and shut it down on
      *            {@link RDF4JDataset#close()}.
      * @param includeInferred
@@ -161,7 +161,7 @@ public abstract class InternalRDF4JFactory {
      * @param repository
      *            RDF4J {@link Repository} to adapt
      * @param handleInitAndShutdown
-     *            If <code>true</code>, the {@link RDF4JGraph} will initialize
+     *            If {@code true}, the {@link RDF4JGraph} will initialize
      *            the repository (if needed), and shut it down on
      *            {@link RDF4JGraph#close()}.
      * @param includeInferred
@@ -170,7 +170,7 @@ public abstract class InternalRDF4JFactory {
      *            Zero or more {@link Resource}s contexts. The array may contain
      *            the value {@code null} for the default graph - however
      *            care must be taken to not provide a null-array
-     *            <code>(Resource[]) null</code>.
+     *            {@code (Resource[]) null}.
      * @return Adapted {@link RDF4JGraph}
      */
     public RDF4JGraph createRepositoryGraphImpl(final Repository repository, final boolean handleInitAndShutdown,

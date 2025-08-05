@@ -99,7 +99,7 @@ public interface BlankNode extends BlankNodeOrIRI {
      * or from different {@link RDF} instances MUST NOT have the same reference
      * string.
      * <p>
-     * The {@link #uniqueReference()} of two <code>BlankNode</code> instances
+     * The {@link #uniqueReference()} of two {@code BlankNode} instances
      * MUST be equal if and only if the two blank nodes are equal according to
      * {@link #equals(Object)}.
      * <p>

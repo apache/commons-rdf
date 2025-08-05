@@ -46,9 +46,9 @@ import org.apache.commons.rdf.api.Triple;
  * This interface follows the
  * <a href="https://en.wikipedia.org/wiki/Builder_pattern">Builder pattern</a>,
  * allowing to set parser settings like {@link #contentType(RDFSyntax)} and
- * {@link #base(IRI)}. A caller MUST call one of the <code>source</code> methods
+ * {@link #base(IRI)}. A caller MUST call one of the {@code source} methods
  * (e.g. {@link #source(IRI)}, {@link #source(Path)},
- * {@link #source(InputStream)}), and MUST call one of the <code>target</code>
+ * {@link #source(InputStream)}), and MUST call one of the {@code target}
  * methods (e.g. {@link #target(Consumer)}, {@link #target(Dataset)},
  * {@link #target(Graph)}) before calling {@link #parse()} on the returned
  * RDFParser - however methods can be called in any order.
@@ -62,7 +62,7 @@ import org.apache.commons.rdf.api.Triple;
  * in the returned builder - regardless of the parameter type (e.g.
  * {@link #source(IRI)} will override a previous {@link #source(Path)}. Settings
  * can be unset by passing {@code null} - note that this may require
- * casting, e.g. <code>contentType( (RDFSyntax) null )</code> to undo a previous
+ * casting, e.g. {@code contentType( (RDFSyntax) null )} to undo a previous
  * call to {@link #contentType(RDFSyntax)}.
  * <p>
  * It is undefined if a RDFParser is mutable or thread-safe, so callers should
@@ -70,7 +70,7 @@ import org.apache.commons.rdf.api.Triple;
  * builder may return itself after modification, or a cloned builder with the
  * modified settings applied. Implementations are however encouraged to be
  * immutable, thread-safe and document this. As an example starting point, see
- * <code>org.apache.commons.rdf.simple.AbstractRDFParser</code>.
+ * {@code org.apache.commons.rdf.simple.AbstractRDFParser}.
  * <p>
  * Example usage:
  * </p>
@@ -96,13 +96,13 @@ public interface RDFParser {
      * Specify a base IRI to use for parsing any relative IRI references.
      * <p>
      * Setting this option will override any protocol-specific base IRI (e.g.
-     * <code>Content-Location</code> header) or the {@link #source(IRI)} IRI,
+     * {@code Content-Location} header) or the {@link #source(IRI)} IRI,
      * but does not override any base IRIs set within the source document (e.g.
-     * <code>@base</code> in Turtle documents).
+     * {@code @base} in Turtle documents).
      * <p>
      * If the source is in a syntax that does not support relative IRI
      * references (e.g. {@link RDFSyntax#NTRIPLES}), setting the
-     * <code>base</code> has no effect.
+     * {@code base} has no effect.
      * <p>
      * This method will override any base IRI set with {@link #base(String)}.
      *
@@ -117,13 +117,13 @@ public interface RDFParser {
      * Specify a base IRI to use for parsing any relative IRI references.
      * <p>
      * Setting this option will override any protocol-specific base IRI (e.g.
-     * <code>Content-Location</code> header) or the {@link #source(IRI)} IRI,
+     * {@code Content-Location} header) or the {@link #source(IRI)} IRI,
      * but does not override any base IRIs set within the source document (e.g.
-     * <code>@base</code> in Turtle documents).
+     * {@code @base} in Turtle documents).
      * <p>
      * If the source is in a syntax that does not support relative IRI
      * references (e.g. {@link RDFSyntax#NTRIPLES}), setting the
-     * <code>base</code> has no effect.
+     * {@code base} has no effect.
      * <p>
      * This method will override any base IRI set with {@link #base(IRI)}.
      *
@@ -140,7 +140,7 @@ public interface RDFParser {
      * Specify the content type of the RDF syntax to parse.
      * <p>
      * This option can be used to select the RDFSyntax of the source, overriding
-     * any <code>Content-Type</code> headers or equivalent.
+     * any {@code Content-Type} headers or equivalent.
      * <p>
      * The character set of the RDFSyntax is assumed to be
      * {@link StandardCharsets#UTF_8} unless overridden within the document
@@ -164,9 +164,9 @@ public interface RDFParser {
      * Specify the content type of the RDF syntax to parse.
      * <p>
      * This option can be used to select the RDFSyntax of the source, overriding
-     * any <code>Content-Type</code> headers or equivalent.
+     * any {@code Content-Type} headers or equivalent.
      * <p>
-     * The content type MAY include a <code>charset</code> parameter if the RDF
+     * The content type MAY include a {@code charset} parameter if the RDF
      * media types permit it; the default charset is
      * {@link StandardCharsets#UTF_8} unless overridden within the document.
      * <p>
@@ -175,8 +175,8 @@ public interface RDFParser {
      *
      * @see #contentType(RDFSyntax)
      * @param contentType
-     *            A content-type string, e.g. <code>application/ld+json</code>
-     *            or <code>text/turtle;charset="UTF-8"</code> as specified by
+     *            A content-type string, e.g. {@code application/ld+json}
+     *            or {@code text/turtle;charset="UTF-8"} as specified by
      *            <a href="https://tools.ietf.org/html/rfc7231#section-3.1.1.1">
      *            RFC7231</a>.
      * @return An {@link RDFParser} that will use the specified content type.
@@ -208,7 +208,7 @@ public interface RDFParser {
      * validity of the {@link #source(IRI)} and {@link #contentType(RDFSyntax)}
      * settings) have finished. The future SHOULD not mark
      * {@link Future#isDone()} before parsing is complete. A synchronous
-     * implementation MAY be blocking on the <code>parse()</code> call and
+     * implementation MAY be blocking on the {@code parse()} call and
      * return a Future that is already {@link Future#isDone()}.
      * <p>
      * The returned {@link Future} contains a {@link ParseResult}.
@@ -217,7 +217,7 @@ public interface RDFParser {
      * value if no details are available, but parsing succeeded.
      * <p>
      * If an exception occurs during parsing, (e.g. {@link IOException} or
-     * <code>org.apache.commons.rdf.simple.experimental.RDFParseException</code>),
+     * {@code org.apache.commons.rdf.simple.experimental.RDFParseException}),
      * it should be indicated as the
      * {@link java.util.concurrent.ExecutionException#getCause()} in the
      * {@link java.util.concurrent.ExecutionException} thrown on
@@ -234,7 +234,7 @@ public interface RDFParser {
      *             {@link Future#get()}.
      * @throws IllegalStateException
      *             If the builder is in an invalid state, e.g. a
-     *             <code>source</code> has not been set.
+     *             {@code source} has not been set.
      */
     Future<? extends ParseResult> parse() throws IOException, IllegalStateException;
 
@@ -267,7 +267,7 @@ public interface RDFParser {
      * <p>
      * The parser might not consume the complete stream (e.g. an RDF/XML parser
      * may not read beyond the closing tag of
-     * <code>&lt;/rdf:Description&gt;</code>).
+     * {@code &lt;/rdf:Description&gt;}).
      * <p>
      * The {@link #contentType(RDFSyntax)} or {@link #contentType(String)}
      * SHOULD be set before calling {@link #parse()}.
@@ -275,7 +275,7 @@ public interface RDFParser {
      * The character set is assumed to be {@link StandardCharsets#UTF_8} unless
      * the {@link #contentType(String)} specifies otherwise or the document
      * declares its own charset (e.g. RDF/XML with a
-     * <code>&lt;?xml encoding="iso-8859-1"&gt;</code> header).
+     * {@code &lt;?xml encoding="iso-8859-1"&gt;} header).
      * <p>
      * The {@link #base(IRI)} or {@link #base(String)} MUST be set before
      * calling {@link #parse()}, unless the RDF syntax does not permit relative
@@ -296,19 +296,19 @@ public interface RDFParser {
      * The source set will not be read before the call to {@link #parse()}.
      * <p>
      * If this builder does not support the given IRI protocol (e.g.
-     * <code>urn:uuid:ce667463-c5ab-4c23-9b64-701d055c4890</code>), this method
+     * {@code urn:uuid:ce667463-c5ab-4c23-9b64-701d055c4890}), this method
      * should succeed, while the {@link #parse()} should throw an
      * {@link IOException}.
      * <p>
      * The {@link #contentType(RDFSyntax)} or {@link #contentType(String)} MAY
      * be set before calling {@link #parse()}, in which case that type MAY be
-     * used for content negotiation (e.g. <code>Accept</code> header in HTTP),
+     * used for content negotiation (e.g. {@code Accept} header in HTTP),
      * and SHOULD be used for selecting the RDFSyntax.
      * <p>
      * The character set is assumed to be {@link StandardCharsets#UTF_8} unless
-     * the protocol's equivalent of <code>Content-Type</code> specifies
+     * the protocol's equivalent of {@code Content-Type} specifies
      * otherwise or the document declares its own charset (e.g. RDF/XML with a
-     * <code>&lt;?xml encoding="iso-8859-1"&gt;</code> header).
+     * {@code &lt;?xml encoding="iso-8859-1"&gt;} header).
      * <p>
      * The {@link #base(IRI)} or {@link #base(String)} MAY be set before calling
      * {@link #parse()}, otherwise the source IRI will be used as the base IRI.
@@ -333,7 +333,7 @@ public interface RDFParser {
      * The character set is assumed to be {@link StandardCharsets#UTF_8} unless
      * the {@link #contentType(String)} specifies otherwise or the document
      * declares its own charset (e.g. RDF/XML with a
-     * <code>&lt;?xml encoding="iso-8859-1"&gt;</code> header).
+     * {@code &lt;?xml encoding="iso-8859-1"&gt;} header).
      * <p>
      * The {@link #base(IRI)} or {@link #base(String)} MAY be set before calling
      * {@link #parse()}, otherwise {@link Path#toUri()} will be used as the base
@@ -354,19 +354,19 @@ public interface RDFParser {
      * The source set will not be read before the call to {@link #parse()}.
      * <p>
      * If this builder does not support the given IRI (e.g.
-     * <code>urn:uuid:ce667463-c5ab-4c23-9b64-701d055c4890</code>), this method
+     * {@code urn:uuid:ce667463-c5ab-4c23-9b64-701d055c4890}), this method
      * should succeed, while the {@link #parse()} should throw an
      * {@link IOException}.
      * <p>
      * The {@link #contentType(RDFSyntax)} or {@link #contentType(String)} MAY
      * be set before calling {@link #parse()}, in which case that type MAY be
-     * used for content negotiation (e.g. <code>Accept</code> header in HTTP),
+     * used for content negotiation (e.g. {@code Accept} header in HTTP),
      * and SHOULD be used for selecting the RDFSyntax.
      * <p>
      * The character set is assumed to be {@link StandardCharsets#UTF_8} unless
-     * the protocol's equivalent of <code>Content-Type</code> specifies
+     * the protocol's equivalent of {@code Content-Type} specifies
      * otherwise or the document declares its own charset (e.g. RDF/XML with a
-     * <code>&lt;?xml encoding="iso-8859-1"&gt;</code> header).
+     * {@code &lt;?xml encoding="iso-8859-1"&gt;} header).
      * <p>
      * The {@link #base(IRI)} or {@link #base(String)} MAY be set before calling
      * {@link #parse()}, otherwise the source IRI will be used as the base IRI.

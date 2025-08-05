@@ -28,27 +28,27 @@ import java.util.Optional;
  * >RDF-1.1 Concepts and Abstract Syntax</a>, a W3C Working Group Note published
  * on 25 February 2014.
  * <p>
- * A <code>Quad</code> object in Commons RDF is considered
+ * A {@code Quad} object in Commons RDF is considered
  * <strong>immutable</strong>, that is, over its life time it will have
  * consistent behavior for its {@link #equals(Object)}, and the instances
  * returned from {@link #getGraphName()}, {@link #getSubject()},
  * {@link #getPredicate()}, {@link #getObject()} and {@link #asTriple()} will
  * have consistent {@link Object#equals(Object)} behavior.
  * <p>
- * Note that <code>Quad</code> methods are not required to return object
- * identical (<code>==</code>) instances as long as they are equivalent
+ * Note that {@code Quad} methods are not required to return object
+ * identical ({@code ==}) instances as long as they are equivalent
  * according to {@link Object#equals(Object)}. Specializations of
- * <code>Quad</code> may provide additional methods that are documented to be
+ * {@code Quad} may provide additional methods that are documented to be
  * mutable.
  * <p>
- * <code>Quad</code> methods are <strong>thread-safe</strong>, however
+ * {@code Quad} methods are <strong>thread-safe</strong>, however
  * specializations may provide additional methods that are documented to not be
  * thread-safe.
  * <p>
- * <code>Quad</code>s can be safely used in hashing collections like
+ * {@code Quad}s can be safely used in hashing collections like
  * {@link java.util.HashSet} and {@link java.util.HashMap}.
  * <p>
- * Any <code>Quad</code> can be used interchangeably across Commons RDF
+ * Any {@code Quad} can be used interchangeably across Commons RDF
  * implementations.
  *
  * @since 0.3.0-incubating
@@ -85,7 +85,7 @@ public interface Quad extends QuadLike<BlankNodeOrIRI> {
      * }
      * </pre>
      *
-     * The <code>default</code> implementation of this method return a proxy
+     * The {@code default} implementation of this method return a proxy
      * {@link Triple} instance that keeps a reference to this {@link Quad} to
      * call the underlying {@link TripleLike} methods, but supplies a
      * {@link Triple} compatible implementation of {@link Triple#equals(Object)}

@@ -128,7 +128,7 @@ public interface Literal extends RDFTerm {
      * The returned hash code MUST be equal to the result of
      * {@link Objects#hash(Object...)} with the arguments
      * {@link #getLexicalForm()}, {@link #getDatatype()},
-     * {@link #getLanguageTag()}<code>.map(s-&gt;s.toLowerString(Locale.ROOT))</code>.
+     * {@link #getLanguageTag()}{@code .map(s-&gt;s.toLowerString(Locale.ROOT))}.
      * <p>
      * This method MUST be implemented in conjunction with
      * {@link #equals(Object)} so that two equal Literals produce the same hash

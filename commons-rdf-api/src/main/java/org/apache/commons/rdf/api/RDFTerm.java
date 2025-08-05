@@ -30,21 +30,21 @@ package org.apache.commons.rdf.api;
  * and {@link Literal#getLanguageTag()}) will have consistent
  * {@link #equals(Object)} behavior.
  * <p>
- * Note that methods in <code>RDFTerm</code> and its Commons RDF specializations
+ * Note that methods in {@code RDFTerm} and its Commons RDF specializations
  * {@link IRI}, {@link BlankNode} and {@link Literal} are not required to return
- * object identical (<code>==</code>) instances as long as they are equivalent
+ * object identical ({@code ==}) instances as long as they are equivalent
  * according to their {@link Object#equals(Object)}. Further specializations may
  * provide additional methods that are documented to be mutable.
  * <p>
- * Methods in <code>RDFTerm</code> and its Commons RDF specializations
+ * Methods in {@code RDFTerm} and its Commons RDF specializations
  * {@link IRI}, {@link BlankNode} and {@link Literal} are
  * <strong>thread-safe</strong>, however further specializations may add
  * additional methods that are documented to not be thread-safe.
  * <p>
- * <code>RDFTerm</code>s can be safely used in hashing collections like
+ * {@code RDFTerm}s can be safely used in hashing collections like
  * {@link java.util.HashSet} and {@link java.util.HashMap}.
  * <p>
- * Any <code>RDFTerm</code> can be used interchangeably across Commons RDF
+ * Any {@code RDFTerm} can be used interchangeably across Commons RDF
  * implementations.
  *
  * @see <a href= "http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-term">RDF-1.1

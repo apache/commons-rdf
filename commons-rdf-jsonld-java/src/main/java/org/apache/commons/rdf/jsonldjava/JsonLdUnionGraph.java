@@ -35,7 +35,7 @@ import com.github.jsonldjava.core.RDFDataset;
  * graph names.
  * <p>
  * {@link #add(Triple)} and {@link #add(BlankNodeOrIRI, IRI, RDFTerm)} will add
- * the triple to the default graph (e.g. <code>@default</code> in JSON-LD),
+ * the triple to the default graph (e.g. {@code @default} in JSON-LD),
  * while the remaining methods (including {@link #remove(Triple)} or
  * {@link #remove(BlankNodeOrIRI, IRI, RDFTerm)}) relate to triples from
  * <strong>all</strong> graphs.

@@ -43,7 +43,7 @@ import org.junit.jupiter.api.Test;
  * Test Graph implementation
  * <p>
  * To add to your implementation's tests, create a subclass with a name ending
- * in <code>Test</code> and provide {@link #createFactory()} which minimally
+ * in {@code Test} and provide {@link #createFactory()} which minimally
  * must support {@link RDF#createGraph()} and {@link RDF#createIRI(String)}, but
  * ideally support all operations.
  * <p>

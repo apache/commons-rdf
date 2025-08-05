@@ -258,7 +258,7 @@ public final class RDF4J implements RDF {
      * Adapt an RDF4J {@link Repository} as a Commons RDF {@link Graph}.
      * <p>
      * The graph will only include triples in the default graph (equivalent to
-     * context <code>new Resource[0]{null})</code> in RDF4J).
+     * context {@code new Resource[0]{null})} in RDF4J).
      * <p>
      * Changes to the graph are reflected in the repository, and vice versa.
      * <p>
@@ -461,7 +461,7 @@ public final class RDF4J implements RDF {
      * Adapt a Commons RDF {@link Triple} or {@link Quad} as a RDF4J
      * {@link Statement}.
      * <p>
-     * If the <code>tripleLike</code> argument is an {@link RDF4JTriple} or a
+     * If the {@code tripleLike} argument is an {@link RDF4JTriple} or a
      * {@link RDF4JQuad}, then its {@link RDF4JTripleLike#asStatement()} is
      * returned as-is. Note that this means that a {@link RDF4JTriple} would
      * preserve its {@link Statement#getContext()}, and that any
