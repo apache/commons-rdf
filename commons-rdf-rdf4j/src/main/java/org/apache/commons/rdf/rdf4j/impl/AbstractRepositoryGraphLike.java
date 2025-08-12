@@ -20,6 +20,8 @@ package org.apache.commons.rdf.rdf4j.impl;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.apache.commons.rdf.api.Quad;
+import org.apache.commons.rdf.api.Triple;
 import org.apache.commons.rdf.api.TripleLike;
 import org.apache.commons.rdf.rdf4j.RDF4J;
 import org.apache.commons.rdf.rdf4j.RDF4JGraphLike;
@@ -48,6 +50,17 @@ abstract class AbstractRepositoryGraphLike<T extends TripleLike> implements RDF4
         rdf4jTermFactory = new RDF4J(repository.getValueFactory(), salt);
     }
 
+    /**
+     * Delegates to {@link RDF4J}{@link #asStatement(TripleLike)}
+     * 
+     * @param tripleLike A {@link Triple} or {@link Quad} to adapt
+     * @return A corresponding {@link Statement}
+     * @since 0.6.0
+     */
+    protected Statement asStatement(final TripleLike tripleLike) {
+        return rdf4jTermFactory.asStatement(tripleLike);
+    }
+    
     @Override
     public Optional<Model> asModel() {
         return Optional.empty();
