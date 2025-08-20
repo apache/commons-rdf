@@ -36,7 +36,7 @@ public interface JenaRDFTerm extends RDFTerm {
     /**
      * Converts this instance to a node.
      *
-     * @return this instance as a node.
+     * @return {@code this} instance as a node.
      */
     Node asJenaNode();
 }
