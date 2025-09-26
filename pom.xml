@@ -56,7 +56,7 @@
 	    <!--  NOTE: jsonldjava is also used by rdf4j and jena, check the version
 	          is cross-compatible -->
     <jsonldjava.version>0.13.6</jsonldjava.version>
-    <rdf4j.version>5.1.4</rdf4j.version>
+    <rdf4j.version>5.1.6</rdf4j.version>
     <jena.version>3.5.0</jena.version>
         <!--  NOTE: dexx and xerces versions should match
         the versions marked as <optional> in jena-osgi pom
