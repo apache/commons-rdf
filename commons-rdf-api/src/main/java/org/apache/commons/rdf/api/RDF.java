@@ -107,7 +107,7 @@ public interface RDF {
      * Create an IRI from a (possibly escaped) String.
      *
      * The provided iri string MUST be valid according to the
-     * <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-iri">W3C RDF-1.1
+     * <a href="https://www.w3.org/TR/rdf11-concepts/#dfn-iri">W3C RDF-1.1
      * IRI</a> definition.
      *
      * @param iri
@@ -151,7 +151,7 @@ public interface RDF {
      * types</a>.
      *
      * The provided lexical form SHOULD be in the
-     * <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-lexical-space">lexical
+     * <a href="https://www.w3.org/TR/rdf11-concepts/#dfn-lexical-space">lexical
      * space</a> of the provided dataType.
      *
      * The returned Literal SHOULD have a {@link Literal#getLexicalForm()} that
@@ -183,7 +183,7 @@ public interface RDF {
      * {@code en}.
      *
      * The provided language tag
-     * <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-language-tagged-string"
+     * <a href="https://www.w3.org/TR/rdf11-concepts/#dfn-language-tagged-string"
      * >MAY be converted to lower case</a>.
      *
      * The returned Literal SHOULD have a {@link Literal#getLexicalForm()} which

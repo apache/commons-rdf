@@ -38,7 +38,7 @@ public interface Literal extends RDFTerm {
     /**
      * Check it this Literal is equal to another Literal.
      * <blockquote>
-     * <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-literal-term">Literal
+     * <a href="https://www.w3.org/TR/rdf11-concepts/#dfn-literal-term">Literal
      * term equality</a>:
      * Two literals are term-equal (the same RDF literal) if
      * and only if the two lexical forms, the two datatype IRIs, and the two
@@ -66,7 +66,7 @@ public interface Literal extends RDFTerm {
      * maps to a literal value.
      *
      * If the datatype IRI is
-     * <a href="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+     * <a href="https://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
      * >http://www.w3.org/1999/02/22-rdf-syntax-ns#langString</a>,
      * {@link #getLanguageTag()} must not return {@link Optional#empty()}, and
      * it must return a valid
@@ -81,12 +81,12 @@ public interface Literal extends RDFTerm {
 
     /**
      * If and only if the datatype IRI is
-     * <a href="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+     * <a href="https://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
      * >http://www.w3.org/1999/02/22-rdf-syntax-ns#langString</a>, the language
      * tag for this Literal is a non-empty language tag as defined by
      * <a href="https://tools.ietf.org/html/bcp47">BCP47</a>.<br>
      * If the datatype IRI is not
-     * <a href="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+     * <a href="https://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
      * >http://www.w3.org/1999/02/22-rdf-syntax-ns#langString</a>, this method
      * must return {@link Optional#empty()}.
      * <p>
@@ -113,7 +113,7 @@ public interface Literal extends RDFTerm {
 
     /**
      * The lexical form of this literal, represented by a
-     * <a href="http://www.unicode.org/versions/latest/">Unicode string</a>.
+     * <a href="https://www.unicode.org/versions/latest/">Unicode string</a>.
      *
      * @return The lexical form of this literal.
      * @see <a href=

@@ -31,7 +31,7 @@ import java.util.stream.Stream;
  * W3C RDF 1.1 serialization syntax.
  * <p>
  * This defines the W3C standardized RDF 1.1 syntaxes like {@link #TURTLE} and {@link #JSONLD}. Note the existence of other RDF syntaxes that are not included
- * here, e.g. <a href="http://www.w3.org/TeamSubmission/n3/">N3</a> and <a href="https://en.wikipedia.org/wiki/TriX_%28syntax%29">TriX</a>.
+ * here, e.g. <a href="https://www.w3.org/TeamSubmission/n3/">N3</a> and <a href="https://en.wikipedia.org/wiki/TriX_%28syntax%29">TriX</a>.
  * </p>
  * <p>
  * This class is package-protected, its static constants are exposed through {@link RDFSyntax}.

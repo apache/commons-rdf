@@ -97,7 +97,7 @@ public interface RDFTerm {
      * Canonical form.
      *
      * @return The term serialized as RDF-1.1 N-Triples.
-     * @see <a href="http://www.w3.org/TR/n-triples/#canonical-ntriples">
+     * @see <a href="https://www.w3.org/TR/n-triples/#canonical-ntriples">
      *      RDF-1.1 N-Triples Canonical form</a>
      */
     String ntriplesString();

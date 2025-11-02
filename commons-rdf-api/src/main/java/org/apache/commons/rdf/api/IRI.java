@@ -29,7 +29,7 @@ public interface IRI extends BlankNodeOrIRI {
 
     /**
      * Check it this IRI is equal to another IRI. <blockquote>
-     * <a href="http://www.w3.org/TR/rdf11-concepts/#section-IRIs">IRI
+     * <a href="https://www.w3.org/TR/rdf11-concepts/#section-IRIs">IRI
      * equality</a>: Two IRIs are equal if and only if they are equivalent under
      * Simple String Comparison according to section 5.1 of [RFC3987]. Further
      * normalization MUST NOT be performed when comparing IRIs for equality.

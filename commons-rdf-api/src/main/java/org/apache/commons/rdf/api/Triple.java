@@ -80,7 +80,7 @@ public interface Triple extends TripleLike {
      * by the interface {@link RDFTerm}.
      *
      * @return The object {@link RDFTerm} of this triple.
-     * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-object">RDF-1.1
+     * @see <a href="https://www.w3.org/TR/rdf11-concepts/#dfn-object">RDF-1.1
      *      Triple object</a>
      */
     @Override
@@ -90,7 +90,7 @@ public interface Triple extends TripleLike {
      * The predicate {@link IRI} of this triple.
      *
      * @return The predicate {@link IRI} of this triple.
-     * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-predicate">RDF-1.1
+     * @see <a href="https://www.w3.org/TR/rdf11-concepts/#dfn-predicate">RDF-1.1
      *      Triple predicate</a>
      */
     @Override
@@ -102,7 +102,7 @@ public interface Triple extends TripleLike {
      * {@link BlankNodeOrIRI}.
      *
      * @return The subject {@link BlankNodeOrIRI} of this triple.
-     * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-subject">RDF-1.1
+     * @see <a href="https://www.w3.org/TR/rdf11-concepts/#dfn-subject">RDF-1.1
      *      Triple subject</a>
      */
     @Override

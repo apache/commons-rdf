@@ -27,7 +27,7 @@ import java.util.UUID;
  * February 2014.<br>
  *
  * Note: <blockquote>
- * <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node">Blank nodes</a>
+ * <a href="https://www.w3.org/TR/rdf11-concepts/#dfn-blank-node">Blank nodes</a>
  * are disjoint from IRIs and literals. Otherwise, the set of possible blank
  * nodes is arbitrary. RDF makes no reference to any internal structure of blank
  * nodes. </blockquote>
@@ -53,7 +53,7 @@ import java.util.UUID;
  *
  * @see RDF#createBlankNode()
  * @see RDF#createBlankNode(String)
- * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node">RDF-1.1
+ * @see <a href="https://www.w3.org/TR/rdf11-concepts/#dfn-blank-node">RDF-1.1
  *      Blank Node</a>
  */
 public interface BlankNode extends BlankNodeOrIRI {
@@ -108,7 +108,7 @@ public interface BlankNode extends BlankNodeOrIRI {
      * UUID-derived string, e.g. as returned from {@link UUID#toString()}.
      * <p>
      * <strong>IMPORTANT:</strong> This is not a
-     * <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node-identifier">
+     * <a href="https://www.w3.org/TR/rdf11-concepts/#dfn-blank-node-identifier">
      * blank node identifier</a> nor a serialization/syntax label, and there are
      * no guarantees that it is a valid identifier in any concrete RDF syntax.
      * For an N-Triples compatible identifier, use {@link #ntriplesString()}.

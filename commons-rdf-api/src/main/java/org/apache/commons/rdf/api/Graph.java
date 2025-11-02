@@ -22,9 +22,9 @@ import java.util.Iterator;
 import java.util.stream.Stream;
 
 /**
- * An <a href="http://www.w3.org/TR/rdf11-concepts/#section-rdf-graph"> RDF 1.1
+ * An <a href="https://www.w3.org/TR/rdf11-concepts/#section-rdf-graph"> RDF 1.1
  * Graph</a>, a set of RDF triples, as defined by
- * <a href="http://www.w3.org/TR/rdf11-concepts/">RDF-1.1 Concepts and Abstract
+ * <a href="https://www.w3.org/TR/rdf11-concepts/">RDF-1.1 Concepts and Abstract
  * Syntax</a>, a W3C Recommendation published on 25 February 2014.
  *
  * @see RDF#createGraph()

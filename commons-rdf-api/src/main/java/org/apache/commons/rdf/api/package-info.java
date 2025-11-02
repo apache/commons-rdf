@@ -19,7 +19,7 @@
 /**
  * Commons RDF, a common library of RDF 1.1 concepts.
  * <p>
- * The core <a href="http://www.w3.org/TR/rdf11-concepts/">RDF 1.1 concepts</a>
+ * The core <a href="https://www.w3.org/TR/rdf11-concepts/">RDF 1.1 concepts</a>
  * are represented by corresponding interfaces:
  * <p>
  * A {@link org.apache.commons.rdf.api.Graph} is a collection of

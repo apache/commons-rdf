@@ -54,9 +54,9 @@ import java.util.Optional;
  * @since 0.3.0-incubating
  * @see Dataset
  * @see RDF#createQuad(BlankNodeOrIRI,BlankNodeOrIRI,IRI,RDFTerm)
- * @see <a href="http://www.w3.org/TR/2014/NOTE-rdf11-datasets-20140225/">RDF
+ * @see <a href="https://www.w3.org/TR/2014/NOTE-rdf11-datasets-20140225/">RDF
  *      1.1: On Semantics of RDF Datasets</a>
- * @see <a href="http://www.w3.org/TR/rdf11-concepts/#section-dataset"> </a>
+ * @see <a href="https://www.w3.org/TR/rdf11-concepts/#section-dataset"> </a>
  */
 public interface Quad extends QuadLike<BlankNodeOrIRI> {
 
@@ -191,7 +191,7 @@ public interface Quad extends QuadLike<BlankNodeOrIRI> {
      * by the interface {@link RDFTerm}.
      *
      * @return The object {@link RDFTerm} of this quad.
-     * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-object">RDF-1.1
+     * @see <a href="https://www.w3.org/TR/rdf11-concepts/#dfn-object">RDF-1.1
      *      Triple object</a>
      */
     @Override
@@ -201,7 +201,7 @@ public interface Quad extends QuadLike<BlankNodeOrIRI> {
      * The predicate {@link IRI} of this quad.
      *
      * @return The predicate {@link IRI} of this quad.
-     * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-predicate">RDF-1.1
+     * @see <a href="https://www.w3.org/TR/rdf11-concepts/#dfn-predicate">RDF-1.1
      *      Triple predicate</a>
      */
     @Override
@@ -213,7 +213,7 @@ public interface Quad extends QuadLike<BlankNodeOrIRI> {
      * {@link BlankNodeOrIRI}.
      *
      * @return The subject {@link BlankNodeOrIRI} of this quad.
-     * @see <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-subject">RDF-1.1
+     * @see <a href="https://www.w3.org/TR/rdf11-concepts/#dfn-subject">RDF-1.1
      *      Triple subject</a>
      */
     @Override

@@ -21,7 +21,7 @@ package org.apache.commons.rdf.jena;
 /**
  * Exception thrown when a problem arises across the Jena-CommonRDF boundary.
  * <p>
- * This should not happen in well-formed RDF data but, for example, Jena triples allow <a href="http://www.w3.org/TR/rdf11-concepts/#section-generalized-rdf">
+ * This should not happen in well-formed RDF data but, for example, Jena triples allow <a href="https://www.w3.org/TR/rdf11-concepts/#section-generalized-rdf">
  * generalized RDF</a>.
  * </p>
  */
