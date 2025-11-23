@@ -34,6 +34,7 @@
         <action type="fix" dev="ggregory" due-to="naturzukunft">Fix AbstractDatasetTest #327.</action>
         <action type="fix" dev="ggregory" due-to="Gary Gregory">Replace unmaintained FindBugs with SpotBugs.</action>
         <action type="fix" dev="ggregory" due-to="naturzukunft, Gary Gregory">stream() implementations should default to being sequential #328.</action>
+        <action type="fix" dev="ggregory" due-to="Gary Gregory">Fix Apache RAT plugin console warnings.</action>
         <!-- UPDATE -->
         <action type="update" dev="ggregory" due-to="Gary Gregory">Bump org.apache.commons:commons-parent from 52 to 93 #259, #265, #269, #273, #279, #353, #377.</action>
         <action type="update" dev="ggregory" due-to="Gary Gregory">Bump actions/cache from 2.1.4 to 3.0.11 and more #77, #97.</action>

@@ -299,18 +299,18 @@
           <artifactId>apache-rat-plugin</artifactId>
           <version>${commons.rat.version}</version>
           <configuration>
-            <excludes combine.children="append">
-              <exclude>.travis.yml</exclude>
-                            <!-- Eclipse files in examples/ -->
-              <exclude>examples/.settings/**</exclude>
-              <exclude>examples/.project</exclude>
-              <exclude>examples/.classpath</exclude>
-                            <!-- ServiceLoader file -->
-              <exclude>**/META-INF/services/*</exclude>
-                            <!-- Duplicates of NOTICE and LICENSE -->
-              <exclude>**/src/main/resources/NOTICE</exclude>
-              <exclude>**/src/main/resources/LICENSE</exclude>
-            </excludes>
+            <inputExcludes combine.children="append">
+              <inputExclude>.travis.yml</inputExclude>
+              <!-- Eclipse files in examples/ -->
+              <inputExclude>examples/.settings/**</inputExclude>
+              <inputExclude>examples/.project</inputExclude>
+              <inputExclude>examples/.classpath</inputExclude>
+              <!-- ServiceLoader file -->
+              <inputExclude>**/META-INF/services/*</inputExclude>
+              <!-- Duplicates of NOTICE and LICENSE -->
+              <inputExclude>**/src/main/resources/NOTICE</inputExclude>
+              <inputExclude>**/src/main/resources/LICENSE</inputExclude>
+            </inputExcludes>
           </configuration>
         </plugin>
         <plugin>
