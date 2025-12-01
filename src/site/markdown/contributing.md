@@ -8,7 +8,7 @@
     "License"); you may not use this file except in compliance
     with the License.  You may obtain a copy of the License at
 
-        http://www.apache.org/licenses/LICENSE-2.0
+        https://www.apache.org/licenses/LICENSE-2.0
 
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS" BASIS,
@@ -55,7 +55,7 @@ Larger changes or any changes to the [api](api/) should be raised as a
 review and discussion.
  
 All contributions are assumed to be under the
-[Apache License, version 2.0](http://www.apache.org/licenses/LICENSE-2.0),
+[Apache License, version 2.0](https://www.apache.org/licenses/LICENSE-2.0),
 however we may ask you to also sign a 
 [software grant](https://www.apache.org/licenses/software-grant.txt) for any 
 larger contributions.
