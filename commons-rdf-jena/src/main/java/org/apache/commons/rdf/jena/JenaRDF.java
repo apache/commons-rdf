@@ -583,7 +583,7 @@ public final class JenaRDF implements RDF {
      * <p>
      * If {@link Node#isLiteral()}, then the returned value is a
      * {@link Literal}. If {@link Node#isURI()}, the returned value is a IRI. If
-     * {$@link Node#isBlank()}, the returned value is a {@link BlankNode}, which
+     * {@link Node#isBlank()}, the returned value is a {@link BlankNode}, which
      * will use a {@link UUID} salt from this {@link JenaRDF} instance in
      * combination with {@link Node#getBlankNodeId()} for the purpose of its
      * {@link BlankNode#uniqueReference()}.
