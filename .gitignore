@@ -13,3 +13,7 @@ hs_err_pid*
 .project
 *.orig
 .DS_Store
+
+# NetBeans files
+nb-configuration.xml
+nbactions.xml
