@@ -45,7 +45,7 @@
         <action type="update" dev="ggregory" due-to="Gary Gregory">Bump JAXB API from 2.3.0 to 2.3.1.</action>
         <action type="update" dev="ggregory" due-to="Gary Gregory">Bump JAXB Glassfish runtime 2.3.0 to 2.3.6.</action>
         <action type="update" dev="ggregory" due-to="Gary Gregory">Bump maven-pmd-plugin from 3.12.0 to 3.16.0 #75.</action>
-        <action type="update" dev="ggregory" due-to="Dependabot, Gary Gregory, naturzukunft">Bump org.eclipse.rdf4j:rdf4j-bom from 2.2.2 to 5.2.0 #78, #324, #341, #366.</action>
+        <action type="update" dev="ggregory" due-to="Dependabot, Gary Gregory, naturzukunft">Bump org.eclipse.rdf4j:rdf4j-bom from 2.2.2 to 5.2.2 #78, #324, #341, #366, #379.</action>
         <action type="update" dev="ggregory" due-to="Dependabot">Bump com.github.jsonld-java:jsonld-java from 0.11.1 to 0.13.6 #73, #255.</action>
         <action type="update" dev="ggregory" due-to="Gary Gregory">Bump jacoco-maven-plugin from 0.8.7 to 0.8.8.</action>
         <action type="update" dev="ggregory" due-to="Dependabot">Bump maven-checkstyle-plugin from 3.0.0 to 3.2.0 #89.</action>
