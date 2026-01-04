@@ -107,10 +107,12 @@ public final class RDF4J implements RDF {
      * Enumerates options.
      */
     public enum Option {
+
         /**
          * The Graph/Dataset should include any inferred statements
          */
         includeInferred,
+
         /**
          * The graph/dataset should handle {@link Repository#init()} (if
          * needed) and {@link Repository#shutDown()} on {@link Graph#close()} /
@@ -307,6 +309,7 @@ public final class RDF4J implements RDF {
      */
     public RDF4JGraph asGraph(final Repository repository, final Set<? extends BlankNodeOrIRI> contexts, final Option... option) {
         final EnumSet<Option> opts = optionSet(option);
+
         /** NOTE: asValue() deliberately CAN handle {@code null} */
         final Resource[] resources = contexts.stream().map(g -> (Resource) asValue(g)).toArray(Resource[]::new);
         return RDF4J.createRepositoryGraphImpl(Objects.requireNonNull(repository),
