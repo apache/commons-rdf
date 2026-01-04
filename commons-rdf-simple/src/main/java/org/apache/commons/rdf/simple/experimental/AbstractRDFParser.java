@@ -141,6 +141,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
 
     private Dataset targetDataset;
     private Graph targetGraph;
+
     /**
      * Returns this.
      * @return {@code this} instance.
@@ -160,6 +161,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
     public T base(final String base) throws IllegalArgumentException {
         return base(internalRdfTermFactory.createIRI(base));
     }
+
     /**
      * Check if base is required.
      *
@@ -172,6 +174,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
             throw new IllegalStateException("base iri required for inputstream source");
         }
     }
+
     /**
      * Subclasses can override this method to check compatibility with the
      * contentType setting.
@@ -182,6 +185,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
      */
     protected void checkContentType() throws IllegalStateException {
     }
+
     /**
      * Check if an iri is absolute.
      * <p>
@@ -198,6 +202,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
             throw new IllegalArgumentException("IRI is not absolute: " + iri);
         }
     }
+
     /**
      * Check that one and only one source is present and valid.
      * <p>
@@ -228,6 +233,7 @@ public abstract class AbstractRDFParser<T extends AbstractRDFParser<T>> implemen
             throw new IOException("Can't read file: " + sourceFile);
         }
     }
+
     /**
      * Subclasses can override this method to check the target is valid.
      * <p>
