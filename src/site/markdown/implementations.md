@@ -114,6 +114,25 @@ Within Commons RDF it is possible to create [generalized triples](apidocs/org/ap
 
 The generalized triples/quads can be accessed as [org.apache.jena.graph.Triple](https://jena.apache.org/documentation/javadoc/jena/org/apache/jena/graph/Triple.html) and [org.apache.jena.sparql.core.Quad](https://jena.apache.org/documentation/javadoc/arq/org/apache/jena/sparql/core/Quad.html) - but can't currently be used with an equivalent _generalized graph_ or _generalized dataset_ within Commons RDF (see [COMMONSRDF-42](https://issues.apache.org/jira/browse/COMMONSRDF-42)).
 
+#### OSGi deployment
+
+One can deploy `commons-rdf-jena` in an OSGi container, such as [Apache Karaf](https://karaf.apache.org). In order to provision the underlying Jena dependencies,
+one can first add the Jena feature repository:
+
+    > feature:repo-add mvn:org.apache.jena/jena-osgi-features/LATEST/xml/features
+
+and then install the `jena` feature:
+
+    > feature:install jena
+
+finally, one can install the `commons-rdf-jena` bundle:
+
+    > bundle:install -s mvn:org.apache.commons/commons-rdf-api/LATEST
+    > bundle:install -s mvn:org.apache.commons/commons-rdf-simple/LATEST
+    > bundle:install -s mvn:org.apache.commons/commons-rdf-jena/LATEST
+
+For more information about assembling OSGi bundles into a custom feature repository, please refer to the [Karaf documentation](https://karaf.apache.org/manual/latest/provisioning).
+
 ### Eclipse RDF4J
 
 [org.apache.commons.rdf.rdf4j](apidocs/org/apache/commons/rdf/rdf4j/package-summary.html) is an implementation of the Commons RDF API backed by Eclispe [RDF4J 2.0](http://rdf4j.org/) (formerly Sesame), including converters from/to RDF4J and Commons RDF.
