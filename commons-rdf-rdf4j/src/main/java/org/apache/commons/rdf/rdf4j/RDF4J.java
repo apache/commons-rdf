@@ -652,7 +652,7 @@ public final class RDF4J implements RDF {
     /**
      * Gets the value factory.
      *
-     * @return the value factory.
+     * @return The value factory.
      */
     public ValueFactory getValueFactory() {
         return valueFactory;

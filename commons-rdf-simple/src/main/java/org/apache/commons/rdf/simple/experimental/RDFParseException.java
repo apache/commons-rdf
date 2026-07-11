@@ -80,7 +80,7 @@ public class RDFParseException extends Exception {
     /**
      * Gets the builder.
      *
-     * @return the builder.
+     * @return The builder.
      */
     public RDFParser getRDFParserBuilder() {
         return rdfParser;
