@@ -87,7 +87,7 @@ public interface RDFTerm {
      * @see IRI#hashCode()
      * @see Literal#hashCode()
      * @see BlankNode#hashCode()
-     * @return a hash code value for this RDFTerm.
+     * @return A hash code value for this RDFTerm.
      */
     @Override
     int hashCode();

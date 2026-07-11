@@ -134,7 +134,7 @@ public interface Literal extends RDFTerm {
      * {@link #equals(Object)} so that two equal Literals produce the same hash
      * code.
      *
-     * @return a hash code value for this Literal.
+     * @return A hash code value for this Literal.
      * @see Object#hashCode()
      * @see Objects#hash(Object...)
      */

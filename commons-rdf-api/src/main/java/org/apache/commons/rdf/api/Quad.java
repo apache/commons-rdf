@@ -230,7 +230,7 @@ public interface Quad extends QuadLike<BlankNodeOrIRI> {
      * {@link #equals(Object)} so that two equal {@link Quad}s produce the same
      * hash code.
      *
-     * @return a hash code value for this Quad.
+     * @return A hash code value for this Quad.
      * @see Object#hashCode()
      * @see Objects#hash(Object...)
      */

@@ -85,7 +85,7 @@ public interface BlankNode extends BlankNodeOrIRI {
      * {@link #equals(Object)} so that two equal BlankNodes produce the same
      * hash code.
      *
-     * @return a hash code value for this BlankNode.
+     * @return A hash code value for this BlankNode.
      * @see Object#hashCode()
      */
     @Override

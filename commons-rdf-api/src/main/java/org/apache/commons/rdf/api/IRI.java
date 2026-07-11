@@ -69,7 +69,7 @@ public interface IRI extends BlankNodeOrIRI {
      * {@link #equals(Object)} so that two equal IRIs produce the same hash
      * code.
      *
-     * @return a hash code value for this IRI.
+     * @return A hash code value for this IRI.
      * @see Object#hashCode()
      */
     @Override

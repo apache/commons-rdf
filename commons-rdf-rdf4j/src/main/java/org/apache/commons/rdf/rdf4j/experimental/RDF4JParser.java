@@ -133,7 +133,7 @@ public class RDF4JParser extends AbstractRDFParser<RDF4JParser> {
     /**
      * Creates a new instance of an RDFHandler.
      *
-     * @return a new instance of an RDFHandler.
+     * @return A new instance of an RDFHandler.
      */
     protected RDFHandler makeRDFHandler() {
 

@@ -93,7 +93,7 @@ public final class JsonLdRDF implements RDF {
      * Creates a new node for the given term.
      *
      * @param term The RDF term.
-     * @return a new node.
+     * @return A new node.
      */
     public Node asJsonLdNode(final RDFTerm term) {
         if (term instanceof JsonLdBlankNode) {

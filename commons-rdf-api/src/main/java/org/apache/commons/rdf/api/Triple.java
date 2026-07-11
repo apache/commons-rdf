@@ -119,7 +119,7 @@ public interface Triple extends TripleLike {
      * {@link #equals(Object)} so that two equal {@link Triple}s produce the
      * same hash code.
      *
-     * @return a hash code value for this Triple.
+     * @return A hash code value for this Triple.
      * @see Object#hashCode()
      * @see Objects#hash(Object...)
      */
