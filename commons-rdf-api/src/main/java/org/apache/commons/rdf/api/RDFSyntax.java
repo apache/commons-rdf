@@ -168,7 +168,7 @@ public interface RDFSyntax {
      * {@link String#toLowerCase(Locale)} with the locale {@link Locale#ROOT}.
      * </p>
      *
-     * @param obj the object with which to compare
+     * @param obj The object with which to compare
      * @return true if this object is the same as the obj argument; false otherwise
      */
     @Override

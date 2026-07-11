@@ -39,7 +39,7 @@ public class ConversionException extends RuntimeException {
     /**
      * Constructs a new instance with the specified detail message.
      * 
-     * @param message the detail message (which you can get using {@link #getMessage()}).
+     * @param message The detail message (which you can get using {@link #getMessage()}).
      */
     public ConversionException(final String message) {
         super(message);
@@ -51,8 +51,8 @@ public class ConversionException extends RuntimeException {
      * The detail message associated with {@code cause} is <em>not</em> automatically incorporated in the detail message.
      * </p>
      * 
-     * @param message the detail message (which you can get using {@link #getMessage()}).
-     * @param cause   the cause (which you can get using {@link #getMessage()}}. A {@code null} means the cause is nonexistent or unknown.
+     * @param message The detail message (which you can get using {@link #getMessage()}).
+     * @param cause   The cause (which you can get using {@link #getMessage()}}. A {@code null} means the cause is nonexistent or unknown.
      */
     public ConversionException(final String message, final Throwable cause) {
         super(message, cause);
@@ -61,7 +61,7 @@ public class ConversionException extends RuntimeException {
     /**
      * Constructs a new instance with the specified detail cause.
      * 
-     * @param cause the cause (which you can get using {@link #getMessage()}}. A {@code null} means the cause is nonexistent or unknown.
+     * @param cause The cause (which you can get using {@link #getMessage()}}. A {@code null} means the cause is nonexistent or unknown.
      */
     public ConversionException(final Throwable cause) {
         super(cause);

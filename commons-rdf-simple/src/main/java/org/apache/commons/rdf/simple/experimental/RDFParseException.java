@@ -45,7 +45,7 @@ public class RDFParseException extends Exception {
      * Constructs a new instance.
      *
      * @param rdfParser RDF parser.
-     * @param message   the detail message (which is saved for later retrieval by the {@link #getMessage()} method).
+     * @param message   The detail message (which is saved for later retrieval by the {@link #getMessage()} method).
      */
     public RDFParseException(final RDFParser rdfParser, final String message) {
         super(message);
@@ -56,8 +56,8 @@ public class RDFParseException extends Exception {
      * Constructs a new instance.
      *
      * @param rdfParser RDF parser.
-     * @param message   the detail message (which is saved for later retrieval by the {@link #getMessage()} method).
-     * @param cause     the cause (which is saved for later retrieval by the {@link #getCause()} method). (A {@code null} value is permitted, and indicates that
+     * @param message   The detail message (which is saved for later retrieval by the {@link #getMessage()} method).
+     * @param cause     The cause (which is saved for later retrieval by the {@link #getCause()} method). (A {@code null} value is permitted, and indicates that
      *                  the cause is nonexistent or unknown.)
      */
     public RDFParseException(final RDFParser rdfParser, final String message, final Throwable cause) {
@@ -69,7 +69,7 @@ public class RDFParseException extends Exception {
      * Constructs a new instance.
      *
      * @param rdfParser RDF parser.
-     * @param cause     the cause (which is saved for later retrieval by the {@link #getCause()} method). (A {@code null} value is permitted, and indicates that
+     * @param cause     The cause (which is saved for later retrieval by the {@link #getCause()} method). (A {@code null} value is permitted, and indicates that
      *                  the cause is nonexistent or unknown.)
      */
     public RDFParseException(final RDFParser rdfParser, final Throwable cause) {

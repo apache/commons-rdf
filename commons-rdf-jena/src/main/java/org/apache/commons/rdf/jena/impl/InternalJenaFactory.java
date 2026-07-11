@@ -94,7 +94,7 @@ public abstract class InternalJenaFactory {
      * Creates a dataset based on the given graph and salt.
      *
      * @param datasetGraph dataset to wrap.
-     * @param salt         a UUID salt.
+     * @param salt         A UUID salt.
      * @return A dataset based on the given graph and salt.
      */
     public JenaDataset createDataset(final DatasetGraph datasetGraph, final UUID salt) {
@@ -141,7 +141,7 @@ public abstract class InternalJenaFactory {
      * Creates a generalized triple representation for the given inputs.
      *
      * @param triple A triple.
-     * @param salt   a UUID salt.
+     * @param salt   A UUID salt.
      * @return A generalized triple representation for the given inputs.
      */
     public JenaGeneralizedTripleLike createGeneralizedTriple(final org.apache.jena.graph.Triple triple, final UUID salt) {
@@ -205,7 +205,7 @@ public abstract class InternalJenaFactory {
     /**
      * Creates a Jena-backed {@link Literal}.
      *
-     * @param lexStr a literal string.
+     * @param lexStr A literal string.
      * @return A Jena-backed {@link Literal}.
      */
     public JenaLiteral createLiteral(final String lexStr) {
@@ -215,7 +215,7 @@ public abstract class InternalJenaFactory {
     /**
      * Creates a Jena-backed {@link Literal}.
      *
-     * @param lexStr a literal string.
+     * @param lexStr A literal string.
      * @param datatypeIRI datatype IRI string.
      * @return A Jena-backed {@link Literal}.
      */
@@ -226,7 +226,7 @@ public abstract class InternalJenaFactory {
     /**
      * Creates a Jena-backed {@link Literal}.
      *
-     * @param lexStr a literal string.
+     * @param lexStr A literal string.
      * @param langTag A language tag.
      * @return A Jena-backed {@link Literal}.
      */

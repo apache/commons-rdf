@@ -102,7 +102,7 @@ public class JenaRDFParser extends AbstractRDFParser<JenaRDFParser> {
     /**
      * Experimental.
      *
-     * @param consumer a Consumer.
+     * @param consumer A Consumer.
      * @return A clone of this instance.
      */
     public JenaRDFParser targetGeneralizedQuad(final Consumer<QuadLike<RDFTerm>> consumer) {
@@ -115,7 +115,7 @@ public class JenaRDFParser extends AbstractRDFParser<JenaRDFParser> {
     /**
      * Experimental.
      *
-     * @param consumer a Consumer.
+     * @param consumer A Consumer.
      * @return A clone of this instance.
      */
     public JenaRDFParser targetGeneralizedTriple(final Consumer<TripleLike> consumer) {
