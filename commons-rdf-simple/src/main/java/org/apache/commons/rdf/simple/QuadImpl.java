@@ -53,9 +53,9 @@ final class QuadImpl implements Quad {
      */
     public QuadImpl(final BlankNodeOrIRI graphName, final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
         this.graphName = graphName; // possibly null
-        this.subject = Objects.requireNonNull(subject);
-        this.predicate = Objects.requireNonNull(predicate);
-        this.object = Objects.requireNonNull(object);
+        this.subject = Objects.requireNonNull(subject, "subject");
+        this.predicate = Objects.requireNonNull(predicate, "predicate");
+        this.object = Objects.requireNonNull(object, "object");
     }
 
     @Override

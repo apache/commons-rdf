@@ -63,8 +63,8 @@ abstract class AbstractJsonLdGraphLike<T extends TripleLike> implements JsonLdGr
     }
 
     AbstractJsonLdGraphLike(final RDFDataset rdfDataSet, final String bnodePrefix) {
-        this.rdfDataSet = Objects.requireNonNull(rdfDataSet);
-        this.bnodePrefix = Objects.requireNonNull(bnodePrefix);
+        this.rdfDataSet = Objects.requireNonNull(rdfDataSet, "rdfDataSet");
+        this.bnodePrefix = Objects.requireNonNull(bnodePrefix, "bnodePrefix");
         this.factory = new JsonLdRDF(bnodePrefix);
     }
 

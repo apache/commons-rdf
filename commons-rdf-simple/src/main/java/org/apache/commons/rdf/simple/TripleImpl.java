@@ -47,9 +47,9 @@ final class TripleImpl implements Triple {
      *            object of triple
      */
     public TripleImpl(final BlankNodeOrIRI subject, final IRI predicate, final RDFTerm object) {
-        this.subject = Objects.requireNonNull(subject);
-        this.predicate = Objects.requireNonNull(predicate);
-        this.object = Objects.requireNonNull(object);
+        this.subject = Objects.requireNonNull(subject, "subject");
+        this.predicate = Objects.requireNonNull(predicate, "predicate");
+        this.object = Objects.requireNonNull(object, "object");
     }
 
     @Override

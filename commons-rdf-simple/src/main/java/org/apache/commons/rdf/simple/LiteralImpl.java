@@ -45,8 +45,8 @@ final class LiteralImpl implements Literal, SimpleRDF.SimpleRDFTerm {
     }
 
     public LiteralImpl(final String lexicalForm, final IRI dataType) {
-        this.lexicalForm = Objects.requireNonNull(lexicalForm);
-        this.dataType = Types.get(Objects.requireNonNull(dataType)).orElse(dataType);
+        this.lexicalForm = Objects.requireNonNull(lexicalForm, "lexicalForm");
+        this.dataType = Types.get(Objects.requireNonNull(dataType, "dataType")).orElse(dataType);
         if (Types.RDF_LANGSTRING.equals(this.dataType)) {
             throw new IllegalArgumentException(
                     "Cannot create a non-language literal with type " + Types.RDF_LANGSTRING);
@@ -55,8 +55,8 @@ final class LiteralImpl implements Literal, SimpleRDF.SimpleRDFTerm {
     }
 
     public LiteralImpl(final String literal, final String languageTag) {
-        this.lexicalForm = Objects.requireNonNull(literal);
-        this.languageTag = Objects.requireNonNull(lowerCase(languageTag));
+        this.lexicalForm = Objects.requireNonNull(literal, "Literal");
+        this.languageTag = lowerCase(Objects.requireNonNull(languageTag, "languageTag"));
         if (languageTag.isEmpty()) {
             // TODO: Check against
             // http://www.w3.org/TR/n-triples/#n-triples-grammar

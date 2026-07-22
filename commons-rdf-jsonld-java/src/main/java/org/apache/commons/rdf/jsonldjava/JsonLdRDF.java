@@ -51,7 +51,7 @@ public final class JsonLdRDF implements RDF {
     }
 
     JsonLdRDF(final String bnodePrefix) {
-        this.bnodePrefix = Objects.requireNonNull(bnodePrefix);
+        this.bnodePrefix = Objects.requireNonNull(bnodePrefix, "bnodePrefix");
     }
 
     /**

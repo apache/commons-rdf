@@ -48,7 +48,7 @@ final class RepositoryGraphImpl extends AbstractRepositoryGraphLike<Triple> impl
     RepositoryGraphImpl(final Repository repository, final UUID salt, final boolean handleInitAndShutdown, final boolean includeInferred,
             final Resource... contextMask) {
         super(repository, salt, handleInitAndShutdown, includeInferred);
-        this.contextMask = Objects.requireNonNull(contextMask);
+        this.contextMask = Objects.requireNonNull(contextMask, "contextMask");
     }
 
     @Override

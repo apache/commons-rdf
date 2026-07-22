@@ -108,7 +108,7 @@ abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
 
     @SuppressWarnings("unchecked")
     AbstractQuadLike(final org.apache.jena.graph.Triple triple, final UUID salt) {
-        this.triple = Objects.requireNonNull(triple);
+        this.triple = Objects.requireNonNull(triple, "triple");
         this.subject = (S) INTERNAL_JENA_FACTORY.createRDFTerm(triple.getSubject(), salt);
         this.predicate = (P) INTERNAL_JENA_FACTORY.createRDFTerm(triple.getPredicate(), salt);
         this.object = (O) INTERNAL_JENA_FACTORY.createRDFTerm(triple.getObject(), salt);
@@ -117,7 +117,7 @@ abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
 
     @SuppressWarnings("unchecked")
     AbstractQuadLike(final org.apache.jena.sparql.core.Quad quad, final UUID salt) {
-        this.quad = Objects.requireNonNull(quad);
+        this.quad = Objects.requireNonNull(quad, "quad");
         this.subject = (S) INTERNAL_JENA_FACTORY.createRDFTerm(quad.getSubject(), salt);
         this.predicate = (P) INTERNAL_JENA_FACTORY.createRDFTerm(quad.getPredicate(), salt);
         this.object = (O) INTERNAL_JENA_FACTORY.createRDFTerm(quad.getObject(), salt);
@@ -133,11 +133,11 @@ abstract class AbstractQuadLike<S extends RDFTerm, P extends RDFTerm, O extends 
     }
 
     AbstractQuadLike(final S subject, final P predicate, final O object, final Optional<G> graphName) {
-        this.subject = Objects.requireNonNull(subject);
-        this.predicate = Objects.requireNonNull(predicate);
-        this.object = Objects.requireNonNull(object);
+        this.subject = Objects.requireNonNull(subject, "subject");
+        this.predicate = Objects.requireNonNull(predicate, "predicate");
+        this.object = Objects.requireNonNull(object, "object");
         // Enforce
-        this.graphName = Objects.requireNonNull(graphName).filter(DEFAULT_GRAPH_CHECKER::isNotDefaultGraphJenaNode);
+        this.graphName = Objects.requireNonNull(graphName, "graphName").filter(DEFAULT_GRAPH_CHECKER::isNotDefaultGraphJenaNode);
     }
 
     @Override

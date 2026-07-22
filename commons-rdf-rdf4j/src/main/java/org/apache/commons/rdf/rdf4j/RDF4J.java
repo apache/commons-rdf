@@ -312,7 +312,7 @@ public final class RDF4J implements RDF {
 
         /** NOTE: asValue() deliberately CAN handle {@code null} */
         final Resource[] resources = contexts.stream().map(g -> (Resource) asValue(g)).toArray(Resource[]::new);
-        return RDF4J.createRepositoryGraphImpl(Objects.requireNonNull(repository),
+        return RDF4J.createRepositoryGraphImpl(Objects.requireNonNull(repository, "repository"),
                 opts.contains(Option.handleInitAndShutdown), opts.contains(Option.includeInferred), resources);
     }
 

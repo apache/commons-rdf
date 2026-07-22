@@ -47,7 +47,7 @@ final class JsonLdGraphImpl extends AbstractJsonLdGraphLike<Triple> implements J
 
     JsonLdGraphImpl(final RDFDataset rdfDataSet, final Optional<BlankNodeOrIRI> graphName, final String bnodePrefix) {
         super(rdfDataSet, bnodePrefix);
-        this.graphName = Objects.requireNonNull(graphName);
+        this.graphName = Objects.requireNonNull(graphName, "graphName");
     }
 
     JsonLdGraphImpl(final String bnodePrefix) {

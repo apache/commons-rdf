@@ -40,7 +40,7 @@ final class BlankNodeImpl implements BlankNode, SimpleRDFTerm {
     }
 
     public BlankNodeImpl(final UUID uuidSalt, final String name) {
-        if (Objects.requireNonNull(name).isEmpty()) {
+        if (Objects.requireNonNull(name, "name").isEmpty()) {
             throw new IllegalArgumentException("Invalid blank node id: " + name);
         }
 

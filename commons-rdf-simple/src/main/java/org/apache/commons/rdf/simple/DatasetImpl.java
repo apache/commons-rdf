@@ -96,7 +96,7 @@ final class DatasetImpl implements Dataset {
 
     @Override
     public boolean contains(final Quad quad) {
-        return quads.contains(Objects.requireNonNull(quad));
+        return quads.contains(Objects.requireNonNull(quad, "quad"));
     }
 
     @Override
@@ -156,7 +156,7 @@ final class DatasetImpl implements Dataset {
 
     @Override
     public void remove(final Quad quad) {
-        quads.remove(Objects.requireNonNull(quad));
+        quads.remove(Objects.requireNonNull(quad, "quad"));
     }
 
     @Override
