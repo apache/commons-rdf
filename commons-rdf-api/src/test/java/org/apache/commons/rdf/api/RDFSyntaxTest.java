@@ -125,8 +125,8 @@ class RDFSyntaxTest {
         assertFalse(left.iri().equals(null));
         assertFalse(right.iri().equals(null));
         final Object notAnInstance = "a";
-        assertFalse(left.equals(notAnInstance));
-        assertFalse(right.equals(notAnInstance));
+        assertNotEquals(left, notAnInstance);
+        assertNotEquals(right, notAnInstance);
         assertFalse(left.iri().equals(notAnInstance));
         assertFalse(right.iri().equals(notAnInstance));
     }
