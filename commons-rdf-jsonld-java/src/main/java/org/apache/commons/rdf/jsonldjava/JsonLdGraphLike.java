@@ -168,12 +168,9 @@ abstract class AbstractJsonLdGraphLike<T extends TripleLike> implements JsonLdGr
         final Optional<Node> subjectNode = Optional.ofNullable(subject).map(factory::asJsonLdNode);
         final Optional<Node> predicateNode = Optional.ofNullable(predicate).map(factory::asJsonLdNode);
         final Optional<Node> objectNode = Optional.ofNullable(object).map(factory::asJsonLdNode);
-
         return q -> {
-            if (subjectNode.isPresent() && subjectNode.get().compareTo(q.getSubject()) != 0) {
-                return false;
-            }
-            if (predicateNode.isPresent() && predicateNode.get().compareTo(q.getPredicate()) != 0) {
+            if (subjectNode.isPresent() && subjectNode.get().compareTo(q.getSubject()) != 0
+                    || predicateNode.isPresent() && predicateNode.get().compareTo(q.getPredicate()) != 0) {
                 return false;
             }
             if (objectNode.isPresent()) {
@@ -182,14 +179,12 @@ abstract class AbstractJsonLdGraphLike<T extends TripleLike> implements JsonLdGr
                     // Less efficient wrapper to a Commons RDF Literal so
                     // we can use our RDF 1.1-compliant .equals()
                     final RDFTerm otherObj = factory.asRDFTerm(q.getObject());
-                    if (! (object.equals(otherObj))) {
+                    if (!object.equals(otherObj)) {
                         return false;
                     }
-                } else {
-                    // JSONLD-Java's .compareTo can handle IRI, BlankNode and type-mismatch
-                    if (objectNode.get().compareTo(q.getObject()) != 0) {
-                        return false;
-                    }
+                } else // JSONLD-Java's .compareTo can handle IRI, BlankNode and type-mismatch
+                if (objectNode.get().compareTo(q.getObject()) != 0) {
+                    return false;
                 }
             }
             // All patterns checked, must be good!
