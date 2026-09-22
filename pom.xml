@@ -64,7 +64,7 @@
     <dexx.collection.version>0.7</dexx.collection.version>
     <servicemix.xerces.version>2.11.0_1</servicemix.xerces.version>
     <!-- Test dependencies -->
-    <slf4j.version>1.7.26</slf4j.version>
+    <slf4j.version>2.0.17</slf4j.version>
     <skipAPICompatCheck>false</skipAPICompatCheck>
     <moditect.skip>true</moditect.skip>
     <!-- JaCoCo: Don't make code coverage worse than: -->
