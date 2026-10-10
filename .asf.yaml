@@ -16,6 +16,8 @@
 github:
   description: "Apache Commons RDF"
   homepage: https://commons.apache.org/rdf/
+  autolink_jira:
+    - COMMONSRDF
   
   pull_requests:
     # allow auto-merge
