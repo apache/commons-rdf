@@ -57,6 +57,8 @@
 	          is cross-compatible -->
     <jsonldjava.version>0.13.6</jsonldjava.version>
     <rdf4j.version>5.2.2</rdf4j.version>
+    <kotlin.version>2.4.21</kotlin.version>
+    <eclipse.collections.version>12.0.0</eclipse.collections.version>
     <jena.version>3.5.0</jena.version>
         <!--  NOTE: dexx and xerces versions should match
         the versions marked as <optional> in jena-osgi pom
@@ -94,6 +96,27 @@
   </modules>
   <dependencyManagement>
     <dependencies>
+      <!-- Pin MapDB transitive dependency ranges for reproducible builds. -->
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-stdlib</artifactId>
+        <version>${kotlin.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.collections</groupId>
+        <artifactId>eclipse-collections-api</artifactId>
+        <version>${eclipse.collections.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.collections</groupId>
+        <artifactId>eclipse-collections</artifactId>
+        <version>${eclipse.collections.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.collections</groupId>
+        <artifactId>eclipse-collections-forkjoin</artifactId>
+        <version>${eclipse.collections.version}</version>
+      </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-simple</artifactId>
